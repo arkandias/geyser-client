@@ -86,10 +86,9 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     label: "S.",
     tooltip: "Service à réaliser (en heures EQTD)",
     field: (row) =>
-      nf.format(
-        (row.services[0]?.heuresEQTD ?? 0) -
-          (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0),
-      ),
+      (row.services[0]?.heuresEQTD ?? 0) -
+      (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0),
+    format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
     visible: perm.deVoirLeServiceDAutrui.value,
@@ -101,11 +100,10 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     label: "\u0394",
     tooltip: "Nombre d'heures EQTD manquantes",
     field: (row) =>
-      nf.format(
-        (row.services[0]?.heuresEQTD ?? 0) -
-          (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0) -
-          (row.totalAttributions.aggregate?.sum?.heures ?? 0),
-      ),
+      (row.services[0]?.heuresEQTD ?? 0) -
+      (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0) -
+      (row.totalAttributions.aggregate?.sum?.heures ?? 0),
+    format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
     visible: perm.deVoirLeServiceDAutrui.value,
@@ -116,8 +114,8 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     name: "attributions",
     label: "A.",
     tooltip: "Nombre d'heures EQTD attribuées",
-    field: (row) =>
-      nf.format(row.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0),
+    field: (row) => row.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0,
+    format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
     visible: perm.deVoirLesAttributions.value,
@@ -128,8 +126,8 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     name: "principales",
     label: "V1",
     tooltip: "Nombre d'heures EQTD demandées en vœux principaux",
-    field: (row) =>
-      nf.format(row.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0),
+    field: (row) => row.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0,
+    format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
     visible: true,
@@ -140,8 +138,8 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     name: "secondaires",
     label: "V2",
     tooltip: "Nombre d'heures EQTD demandées en vœux secondaires",
-    field: (row) =>
-      nf.format(row.totalSecondaires.aggregate?.sum?.heuresEQTD ?? 0),
+    field: (row) => row.totalSecondaires.aggregate?.sum?.heuresEQTD ?? 0,
+    format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
     visible: true,
