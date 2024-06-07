@@ -113,7 +113,8 @@ import AccueilVolet from "@/components/accueil/AccueilVolet.vue";
           le 03/03/2024.
         </p>
         <p style="text-align: right"></p>
-        Le code source de Geyser est disponible sur Gitlab :
+        Le code source de Geyser est disponible sur l'instance Gitlab de
+        l'Université de Lille :
         <ol>
           <li>
             <a
