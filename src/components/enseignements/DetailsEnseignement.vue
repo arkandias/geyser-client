@@ -20,9 +20,7 @@ import {
   RowEnseignement,
 } from "@/helpers/types.ts";
 
-const props = defineProps<{
-  enseignement: RowEnseignement | null;
-}>();
+const props = defineProps<{ enseignement: RowEnseignement | null }>();
 
 const queryDetails = useQuery({
   query: GET_ENSEIGNEMENT_DETAILS,
@@ -36,8 +34,8 @@ const queryDetails = useQuery({
   },
 });
 
-const resume: ComputedRef<Resume | null> = computed(
-  () => queryDetails.data.value?.enseignement ?? null,
+const resume: ComputedRef<Resume | null> = computed(() =>
+  props.enseignement ? queryDetails.data.value?.enseignement ?? null : null,
 );
 const demandes: ComputedRef<Demande[]> = computed(() =>
   props.enseignement && queryDetails.data.value?.enseignement
