@@ -31,6 +31,8 @@ vite:
   stage: build
   rules:
     - if: $CI_COMMIT_TAG
+  variables:
+    VITE_BUILD_VERSION: $CI_COMMIT_TAG
   script:
     - pnpm run build
   artifacts:

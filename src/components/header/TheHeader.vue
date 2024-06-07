@@ -15,11 +15,17 @@ import MenuUtilisateur from "@/components/header/MenuUtilisateur.vue";
 import { couleurBouton } from "@/helpers/format.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 import { useRefresh } from "@/stores/refresh.ts";
+import { computed, ComputedRef } from "vue";
 
 const $q = useQuasar();
 const router = useRouter();
 const perm = usePermissions();
 const { refresh } = useRefresh();
+
+const version: ComputedRef<string> = computed(
+  () =>
+    import.meta.env.VITE_BUILD_VERSION ?? (import.meta.env.DEV ? "dev" : ""),
+);
 </script>
 
 <template>
@@ -29,6 +35,7 @@ const { refresh } = useRefresh();
         <QAvatar icon="sym_s_spa" square size="xl" />
         Geyser
       </QToolbarTitle>
+      <small>{{ version }}</small>
       <QSpace />
       <QBtn
         icon="sym_s_home"
