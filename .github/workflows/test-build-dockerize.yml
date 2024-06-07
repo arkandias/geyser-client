@@ -69,5 +69,5 @@ jobs:
           context: .
           push: true
           tags: |
-            IMAGE_ID=ghcr.io/${{ github.repository }}:latest
-            IMAGE_ID=ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
