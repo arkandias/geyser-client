@@ -183,7 +183,7 @@ const columns: Column<RowEnseignement>[] = [
         ? null
         : row.heures * (row.groupes ?? 0) -
           (row.totalAttributions.aggregate?.sum?.heures ?? 0),
-    format: (val: number | null) => (val !== null ? nf.format(val) : "-"),
+    format: (val: number | null) => (val !== null ? nf.format(val) : "n/a"),
     align: "left",
     sortable: true,
     visible: perm.deVoirLesAttributions.value,
@@ -236,7 +236,7 @@ const columns: Column<RowEnseignement>[] = [
         ? null
         : row.heures * (row.groupes ?? 0) -
           (row.totalPrioritaire.aggregate?.sum?.heures ?? 0),
-    format: (val: number | null) => (val !== null ? nf.format(val) : "-"),
+    format: (val: number | null) => (val !== null ? nf.format(val) : "n/a"),
     align: "left",
     sortable: true,
     visible: true,
