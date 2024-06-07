@@ -1,0 +1,30 @@
+/*!*****************************************************************************
+ * Copyright (c) 2021-2024 Amaël Broustet, Julien Hauseux.                    *
+ * This file is part of Geyser.                                               *
+ * Distributed under the GNU Affero General Public License, version 3.        *
+ ******************************************************************************/
+
+// Ajuste le layout de la page Enseignements à la hauteur de la fenêtre
+$header-height: 50px;
+#header {
+  height: $header-height;
+}
+#splitter-ens {
+  height: calc(100vh - $header-height);
+}
+
+// couleur de l'en-tête et des séparateurs (y compris en mode sombre)
+#header,
+.q-splitter .q-splitter__separator {
+  background-color: $primary;
+}
+
+// couleurs des liens hypertextes
+a:link,
+a:visited {
+  color: var(--q-primary);
+}
+a:hover,
+a:active {
+  color: $accent;
+}

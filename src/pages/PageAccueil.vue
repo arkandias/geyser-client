@@ -1,0 +1,52 @@
+<!-----------------------------------------------------------------------------
+  - Copyright (c) 2021-2024 Amaël Broustet, Julien Hauseux.                   -
+  - This file is part of Geyser.                                              -
+  - Distributed under the GNU Affero General Public License, version 3.       -
+  ----------------------------------------------------------------------------->
+
+<script setup lang="ts">
+import AccueilInformations from "@/components/accueil/AccueilInformations.vue";
+import { formatIntervenant } from "@/helpers/format.ts";
+import { useAuthentication } from "@/stores/authentication.ts";
+import { usePhases } from "@/stores/phases.ts";
+
+const { enCours: phaseEnCours } = usePhases();
+const { intervenant } = useAuthentication();
+</script>
+
+<template>
+  <QPage class="column items-center">
+    <QCard flat square class="text-center">
+      <QCardSection class="text-h5">
+        Bienvenue,
+        <br />
+        {{ formatIntervenant(intervenant) }}
+      </QCardSection>
+      <QCardSection v-if="phaseEnCours === 'voeux'">
+        Geyser est actuellement en phase de vœux.
+        <p>
+          Vous pouvez faire des demandes principales et secondaires. Merci de
+          demander l’équivalent de votre service en demandes principales et en
+          demandes secondaires.
+        </p>
+      </QCardSection>
+      <QCardSection v-if="phaseEnCours === 'commission'">
+        Les travaux de la commission sont en cours. Vous ne pouvez plus faire de
+        demandes. Vous serez informé lorsque Geyser rouvrira pour consulter les
+        attributions.
+      </QCardSection>
+      <QCardSection v-if="phaseEnCours === 'consultation'">
+        Geyser est actuellement en phase de consultation.
+      </QCardSection>
+    </QCard>
+    <AccueilInformations />
+  </QPage>
+</template>
+
+<style scoped lang="scss">
+.q-page > .q-card {
+  width: 750px;
+  margin: 16px;
+  padding: 0;
+}
+</style>
