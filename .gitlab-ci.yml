@@ -38,14 +38,14 @@ vite:
   artifacts:
     paths:
       - dist/
-    expire_in: 1 week
+    expire_in: 30 days
 #
 # The GitLab instance of the University of Lille does not have a Docker
 # container registry (yet!). For now, we are using a private Docker Hub
 # repository instead. Hopefully, we will be able to migrate very soon!
 #
-docker:
-  stage: build
+dockerize:
+  stage: deploy
   rules:
     - if: $CI_COMMIT_TAG
   image: docker:latest
@@ -54,10 +54,9 @@ docker:
   variables:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_HOST: tcp://docker:2375/
-  before_script:
+  script:
     - ls -la
     - docker info
-  script:
     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG .
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG $CI_REGISTRY_IMAGE:latest
