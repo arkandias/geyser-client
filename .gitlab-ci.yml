@@ -37,8 +37,8 @@ vite:
     - pnpm run build
   artifacts:
     paths:
-      - dist/*
-    expire_in: 30 days
+      - dist
+    expire_in: 1 week
 #
 # The GitLab instance of the University of Lille does not have a Docker
 # container registry (yet!). For now, we are using a private Docker Hub
