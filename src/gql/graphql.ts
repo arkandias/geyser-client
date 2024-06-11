@@ -2413,6 +2413,8 @@ export type Ec_Intervenant = {
   responsables: Array<Ec_Responsable>;
   /** An aggregate relationship */
   responsables_aggregate: Ec_Responsable_Aggregate;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: Maybe<Scalars["Float"]["output"]>;
   /** An array relationship */
   services: Array<Ec_Service>;
   /** An aggregate relationship */
@@ -2541,15 +2543,30 @@ export type Ec_Intervenant_Aggregate = {
 /** aggregate fields of "ec.intervenant" */
 export type Ec_Intervenant_Aggregate_Fields = {
   __typename?: "ec_intervenant_aggregate_fields";
+  avg: Maybe<Ec_Intervenant_Avg_Fields>;
   count: Scalars["Int"]["output"];
   max: Maybe<Ec_Intervenant_Max_Fields>;
   min: Maybe<Ec_Intervenant_Min_Fields>;
+  stddev: Maybe<Ec_Intervenant_Stddev_Fields>;
+  stddev_pop: Maybe<Ec_Intervenant_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Ec_Intervenant_Stddev_Samp_Fields>;
+  sum: Maybe<Ec_Intervenant_Sum_Fields>;
+  var_pop: Maybe<Ec_Intervenant_Var_Pop_Fields>;
+  var_samp: Maybe<Ec_Intervenant_Var_Samp_Fields>;
+  variance: Maybe<Ec_Intervenant_Variance_Fields>;
 };
 
 /** aggregate fields of "ec.intervenant" */
 export type Ec_Intervenant_Aggregate_FieldsCountArgs = {
   columns: InputMaybe<Array<Ec_Intervenant_Select_Column>>;
   distinct: InputMaybe<Scalars["Boolean"]["input"]>;
+};
+
+/** aggregate avg on columns */
+export type Ec_Intervenant_Avg_Fields = {
+  __typename?: "ec_intervenant_avg_fields";
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** Boolean expression to filter rows from the table "ec.intervenant". All fields are combined with a logical 'AND'. */
@@ -2571,6 +2588,7 @@ export type Ec_Intervenant_Bool_Exp = {
   priorites_aggregate: InputMaybe<Ec_Priorite_Aggregate_Bool_Exp>;
   responsables: InputMaybe<Ec_Responsable_Bool_Exp>;
   responsables_aggregate: InputMaybe<Ec_Responsable_Aggregate_Bool_Exp>;
+  service: InputMaybe<Float_Comparison_Exp>;
   services: InputMaybe<Ec_Service_Bool_Exp>;
   services_aggregate: InputMaybe<Ec_Service_Aggregate_Bool_Exp>;
   uid: InputMaybe<String_Comparison_Exp>;
@@ -2582,6 +2600,12 @@ export enum Ec_Intervenant_Constraint {
   /** unique or primary key constraint on columns "uid" */
   IntervenantPkey = "intervenant_pkey",
 }
+
+/** input type for incrementing numeric columns in table "ec.intervenant" */
+export type Ec_Intervenant_Inc_Input = {
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: InputMaybe<Scalars["Float"]["input"]>;
+};
 
 /** input type for inserting data into table "ec.intervenant" */
 export type Ec_Intervenant_Insert_Input = {
@@ -2598,6 +2622,8 @@ export type Ec_Intervenant_Insert_Input = {
   prenom: InputMaybe<Scalars["String"]["input"]>;
   priorites: InputMaybe<Ec_Priorite_Arr_Rel_Insert_Input>;
   responsables: InputMaybe<Ec_Responsable_Arr_Rel_Insert_Input>;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: InputMaybe<Scalars["Float"]["input"]>;
   services: InputMaybe<Ec_Service_Arr_Rel_Insert_Input>;
   /** L'identifiant unique de l'intervenant. */
   uid: InputMaybe<Scalars["String"]["input"]>;
@@ -2614,6 +2640,8 @@ export type Ec_Intervenant_Max_Fields = {
   nom: Maybe<Scalars["String"]["output"]>;
   /** Le prénom de l'intervenant. */
   prenom: Maybe<Scalars["String"]["output"]>;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'intervenant. */
   uid: Maybe<Scalars["String"]["output"]>;
 };
@@ -2627,6 +2655,8 @@ export type Ec_Intervenant_Min_Fields = {
   nom: Maybe<Scalars["String"]["output"]>;
   /** Le prénom de l'intervenant. */
   prenom: Maybe<Scalars["String"]["output"]>;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'intervenant. */
   uid: Maybe<Scalars["String"]["output"]>;
 };
@@ -2665,6 +2695,7 @@ export type Ec_Intervenant_Order_By = {
   prenom: InputMaybe<Order_By>;
   priorites_aggregate: InputMaybe<Ec_Priorite_Aggregate_Order_By>;
   responsables_aggregate: InputMaybe<Ec_Responsable_Aggregate_Order_By>;
+  service: InputMaybe<Order_By>;
   services_aggregate: InputMaybe<Ec_Service_Aggregate_Order_By>;
   uid: InputMaybe<Order_By>;
   visible: InputMaybe<Order_By>;
@@ -2687,6 +2718,8 @@ export enum Ec_Intervenant_Select_Column {
   /** column name */
   Prenom = "prenom",
   /** column name */
+  Service = "service",
+  /** column name */
   Uid = "uid",
   /** column name */
   Visible = "visible",
@@ -2702,10 +2735,33 @@ export type Ec_Intervenant_Set_Input = {
   nom: InputMaybe<Scalars["String"]["input"]>;
   /** Le prénom de l'intervenant. */
   prenom: InputMaybe<Scalars["String"]["input"]>;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: InputMaybe<Scalars["Float"]["input"]>;
   /** L'identifiant unique de l'intervenant. */
   uid: InputMaybe<Scalars["String"]["input"]>;
   /** Indique si l'intervenant correspondant est visible par les utilisateurs. */
   visible: InputMaybe<Scalars["Boolean"]["input"]>;
+};
+
+/** aggregate stddev on columns */
+export type Ec_Intervenant_Stddev_Fields = {
+  __typename?: "ec_intervenant_stddev_fields";
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Ec_Intervenant_Stddev_Pop_Fields = {
+  __typename?: "ec_intervenant_stddev_pop_fields";
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Ec_Intervenant_Stddev_Samp_Fields = {
+  __typename?: "ec_intervenant_stddev_samp_fields";
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** Streaming cursor of the table "ec_intervenant" */
@@ -2726,10 +2782,19 @@ export type Ec_Intervenant_Stream_Cursor_Value_Input = {
   nom: InputMaybe<Scalars["String"]["input"]>;
   /** Le prénom de l'intervenant. */
   prenom: InputMaybe<Scalars["String"]["input"]>;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: InputMaybe<Scalars["Float"]["input"]>;
   /** L'identifiant unique de l'intervenant. */
   uid: InputMaybe<Scalars["String"]["input"]>;
   /** Indique si l'intervenant correspondant est visible par les utilisateurs. */
   visible: InputMaybe<Scalars["Boolean"]["input"]>;
+};
+
+/** aggregate sum on columns */
+export type Ec_Intervenant_Sum_Fields = {
+  __typename?: "ec_intervenant_sum_fields";
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** update columns of table "ec.intervenant" */
@@ -2743,16 +2808,41 @@ export enum Ec_Intervenant_Update_Column {
   /** column name */
   Prenom = "prenom",
   /** column name */
+  Service = "service",
+  /** column name */
   Uid = "uid",
   /** column name */
   Visible = "visible",
 }
 
 export type Ec_Intervenant_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Ec_Intervenant_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set: InputMaybe<Ec_Intervenant_Set_Input>;
   /** filter the rows which have to be updated */
   where: Ec_Intervenant_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Ec_Intervenant_Var_Pop_Fields = {
+  __typename?: "ec_intervenant_var_pop_fields";
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** aggregate var_samp on columns */
+export type Ec_Intervenant_Var_Samp_Fields = {
+  __typename?: "ec_intervenant_var_samp_fields";
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** aggregate variance on columns */
+export type Ec_Intervenant_Variance_Fields = {
+  __typename?: "ec_intervenant_variance_fields";
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  service: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** Table contenant les différentes mentions. */
@@ -7739,12 +7829,14 @@ export type Mutation_RootUpdate_Ec_Enseignement_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Ec_IntervenantArgs = {
+  _inc: InputMaybe<Ec_Intervenant_Inc_Input>;
   _set: InputMaybe<Ec_Intervenant_Set_Input>;
   where: Ec_Intervenant_Bool_Exp;
 };
 
 /** mutation root */
 export type Mutation_RootUpdate_Ec_Intervenant_By_PkArgs = {
+  _inc: InputMaybe<Ec_Intervenant_Inc_Input>;
   _set: InputMaybe<Ec_Intervenant_Set_Input>;
   pk_columns: Ec_Intervenant_Pk_Columns_Input;
 };
@@ -10119,21 +10211,45 @@ export const ResumeFragmentDoc = {
                 kind: "Argument",
                 name: { kind: "Name", value: "order_by" },
                 value: {
-                  kind: "ObjectValue",
-                  fields: [
+                  kind: "ListValue",
+                  values: [
                     {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "intervenant" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "nom" },
-                            value: { kind: "EnumValue", value: "asc" },
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
                           },
-                        ],
-                      },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
                     },
                   ],
                 },
@@ -10165,21 +10281,51 @@ export const ResumeFragmentDoc = {
                       kind: "Argument",
                       name: { kind: "Name", value: "order_by" },
                       value: {
-                        kind: "ObjectValue",
-                        fields: [
+                        kind: "ListValue",
+                        values: [
                           {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "intervenant" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "nom" },
-                                  value: { kind: "EnumValue", value: "asc" },
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "nom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
                                 },
-                              ],
-                            },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "prenom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
                           },
                         ],
                       },
@@ -10225,21 +10371,51 @@ export const ResumeFragmentDoc = {
                       kind: "Argument",
                       name: { kind: "Name", value: "order_by" },
                       value: {
-                        kind: "ObjectValue",
-                        fields: [
+                        kind: "ListValue",
+                        values: [
                           {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "intervenant" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "nom" },
-                                  value: { kind: "EnumValue", value: "asc" },
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "nom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
                                 },
-                              ],
-                            },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "prenom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
                           },
                         ],
                       },
@@ -10423,6 +10599,53 @@ export const ArchiveFragmentDoc = {
                           },
                         ],
                       },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
                     },
                   ],
                 },
@@ -10653,6 +10876,53 @@ export const NestedArchivesFragmentDoc = {
                           },
                         ],
                       },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
                     },
                   ],
                 },
@@ -12102,6 +12372,61 @@ export const GetEnseignementDetailsDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "demandes" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "nom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "prenom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
@@ -12115,6 +12440,96 @@ export const GetEnseignementDetailsDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "priorites" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "intervenant" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "actif" },
+                                  value: {
+                                    kind: "ObjectValue",
+                                    fields: [
+                                      {
+                                        kind: "ObjectField",
+                                        name: { kind: "Name", value: "_eq" },
+                                        value: {
+                                          kind: "BooleanValue",
+                                          value: true,
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "nom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "prenom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
@@ -12281,6 +12696,53 @@ export const GetEnseignementDetailsDocument = {
                   ],
                 },
               },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
             ],
             selectionSet: {
               kind: "SelectionSet",
@@ -12319,21 +12781,45 @@ export const GetEnseignementDetailsDocument = {
                 kind: "Argument",
                 name: { kind: "Name", value: "order_by" },
                 value: {
-                  kind: "ObjectValue",
-                  fields: [
+                  kind: "ListValue",
+                  values: [
                     {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "intervenant" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "nom" },
-                            value: { kind: "EnumValue", value: "asc" },
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
                           },
-                        ],
-                      },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
                     },
                   ],
                 },
@@ -12365,21 +12851,51 @@ export const GetEnseignementDetailsDocument = {
                       kind: "Argument",
                       name: { kind: "Name", value: "order_by" },
                       value: {
-                        kind: "ObjectValue",
-                        fields: [
+                        kind: "ListValue",
+                        values: [
                           {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "intervenant" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "nom" },
-                                  value: { kind: "EnumValue", value: "asc" },
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "nom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
                                 },
-                              ],
-                            },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "prenom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
                           },
                         ],
                       },
@@ -12425,21 +12941,51 @@ export const GetEnseignementDetailsDocument = {
                       kind: "Argument",
                       name: { kind: "Name", value: "order_by" },
                       value: {
-                        kind: "ObjectValue",
-                        fields: [
+                        kind: "ListValue",
+                        values: [
                           {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "intervenant" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "nom" },
-                                  value: { kind: "EnumValue", value: "asc" },
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "nom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
                                 },
-                              ],
-                            },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "prenom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
                           },
                         ],
                       },

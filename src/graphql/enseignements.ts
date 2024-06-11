@@ -18,13 +18,23 @@ graphql(/* GraphQL */ `
   fragment Resume on ec_enseignement {
     ensId: id
     nom
-    responsables(order_by: { intervenant: { nom: asc } }) {
+    responsables(
+      order_by: [
+        { intervenant: { nom: asc } }
+        { intervenant: { prenom: asc } }
+      ]
+    ) {
       ...Responsable
     }
     mention {
       id
       nom
-      responsables(order_by: { intervenant: { nom: asc } }) {
+      responsables(
+        order_by: [
+          { intervenant: { nom: asc } }
+          { intervenant: { prenom: asc } }
+        ]
+      ) {
         ...Responsable
       }
       cursus {
@@ -35,7 +45,12 @@ graphql(/* GraphQL */ `
     parcours {
       id
       nom
-      responsables(order_by: { intervenant: { nom: asc } }) {
+      responsables(
+        order_by: [
+          { intervenant: { nom: asc } }
+          { intervenant: { prenom: asc } }
+        ]
+      ) {
         ...Responsable
       }
     }
@@ -46,7 +61,13 @@ graphql(/* GraphQL */ `
   fragment Archive on ec_enseignement {
     ensId: id
     annee
-    demandes(where: { type: { _eq: "attribution" } }) {
+    demandes(
+      where: { type: { _eq: "attribution" } }
+      order_by: [
+        { intervenant: { nom: asc } }
+        { intervenant: { prenom: asc } }
+      ]
+    ) {
       ...Demande
     }
   }
@@ -140,10 +161,21 @@ export const GET_ENSEIGNEMENT_DETAILS = graphql(/* GraphQL */ `
   query GetEnseignementDetails($ensId: Int!) {
     enseignement: ec_enseignement_by_pk(id: $ensId) {
       ...Resume
-      demandes {
+      demandes(
+        order_by: [
+          { intervenant: { nom: asc } }
+          { intervenant: { prenom: asc } }
+        ]
+      ) {
         ...Demande
       }
-      priorites {
+      priorites(
+        where: { intervenant: { actif: { _eq: true } } }
+        order_by: [
+          { intervenant: { nom: asc } }
+          { intervenant: { prenom: asc } }
+        ]
+      ) {
         ...Priorite
       }
       parent {
