@@ -170,7 +170,6 @@ export const GET_ENSEIGNEMENT_DETAILS = graphql(/* GraphQL */ `
         ...Demande
       }
       priorites(
-        where: { intervenant: { actif: { _eq: true } } }
         order_by: [
           { intervenant: { nom: asc } }
           { intervenant: { prenom: asc } }
