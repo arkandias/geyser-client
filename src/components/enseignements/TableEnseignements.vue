@@ -515,7 +515,13 @@ const estAttribue = (row: RowEnseignement) =>
       </QTh>
     </template>
     <template #body-cell="scope">
-      <QTd :props="scope" :class="{ attribue: estAttribue(scope.row) }">
+      <QTd
+        :props="scope"
+        :class="{
+          attribue: estAttribue(scope.row),
+          cache: !scope.row.visible,
+        }"
+      >
         {{ scope.value?.short ?? scope.value?.long ?? scope.value }}
         <QTooltip v-if="scope.value?.short" :delay="tooltipDelay">
           {{ scope.value.long }}
@@ -531,5 +537,8 @@ const estAttribue = (row: RowEnseignement) =>
 <style scoped lang="scss">
 .attribue {
   background-color: rgba($positive, 0.1);
+}
+.cache {
+  background-color: rgba($negative, 0.1);
 }
 </style>
