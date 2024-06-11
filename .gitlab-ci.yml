@@ -37,7 +37,7 @@ vite:
     - pnpm run build
   artifacts:
     paths:
-      - dist
+      - dist/*
     expire_in: 30 days
 #
 # The GitLab instance of the University of Lille does not have a Docker
