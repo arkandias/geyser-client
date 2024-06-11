@@ -4,7 +4,7 @@ default:
     - corepack enable
     - corepack prepare pnpm@latest-9 --activate
     - pnpm config set store-dir .pnpm-store
-    - pnpm install
+    - pnpm install --no-prefer-frozen-lockfile
   cache:
     key:
       files:
