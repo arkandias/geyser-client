@@ -519,7 +519,7 @@ const estAttribue = (row: RowEnseignement) =>
         :props="scope"
         :class="{
           attribue: estAttribue(scope.row),
-          cache: !scope.row.visible,
+          'non-visible': !scope.row.visible,
         }"
       >
         {{ scope.value?.short ?? scope.value?.long ?? scope.value }}
@@ -538,7 +538,7 @@ const estAttribue = (row: RowEnseignement) =>
 .attribue {
   background-color: rgba($positive, 0.1);
 }
-.cache {
+.non-visible {
   background-color: rgba($negative, 0.1);
 }
 </style>
