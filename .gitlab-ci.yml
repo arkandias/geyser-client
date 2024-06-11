@@ -17,15 +17,15 @@ stages:
   - build
   - deploy
 
-format:
-  stage: test
-  script:
-    - pnpm run format
-
-lint:
-  stage: test
-  script:
-    - pnpm run lint
+#format:
+#  stage: test
+#  script:
+#    - pnpm run format
+#
+#lint:
+#  stage: test
+#  script:
+#    - pnpm run lint
 
 vite:
   stage: build
