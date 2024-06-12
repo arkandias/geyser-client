@@ -16,10 +16,12 @@ import "quasar/src/css/index.sass";
 import "@/css/main.scss";
 
 import App from "@/App.vue";
-import { KeycloakClaims } from "@/helpers/types.ts";
+import { errorNotify } from "@/helpers/notify.ts";
+import { boolFromString } from "@/helpers/utils.ts";
 import {
   getToken,
   initKeycloak,
+  KeycloakClaims,
   logout,
   refreshToken,
 } from "@/services/keycloak.ts";
@@ -28,6 +30,7 @@ import { router } from "@/services/router.ts";
 import { createCustomClient, enableNotifications } from "@/services/urql.ts";
 import {
   activeRole,
+  applyProfile,
   getProfile,
   login,
   updateProfile,
@@ -39,7 +42,7 @@ if (import.meta.env.PROD) {
 }
 
 // bypass Keycloak in development
-const bypassKeycloak = true;
+const bypassKeycloak = false;
 
 // Login flow
 let claims: Ref<KeycloakClaims | null>;
@@ -47,12 +50,27 @@ let client: Client;
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 if (import.meta.env.PROD || !bypassKeycloak) {
   claims = await initKeycloak();
-  login(claims, logout);
-  client = createCustomClient(activeRole, getToken, refreshToken);
-  if (import.meta.env.VITE_IMPORT_PROFILE?.toLowerCase() === "true") {
-    await updateProfile(client);
+  await login(claims, logout);
+  client = createCustomClient({
+    activeRole,
+    getToken,
+    refreshToken,
+    errorNotify,
+  });
+  const profile = await getProfile(client);
+  const importProfile = boolFromString(
+    import.meta.env.VITE_IMPORT_PROFILE ?? "",
+  );
+  if (importProfile === null) {
+    console.warn(
+      `Environment variable VITE_IMPORT_PROFILE's value is ambiguous. 
+      Defaulting to 'false'.`,
+    );
+  }
+  if (!profile || importProfile) {
+    await updateProfile(profile, client);
   } else {
-    await getProfile(client);
+    applyProfile(profile);
   }
 } else {
   claims = ref({
@@ -63,8 +81,11 @@ if (import.meta.env.PROD || !bypassKeycloak) {
     defaultRole: "admin",
     allowedRoles: ["intervenant", "commissaire", "admin"],
   });
-  login(claims);
-  client = createCustomClient(ref("admin"));
+  await login(claims);
+  client = createCustomClient({
+    activeRole: ref("admin"),
+    errorNotify,
+  });
 }
 
 enableNotifications();

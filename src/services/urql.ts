@@ -4,7 +4,6 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { errorNotify } from "@/helpers/notify.ts";
 import { devtoolsExchange } from "@urql/devtools";
 import {
   cacheExchange,
@@ -17,18 +16,21 @@ import {
 import { Ref, ref } from "vue";
 
 // prevent using Quasar notifications before the plugin is installed
-const notify: Ref<boolean> = ref(false);
+const notifications: Ref<boolean> = ref(false);
 export const enableNotifications = () => {
-  notify.value = true;
+  notifications.value = true;
+};
+
+type CustomClientOptions = {
+  activeRole: Ref<string | null>;
+  getToken?: () => string;
+  refreshToken?: () => Promise<void>;
+  errorNotify: (message: string) => void;
 };
 
 // custom urql client with keycloak token, X-Hasura-Role header,
 // and Quasar notifications
-export const createCustomClient = (
-  activeRole: Ref<string>,
-  getToken?: () => string,
-  refreshToken?: () => Promise<void>,
-): Client =>
+export const createCustomClient = (opts: CustomClientOptions): Client =>
   createClient({
     url: import.meta.env.VITE_GRAPHQL_HTTP,
     exchanges: [
@@ -37,15 +39,15 @@ export const createCustomClient = (
       debugExchange,
       mapExchange({
         async onOperation(operation) {
-          if (refreshToken) {
-            await refreshToken();
+          if (opts.refreshToken) {
+            await opts.refreshToken();
           }
           return operation;
         },
         onError(error) {
           console.error(error);
-          if (notify.value) {
-            errorNotify(error.toString());
+          if (notifications.value) {
+            opts.errorNotify(error.toString());
           }
         },
       }),
@@ -53,13 +55,15 @@ export const createCustomClient = (
     ],
     fetchOptions: () => ({
       headers: {
-        ...(getToken
-          ? { Authorization: "Bearer " + getToken() }
+        ...(opts.getToken
+          ? { Authorization: "Bearer " + opts.getToken() }
           : {
               "X-Hasura-Admin-Secret":
                 import.meta.env.VITE_HASURA_ADMIN_SECRET ?? "",
             }),
-        "X-Hasura-Role": activeRole.value,
+        ...(opts.activeRole.value
+          ? { "X-Hasura-Role": opts.activeRole.value }
+          : {}),
       },
     }),
   });

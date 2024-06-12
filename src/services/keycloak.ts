@@ -4,9 +4,30 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { CustomKeycloak, KeycloakClaims } from "@/helpers/types.ts";
-import Keycloak from "keycloak-js";
+import Keycloak, { KeycloakTokenParsed } from "keycloak-js";
 import { ComputedRef, Ref, computed, ref } from "vue";
+
+type CustomKeycloak = Keycloak & {
+  tokenParsed?: KeycloakTokenParsed & {
+    "https://hasura.io/jwt/claims": {
+      "x-hasura-allowed-roles"?: string[];
+      "x-hasura-default-role"?: string;
+      "x-hasura-user-id"?: string;
+      "x-hasura-last-name"?: string;
+      "x-hasura-first-name"?: string;
+      "x-hasura-alias"?: string;
+    };
+  };
+};
+
+export type KeycloakClaims = {
+  allowedRoles: string[];
+  defaultRole: string;
+  userId: string;
+  lastName: string | null;
+  firstName: string | null;
+  alias: string | null;
+};
 
 const keycloak = new Keycloak({
   url: import.meta.env.VITE_KEYCLOAK_URL,
@@ -28,15 +49,15 @@ const claims: ComputedRef<KeycloakClaims | null> = computed(() =>
         allowedRoles:
           keycloak.tokenParsed["https://hasura.io/jwt/claims"][
             "x-hasura-allowed-roles"
-          ],
+          ] ?? [],
         defaultRole:
           keycloak.tokenParsed["https://hasura.io/jwt/claims"][
             "x-hasura-default-role"
-          ],
+          ] ?? "",
         userId:
           keycloak.tokenParsed["https://hasura.io/jwt/claims"][
             "x-hasura-user-id"
-          ],
+          ] ?? "",
         lastName:
           keycloak.tokenParsed["https://hasura.io/jwt/claims"][
             "x-hasura-last-name"
