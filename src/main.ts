@@ -61,7 +61,7 @@ if (import.meta.env.PROD || !bypassKeycloak) {
     firstName: "",
     alias: "Développeur",
     defaultRole: "admin",
-    allowedRoles: ["admin"],
+    allowedRoles: ["intervenant", "commissaire", "admin"],
   });
   login(claims);
   client = createCustomClient(ref("admin"));
