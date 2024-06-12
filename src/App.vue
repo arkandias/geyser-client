@@ -31,7 +31,6 @@ watch(
   },
   { immediate: true },
 );
-
 watch(
   queryPhases.data,
   (value) => {

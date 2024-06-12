@@ -6,9 +6,6 @@
 
 import { Notify } from "quasar";
 
-const defaultErrorCaption: string =
-  "Essayez de recharcher la page ou contactez un administrateur";
-
 export const defaultNotify = (message: string, caption?: string) => {
   Notify.create({
     message: message,
@@ -17,6 +14,9 @@ export const defaultNotify = (message: string, caption?: string) => {
     group: false,
   });
 };
+
+const defaultErrorCaption: string =
+  "Essayez de recharcher la page ou contactez un administrateur";
 
 export const errorNotify = (message: string, caption?: string) => {
   Notify.create({

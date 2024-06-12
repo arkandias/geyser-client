@@ -18,9 +18,7 @@ import {
 import { Demande } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
-const props = defineProps<{
-  demande: Demande;
-}>();
+const props = defineProps<{ demande: Demande }>();
 
 const perm = usePermissions();
 const client = useClientHandle().client;

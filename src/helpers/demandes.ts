@@ -4,6 +4,8 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
+import { Client } from "@urql/vue";
+
 import {
   DELETE_DEMANDE,
   DELETE_DEMANDE_BY_ID,
@@ -11,7 +13,6 @@ import {
   UPSERT_DEMANDE,
 } from "@/graphql/demandes.ts";
 import { defaultNotify, errorNotify, successNotify } from "@/helpers/notify.ts";
-import { Client } from "@urql/vue";
 
 const getCurrentDemande = async (
   client: Client,

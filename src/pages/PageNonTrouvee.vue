@@ -9,7 +9,9 @@
 <template>
   <QPage>
     <QCard flat square class="fixed-center">
-      <QCardSection class="text-h5"> Page non trouvée </QCardSection>
+      <QCardSection class="text-h5 text-center">
+        Page non trouvée
+      </QCardSection>
     </QCard>
   </QPage>
 </template>
