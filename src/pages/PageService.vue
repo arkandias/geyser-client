@@ -27,8 +27,11 @@ const queryTypesMessage = useQuery({
   query: GET_TYPES_MESSAGE,
 });
 
-const uid: Ref<string> = ref(moi.value);
-watch(moi, (value) => {
+const uidInit: ComputedRef<string | null> = computed(() =>
+  perm.deVoirLeServiceDAutrui.value ? null : moi.value,
+);
+const uid: Ref<string | null> = ref(moi.value);
+watch(uidInit, (value) => {
   uid.value = value;
 });
 
@@ -36,10 +39,10 @@ const queryService = useQuery({
   query: GET_SERVICE,
   variables: reactive({
     annee: computed(() => anneeActive.value ?? 0),
-    uid,
+    uid: computed(() => uid.value ?? ""),
   }),
   // todo: remove computed with urql/vue update
-  pause: computed(() => !anneeActive.value),
+  pause: computed(() => !anneeActive.value || !uid.value),
   context: {
     additionalTypenames: [
       "ec_modification_service",
@@ -87,7 +90,7 @@ const typesMessage: ComputedRef<string[]> = computed(
 );
 const typesMessageVisibles: ComputedRef<string[]> = computed(() =>
   typesMessage.value.filter((typeMessage) =>
-    perm.deVoirUnMessage.value(typeMessage, uid.value),
+    perm.deVoirUnMessage.value(typeMessage, uid.value ?? ""),
   ),
 );
 </script>
@@ -103,31 +106,33 @@ const typesMessageVisibles: ComputedRef<string[]> = computed(() =>
         <SelectIntervenant v-model="uid" style="width: 250px" />
       </QCardSection>
     </QCard>
-    <ServiceModifications
-      v-if="perm.deVoirUnService.value(uid)"
-      :uid
-      :editable="perm.deModifierUnService.value(uid)"
-      :service-base
-      :total-modifications
-      :modifications
-    />
-    <ServiceDemandes
-      :total-attributions
-      :total-principales
-      :total-secondaires
-    />
-    <ServiceMessage
-      v-for="typeMessage in typesMessageVisibles"
-      :key="typeMessage"
-      :uid
-      :editable="perm.deModifierUnMessage.value(typeMessage, uid)"
-      :message="
-        messages.find((message) => message.typeMessage === typeMessage) ?? {
-          typeMessage,
-          contenu: '',
-        }
-      "
-    />
+    <template v-if="uid">
+      <ServiceModifications
+        v-if="uid && perm.deVoirUnService.value(uid)"
+        :uid
+        :editable="perm.deModifierUnService.value(uid)"
+        :service-base
+        :total-modifications
+        :modifications
+      />
+      <ServiceDemandes
+        :total-attributions
+        :total-principales
+        :total-secondaires
+      />
+      <ServiceMessage
+        v-for="typeMessage in typesMessageVisibles"
+        :key="typeMessage"
+        :uid
+        :editable="perm.deModifierUnMessage.value(typeMessage, uid)"
+        :message="
+          messages.find((message) => message.typeMessage === typeMessage) ?? {
+            typeMessage,
+            contenu: '',
+          }
+        "
+      />
+    </template>
   </QPage>
 </template>
 
