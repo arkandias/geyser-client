@@ -6,6 +6,14 @@
 
 import { graphql } from "@/gql";
 
+export const GET_TYPES_MESSAGE = graphql(/* GraphQL */ `
+  query GetTypesMessage {
+    typesMessage: ec_type_message {
+      value
+    }
+  }
+`);
+
 export const UPSERT_MESSAGE = graphql(/* GraphQL */ `
   mutation UpsertMessage(
     $annee: Int!

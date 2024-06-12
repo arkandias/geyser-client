@@ -12,6 +12,7 @@ import SelectIntervenant from "@/components/core/SelectIntervenant.vue";
 import ServiceDemandes from "@/components/service/ServiceDemandes.vue";
 import ServiceMessage from "@/components/service/ServiceMessage.vue";
 import ServiceModifications from "@/components/service/ServiceModifications.vue";
+import { GET_TYPES_MESSAGE } from "@/graphql/messages.ts";
 import { GET_SERVICE } from "@/graphql/services.ts";
 import { Message, Modification } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
@@ -21,6 +22,10 @@ import { usePermissions } from "@/stores/permissions.ts";
 const { active: anneeActive } = useAnnees();
 const { uid: moi } = useAuthentication();
 const perm = usePermissions();
+
+const queryTypesMessage = useQuery({
+  query: GET_TYPES_MESSAGE,
+});
 
 const uid: Ref<string> = ref(moi.value);
 watch(moi, (value) => {
@@ -74,9 +79,14 @@ const messages: ComputedRef<Message[]> = computed(
   () => queryService.data.value?.intervenant?.messages ?? [],
 );
 
-const typesMessage = ["message_intervenant", "note_commission"];
+const typesMessage: ComputedRef<string[]> = computed(
+  () =>
+    queryTypesMessage.data.value?.typesMessage.map(
+      (typeMessage) => typeMessage.value,
+    ) ?? [],
+);
 const typesMessageVisibles: ComputedRef<string[]> = computed(() =>
-  typesMessage.filter((typeMessage) =>
+  typesMessage.value.filter((typeMessage) =>
     perm.deVoirUnMessage.value(typeMessage, uid.value),
   ),
 );
