@@ -13,6 +13,7 @@ import { KeycloakClaims } from "@/services/keycloak.ts";
 
 export const activeRole: Ref<string | null> = ref(null);
 
+const logged: Ref<boolean> = ref(false);
 const intervenant: Intervenant = reactive({
   uid: "",
   nom: "",
@@ -23,6 +24,7 @@ const allowedRoles: Ref<string[]> = ref([]);
 const logout: Ref<(() => Promise<void>) | undefined> = ref(undefined);
 
 export const useAuthentication = () => ({
+  logged: readonly(logged),
   intervenant: readonly(intervenant),
   uid: readonly(toRef(intervenant, "uid")),
   allowedRoles: readonly(allowedRoles),
@@ -30,30 +32,29 @@ export const useAuthentication = () => ({
   logout: readonly(logout),
 });
 
-export const login = async (
+export const login = (
   claims: Ref<KeycloakClaims | null>,
   keycloakLogout?: () => Promise<void>,
-): Promise<void> => {
+): boolean => {
+  logout.value = keycloakLogout;
   if (!claims.value) {
     console.error("Login failed: No token claims provided during login");
-    if (keycloakLogout) {
-      await keycloakLogout();
-    }
+    return false;
   } else if (!claims.value.allowedRoles.includes(claims.value.defaultRole)) {
     console.error("Login failed: Default role not allowed");
-    if (keycloakLogout) {
-      await keycloakLogout();
-    }
+    intervenant.alias = claims.value.userId;
+    return false;
   } else {
     console.debug("Logging in with token claims:", claims.value);
+    logged.value = true;
     allowedRoles.value = claims.value.allowedRoles;
     activeRole.value = claims.value.defaultRole;
     intervenant.uid = claims.value.userId;
     intervenant.nom = claims.value.lastName ?? "";
     intervenant.prenom = claims.value.firstName ?? "";
     intervenant.alias = claims.value.alias;
-    logout.value = keycloakLogout;
     console.debug("Logged in!");
+    return true;
   }
 };
 

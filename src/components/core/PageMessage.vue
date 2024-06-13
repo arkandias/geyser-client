@@ -5,11 +5,17 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import PageMessage from "@/components/core/PageMessage.vue";
+defineSlots<{ default(): unknown }>();
 </script>
 
 <template>
-  <PageMessage> Page non trouvée </PageMessage>
+  <QPage>
+    <QCard flat square class="fixed-center">
+      <QCardSection class="text-h5 text-center">
+        <slot />
+      </QCardSection>
+    </QCard>
+  </QPage>
 </template>
 
 <style scoped lang="scss"></style>

@@ -15,25 +15,21 @@ const routes: RouteRecordRaw[] = [
     path: "/",
     name: "accueil",
     component: PageAccueil,
-    meta: { requiresAuth: false },
   },
   {
     path: "/service",
     name: "service",
     component: PageService,
-    meta: { requiresAuth: true },
   },
   {
     path: "/enseignements",
     name: "enseignements",
     component: PageEnseignements,
-    meta: { requiresAuth: true },
   },
   {
     path: "/:pathMatch(.*)*",
     name: "non-trouvee",
     component: PageNonTrouvee,
-    meta: { requiresAuth: false },
   },
 ];
 

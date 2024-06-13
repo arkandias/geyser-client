@@ -9,7 +9,11 @@ import PageMessage from "@/components/core/PageMessage.vue";
 </script>
 
 <template>
-  <PageMessage> Page non trouvée </PageMessage>
+  <PageMessage>
+    Vous n'avez pas accès à Geyser.
+    <br />
+    Veuillez contacter un administrateur.
+  </PageMessage>
 </template>
 
 <style scoped lang="scss"></style>

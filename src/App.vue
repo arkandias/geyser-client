@@ -16,7 +16,11 @@ import {
   enCours as anneeEnCours,
   annees,
 } from "@/stores/annees.ts";
+import { useAuthentication } from "@/stores/authentication.ts";
 import { enCours as phaseEnCours, phases } from "@/stores/phases.ts";
+import PageInterdite from "@/pages/PageInterdite.vue";
+
+const { logged } = useAuthentication();
 
 const queryAnnees = useQuery({ query: GET_ANNEES, variables: {} });
 const queryPhases = useQuery({ query: GET_PHASES, variables: {} });
@@ -46,7 +50,8 @@ watch(
   <QLayout view="hHh lpR fFf" class="text-body1">
     <TheHeader />
     <QPageContainer>
-      <RouterView />
+      <RouterView v-if="logged" />
+      <PageInterdite v-else />
     </QPageContainer>
   </QLayout>
 </template>

@@ -16,7 +16,10 @@ import {
 import { Ref, ref } from "vue";
 
 // prevent using Quasar notifications before the plugin is installed
-const notifications: Ref<boolean> = ref(false);
+const notifications: Ref<boolean> = ref(true);
+export const disableNotifications = () => {
+  notifications.value = false;
+};
 export const enableNotifications = () => {
   notifications.value = true;
 };
@@ -25,7 +28,7 @@ type CustomClientOptions = {
   activeRole: Ref<string | null>;
   getToken?: () => string;
   refreshToken?: () => Promise<void>;
-  errorNotify: (message: string) => void;
+  errorNotify?: (message: string) => void;
 };
 
 // custom urql client with keycloak token, X-Hasura-Role header,
@@ -46,7 +49,7 @@ export const createCustomClient = (opts: CustomClientOptions): Client =>
         },
         onError(error) {
           console.error(error);
-          if (notifications.value) {
+          if (opts.errorNotify && notifications.value) {
             opts.errorNotify(error.toString());
           }
         },
