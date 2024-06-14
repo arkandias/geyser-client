@@ -8,7 +8,7 @@ export default {
   extensions: {
     endpoints: {
       dev: {
-        url: process.env.VITE_GRAPHQL_HTTP ?? "",
+        url: process.env.VITE_GRAPHQL_URL ?? "",
         headers: {
           "x-hasura-admin-secret": process.env.VITE_HASURA_ADMIN_SECRET ?? "",
         },

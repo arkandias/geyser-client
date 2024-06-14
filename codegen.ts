@@ -7,7 +7,7 @@ dotenv.config({ path: ".env.development.local" });
 const config: CodegenConfig = {
   overwrite: true,
   schema: {
-    [process.env.VITE_GRAPHQL_HTTP ?? ""]: {
+    [process.env.VITE_GRAPHQL_URL ?? ""]: {
       headers: {
         "x-hasura-admin-secret": process.env.VITE_HASURA_ADMIN_SECRET ?? "",
       },

@@ -35,7 +35,7 @@ type CustomClientOptions = {
 // and Quasar notifications
 export const createCustomClient = (opts: CustomClientOptions): Client =>
   createClient({
-    url: import.meta.env.VITE_GRAPHQL_HTTP,
+    url: import.meta.env.VITE_GRAPHQL_URL,
     exchanges: [
       devtoolsExchange,
       cacheExchange,

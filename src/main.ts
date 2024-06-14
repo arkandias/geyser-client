@@ -46,7 +46,7 @@ if (import.meta.env.PROD) {
 }
 
 // bypass Keycloak in development
-const bypassKeycloak = false;
+const bypassKeycloak = true;
 
 // Login flow
 let claims: Ref<KeycloakClaims | null>;
