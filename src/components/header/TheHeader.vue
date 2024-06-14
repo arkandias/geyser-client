@@ -41,11 +41,7 @@ const version: ComputedRef<string> = computed(
         icon="sym_s_home"
         flat
         square
-        @click="
-          () => {
-            router.push({ path: '/' });
-          }
-        "
+        @click="router.push({ name: 'accueil' })"
       >
         <QTooltip>Accueil</QTooltip>
       </QBtn>
@@ -54,11 +50,7 @@ const version: ComputedRef<string> = computed(
         icon="sym_s_assignment"
         flat
         square
-        @click="
-          () => {
-            router.push({ path: '/service' });
-          }
-        "
+        @click="router.push({ name: 'service' })"
       >
         <QTooltip>Service</QTooltip>
       </QBtn>
@@ -67,11 +59,7 @@ const version: ComputedRef<string> = computed(
         icon="sym_s_menu_book"
         flat
         square
-        @click="
-          () => {
-            router.push({ path: '/enseignements' });
-          }
-        "
+        @click="router.push({ name: 'enseignements' })"
       >
         <QTooltip>Liste enseignements</QTooltip>
       </QBtn>
@@ -94,7 +82,7 @@ const version: ComputedRef<string> = computed(
         :color="couleurBouton($q.dark.isActive)"
         flat
         square
-        @click="() => $q.dark.toggle()"
+        @click="$q.dark.toggle"
       >
         <QTooltip>Mode sombre</QTooltip>
       </QBtn>
