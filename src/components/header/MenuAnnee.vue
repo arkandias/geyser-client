@@ -11,6 +11,8 @@ import MenuBase from "@/components/header/MenuBase.vue";
 import { Option } from "@/helpers/types.ts";
 import { active, useAnnees } from "@/stores/annees.ts";
 
+defineProps<{ disable?: boolean }>();
+
 const { annees } = useAnnees();
 
 const options: ComputedRef<Option<number>[]> = computed(() =>
@@ -24,7 +26,7 @@ const options: ComputedRef<Option<number>[]> = computed(() =>
 </script>
 
 <template>
-  <MenuBase label="Historique" icon="sym_s_history">
+  <MenuBase label="Historique" icon="sym_s_history" :disable>
     <QList dense>
       <QItem class="flex-center">
         <QItemLabel header>Année</QItemLabel>

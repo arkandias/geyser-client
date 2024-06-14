@@ -371,9 +371,9 @@ const estAttribue = (row: RowEnseignement) =>
           :options="formationOptions"
           :disable="intervenant !== null"
           color="primary"
+          label="Formation"
           emit-value
           map-options
-          label="Formation"
           multiple
           use-chips
           square
@@ -400,9 +400,9 @@ const estAttribue = (row: RowEnseignement) =>
           :options="typeEnseignementOptions"
           :disable="intervenant !== null"
           color="primary"
+          label="Type"
           emit-value
           map-options
-          label="Type"
           multiple
           square
           dense
@@ -428,9 +428,9 @@ const estAttribue = (row: RowEnseignement) =>
           :options="semestreOptions"
           :disable="intervenant !== null"
           color="primary"
+          label="Semestre"
           emit-value
           map-options
-          label="Semestre"
           multiple
           square
           dense
@@ -456,8 +456,8 @@ const estAttribue = (row: RowEnseignement) =>
           :disable="intervenant !== null"
           color="primary"
           placeholder="Rechercher"
-          clearable
           clear-icon="sym_s_close"
+          clearable
           square
           dense
           style="width: 200px"

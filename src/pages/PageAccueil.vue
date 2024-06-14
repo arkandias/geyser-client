@@ -23,7 +23,7 @@ const { intervenant } = useAuthentication();
         {{ formatIntervenant(intervenant) }}
       </QCardSection>
       <QCardSection v-if="phaseEnCours === 'voeux'">
-        Geyser est actuellement en phase de vœux.
+        <p>Geyser est actuellement en phase de vœux.</p>
         <p>
           Vous pouvez faire des demandes principales et secondaires. Merci de
           demander l’équivalent de votre service en demandes principales et en
@@ -31,12 +31,17 @@ const { intervenant } = useAuthentication();
         </p>
       </QCardSection>
       <QCardSection v-if="phaseEnCours === 'commission'">
-        Les travaux de la commission sont en cours. Vous ne pouvez plus faire de
-        demandes. Vous serez informé lorsque Geyser rouvrira pour consulter les
-        attributions.
+        <p>Les travaux de la commission sont en cours.</p>
+        <p>
+          Vous ne pouvez plus faire de demandes. Vous serez informé lorsque
+          Geyser rouvrira pour consulter les attributions.
+        </p>
       </QCardSection>
       <QCardSection v-if="phaseEnCours === 'consultation'">
-        Geyser est actuellement en phase de consultation.
+        <p>Geyser est actuellement en phase de consultation.</p>
+      </QCardSection>
+      <QCardSection v-if="phaseEnCours === 'fermeture'">
+        <p>Geyser est actuellement fermé.</p>
       </QCardSection>
     </QCard>
     <AccueilInformations />

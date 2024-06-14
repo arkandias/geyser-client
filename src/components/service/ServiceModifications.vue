@@ -114,6 +114,7 @@ const onDelete = async (id: number): Promise<void> => {
             color="primary"
             size="sm"
             flat
+            square
             dense
             @click="openForm = true"
           />
@@ -128,6 +129,7 @@ const onDelete = async (id: number): Promise<void> => {
             color="primary"
             size="sm"
             flat
+            square
             dense
           />
           <QBtn
@@ -137,6 +139,7 @@ const onDelete = async (id: number): Promise<void> => {
             color="primary"
             size="sm"
             flat
+            square
             dense
           />
           <QSelect
@@ -173,6 +176,7 @@ const onDelete = async (id: number): Promise<void> => {
             color="primary"
             size="sm"
             flat
+            square
             dense
             @click="onDelete(modification.id)"
           />

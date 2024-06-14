@@ -6,21 +6,24 @@
 
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { watch } from "vue";
+import { computed, ComputedRef, watch } from "vue";
 
 import TheHeader from "@/components/header/TheHeader.vue";
 import { GET_ANNEES } from "@/graphql/annees.ts";
 import { GET_PHASES } from "@/graphql/phases.ts";
+import PageFermee from "@/pages/PageFermee.vue";
+import PageInterdite from "@/pages/PageInterdite.vue";
 import {
   active as anneeActive,
   enCours as anneeEnCours,
   annees,
 } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
+import { usePermissions } from "@/stores/permissions.ts";
 import { enCours as phaseEnCours, phases } from "@/stores/phases.ts";
-import PageInterdite from "@/pages/PageInterdite.vue";
 
 const { logged } = useAuthentication();
+const perm = usePermissions();
 
 const queryAnnees = useQuery({ query: GET_ANNEES, variables: {} });
 const queryPhases = useQuery({ query: GET_PHASES, variables: {} });
@@ -44,13 +47,20 @@ watch(
   },
   { immediate: true },
 );
+
+const accesAutorise: ComputedRef<boolean> = computed(
+  () =>
+    logged.value &&
+    (phaseEnCours.value !== "fermeture" || perm.dAdministrer.value),
+);
 </script>
 
 <template>
   <QLayout view="hHh lpR fFf" class="text-body1">
-    <TheHeader />
+    <TheHeader :disable="!accesAutorise" />
     <QPageContainer>
-      <RouterView v-if="logged" />
+      <RouterView v-if="accesAutorise" />
+      <PageFermee v-else-if="phaseEnCours === 'fermeture'" />
       <PageInterdite v-else />
     </QPageContainer>
   </QLayout>

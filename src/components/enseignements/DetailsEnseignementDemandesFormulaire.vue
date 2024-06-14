@@ -179,10 +179,10 @@ const onReset = (): void => {
       color="primary"
       dense
     />
-    <QBtn icon="sym_s_check" type="submit" color="primary" flat square dense>
+    <QBtn type="submit" icon="sym_s_check" color="primary" flat square dense>
       <QTooltip>Valider la demande</QTooltip>
     </QBtn>
-    <QBtn icon="sym_s_clear" type="reset" color="primary" flat square dense>
+    <QBtn type="reset" icon="sym_s_clear" color="primary" flat square dense>
       <QTooltip>Réinitialiser le formulaire</QTooltip>
     </QBtn>
   </QForm>

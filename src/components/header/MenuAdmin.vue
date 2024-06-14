@@ -35,7 +35,7 @@ const optionsAnnees: ComputedRef<Option<number>[]> = computed(() =>
     }))
     .sort((a, b) => b.value - a.value),
 );
-const orderPhases = { voeux: 1, commission: 2, consultation: 3 };
+const orderPhases = { voeux: 1, commission: 2, consultation: 3, fermeture: 4 };
 const optionsPhases: ComputedRef<Option<string>[]> = computed(() =>
   phases.value
     .map((phase) => ({

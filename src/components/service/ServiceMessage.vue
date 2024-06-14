@@ -90,18 +90,18 @@ const onAbort = (): void => {
     <template v-if="editorOpen" #actions>
       <QBtn
         label="Enregistrer"
+        color="primary"
         flat
         square
         dense
-        color="primary"
         @click="onSave"
       />
       <QBtn
         label="Abandonner"
+        color="primary"
         flat
         square
         dense
-        color="primary"
         @click="onAbort"
       />
     </template>

@@ -43,6 +43,8 @@ export const formatPhase = (phase: string): string => {
       return "Commission";
     case "consultation":
       return "Consultation";
+    case "fermeture":
+      return "Fermeture";
     default:
       console.warn(`Phase '${phase}' inconnue`);
       return "";

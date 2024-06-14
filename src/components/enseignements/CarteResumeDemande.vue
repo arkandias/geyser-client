@@ -62,12 +62,13 @@ const groupes: ComputedRef<number> = computed(
     <QSeparator />
     <QCardActions align="evenly" class="q-pa-xs">
       <QBtn
+        icon="sym_s_check"
+        color="positive"
+        size="sm"
         :disable="!perm.deModifierLesAttributions.value"
         flat
+        square
         dense
-        size="sm"
-        color="positive"
-        icon="sym_s_check"
         @click="onAttribute"
       >
         <QTooltip
@@ -79,6 +80,9 @@ const groupes: ComputedRef<number> = computed(
         </QTooltip>
       </QBtn>
       <QBtn
+        icon="sym_s_close"
+        color="negative"
+        size="sm"
         :disable="
           !perm.deSupprimerUneDemande.value(
             demande.typeDemande,
@@ -86,10 +90,8 @@ const groupes: ComputedRef<number> = computed(
           )
         "
         flat
+        square
         dense
-        size="sm"
-        color="negative"
-        icon="sym_s_close"
         @click="onDelete"
       >
         <QTooltip

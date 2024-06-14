@@ -19,8 +19,8 @@ const { selectedMe, toggleMonService } = useData();
   <QIcon name="sym_s_chevron_right" />
   <QBtn
     icon="sym_s_vertical_split"
-    :disable="!perm.deVoirLeServiceDAutrui.value"
     :color="couleurBouton(filtreIntervenants)"
+    :disable="!perm.deVoirLeServiceDAutrui.value"
     flat
     square
     @click="toggleFilter"

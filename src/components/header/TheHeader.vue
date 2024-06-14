@@ -17,6 +17,8 @@ import { usePermissions } from "@/stores/permissions.ts";
 import { useRefresh } from "@/stores/refresh.ts";
 import { computed, ComputedRef } from "vue";
 
+defineProps<{ disable?: boolean }>();
+
 const $q = useQuasar();
 const router = useRouter();
 const perm = usePermissions();
@@ -39,6 +41,7 @@ const version: ComputedRef<string> = computed(
       <QSpace />
       <QBtn
         icon="sym_s_home"
+        :disable
         flat
         square
         @click="router.push({ name: 'accueil' })"
@@ -48,6 +51,7 @@ const version: ComputedRef<string> = computed(
       <QSeparator vertical inset color="white" />
       <QBtn
         icon="sym_s_assignment"
+        :disable
         flat
         square
         @click="router.push({ name: 'service' })"
@@ -57,6 +61,7 @@ const version: ComputedRef<string> = computed(
       <QSeparator vertical inset color="white" />
       <QBtn
         icon="sym_s_menu_book"
+        :disable
         flat
         square
         @click="router.push({ name: 'enseignements' })"
@@ -65,7 +70,7 @@ const version: ComputedRef<string> = computed(
       </QBtn>
       <Transition>
         <div
-          v-if="router.currentRoute.value.name === 'enseignements'"
+          v-if="!disable && router.currentRoute.value.name === 'enseignements'"
           id="transition-wrapper"
         >
           <div style="width: 129px">
@@ -74,7 +79,7 @@ const version: ComputedRef<string> = computed(
         </div>
       </Transition>
       <QSeparator vertical inset color="white" />
-      <QBtn icon="sym_s_refresh" flat square @click="refresh">
+      <QBtn icon="sym_s_refresh" :disable flat square @click="refresh">
         <QTooltip>Rafraîchir les données</QTooltip>
       </QBtn>
       <QBtn
@@ -86,7 +91,7 @@ const version: ComputedRef<string> = computed(
       >
         <QTooltip>Mode sombre</QTooltip>
       </QBtn>
-      <MenuAnnee />
+      <MenuAnnee :disable />
       <MenuAdmin v-if="perm.dAdministrer.value" />
       <MenuUtilisateur />
     </QToolbar>
