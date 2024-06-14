@@ -1,6 +1,6 @@
 # Geyser frontend
 
-*A Vue.js client for Geyser*
+_A Vue.js client for Geyser_
 
 1. [Installation](#installation)
 2. [Package scripts](#package-scripts)
@@ -78,11 +78,11 @@ Environment variables can be stored in either of the following .env files:
 The following environment variables are used by the client.
 
 | Environment variable       | Explanation                                                                                          |
-|----------------------------|------------------------------------------------------------------------------------------------------|
+| -------------------------- | ---------------------------------------------------------------------------------------------------- |
 | `VITE_KEYCLOAK_URL`        | The URL of the Keycloak server used for authentification                                             |
 | `VITE_GRAPHQL_URL`         | The URL of the GraphQL engine                                                                        |
 | `VITE_IMPORT_PROFILE`      | Should be `true` or `false`. Indicate if the user profile from Keycloak should be imported in Geyser |
-| `VITE_HASURA_ADMIN_SECRET` | Admin secret for Hasura GraphQL Engine                                                               |
+| `VITE_HASURA_ADMIN_SECRET` | Admin secret for Hasura GraphQL Engine (in development mode only)                                    |
 
 ## Contact
 
