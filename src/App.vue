@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { computed, ComputedRef, watch } from "vue";
+import { watch } from "vue";
 
 import TheHeader from "@/components/header/TheHeader.vue";
 import { GET_ANNEES } from "@/graphql/annees.ts";
@@ -47,19 +47,13 @@ watch(
   },
   { immediate: true },
 );
-
-const accesAutorise: ComputedRef<boolean> = computed(
-  () =>
-    logged.value &&
-    (phaseEnCours.value !== "fermeture" || perm.dAdministrer.value),
-);
 </script>
 
 <template>
   <QLayout view="hHh lpR fFf" class="text-body1">
-    <TheHeader :disable="!accesAutorise" />
+    <TheHeader :disable="!logged || !perm.dAcceder.value" />
     <QPageContainer>
-      <RouterView v-if="accesAutorise" />
+      <RouterView v-if="logged && perm.dAcceder.value" />
       <PageFermee v-else-if="phaseEnCours === 'fermeture'" />
       <PageInterdite v-else />
     </QPageContainer>

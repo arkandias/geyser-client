@@ -15,6 +15,12 @@ export const usePermissions = () => {
   const { enCoursActive: anneeEnCoursActive } = useAnnees();
   const { enCours: phaseEnCours } = usePhases();
   const { activeRole, uid: moi } = useAuthentication();
+  const dAdministrer: ComputedRef<boolean> = computed(
+    () => activeRole.value === "admin",
+  );
+  const dAcceder: ComputedRef<boolean> = computed(
+    () => phaseEnCours.value !== "fermeture" || dAdministrer.value,
+  );
   const deFaireDesDemandesPourAutrui: ComputedRef<boolean> = computed(
     () => activeRole.value === "admin",
   );
@@ -125,10 +131,9 @@ export const usePermissions = () => {
         return activeRole.value === "admin";
     }
   });
-  const dAdministrer: ComputedRef<boolean> = computed(
-    () => activeRole.value === "admin",
-  );
   return {
+    dAdministrer,
+    dAcceder,
     deFaireDesDemandesPourAutrui,
     deFaireDesDemandes,
     deVoirLesAttributions,
@@ -140,6 +145,5 @@ export const usePermissions = () => {
     deModifierUnService,
     deVoirUnMessage,
     deModifierUnMessage,
-    dAdministrer,
   };
 };
