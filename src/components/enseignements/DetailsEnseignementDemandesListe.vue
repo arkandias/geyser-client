@@ -5,7 +5,7 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import CarteResumeDemande from "@/components/enseignements/CarteResumeDemande.vue";
+import CarteResumeDemande from "@/components/core/CarteResumeDemande.vue";
 import { Demande } from "@/helpers/types.ts";
 
 defineProps<{

@@ -8,7 +8,7 @@
 import DetailsEnseignementDemandesFormulaire from "@/components/enseignements/DetailsEnseignementDemandesFormulaire.vue";
 import DetailsEnseignementDemandesListe from "@/components/enseignements/DetailsEnseignementDemandesListe.vue";
 import DetailsEnseignementDemandesSection from "@/components/enseignements/DetailsEnseignementDemandesSection.vue";
-import PuceResumePriorite from "@/components/enseignements/PuceResumePriorite.vue";
+import PuceResumePriorite from "@/components/core/PuceResumePriorite.vue";
 import { formatTypeDemandesTitre } from "@/helpers/format.ts";
 import { Archive, Demande, Priorite } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";
