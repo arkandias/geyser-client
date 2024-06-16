@@ -64,13 +64,12 @@ if (import.meta.env.PROD || !bypassKeycloak) {
   if (logged) {
     disableNotifications();
     const profile = await getProfile(client);
-    const importProfile = boolFromString(
-      import.meta.env.VITE_IMPORT_PROFILE ?? "",
-    );
+    const s = import.meta.env.VITE_IMPORT_PROFILE ?? "";
+    const importProfile = boolFromString(s);
     if (importProfile === null) {
       console.warn(
-        "Environment variable VITE_IMPORT_PROFILE has an ambiguous value (defaulting to false):",
-        import.meta.env.VITE_IMPORT_PROFILE,
+        `Environment variable VITE_IMPORT_PROFILE has value '${s}' ` +
+          "which is ambiguous. Defaulting to 'false'.",
       );
     }
     if (!profile || importProfile) {

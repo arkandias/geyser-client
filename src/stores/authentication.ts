@@ -61,6 +61,7 @@ export const login = (
 export const getProfile = async (
   client: Client,
 ): Promise<Intervenant | null> => {
+  console.debug("Retrieving profile...");
   const queryIntervenant = await client.query(
     GET_INTERVENANT,
     { uid: intervenant.uid },
@@ -79,6 +80,7 @@ export const getProfile = async (
 };
 
 export const applyProfile = (profile: Intervenant) => {
+  console.debug("Applying profile...");
   Object.assign(intervenant, profile);
 };
 
@@ -86,6 +88,7 @@ export const updateProfile = async (
   profile: Intervenant | null,
   client: Client,
 ): Promise<void> => {
+  console.debug("Updating profile...");
   const updateIntervenant = await client.mutation(UPSERT_INTERVENANT, {
     uid: intervenant.uid,
     nom: intervenant.nom,
