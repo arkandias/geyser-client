@@ -12,7 +12,6 @@ import { couleurBouton } from "@/helpers/format.ts";
 defineProps<{
   label: string;
   icon: string;
-  disable?: boolean;
 }>();
 defineSlots<{ default(): unknown }>();
 
@@ -21,7 +20,7 @@ const tooltip: Ref<boolean> = ref(false);
 </script>
 
 <template>
-  <QBtn :icon :color="couleurBouton(open)" flat square :disable>
+  <QBtn :icon :color="couleurBouton(open)" flat square>
     <QTooltip v-model="tooltip">{{ label }}</QTooltip>
     <QMenu v-model="open" square @show="tooltip = false">
       <slot />
