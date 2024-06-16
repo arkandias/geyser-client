@@ -19,7 +19,12 @@ export const usePermissions = () => {
     () => activeRole.value === "admin",
   );
   const dAcceder: ComputedRef<boolean> = computed(
-    () => phaseEnCours.value !== "fermeture" || dAdministrer.value,
+    () =>
+      activeRole.value === "admin" ||
+      (activeRole.value === "commissaire" &&
+        phaseEnCours.value === "commission") ||
+      (activeRole.value === "intervenant" &&
+        phaseEnCours.value !== "fermeture"),
   );
   const deFaireDesDemandesPourAutrui: ComputedRef<boolean> = computed(
     () => activeRole.value === "admin",

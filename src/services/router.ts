@@ -6,7 +6,7 @@
 
 import PageAccueil from "@/pages/PageAccueil.vue";
 import PageEnseignements from "@/pages/PageEnseignements.vue";
-import PageNonTrouvee from "@/pages/PageNonTrouvee.vue";
+import PageMessage from "@/pages/PageMessage.vue";
 import PageService from "@/pages/PageService.vue";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
@@ -29,7 +29,8 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/:pathMatch(.*)*",
     name: "non-trouvee",
-    component: PageNonTrouvee,
+    component: PageMessage,
+    props: { message: "Page non trouvée" },
   },
 ];
 

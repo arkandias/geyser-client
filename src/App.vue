@@ -11,8 +11,6 @@ import { watch } from "vue";
 import TheHeader from "@/components/header/TheHeader.vue";
 import { GET_ANNEES } from "@/graphql/annees.ts";
 import { GET_PHASES } from "@/graphql/phases.ts";
-import PageFermee from "@/pages/PageFermee.vue";
-import PageInterdite from "@/pages/PageInterdite.vue";
 import {
   active as anneeActive,
   enCours as anneeEnCours,
@@ -21,6 +19,7 @@ import {
 import { useAuthentication } from "@/stores/authentication.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 import { enCours as phaseEnCours, phases } from "@/stores/phases.ts";
+import PageMessage from "@/pages/PageMessage.vue";
 
 const { logged } = useAuthentication();
 const perm = usePermissions();
@@ -54,8 +53,11 @@ watch(
     <TheHeader :disable="!logged || !perm.dAcceder.value" />
     <QPageContainer>
       <RouterView v-if="logged && perm.dAcceder.value" />
-      <PageFermee v-else-if="phaseEnCours === 'fermeture'" />
-      <PageInterdite v-else />
+      <PageMessage
+        v-else-if="phaseEnCours === 'fermeture'"
+        message="Geyser est actuellement fermé"
+      />
+      <PageMessage v-else message="Vous n'avez pas accès à Geyser" />
     </QPageContainer>
   </QLayout>
 </template>
