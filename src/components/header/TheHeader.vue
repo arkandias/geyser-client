@@ -73,7 +73,7 @@ const version: ComputedRef<string> = computed(
           v-if="!disable && router.currentRoute.value.name === 'enseignements'"
           id="transition-wrapper"
         >
-          <div style="width: 129px">
+          <div style="width: 130px">
             <MenuEnseignements />
           </div>
         </div>
