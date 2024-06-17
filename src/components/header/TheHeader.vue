@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import { useQuasar } from "quasar";
+import { computed, ComputedRef } from "vue";
 import { useRouter } from "vue-router";
 
 import MenuAdmin from "@/components/header/MenuAdmin.vue";
@@ -15,7 +16,6 @@ import MenuUtilisateur from "@/components/header/MenuUtilisateur.vue";
 import { couleurBouton } from "@/helpers/format.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 import { useRefresh } from "@/stores/refresh.ts";
-import { computed, ComputedRef } from "vue";
 
 defineProps<{ disable?: boolean }>();
 
@@ -73,9 +73,7 @@ const version: ComputedRef<string> = computed(
           v-if="!disable && router.currentRoute.value.name === 'enseignements'"
           id="transition-wrapper"
         >
-          <div style="width: 130px">
-            <MenuEnseignements />
-          </div>
+          <MenuEnseignements />
         </div>
       </Transition>
       <QSeparator vertical inset color="white" />
@@ -99,9 +97,14 @@ const version: ComputedRef<string> = computed(
 </template>
 
 <style scoped lang="scss">
+$menu-enseignements-width: 130px;
 #transition-wrapper {
-  display: inline;
+  display: flex;
+  align-items: center;
   overflow: hidden;
+}
+#transition-wrapper * {
+  white-space: nowrap;
 }
 .v-enter-active,
 .v-leave-active {
@@ -109,7 +112,7 @@ const version: ComputedRef<string> = computed(
 }
 .v-enter-to,
 .v-leave-from {
-  width: 130px;
+  width: $menu-enseignements-width;
 }
 .v-enter-from,
 .v-leave-to {
