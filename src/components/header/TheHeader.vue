@@ -109,7 +109,7 @@ const version: ComputedRef<string> = computed(
 }
 .v-enter-to,
 .v-leave-from {
-  width: 129px;
+  width: 130px;
 }
 .v-enter-from,
 .v-leave-to {

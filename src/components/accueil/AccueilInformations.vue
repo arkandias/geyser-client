@@ -118,21 +118,19 @@ import AccueilVolet from "@/components/accueil/AccueilVolet.vue";
         <ol>
           <li>
             <a
-              href="https://gitlab.univ-lille.fr/julien.hauseux/geyser-frontend"
-              target="_blank"
-              rel="noopener noreferrer"
-              >https://gitlab.univ-lille.fr/julien.hauseux/geyser-frontend</a
-            >
-            (frontend)
-          </li>
-          <li>
-            <a
               href="https://gitlab.univ-lille.fr/julien.hauseux/geyser-backend"
               target="_blank"
               rel="noopener noreferrer"
               >https://gitlab.univ-lille.fr/julien.hauseux/geyser-backend</a
             >
-            (backend)
+          </li>
+          <li>
+            <a
+              href="https://gitlab.univ-lille.fr/julien.hauseux/geyser-frontend"
+              target="_blank"
+              rel="noopener noreferrer"
+              >https://gitlab.univ-lille.fr/julien.hauseux/geyser-frontend</a
+            >
           </li>
         </ol>
       </AccueilVolet>

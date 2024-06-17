@@ -78,8 +78,6 @@ if (import.meta.env.PROD || !bypassKeycloak) {
       applyProfile(profile);
     }
     enableNotifications();
-  } else {
-    disableNotifications();
   }
 } else {
   claims = ref({
