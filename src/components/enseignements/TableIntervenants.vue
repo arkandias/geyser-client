@@ -81,6 +81,16 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     abbreviable: false,
   },
   {
+    name: "alias",
+    label: "Alias",
+    align: "left",
+    field: (row) => row.alias,
+    sortable: true,
+    visible: false,
+    searchable: true,
+    abbreviable: false,
+  },
+  {
     name: "service",
     label: "S.",
     tooltip: "Service à réaliser (en heures EQTD)",
