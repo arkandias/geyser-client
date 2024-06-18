@@ -25,6 +25,7 @@ const perm = usePermissions();
 
 const queryTypesMessage = useQuery({
   query: GET_TYPES_MESSAGE,
+  variables: {},
 });
 
 const uid: Ref<string> = ref(moi.value);
