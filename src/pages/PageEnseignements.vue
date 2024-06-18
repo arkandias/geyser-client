@@ -44,13 +44,17 @@ watch(queryIntervenant.data, (value) => {
   setMyRow(value?.intervenant ?? null);
 });
 
-watch(perm.deVoirLeServiceDAutrui, (value) => {
-  if (value) {
-    openFilter();
-  } else {
-    closeFilter();
-  }
-});
+watch(
+  perm.deVoirLeServiceDAutrui,
+  (value) => {
+    if (value) {
+      openFilter();
+    } else {
+      closeFilter();
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <template>

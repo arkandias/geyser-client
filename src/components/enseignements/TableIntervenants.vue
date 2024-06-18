@@ -90,22 +90,7 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
-    visible: perm.deVoirLeServiceDAutrui.value,
-    searchable: false,
-    abbreviable: false,
-  },
-  {
-    name: "differentiel",
-    label: "\u0394",
-    tooltip: "Nombre d'heures EQTD manquantes",
-    field: (row) =>
-      (row.services[0]?.heuresEQTD ?? 0) -
-      (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0) -
-      (row.totalAttributions.aggregate?.sum?.heures ?? 0),
-    format: (val: number) => nf.format(val),
-    align: "left",
-    sortable: true,
-    visible: perm.deVoirLeServiceDAutrui.value,
+    visible: perm.deVoirLeServiceDAutrui,
     searchable: false,
     abbreviable: false,
   },
@@ -117,7 +102,23 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
-    visible: perm.deVoirLesAttributions.value,
+    visible: perm.deVoirLesAttributions,
+    searchable: false,
+    abbreviable: false,
+  },
+  {
+    name: "diff_attribution",
+    label: "\u0394A",
+    tooltip:
+      "Différence entre le service et le nombre d'heures EQTD attribuées",
+    field: (row) =>
+      (row.services[0]?.heuresEQTD ?? 0) -
+      (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0) -
+      (row.totalAttributions.aggregate?.sum?.heures ?? 0),
+    format: (val: number) => nf.format(val),
+    align: "left",
+    sortable: true,
+    visible: false,
     searchable: false,
     abbreviable: false,
   },
@@ -130,6 +131,22 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     align: "left",
     sortable: true,
     visible: true,
+    searchable: false,
+    abbreviable: false,
+  },
+  {
+    name: "diff_principales",
+    label: "\u0394V1",
+    tooltip:
+      "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",
+    field: (row) =>
+      (row.services[0]?.heuresEQTD ?? 0) -
+      (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0) -
+      (row.totalPrincipales.aggregate?.sum?.heures ?? 0),
+    format: (val: number) => nf.format(val),
+    align: "left",
+    sortable: true,
+    visible: false,
     searchable: false,
     abbreviable: false,
   },

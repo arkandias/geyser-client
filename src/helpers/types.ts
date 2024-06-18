@@ -5,7 +5,7 @@
  ******************************************************************************/
 
 import type { QTableProps } from "quasar";
-import { MaybeRef } from "vue";
+import { MaybeRefOrGetter } from "vue";
 
 // Rows
 type Identifiant = {
@@ -65,7 +65,7 @@ type ArrayElement<ArrayType extends readonly unknown[]> =
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 export type ColumnBase = ArrayElement<NonNullable<QTableProps["columns"]>> & {
   tooltip?: string;
-  visible: MaybeRef<boolean>;
+  visible: MaybeRefOrGetter<boolean>;
   searchable: boolean;
   abbreviable: boolean;
 };

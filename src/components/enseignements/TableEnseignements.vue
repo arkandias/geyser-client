@@ -174,9 +174,22 @@ const columns: Column<RowEnseignement>[] = [
     abbreviable: false,
   },
   {
-    name: "differentiel",
-    label: "\u0394",
-    tooltip: "Nombre d'heures non attribuées",
+    name: "attributions",
+    label: "A.",
+    tooltip: "Nombre d'heures attribuées",
+    field: (row) => demandeValue(row, props.intervenant, "attribution"),
+    format: (val: number) => nf.format(val),
+    align: "left",
+    sortable: true,
+    visible: perm.deVoirLesAttributions,
+    searchable: false,
+    abbreviable: false,
+  },
+  {
+    name: "diff_attributions",
+    label: "\u0394A",
+    tooltip:
+      "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
     field: (row) =>
       props.intervenant
         ? null
@@ -185,36 +198,7 @@ const columns: Column<RowEnseignement>[] = [
     format: (val: number | null) => (val !== null ? nf.format(val) : "n/a"),
     align: "left",
     sortable: true,
-    visible: perm.deVoirLesAttributions.value,
-    searchable: false,
-    abbreviable: false,
-  },
-  {
-    name: "attributions",
-    label: "A.",
-    tooltip: "Nombre d'heures attribuées",
-    field: (row) => demandeValue(row, props.intervenant, "attribution"),
-    format: (val: number) => nf.format(val),
-    align: "left",
-    sortable: true,
-    visible: perm.deVoirLesAttributions.value,
-    searchable: false,
-    abbreviable: false,
-  },
-  {
-    name: "diff_principales",
-    label: "\u0394V1",
-    tooltip:
-      "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
-    field: (row) =>
-      props.intervenant
-        ? null
-        : row.heures * (row.groupes ?? 0) -
-          (row.totalPrincipales.aggregate?.sum?.heures ?? 0),
-    format: (val: number | null) => (val !== null ? nf.format(val) : "n/a"),
-    align: "left",
-    sortable: true,
-    visible: perm.deVoirLesAttributions.value,
+    visible: false,
     searchable: false,
     abbreviable: false,
   },
@@ -231,28 +215,45 @@ const columns: Column<RowEnseignement>[] = [
     abbreviable: false,
   },
   {
-    name: "secondaires",
-    label: "V2",
-    tooltip: "Nombre d'heures demandées en vœux secondaires",
-    field: (row) => demandeValue(row, props.intervenant, "secondaire"),
-    format: (val: number) => nf.format(val),
+    name: "diff_principales",
+    label: "\u0394V1",
+    tooltip:
+      "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
+    field: (row) =>
+      props.intervenant
+        ? null
+        : row.heures * (row.groupes ?? 0) -
+          (row.totalPrincipales.aggregate?.sum?.heures ?? 0),
+    format: (val: number | null) => (val !== null ? nf.format(val) : "n/a"),
     align: "left",
     sortable: true,
-    visible: true,
+    visible: false,
     searchable: false,
     abbreviable: false,
   },
   {
-    name: "nonPrioritaire",
-    label: "N.Prio",
+    name: "diff_principales_prio",
+    label: "\u0394V1 Prio",
     tooltip:
-      "Nombre d'heures restantes après déduction des vœux principaux prioritaires",
+      "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",
     field: (row) =>
       props.intervenant
         ? null
         : row.heures * (row.groupes ?? 0) -
           (row.totalPrioritaire.aggregate?.sum?.heures ?? 0),
     format: (val: number | null) => (val !== null ? nf.format(val) : "n/a"),
+    align: "left",
+    sortable: true,
+    visible: false,
+    searchable: false,
+    abbreviable: false,
+  },
+  {
+    name: "secondaires",
+    label: "V2",
+    tooltip: "Nombre d'heures demandées en vœux secondaires",
+    field: (row) => demandeValue(row, props.intervenant, "secondaire"),
+    format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
     visible: true,
