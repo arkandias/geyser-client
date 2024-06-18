@@ -124,7 +124,7 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     field: (row) =>
       (row.services[0]?.heuresEQTD ?? 0) -
       (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0) -
-      (row.totalAttributions.aggregate?.sum?.heures ?? 0),
+      (row.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -152,7 +152,7 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     field: (row) =>
       (row.services[0]?.heuresEQTD ?? 0) -
       (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0) -
-      (row.totalPrincipales.aggregate?.sum?.heures ?? 0),
+      (row.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
