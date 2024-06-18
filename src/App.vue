@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { computed, watch } from "vue";
+import { watch } from "vue";
 
 import TheHeader from "@/components/header/TheHeader.vue";
 import { GET_ANNEES } from "@/graphql/annees.ts";
@@ -27,14 +27,12 @@ const perm = usePermissions();
 const queryAnnees = useQuery({
   query: GET_ANNEES,
   variables: {},
-  // todo: remove computed with urql/vue update
-  pause: computed(() => !logged.value),
+  pause: () => !logged.value,
 });
 const queryPhases = useQuery({
   query: GET_PHASES,
   variables: {},
-  // todo: remove computed with urql/vue update
-  pause: computed(() => !logged.value),
+  pause: () => !logged.value,
 });
 
 watch(

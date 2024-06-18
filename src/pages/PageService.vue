@@ -38,8 +38,7 @@ const queryService = useQuery({
     annee: computed(() => anneeActive.value ?? 0),
     uid,
   }),
-  // todo: remove computed with urql/vue update
-  pause: computed(() => !anneeActive.value),
+  pause: () => !anneeActive.value,
   context: {
     additionalTypenames: [
       "ec_modification_service",

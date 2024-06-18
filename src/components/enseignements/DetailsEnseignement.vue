@@ -27,8 +27,7 @@ const queryDetails = useQuery({
   variables: reactive({
     ensId: computed(() => props.enseignement?.id ?? 0),
   }),
-  // todo: remove computed with urql/vue update
-  pause: computed(() => !props.enseignement?.id),
+  pause: () => !props.enseignement?.id,
   context: {
     additionalTypenames: ["ec_demande"],
   },

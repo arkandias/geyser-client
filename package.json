@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.16.11",
-    "@urql/vue": "^1.2.1",
+    "@urql/vue": "^1.2.2",
     "dotenv": "^16.4.5",
     "graphql": "^16.8.2",
     "keycloak-js": "^24.0.5",
