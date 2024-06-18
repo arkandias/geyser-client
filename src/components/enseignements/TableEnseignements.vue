@@ -545,8 +545,8 @@ const estAttribue = (row: RowEnseignement) =>
         </QTooltip>
       </QTd>
     </template>
-    <template v-if="props.intervenant" #bottom>
-      {{ formatResumeIntervenant(props.intervenant) }}
+    <template v-if="intervenant" #bottom>
+      {{ formatResumeIntervenant(intervenant) }}
     </template>
   </QTable>
 </template>

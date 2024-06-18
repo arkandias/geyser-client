@@ -14,7 +14,7 @@ import { Archive, Demande, Priorite } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 import { ComputedRef, computed } from "vue";
 
-const props = defineProps<{
+defineProps<{
   ensId: number;
   heuresParGroupe: number;
   demandes: Demande[];
@@ -39,7 +39,7 @@ const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
           perm.deFaireDesDemandes.value || perm.deModifierLesAttributions.value
         "
         :ens-id
-        :heures-par-groupe="props.heuresParGroupe"
+        :heures-par-groupe
       />
       <DetailsEnseignementDemandesListe
         v-for="typeDemande in typesDemandeAffiches"

@@ -57,9 +57,9 @@ const archives: ComputedRef<Archive[]> = computed(() =>
 <template>
   <DetailsEnseignementVolet :resume />
   <DetailsEnseignementDemandes
-    v-if="props.enseignement"
-    :ens-id="props.enseignement.id"
-    :heures-par-groupe="props.enseignement.heures"
+    v-if="enseignement"
+    :ens-id="enseignement.id"
+    :heures-par-groupe="enseignement.heures"
     :demandes
     :priorites
     :archives
