@@ -39,6 +39,7 @@ const serviceCorrige: ComputedRef<number> = computed(
 
 const queryTypesModification = useQuery({
   query: GET_TYPES_MODIFICATION,
+  variables: {},
 });
 const insertModification = useMutation(INSERT_MODIFICATION);
 const deleteModification = useMutation(DELETE_MODIFICATION);

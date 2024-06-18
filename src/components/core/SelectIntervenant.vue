@@ -16,6 +16,7 @@ const uid = defineModel<string | null>({ required: true });
 
 const queryIntervenants = useQuery({
   query: GET_INTERVENANTS,
+  variables: {},
 });
 
 const optionsInit: ComputedRef<OptionSearch<string>[]> = computed(() =>
