@@ -203,6 +203,23 @@ const columns: Column<RowEnseignement>[] = [
     abbreviable: false,
   },
   {
+    name: "diff_principales",
+    label: "\u0394V1",
+    tooltip:
+      "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
+    field: (row) =>
+      props.intervenant
+        ? null
+        : row.heures * (row.groupes ?? 0) -
+          (row.totalPrincipales.aggregate?.sum?.heures ?? 0),
+    format: (val: number | null) => (val !== null ? nf.format(val) : "n/a"),
+    align: "left",
+    sortable: true,
+    visible: perm.deVoirLesAttributions.value,
+    searchable: false,
+    abbreviable: false,
+  },
+  {
     name: "principales",
     label: "V1",
     tooltip: "Nombre d'heures demandées en vœux principaux",
