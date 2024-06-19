@@ -22,7 +22,6 @@ export const UPDATE_PHASE_EN_COURS = graphql(/* GraphQL */ `
       where: { value: { _neq: $value } }
       _set: { en_cours: null }
     ) {
-      affected_rows
       returning {
         value
       }

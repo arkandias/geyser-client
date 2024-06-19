@@ -21,7 +21,7 @@ export const INSERT_MODIFICATION = graphql(/* GraphQL */ `
     $typeModification: String!
     $heuresEQTD: Float!
   ) {
-    insert_ec_modification_service_one(
+    modificationService: insert_ec_modification_service_one(
       object: {
         annee: $annee
         uid: $uid
@@ -36,7 +36,7 @@ export const INSERT_MODIFICATION = graphql(/* GraphQL */ `
 
 export const DELETE_MODIFICATION = graphql(/* GraphQL */ `
   mutation DeleteModification($id: Int!) {
-    delete_ec_modification_service_by_pk(id: $id) {
+    modificationService: delete_ec_modification_service_by_pk(id: $id) {
       id
     }
   }

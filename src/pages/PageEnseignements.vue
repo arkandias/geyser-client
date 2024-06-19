@@ -12,16 +12,21 @@ import PanelDetails from "@/components/PanelDetails.vue";
 import PanelEnseignements from "@/components/PanelEnseignements.vue";
 import PanelIntervenants from "@/components/PanelIntervenants.vue";
 import { GET_ENSEIGNEMENTS_TABLE_ROWS } from "@/graphql/enseignements.ts";
-import { GET_INTERVENANTS_TABLE_ROWS } from "@/graphql/intervenants.ts";
+import {
+  GET_INTERVENANTS_TABLE_ROWS,
+  GET_MY_ROW,
+} from "@/graphql/intervenants.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { usePermissions } from "@/stores/permissions.ts";
+import { useAuthentication } from "@/stores/authentication.ts";
 
 const { active: anneeActive } = useAnnees();
+const { uid: moi } = useAuthentication();
 const perm = usePermissions();
 const { closeFilter, filtreIntervenants, openFilter } = useLayout();
-const { setEnseignements, setIntervenants } = useData();
+const { setEnseignements, setIntervenants, setMyRow } = useData();
 
 const queryEnseignements = useQuery({
   query: GET_ENSEIGNEMENTS_TABLE_ROWS,
@@ -57,6 +62,29 @@ watch(
   queryIntervenants.data,
   (value) => {
     setIntervenants(value?.intervenants ?? []);
+  },
+  { immediate: true },
+);
+
+const queryMe = useQuery({
+  query: GET_MY_ROW,
+  variables: reactive({
+    uid: moi,
+    annee: computed(() => anneeActive.value ?? 0),
+  }),
+  pause: () => !anneeActive.value,
+  context: {
+    additionalTypenames: [
+      "ec_modification_service",
+      "ec_message",
+      "ec_demande",
+    ],
+  },
+});
+watch(
+  queryMe.data,
+  (value) => {
+    setMyRow(value?.intervenant ?? null);
   },
   { immediate: true },
 );

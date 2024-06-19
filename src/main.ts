@@ -6,7 +6,7 @@
 
 import urql, { Client } from "@urql/vue";
 import { Quasar } from "quasar";
-import { createApp, ref, Ref } from "vue";
+import { createApp, ref } from "vue";
 
 // styles
 import "@quasar/extras/material-symbols-sharp/material-symbols-sharp.css";
@@ -17,7 +17,6 @@ import "@/css/main.scss";
 
 import App from "@/App.vue";
 import { errorNotify } from "@/helpers/notify.ts";
-import { boolFromString } from "@/helpers/utils.ts";
 import {
   getToken,
   initKeycloak,
@@ -32,13 +31,7 @@ import {
   disableNotifications,
   enableNotifications,
 } from "@/services/urql.ts";
-import {
-  activeRole,
-  applyProfile,
-  getProfile,
-  login,
-  updateProfile,
-} from "@/stores/authentication.ts";
+import { activeRole, login, setLogout } from "@/stores/authentication.ts";
 
 // disable debug logs in production
 if (import.meta.env.PROD) {
@@ -49,50 +42,36 @@ if (import.meta.env.PROD) {
 const bypassKeycloak = false;
 
 // Login flow
-let claims: Ref<KeycloakClaims | null>;
+let claims: KeycloakClaims | null;
 let client: Client;
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 if (import.meta.env.PROD || !bypassKeycloak) {
   claims = await initKeycloak();
+  const flow = (import.meta.env.VITE_LOGIN_FLOW ?? "").trim().toUpperCase();
   client = createCustomClient({
     activeRole,
     getToken,
     refreshToken,
     errorNotify,
   });
-  const logged = login(claims, logout);
-  if (logged) {
-    disableNotifications();
-    const profile = await getProfile(client);
-    const s = import.meta.env.VITE_IMPORT_PROFILE ?? "";
-    const importProfile = boolFromString(s);
-    if (importProfile === null) {
-      console.warn(
-        `Environment variable VITE_IMPORT_PROFILE has value '${s}' ` +
-          "which is ambiguous. Defaulting to 'false'.",
-      );
-    }
-    if (!profile || importProfile) {
-      await updateProfile(profile, client);
-    } else {
-      applyProfile(profile);
-    }
-    enableNotifications();
-  }
+  disableNotifications();
+  await login(claims, flow, client);
+  enableNotifications();
+  setLogout(logout);
 } else {
-  claims = ref({
+  claims = {
     userId: "",
     lastName: "",
     firstName: "",
     alias: "Développeur",
     defaultRole: "admin",
     allowedRoles: ["intervenant", "commissaire", "admin"],
-  });
+  };
   client = createCustomClient({
     activeRole: ref("admin"),
     errorNotify,
   });
-  login(claims);
+  await login(claims);
 }
 
 createApp(App)

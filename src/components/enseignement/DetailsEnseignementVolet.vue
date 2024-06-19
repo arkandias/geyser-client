@@ -68,10 +68,7 @@ const setDescription = (text: string): Promise<boolean> =>
       id: props.resume?.ensId ?? 0,
       description: text || null,
     })
-    .then(
-      (result) =>
-        !!result.data?.update_ec_enseignement_by_pk?.id && !result.error,
-    );
+    .then((result) => !!result.data?.description?.id && !result.error);
 
 // on change: close and scroll to top
 watch(

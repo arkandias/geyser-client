@@ -77,14 +77,14 @@ const onSubmit = async (): Promise<void> => {
     typeModification: typeModification.value,
     heuresEQTD: heuresEQTD.value,
   });
-  if (result.data?.insert_ec_modification_service_one?.id && !result.error) {
+  if (result.data?.modificationService?.id && !result.error) {
     successNotify(`Modification ajoutée`);
   }
   onReset();
 };
 const onDelete = async (id: number): Promise<void> => {
   const result = await deleteModification.executeMutation({ id: id });
-  if (result.data?.delete_ec_modification_service_by_pk?.id && !result.error) {
+  if (result.data?.modificationService?.id && !result.error) {
     successNotify(`Modification supprimée`);
   }
 };

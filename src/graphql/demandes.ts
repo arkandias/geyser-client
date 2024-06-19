@@ -67,7 +67,7 @@ export const UPSERT_DEMANDE = graphql(/* GraphQL */ `
     $typeDemande: String!
     $heures: Float!
   ) {
-    insert_ec_demande_one(
+    demande: insert_ec_demande_one(
       object: { uid: $uid, ens_id: $ensId, type: $typeDemande, heures: $heures }
       on_conflict: {
         constraint: demande_uid_ens_id_type_key
@@ -81,7 +81,7 @@ export const UPSERT_DEMANDE = graphql(/* GraphQL */ `
 
 export const DELETE_DEMANDE = graphql(/* GraphQL */ `
   mutation DeleteDemande($ensId: Int!, $uid: String!, $typeDemande: String!) {
-    delete_ec_demande(
+    demandes: delete_ec_demande(
       where: {
         _and: [
           { uid: { _eq: $uid } }
@@ -90,7 +90,6 @@ export const DELETE_DEMANDE = graphql(/* GraphQL */ `
         ]
       }
     ) {
-      affected_rows
       returning {
         id
       }
@@ -100,7 +99,7 @@ export const DELETE_DEMANDE = graphql(/* GraphQL */ `
 
 export const DELETE_DEMANDE_BY_ID = graphql(/* GraphQL */ `
   mutation DeleteDemandeById($id: Int!) {
-    delete_ec_demande_by_pk(id: $id) {
+    demande: delete_ec_demande_by_pk(id: $id) {
       id
     }
   }
@@ -108,8 +107,10 @@ export const DELETE_DEMANDE_BY_ID = graphql(/* GraphQL */ `
 
 export const DUMMY_MUTATION = graphql(/* GraphQL */ `
   mutation DummyMutation {
-    insert_ec_demande(objects: []) {
-      affected_rows
+    demandes: insert_ec_demande(objects: []) {
+      returning {
+        id
+      }
     }
   }
 `);

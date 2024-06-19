@@ -21,7 +21,7 @@ export const UPSERT_MESSAGE = graphql(/* GraphQL */ `
     $typeMessage: String!
     $contenu: String!
   ) {
-    insert_ec_message_one(
+    message: insert_ec_message_one(
       object: {
         annee: $annee
         uid: $uid
@@ -40,7 +40,7 @@ export const UPSERT_MESSAGE = graphql(/* GraphQL */ `
 
 export const DELETE_MESSAGE = graphql(/* GraphQL */ `
   mutation DeleteMessage($annee: Int!, $uid: String!, $typeMessage: String!) {
-    delete_ec_message(
+    messages: delete_ec_message(
       where: {
         _and: [
           { annee: { _eq: $annee } }
@@ -49,7 +49,6 @@ export const DELETE_MESSAGE = graphql(/* GraphQL */ `
         ]
       }
     ) {
-      affected_rows
       returning {
         id
       }

@@ -12,7 +12,7 @@ import { usePermissions } from "@/stores/permissions.ts";
 
 const perm = usePermissions();
 const { filtreIntervenants, toggleFilter } = useLayout();
-const { selectedMe, toggleMonService } = useData();
+const { selectedMe, myRow, toggleMonService } = useData();
 </script>
 
 <template>
@@ -28,8 +28,9 @@ const { selectedMe, toggleMonService } = useData();
     <QTooltip>Filtre intervenants</QTooltip>
   </QBtn>
   <QBtn
-    icon="sym_s_attribution"
+    icon="sym_s_assignment"
     :color="couleurBouton(selectedMe)"
+    :disable="!myRow"
     flat
     square
     @click="toggleMonService"

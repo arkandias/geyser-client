@@ -22,13 +22,3 @@ export const compare =
   <K extends string, T extends Record<K, string>>(name: K) =>
   (a: T, b: T): number =>
     compareStrings(a[name].toLowerCase(), b[name].toLowerCase());
-
-export const boolFromString = (s: string): boolean | null => {
-  if (["true", "yes", "t", "y", "1"].includes(s.toLowerCase())) {
-    return true;
-  }
-  if (["false", "no", "f", "n", "0"].includes(s.toLowerCase())) {
-    return false;
-  }
-  return null;
-};

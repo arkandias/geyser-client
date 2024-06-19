@@ -5,7 +5,7 @@
  ******************************************************************************/
 
 import Keycloak, { KeycloakTokenParsed } from "keycloak-js";
-import { ComputedRef, Ref, computed, ref } from "vue";
+import { ComputedRef, computed } from "vue";
 
 type CustomKeycloak = Keycloak & {
   tokenParsed?: KeycloakTokenParsed & {
@@ -92,20 +92,20 @@ export const logout = async (): Promise<void> => {
   await keycloak.logout();
 };
 
-export const initKeycloak = async (): Promise<Ref<KeycloakClaims | null>> => {
+export const initKeycloak = async (): Promise<KeycloakClaims | null> => {
   try {
     const authenticated = await keycloak.init({
       onLoad: "login-required",
     });
     if (authenticated) {
       console.debug("Authenticated!");
-      return claims;
+      return claims.value;
     } else {
       console.warn("Authentication failed");
-      return ref<null>(null);
+      return null;
     }
   } catch (error: unknown) {
     console.error("Authentication error:", error);
-    return ref<null>(null);
+    return null;
   }
 };

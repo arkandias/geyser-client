@@ -20,12 +20,12 @@ const getCurrentDemande = async (
   ensId: number,
   typeDemande: string,
 ): Promise<number | null> => {
-  const resultQuery = await client.query(
+  const result = await client.query(
     GET_DEMANDE,
     { uid, ensId, typeDemande },
     { requestPolicy: "network-only" },
   );
-  if (!resultQuery.data?.demande) {
+  if (!result.data?.demande) {
     console.error(
       "Cannot get current demande. Please report this error to an administrator",
     );
@@ -35,7 +35,7 @@ const getCurrentDemande = async (
     );
     return null;
   }
-  return resultQuery.data.demande[0]?.heures ?? 0;
+  return result.data.demande[0]?.heures ?? 0;
 };
 
 export const updateDemande = async (
@@ -54,28 +54,22 @@ export const updateDemande = async (
     return;
   }
   if (heures === 0) {
-    const resultMutation = await client.mutation(DELETE_DEMANDE, {
+    const result = await client.mutation(DELETE_DEMANDE, {
       uid,
       ensId,
       typeDemande,
     });
-    if (
-      resultMutation.data?.delete_ec_demande?.affected_rows &&
-      !resultMutation.error
-    ) {
+    if (result.data?.demandes?.returning && !result.error) {
       successNotify(format(typeDemande) + " supprimée");
     }
   } else {
-    const resultMutation = await client.mutation(UPSERT_DEMANDE, {
+    const result = await client.mutation(UPSERT_DEMANDE, {
       uid,
       ensId,
       typeDemande,
       heures,
     });
-    if (
-      resultMutation.data?.insert_ec_demande_one?.id &&
-      !resultMutation.error
-    ) {
+    if (result.data?.demande?.id && !result.error) {
       successNotify(
         format(typeDemande) + (current === 0 ? " créée" : " mise à jour"),
       );
@@ -88,11 +82,8 @@ export const deleteDemande = async (
   id: number,
   typeDemande: string,
 ): Promise<void> => {
-  const resultMutation = await client.mutation(DELETE_DEMANDE_BY_ID, { id });
-  if (
-    resultMutation.data?.delete_ec_demande_by_pk?.id &&
-    !resultMutation.error
-  ) {
+  const result = await client.mutation(DELETE_DEMANDE_BY_ID, { id });
+  if (result.data?.demande?.id && !result.error) {
     successNotify(format(typeDemande) + " supprimée");
   }
 };

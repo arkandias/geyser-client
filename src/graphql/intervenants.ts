@@ -29,10 +29,13 @@ export const UPSERT_INTERVENANT = graphql(/* GraphQL */ `
       object: { uid: $uid, nom: $nom, prenom: $prenom }
       on_conflict: {
         constraint: intervenant_pkey
-        update_columns: [uid, nom, prenom]
+        update_columns: [nom, prenom]
       }
     ) {
       uid
+      nom
+      prenom
+      alias
     }
   }
 `);
@@ -44,6 +47,79 @@ export const GET_INTERVENANTS = graphql(/* GraphQL */ `
       order_by: [{ nom: asc }, { prenom: asc }]
     ) {
       ...Intervenant
+    }
+  }
+`);
+
+export const GET_MY_ROW = graphql(/* GraphQL */ `
+  query GetMyRow($uid: String!, $annee: Int!) {
+    intervenant: ec_intervenant_by_pk(uid: $uid) {
+      ...Intervenant
+      demandes {
+        id
+        ensId: ens_id
+        typeDemande: type
+        heures
+        heuresEQTD: heures_eqtd
+      }
+      # limit: 1 car unique
+      services(where: { annee: { _eq: $annee } }, limit: 1) {
+        id
+        heuresEQTD: heures_eqtd
+      }
+      modifications: modifications_service(where: { annee: { _eq: $annee } }) {
+        id
+        typeModification: type
+        heuresEQTD: heures_eqtd
+      }
+      totalModifications: modifications_service_aggregate(
+        where: { annee: { _eq: $annee } }
+      ) {
+        aggregate {
+          sum {
+            heuresEQTD: heures_eqtd
+          }
+        }
+      }
+      totalAttributions: demandes_aggregate(
+        where: {
+          _and: [
+            { type: { _eq: "attribution" } }
+            { enseignement: { annee: { _eq: $annee } } }
+          ]
+        }
+      ) {
+        ...TotalHeures
+        ...TotalHeuresEQTD
+      }
+      totalPrincipales: demandes_aggregate(
+        where: {
+          _and: [
+            { type: { _eq: "principale" } }
+            { enseignement: { annee: { _eq: $annee } } }
+          ]
+        }
+      ) {
+        ...TotalHeures
+        ...TotalHeuresEQTD
+      }
+      totalSecondaires: demandes_aggregate(
+        where: {
+          _and: [
+            { type: { _eq: "secondaire" } }
+            { enseignement: { annee: { _eq: $annee } } }
+          ]
+        }
+      ) {
+        ...TotalHeures
+        ...TotalHeuresEQTD
+      }
+      messages(where: { annee: { _eq: $annee } }) {
+        id
+        typeMessage: type
+        contenu
+      }
+      visible
     }
   }
 `);

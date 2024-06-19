@@ -22,6 +22,9 @@ const intervenant: Intervenant = reactive({
 });
 const allowedRoles: Ref<string[]> = ref([]);
 const logout: Ref<(() => Promise<void>) | undefined> = ref(undefined);
+export const setLogout = (fn: () => Promise<void>): void => {
+  logout.value = fn;
+};
 
 export const useAuthentication = () => ({
   logged: readonly(logged),
@@ -32,81 +35,112 @@ export const useAuthentication = () => ({
   logout: readonly(logout),
 });
 
-export const login = (
-  claims: Ref<KeycloakClaims | null>,
-  keycloakLogout?: () => Promise<void>,
-): boolean => {
-  logout.value = keycloakLogout;
-  if (!claims.value) {
+export async function login(
+  claims: KeycloakClaims | null,
+  flow?: string,
+  client?: Client,
+): Promise<boolean> {
+  if (!claims) {
     console.error("Login failed: No token claims provided during login");
     return false;
-  } else if (!claims.value.allowedRoles.includes(claims.value.defaultRole)) {
-    console.error("Login failed: Default role not allowed");
-    intervenant.alias = claims.value.userId;
-    return false;
-  } else {
-    console.debug("Logging in with token claims:", claims.value);
-    logged.value = true;
-    allowedRoles.value = claims.value.allowedRoles;
-    activeRole.value = claims.value.defaultRole;
-    intervenant.uid = claims.value.userId;
-    intervenant.nom = claims.value.lastName ?? "";
-    intervenant.prenom = claims.value.firstName ?? "";
-    intervenant.alias = claims.value.alias;
-    console.debug("Logged in!");
-    return true;
   }
-};
+  if (!claims.allowedRoles.includes(claims.defaultRole)) {
+    console.error("Login failed: Default role not allowed");
+    intervenant.alias = claims.userId;
+    return false;
+  }
+  console.debug("Logging in with token claims:", claims);
+  let profile: Intervenant | null = {
+    uid: claims.userId,
+    nom: claims.lastName ?? "",
+    prenom: claims.firstName ?? "",
+    alias: claims.alias,
+  };
+  switch (flow) {
+    case "LOOKUP":
+      if (!client) {
+        console.error("Login failed: Missing client with login flow 'LOOKUP'");
+        return false;
+      }
+      profile = (await getProfile(profile.uid, client)) ?? null;
+      break;
+    case "IMPORT":
+      if (!client) {
+        console.error("Login failed: Missing client with login flow 'IMPORT'");
+        return false;
+      }
+      profile = (await updateProfile(profile, client)) ?? null;
+      break;
+    case "DIRECT":
+      break;
+    default:
+      console.warn(
+        "Invalid Login Flow (valid flows are 'DIRECT', 'LOOKUP', and 'IMPORT'). Defaulting to 'DIRECT'",
+      );
+  }
+  if (!profile) {
+    return false;
+  }
+  allowedRoles.value = claims.allowedRoles;
+  activeRole.value = claims.defaultRole;
+  intervenant.uid = profile.uid;
+  intervenant.nom = profile.nom;
+  intervenant.prenom = profile.prenom;
+  intervenant.alias = profile.alias;
+  logged.value = true;
+  console.debug("Logged in!");
+  return true;
+}
 
-export const getProfile = async (
+const getProfile = async (
+  uid: string,
   client: Client,
 ): Promise<Intervenant | null> => {
   console.debug("Retrieving profile...");
-  const queryIntervenant = await client.query(
+  const result = await client.query(
     GET_INTERVENANT,
-    { uid: intervenant.uid },
+    { uid },
     { requestPolicy: "network-only" },
   );
-  if (queryIntervenant.data?.intervenant) {
-    console.debug(
-      "Profile retrieved in database:",
-      queryIntervenant.data.intervenant,
-    );
-    return queryIntervenant.data.intervenant;
-  } else {
+  const profile = result.data?.intervenant ?? null;
+  if (!profile) {
     console.warn("Could not find user profile in the database");
+  }
+  console.debug("Profile retrieved:", profile);
+  return profile;
+};
+
+const updateProfile = async (
+  profile: Intervenant,
+  client: Client,
+): Promise<Intervenant | null> => {
+  console.debug("Updating profile...");
+  const result = await client.mutation(UPSERT_INTERVENANT, {
+    uid: profile.uid,
+    nom: profile.nom,
+    prenom: profile.prenom,
+  });
+  const newProfile = result.data?.intervenant ?? null;
+  if (
+    !newProfile ||
+    newProfile.uid !== profile.uid ||
+    newProfile.nom !== profile.nom ||
+    newProfile.prenom !== profile.prenom
+  ) {
+    console.error("Could not update user profile in the database");
     return null;
   }
-};
-
-export const applyProfile = (profile: Intervenant) => {
-  console.debug("Applying profile...");
-  Object.assign(intervenant, profile);
-};
-
-export const updateProfile = async (
-  profile: Intervenant | null,
-  client: Client,
-): Promise<void> => {
-  console.debug("Updating profile...");
-  const updateIntervenant = await client.mutation(UPSERT_INTERVENANT, {
-    uid: intervenant.uid,
-    nom: intervenant.nom,
-    prenom: intervenant.prenom,
-  });
-  if (!updateIntervenant.error) {
-    console.debug(`User profile ${profile ? "updated" : "created"}`);
-  }
-
+  console.debug("Profile updated:", newProfile);
   // Aliases cannot be updated automatically with the current login flow
   // because Keycloak does not provide a token claim when the attribute is null
   // and Hasura's permission system does not handle optional session variables.
-  if (intervenant.alias !== (profile?.alias ?? null)) {
+  if (newProfile.alias !== profile.alias) {
     console.warn(
       `Aliases mismatch ` +
         `(current value: ${intervenant.alias ?? "null"}; ` +
-        `local value: ${profile?.alias ?? "null"}). ` +
+        `local value: ${profile.alias ?? "null"}). ` +
         `Please report this warning to an administrator`,
     );
   }
+  return newProfile;
 };

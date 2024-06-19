@@ -187,7 +187,7 @@ export const GET_ENSEIGNEMENT_DETAILS = graphql(/* GraphQL */ `
 
 export const UPDATE_DESCRIPTION = graphql(/* GraphQL */ `
   mutation UpdateDescription($id: Int!, $description: String) {
-    update_ec_enseignement_by_pk(
+    description: update_ec_enseignement_by_pk(
       pk_columns: { id: $id }
       _set: { description: $description }
     ) {

@@ -4,10 +4,9 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { errorNotify } from "@/helpers/notify.ts";
 import { RowEnseignement, RowIntervenant } from "@/helpers/types.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
-import { ComputedRef, Ref, computed, ref } from "vue";
+import { ComputedRef, Ref, computed, readonly, ref } from "vue";
 
 const intervenants: Ref<RowIntervenant[]> = ref([]);
 const enseignements: Ref<RowEnseignement[]> = ref([]);
@@ -19,14 +18,22 @@ const setEnseignements = (rows: RowEnseignement[]) => {
   enseignements.value = rows;
 };
 
+const myRow: Ref<RowIntervenant | null> = ref(null);
+const setMyRow = (row: RowIntervenant | null) => {
+  myRow.value = row;
+};
+
 export const selectedIntervenants: Ref<RowIntervenant[]> = ref([]);
 export const selectedEnseignements: Ref<RowEnseignement[]> = ref([]);
 
-const deselectEnseignement = () => {
-  selectedEnseignements.value = [];
+const selectMe = () => {
+  selectedIntervenants.value = myRow.value ? [myRow.value] : [];
 };
 const deselectIntervenant = () => {
   selectedIntervenants.value = [];
+};
+const deselectEnseignement = () => {
+  selectedEnseignements.value = [];
 };
 
 const intervenant: ComputedRef<RowIntervenant | null> = computed(
@@ -38,37 +45,26 @@ const enseignement: ComputedRef<RowEnseignement | null> = computed(
 
 export const useData = () => {
   const { uid: moi } = useAuthentication();
-  const myRow: ComputedRef<RowIntervenant | null> = computed(
-    () => intervenants.value.find((row) => row.uid === moi.value) ?? null,
-  );
   const selectedMe: ComputedRef<boolean> = computed(
     () => intervenant.value?.uid === moi.value,
   );
-  const selectMe = () => {
-    selectedIntervenants.value = myRow.value ? [myRow.value] : [];
-  };
   const toggleMonService = () => {
     if (selectedMe.value) {
       selectedIntervenants.value = [];
     } else if (myRow.value) {
       selectedIntervenants.value = [myRow.value];
-    } else {
-      // todo!
-      console.error(`User '${moi.value}' is not an active user`);
-      errorNotify(
-        "Vous n'êtes pas un intervenant actif",
-        "Vous ne pouvez pas voir votre service'",
-      );
     }
   };
   return {
     intervenant,
     enseignement,
+    selectedMe,
     setIntervenants,
     setEnseignements,
+    myRow: readonly(myRow),
+    setMyRow,
     deselectIntervenant,
     deselectEnseignement,
-    selectedMe,
     selectMe,
     toggleMonService,
   };

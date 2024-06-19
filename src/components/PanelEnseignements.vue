@@ -39,7 +39,7 @@ import { usePermissions } from "@/stores/permissions.ts";
 
 const { active: anneeActive } = useAnnees();
 const perm = usePermissions();
-const { intervenant, deselectIntervenant } = useData();
+const { intervenant, deselectEnseignement, deselectIntervenant } = useData();
 
 const queryEnseignements = useQuery({
   query: GET_ENSEIGNEMENTS_TABLE_ROWS,
@@ -379,6 +379,15 @@ const estAttribue = (row: RowEnseignement) =>
     <template #top>
       <div class="q-table__title">
         {{ title }}
+        <QBtn
+          v-if="intervenant"
+          icon="sym_s_visibility"
+          size="sm"
+          flat
+          square
+          dense
+          @click="deselectEnseignement"
+        />
         <QBtn
           v-if="intervenant"
           icon="sym_s_close"

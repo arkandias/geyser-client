@@ -60,10 +60,7 @@ const setMessage =
             typeMessage,
             contenu,
           })
-          .then(
-            (result) =>
-              !!result.data?.insert_ec_message_one?.id && !result.error,
-          )
+          .then((result) => !!result.data?.message?.id && !result.error)
       : deleteMessage
           .executeMutation({
             annee: anneeActive.value ?? 0,
@@ -71,8 +68,7 @@ const setMessage =
             typeMessage,
           })
           .then(
-            (result) =>
-              !!result.data?.delete_ec_message?.affected_rows && !result.error,
+            (result) => !!result.data?.messages?.returning && !result.error,
           );
 </script>
 
