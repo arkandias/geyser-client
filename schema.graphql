@@ -4544,7 +4544,7 @@ type ec_intervenant {
   actif: Boolean!
 
   """
-  Un alias pour l'intervenant (optionnel).
+  Le service de base en heures EQTD de l'intervenant (optionnel).
   """
   alias: String
 
@@ -4857,10 +4857,6 @@ type ec_intervenant {
     """
     where: ec_responsable_bool_exp
   ): ec_responsable_aggregate!
-
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 
   """
@@ -4963,9 +4959,6 @@ type ec_intervenant_aggregate_fields {
 aggregate avg on columns
 """
 type ec_intervenant_avg_fields {
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 }
 
@@ -5011,9 +5004,6 @@ enum ec_intervenant_constraint {
 input type for incrementing numeric columns in table "ec.intervenant"
 """
 input ec_intervenant_inc_input {
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 }
 
@@ -5027,7 +5017,7 @@ input ec_intervenant_insert_input {
   actif: Boolean
 
   """
-  Un alias pour l'intervenant (optionnel).
+  Le service de base en heures EQTD de l'intervenant (optionnel).
   """
   alias: String
   demandes: ec_demande_arr_rel_insert_input
@@ -5045,10 +5035,6 @@ input ec_intervenant_insert_input {
   prenom: String
   priorites: ec_priorite_arr_rel_insert_input
   responsables: ec_responsable_arr_rel_insert_input
-
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
   services: ec_service_arr_rel_insert_input
 
@@ -5068,7 +5054,7 @@ aggregate max on columns
 """
 type ec_intervenant_max_fields {
   """
-  Un alias pour l'intervenant (optionnel).
+  Le service de base en heures EQTD de l'intervenant (optionnel).
   """
   alias: String
 
@@ -5081,10 +5067,6 @@ type ec_intervenant_max_fields {
   Le prénom de l'intervenant.
   """
   prenom: String
-
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 
   """
@@ -5098,7 +5080,7 @@ aggregate min on columns
 """
 type ec_intervenant_min_fields {
   """
-  Un alias pour l'intervenant (optionnel).
+  Le service de base en heures EQTD de l'intervenant (optionnel).
   """
   alias: String
 
@@ -5111,10 +5093,6 @@ type ec_intervenant_min_fields {
   Le prénom de l'intervenant.
   """
   prenom: String
-
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 
   """
@@ -5238,7 +5216,7 @@ input ec_intervenant_set_input {
   actif: Boolean
 
   """
-  Un alias pour l'intervenant (optionnel).
+  Le service de base en heures EQTD de l'intervenant (optionnel).
   """
   alias: String
 
@@ -5251,10 +5229,6 @@ input ec_intervenant_set_input {
   Le prénom de l'intervenant.
   """
   prenom: String
-
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 
   """
@@ -5272,9 +5246,6 @@ input ec_intervenant_set_input {
 aggregate stddev on columns
 """
 type ec_intervenant_stddev_fields {
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 }
 
@@ -5282,9 +5253,6 @@ type ec_intervenant_stddev_fields {
 aggregate stddev_pop on columns
 """
 type ec_intervenant_stddev_pop_fields {
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 }
 
@@ -5292,9 +5260,6 @@ type ec_intervenant_stddev_pop_fields {
 aggregate stddev_samp on columns
 """
 type ec_intervenant_stddev_samp_fields {
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 }
 
@@ -5323,7 +5288,7 @@ input ec_intervenant_stream_cursor_value_input {
   actif: Boolean
 
   """
-  Un alias pour l'intervenant (optionnel).
+  Le service de base en heures EQTD de l'intervenant (optionnel).
   """
   alias: String
 
@@ -5336,10 +5301,6 @@ input ec_intervenant_stream_cursor_value_input {
   Le prénom de l'intervenant.
   """
   prenom: String
-
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 
   """
@@ -5357,9 +5318,6 @@ input ec_intervenant_stream_cursor_value_input {
 aggregate sum on columns
 """
 type ec_intervenant_sum_fields {
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 }
 
@@ -5424,9 +5382,6 @@ input ec_intervenant_updates {
 aggregate var_pop on columns
 """
 type ec_intervenant_var_pop_fields {
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 }
 
@@ -5434,9 +5389,6 @@ type ec_intervenant_var_pop_fields {
 aggregate var_samp on columns
 """
 type ec_intervenant_var_samp_fields {
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 }
 
@@ -5444,9 +5396,6 @@ type ec_intervenant_var_samp_fields {
 aggregate variance on columns
 """
 type ec_intervenant_variance_fields {
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
   service: Float
 }
 

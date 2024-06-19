@@ -55,6 +55,7 @@ graphql(/* GraphQL */ `
       }
     }
     semestre
+    typeEnseignement: type
     description
   }
 

@@ -59,7 +59,10 @@ export const updateDemande = async (
       ensId,
       typeDemande,
     });
-    if (!resultMutation.error) {
+    if (
+      resultMutation.data?.delete_ec_demande?.affected_rows &&
+      !resultMutation.error
+    ) {
       successNotify(format(typeDemande) + " supprimée");
     }
   } else {
@@ -69,7 +72,10 @@ export const updateDemande = async (
       typeDemande,
       heures,
     });
-    if (!resultMutation.error) {
+    if (
+      resultMutation.data?.insert_ec_demande_one?.id &&
+      !resultMutation.error
+    ) {
       successNotify(
         format(typeDemande) + (current === 0 ? " créée" : " mise à jour"),
       );
@@ -83,7 +89,10 @@ export const deleteDemande = async (
   typeDemande: string,
 ): Promise<void> => {
   const resultMutation = await client.mutation(DELETE_DEMANDE_BY_ID, { id });
-  if (!resultMutation.error) {
+  if (
+    resultMutation.data?.delete_ec_demande_by_pk?.id &&
+    !resultMutation.error
+  ) {
     successNotify(format(typeDemande) + " supprimée");
   }
 };

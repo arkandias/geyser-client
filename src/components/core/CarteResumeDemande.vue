@@ -18,10 +18,14 @@ import {
 import { Demande } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
-const props = defineProps<{ demande: Demande }>();
+const props = defineProps<{
+  demande: Demande;
+  archive?: boolean;
+}>();
 
 const perm = usePermissions();
 const client = useClientHandle().client;
+
 const onAttribute = async (): Promise<void> => {
   await updateDemande(
     client,
@@ -34,6 +38,7 @@ const onAttribute = async (): Promise<void> => {
 const onDelete = async (): Promise<void> => {
   await deleteDemande(client, props.demande.id, props.demande.typeDemande);
 };
+
 const groupes: ComputedRef<number> = computed(
   () => props.demande.heures / props.demande.enseignement.heures,
 );
@@ -60,7 +65,7 @@ const groupes: ComputedRef<number> = computed(
       }}
     </QCardSection>
     <QSeparator />
-    <QCardActions align="evenly" class="q-pa-xs">
+    <QCardActions v-if="!archive" align="evenly" class="q-pa-xs">
       <QBtn
         icon="sym_s_check"
         color="positive"

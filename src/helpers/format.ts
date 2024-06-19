@@ -6,7 +6,12 @@
 
 import { NamedColor } from "quasar";
 
-import { Intervenant, Responsable, RowIntervenant } from "@/helpers/types.ts";
+import {
+  Intervenant,
+  Message,
+  Responsable,
+  RowIntervenant,
+} from "@/helpers/types.ts";
 
 export const tooltipDelay: number = 500;
 
@@ -76,6 +81,15 @@ export const formatTypeMessage = (typeMessage: string): string => {
       return "";
   }
 };
+
+export const indicateurMessage = (messages: Message[]): string =>
+  messages.find((message) => message.typeMessage === "message_intervenant")
+    ? messages.find((message) => message.typeMessage === "note_commission")
+      ? "\u2021"
+      : "\u002A"
+    : messages.find((message) => message.typeMessage === "note_commission")
+      ? "\u2020"
+      : "";
 
 export const formatFormation = (
   nomCursus: string,

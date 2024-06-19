@@ -37,13 +37,3 @@ export const successNotify = (message: string, caption?: string) => {
     group: false,
   });
 };
-
-export const notifyAnneeActiveNull = (): void => {
-  console.error(
-    "anneeActive is null. Please report this error to an administrator",
-  );
-  errorNotify(
-    "Année active non définie",
-    "Merci de rapporter cette erreur à un administrateur",
-  );
-};

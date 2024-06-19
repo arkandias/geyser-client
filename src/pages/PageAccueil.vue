@@ -5,12 +5,11 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import AccueilInformations from "@/components/accueil/AccueilInformations.vue";
+import InformationsAccueil from "@/components/accueil/InformationsAccueil.vue";
 import { formatIntervenant } from "@/helpers/format.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
-import { usePhases } from "@/stores/phases.ts";
+import MessageAccueil from "@/components/accueil/MessageAccueil.vue";
 
-const { enCours: phaseEnCours } = usePhases();
 const { intervenant } = useAuthentication();
 </script>
 
@@ -22,29 +21,9 @@ const { intervenant } = useAuthentication();
         <br />
         {{ formatIntervenant(intervenant) }}
       </QCardSection>
-      <QCardSection v-if="phaseEnCours === 'voeux'">
-        <p>Geyser est actuellement en phase de vœux.</p>
-        <p>
-          Vous pouvez faire des demandes principales et secondaires. Merci de
-          demander l’équivalent de votre service en demandes principales et en
-          demandes secondaires.
-        </p>
-      </QCardSection>
-      <QCardSection v-if="phaseEnCours === 'commission'">
-        <p>Les travaux de la commission sont en cours.</p>
-        <p>
-          Vous ne pouvez plus faire de demandes. Vous serez informé lorsque
-          Geyser rouvrira pour consulter les attributions.
-        </p>
-      </QCardSection>
-      <QCardSection v-if="phaseEnCours === 'consultation'">
-        <p>Geyser est actuellement en phase de consultation.</p>
-      </QCardSection>
-      <QCardSection v-if="phaseEnCours === 'fermeture'">
-        <p>Geyser est actuellement fermé.</p>
-      </QCardSection>
+      <MessageAccueil />
     </QCard>
-    <AccueilInformations />
+    <InformationsAccueil />
   </QPage>
 </template>
 

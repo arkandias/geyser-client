@@ -8,7 +8,7 @@
 import { useQuery } from "@urql/vue";
 import { watch } from "vue";
 
-import TheHeader from "@/components/header/TheHeader.vue";
+import TheHeader from "@/components/TheHeader.vue";
 import { GET_ANNEES } from "@/graphql/annees.ts";
 import { GET_PHASES } from "@/graphql/phases.ts";
 import {

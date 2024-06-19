@@ -7,10 +7,10 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
 import {
-  ComputedRef,
-  Ref,
   computed,
+  ComputedRef,
   reactive,
+  Ref,
   ref,
   toValue,
   watch,
@@ -22,27 +22,24 @@ import { demandeValue } from "@/helpers/enseignement.ts";
 import {
   formatFormation,
   formatIntervenant,
-  formatResumeIntervenant,
   nf,
   normalizeForSearch,
   tooltipDelay,
 } from "@/helpers/format.ts";
 import {
   Column,
+  isAbbreviable,
   Option,
   RowEnseignement,
-  RowIntervenant,
-  isAbbreviable,
 } from "@/helpers/types.ts";
 import { compare, uniqueValue } from "@/helpers/utils.ts";
 import { useAnnees } from "@/stores/annees.ts";
+import { selectedEnseignements as selected, useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";
-
-const selected = defineModel<RowEnseignement[]>({ required: true });
-const props = defineProps<{ intervenant: RowIntervenant | null }>();
 
 const { active: anneeActive } = useAnnees();
 const perm = usePermissions();
+const { intervenant, deselectIntervenant } = useData();
 
 const queryEnseignements = useQuery({
   query: GET_ENSEIGNEMENTS_TABLE_ROWS,
@@ -74,7 +71,7 @@ watch(
 
 // Titre de la table
 const title: ComputedRef<string> = computed(() =>
-  props.intervenant ? formatIntervenant(props.intervenant) : "Enseignements",
+  intervenant.value ? formatIntervenant(intervenant.value) : "Enseignements",
 );
 
 // Colonnes
@@ -177,7 +174,7 @@ const columns: Column<RowEnseignement>[] = [
     name: "attributions",
     label: "A.",
     tooltip: "Nombre d'heures attribuées",
-    field: (row) => demandeValue(row, props.intervenant, "attribution"),
+    field: (row) => demandeValue(row, intervenant.value, "attribution"),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -191,7 +188,7 @@ const columns: Column<RowEnseignement>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
     field: (row) =>
-      props.intervenant
+      intervenant.value
         ? null
         : row.heures * (row.groupes ?? 0) -
           (row.totalAttributions.aggregate?.sum?.heures ?? 0),
@@ -206,7 +203,7 @@ const columns: Column<RowEnseignement>[] = [
     name: "principales",
     label: "V1",
     tooltip: "Nombre d'heures demandées en vœux principaux",
-    field: (row) => demandeValue(row, props.intervenant, "principale"),
+    field: (row) => demandeValue(row, intervenant.value, "principale"),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -220,7 +217,7 @@ const columns: Column<RowEnseignement>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
     field: (row) =>
-      props.intervenant
+      intervenant.value
         ? null
         : row.heures * (row.groupes ?? 0) -
           (row.totalPrincipales.aggregate?.sum?.heures ?? 0),
@@ -237,7 +234,7 @@ const columns: Column<RowEnseignement>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",
     field: (row) =>
-      props.intervenant
+      intervenant.value
         ? null
         : row.heures * (row.groupes ?? 0) -
           (row.totalPrioritaire.aggregate?.sum?.heures ?? 0),
@@ -252,7 +249,7 @@ const columns: Column<RowEnseignement>[] = [
     name: "secondaires",
     label: "V2",
     tooltip: "Nombre d'heures demandées en vœux secondaires",
-    field: (row) => demandeValue(row, props.intervenant, "secondaire"),
+    field: (row) => demandeValue(row, intervenant.value, "secondaire"),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -320,7 +317,7 @@ const clearSearch = () => {
 };
 // Attributs du filtre
 const filterObj = computed(() => ({
-  demandesIntervenant: props.intervenant ? props.intervenant.demandes : null,
+  demandesIntervenant: intervenant.value ? intervenant.value.demandes : null,
   formations: formations.value,
   typesEnseignement: typesEnseignement.value,
   semestres: semestres.value,
@@ -354,7 +351,7 @@ const filterMethod = (
   );
 
 const estAttribue = (row: RowEnseignement) =>
-  props.intervenant?.demandes.some(
+  intervenant.value?.demandes.some(
     (demande) =>
       demande.ensId === row.id && demande.typeDemande === "attribution",
   ) ?? false;
@@ -380,7 +377,18 @@ const estAttribue = (row: RowEnseignement) =>
     @row-click="select"
   >
     <template #top>
-      <div class="q-table__title">{{ title }}</div>
+      <div class="q-table__title">
+        {{ title }}
+        <QBtn
+          v-if="intervenant"
+          icon="sym_s_close"
+          size="sm"
+          flat
+          square
+          dense
+          @click="deselectIntervenant"
+        />
+      </div>
       <QSpace />
       <div class="row q-gutter-md">
         <QSelect
@@ -544,9 +552,6 @@ const estAttribue = (row: RowEnseignement) =>
           {{ scope.value.long }}
         </QTooltip>
       </QTd>
-    </template>
-    <template v-if="intervenant" #bottom>
-      {{ formatResumeIntervenant(intervenant) }}
     </template>
   </QTable>
 </template>

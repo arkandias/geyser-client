@@ -5,14 +5,14 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import DetailsEnseignementDemandesFormulaire from "@/components/enseignements/DetailsEnseignementDemandesFormulaire.vue";
-import DetailsEnseignementDemandesListe from "@/components/enseignements/DetailsEnseignementDemandesListe.vue";
-import DetailsEnseignementDemandesSection from "@/components/enseignements/DetailsEnseignementDemandesSection.vue";
 import PuceResumePriorite from "@/components/core/PuceResumePriorite.vue";
+import DetailsEnseignementDemandesFormulaire from "@/components/enseignement/DetailsEnseignementDemandesFormulaire.vue";
+import DetailsEnseignementDemandesListe from "@/components/enseignement/DetailsEnseignementDemandesListe.vue";
 import { formatTypeDemandesTitre } from "@/helpers/format.ts";
 import { Archive, Demande, Priorite } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 import { ComputedRef, computed } from "vue";
+import VueSection from "@/components/core/VueSection.vue";
 
 defineProps<{
   ensId: number;
@@ -33,7 +33,7 @@ const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
 
 <template>
   <QCard flat square>
-    <DetailsEnseignementDemandesSection title="Demandes">
+    <VueSection title="Demandes">
       <DetailsEnseignementDemandesFormulaire
         v-if="
           perm.deFaireDesDemandes.value || perm.deModifierLesAttributions.value
@@ -49,22 +49,23 @@ const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
           demandes.filter((demande) => demande.typeDemande === typeDemande)
         "
       />
-    </DetailsEnseignementDemandesSection>
-    <DetailsEnseignementDemandesSection title="Priorités">
+    </VueSection>
+    <VueSection title="Priorités">
       <PuceResumePriorite
         v-for="priorite in priorites"
         :key="priorite.id"
         :priorite
       />
-    </DetailsEnseignementDemandesSection>
-    <DetailsEnseignementDemandesSection title="Archives">
+    </VueSection>
+    <VueSection title="Archives">
       <DetailsEnseignementDemandesListe
         v-for="archive in archives"
         :key="archive.annee"
         :title="archive.annee.toString()"
         :demandes="archive.demandes"
+        archive
       />
-    </DetailsEnseignementDemandesSection>
+    </VueSection>
   </QCard>
 </template>
 

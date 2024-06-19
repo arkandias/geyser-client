@@ -5,13 +5,13 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import AccueilVolet from "@/components/accueil/AccueilVolet.vue";
+import VoletAccueil from "@/components/accueil/VoletAccueil.vue";
 </script>
 
 <template>
   <QCard bordered flat square>
     <QList>
-      <AccueilVolet label="Guide d'utilisation">
+      <VoletAccueil label="Guide d'utilisation">
         Pour toute question, remarque, suggestion d'améliorations, signalement
         d'erreurs ou de bugs éventuels, merci d'utiliser l'adresse électronique
         de contact ci-dessous.
@@ -20,8 +20,8 @@ import AccueilVolet from "@/components/accueil/AccueilVolet.vue";
         <a href="mailto:julien.hauseux@univ-lille.fr"
           >julien.hauseux@univ-lille.fr</a
         >
-      </AccueilVolet>
-      <AccueilVolet label="Mention d'information">
+      </VoletAccueil>
+      <VoletAccueil label="Mention d'information">
         <p>
           Les informations recueillies dans cette application sont enregistrées
           dans un fichier informatisé par le département de mathématiques pour
@@ -79,8 +79,8 @@ import AccueilVolet from "@/components/accueil/AccueilVolet.vue";
           mathématiques, que vos droits «&nbsp;Informatique et Libertés&nbsp;»
           ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL.
         </p>
-      </AccueilVolet>
-      <AccueilVolet label="Licence">
+      </VoletAccueil>
+      <VoletAccueil label="Licence">
         <p>
           Geyser &mdash; Gestion des enseignements prévisionnels<br />
           Copyright &copy; 2021-2024 Amaël Broustet, Julien Hauseux
@@ -133,7 +133,7 @@ import AccueilVolet from "@/components/accueil/AccueilVolet.vue";
             >
           </li>
         </ol>
-      </AccueilVolet>
+      </VoletAccueil>
     </QList>
   </QCard>
 </template>

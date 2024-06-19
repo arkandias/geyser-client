@@ -5,7 +5,7 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import ServiceSection from "@/components/service/ServiceSection.vue";
+import VueSection from "@/components/core/VueSection.vue";
 import { formatTypeDemandesTitre, nf } from "@/helpers/format.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
@@ -19,7 +19,7 @@ const perm = usePermissions();
 </script>
 
 <template>
-  <ServiceSection title="Demandes">
+  <VueSection title="Demandes">
     <table>
       <tr v-if="perm.deVoirLesAttributions.value">
         <td>{{ formatTypeDemandesTitre("attribution") }}</td>
@@ -34,12 +34,12 @@ const perm = usePermissions();
         <td>{{ nf.format(totalSecondaires) + " htd" }}</td>
       </tr>
     </table>
-  </ServiceSection>
+  </VueSection>
 </template>
 
 <style scoped lang="scss">
 table {
-  width: 100%;
+  width: 400px;
   border-spacing: 8px;
 }
 td:first-child {

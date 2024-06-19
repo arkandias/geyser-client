@@ -11,6 +11,7 @@ import { Demande } from "@/helpers/types.ts";
 defineProps<{
   title: string;
   demandes: Demande[];
+  archive?: boolean;
 }>();
 </script>
 
@@ -22,6 +23,7 @@ defineProps<{
         v-for="demande in demandes"
         :key="demande.id"
         :demande
+        :archive
       />
     </div>
   </QCardSection>

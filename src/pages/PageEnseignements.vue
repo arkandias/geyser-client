@@ -8,41 +8,58 @@
 import { useQuery } from "@urql/vue";
 import { computed, reactive, watch } from "vue";
 
-import DetailsEnseignement from "@/components/enseignements/DetailsEnseignement.vue";
-import TableEnseignements from "@/components/enseignements/TableEnseignements.vue";
-import TableIntervenants from "@/components/enseignements/TableIntervenants.vue";
-import { GET_MY_ROW } from "@/graphql/intervenants.ts";
+import PanelDetails from "@/components/PanelDetails.vue";
+import PanelEnseignements from "@/components/PanelEnseignements.vue";
+import PanelIntervenants from "@/components/PanelIntervenants.vue";
+import { GET_ENSEIGNEMENTS_TABLE_ROWS } from "@/graphql/enseignements.ts";
+import { GET_INTERVENANTS_TABLE_ROWS } from "@/graphql/intervenants.ts";
 import { useAnnees } from "@/stores/annees.ts";
-import { useAuthentication } from "@/stores/authentication.ts";
-import {
-  selectedEnseignements,
-  selectedIntervenants,
-  useData,
-} from "@/stores/data.ts";
+import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
 const { active: anneeActive } = useAnnees();
-const { uid: moi } = useAuthentication();
 const perm = usePermissions();
-const { filtreIntervenants, openFilter, closeFilter } = useLayout();
-const { intervenant, enseignement, setMyRow } = useData();
+const { closeFilter, filtreIntervenants, openFilter } = useLayout();
+const { setEnseignements, setIntervenants } = useData();
 
-const queryIntervenant = useQuery({
-  query: GET_MY_ROW,
+const queryEnseignements = useQuery({
+  query: GET_ENSEIGNEMENTS_TABLE_ROWS,
   variables: reactive({
-    uid: moi,
     annee: computed(() => anneeActive.value ?? 0),
   }),
   pause: () => !anneeActive.value,
+  context: { additionalTypenames: ["ec_demande"] },
+});
+watch(
+  queryEnseignements.data,
+  (value) => {
+    setEnseignements(value?.enseignements ?? []);
+  },
+  { immediate: true },
+);
+
+const queryIntervenants = useQuery({
+  query: GET_INTERVENANTS_TABLE_ROWS,
+  variables: reactive({
+    annee: computed(() => anneeActive.value ?? 0),
+  }),
+  pause: () => !anneeActive.value || !perm.deVoirLeServiceDAutrui.value,
   context: {
-    additionalTypenames: ["ec_modification_service", "ec_demande"],
+    additionalTypenames: [
+      "ec_modification_service",
+      "ec_message",
+      "ec_demande",
+    ],
   },
 });
-
-watch(queryIntervenant.data, (value) => {
-  setMyRow(value?.intervenant ?? null);
-});
+watch(
+  queryIntervenants.data,
+  (value) => {
+    setIntervenants(value?.intervenants ?? []);
+  },
+  { immediate: true },
+);
 
 watch(
   perm.deVoirLeServiceDAutrui,
@@ -66,18 +83,15 @@ watch(
       :disable="!filtreIntervenants"
     >
       <template #before>
-        <TableIntervenants
-          v-if="perm.deVoirLeServiceDAutrui.value"
-          v-model="selectedIntervenants"
-        />
+        <PanelIntervenants v-if="perm.deVoirLeServiceDAutrui.value" />
       </template>
       <template #after>
         <QSplitter v-model="hSplitterRatio" horizontal>
           <template #before>
-            <TableEnseignements v-model="selectedEnseignements" :intervenant />
+            <PanelEnseignements />
           </template>
           <template #after>
-            <DetailsEnseignement :enseignement />
+            <PanelDetails />
           </template>
         </QSplitter>
       </template>

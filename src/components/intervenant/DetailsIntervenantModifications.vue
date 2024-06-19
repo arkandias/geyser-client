@@ -8,27 +8,23 @@
 import { useMutation, useQuery } from "@urql/vue";
 import { ComputedRef, Ref, computed, ref } from "vue";
 
-import ServiceSection from "@/components/service/ServiceSection.vue";
+import VueSection from "@/components/core/VueSection.vue";
 import {
   DELETE_MODIFICATION,
   GET_TYPES_MODIFICATION,
   INSERT_MODIFICATION,
 } from "@/graphql/modifications.ts";
 import { nf } from "@/helpers/format.ts";
-import {
-  errorNotify,
-  notifyAnneeActiveNull,
-  successNotify,
-} from "@/helpers/notify.ts";
+import { errorNotify, successNotify } from "@/helpers/notify.ts";
 import { Modification } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
 
 const props = defineProps<{
   uid: string;
-  editable: boolean;
   serviceBase: number;
-  totalModifications: number;
   modifications: Modification[];
+  totalModifications: number;
+  editable: boolean;
 }>();
 
 const { active: anneeActive } = useAnnees();
@@ -61,10 +57,6 @@ const onReset = (): void => {
   heuresEQTD.value = 0;
 };
 const onSubmit = async (): Promise<void> => {
-  if (!anneeActive.value) {
-    notifyAnneeActiveNull();
-    return;
-  }
   if (!typeModification.value) {
     errorNotify(
       "Formulaire non valide",
@@ -80,26 +72,26 @@ const onSubmit = async (): Promise<void> => {
     return;
   }
   const result = await insertModification.executeMutation({
-    annee: anneeActive.value,
+    annee: anneeActive.value ?? 0,
     uid: props.uid,
     typeModification: typeModification.value,
     heuresEQTD: heuresEQTD.value,
   });
-  if (!result.error) {
+  if (result.data?.insert_ec_modification_service_one?.id && !result.error) {
     successNotify(`Modification ajoutée`);
   }
   onReset();
 };
 const onDelete = async (id: number): Promise<void> => {
   const result = await deleteModification.executeMutation({ id: id });
-  if (!result.error) {
+  if (result.data?.delete_ec_modification_service_by_pk?.id && !result.error) {
     successNotify(`Modification supprimée`);
   }
 };
 </script>
 
 <template>
-  <ServiceSection title="Service">
+  <VueSection title="Service">
     <form id="addModification" @submit.prevent="onSubmit" @reset="onReset" />
     <table>
       <tr>
@@ -152,7 +144,7 @@ const onDelete = async (id: number): Promise<void> => {
             options-dense
             form="addModification"
             class="inline-block"
-            style="width: 250px"
+            style="width: 200px"
           />
         </td>
         <td>
@@ -193,12 +185,12 @@ const onDelete = async (id: number): Promise<void> => {
         <td>{{ nf.format(serviceCorrige) + " htd" }}</td>
       </tr>
     </table>
-  </ServiceSection>
+  </VueSection>
 </template>
 
 <style scoped lang="scss">
 table {
-  width: 100%;
+  width: 400px;
   border-spacing: 8px;
 }
 td:first-child {

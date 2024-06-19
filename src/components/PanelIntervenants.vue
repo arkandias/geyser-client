@@ -18,15 +18,20 @@ import {
 } from "vue";
 
 import { GET_INTERVENANTS_TABLE_ROWS } from "@/graphql/intervenants.ts";
-import { nf, normalizeForSearch, tooltipDelay } from "@/helpers/format.ts";
+import {
+  indicateurMessage,
+  nf,
+  normalizeForSearch,
+  tooltipDelay,
+} from "@/helpers/format.ts";
 import { ColumnNonAbbreviable, RowIntervenant } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
+import { selectedIntervenants as selected, useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";
-
-const selected = defineModel<RowIntervenant[]>({ required: true });
 
 const { active: anneeActive } = useAnnees();
 const perm = usePermissions();
+const { deselectEnseignement } = useData();
 
 const queryIntervenants = useQuery({
   query: GET_INTERVENANTS_TABLE_ROWS,
@@ -48,10 +53,10 @@ const select = (_: Event, row: RowIntervenant) => {
     selected.value = [];
   } else {
     selected.value = [row];
+    deselectEnseignement();
   }
 };
-// update value of `selected` when the corresponding row changes
-// (this is not automatic!)
+// update value of `selected` when the corresponding row changes (not automatic)
 watch(
   () => rows.value.find((row) => row.uid === selected.value[0]?.uid),
   (value) => {
@@ -91,6 +96,17 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     abbreviable: false,
   },
   {
+    name: "messages",
+    label: "M.",
+    tooltip: "Messages",
+    align: "left",
+    field: (row) => indicateurMessage(row.messages),
+    sortable: true,
+    visible: false,
+    searchable: false,
+    abbreviable: false,
+  },
+  {
     name: "service",
     label: "S.",
     tooltip: "Service à réaliser (en heures EQTD)",
@@ -100,7 +116,7 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
-    visible: perm.deVoirLeServiceDAutrui,
+    visible: true,
     searchable: false,
     abbreviable: false,
   },

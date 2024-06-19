@@ -54,10 +54,16 @@ export type RowIntervenant = Intervenant & {
     heuresEQTD: number | null;
   }>;
   services: Array<{ heuresEQTD: number }>;
+  modifications: Array<{
+    id: number;
+    typeModification: string;
+    heuresEQTD: number;
+  }>;
   totalModifications: TotalHeuresEQTD;
   totalAttributions: TotalHeures & TotalHeuresEQTD;
   totalPrincipales: TotalHeures & TotalHeuresEQTD;
   totalSecondaires: TotalHeures & TotalHeuresEQTD;
+  messages: Array<Message>;
 };
 
 // Columns
@@ -106,6 +112,7 @@ export type Resume = {
     responsables: Responsable[];
   } | null;
   semestre: number;
+  typeEnseignement: string;
   description: string | null;
 };
 export type Demande = {

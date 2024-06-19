@@ -7,7 +7,6 @@
 import PageAccueil from "@/pages/PageAccueil.vue";
 import PageEnseignements from "@/pages/PageEnseignements.vue";
 import PageMessage from "@/pages/PageMessage.vue";
-import PageService from "@/pages/PageService.vue";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 const routes: RouteRecordRaw[] = [
@@ -15,11 +14,6 @@ const routes: RouteRecordRaw[] = [
     path: "/",
     name: "accueil",
     component: PageAccueil,
-  },
-  {
-    path: "/service",
-    name: "service",
-    component: PageService,
   },
   {
     path: "/enseignements",

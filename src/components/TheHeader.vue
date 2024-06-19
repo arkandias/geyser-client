@@ -50,16 +50,6 @@ const version: ComputedRef<string> = computed(
       </QBtn>
       <QSeparator vertical inset color="white" />
       <QBtn
-        icon="sym_s_assignment"
-        :disable
-        flat
-        square
-        @click="router.push({ name: 'service' })"
-      >
-        <QTooltip>Service</QTooltip>
-      </QBtn>
-      <QSeparator vertical inset color="white" />
-      <QBtn
         icon="sym_s_menu_book"
         :disable
         flat
