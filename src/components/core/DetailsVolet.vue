@@ -20,11 +20,20 @@ const { enseignement, intervenant } = useData();
 
 const expanded: Ref<boolean> = ref(false);
 
-// on change: close and scroll to top
-watch([() => enseignement.value?.id, () => intervenant.value?.uid], () => {
-  expanded.value = false;
-  document.getElementById("details")?.scrollIntoView();
-});
+// on change: close and scroll to top (sync)
+watch(
+  [
+    () => enseignement.value?.id,
+    () => enseignement.value?.id || intervenant.value?.uid,
+  ],
+  () => {
+    expanded.value = false;
+    document.getElementById("volet")?.scrollIntoView();
+  },
+  {
+    flush: "sync",
+  },
+);
 </script>
 
 <template>

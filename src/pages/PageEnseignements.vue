@@ -110,7 +110,7 @@ watch(
             <PanelEnseignements />
           </template>
           <template #after>
-            <PanelDetails id="details" />
+            <PanelDetails />
           </template>
         </QSplitter>
       </template>
