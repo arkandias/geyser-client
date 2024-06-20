@@ -203,6 +203,7 @@ const filterMethod = (
     square
     dense
     virtual-scroll
+    class="sticky-header-table"
     @row-click="select"
   >
     <template #top>
