@@ -14,11 +14,13 @@ import PanelIntervenants from "@/components/PanelIntervenants.vue";
 import { GET_ENSEIGNEMENTS_TABLE_ROWS } from "@/graphql/enseignements.ts";
 import { GET_INTERVENANTS_TABLE_ROWS } from "@/graphql/intervenants.ts";
 import { useAnnees } from "@/stores/annees.ts";
+import { useAuthentication } from "@/stores/authentication.ts";
 import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
 const { active: anneeActive } = useAnnees();
+const { uid: moi } = useAuthentication();
 const perm = usePermissions();
 const { closeFilter, filtreIntervenants, openFilter } = useLayout();
 const {
@@ -55,6 +57,11 @@ const queryIntervenants = useQuery({
   query: GET_INTERVENANTS_TABLE_ROWS,
   variables: reactive({
     annee: computed(() => anneeActive.value ?? 0),
+    condition: computed(() =>
+      perm.deVoirLeServiceDAutrui.value
+        ? { actif: { _eq: true } }
+        : { uid: { _eq: moi.value } },
+    ),
   }),
   pause: () => !anneeActive.value,
   context: {

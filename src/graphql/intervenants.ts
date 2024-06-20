@@ -52,9 +52,12 @@ export const GET_INTERVENANTS = graphql(/* GraphQL */ `
 `);
 
 export const GET_INTERVENANTS_TABLE_ROWS = graphql(/* GraphQL */ `
-  query GetIntervenantsTableRows($annee: Int!) {
+  query GetIntervenantsTableRows(
+    $annee: Int!
+    $condition: ec_intervenant_bool_exp!
+  ) {
     intervenants: ec_intervenant(
-      where: { actif: { _eq: true } }
+      where: $condition
       order_by: [{ nom: asc }, { prenom: asc }]
     ) {
       ...Intervenant
