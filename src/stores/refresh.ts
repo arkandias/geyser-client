@@ -16,9 +16,10 @@ export const useRefresh = () => {
       {},
       {
         additionalTypenames: [
-          "ec_modification_service",
-          "ec_message",
           "ec_demande",
+          "ec_message",
+          "ec_modification_service",
+          "ec_priorite",
         ],
       },
     );

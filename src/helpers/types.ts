@@ -98,21 +98,14 @@ export type Responsable = {
 };
 export type Resume = {
   ensId: number;
-  nom: string;
+  heuresParGroupe: number;
   responsables: Responsable[];
   mention: {
-    nom: string;
     responsables: Responsable[];
-    cursus: {
-      nom: string;
-    };
   };
   parcours: {
-    nom: string;
     responsables: Responsable[];
   } | null;
-  semestre: number;
-  typeEnseignement: string;
   description: string | null;
 };
 export type Demande = {
@@ -140,6 +133,11 @@ export type Archive = {
 };
 export type NestedArchives = Archive & {
   parent?: NestedArchives | null;
+};
+export type Details = Resume & {
+  demandes: Demande[];
+  priorites: Priorite[];
+  parent: NestedArchives | null;
 };
 export type Modification = {
   id: number;

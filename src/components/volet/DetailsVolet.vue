@@ -10,9 +10,8 @@ import { Ref, ref, watch } from "vue";
 import { useData } from "@/stores/data.ts";
 
 defineProps<{
-  label?: string;
-  caption?: string;
-  disable?: boolean;
+  label: string;
+  caption: string;
 }>();
 defineSlots<{ default(): unknown }>();
 
@@ -43,22 +42,20 @@ watch(
     expand-separator
     :label
     :caption
-    :disable
-    class="details"
     dense
     dense-toggle
   >
-    <QCard v-if="!disable" flat square class="text-body2">
+    <QCard flat square class="text-body2">
       <slot />
     </QCard>
   </QExpansionItem>
 </template>
 
 <style scoped lang="scss">
-.details {
+.q-expansion-item {
   background-color: $grey-3;
 }
-.body--dark .details {
+.body--dark .q-expansion-item {
   background-color: $grey-9;
 }
 </style>

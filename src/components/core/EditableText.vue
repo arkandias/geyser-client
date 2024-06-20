@@ -9,18 +9,28 @@ import { computed, ComputedRef, Ref, ref, watch } from "vue";
 import xss from "xss";
 
 import { defaultNotify, successNotify } from "@/helpers/notify.ts";
+import VueSubsection from "@/components/core/VueSubsection.vue";
 
-const props = defineProps<{
-  name: string;
-  text: string;
-  setText: (text: string) => Promise<boolean>;
-  editable: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    name: string;
+    text: string | null;
+    defaultText?: string;
+    setText?: (text: string) => Promise<boolean>;
+    editable?: boolean;
+  }>(),
+  {
+    defaultText: "",
+    setText: () => Promise.resolve(false),
+  },
+);
 
 const edition: Ref<boolean> = ref(false);
 
 // sanitize HTML to prevent XSS attacks
-const sanitizedText: ComputedRef<string> = computed(() => xss(props.text));
+const sanitizedText: ComputedRef<string> = computed(() =>
+  xss(props.text || props.defaultText),
+);
 
 const editorText: Ref<string> = ref("");
 
@@ -38,7 +48,7 @@ const onSave = async (): Promise<void> => {
   edition.value = false;
 };
 const onAbort = (): void => {
-  editorText.value = props.text;
+  editorText.value = props.text ?? "";
   edition.value = false;
 };
 
@@ -76,29 +86,13 @@ watch(
 </script>
 
 <template>
-  <QCardSection>
-    <div class="text-subtitle1">
-      {{ name }}
-      <QToggle
-        v-if="editable"
-        v-model="edition"
-        icon="sym_s_edit"
-        color="primary"
-        size="sm"
-        dense
-      />
-    </div>
-    <QEditor
-      v-if="edition"
-      v-model="editorText"
-      :definitions
-      :toolbar
-      square
-      dense
-    />
+  <VueSubsection v-model="edition" :title="name" :editable>
+    <QCardSection v-if="edition">
+      <QEditor v-model="editorText" :definitions :toolbar square dense />
+    </QCardSection>
     <!--eslint-disable-next-line-->
-    <QCardSection v-else-if="text" class="q-px-md" v-html="sanitizedText" />
-  </QCardSection>
+    <QCardSection v-else-if="text" v-html="sanitizedText" />
+  </VueSubsection>
 </template>
 
 <style scoped lang="scss"></style>

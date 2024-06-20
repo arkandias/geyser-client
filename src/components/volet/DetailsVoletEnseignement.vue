@@ -9,45 +9,24 @@ import { useMutation } from "@urql/vue";
 import { computed, ComputedRef } from "vue";
 
 import EditableText from "@/components/core/EditableText.vue";
+import DetailsEnseignementResponsables from "@/components/volet/DetailsVoletEnseignementResponsables.vue";
 import { UPDATE_DESCRIPTION } from "@/graphql/enseignements.ts";
-import { Intervenant, Responsable, Resume } from "@/helpers/types.ts";
+import { Details, Intervenant, Responsable } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";
-import DetailsVolet from "@/components/core/DetailsVolet.vue";
-import DetailsEnseignementResponsables from "@/components/enseignement/DetailsEnseignementResponsables.vue";
 
-const props = defineProps<{ resume: Resume | null }>();
+const props = defineProps<{ details: Details }>();
 
 const perm = usePermissions();
 
-// header
-const label: ComputedRef<string> = computed(() =>
-  props.resume
-    ? props.resume.nom
-    : "Cliquez sur un enseignement ou un intervenant",
-);
-const caption: ComputedRef<string> = computed(() =>
-  props.resume
-    ? props.resume.mention.cursus.nom +
-      " \u2014 " +
-      props.resume.mention.nom +
-      " \u2014 " +
-      (props.resume.parcours?.nom ?? "") +
-      " \u2014 S" +
-      props.resume.semestre.toString() +
-      " \u2014 " +
-      props.resume.typeEnseignement
-    : "",
-);
-
 // responsables
 const responsablesEnseignement: ComputedRef<Responsable[]> = computed(
-  () => props.resume?.responsables ?? [],
+  () => props.details.responsables,
 );
 const responsablesParcours: ComputedRef<Responsable[]> = computed(
-  () => props.resume?.parcours?.responsables ?? [],
+  () => props.details.parcours?.responsables ?? [],
 );
 const responsablesMention: ComputedRef<Responsable[]> = computed(
-  () => props.resume?.mention.responsables ?? [],
+  () => props.details.mention.responsables,
 );
 const responsables: ComputedRef<Intervenant[]> = computed(() => [
   ...responsablesEnseignement.value.map(({ intervenant }) => intervenant),
@@ -56,33 +35,29 @@ const responsables: ComputedRef<Intervenant[]> = computed(() => [
 ]);
 
 // description
-const description: ComputedRef<string> = computed(
-  () => props.resume?.description ?? "",
-);
 const updateDescription = useMutation(UPDATE_DESCRIPTION);
 const setDescription = (text: string): Promise<boolean> =>
   updateDescription
     .executeMutation({
-      id: props.resume?.ensId ?? 0,
+      id: props.details.ensId,
       description: text || null,
     })
     .then((result) => !!result.data?.description?.id && !result.error);
 </script>
 
 <template>
-  <DetailsVolet :label :caption :disable="!resume">
-    <DetailsEnseignementResponsables
-      :responsables-mention
-      :responsables-enseignement
-      :responsables-parcours
-    />
-    <EditableText
-      name="Description"
-      :text="description"
-      :set-text="setDescription"
-      :editable="perm.deModifierUneDescription.value(responsables)"
-    />
-  </DetailsVolet>
+  <DetailsEnseignementResponsables
+    :responsables-mention
+    :responsables-enseignement
+    :responsables-parcours
+  />
+  <EditableText
+    name="Description"
+    :text="details.description"
+    default-text="Pas de description (contactez un responsable)"
+    :set-text="setDescription"
+    :editable="perm.deModifierUneDescription.value(responsables)"
+  />
 </template>
 
 <style scoped lang="scss"></style>

@@ -36,8 +36,8 @@ const version: ComputedRef<string> = computed(
       <QToolbarTitle shrink>
         <QAvatar icon="sym_s_spa" square size="xl" />
         Geyser
+        <QBadge outline align="middle">{{ version }}</QBadge>
       </QToolbarTitle>
-      <small>{{ version }}</small>
       <QSpace />
       <QBtn
         icon="sym_s_home"

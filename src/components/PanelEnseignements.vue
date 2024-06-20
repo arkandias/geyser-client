@@ -162,11 +162,9 @@ const columns: Column<RowEnseignement>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
     field: (row) =>
-      intervenant.value
-        ? null
-        : row.heures * (row.groupes ?? 0) -
-          (row.totalAttributions.aggregate?.sum?.heures ?? 0),
-    format: (val: number | null) => (val !== null ? nf.format(val) : "n/a"),
+      row.heures * (row.groupes ?? 0) -
+      (row.totalAttributions.aggregate?.sum?.heures ?? 0),
+    format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
     visible: false,
@@ -191,11 +189,9 @@ const columns: Column<RowEnseignement>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
     field: (row) =>
-      intervenant.value
-        ? null
-        : row.heures * (row.groupes ?? 0) -
-          (row.totalPrincipales.aggregate?.sum?.heures ?? 0),
-    format: (val: number | null) => (val !== null ? nf.format(val) : "n/a"),
+      row.heures * (row.groupes ?? 0) -
+      (row.totalPrincipales.aggregate?.sum?.heures ?? 0),
+    format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
     visible: false,
@@ -208,11 +204,9 @@ const columns: Column<RowEnseignement>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",
     field: (row) =>
-      intervenant.value
-        ? null
-        : row.heures * (row.groupes ?? 0) -
-          (row.totalPrioritaire.aggregate?.sum?.heures ?? 0),
-    format: (val: number | null) => (val !== null ? nf.format(val) : "n/a"),
+      row.heures * (row.groupes ?? 0) -
+      (row.totalPrioritaire.aggregate?.sum?.heures ?? 0),
+    format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
     visible: false,
@@ -525,8 +519,8 @@ const estAttribue = (row: RowEnseignement) =>
       <QTd
         :props="scope"
         :class="{
+          'non-visible': !intervenant && !scope.row.visible,
           attribue: estAttribue(scope.row),
-          'non-visible': !scope.row.visible,
         }"
       >
         {{ scope.value?.short ?? scope.value?.long ?? scope.value }}
@@ -545,10 +539,10 @@ const estAttribue = (row: RowEnseignement) =>
 .q-input {
   min-width: $search-input-width;
 }
-.attribue {
-  background-color: rgba($positive, 0.1);
-}
 .non-visible {
   background-color: rgba($negative, 0.1);
+}
+.attribue {
+  background-color: rgba($positive, 0.1);
 }
 </style>

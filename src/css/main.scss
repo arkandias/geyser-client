@@ -4,7 +4,7 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-// ajuste le layout de la page Enseignements à la hauteur de la fenêtre
+/* ajuste le layout de la page Enseignements à la hauteur de la fenêtre */
 #header {
   height: $header-height;
 }
@@ -12,47 +12,40 @@
   height: calc(100vh - $header-height);
 }
 
-// sticky header table
+/* sticky header table */
 .sticky-header-table {
-  /* height or max-height is important */
   max-height: calc(100vh - $header-height);
-
-  .q-table__top,
-  .q-table__bottom,
   thead tr:first-child th {
-    /* bg color is important for th; just specify one */
     background-color: #ffffff;
+    top: 0;
   }
-
   thead tr th {
     position: sticky;
     z-index: 1;
   }
-
-  thead tr:first-child th {
-    top: 0;
-  }
-
   /* this is when the loading indicator appears */
   &.q-table--loading thead tr:last-child th {
     /* height of all previous header rows */
     top: 48px;
   }
-
   /* prevent scrolling behind sticky top row on focus */
   tbody {
     /* height of all previous header rows */
     scroll-margin-top: 48px;
   }
 }
+/* background color in dark mode */
+.body--dark .sticky-header-table thead tr:first-child th {
+  background-color: $dark;
+}
 
-// couleur de l'en-tête et des séparateurs (y compris en mode sombre)
+/* couleur de l'en-tête et des séparateurs (y compris en mode sombre) */
 #header,
 .q-splitter .q-splitter__separator {
   background-color: $primary;
 }
 
-// couleurs des liens hypertextes
+/* couleurs des liens hypertextes */
 a:link,
 a:visited {
   color: var(--q-primary);

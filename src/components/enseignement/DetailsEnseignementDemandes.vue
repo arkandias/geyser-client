@@ -5,68 +5,30 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import PucePriorite from "@/components/core/PucePriorite.vue";
-import DetailsEnseignementDemandesFormulaire from "@/components/enseignement/DetailsEnseignementDemandesFormulaire.vue";
-import DetailsEnseignementDemandesListe from "@/components/enseignement/DetailsEnseignementDemandesListe.vue";
-import { formatTypeDemandesTitre } from "@/helpers/format.ts";
-import { Archive, Demande, Priorite } from "@/helpers/types.ts";
-import { usePermissions } from "@/stores/permissions.ts";
-import { ComputedRef, computed } from "vue";
-import VueSection from "@/components/core/VueSection.vue";
+import CarteDemande from "@/components/core/CarteDemande.vue";
+import { Demande } from "@/helpers/types.ts";
+import VueSubsection from "@/components/core/VueSubsection.vue";
 
 defineProps<{
-  ensId: number;
-  heuresParGroupe: number;
+  title: string;
   demandes: Demande[];
-  priorites: Priorite[];
-  archives: Archive[];
+  archive?: boolean;
 }>();
-
-const perm = usePermissions();
-
-const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
-  perm.deVoirLesAttributions.value
-    ? ["attribution", "principale", "secondaire"]
-    : ["principale", "secondaire"],
-);
 </script>
 
 <template>
-  <QCard flat square>
-    <VueSection title="Demandes">
-      <DetailsEnseignementDemandesFormulaire
-        v-if="
-          perm.deFaireDesDemandes.value || perm.deModifierLesAttributions.value
-        "
-        :ens-id
-        :heures-par-groupe
-      />
-      <DetailsEnseignementDemandesListe
-        v-for="typeDemande in typesDemandeAffiches"
-        :key="typeDemande"
-        :title="formatTypeDemandesTitre(typeDemande)"
-        :demandes="
-          demandes.filter((demande) => demande.typeDemande === typeDemande)
-        "
-      />
-    </VueSection>
-    <VueSection title="Priorités">
-      <PucePriorite
-        v-for="priorite in priorites"
-        :key="priorite.id"
-        :priorite
-      />
-    </VueSection>
-    <VueSection title="Archives">
-      <DetailsEnseignementDemandesListe
-        v-for="archive in archives"
-        :key="archive.annee"
-        :title="archive.annee.toString()"
-        :demandes="archive.demandes"
-        archive
-      />
-    </VueSection>
-  </QCard>
+  <VueSubsection :title>
+    <QCardSection>
+      <div class="row q-gutter-xs">
+        <CarteDemande
+          v-for="demande in demandes"
+          :key="demande.id"
+          :demande
+          :archive
+        />
+      </div>
+    </QCardSection>
+  </VueSubsection>
 </template>
 
 <style scoped lang="scss"></style>

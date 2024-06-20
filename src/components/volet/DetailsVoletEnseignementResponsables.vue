@@ -18,18 +18,20 @@ defineProps<{
 
 <template>
   <VueSubsection title="Responsables">
-    <div v-if="responsablesEnseignement.length" class="q-pa-sm">
-      Responsable(s) de l'enseignement :
-      {{ formatResponsables(responsablesEnseignement) }}
-    </div>
-    <div v-if="responsablesParcours.length" class="q-pa-sm">
-      Responsable(s) du parcours :
-      {{ formatResponsables(responsablesParcours) }}
-    </div>
-    <div v-if="responsablesMention.length" class="q-pa-sm">
-      Responsable(s) de la mention :
-      {{ formatResponsables(responsablesMention) }}
-    </div>
+    <QCardSection>
+      <div v-if="responsablesMention.length">
+        Responsable(s) de la mention :
+        {{ formatResponsables(responsablesMention) }}
+      </div>
+      <div v-if="responsablesParcours.length">
+        Responsable(s) du parcours :
+        {{ formatResponsables(responsablesParcours) }}
+      </div>
+      <div v-if="responsablesEnseignement.length">
+        Responsable(s) de l'enseignement :
+        {{ formatResponsables(responsablesEnseignement) }}
+      </div>
+    </QCardSection>
   </VueSubsection>
 </template>
 

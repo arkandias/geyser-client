@@ -119,70 +119,72 @@ const onReset = (): void => {
 </script>
 
 <template>
-  <QForm
-    dense
-    class="row q-pa-md q-gutter-md text-body2"
-    @submit="onSubmit"
-    @reset="onReset"
-  >
-    <SelectIntervenant
-      v-if="
-        perm.deFaireDesDemandesPourAutrui.value ||
-        perm.deModifierLesAttributions.value
-      "
-      v-model="uid"
+  <QCardSection>
+    <QForm
       dense
-      options-dense
-    />
-    <QInput
-      v-model.number="groupes"
-      color="primary"
-      type="number"
-      step="any"
-      label="Groupes"
-      square
-      dense
-    />
-    <QInput
-      v-model.number="heures"
-      color="primary"
-      type="number"
-      step="any"
-      label="Heures"
-      square
-      dense
-    />
-    <QRadio
-      v-if="perm.deModifierLesAttributions.value"
-      v-model="typeDemande"
-      val="attribution"
-      label="Attribution"
-      color="primary"
-      dense
-    />
-    <QRadio
-      v-if="perm.deFaireDesDemandes.value"
-      v-model="typeDemande"
-      val="principale"
-      label="Principale"
-      color="primary"
-      dense
-    />
-    <QRadio
-      v-if="perm.deFaireDesDemandes.value"
-      v-model="typeDemande"
-      val="secondaire"
-      label="Secondaire"
-      color="primary"
-      dense
-    />
-    <QBtn type="submit" icon="sym_s_check" color="primary" flat square dense>
-      <QTooltip>Valider la demande</QTooltip>
-    </QBtn>
-    <QBtn type="reset" icon="sym_s_clear" color="primary" flat square dense>
-      <QTooltip>Réinitialiser le formulaire</QTooltip>
-    </QBtn>
-  </QForm>
+      class="row q-gutter-md text-body2"
+      @submit="onSubmit"
+      @reset="onReset"
+    >
+      <SelectIntervenant
+        v-if="
+          perm.deFaireDesDemandesPourAutrui.value ||
+          perm.deModifierLesAttributions.value
+        "
+        v-model="uid"
+        dense
+        options-dense
+      />
+      <QInput
+        v-model.number="groupes"
+        color="primary"
+        type="number"
+        step="any"
+        label="Groupes"
+        square
+        dense
+      />
+      <QInput
+        v-model.number="heures"
+        color="primary"
+        type="number"
+        step="any"
+        label="Heures"
+        square
+        dense
+      />
+      <QRadio
+        v-if="perm.deModifierLesAttributions.value"
+        v-model="typeDemande"
+        val="attribution"
+        label="Attribution"
+        color="primary"
+        dense
+      />
+      <QRadio
+        v-if="perm.deFaireDesDemandes.value"
+        v-model="typeDemande"
+        val="principale"
+        label="Principale"
+        color="primary"
+        dense
+      />
+      <QRadio
+        v-if="perm.deFaireDesDemandes.value"
+        v-model="typeDemande"
+        val="secondaire"
+        label="Secondaire"
+        color="primary"
+        dense
+      />
+      <QBtn type="submit" icon="sym_s_check" color="primary" flat square dense>
+        <QTooltip>Valider la demande</QTooltip>
+      </QBtn>
+      <QBtn type="reset" icon="sym_s_clear" color="primary" flat square dense>
+        <QTooltip>Réinitialiser le formulaire</QTooltip>
+      </QBtn>
+    </QForm>
+  </QCardSection>
 </template>
 
 <style scoped lang="scss">

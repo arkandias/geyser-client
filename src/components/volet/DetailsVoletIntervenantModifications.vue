@@ -8,7 +8,8 @@
 import { useMutation, useQuery } from "@urql/vue";
 import { ComputedRef, Ref, computed, ref } from "vue";
 
-import VueSection from "@/components/core/VueSection.vue";
+import TableService from "@/components/core/TableService.vue";
+import VueSubsection from "@/components/core/VueSubsection.vue";
 import {
   DELETE_MODIFICATION,
   GET_TYPES_MODIFICATION,
@@ -18,7 +19,6 @@ import { nf } from "@/helpers/format.ts";
 import { errorNotify, successNotify } from "@/helpers/notify.ts";
 import { Modification } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
-import TableService from "@/components/core/TableService.vue";
 
 const props = defineProps<{
   uid: string;
@@ -92,7 +92,7 @@ const onDelete = async (id: number): Promise<void> => {
 </script>
 
 <template>
-  <VueSection title="Service">
+  <VueSubsection title="Service">
     <form id="addModification" @submit.prevent="onSubmit" @reset="onReset" />
     <TableService>
       <tr>
@@ -184,7 +184,7 @@ const onDelete = async (id: number): Promise<void> => {
         <td>{{ nf.format(serviceCorrige) + " htd" }}</td>
       </tr>
     </TableService>
-  </VueSection>
+  </VueSubsection>
 </template>
 
 <style scoped lang="scss">

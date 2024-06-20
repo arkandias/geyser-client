@@ -59,9 +59,9 @@ const queryIntervenants = useQuery({
   pause: () => !anneeActive.value,
   context: {
     additionalTypenames: [
-      "ec_modification_service",
-      "ec_message",
       "ec_demande",
+      "ec_message",
+      "ec_modification_service",
     ],
   },
 });

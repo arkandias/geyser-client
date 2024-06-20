@@ -5,58 +5,69 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
-import { computed, ComputedRef, reactive } from "vue";
+import { computed, ComputedRef } from "vue";
 
+import VueSection from "@/components/core/VueSection.vue";
+import FormulaireDemande from "@/components/core/FormulaireDemande.vue";
 import DetailsEnseignementDemandes from "@/components/enseignement/DetailsEnseignementDemandes.vue";
-import DetailsEnseignementVolet from "@/components/enseignement/DetailsEnseignementVolet.vue";
-import { GET_ENSEIGNEMENT_DETAILS } from "@/graphql/enseignements.ts";
+import PucePriorite from "@/components/core/PucePriorite.vue";
 import { processArchives } from "@/helpers/enseignement.ts";
-import {
-  Archive,
-  Demande,
-  Priorite,
-  Resume,
-  RowEnseignement,
-} from "@/helpers/types.ts";
+import { Archive, Details } from "@/helpers/types.ts";
+import { usePermissions } from "@/stores/permissions.ts";
+import { formatTypeDemandesTitre } from "@/helpers/format.ts";
 
-const props = defineProps<{ enseignement: RowEnseignement }>();
+const props = defineProps<{ details: Details }>();
 
-const queryDetails = useQuery({
-  query: GET_ENSEIGNEMENT_DETAILS,
-  variables: reactive({
-    ensId: computed(() => props.enseignement.id),
-  }),
-  context: {
-    additionalTypenames: ["ec_demande"],
-  },
-});
+const perm = usePermissions();
 
-const resume: ComputedRef<Resume | null> = computed(
-  () => queryDetails.data.value?.enseignement ?? null,
-);
-const demandes: ComputedRef<Demande[]> = computed(
-  () => queryDetails.data.value?.enseignement?.demandes ?? [],
-);
-const priorites: ComputedRef<Priorite[]> = computed(
-  () => queryDetails.data.value?.enseignement?.priorites ?? [],
-);
 const archives: ComputedRef<Archive[]> = computed(() =>
-  processArchives(queryDetails.data.value?.enseignement?.parent).sort(
-    (a, b) => b.annee - a.annee,
-  ),
+  processArchives(props.details.parent).sort((a, b) => b.annee - a.annee),
+);
+const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
+  perm.deVoirLesAttributions.value
+    ? ["attribution", "principale", "secondaire"]
+    : ["principale", "secondaire"],
 );
 </script>
 
 <template>
-  <DetailsEnseignementVolet :resume />
-  <DetailsEnseignementDemandes
-    :ens-id="enseignement.id"
-    :heures-par-groupe="enseignement.heures"
-    :demandes
-    :priorites
-    :archives
-  />
+  <VueSection title="Demandes">
+    <FormulaireDemande
+      v-if="
+        perm.deFaireDesDemandes.value || perm.deModifierLesAttributions.value
+      "
+      :ens-id="details.ensId"
+      :heures-par-groupe="details.heuresParGroupe"
+    />
+    <DetailsEnseignementDemandes
+      v-for="typeDemande in typesDemandeAffiches"
+      :key="typeDemande"
+      :title="formatTypeDemandesTitre(typeDemande)"
+      :demandes="
+        details.demandes.filter(
+          (demande) => demande.typeDemande === typeDemande,
+        )
+      "
+    />
+  </VueSection>
+  <VueSection title="Priorités">
+    <QCardSection>
+      <PucePriorite
+        v-for="priorite in details.priorites"
+        :key="priorite.id"
+        :priorite
+      />
+    </QCardSection>
+  </VueSection>
+  <VueSection title="Archives">
+    <DetailsEnseignementDemandes
+      v-for="archive in archives"
+      :key="archive.annee"
+      :title="archive.annee.toString()"
+      :demandes="archive.demandes"
+      archive
+    />
+  </VueSection>
 </template>
 
 <style scoped lang="scss"></style>

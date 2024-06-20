@@ -16,7 +16,7 @@ defineSlots<{ default(): unknown }>();
 
 <style scoped lang="scss">
 table {
-  width: $service-table-width;
+  min-width: $service-table-min-width;
   border-spacing: 8px;
 }
 :slotted(td:first-child) {

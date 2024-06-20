@@ -9,7 +9,6 @@ import { useMutation, useQuery } from "@urql/vue";
 import { computed, ComputedRef } from "vue";
 
 import EditableText from "@/components/core/EditableText.vue";
-import VueSection from "@/components/core/VueSection.vue";
 import {
   DELETE_MESSAGE,
   GET_TYPES_MESSAGE,
@@ -73,18 +72,14 @@ const setMessage =
 </script>
 
 <template>
-  <QCard flat square>
-    <VueSection title="Messages">
-      <EditableText
-        v-for="typeMessage in typesMessageVisibles"
-        :key="typeMessage"
-        :name="formatTypeMessage(typeMessage)"
-        :text="getMessage(typeMessage)"
-        :set-text="setMessage(typeMessage)"
-        :editable="perm.deModifierUnMessage.value(typeMessage, uid)"
-      />
-    </VueSection>
-  </QCard>
+  <EditableText
+    v-for="typeMessage in typesMessageVisibles"
+    :key="typeMessage"
+    :name="formatTypeMessage(typeMessage)"
+    :text="getMessage(typeMessage)"
+    :set-text="setMessage(typeMessage)"
+    :editable="perm.deModifierUnMessage.value(typeMessage, uid)"
+  />
 </template>
 
 <style scoped lang="scss"></style>

@@ -17,7 +17,7 @@ graphql(/* GraphQL */ `
 
   fragment Resume on ec_enseignement {
     ensId: id
-    nom
+    heuresParGroupe: heures
     responsables(
       order_by: [
         { intervenant: { nom: asc } }
@@ -27,8 +27,6 @@ graphql(/* GraphQL */ `
       ...Responsable
     }
     mention {
-      id
-      nom
       responsables(
         order_by: [
           { intervenant: { nom: asc } }
@@ -36,15 +34,9 @@ graphql(/* GraphQL */ `
         ]
       ) {
         ...Responsable
-      }
-      cursus {
-        id
-        nom
       }
     }
     parcours {
-      id
-      nom
       responsables(
         order_by: [
           { intervenant: { nom: asc } }
@@ -54,8 +46,6 @@ graphql(/* GraphQL */ `
         ...Responsable
       }
     }
-    semestre
-    typeEnseignement: type
     description
   }
 
