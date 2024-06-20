@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed, ComputedRef, Ref, ref, watch } from "vue";
+import { computed, ComputedRef } from "vue";
 
 import EditableText from "@/components/core/EditableText.vue";
 import { UPDATE_DESCRIPTION } from "@/graphql/enseignements.ts";
@@ -18,8 +18,6 @@ import DetailsEnseignementResponsables from "@/components/enseignement/DetailsEn
 const props = defineProps<{ resume: Resume | null }>();
 
 const perm = usePermissions();
-
-const expanded: Ref<boolean> = ref(false);
 
 // header
 const label: ComputedRef<string> = computed(() =>
@@ -69,15 +67,6 @@ const setDescription = (text: string): Promise<boolean> =>
       description: text || null,
     })
     .then((result) => !!result.data?.description?.id && !result.error);
-
-// on change: close and scroll to top
-watch(
-  () => props.resume?.ensId,
-  () => {
-    expanded.value = false;
-    document.getElementById("volet")?.scrollIntoView();
-  },
-);
 </script>
 
 <template>

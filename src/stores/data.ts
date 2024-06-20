@@ -10,7 +10,6 @@ import { ComputedRef, Ref, computed, readonly, ref } from "vue";
 
 const intervenants: Ref<RowIntervenant[]> = ref([]);
 const enseignements: Ref<RowEnseignement[]> = ref([]);
-
 const setIntervenants = (rows: RowIntervenant[]) => {
   intervenants.value = rows;
 };
@@ -18,54 +17,68 @@ const setEnseignements = (rows: RowEnseignement[]) => {
   enseignements.value = rows;
 };
 
-const myRow: Ref<RowIntervenant | null> = ref(null);
-const setMyRow = (row: RowIntervenant | null) => {
-  myRow.value = row;
+const fetchingIntervenants: Ref<boolean> = ref(false);
+const fetchingEnseignements: Ref<boolean> = ref(false);
+const setFetchingIntervenants = (value: boolean) => {
+  fetchingIntervenants.value = value;
+};
+const setFetchingEnseignements = (value: boolean) => {
+  fetchingEnseignements.value = value;
 };
 
-export const selectedIntervenants: Ref<RowIntervenant[]> = ref([]);
-export const selectedEnseignements: Ref<RowEnseignement[]> = ref([]);
-
-const selectMe = () => {
-  selectedIntervenants.value = myRow.value ? [myRow.value] : [];
-};
+export const selectedIntervenant: Ref<{ uid: string }[]> = ref([]);
+export const selectedEnseignement: Ref<{ id: number }[]> = ref([]);
 const deselectIntervenant = () => {
-  selectedIntervenants.value = [];
+  selectedIntervenant.value = [];
 };
 const deselectEnseignement = () => {
-  selectedEnseignements.value = [];
+  selectedEnseignement.value = [];
 };
 
 const intervenant: ComputedRef<RowIntervenant | null> = computed(
-  () => selectedIntervenants.value[0] ?? null,
+  () =>
+    intervenants.value.find(
+      (row) => row.uid === selectedIntervenant.value[0]?.uid,
+    ) ?? null,
 );
 const enseignement: ComputedRef<RowEnseignement | null> = computed(
-  () => selectedEnseignements.value[0] ?? null,
+  () =>
+    enseignements.value.find(
+      (row) => row.id === selectedEnseignement.value[0]?.id,
+    ) ?? null,
 );
 
 export const useData = () => {
   const { uid: moi } = useAuthentication();
-  const selectedMe: ComputedRef<boolean> = computed(
-    () => intervenant.value?.uid === moi.value,
+  const myRow: ComputedRef<RowIntervenant | null> = computed(
+    () => intervenants.value.find((row) => row.uid === moi.value) ?? null,
+  );
+  const meSelected: ComputedRef<boolean> = computed(
+    () => selectedIntervenant.value[0]?.uid === moi.value,
   );
   const toggleMonService = () => {
-    if (selectedMe.value) {
-      selectedIntervenants.value = [];
+    if (meSelected.value) {
+      deselectIntervenant();
     } else if (myRow.value) {
-      selectedIntervenants.value = [myRow.value];
+      selectedIntervenant.value = [{ uid: moi.value }];
+      deselectEnseignement();
     }
   };
   return {
+    intervenants: readonly(intervenants),
+    enseignements: readonly(enseignements),
+    fetchingIntervenants: readonly(fetchingIntervenants),
+    fetchingEnseignements: readonly(fetchingEnseignements),
     intervenant,
     enseignement,
-    selectedMe,
     setIntervenants,
     setEnseignements,
-    myRow: readonly(myRow),
-    setMyRow,
+    setFetchingIntervenants,
+    setFetchingEnseignements,
     deselectIntervenant,
     deselectEnseignement,
-    selectMe,
+    myRow,
+    meSelected,
     toggleMonService,
   };
 };

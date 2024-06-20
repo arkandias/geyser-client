@@ -5,19 +5,8 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
-import {
-  ComputedRef,
-  Ref,
-  computed,
-  reactive,
-  ref,
-  toValue,
-  watch,
-  watchEffect,
-} from "vue";
+import { Ref, computed, ref, toValue, watchEffect } from "vue";
 
-import { GET_INTERVENANTS_TABLE_ROWS } from "@/graphql/intervenants.ts";
 import {
   indicateurMessage,
   nf,
@@ -25,44 +14,20 @@ import {
   tooltipDelay,
 } from "@/helpers/format.ts";
 import { ColumnNonAbbreviable, RowIntervenant } from "@/helpers/types.ts";
-import { useAnnees } from "@/stores/annees.ts";
-import { selectedIntervenants as selected, useData } from "@/stores/data.ts";
+import { selectedIntervenant as selected, useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
-const { active: anneeActive } = useAnnees();
 const perm = usePermissions();
-const { deselectEnseignement } = useData();
-
-const queryIntervenants = useQuery({
-  query: GET_INTERVENANTS_TABLE_ROWS,
-  variables: reactive({
-    annee: computed(() => anneeActive.value ?? 0),
-  }),
-  pause: () => !anneeActive.value,
-  context: {
-    additionalTypenames: ["ec_modification_service", "ec_demande"],
-  },
-});
-
-const rows: ComputedRef<RowIntervenant[]> = computed(
-  () => queryIntervenants.data.value?.intervenants ?? [],
-);
+const { intervenants, fetchingIntervenants, deselectEnseignement } = useData();
 
 const select = (_: Event, row: RowIntervenant) => {
-  if (selected.value.length > 0 && selected.value[0].uid === row.uid) {
+  if (selected.value[0]?.uid === row.uid) {
     selected.value = [];
   } else {
     selected.value = [row];
     deselectEnseignement();
   }
 };
-// update value of `selected` when the corresponding row changes (not automatic)
-watch(
-  () => rows.value.find((row) => row.uid === selected.value[0]?.uid),
-  (value) => {
-    selected.value = value ? [value] : [];
-  },
-);
 
 const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
   {
@@ -227,8 +192,8 @@ const filterMethod = (
     v-model:selected="selected"
     :columns
     :visible-columns
-    :rows
-    :loading="queryIntervenants.fetching.value"
+    :rows="intervenants"
+    :loading="fetchingIntervenants"
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"
@@ -247,12 +212,11 @@ const filterMethod = (
         <QInput
           v-model="search"
           color="primary"
-          placeholder="Rechercher"
+          placeholder="Recherche"
           clearable
           clear-icon="sym_s_close"
           square
           dense
-          style="width: 150px"
           @clear="clearSearch"
         >
         </QInput>
@@ -306,7 +270,19 @@ const filterMethod = (
         </QTooltip>
       </QTh>
     </template>
+    <template #body-cell="scope">
+      <QTd :props="scope" :class="{ 'non-visible': !scope.row.visible }">
+        {{ scope.value }}
+      </QTd>
+    </template>
   </QTable>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.q-input {
+  min-width: $search-input-width;
+}
+.non-visible {
+  background-color: rgba($negative, 0.1);
+}
+</style>

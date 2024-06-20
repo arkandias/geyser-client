@@ -5,19 +5,8 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
-import {
-  computed,
-  ComputedRef,
-  reactive,
-  Ref,
-  ref,
-  toValue,
-  watch,
-  watchEffect,
-} from "vue";
+import { computed, ComputedRef, Ref, ref, toValue, watchEffect } from "vue";
 
-import { GET_ENSEIGNEMENTS_TABLE_ROWS } from "@/graphql/enseignements.ts";
 import { demandeValue } from "@/helpers/enseignement.ts";
 import {
   formatFormation,
@@ -33,41 +22,26 @@ import {
   RowEnseignement,
 } from "@/helpers/types.ts";
 import { compare, uniqueValue } from "@/helpers/utils.ts";
-import { useAnnees } from "@/stores/annees.ts";
-import { selectedEnseignements as selected, useData } from "@/stores/data.ts";
+import { selectedEnseignement as selected, useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
-const { active: anneeActive } = useAnnees();
 const perm = usePermissions();
-const { intervenant, deselectEnseignement, deselectIntervenant } = useData();
-
-const queryEnseignements = useQuery({
-  query: GET_ENSEIGNEMENTS_TABLE_ROWS,
-  variables: reactive({
-    annee: computed(() => anneeActive.value ?? 0),
-  }),
-  pause: () => !anneeActive.value,
-  context: { additionalTypenames: ["ec_demande"] },
-});
-
-const rows: ComputedRef<RowEnseignement[]> = computed(
-  () => queryEnseignements.data.value?.enseignements ?? [],
-);
+const {
+  enseignement,
+  enseignements,
+  fetchingEnseignements,
+  intervenant,
+  deselectEnseignement,
+  deselectIntervenant,
+} = useData();
 
 const select = (_: Event, row: RowEnseignement) => {
-  if (selected.value.length > 0 && selected.value[0].id === row.id) {
+  if (selected.value[0]?.id === row.id) {
     selected.value = [];
   } else {
     selected.value = [row];
   }
 };
-// update value of `selected` when the corresponding row changes (not automatic)
-watch(
-  () => rows.value.find((row) => row.id === selected.value[0]?.id),
-  (value) => {
-    selected.value = value ? [value] : [];
-  },
-);
 
 // Titre de la table
 const title: ComputedRef<string> = computed(() =>
@@ -275,7 +249,7 @@ const tooltipMenuColonnes: Ref<boolean> = ref(false);
 // Formation
 const formations: Ref<number[]> = ref([]);
 const formationOptions: ComputedRef<Option<number>[]> = computed(() =>
-  rows.value
+  enseignements.value
     .map((enseignement) => ({
       value: enseignement.mention.id,
       label: formatFormation(
@@ -289,7 +263,7 @@ const formationOptions: ComputedRef<Option<number>[]> = computed(() =>
 // Type
 const typesEnseignement: Ref<string[]> = ref([]);
 const typeEnseignementOptions: ComputedRef<Option<string>[]> = computed(() =>
-  rows.value
+  enseignements.value
     .map((enseignement) => ({
       value: enseignement.typeEnseignement.label,
       label:
@@ -302,7 +276,7 @@ const typeEnseignementOptions: ComputedRef<Option<string>[]> = computed(() =>
 // Semestre
 const semestres: Ref<number[]> = ref([]);
 const semestreOptions: ComputedRef<Option<number>[]> = computed(() =>
-  rows.value
+  enseignements.value
     .map((enseignement) => ({
       value: enseignement.semestre,
       label: "S" + enseignement.semestre.toString(),
@@ -363,8 +337,8 @@ const estAttribue = (row: RowEnseignement) =>
     :title
     :columns
     :visible-columns
-    :rows
-    :loading="queryEnseignements.fetching.value"
+    :rows="enseignements"
+    :loading="fetchingEnseignements"
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"
@@ -382,6 +356,7 @@ const estAttribue = (row: RowEnseignement) =>
         <QBtn
           v-if="intervenant"
           icon="sym_s_visibility"
+          :color="!enseignement ? 'primary' : 'grey'"
           size="sm"
           flat
           square
@@ -391,6 +366,7 @@ const estAttribue = (row: RowEnseignement) =>
         <QBtn
           v-if="intervenant"
           icon="sym_s_close"
+          color="primary"
           size="sm"
           flat
           square
@@ -413,7 +389,6 @@ const estAttribue = (row: RowEnseignement) =>
           square
           dense
           options-dense
-          style="min-width: 120px"
         >
           <!--slot pour utiliser QChip avec l'attribut dense-->
           <template #selected-item="scope">
@@ -441,7 +416,6 @@ const estAttribue = (row: RowEnseignement) =>
           square
           dense
           options-dense
-          style="min-width: 120px"
         >
           <!--slot pour utiliser QChip avec l'attribut dense-->
           <template #selected-item="scope">
@@ -469,7 +443,6 @@ const estAttribue = (row: RowEnseignement) =>
           square
           dense
           options-dense
-          style="min-width: 120px"
         >
           <!--slot pour utiliser QChip avec l'attribut dense-->
           <template #selected-item="scope">
@@ -489,12 +462,11 @@ const estAttribue = (row: RowEnseignement) =>
           v-model="search"
           :disable="intervenant !== null"
           color="primary"
-          placeholder="Rechercher"
+          placeholder="Recherche"
           clear-icon="sym_s_close"
           clearable
           square
           dense
-          style="width: 200px"
           @clear="clearSearch"
         >
         </QInput>
@@ -566,6 +538,12 @@ const estAttribue = (row: RowEnseignement) =>
 </template>
 
 <style scoped lang="scss">
+.q-select {
+  min-width: $select-filter-min-width;
+}
+.q-input {
+  min-width: $search-input-width;
+}
 .attribue {
   background-color: rgba($positive, 0.1);
 }

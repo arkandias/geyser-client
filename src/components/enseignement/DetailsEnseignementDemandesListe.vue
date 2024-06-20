@@ -5,7 +5,7 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import CarteResumeDemande from "@/components/core/CarteResumeDemande.vue";
+import CarteDemande from "@/components/core/CarteDemande.vue";
 import { Demande } from "@/helpers/types.ts";
 
 defineProps<{
@@ -19,7 +19,7 @@ defineProps<{
   <QCardSection>
     <div class="q-mb-md">{{ title }}</div>
     <div class="row q-gutter-xs">
-      <CarteResumeDemande
+      <CarteDemande
         v-for="demande in demandes"
         :key="demande.id"
         :demande

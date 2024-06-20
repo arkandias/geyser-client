@@ -133,7 +133,6 @@ const onReset = (): void => {
       v-model="uid"
       dense
       options-dense
-      style="width: 200px"
     />
     <QInput
       v-model.number="groupes"
@@ -143,7 +142,6 @@ const onReset = (): void => {
       label="Groupes"
       square
       dense
-      style="width: 50px"
     />
     <QInput
       v-model.number="heures"
@@ -153,7 +151,6 @@ const onReset = (): void => {
       label="Heures"
       square
       dense
-      style="width: 50px"
     />
     <QRadio
       v-if="perm.deModifierLesAttributions.value"
@@ -188,4 +185,11 @@ const onReset = (): void => {
   </QForm>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.q-select {
+  width: $form-select-width;
+}
+.q-input {
+  width: $form-input-width;
+}
+</style>

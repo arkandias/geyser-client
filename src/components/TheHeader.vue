@@ -87,7 +87,6 @@ const version: ComputedRef<string> = computed(
 </template>
 
 <style scoped lang="scss">
-$menu-enseignements-width: 130px;
 #transition-wrapper {
   display: flex;
   align-items: center;
@@ -102,7 +101,7 @@ $menu-enseignements-width: 130px;
 }
 .v-enter-to,
 .v-leave-from {
-  width: $menu-enseignements-width;
+  width: 130px;
 }
 .v-enter-from,
 .v-leave-to {

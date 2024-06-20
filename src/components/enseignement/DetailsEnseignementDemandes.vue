@@ -5,7 +5,7 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import PuceResumePriorite from "@/components/core/PuceResumePriorite.vue";
+import PucePriorite from "@/components/core/PucePriorite.vue";
 import DetailsEnseignementDemandesFormulaire from "@/components/enseignement/DetailsEnseignementDemandesFormulaire.vue";
 import DetailsEnseignementDemandesListe from "@/components/enseignement/DetailsEnseignementDemandesListe.vue";
 import { formatTypeDemandesTitre } from "@/helpers/format.ts";
@@ -51,7 +51,7 @@ const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
       />
     </VueSection>
     <VueSection title="Priorités">
-      <PuceResumePriorite
+      <PucePriorite
         v-for="priorite in priorites"
         :key="priorite.id"
         :priorite

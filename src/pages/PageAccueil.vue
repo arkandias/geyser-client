@@ -29,7 +29,7 @@ const { intervenant } = useAuthentication();
 
 <style scoped lang="scss">
 .q-page > .q-card {
-  width: 750px;
+  width: $homepage-width;
   margin: 16px;
   padding: 0;
 }

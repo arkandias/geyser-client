@@ -7,19 +7,23 @@
 <script setup lang="ts">
 import { Ref, ref, watch } from "vue";
 
-const props = defineProps<{
+import { useData } from "@/stores/data.ts";
+
+defineProps<{
   label?: string;
   caption?: string;
   disable?: boolean;
 }>();
 defineSlots<{ default(): unknown }>();
 
+const { enseignement, intervenant } = useData();
+
 const expanded: Ref<boolean> = ref(false);
 
-// changement d'enseignement : tout fermer et revenir en haut de la fenêtre
-watch([() => props.label, () => props.caption], () => {
+// on change: close and scroll to top
+watch([() => enseignement.value?.id, () => intervenant.value?.uid], () => {
   expanded.value = false;
-  document.getElementById("volet")?.scrollIntoView();
+  document.getElementById("details")?.scrollIntoView();
 });
 </script>
 

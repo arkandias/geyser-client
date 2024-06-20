@@ -8,6 +8,7 @@
 import VueSection from "@/components/core/VueSection.vue";
 import { formatTypeDemandesTitre, nf } from "@/helpers/format.ts";
 import { usePermissions } from "@/stores/permissions.ts";
+import TableService from "@/components/core/TableService.vue";
 
 defineProps<{
   totalAttributions: number;
@@ -20,7 +21,7 @@ const perm = usePermissions();
 
 <template>
   <VueSection title="Demandes">
-    <table>
+    <TableService>
       <tr v-if="perm.deVoirLesAttributions.value">
         <td>{{ formatTypeDemandesTitre("attribution") }}</td>
         <td>{{ nf.format(totalAttributions) + " htd" }}</td>
@@ -33,22 +34,8 @@ const perm = usePermissions();
         <td>{{ formatTypeDemandesTitre("secondaire") }}</td>
         <td>{{ nf.format(totalSecondaires) + " htd" }}</td>
       </tr>
-    </table>
+    </TableService>
   </VueSection>
 </template>
 
-<style scoped lang="scss">
-table {
-  width: 400px;
-  border-spacing: 8px;
-}
-td:first-child {
-  text-align: start;
-}
-td:nth-child(2) {
-  text-align: end;
-}
-.q-select {
-  margin-left: 8px;
-}
-</style>
+<style scoped lang="scss"></style>

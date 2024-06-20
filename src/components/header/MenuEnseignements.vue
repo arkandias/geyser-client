@@ -12,7 +12,7 @@ import { usePermissions } from "@/stores/permissions.ts";
 
 const perm = usePermissions();
 const { filtreIntervenants, toggleFilter } = useLayout();
-const { selectedMe, myRow, toggleMonService } = useData();
+const { meSelected, myRow, toggleMonService } = useData();
 </script>
 
 <template>
@@ -29,7 +29,7 @@ const { selectedMe, myRow, toggleMonService } = useData();
   </QBtn>
   <QBtn
     icon="sym_s_assignment"
-    :color="couleurBouton(selectedMe)"
+    :color="couleurBouton(meSelected)"
     :disable="!myRow"
     flat
     square

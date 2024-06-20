@@ -18,6 +18,7 @@ import { nf } from "@/helpers/format.ts";
 import { errorNotify, successNotify } from "@/helpers/notify.ts";
 import { Modification } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
+import TableService from "@/components/core/TableService.vue";
 
 const props = defineProps<{
   uid: string;
@@ -93,7 +94,7 @@ const onDelete = async (id: number): Promise<void> => {
 <template>
   <VueSection title="Service">
     <form id="addModification" @submit.prevent="onSubmit" @reset="onReset" />
-    <table>
+    <TableService>
       <tr>
         <td>Base</td>
         <td>{{ nf.format(serviceBase) + " htd" }}</td>
@@ -144,7 +145,6 @@ const onDelete = async (id: number): Promise<void> => {
             options-dense
             form="addModification"
             class="inline-block"
-            style="width: 200px"
           />
         </td>
         <td>
@@ -157,7 +157,6 @@ const onDelete = async (id: number): Promise<void> => {
             dense
             form="addModification"
             class="inline-block"
-            style="width: 70px"
           />
         </td>
       </tr>
@@ -184,22 +183,16 @@ const onDelete = async (id: number): Promise<void> => {
         <td>Total</td>
         <td>{{ nf.format(serviceCorrige) + " htd" }}</td>
       </tr>
-    </table>
+    </TableService>
   </VueSection>
 </template>
 
 <style scoped lang="scss">
-table {
-  width: 400px;
-  border-spacing: 8px;
-}
-td:first-child {
-  text-align: start;
-}
-td:nth-child(2) {
-  text-align: end;
-}
 .q-select {
+  width: $modification-form-select-width;
   margin-left: 8px;
+}
+.q-input {
+  width: $modification-form-input-width;
 }
 </style>

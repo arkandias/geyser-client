@@ -45,8 +45,8 @@ const groupes: ComputedRef<number> = computed(
 </script>
 
 <template>
-  <QCard bordered square class="carte-resume-demande">
-    <QCardSection class="carte-resume-demande-titre q-pa-xs text-body2">
+  <QCard bordered square class="carte-demande">
+    <QCardSection class="carte-demande__titre q-pa-xs text-body2">
       <QBadge
         v-if="demande.prioritaire !== null"
         :color="couleurPriorite(demande.prioritaire)"
@@ -112,19 +112,19 @@ const groupes: ComputedRef<number> = computed(
 </template>
 
 <style scoped lang="scss">
-.carte-resume-demande {
-  width: 120px;
+.carte-demande {
+  width: $wish-card-width;
   text-align: center;
 }
 
-.carte-resume-demande-titre {
+.carte-demande__titre {
   background-color: $grey-3;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.body--dark .carte-resume-demande-titre {
+.body--dark .carte-demande__titre {
   background-color: $grey-9;
 }
 </style>
