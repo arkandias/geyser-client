@@ -24,9 +24,8 @@ const router = useRouter();
 const perm = usePermissions();
 const { refresh } = useRefresh();
 
-const version: ComputedRef<string> = computed(
-  () =>
-    import.meta.env.VITE_BUILD_VERSION ?? (import.meta.env.DEV ? "dev" : ""),
+const version: ComputedRef<string | null> = computed(() =>
+  import.meta.env.DEV ? "dev" : import.meta.env.VITE_BUILD_VERSION ?? null,
 );
 </script>
 
@@ -36,7 +35,7 @@ const version: ComputedRef<string> = computed(
       <QToolbarTitle shrink>
         <QAvatar icon="sym_s_spa" square size="xl" />
         Geyser
-        <QBadge outline align="middle">{{ version }}</QBadge>
+        <QBadge v-if="version" outline align="middle">{{ version }}</QBadge>
       </QToolbarTitle>
       <QSpace />
       <QBtn
