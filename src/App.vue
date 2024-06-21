@@ -58,9 +58,9 @@ watch(
 
 <template>
   <QLayout view="hHh lpR fFf" class="text-body1">
-    <TheHeader :disable="!logged || !perm.dAcceder.value" />
+    <TheHeader :disable="!logged || !perm.dAcceder" />
     <QPageContainer>
-      <RouterView v-if="logged && perm.dAcceder.value" />
+      <RouterView v-if="logged && perm.dAcceder" />
       <PageMessage
         v-else-if="phaseEnCours === 'fermeture'"
         message="Geyser est actuellement fermé"

@@ -72,8 +72,7 @@ watch(
 );
 
 const uidInit: ComputedRef<string | null> = computed(() =>
-  perm.deFaireDesDemandesPourAutrui.value ||
-  perm.deModifierLesAttributions.value
+  perm.deFaireDesDemandesPourAutrui || perm.deModifierLesAttributions
     ? null
     : moi.value,
 );
@@ -128,8 +127,7 @@ const onReset = (): void => {
     >
       <SelectIntervenant
         v-if="
-          perm.deFaireDesDemandesPourAutrui.value ||
-          perm.deModifierLesAttributions.value
+          perm.deFaireDesDemandesPourAutrui || perm.deModifierLesAttributions
         "
         v-model="uid"
         dense
@@ -154,7 +152,7 @@ const onReset = (): void => {
         dense
       />
       <QRadio
-        v-if="perm.deModifierLesAttributions.value"
+        v-if="perm.deModifierLesAttributions"
         v-model="typeDemande"
         val="attribution"
         label="Attribution"
@@ -162,7 +160,7 @@ const onReset = (): void => {
         dense
       />
       <QRadio
-        v-if="perm.deFaireDesDemandes.value"
+        v-if="perm.deFaireDesDemandes"
         v-model="typeDemande"
         val="principale"
         label="Principale"
@@ -170,7 +168,7 @@ const onReset = (): void => {
         dense
       />
       <QRadio
-        v-if="perm.deFaireDesDemandes.value"
+        v-if="perm.deFaireDesDemandes"
         v-model="typeDemande"
         val="secondaire"
         label="Secondaire"

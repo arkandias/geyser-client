@@ -32,7 +32,7 @@ const totalModifications: ComputedRef<number> = computed(
     :service-base
     :modifications
     :total-modifications
-    :editable="perm.deModifierUnService.value(intervenant.uid)"
+    :editable="perm.deModifierUnService(intervenant.uid)"
   />
 </template>
 

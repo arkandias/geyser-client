@@ -80,7 +80,7 @@ const version: ComputedRef<string> = computed(
         <QTooltip>Mode sombre</QTooltip>
       </QBtn>
       <MenuAnnee :disable />
-      <MenuAdmin v-if="perm.dAdministrer.value" />
+      <MenuAdmin v-if="perm.dAdministrer" />
       <MenuUtilisateur />
     </QToolbar>
   </QHeader>

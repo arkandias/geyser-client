@@ -24,7 +24,7 @@ const archives: ComputedRef<Archive[]> = computed(() =>
   processArchives(props.details.parent).sort((a, b) => b.annee - a.annee),
 );
 const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
-  perm.deVoirLesAttributions.value
+  perm.deVoirLesAttributions
     ? ["attribution", "principale", "secondaire"]
     : ["principale", "secondaire"],
 );
@@ -33,9 +33,7 @@ const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
 <template>
   <VueSection title="Demandes">
     <FormulaireDemande
-      v-if="
-        perm.deFaireDesDemandes.value || perm.deModifierLesAttributions.value
-      "
+      v-if="perm.deFaireDesDemandes || perm.deModifierLesAttributions"
       :ens-id="details.ensId"
       :heures-par-groupe="details.heuresParGroupe"
     />

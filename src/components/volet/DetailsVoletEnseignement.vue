@@ -56,7 +56,7 @@ const setDescription = (text: string): Promise<boolean> =>
     :text="details.description"
     default-text="Pas de description (contactez un responsable)"
     :set-text="setDescription"
-    :editable="perm.deModifierUneDescription.value(responsables)"
+    :editable="perm.deModifierUneDescription(responsables)"
   />
 </template>
 

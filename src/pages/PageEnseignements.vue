@@ -58,7 +58,7 @@ const queryIntervenants = useQuery({
   variables: reactive({
     annee: computed(() => anneeActive.value ?? 0),
     condition: computed(() =>
-      perm.deVoirLeServiceDAutrui.value
+      perm.deVoirLeServiceDAutrui
         ? { actif: { _eq: true } }
         : { uid: { _eq: moi.value } },
     ),
@@ -88,7 +88,7 @@ watch(
 );
 
 watch(
-  perm.deVoirLeServiceDAutrui,
+  () => perm.deVoirLeServiceDAutrui,
   (value) => {
     if (value) {
       openFilter();
@@ -109,7 +109,7 @@ watch(
       :disable="!filtreIntervenants"
     >
       <template #before>
-        <PanelIntervenants v-if="perm.deVoirLeServiceDAutrui.value" />
+        <PanelIntervenants v-if="perm.deVoirLeServiceDAutrui" />
       </template>
       <template #after>
         <QSplitter v-model="hSplitterRatio" horizontal>

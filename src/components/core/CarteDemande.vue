@@ -70,7 +70,7 @@ const groupes: ComputedRef<number> = computed(
         icon="sym_s_check"
         color="positive"
         size="sm"
-        :disable="!perm.deModifierLesAttributions.value"
+        :disable="!perm.deModifierLesAttributions"
         flat
         square
         dense
@@ -89,7 +89,7 @@ const groupes: ComputedRef<number> = computed(
         color="negative"
         size="sm"
         :disable="
-          !perm.deSupprimerUneDemande.value(
+          !perm.deSupprimerUneDemande(
             demande.typeDemande,
             demande.intervenant.uid,
           )

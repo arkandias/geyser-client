@@ -20,7 +20,7 @@ const { meSelected, myRow, toggleMonService } = useData();
   <QBtn
     icon="sym_s_vertical_split"
     :color="couleurBouton(filtreIntervenants)"
-    :disable="!perm.deVoirLeServiceDAutrui.value"
+    :disable="!perm.deVoirLeServiceDAutrui"
     flat
     square
     @click="toggleFilter"

@@ -40,7 +40,7 @@ const typesMessage: ComputedRef<string[]> = computed(
 );
 const typesMessageVisibles: ComputedRef<string[]> = computed(() =>
   typesMessage.value.filter((typeMessage) =>
-    perm.deVoirUnMessage.value(typeMessage, props.uid),
+    perm.deVoirUnMessage(typeMessage, props.uid),
   ),
 );
 const updateMessage = useMutation(UPSERT_MESSAGE);
@@ -78,7 +78,7 @@ const setMessage =
     :name="formatTypeMessage(typeMessage)"
     :text="getMessage(typeMessage)"
     :set-text="setMessage(typeMessage)"
-    :editable="perm.deModifierUnMessage.value(typeMessage, uid)"
+    :editable="perm.deModifierUnMessage(typeMessage, uid)"
   />
 </template>
 

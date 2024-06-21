@@ -4,7 +4,7 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { ComputedRef, computed } from "vue";
+import { ComputedRef, computed, reactive } from "vue";
 
 import { Intervenant } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
@@ -136,7 +136,7 @@ export const usePermissions = () => {
         return activeRole.value === "admin";
     }
   });
-  return {
+  return reactive({
     dAdministrer,
     dAcceder,
     deFaireDesDemandesPourAutrui,
@@ -150,5 +150,5 @@ export const usePermissions = () => {
     deModifierUnService,
     deVoirUnMessage,
     deModifierUnMessage,
-  };
+  });
 };
