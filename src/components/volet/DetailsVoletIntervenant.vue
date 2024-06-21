@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { computed, ComputedRef } from "vue";
 
-import DetailsVoletIntervenantModifications from "@/components/volet/DetailsVoletIntervenantModifications.vue";
+import DetailsVoletIntervenantService from "@/components/volet/DetailsVoletIntervenantService.vue";
 import { Modification, RowIntervenant } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
@@ -27,7 +27,7 @@ const totalModifications: ComputedRef<number> = computed(
 </script>
 
 <template>
-  <DetailsVoletIntervenantModifications
+  <DetailsVoletIntervenantService
     :uid="intervenant.uid"
     :service-base
     :modifications
