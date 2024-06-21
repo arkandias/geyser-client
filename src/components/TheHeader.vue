@@ -43,7 +43,7 @@ const version: ComputedRef<string | null> = computed(() =>
         :disable
         flat
         square
-        @click="router.push({ name: 'accueil' })"
+        @click="router.replace({ name: 'accueil' })"
       >
         <QTooltip>Accueil</QTooltip>
       </QBtn>
@@ -53,7 +53,7 @@ const version: ComputedRef<string | null> = computed(() =>
         :disable
         flat
         square
-        @click="router.push({ name: 'enseignements' })"
+        @click="router.replace({ name: 'enseignements' })"
       >
         <QTooltip>Liste enseignements</QTooltip>
       </QBtn>

@@ -31,16 +31,13 @@ const {
   enseignements,
   fetchingEnseignements,
   intervenant,
-  deselectEnseignement,
-  deselectIntervenant,
+  selectEnseignement,
+  selectIntervenant,
+  toggleEnseignements,
 } = useData();
 
 const select = (_: Event, row: RowEnseignement) => {
-  if (selected.value[0]?.id === row.id) {
-    selected.value = [];
-  } else {
-    selected.value = [row];
-  }
+  toggleEnseignements(row.id);
 };
 
 // Titre de la table
@@ -356,7 +353,7 @@ const estAttribue = (row: RowEnseignement) =>
           flat
           square
           dense
-          @click="deselectEnseignement"
+          @click="selectEnseignement()"
         />
         <QBtn
           v-if="intervenant"
@@ -366,7 +363,7 @@ const estAttribue = (row: RowEnseignement) =>
           flat
           square
           dense
-          @click="deselectIntervenant"
+          @click="selectIntervenant()"
         />
       </div>
       <QSpace />

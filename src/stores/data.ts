@@ -28,11 +28,33 @@ const setFetchingEnseignements = (value: boolean) => {
 
 export const selectedIntervenant: Ref<{ uid: string }[]> = ref([]);
 export const selectedEnseignement: Ref<{ id: number }[]> = ref([]);
-const deselectIntervenant = () => {
-  selectedIntervenant.value = [];
+const selectIntervenant = (uid?: string | null) => {
+  if (uid) {
+    selectedIntervenant.value = [{ uid }];
+  } else {
+    selectedIntervenant.value = [];
+  }
 };
-const deselectEnseignement = () => {
-  selectedEnseignement.value = [];
+const selectEnseignement = (id?: number | null) => {
+  if (id) {
+    selectedEnseignement.value = [{ id }];
+  } else {
+    selectedEnseignement.value = [];
+  }
+};
+const toggleIntervenant = (uid: string) => {
+  if (selectedIntervenant.value[0]?.uid === uid) {
+    selectIntervenant();
+  } else {
+    selectIntervenant(uid);
+  }
+};
+const toggleEnseignements = (id: number) => {
+  if (selectedEnseignement.value[0]?.id === id) {
+    selectEnseignement();
+  } else {
+    selectEnseignement(id);
+  }
 };
 
 const intervenant: ComputedRef<RowIntervenant | null> = computed(
@@ -54,14 +76,14 @@ export const useData = () => {
     () => intervenants.value.find((row) => row.uid === moi.value) ?? null,
   );
   const meSelected: ComputedRef<boolean> = computed(
-    () => selectedIntervenant.value[0]?.uid === moi.value,
+    () => intervenant.value?.uid === moi.value,
   );
   const toggleMonService = () => {
     if (meSelected.value) {
-      deselectIntervenant();
+      selectIntervenant();
     } else if (myRow.value) {
-      selectedIntervenant.value = [{ uid: moi.value }];
-      deselectEnseignement();
+      selectIntervenant(moi.value);
+      selectEnseignement();
     }
   };
   return {
@@ -75,8 +97,10 @@ export const useData = () => {
     setEnseignements,
     setFetchingIntervenants,
     setFetchingEnseignements,
-    deselectIntervenant,
-    deselectEnseignement,
+    selectIntervenant,
+    selectEnseignement,
+    toggleIntervenant,
+    toggleEnseignements,
     myRow,
     meSelected,
     toggleMonService,

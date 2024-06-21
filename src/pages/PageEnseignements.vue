@@ -7,6 +7,7 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
 import { computed, reactive, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 import PanelDetails from "@/components/PanelDetails.vue";
 import PanelEnseignements from "@/components/PanelEnseignements.vue";
@@ -24,11 +25,41 @@ const { uid: moi } = useAuthentication();
 const perm = usePermissions();
 const { closeFilter, filtreIntervenants, openFilter } = useLayout();
 const {
+  enseignement,
+  intervenant,
+  selectEnseignement,
+  selectIntervenant,
   setEnseignements,
   setFetchingEnseignements,
   setFetchingIntervenants,
   setIntervenants,
 } = useData();
+
+const router = useRouter();
+const route = useRoute();
+watch(
+  [enseignement, intervenant],
+  async ([rowEnseignement, rowIntervenant]) => {
+    await router.replace({
+      name: "enseignements",
+      query: { ens: rowEnseignement?.id, uid: rowIntervenant?.uid },
+    });
+  },
+);
+watch(
+  () => String(route.query.uid),
+  (uid) => {
+    selectIntervenant(uid);
+  },
+  { immediate: true },
+);
+watch(
+  () => Number(route.query.ens),
+  (id) => {
+    selectEnseignement(id);
+  },
+  { immediate: true },
+);
 
 const queryEnseignements = useQuery({
   query: GET_ENSEIGNEMENTS_TABLE_ROWS,
