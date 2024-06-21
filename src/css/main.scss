@@ -54,3 +54,18 @@ a:hover,
 a:active {
   color: $accent;
 }
+
+/* marges des listes et paragraphes */
+ol,
+li {
+  margin: 0;
+}
+p {
+  margin: 16px 0;
+}
+p:first-child {
+  margin-top: 0;
+}
+p:last-child {
+  margin-bottom: 0;
+}

@@ -8,7 +8,7 @@
 import { useMutation, useQuery } from "@urql/vue";
 import { computed, ComputedRef } from "vue";
 
-import EditableText from "@/components/core/EditableText.vue";
+import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
 import {
   DELETE_MESSAGE,
   GET_TYPES_MESSAGE,
@@ -72,7 +72,7 @@ const setMessage =
 </script>
 
 <template>
-  <EditableText
+  <DetailsSubsectionEditableText
     v-for="typeMessage in typesMessageVisibles"
     :key="typeMessage"
     :name="formatTypeMessage(typeMessage)"

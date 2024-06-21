@@ -7,8 +7,8 @@
 <script setup lang="ts">
 import { computed, ComputedRef } from "vue";
 
-import VueSection from "@/components/core/VueSection.vue";
-import DetailsIntervenantMessages from "@/components/intervenant/DetailsIntervenantMessages.vue";
+import DetailsSection from "@/components/details/DetailsSection.vue";
+import DetailsIntervenantMessages from "@/components/details/DetailsIntervenantMessages.vue";
 import { Message, RowIntervenant } from "@/helpers/types.ts";
 
 const props = defineProps<{ intervenant: RowIntervenant }>();
@@ -19,9 +19,9 @@ const messages: ComputedRef<Message[]> = computed(
 </script>
 
 <template>
-  <VueSection title="Messages">
+  <DetailsSection title="Messages">
     <DetailsIntervenantMessages :uid="intervenant.uid" :messages />
-  </VueSection>
+  </DetailsSection>
 </template>
 
 <style scoped lang="scss"></style>

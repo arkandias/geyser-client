@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import CarteDemande from "@/components/core/CarteDemande.vue";
 import { Demande } from "@/helpers/types.ts";
-import VueSubsection from "@/components/core/VueSubsection.vue";
+import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 
 defineProps<{
   title: string;
@@ -17,7 +17,7 @@ defineProps<{
 </script>
 
 <template>
-  <VueSubsection :title>
+  <DetailsSubsection :title>
     <QCardSection>
       <div class="row q-gutter-xs">
         <CarteDemande
@@ -28,7 +28,7 @@ defineProps<{
         />
       </div>
     </QCardSection>
-  </VueSubsection>
+  </DetailsSubsection>
 </template>
 
 <style scoped lang="scss"></style>

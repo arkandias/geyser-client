@@ -5,10 +5,10 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import InformationsAccueil from "@/components/accueil/InformationsAccueil.vue";
+import AccueilInformations from "@/components/accueil/AccueilInformations.vue";
+import AccueilMessage from "@/components/accueil/AccueilMessage.vue";
 import { formatIntervenant } from "@/helpers/format.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
-import MessageAccueil from "@/components/accueil/MessageAccueil.vue";
 
 const { intervenant } = useAuthentication();
 </script>
@@ -21,16 +21,31 @@ const { intervenant } = useAuthentication();
         <br />
         {{ formatIntervenant(intervenant) }}
       </QCardSection>
-      <MessageAccueil />
+      <AccueilMessage />
+      <!--      <AccueilSubsection title="Service">-->
+      <!--        <ServiceIntervenant-->
+      <!--          service-base=""-->
+      <!--          uid=""-->
+      <!--          total-modifications=""-->
+      <!--          editable=""-->
+      <!--          modifications=""-->
+      <!--        />-->
+      <!--      </AccueilSubsection>-->
+      <!--      <AccueilSubsection title="Résumé">-->
+      <!--        <ResumeDemandes-->
+      <!--          total-attributions=""-->
+      <!--          total-secondaires=""-->
+      <!--          total-principales=""-->
+      <!--        />-->
+      <!--      </AccueilSubsection>-->
     </QCard>
-    <InformationsAccueil />
+    <AccueilInformations />
   </QPage>
 </template>
 
 <style scoped lang="scss">
-.q-page > .q-card {
+.q-page > * {
   width: $homepage-width;
-  margin: 16px;
-  padding: 0;
+  margin-bottom: 16px;
 }
 </style>

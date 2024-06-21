@@ -7,9 +7,9 @@
 <script setup lang="ts">
 import { computed, ComputedRef } from "vue";
 
-import VueSection from "@/components/core/VueSection.vue";
+import DetailsSection from "@/components/details/DetailsSection.vue";
 import FormulaireDemande from "@/components/core/FormulaireDemande.vue";
-import DetailsEnseignementDemandes from "@/components/enseignement/DetailsEnseignementDemandes.vue";
+import DetailsEnseignementDemandes from "@/components/details/DetailsEnseignementDemandes.vue";
 import PucePriorite from "@/components/core/PucePriorite.vue";
 import { processArchives } from "@/helpers/enseignement.ts";
 import { Archive, Details } from "@/helpers/types.ts";
@@ -31,7 +31,7 @@ const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
 </script>
 
 <template>
-  <VueSection title="Demandes">
+  <DetailsSection title="Demandes">
     <FormulaireDemande
       v-if="perm.deFaireDesDemandes || perm.deModifierLesAttributions"
       :ens-id="details.ensId"
@@ -47,8 +47,8 @@ const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
         )
       "
     />
-  </VueSection>
-  <VueSection title="Priorités">
+  </DetailsSection>
+  <DetailsSection title="Priorités">
     <QCardSection>
       <PucePriorite
         v-for="priorite in details.priorites"
@@ -56,8 +56,8 @@ const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
         :priorite
       />
     </QCardSection>
-  </VueSection>
-  <VueSection title="Archives">
+  </DetailsSection>
+  <DetailsSection title="Archives">
     <DetailsEnseignementDemandes
       v-for="archive in archives"
       :key="archive.annee"
@@ -65,7 +65,7 @@ const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
       :demandes="archive.demandes"
       archive
     />
-  </VueSection>
+  </DetailsSection>
 </template>
 
 <style scoped lang="scss"></style>

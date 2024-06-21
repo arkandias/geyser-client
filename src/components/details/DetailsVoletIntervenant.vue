@@ -7,7 +7,9 @@
 <script setup lang="ts">
 import { computed, ComputedRef } from "vue";
 
-import DetailsVoletIntervenantService from "@/components/volet/DetailsVoletIntervenantService.vue";
+import ResumeDemandes from "@/components/core/ResumeDemandes.vue";
+import ServiceIntervenant from "@/components/core/ServiceIntervenant.vue";
+import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 import { Modification, RowIntervenant } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
@@ -24,16 +26,30 @@ const modifications: ComputedRef<Modification[]> = computed(
 const totalModifications: ComputedRef<number> = computed(
   () => props.intervenant.totalModifications.aggregate?.sum?.heuresEQTD ?? 0,
 );
+const totalAttributions: ComputedRef<number> = computed(
+  () => props.intervenant.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0,
+);
+const totalPrincipales: ComputedRef<number> = computed(
+  () => props.intervenant.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0,
+);
+const totalSecondaires: ComputedRef<number> = computed(
+  () => props.intervenant.totalSecondaires.aggregate?.sum?.heuresEQTD ?? 0,
+);
 </script>
 
 <template>
-  <DetailsVoletIntervenantService
-    :uid="intervenant.uid"
-    :service-base
-    :modifications
-    :total-modifications
-    :editable="perm.deModifierUnService(intervenant.uid)"
-  />
+  <DetailsSubsection title="Service">
+    <ServiceIntervenant
+      :uid="intervenant.uid"
+      :service-base
+      :modifications
+      :total-modifications
+      :editable="perm.deModifierUnService(intervenant.uid)"
+    />
+  </DetailsSubsection>
+  <DetailsSubsection title="Demandes">
+    <ResumeDemandes :total-attributions :total-principales :total-secondaires />
+  </DetailsSubsection>
 </template>
 
 <style scoped lang="scss"></style>

@@ -7,21 +7,21 @@
 <script setup lang="ts">
 import { computed, ComputedRef, reactive } from "vue";
 
-import DetailsInformations from "@/components/core/DetailsInformations.vue";
-import DetailsVolet from "@/components/volet/DetailsVolet.vue";
-import DetailsEnseignement from "@/components/enseignement/DetailsEnseignement.vue";
-import DetailsIntervenant from "@/components/intervenant/DetailsIntervenant.vue";
+import DetailsInformations from "@/components/details/DetailsInformations.vue";
+import DetailsVolet from "@/components/details/DetailsVolet.vue";
+import DetailsEnseignement from "@/components/details/DetailsEnseignement.vue";
+import DetailsIntervenant from "@/components/details/DetailsIntervenant.vue";
 import { useData } from "@/stores/data.ts";
 import {
   formatIntervenant,
   formatResumeIntervenant,
 } from "@/helpers/format.ts";
-import DetailsVoletInformations from "@/components/volet/DetailsVoletInformations.vue";
+import DetailsVoletInformations from "@/components/details/DetailsVoletInformations.vue";
 import { useQuery } from "@urql/vue";
 import { GET_ENSEIGNEMENT_DETAILS } from "@/graphql/enseignements.ts";
 import { Details } from "@/helpers/types.ts";
-import DetailsVoletEnseignement from "@/components/volet/DetailsVoletEnseignement.vue";
-import DetailsVoletIntervenant from "@/components/volet/DetailsVoletIntervenant.vue";
+import DetailsVoletEnseignement from "@/components/details/DetailsVoletEnseignement.vue";
+import DetailsVoletIntervenant from "@/components/details/DetailsVoletIntervenant.vue";
 
 const { enseignement, intervenant } = useData();
 

@@ -9,23 +9,20 @@ import { computed, ComputedRef, Ref, ref, watch } from "vue";
 import xss from "xss";
 
 import { defaultNotify, successNotify } from "@/helpers/notify.ts";
-import VueSubsection from "@/components/core/VueSubsection.vue";
 
+const edition = defineModel<boolean>();
 const props = withDefaults(
   defineProps<{
     name: string;
     text: string | null;
     defaultText?: string;
     setText?: (text: string) => Promise<boolean>;
-    editable?: boolean;
   }>(),
   {
     defaultText: "",
     setText: () => Promise.resolve(false),
   },
 );
-
-const edition: Ref<boolean> = ref(false);
 
 // sanitize HTML to prevent XSS attacks
 const sanitizedText: ComputedRef<string> = computed(() =>
@@ -86,13 +83,11 @@ watch(
 </script>
 
 <template>
-  <VueSubsection v-model="edition" :title="name" :editable>
-    <QCardSection v-if="edition">
-      <QEditor v-model="editorText" :definitions :toolbar square dense />
-    </QCardSection>
-    <!--eslint-disable-next-line-->
-    <QCardSection v-else-if="sanitizedText" v-html="sanitizedText" />
-  </VueSubsection>
+  <QCardSection v-if="edition">
+    <QEditor v-model="editorText" :definitions :toolbar square dense />
+  </QCardSection>
+  <!--eslint-disable-next-line-->
+  <QCardSection v-else-if="sanitizedText" v-html="sanitizedText" />
 </template>
 
 <style scoped lang="scss"></style>

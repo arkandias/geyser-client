@@ -1,32 +1,21 @@
 <!-----------------------------------------------------------------------------
-  - Copyright (c) 2021-2024 Amaël Broustet, Julien Hauseux.                   -
+  - Copyright (c) 2024 Amaël Broustet, Julien Hauseux.                        -
   - This file is part of Geyser.                                              -
   - Distributed under the GNU Affero General Public License, version 3.       -
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
+defineProps<{ title: string }>();
 defineSlots<{ default(): unknown }>();
 </script>
 
 <template>
-  <table>
-    <slot />
-  </table>
+  <QCardSection>
+    <div class="text-subtitle1 text-uppercase">{{ title }}</div>
+    <div style="display: flex; justify-content: center">
+      <slot />
+    </div>
+  </QCardSection>
 </template>
 
-<style scoped lang="scss">
-.wrapper {
-  display: flex;
-  justify-content: center;
-}
-table {
-  min-width: $service-table-min-width;
-  border-spacing: 8px;
-}
-:slotted(td:first-child) {
-  text-align: start;
-}
-:slotted(td:nth-child(2)) {
-  text-align: end;
-}
-</style>
+<style scoped lang="scss"></style>

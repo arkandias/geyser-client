@@ -8,8 +8,9 @@
 import { useMutation } from "@urql/vue";
 import { computed, ComputedRef } from "vue";
 
-import EditableText from "@/components/core/EditableText.vue";
-import DetailsEnseignementResponsables from "@/components/volet/DetailsVoletEnseignementResponsables.vue";
+import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
+import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
+import DetailsVoletEnseignementResponsables from "@/components/details/DetailsVoletEnseignementResponsables.vue";
 import { UPDATE_DESCRIPTION } from "@/graphql/enseignements.ts";
 import { Details, Intervenant, Responsable } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";
@@ -46,12 +47,14 @@ const setDescription = (text: string): Promise<boolean> =>
 </script>
 
 <template>
-  <DetailsEnseignementResponsables
-    :responsables-mention
-    :responsables-enseignement
-    :responsables-parcours
-  />
-  <EditableText
+  <DetailsSubsection title="Responsables">
+    <DetailsVoletEnseignementResponsables
+      :responsables-mention
+      :responsables-enseignement
+      :responsables-parcours
+    />
+  </DetailsSubsection>
+  <DetailsSubsectionEditableText
     name="Description"
     :text="details.description"
     default-text="Pas de description (contactez un responsable)"

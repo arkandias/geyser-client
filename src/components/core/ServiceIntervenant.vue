@@ -9,7 +9,6 @@ import { useMutation, useQuery } from "@urql/vue";
 import { ComputedRef, Ref, computed, ref } from "vue";
 
 import TableService from "@/components/core/TableService.vue";
-import VueSubsection from "@/components/core/VueSubsection.vue";
 import {
   DELETE_MODIFICATION,
   GET_TYPES_MODIFICATION,
@@ -92,99 +91,97 @@ const onDelete = async (id: number): Promise<void> => {
 </script>
 
 <template>
-  <VueSubsection title="Service">
-    <form id="addModification" @submit.prevent="onSubmit" @reset="onReset" />
-    <TableService>
-      <tr>
-        <td>Base</td>
-        <td>{{ nf.format(serviceBase) + " htd" }}</td>
-      </tr>
-      <tr>
-        <td>
-          Modifications
-          <QBtn
-            v-if="editable"
-            icon="sym_s_add_circle"
-            color="primary"
-            size="sm"
-            flat
-            square
-            dense
-            @click="openForm = true"
-          />
-        </td>
-      </tr>
-      <tr v-if="openForm">
-        <td>
-          <QBtn
-            form="addModification"
-            type="reset"
-            icon="sym_s_cancel"
-            color="primary"
-            size="sm"
-            flat
-            square
-            dense
-          />
-          <QBtn
-            form="addModification"
-            type="submit"
-            icon="sym_s_check_circle"
-            color="primary"
-            size="sm"
-            flat
-            square
-            dense
-          />
-          <QSelect
-            v-model="typeModification"
-            :options="typeModificationOptions"
-            label="Type"
-            square
-            dense
-            options-dense
-            form="addModification"
-            class="inline-block"
-          />
-        </td>
-        <td>
-          <QInput
-            v-model.number="heuresEQTD"
-            type="number"
-            step="any"
-            suffix="htd"
-            square
-            dense
-            form="addModification"
-            class="inline-block"
-          />
-        </td>
-      </tr>
-      <tr v-for="modification in modifications" :key="modification.id">
-        <td>
-          <QBtn
-            v-if="editable"
-            icon="sym_s_cancel"
-            color="primary"
-            size="sm"
-            flat
-            square
-            dense
-            @click="onDelete(modification.id)"
-          />
-          {{ modification.typeModification }}
-        </td>
-        <td>{{ nf.format(modification.heuresEQTD) + " htd" }}</td>
-      </tr>
-      <tr>
-        <td colspan="100%" style="border-bottom: 1px solid black" />
-      </tr>
-      <tr>
-        <td>Total</td>
-        <td>{{ nf.format(serviceCorrige) + " htd" }}</td>
-      </tr>
-    </TableService>
-  </VueSubsection>
+  <form id="addModification" @submit.prevent="onSubmit" @reset="onReset" />
+  <TableService>
+    <tr>
+      <td>Base</td>
+      <td>{{ nf.format(serviceBase) + " htd" }}</td>
+    </tr>
+    <tr>
+      <td>
+        Modifications
+        <QBtn
+          v-if="editable"
+          icon="sym_s_add_circle"
+          color="primary"
+          size="sm"
+          flat
+          square
+          dense
+          @click="openForm = true"
+        />
+      </td>
+    </tr>
+    <tr v-if="openForm">
+      <td>
+        <QBtn
+          form="addModification"
+          type="reset"
+          icon="sym_s_cancel"
+          color="primary"
+          size="sm"
+          flat
+          square
+          dense
+        />
+        <QBtn
+          form="addModification"
+          type="submit"
+          icon="sym_s_check_circle"
+          color="primary"
+          size="sm"
+          flat
+          square
+          dense
+        />
+        <QSelect
+          v-model="typeModification"
+          :options="typeModificationOptions"
+          label="Type"
+          square
+          dense
+          options-dense
+          form="addModification"
+          class="inline-block"
+        />
+      </td>
+      <td>
+        <QInput
+          v-model.number="heuresEQTD"
+          type="number"
+          step="any"
+          suffix="htd"
+          square
+          dense
+          form="addModification"
+          class="inline-block"
+        />
+      </td>
+    </tr>
+    <tr v-for="modification in modifications" :key="modification.id">
+      <td>
+        <QBtn
+          v-if="editable"
+          icon="sym_s_cancel"
+          color="primary"
+          size="sm"
+          flat
+          square
+          dense
+          @click="onDelete(modification.id)"
+        />
+        {{ modification.typeModification }}
+      </td>
+      <td>{{ nf.format(modification.heuresEQTD) + " htd" }}</td>
+    </tr>
+    <tr>
+      <td colspan="100%" style="border-bottom: 1px solid black" />
+    </tr>
+    <tr>
+      <td>Total</td>
+      <td>{{ nf.format(serviceCorrige) + " htd" }}</td>
+    </tr>
+  </TableService>
 </template>
 
 <style scoped lang="scss">
