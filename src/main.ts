@@ -46,7 +46,7 @@ if (import.meta.env.PROD) {
 }
 
 // bypass Keycloak in development
-const bypassKeycloak = false;
+const bypassKeycloak = true;
 
 // Login flow
 let claims: KeycloakClaims | null;
@@ -67,7 +67,7 @@ if (import.meta.env.PROD || !bypassKeycloak) {
   setLogout(logout);
 } else {
   claims = {
-    userId: "",
+    userId: "dev",
     lastName: "",
     firstName: "",
     alias: "Développeur",
