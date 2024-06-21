@@ -4,9 +4,10 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
+import { ComputedRef, Ref, computed, readonly, ref } from "vue";
+
 import { RowEnseignement, RowIntervenant } from "@/helpers/types.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
-import { ComputedRef, Ref, computed, readonly, ref } from "vue";
 
 const intervenants: Ref<RowIntervenant[]> = ref([]);
 const enseignements: Ref<RowEnseignement[]> = ref([]);
@@ -40,20 +41,6 @@ const selectEnseignement = (id?: number | null) => {
     selectedEnseignement.value = [{ id }];
   } else {
     selectedEnseignement.value = [];
-  }
-};
-const toggleIntervenant = (uid: string) => {
-  if (selectedIntervenant.value[0]?.uid === uid) {
-    selectIntervenant();
-  } else {
-    selectIntervenant(uid);
-  }
-};
-const toggleEnseignements = (id: number) => {
-  if (selectedEnseignement.value[0]?.id === id) {
-    selectEnseignement();
-  } else {
-    selectEnseignement(id);
   }
 };
 
@@ -99,8 +86,6 @@ export const useData = () => {
     setFetchingEnseignements,
     selectIntervenant,
     selectEnseignement,
-    toggleIntervenant,
-    toggleEnseignements,
     myRow,
     meSelected,
     toggleMonService,

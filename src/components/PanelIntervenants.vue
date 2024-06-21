@@ -18,10 +18,20 @@ import { selectedIntervenant as selected, useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
 const perm = usePermissions();
-const { intervenants, fetchingIntervenants, toggleIntervenant } = useData();
+const {
+  intervenants,
+  fetchingIntervenants,
+  selectEnseignement,
+  selectIntervenant,
+} = useData();
 
 const select = (_: Event, row: RowIntervenant) => {
-  toggleIntervenant(row.uid);
+  if (selected.value[0]?.uid === row.uid) {
+    selectIntervenant();
+  } else {
+    selectIntervenant(row.uid);
+    selectEnseignement();
+  }
 };
 
 const columns: ColumnNonAbbreviable<RowIntervenant>[] = [

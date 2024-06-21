@@ -33,11 +33,14 @@ const {
   intervenant,
   selectEnseignement,
   selectIntervenant,
-  toggleEnseignements,
 } = useData();
 
 const select = (_: Event, row: RowEnseignement) => {
-  toggleEnseignements(row.id);
+  if (selected.value[0]?.id === row.id) {
+    selectEnseignement();
+  } else {
+    selectEnseignement(row.id);
+  }
 };
 
 // Titre de la table
