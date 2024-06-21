@@ -91,7 +91,7 @@ watch(
       <QEditor v-model="editorText" :definitions :toolbar square dense />
     </QCardSection>
     <!--eslint-disable-next-line-->
-    <QCardSection v-else-if="text" v-html="sanitizedText" />
+    <QCardSection v-else-if="sanitizedText" v-html="sanitizedText" />
   </VueSubsection>
 </template>
 

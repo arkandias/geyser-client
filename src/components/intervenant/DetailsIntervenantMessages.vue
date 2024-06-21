@@ -45,9 +45,9 @@ const typesMessageVisibles: ComputedRef<string[]> = computed(() =>
 );
 const updateMessage = useMutation(UPSERT_MESSAGE);
 const deleteMessage = useMutation(DELETE_MESSAGE);
-const getMessage = (typeMessage: string): string =>
+const getMessage = (typeMessage: string): string | null =>
   props.messages.find((message) => message.typeMessage === typeMessage)
-    ?.contenu ?? "";
+    ?.contenu ?? null;
 const setMessage =
   (typeMessage: string) =>
   (contenu: string): Promise<boolean> =>
@@ -77,6 +77,7 @@ const setMessage =
     :key="typeMessage"
     :name="formatTypeMessage(typeMessage)"
     :text="getMessage(typeMessage)"
+    default-text="[Pas de message]"
     :set-text="setMessage(typeMessage)"
     :editable="perm.deModifierUnMessage(typeMessage, uid)"
   />
