@@ -15,7 +15,7 @@ import {
 } from "@urql/vue";
 import { Ref, ref } from "vue";
 
-// prevent using Quasar notifications before the plugin is installed
+// enable/disable Quasar notifications
 const notifications: Ref<boolean> = ref(true);
 export const disableNotifications = () => {
   notifications.value = false;
@@ -24,16 +24,12 @@ export const enableNotifications = () => {
   notifications.value = true;
 };
 
-type CustomClientOptions = {
-  activeRole: Ref<string | null>;
-  getToken?: () => string;
-  refreshToken?: () => Promise<void>;
-  errorNotify?: (message: string) => void;
-};
-
-// custom urql client with keycloak token, X-Hasura-Role header,
-// and Quasar notifications
-export const createCustomClient = (opts: CustomClientOptions): Client =>
+export const createClientWithToken = (
+  activeRole: Ref<string>,
+  getToken: () => string,
+  refreshToken: () => Promise<void>,
+  errorNotify: (message: string) => void,
+): Client =>
   createClient({
     url: import.meta.env.VITE_GRAPHQL_URL,
     exchanges: [
@@ -42,15 +38,13 @@ export const createCustomClient = (opts: CustomClientOptions): Client =>
       debugExchange,
       mapExchange({
         async onOperation(operation) {
-          if (opts.refreshToken) {
-            await opts.refreshToken();
-          }
+          await refreshToken();
           return operation;
         },
         onError(error) {
           console.error(error);
-          if (opts.errorNotify && notifications.value) {
-            opts.errorNotify(error.toString());
+          if (notifications.value) {
+            errorNotify(error.toString());
           }
         },
       }),
@@ -58,15 +52,38 @@ export const createCustomClient = (opts: CustomClientOptions): Client =>
     ],
     fetchOptions: () => ({
       headers: {
-        ...(opts.getToken
-          ? { Authorization: "Bearer " + opts.getToken() }
-          : {
-              "X-Hasura-Admin-Secret":
-                import.meta.env.VITE_HASURA_ADMIN_SECRET ?? "",
-            }),
-        ...(opts.activeRole.value
-          ? { "X-Hasura-Role": opts.activeRole.value }
-          : {}),
+        Authorization: "Bearer " + getToken(),
+        ...(activeRole.value ? { "X-Hasura-Role": activeRole.value } : {}),
+      },
+    }),
+  });
+
+export const createClientWithAdminSecret = (
+  uid: Ref<string>,
+  activeRole: Ref<string>,
+  errorNotify: (message: string) => void,
+): Client =>
+  createClient({
+    url: import.meta.env.VITE_GRAPHQL_URL,
+    exchanges: [
+      devtoolsExchange,
+      cacheExchange,
+      debugExchange,
+      mapExchange({
+        onError(error) {
+          console.error(error);
+          if (notifications.value) {
+            errorNotify(error.toString());
+          }
+        },
+      }),
+      fetchExchange,
+    ],
+    fetchOptions: () => ({
+      headers: {
+        "X-Hasura-Admin-Secret": import.meta.env.VITE_HASURA_ADMIN_SECRET ?? "",
+        ...(uid.value ? { "X-Hasura-User-Id": uid.value } : {}),
+        ...(activeRole.value ? { "X-Hasura-Role": activeRole.value } : {}),
       },
     }),
   });

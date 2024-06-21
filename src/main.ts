@@ -6,7 +6,7 @@
 
 import urql, { Client } from "@urql/vue";
 import { Quasar } from "quasar";
-import { createApp, ref } from "vue";
+import { createApp } from "vue";
 
 // styles
 import "@quasar/extras/material-symbols-sharp/material-symbols-sharp.css";
@@ -27,11 +27,18 @@ import {
 import { quasarOptions } from "@/services/quasar.ts";
 import { router } from "@/services/router.ts";
 import {
-  createCustomClient,
+  createClientWithAdminSecret,
+  createClientWithToken,
   disableNotifications,
   enableNotifications,
 } from "@/services/urql.ts";
-import { activeRole, login, setLogout } from "@/stores/authentication.ts";
+import {
+  login,
+  setLogout,
+  useAuthentication,
+} from "@/stores/authentication.ts";
+
+const { activeRole, uid } = useAuthentication();
 
 // disable debug logs in production
 if (import.meta.env.PROD) {
@@ -48,12 +55,12 @@ let client: Client;
 if (import.meta.env.PROD || !bypassKeycloak) {
   claims = await initKeycloak();
   const flow = (import.meta.env.VITE_LOGIN_FLOW ?? "").trim().toUpperCase();
-  client = createCustomClient({
+  client = createClientWithToken(
     activeRole,
     getToken,
     refreshToken,
     errorNotify,
-  });
+  );
   disableNotifications();
   await login(claims, flow, client);
   enableNotifications();
@@ -67,10 +74,7 @@ if (import.meta.env.PROD || !bypassKeycloak) {
     defaultRole: "admin",
     allowedRoles: ["intervenant", "commissaire", "admin"],
   };
-  client = createCustomClient({
-    activeRole: ref("admin"),
-    errorNotify,
-  });
+  client = createClientWithAdminSecret(uid, activeRole, errorNotify);
   await login(claims);
 }
 

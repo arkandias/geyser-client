@@ -11,7 +11,7 @@ import { GET_INTERVENANT, UPSERT_INTERVENANT } from "@/graphql/intervenants.ts";
 import { Intervenant } from "@/helpers/types.ts";
 import { KeycloakClaims } from "@/services/keycloak.ts";
 
-export const activeRole: Ref<string | null> = ref(null);
+export const activeRole: Ref<string> = ref("");
 
 const logged: Ref<boolean> = ref(false);
 const intervenant: Intervenant = reactive({
