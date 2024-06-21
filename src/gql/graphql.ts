@@ -1218,11 +1218,11 @@ export type Ec_Enseignement = {
   demandes_aggregate: Ec_Demande_Aggregate;
   /** Une description de l'enseignement. */
   description: Maybe<Scalars["String"]["output"]>;
-  ens_id_import: Maybe<Scalars["String"]["output"]>;
   /** An array relationship */
-  enseignements: Array<Ec_Enseignement>;
+  enfants: Array<Ec_Enseignement>;
   /** An aggregate relationship */
-  enseignements_aggregate: Ec_Enseignement_Aggregate;
+  enfants_aggregate: Ec_Enseignement_Aggregate;
+  ens_id_import: Maybe<Scalars["String"]["output"]>;
   formation_id_import: Maybe<Scalars["String"]["output"]>;
   /** Le nombre de groupes. */
   groupes: Scalars["Int"]["output"];
@@ -1290,7 +1290,7 @@ export type Ec_EnseignementDemandes_AggregateArgs = {
 };
 
 /** Table contenant les enseignements. */
-export type Ec_EnseignementEnseignementsArgs = {
+export type Ec_EnseignementEnfantsArgs = {
   distinct_on: InputMaybe<Array<Ec_Enseignement_Select_Column>>;
   limit: InputMaybe<Scalars["Int"]["input"]>;
   offset: InputMaybe<Scalars["Int"]["input"]>;
@@ -1299,7 +1299,7 @@ export type Ec_EnseignementEnseignementsArgs = {
 };
 
 /** Table contenant les enseignements. */
-export type Ec_EnseignementEnseignements_AggregateArgs = {
+export type Ec_EnseignementEnfants_AggregateArgs = {
   distinct_on: InputMaybe<Array<Ec_Enseignement_Select_Column>>;
   limit: InputMaybe<Scalars["Int"]["input"]>;
   offset: InputMaybe<Scalars["Int"]["input"]>;
@@ -1487,9 +1487,9 @@ export type Ec_Enseignement_Bool_Exp = {
   demandes: InputMaybe<Ec_Demande_Bool_Exp>;
   demandes_aggregate: InputMaybe<Ec_Demande_Aggregate_Bool_Exp>;
   description: InputMaybe<String_Comparison_Exp>;
+  enfants: InputMaybe<Ec_Enseignement_Bool_Exp>;
+  enfants_aggregate: InputMaybe<Ec_Enseignement_Aggregate_Bool_Exp>;
   ens_id_import: InputMaybe<String_Comparison_Exp>;
-  enseignements: InputMaybe<Ec_Enseignement_Bool_Exp>;
-  enseignements_aggregate: InputMaybe<Ec_Enseignement_Aggregate_Bool_Exp>;
   formation_id_import: InputMaybe<String_Comparison_Exp>;
   groupes: InputMaybe<Int_Comparison_Exp>;
   groupes_corriges: InputMaybe<Int_Comparison_Exp>;
@@ -1556,8 +1556,8 @@ export type Ec_Enseignement_Insert_Input = {
   demandes: InputMaybe<Ec_Demande_Arr_Rel_Insert_Input>;
   /** Une description de l'enseignement. */
   description: InputMaybe<Scalars["String"]["input"]>;
+  enfants: InputMaybe<Ec_Enseignement_Arr_Rel_Insert_Input>;
   ens_id_import: InputMaybe<Scalars["String"]["input"]>;
-  enseignements: InputMaybe<Ec_Enseignement_Arr_Rel_Insert_Input>;
   formation_id_import: InputMaybe<Scalars["String"]["input"]>;
   /** Le nombre de groupes. */
   groupes: InputMaybe<Scalars["Int"]["input"]>;
@@ -1778,8 +1778,8 @@ export type Ec_Enseignement_Order_By = {
   annee_cycle: InputMaybe<Order_By>;
   demandes_aggregate: InputMaybe<Ec_Demande_Aggregate_Order_By>;
   description: InputMaybe<Order_By>;
+  enfants_aggregate: InputMaybe<Ec_Enseignement_Aggregate_Order_By>;
   ens_id_import: InputMaybe<Order_By>;
-  enseignements_aggregate: InputMaybe<Ec_Enseignement_Aggregate_Order_By>;
   formation_id_import: InputMaybe<Order_By>;
   groupes: InputMaybe<Order_By>;
   groupes_corriges: InputMaybe<Order_By>;

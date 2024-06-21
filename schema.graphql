@@ -2133,12 +2133,11 @@ type ec_enseignement {
   Une description de l'enseignement.
   """
   description: String
-  ens_id_import: String
 
   """
   An array relationship
   """
-  enseignements(
+  enfants(
     """
     distinct select on columns
     """
@@ -2168,7 +2167,7 @@ type ec_enseignement {
   """
   An aggregate relationship
   """
-  enseignements_aggregate(
+  enfants_aggregate(
     """
     distinct select on columns
     """
@@ -2194,6 +2193,7 @@ type ec_enseignement {
     """
     where: ec_enseignement_bool_exp
   ): ec_enseignement_aggregate!
+  ens_id_import: String
   formation_id_import: String
 
   """
@@ -2627,9 +2627,9 @@ input ec_enseignement_bool_exp {
   demandes: ec_demande_bool_exp
   demandes_aggregate: ec_demande_aggregate_bool_exp
   description: String_comparison_exp
+  enfants: ec_enseignement_bool_exp
+  enfants_aggregate: ec_enseignement_aggregate_bool_exp
   ens_id_import: String_comparison_exp
-  enseignements: ec_enseignement_bool_exp
-  enseignements_aggregate: ec_enseignement_aggregate_bool_exp
   formation_id_import: String_comparison_exp
   groupes: Int_comparison_exp
   groupes_corriges: Int_comparison_exp
@@ -2741,8 +2741,8 @@ input ec_enseignement_insert_input {
   Une description de l'enseignement.
   """
   description: String
+  enfants: ec_enseignement_arr_rel_insert_input
   ens_id_import: String
-  enseignements: ec_enseignement_arr_rel_insert_input
   formation_id_import: String
 
   """
@@ -3205,8 +3205,8 @@ input ec_enseignement_order_by {
   annee_cycle: order_by
   demandes_aggregate: ec_demande_aggregate_order_by
   description: order_by
+  enfants_aggregate: ec_enseignement_aggregate_order_by
   ens_id_import: order_by
-  enseignements_aggregate: ec_enseignement_aggregate_order_by
   formation_id_import: order_by
   groupes: order_by
   groupes_corriges: order_by
