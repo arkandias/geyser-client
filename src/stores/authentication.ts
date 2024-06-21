@@ -72,10 +72,11 @@ export async function login(
       profile = (await updateProfile(profile, client)) ?? null;
       break;
     case "DIRECT":
+    case undefined:
       break;
     default:
       console.warn(
-        "Invalid Login Flow (valid flows are 'DIRECT', 'LOOKUP', and 'IMPORT'). Defaulting to 'DIRECT'",
+        `Invalid login flow '${flow}' (valid flows are 'DIRECT', 'LOOKUP', and 'IMPORT'). Defaulting to 'DIRECT'`,
       );
   }
   if (!profile) {
