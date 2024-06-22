@@ -35,7 +35,8 @@
     <ul>
       <li>
         <QIcon name="sym_s_visibility" /> permet de désélectionner
-        l'enseignement ;
+        l'enseignement éventuellement sélectionné (pour afficher les
+        informations sur l'intervenant) ;
       </li>
       <li>
         <QIcon name="sym_s_close" /> permet de désélectionner l'intervenant.
