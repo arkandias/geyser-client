@@ -12,6 +12,7 @@ import {
   GET_DEMANDE,
   UPSERT_DEMANDE,
 } from "@/graphql/demandes.ts";
+import { formatTypeDemande } from "@/helpers/format.ts";
 import { defaultNotify, errorNotify, successNotify } from "@/helpers/notify.ts";
 
 const getCurrentDemande = async (
@@ -50,7 +51,7 @@ export const updateDemande = async (
     return;
   }
   if (heures === current) {
-    defaultNotify(format(typeDemande) + " identique");
+    defaultNotify(formatTypeDemande(typeDemande) + " identique");
     return;
   }
   if (heures === 0) {
@@ -60,7 +61,9 @@ export const updateDemande = async (
       typeDemande,
     });
     if (result.data?.demandes?.returning && !result.error) {
-      successNotify(format(typeDemande) + " supprimée");
+      successNotify(formatTypeDemande(typeDemande) + " supprimée");
+    } else {
+      errorNotify("Échec de la suppression");
     }
   } else {
     const result = await client.mutation(UPSERT_DEMANDE, {
@@ -71,8 +74,11 @@ export const updateDemande = async (
     });
     if (result.data?.demande?.id && !result.error) {
       successNotify(
-        format(typeDemande) + (current === 0 ? " créée" : " mise à jour"),
+        formatTypeDemande(typeDemande) +
+          (current === 0 ? " créée" : " mise à jour"),
       );
+    } else {
+      errorNotify(`Échec de la ${current === 0 ? "création" : "mise à jour"}`);
     }
   }
 };
@@ -84,9 +90,8 @@ export const deleteDemande = async (
 ): Promise<void> => {
   const result = await client.mutation(DELETE_DEMANDE_BY_ID, { id });
   if (result.data?.demande?.id && !result.error) {
-    successNotify(format(typeDemande) + " supprimée");
+    successNotify(formatTypeDemande(typeDemande) + " supprimée");
+  } else {
+    errorNotify("Échec de la suppression");
   }
 };
-
-const format = (typeDemande: string): string =>
-  typeDemande === "attribution" ? "Attribution" : `Demande ${typeDemande}`;

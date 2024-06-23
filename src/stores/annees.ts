@@ -4,9 +4,10 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { UPDATE_ANNEE_EN_COURS } from "@/graphql/annees.ts";
 import { useMutation } from "@urql/vue";
 import { ComputedRef, Ref, computed, readonly, ref } from "vue";
+
+import { UPDATE_ANNEE_EN_COURS } from "@/graphql/annees.ts";
 
 export const annees: Ref<number[]> = ref([]);
 export const enCours: Ref<number | null> = ref(null);

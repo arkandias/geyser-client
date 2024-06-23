@@ -4,9 +4,10 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { UPDATE_PHASE_EN_COURS } from "@/graphql/phases.ts";
 import { useMutation } from "@urql/vue";
 import { Ref, readonly, ref } from "vue";
+
+import { UPDATE_PHASE_EN_COURS } from "@/graphql/phases.ts";
 
 export const phases: Ref<string[]> = ref([]);
 export const enCours: Ref<string | null> = ref(null);

@@ -5,12 +5,42 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
+import { useQuery } from "@urql/vue";
+import { computed, ComputedRef, reactive } from "vue";
+
 import AccueilInformations from "@/components/accueil/AccueilInformations.vue";
 import AccueilMessage from "@/components/accueil/AccueilMessage.vue";
+import AccueilSubsection from "@/components/accueil/AccueilSubsection.vue";
+import ResumeDemandes from "@/components/core/ResumeDemandes.vue";
+import ServiceIntervenant from "@/components/core/ServiceIntervenant.vue";
+import DetailsVoletIntervenant from "@/components/details/DetailsVoletIntervenant.vue";
+import { GET_MY_ROW } from "@/graphql/intervenants.ts";
 import { formatIntervenant } from "@/helpers/format.ts";
+import { RowIntervenant } from "@/helpers/types.ts";
+import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 
-const { intervenant } = useAuthentication();
+const { active: anneeActive } = useAnnees();
+const { intervenant, uid } = useAuthentication();
+
+const queryMyRow = useQuery({
+  query: GET_MY_ROW,
+  variables: reactive({
+    annee: computed(() => anneeActive.value ?? 0),
+    uid,
+  }),
+  pause: () => !anneeActive.value,
+  context: {
+    additionalTypenames: [
+      "ec_demande",
+      "ec_message",
+      "ec_modification_service",
+    ],
+  },
+});
+const myRow: ComputedRef<RowIntervenant | null> = computed(
+  () => queryMyRow.data.value?.intervenant ?? null,
+);
 </script>
 
 <template>
@@ -22,22 +52,18 @@ const { intervenant } = useAuthentication();
         {{ formatIntervenant(intervenant) }}
       </QCardSection>
       <AccueilMessage />
-      <!--      <AccueilSubsection title="Service">-->
-      <!--        <ServiceIntervenant-->
-      <!--          service-base=""-->
-      <!--          uid=""-->
-      <!--          total-modifications=""-->
-      <!--          editable=""-->
-      <!--          modifications=""-->
-      <!--        />-->
-      <!--      </AccueilSubsection>-->
-      <!--      <AccueilSubsection title="Résumé">-->
-      <!--        <ResumeDemandes-->
-      <!--          total-attributions=""-->
-      <!--          total-secondaires=""-->
-      <!--          total-principales=""-->
-      <!--        />-->
-      <!--      </AccueilSubsection>-->
+      <DetailsVoletIntervenant v-if="myRow" :intervenant="myRow">
+        <template #service="scope">
+          <AccueilSubsection title="Service">
+            <ServiceIntervenant v-bind="scope" />
+          </AccueilSubsection>
+        </template>
+        <template #demandes="scope">
+          <AccueilSubsection title="Demandes">
+            <ResumeDemandes v-bind="scope" />
+          </AccueilSubsection>
+        </template>
+      </DetailsVoletIntervenant>
     </QCard>
     <AccueilInformations />
   </QPage>

@@ -7,13 +7,24 @@
 <script setup lang="ts">
 import { computed, ComputedRef } from "vue";
 
-import ResumeDemandes from "@/components/core/ResumeDemandes.vue";
-import ServiceIntervenant from "@/components/core/ServiceIntervenant.vue";
-import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 import { Modification, RowIntervenant } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
 const props = defineProps<{ intervenant: RowIntervenant }>();
+defineSlots<{
+  service(scope: {
+    uid: string;
+    serviceBase: number;
+    modifications: Modification[];
+    totalModifications: number;
+    editable: boolean;
+  }): unknown;
+  demandes(scope: {
+    totalAttributions: number;
+    totalPrincipales: number;
+    totalSecondaires: number;
+  }): unknown;
+}>();
 
 const perm = usePermissions();
 
@@ -38,18 +49,20 @@ const totalSecondaires: ComputedRef<number> = computed(
 </script>
 
 <template>
-  <DetailsSubsection title="Service">
-    <ServiceIntervenant
-      :uid="intervenant.uid"
-      :service-base
-      :modifications
-      :total-modifications
-      :editable="perm.deModifierUnService(intervenant.uid)"
-    />
-  </DetailsSubsection>
-  <DetailsSubsection title="Demandes">
-    <ResumeDemandes :total-attributions :total-principales :total-secondaires />
-  </DetailsSubsection>
+  <slot
+    name="service"
+    :uid="intervenant.uid"
+    :service-base
+    :modifications
+    :total-modifications
+    :editable="perm.deModifierUnService(intervenant.uid)"
+  />
+  <slot
+    name="demandes"
+    :total-attributions
+    :total-principales
+    :total-secondaires
+  />
 </template>
 
 <style scoped lang="scss"></style>

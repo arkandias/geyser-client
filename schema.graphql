@@ -12424,6 +12424,11 @@ type ec_type_modification {
   description: String
 
   """
+  Le type de modification (unique).
+  """
+  label: String!
+
+  """
   An array relationship
   """
   modifications_service(
@@ -12482,11 +12487,6 @@ type ec_type_modification {
     """
     where: ec_modification_service_bool_exp
   ): ec_modification_service_aggregate!
-
-  """
-  Le type de modification (unique).
-  """
-  value: String!
 }
 
 """
@@ -12514,9 +12514,9 @@ input ec_type_modification_bool_exp {
   _not: ec_type_modification_bool_exp
   _or: [ec_type_modification_bool_exp!]
   description: String_comparison_exp
+  label: String_comparison_exp
   modifications_service: ec_modification_service_bool_exp
   modifications_service_aggregate: ec_modification_service_aggregate_bool_exp
-  value: String_comparison_exp
 }
 
 """
@@ -12524,7 +12524,7 @@ unique or primary key constraints on table "ec.type_modification"
 """
 enum ec_type_modification_constraint {
   """
-  unique or primary key constraint on columns "value"
+  unique or primary key constraint on columns "label"
   """
   type_modification_pkey
 }
@@ -12537,12 +12537,12 @@ input ec_type_modification_insert_input {
   Une brève description.
   """
   description: String
-  modifications_service: ec_modification_service_arr_rel_insert_input
 
   """
   Le type de modification (unique).
   """
-  value: String
+  label: String
+  modifications_service: ec_modification_service_arr_rel_insert_input
 }
 
 """
@@ -12557,7 +12557,7 @@ type ec_type_modification_max_fields {
   """
   Le type de modification (unique).
   """
-  value: String
+  label: String
 }
 
 """
@@ -12572,7 +12572,7 @@ type ec_type_modification_min_fields {
   """
   Le type de modification (unique).
   """
-  value: String
+  label: String
 }
 
 """
@@ -12616,8 +12616,8 @@ Ordering options when selecting data from "ec.type_modification".
 """
 input ec_type_modification_order_by {
   description: order_by
+  label: order_by
   modifications_service_aggregate: ec_modification_service_aggregate_order_by
-  value: order_by
 }
 
 """
@@ -12627,7 +12627,7 @@ input ec_type_modification_pk_columns_input {
   """
   Le type de modification (unique).
   """
-  value: String!
+  label: String!
 }
 
 """
@@ -12642,7 +12642,7 @@ enum ec_type_modification_select_column {
   """
   column name
   """
-  value
+  label
 }
 
 """
@@ -12657,7 +12657,7 @@ input ec_type_modification_set_input {
   """
   Le type de modification (unique).
   """
-  value: String
+  label: String
 }
 
 """
@@ -12687,7 +12687,7 @@ input ec_type_modification_stream_cursor_value_input {
   """
   Le type de modification (unique).
   """
-  value: String
+  label: String
 }
 
 """
@@ -12702,7 +12702,7 @@ enum ec_type_modification_update_column {
   """
   column name
   """
-  value
+  label
 }
 
 input ec_type_modification_updates {
@@ -13043,7 +13043,7 @@ type mutation_root {
     """
     Le type de modification (unique).
     """
-    value: String!
+    label: String!
   ): ec_type_modification
 
   """
@@ -15507,7 +15507,7 @@ type query_root {
     """
     Le type de modification (unique).
     """
-    value: String!
+    label: String!
   ): ec_type_modification
 }
 
@@ -17004,7 +17004,7 @@ type subscription_root {
     """
     Le type de modification (unique).
     """
-    value: String!
+    label: String!
   ): ec_type_modification
 
   """

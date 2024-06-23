@@ -55,7 +55,7 @@ const version: ComputedRef<string | null> = computed(() =>
         square
         @click="router.replace({ name: 'enseignements' })"
       >
-        <QTooltip>Liste enseignements</QTooltip>
+        <QTooltip>Enseignements</QTooltip>
       </QBtn>
       <Transition>
         <div

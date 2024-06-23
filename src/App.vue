@@ -9,6 +9,7 @@ import { useQuery } from "@urql/vue";
 import { watch } from "vue";
 
 import TheHeader from "@/components/TheHeader.vue";
+import PageMessage from "@/pages/PageMessage.vue";
 import { GET_ANNEES } from "@/graphql/annees.ts";
 import { GET_PHASES } from "@/graphql/phases.ts";
 import {
@@ -19,7 +20,6 @@ import {
 import { useAuthentication } from "@/stores/authentication.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 import { enCours as phaseEnCours, phases } from "@/stores/phases.ts";
-import PageMessage from "@/pages/PageMessage.vue";
 
 const { logged } = useAuthentication();
 const perm = usePermissions();

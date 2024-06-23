@@ -12,25 +12,40 @@ const { enCours: phaseEnCours } = usePhases();
 
 <template>
   <QCardSection v-if="phaseEnCours === 'voeux'">
-    <p>Geyser est actuellement en phase de vœux.</p>
-    <p>
-      Vous pouvez faire des demandes principales et secondaires. Merci de
-      demander l’équivalent de votre service en demandes principales et en
-      demandes secondaires.
+    <p class="text-subtitle2">Geyser est actuellement en phase de vœux</p>
+    <p class="text-justify">
+      Vérifiez que votre service de base (ci-dessous) est correct. Dans le cas
+      contraire contactez un membre de la commission. Ajoutez ensuite vos
+      modifications de service éventuelles (délégation, décharge, congé, etc.),
+      afin d'indiquer à la commission le nombre d'heures d'enseignement total à
+      vous attribuer.
+    </p>
+    <p class="text-justify">
+      Vous pouvez faire des demandes principales et secondaires sur la page
+      Enseignements (icône <QIcon name="sym_s_menu_book" /> dans l'en-tête).
+      Merci de demander l’équivalent de votre service total en demandes
+      principales et en demandes secondaires.
     </p>
   </QCardSection>
   <QCardSection v-if="phaseEnCours === 'commission'">
-    <p>Les travaux de la commission sont en cours.</p>
-    <p>
-      Vous ne pouvez plus faire de demandes. Vous serez informé lorsque Geyser
-      rouvrira pour consulter les attributions.
+    <p class="text-subtitle2">Geyser est actuellement en phase de commission</p>
+    <p class="text-justify">
+      Les travaux de la commission sont en cours. Vous serez informé lorsqu'ils
+      seront terminés pour consulter les attributions. En attendant, vous pouvez
+      toujours consulter les demandes mais il n'est plus possible de les
+      modifier.
     </p>
   </QCardSection>
   <QCardSection v-if="phaseEnCours === 'consultation'">
-    <p>Geyser est actuellement en phase de consultation.</p>
+    <p class="text-subtitle2">
+      Geyser est actuellement en phase de consultation
+    </p>
+    <p class="text-justify">
+      Vous pouvez à présent consulter les attributions des enseignements.
+    </p>
   </QCardSection>
   <QCardSection v-if="phaseEnCours === 'fermeture'">
-    <p>Geyser est actuellement fermé.</p>
+    <p class="text-subtitle2">Geyser est actuellement fermé</p>
   </QCardSection>
 </template>
 

@@ -5,23 +5,26 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
+import { useQuery } from "@urql/vue";
 import { computed, ComputedRef, reactive } from "vue";
 
+import ResumeDemandes from "@/components/core/ResumeDemandes.vue";
+import ServiceIntervenant from "@/components/core/ServiceIntervenant.vue";
 import DetailsInformations from "@/components/details/DetailsInformations.vue";
-import DetailsVolet from "@/components/details/DetailsVolet.vue";
 import DetailsEnseignement from "@/components/details/DetailsEnseignement.vue";
 import DetailsIntervenant from "@/components/details/DetailsIntervenant.vue";
-import { useData } from "@/stores/data.ts";
+import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
+import DetailsVolet from "@/components/details/DetailsVolet.vue";
+import DetailsVoletEnseignement from "@/components/details/DetailsVoletEnseignement.vue";
+import DetailsVoletInformations from "@/components/details/DetailsVoletInformations.vue";
+import DetailsVoletIntervenant from "@/components/details/DetailsVoletIntervenant.vue";
+import { GET_ENSEIGNEMENT_DETAILS } from "@/graphql/enseignements.ts";
 import {
   formatIntervenant,
   formatResumeIntervenant,
 } from "@/helpers/format.ts";
-import DetailsVoletInformations from "@/components/details/DetailsVoletInformations.vue";
-import { useQuery } from "@urql/vue";
-import { GET_ENSEIGNEMENT_DETAILS } from "@/graphql/enseignements.ts";
 import { Details } from "@/helpers/types.ts";
-import DetailsVoletEnseignement from "@/components/details/DetailsVoletEnseignement.vue";
-import DetailsVoletIntervenant from "@/components/details/DetailsVoletIntervenant.vue";
+import { useData } from "@/stores/data.ts";
 
 const { enseignement, intervenant } = useData();
 
@@ -53,8 +56,8 @@ const caption: ComputedRef<string> = computed(() =>
       enseignement.value.mention.nom +
       " \u2014 " +
       (enseignement.value.parcours?.nom ?? "") +
-      " \u2014 S" +
-      enseignement.value.semestre.toString() +
+      " \u2014 " +
+      `S${enseignement.value.semestre.toString()}` +
       " \u2014 " +
       enseignement.value.typeEnseignement.label
     : intervenant.value
@@ -66,7 +69,18 @@ const caption: ComputedRef<string> = computed(() =>
 <template>
   <DetailsVolet :label :caption>
     <DetailsVoletEnseignement v-if="enseignement && details" :details />
-    <DetailsVoletIntervenant v-else-if="intervenant" :intervenant />
+    <DetailsVoletIntervenant v-else-if="intervenant" :intervenant>
+      <template #service="scope">
+        <DetailsSubsection title="Service">
+          <ServiceIntervenant v-bind="scope" />
+        </DetailsSubsection>
+      </template>
+      <template #demandes="scope">
+        <DetailsSubsection title="Demandes">
+          <ResumeDemandes v-bind="scope" />
+        </DetailsSubsection>
+      </template>
+    </DetailsVoletIntervenant>
     <DetailsVoletInformations v-else />
   </DetailsVolet>
   <QCard flat square>

@@ -23,10 +23,10 @@ table {
   min-width: $service-table-min-width;
   border-spacing: 8px;
 }
+:slotted(td:last-child) {
+  text-align: end;
+}
 :slotted(td:first-child) {
   text-align: start;
-}
-:slotted(td:nth-child(2)) {
-  text-align: end;
 }
 </style>

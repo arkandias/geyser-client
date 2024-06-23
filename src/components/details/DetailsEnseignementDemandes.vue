@@ -6,8 +6,8 @@
 
 <script setup lang="ts">
 import CarteDemande from "@/components/core/CarteDemande.vue";
-import { Demande } from "@/helpers/types.ts";
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
+import { Demande } from "@/helpers/types.ts";
 
 defineProps<{
   title: string;

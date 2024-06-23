@@ -4,8 +4,9 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { DUMMY_MUTATION } from "@/graphql/demandes.ts";
 import { useMutation } from "@urql/vue";
+
+import { DUMMY_MUTATION } from "@/graphql/demandes.ts";
 
 export const useRefresh = () => {
   // this is an ugly hack to invalidate cache (using urql's Document Caching):

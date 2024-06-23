@@ -56,6 +56,9 @@ export const formatPhase = (phase: string): string => {
   }
 };
 
+export const formatTypeDemande = (typeDemande: string): string =>
+  typeDemande === "attribution" ? "Attribution" : `Demande ${typeDemande}`;
+
 export const formatTypeDemandesTitre = (typeDemande: string): string => {
   switch (typeDemande) {
     case "attribution":
@@ -103,8 +106,7 @@ export const formatResponsables = (responsables: Responsable[]): string =>
   responsables
     .map(
       ({ intervenant, commentaire }) =>
-        formatIntervenant(intervenant) +
-        (commentaire ? ` (${commentaire})` : ""),
+        `${formatIntervenant(intervenant)} (${commentaire ?? ""})`,
     )
     .join(", ");
 
@@ -112,13 +114,13 @@ export const formatResumeIntervenant = (row: RowIntervenant): string =>
   `Service : ${String(
     (row.services[0]?.heuresEQTD ?? 0) -
       (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0),
-  )} htd ` +
+  )} htd` +
   " \u2014 " +
-  `Attributions : ${String(row.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0)} htd ` +
+  `Attributions : ${String(row.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0)} htd` +
   " \u2014 " +
-  `Vœux principaux : ${String(row.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0)} htd ` +
+  `Vœux principaux : ${String(row.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0)} htd` +
   " \u2014 " +
-  `Vœux secondaires : ${String(row.totalSecondaires.aggregate?.sum?.heuresEQTD ?? 0)} htd `;
+  `Vœux secondaires : ${String(row.totalSecondaires.aggregate?.sum?.heuresEQTD ?? 0)} htd`;
 
 export const couleurBouton = (actif: boolean): NamedColor =>
   actif ? "accent" : "white";

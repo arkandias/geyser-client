@@ -8,8 +8,9 @@ import { graphql } from "@/gql";
 
 export const GET_TYPES_MODIFICATION = graphql(/* GraphQL */ `
   query GetTypesModification {
-    typesModification: ec_type_modification {
-      value
+    typesModification: ec_type_modification(order_by: { label: asc }) {
+      label
+      description
     }
   }
 `);

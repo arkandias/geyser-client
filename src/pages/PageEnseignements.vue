@@ -13,7 +13,10 @@ import PanelDetails from "@/components/PanelDetails.vue";
 import PanelEnseignements from "@/components/PanelEnseignements.vue";
 import PanelIntervenants from "@/components/PanelIntervenants.vue";
 import { GET_ENSEIGNEMENTS_TABLE_ROWS } from "@/graphql/enseignements.ts";
-import { GET_INTERVENANTS_TABLE_ROWS } from "@/graphql/intervenants.ts";
+import {
+  GET_INTERVENANTS_TABLE_ROWS,
+  GET_MY_ROW,
+} from "@/graphql/intervenants.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useData } from "@/stores/data.ts";
@@ -35,8 +38,10 @@ const {
   setIntervenants,
 } = useData();
 
+// sync the selected enseignement/intervenant with the query parameter ens/uid
 const router = useRouter();
 const route = useRoute();
+// update ens/uid if the selected enseignement/intervenant changes
 watch(
   [enseignement, intervenant],
   async ([rowEnseignement, rowIntervenant]) => {
@@ -46,21 +51,12 @@ watch(
     });
   },
 );
-watch(
-  () => String(route.query.uid),
-  (uid) => {
-    selectIntervenant(uid);
-  },
-  { immediate: true },
-);
-watch(
-  () => Number(route.query.ens),
-  (id) => {
-    selectEnseignement(id);
-  },
-  { immediate: true },
-);
+// update the selected enseignement if ens changes
+watch(() => Number(route.query.ens), selectEnseignement, { immediate: true });
+// update the selected intervenant if uid changes
+watch(() => String(route.query.uid), selectIntervenant, { immediate: true });
 
+// query for the list of enseignements
 const queryEnseignements = useQuery({
   query: GET_ENSEIGNEMENTS_TABLE_ROWS,
   variables: reactive({
@@ -69,32 +65,25 @@ const queryEnseignements = useQuery({
   pause: () => !anneeActive.value,
   context: { additionalTypenames: ["ec_demande"] },
 });
+// store the fetching status and result of the query result in the Data store
+// and update on change
+watch(queryEnseignements.fetching, setFetchingEnseignements, {
+  immediate: true,
+});
 watch(
-  queryEnseignements.fetching,
-  (value) => {
-    setFetchingEnseignements(value);
-  },
-  { immediate: true },
-);
-watch(
-  queryEnseignements.data,
-  (value) => {
-    setEnseignements(value?.enseignements ?? []);
-  },
+  () => queryEnseignements.data.value?.enseignements ?? [],
+  setEnseignements,
   { immediate: true },
 );
 
+// query for the list of all active intervenants or just for the user's row,
+// depending on whether or not the user has the corresponding permission
 const queryIntervenants = useQuery({
   query: GET_INTERVENANTS_TABLE_ROWS,
   variables: reactive({
     annee: computed(() => anneeActive.value ?? 0),
-    condition: computed(() =>
-      perm.deVoirLeServiceDAutrui
-        ? { actif: { _eq: true } }
-        : { uid: { _eq: moi.value } },
-    ),
   }),
-  pause: () => !anneeActive.value,
+  pause: () => !perm.deVoirLeServiceDAutrui || !anneeActive.value,
   context: {
     additionalTypenames: [
       "ec_demande",
@@ -103,21 +92,43 @@ const queryIntervenants = useQuery({
     ],
   },
 });
-watch(
-  queryIntervenants.fetching,
-  (value) => {
-    setFetchingIntervenants(value);
+const queryMyRow = useQuery({
+  query: GET_MY_ROW,
+  variables: reactive({
+    annee: computed(() => anneeActive.value ?? 0),
+    uid: moi,
+  }),
+  pause: () => perm.deVoirLeServiceDAutrui || !anneeActive.value,
+  context: {
+    additionalTypenames: [
+      "ec_demande",
+      "ec_message",
+      "ec_modification_service",
+    ],
   },
+});
+// store the fetching status and result of the query result in the Data store
+// and update on change
+watch(
+  () =>
+    perm.deVoirLeServiceDAutrui
+      ? queryIntervenants.fetching.value
+      : queryMyRow.fetching.value,
+  setFetchingIntervenants,
   { immediate: true },
 );
 watch(
-  queryIntervenants.data,
-  (value) => {
-    setIntervenants(value?.intervenants ?? []);
-  },
+  () =>
+    perm.deVoirLeServiceDAutrui
+      ? queryIntervenants.data.value?.intervenants ?? []
+      : queryMyRow.data.value?.intervenant
+        ? [queryMyRow.data.value.intervenant]
+        : [],
+  setIntervenants,
   { immediate: true },
 );
 
+// open/close the intervenant filter based on user's permissions
 watch(
   () => perm.deVoirLeServiceDAutrui,
   (value) => {

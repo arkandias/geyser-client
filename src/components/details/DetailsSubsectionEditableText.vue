@@ -7,8 +7,8 @@
 <script setup lang="ts">
 import { ref, Ref } from "vue";
 
-import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 import EditableText from "@/components/core/EditableText.vue";
+import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 
 defineProps<{
   name: string;

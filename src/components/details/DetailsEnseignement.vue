@@ -9,12 +9,12 @@ import { computed, ComputedRef } from "vue";
 
 import DetailsSection from "@/components/details/DetailsSection.vue";
 import FormulaireDemande from "@/components/core/FormulaireDemande.vue";
-import DetailsEnseignementDemandes from "@/components/details/DetailsEnseignementDemandes.vue";
 import PucePriorite from "@/components/core/PucePriorite.vue";
+import DetailsEnseignementDemandes from "@/components/details/DetailsEnseignementDemandes.vue";
 import { processArchives } from "@/helpers/enseignement.ts";
+import { formatTypeDemandesTitre } from "@/helpers/format.ts";
 import { Archive, Details } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";
-import { formatTypeDemandesTitre } from "@/helpers/format.ts";
 
 const props = defineProps<{ details: Details }>();
 

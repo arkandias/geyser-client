@@ -98,7 +98,7 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
-    visible: perm.deVoirLesAttributions,
+    visible: () => perm.deVoirLesAttributions,
     searchable: false,
     abbreviable: false,
   },

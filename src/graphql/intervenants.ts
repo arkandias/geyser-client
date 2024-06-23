@@ -51,17 +51,87 @@ export const GET_INTERVENANTS = graphql(/* GraphQL */ `
   }
 `);
 
+export const GET_MY_ROW = graphql(/* GraphQL */ `
+  query GetMyRow($annee: Int!, $uid: String!) {
+    intervenant: ec_intervenant_by_pk(uid: $uid) {
+      ...Intervenant
+      demandes(where: { enseignement: { annee: { _eq: $annee } } }) {
+        id
+        ensId: ens_id
+        typeDemande: type
+        heures
+        heuresEQTD: heures_eqtd
+      }
+      # limit: 1 car unique
+      services(where: { annee: { _eq: $annee } }, limit: 1) {
+        id
+        heuresEQTD: heures_eqtd
+      }
+      modifications: modifications_service(where: { annee: { _eq: $annee } }) {
+        id
+        typeModification: type
+        heuresEQTD: heures_eqtd
+      }
+      totalModifications: modifications_service_aggregate(
+        where: { annee: { _eq: $annee } }
+      ) {
+        aggregate {
+          sum {
+            heuresEQTD: heures_eqtd
+          }
+        }
+      }
+      totalAttributions: demandes_aggregate(
+        where: {
+          _and: [
+            { type: { _eq: "attribution" } }
+            { enseignement: { annee: { _eq: $annee } } }
+          ]
+        }
+      ) {
+        ...TotalHeures
+        ...TotalHeuresEQTD
+      }
+      totalPrincipales: demandes_aggregate(
+        where: {
+          _and: [
+            { type: { _eq: "principale" } }
+            { enseignement: { annee: { _eq: $annee } } }
+          ]
+        }
+      ) {
+        ...TotalHeures
+        ...TotalHeuresEQTD
+      }
+      totalSecondaires: demandes_aggregate(
+        where: {
+          _and: [
+            { type: { _eq: "secondaire" } }
+            { enseignement: { annee: { _eq: $annee } } }
+          ]
+        }
+      ) {
+        ...TotalHeures
+        ...TotalHeuresEQTD
+      }
+      messages(where: { annee: { _eq: $annee } }) {
+        id
+        typeMessage: type
+        contenu
+      }
+      visible
+    }
+  }
+`);
+
 export const GET_INTERVENANTS_TABLE_ROWS = graphql(/* GraphQL */ `
-  query GetIntervenantsTableRows(
-    $annee: Int!
-    $condition: ec_intervenant_bool_exp!
-  ) {
+  query GetIntervenantsTableRows($annee: Int!) {
     intervenants: ec_intervenant(
-      where: $condition
+      where: { actif: { _eq: true } }
       order_by: [{ nom: asc }, { prenom: asc }]
     ) {
       ...Intervenant
-      demandes {
+      demandes(where: { enseignement: { annee: { _eq: $annee } } }) {
         id
         ensId: ens_id
         typeDemande: type

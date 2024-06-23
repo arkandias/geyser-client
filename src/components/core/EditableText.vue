@@ -8,7 +8,7 @@
 import { computed, ComputedRef, Ref, ref, watch } from "vue";
 import xss from "xss";
 
-import { defaultNotify, successNotify } from "@/helpers/notify.ts";
+import { defaultNotify, errorNotify, successNotify } from "@/helpers/notify.ts";
 
 const edition = defineModel<boolean>();
 const props = withDefaults(
@@ -40,6 +40,10 @@ const onSave = async (): Promise<void> => {
   if (success) {
     successNotify(
       props.name + (editorText.value ? " mis(e) à jour" : " supprimé(e)"),
+    );
+  } else {
+    errorNotify(
+      `Échec de la ${editorText.value ? "mise à jour" : "suppression"}`,
     );
   }
   edition.value = false;

@@ -4,10 +4,11 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+
 import PageAccueil from "@/pages/PageAccueil.vue";
 import PageEnseignements from "@/pages/PageEnseignements.vue";
 import PageMessage from "@/pages/PageMessage.vue";
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 const routes: RouteRecordRaw[] = [
   {

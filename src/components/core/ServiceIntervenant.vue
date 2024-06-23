@@ -16,7 +16,7 @@ import {
 } from "@/graphql/modifications.ts";
 import { nf } from "@/helpers/format.ts";
 import { errorNotify, successNotify } from "@/helpers/notify.ts";
-import { Modification } from "@/helpers/types.ts";
+import { Modification, TypeModification } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
 
 const props = defineProps<{
@@ -40,10 +40,13 @@ const queryTypesModification = useQuery({
 const insertModification = useMutation(INSERT_MODIFICATION);
 const deleteModification = useMutation(DELETE_MODIFICATION);
 
-const typeModificationOptions: ComputedRef<string[]> = computed(
+const typeModificationOptions: ComputedRef<TypeModification[]> = computed(
   () =>
     queryTypesModification.data.value?.typesModification.map(
-      (typeModification) => typeModification.value,
+      (typeModification) => ({
+        label: typeModification.label,
+        description: typeModification.description ?? null,
+      }),
     ) ?? [],
 );
 
@@ -78,7 +81,9 @@ const onSubmit = async (): Promise<void> => {
     heuresEQTD: heuresEQTD.value,
   });
   if (result.data?.modificationService?.id && !result.error) {
-    successNotify(`Modification ajoutée`);
+    successNotify("Modification ajoutée");
+  } else {
+    errorNotify("Échec de l'ajout");
   }
   onReset();
 };
@@ -86,6 +91,8 @@ const onDelete = async (id: number): Promise<void> => {
   const result = await deleteModification.executeMutation({ id: id });
   if (result.data?.modificationService?.id && !result.error) {
     successNotify(`Modification supprimée`);
+  } else {
+    errorNotify("Échec de la suppression");
   }
 };
 </script>
@@ -124,26 +131,27 @@ const onDelete = async (id: number): Promise<void> => {
           square
           dense
         />
-        <QBtn
-          form="addModification"
-          type="submit"
-          icon="sym_s_check_circle"
-          color="primary"
-          size="sm"
-          flat
-          square
-          dense
-        />
         <QSelect
           v-model="typeModification"
           :options="typeModificationOptions"
+          option-value="label"
+          label-slot
           label="Type"
           square
           dense
           options-dense
           form="addModification"
           class="inline-block"
-        />
+        >
+          <template #option="scope">
+            <QItem v-bind="scope.itemProps">
+              <QItemSection>
+                <QItemLabel>{{ scope.opt.label }}</QItemLabel>
+                <QItemLabel caption>{{ scope.opt.description }}</QItemLabel>
+              </QItemSection>
+            </QItem>
+          </template>
+        </QSelect>
       </td>
       <td>
         <QInput
@@ -155,6 +163,16 @@ const onDelete = async (id: number): Promise<void> => {
           dense
           form="addModification"
           class="inline-block"
+        />
+        <QBtn
+          form="addModification"
+          type="submit"
+          icon="sym_s_check_circle"
+          color="primary"
+          size="sm"
+          flat
+          square
+          dense
         />
       </td>
     </tr>
@@ -187,9 +205,10 @@ const onDelete = async (id: number): Promise<void> => {
 <style scoped lang="scss">
 .q-select {
   width: $modification-form-select-width;
-  margin-left: 8px;
+  margin: 0 8px;
 }
 .q-input {
   width: $modification-form-input-width;
+  margin: 0 8px;
 }
 </style>

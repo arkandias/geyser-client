@@ -6929,12 +6929,12 @@ export type Ec_Type_Modification = {
   __typename?: "ec_type_modification";
   /** Une brève description. */
   description: Maybe<Scalars["String"]["output"]>;
+  /** Le type de modification (unique). */
+  label: Scalars["String"]["output"];
   /** An array relationship */
   modifications_service: Array<Ec_Modification_Service>;
   /** An aggregate relationship */
   modifications_service_aggregate: Ec_Modification_Service_Aggregate;
-  /** Le type de modification (unique). */
-  value: Scalars["String"]["output"];
 };
 
 /** Table contenant les différents types de modification de service. */
@@ -6982,14 +6982,14 @@ export type Ec_Type_Modification_Bool_Exp = {
   _not: InputMaybe<Ec_Type_Modification_Bool_Exp>;
   _or: InputMaybe<Array<Ec_Type_Modification_Bool_Exp>>;
   description: InputMaybe<String_Comparison_Exp>;
+  label: InputMaybe<String_Comparison_Exp>;
   modifications_service: InputMaybe<Ec_Modification_Service_Bool_Exp>;
   modifications_service_aggregate: InputMaybe<Ec_Modification_Service_Aggregate_Bool_Exp>;
-  value: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "ec.type_modification" */
 export enum Ec_Type_Modification_Constraint {
-  /** unique or primary key constraint on columns "value" */
+  /** unique or primary key constraint on columns "label" */
   TypeModificationPkey = "type_modification_pkey",
 }
 
@@ -6997,9 +6997,9 @@ export enum Ec_Type_Modification_Constraint {
 export type Ec_Type_Modification_Insert_Input = {
   /** Une brève description. */
   description: InputMaybe<Scalars["String"]["input"]>;
-  modifications_service: InputMaybe<Ec_Modification_Service_Arr_Rel_Insert_Input>;
   /** Le type de modification (unique). */
-  value: InputMaybe<Scalars["String"]["input"]>;
+  label: InputMaybe<Scalars["String"]["input"]>;
+  modifications_service: InputMaybe<Ec_Modification_Service_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -7008,7 +7008,7 @@ export type Ec_Type_Modification_Max_Fields = {
   /** Une brève description. */
   description: Maybe<Scalars["String"]["output"]>;
   /** Le type de modification (unique). */
-  value: Maybe<Scalars["String"]["output"]>;
+  label: Maybe<Scalars["String"]["output"]>;
 };
 
 /** aggregate min on columns */
@@ -7017,7 +7017,7 @@ export type Ec_Type_Modification_Min_Fields = {
   /** Une brève description. */
   description: Maybe<Scalars["String"]["output"]>;
   /** Le type de modification (unique). */
-  value: Maybe<Scalars["String"]["output"]>;
+  label: Maybe<Scalars["String"]["output"]>;
 };
 
 /** response of any mutation on the table "ec.type_modification" */
@@ -7046,14 +7046,14 @@ export type Ec_Type_Modification_On_Conflict = {
 /** Ordering options when selecting data from "ec.type_modification". */
 export type Ec_Type_Modification_Order_By = {
   description: InputMaybe<Order_By>;
+  label: InputMaybe<Order_By>;
   modifications_service_aggregate: InputMaybe<Ec_Modification_Service_Aggregate_Order_By>;
-  value: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: ec.type_modification */
 export type Ec_Type_Modification_Pk_Columns_Input = {
   /** Le type de modification (unique). */
-  value: Scalars["String"]["input"];
+  label: Scalars["String"]["input"];
 };
 
 /** select columns of table "ec.type_modification" */
@@ -7061,7 +7061,7 @@ export enum Ec_Type_Modification_Select_Column {
   /** column name */
   Description = "description",
   /** column name */
-  Value = "value",
+  Label = "label",
 }
 
 /** input type for updating data in table "ec.type_modification" */
@@ -7069,7 +7069,7 @@ export type Ec_Type_Modification_Set_Input = {
   /** Une brève description. */
   description: InputMaybe<Scalars["String"]["input"]>;
   /** Le type de modification (unique). */
-  value: InputMaybe<Scalars["String"]["input"]>;
+  label: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Streaming cursor of the table "ec_type_modification" */
@@ -7085,7 +7085,7 @@ export type Ec_Type_Modification_Stream_Cursor_Value_Input = {
   /** Une brève description. */
   description: InputMaybe<Scalars["String"]["input"]>;
   /** Le type de modification (unique). */
-  value: InputMaybe<Scalars["String"]["input"]>;
+  label: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** update columns of table "ec.type_modification" */
@@ -7093,7 +7093,7 @@ export enum Ec_Type_Modification_Update_Column {
   /** column name */
   Description = "description",
   /** column name */
-  Value = "value",
+  Label = "label",
 }
 
 export type Ec_Type_Modification_Updates = {
@@ -7529,7 +7529,7 @@ export type Mutation_RootDelete_Ec_Type_ModificationArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Ec_Type_Modification_By_PkArgs = {
-  value: Scalars["String"]["input"];
+  label: Scalars["String"]["input"];
 };
 
 /** mutation root */
@@ -8510,7 +8510,7 @@ export type Query_RootEc_Type_Modification_AggregateArgs = {
 };
 
 export type Query_RootEc_Type_Modification_By_PkArgs = {
-  value: Scalars["String"]["input"];
+  label: Scalars["String"]["input"];
 };
 
 export type Subscription_Root = {
@@ -9086,7 +9086,7 @@ export type Subscription_RootEc_Type_Modification_AggregateArgs = {
 };
 
 export type Subscription_RootEc_Type_Modification_By_PkArgs = {
-  value: Scalars["String"]["input"];
+  label: Scalars["String"]["input"];
 };
 
 export type Subscription_RootEc_Type_Modification_StreamArgs = {
@@ -9683,9 +9683,93 @@ export type GetIntervenantsQuery = {
   }>;
 };
 
+export type GetMyRowQueryVariables = Exact<{
+  annee: Scalars["Int"]["input"];
+  uid: Scalars["String"]["input"];
+}>;
+
+export type GetMyRowQuery = {
+  __typename?: "query_root";
+  intervenant: {
+    __typename?: "ec_intervenant";
+    visible: boolean;
+    uid: string;
+    nom: string;
+    prenom: string;
+    alias: string | null;
+    demandes: Array<{
+      __typename?: "ec_demande";
+      id: number;
+      heures: number;
+      ensId: number;
+      typeDemande: string;
+      heuresEQTD: number | null;
+    }>;
+    services: Array<{
+      __typename?: "ec_service";
+      id: number;
+      heuresEQTD: number;
+    }>;
+    modifications: Array<{
+      __typename?: "ec_modification_service";
+      id: number;
+      typeModification: string;
+      heuresEQTD: number;
+    }>;
+    totalModifications: {
+      __typename?: "ec_modification_service_aggregate";
+      aggregate: {
+        __typename?: "ec_modification_service_aggregate_fields";
+        sum: {
+          __typename?: "ec_modification_service_sum_fields";
+          heuresEQTD: number | null;
+        } | null;
+      } | null;
+    };
+    totalAttributions: {
+      __typename?: "ec_demande_aggregate";
+      aggregate: {
+        __typename?: "ec_demande_aggregate_fields";
+        sum: {
+          __typename?: "ec_demande_sum_fields";
+          heures: number | null;
+          heuresEQTD: number | null;
+        } | null;
+      } | null;
+    };
+    totalPrincipales: {
+      __typename?: "ec_demande_aggregate";
+      aggregate: {
+        __typename?: "ec_demande_aggregate_fields";
+        sum: {
+          __typename?: "ec_demande_sum_fields";
+          heures: number | null;
+          heuresEQTD: number | null;
+        } | null;
+      } | null;
+    };
+    totalSecondaires: {
+      __typename?: "ec_demande_aggregate";
+      aggregate: {
+        __typename?: "ec_demande_aggregate_fields";
+        sum: {
+          __typename?: "ec_demande_sum_fields";
+          heures: number | null;
+          heuresEQTD: number | null;
+        } | null;
+      } | null;
+    };
+    messages: Array<{
+      __typename?: "ec_message";
+      id: number;
+      contenu: string;
+      typeMessage: string;
+    }>;
+  } | null;
+};
+
 export type GetIntervenantsTableRowsQueryVariables = Exact<{
   annee: Scalars["Int"]["input"];
-  condition: Ec_Intervenant_Bool_Exp;
 }>;
 
 export type GetIntervenantsTableRowsQuery = {
@@ -9809,7 +9893,8 @@ export type GetTypesModificationQuery = {
   __typename?: "query_root";
   typesModification: Array<{
     __typename?: "ec_type_modification";
-    value: string;
+    label: string;
+    description: string | null;
   }>;
 };
 
@@ -13265,6 +13350,762 @@ export const GetIntervenantsDocument = {
   GetIntervenantsQuery,
   GetIntervenantsQueryVariables
 >;
+export const GetMyRowDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetMyRow" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "annee" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "intervenant" },
+            name: { kind: "Name", value: "ec_intervenant_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "uid" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "uid" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Intervenant" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "demandes" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "enseignement" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "annee" },
+                                  value: {
+                                    kind: "ObjectValue",
+                                    fields: [
+                                      {
+                                        kind: "ObjectField",
+                                        name: { kind: "Name", value: "_eq" },
+                                        value: {
+                                          kind: "Variable",
+                                          name: {
+                                            kind: "Name",
+                                            value: "annee",
+                                          },
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "ensId" },
+                        name: { kind: "Name", value: "ens_id" },
+                      },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "typeDemande" },
+                        name: { kind: "Name", value: "type" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "heures" },
+                      },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "heuresEQTD" },
+                        name: { kind: "Name", value: "heures_eqtd" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "services" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "annee" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "annee" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "heuresEQTD" },
+                        name: { kind: "Name", value: "heures_eqtd" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "modifications" },
+                  name: { kind: "Name", value: "modifications_service" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "annee" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "annee" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "typeModification" },
+                        name: { kind: "Name", value: "type" },
+                      },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "heuresEQTD" },
+                        name: { kind: "Name", value: "heures_eqtd" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "totalModifications" },
+                  name: {
+                    kind: "Name",
+                    value: "modifications_service_aggregate",
+                  },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "annee" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "annee" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "aggregate" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "sum" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    alias: {
+                                      kind: "Name",
+                                      value: "heuresEQTD",
+                                    },
+                                    name: {
+                                      kind: "Name",
+                                      value: "heures_eqtd",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "totalAttributions" },
+                  name: { kind: "Name", value: "demandes_aggregate" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_and" },
+                            value: {
+                              kind: "ListValue",
+                              values: [
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "type" },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "_eq",
+                                            },
+                                            value: {
+                                              kind: "StringValue",
+                                              value: "attribution",
+                                              block: false,
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: {
+                                        kind: "Name",
+                                        value: "enseignement",
+                                      },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "annee",
+                                            },
+                                            value: {
+                                              kind: "ObjectValue",
+                                              fields: [
+                                                {
+                                                  kind: "ObjectField",
+                                                  name: {
+                                                    kind: "Name",
+                                                    value: "_eq",
+                                                  },
+                                                  value: {
+                                                    kind: "Variable",
+                                                    name: {
+                                                      kind: "Name",
+                                                      value: "annee",
+                                                    },
+                                                  },
+                                                },
+                                              ],
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "TotalHeures" },
+                      },
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "TotalHeuresEQTD" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "totalPrincipales" },
+                  name: { kind: "Name", value: "demandes_aggregate" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_and" },
+                            value: {
+                              kind: "ListValue",
+                              values: [
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "type" },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "_eq",
+                                            },
+                                            value: {
+                                              kind: "StringValue",
+                                              value: "principale",
+                                              block: false,
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: {
+                                        kind: "Name",
+                                        value: "enseignement",
+                                      },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "annee",
+                                            },
+                                            value: {
+                                              kind: "ObjectValue",
+                                              fields: [
+                                                {
+                                                  kind: "ObjectField",
+                                                  name: {
+                                                    kind: "Name",
+                                                    value: "_eq",
+                                                  },
+                                                  value: {
+                                                    kind: "Variable",
+                                                    name: {
+                                                      kind: "Name",
+                                                      value: "annee",
+                                                    },
+                                                  },
+                                                },
+                                              ],
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "TotalHeures" },
+                      },
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "TotalHeuresEQTD" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "totalSecondaires" },
+                  name: { kind: "Name", value: "demandes_aggregate" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_and" },
+                            value: {
+                              kind: "ListValue",
+                              values: [
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "type" },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "_eq",
+                                            },
+                                            value: {
+                                              kind: "StringValue",
+                                              value: "secondaire",
+                                              block: false,
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: {
+                                        kind: "Name",
+                                        value: "enseignement",
+                                      },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "annee",
+                                            },
+                                            value: {
+                                              kind: "ObjectValue",
+                                              fields: [
+                                                {
+                                                  kind: "ObjectField",
+                                                  name: {
+                                                    kind: "Name",
+                                                    value: "_eq",
+                                                  },
+                                                  value: {
+                                                    kind: "Variable",
+                                                    name: {
+                                                      kind: "Name",
+                                                      value: "annee",
+                                                    },
+                                                  },
+                                                },
+                                              ],
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "TotalHeures" },
+                      },
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "TotalHeuresEQTD" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "messages" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "annee" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "annee" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "typeMessage" },
+                        name: { kind: "Name", value: "type" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "contenu" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "visible" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Intervenant" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "ec_intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          { kind: "Field", name: { kind: "Name", value: "nom" } },
+          { kind: "Field", name: { kind: "Name", value: "prenom" } },
+          { kind: "Field", name: { kind: "Name", value: "alias" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TotalHeures" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "ec_demande_aggregate" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "sum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "heures" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TotalHeuresEQTD" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "ec_demande_aggregate" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "sum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "heuresEQTD" },
+                        name: { kind: "Name", value: "heures_eqtd" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetMyRowQuery, GetMyRowQueryVariables>;
 export const GetIntervenantsTableRowsDocument = {
   kind: "Document",
   definitions: [
@@ -13284,20 +14125,6 @@ export const GetIntervenantsTableRowsDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "condition" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "ec_intervenant_bool_exp" },
-            },
-          },
-        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -13311,8 +14138,23 @@ export const GetIntervenantsTableRowsDocument = {
                 kind: "Argument",
                 name: { kind: "Name", value: "where" },
                 value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "condition" },
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "actif" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: { kind: "BooleanValue", value: true },
+                          },
+                        ],
+                      },
+                    },
+                  ],
                 },
               },
               {
@@ -13355,6 +14197,46 @@ export const GetIntervenantsTableRowsDocument = {
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "demandes" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "enseignement" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "annee" },
+                                  value: {
+                                    kind: "ObjectValue",
+                                    fields: [
+                                      {
+                                        kind: "ObjectField",
+                                        name: { kind: "Name", value: "_eq" },
+                                        value: {
+                                          kind: "Variable",
+                                          name: {
+                                            kind: "Name",
+                                            value: "annee",
+                                          },
+                                        },
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
@@ -14373,10 +15255,27 @@ export const GetTypesModificationDocument = {
             kind: "Field",
             alias: { kind: "Name", value: "typesModification" },
             name: { kind: "Name", value: "ec_type_modification" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "label" },
+                      value: { kind: "EnumValue", value: "asc" },
+                    },
+                  ],
+                },
+              },
+            ],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "value" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
               ],
             },
           },
