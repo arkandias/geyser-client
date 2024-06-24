@@ -106,7 +106,8 @@ export const formatResponsables = (responsables: Responsable[]): string =>
   responsables
     .map(
       ({ intervenant, commentaire }) =>
-        `${formatIntervenant(intervenant)} (${commentaire ?? ""})`,
+        formatIntervenant(intervenant) +
+        (commentaire ? ` (${commentaire})` : ""),
     )
     .join(", ");
 
