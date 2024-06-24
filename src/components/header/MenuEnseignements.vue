@@ -25,7 +25,7 @@ const { meSelected, myRow, toggleMonService } = useData();
     :disable="!perm.deVoirLeServiceDAutrui"
     flat
     square
-    @click="toggleFilter"
+    @click="toggleFilter()"
   >
     <QTooltip>Filtre intervenants</QTooltip>
   </QBtn>
@@ -35,7 +35,7 @@ const { meSelected, myRow, toggleMonService } = useData();
     :disable="!myRow"
     flat
     square
-    @click="toggleMonService"
+    @click="toggleMonService()"
   >
     <QTooltip>Mes demandes</QTooltip>
   </QBtn>

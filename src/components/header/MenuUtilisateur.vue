@@ -47,7 +47,7 @@ const options: ComputedRef<Option<string>[]> = computed(() =>
         />
       </QItem>
       <QSeparator />
-      <QItem v-close-popup clickable @click="logout">
+      <QItem v-close-popup clickable @click="logout()">
         <QItemSection side>
           <QIcon name="sym_s_logout" />
         </QItemSection>

@@ -74,7 +74,7 @@ const groupes: ComputedRef<number> = computed(
         flat
         square
         dense
-        @click="onAttribute"
+        @click="onAttribute()"
       >
         <QTooltip
           :delay="tooltipDelay"
@@ -97,7 +97,7 @@ const groupes: ComputedRef<number> = computed(
         flat
         square
         dense
-        @click="onDelete"
+        @click="onDelete()"
       >
         <QTooltip
           :delay="tooltipDelay"

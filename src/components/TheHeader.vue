@@ -65,7 +65,7 @@ const version: ComputedRef<string | null> = computed(() =>
         </div>
       </Transition>
       <QSeparator vertical inset color="white" />
-      <QBtn icon="sym_s_refresh" :disable flat square @click="refresh">
+      <QBtn icon="sym_s_refresh" :disable flat square @click="refresh()">
         <QTooltip>Rafraîchir les données</QTooltip>
       </QBtn>
       <QBtn
@@ -73,7 +73,7 @@ const version: ComputedRef<string | null> = computed(() =>
         :color="couleurBouton($q.dark.isActive)"
         flat
         square
-        @click="$q.dark.toggle"
+        @click="$q.dark.toggle()"
       >
         <QTooltip>Mode sombre</QTooltip>
       </QBtn>
