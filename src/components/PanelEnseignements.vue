@@ -342,7 +342,6 @@ const estAttribue = (row: RowEnseignement) =>
     square
     dense
     virtual-scroll
-    class="sticky-header-table"
     @row-click="select"
   >
     <template #top>
