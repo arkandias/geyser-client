@@ -10,7 +10,7 @@ import { computed, ComputedRef } from "vue";
 
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
-import DetailsVoletEnseignementResponsables from "@/components/details/DetailsVoletEnseignementResponsables.vue";
+import DetailsVoletEnseignementResponsables from "@/components/details/volet/DetailsVoletEnseignementResponsables.vue";
 import { UPDATE_DESCRIPTION } from "@/graphql/enseignements.ts";
 import { Details, Intervenant, Responsable } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";

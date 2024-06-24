@@ -16,9 +16,10 @@ const demo: Ref<boolean> = ref(false);
       Ici sont affichées des informations supplémentaires lorsqu'un enseignement
       ou un intervenant est sélectionné.
     </p>
-
-    Lorsqu'un enseignement est sélectionné, les informations suivantes sont
-    affichées :
+    <p>
+      Lorsqu'un enseignement est sélectionné, les informations suivantes sont
+      affichées :
+    </p>
     <ul>
       <li>
         les responsables de l'enseignement, du parcours et de la mention ;
@@ -36,7 +37,6 @@ const demo: Ref<boolean> = ref(false);
         qui apparaît à côté du titre).
       </li>
     </ul>
-
     <p>
       Lorsqu'un intervenant est sélectionné, son service de base et ses
       modifications de service (délégation, décharge, etc.) sont affichées ici.

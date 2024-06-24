@@ -14,10 +14,10 @@ import DetailsInformations from "@/components/details/DetailsInformations.vue";
 import DetailsEnseignement from "@/components/details/DetailsEnseignement.vue";
 import DetailsIntervenant from "@/components/details/DetailsIntervenant.vue";
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
-import DetailsVolet from "@/components/details/DetailsVolet.vue";
-import DetailsVoletEnseignement from "@/components/details/DetailsVoletEnseignement.vue";
-import DetailsVoletInformations from "@/components/details/DetailsVoletInformations.vue";
-import DetailsVoletIntervenant from "@/components/details/DetailsVoletIntervenant.vue";
+import DetailsVolet from "@/components/details/volet/DetailsVolet.vue";
+import DetailsVoletEnseignement from "@/components/details/volet/DetailsVoletEnseignement.vue";
+import DetailsVoletInformations from "@/components/details/volet/DetailsVoletInformations.vue";
+import DetailsVoletIntervenant from "@/components/details/volet/DetailsVoletIntervenant.vue";
 import { GET_ENSEIGNEMENT_DETAILS } from "@/graphql/enseignements.ts";
 import {
   formatIntervenant,

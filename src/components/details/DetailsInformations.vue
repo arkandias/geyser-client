@@ -8,14 +8,14 @@
 
 <template>
   <QCardSection class="text-body2 text-justify">
-    Cliquez sur la ligne d'un enseignement ou d'un intervenant pour afficher ici
-    des informations détaillées. Si un enseignement et un intervenant sont
-    sélectionnés en même temps, ce sont les informations de l'enseignement qui
-    sont affichées. Vous pouvez désélectionner un enseignement ou un intervenant
-    en cliquant à nouveau sur la ligne correspondante.
-    <br />
-    <br />
-    Boutons dans l'en-tête (accessibles uniquement depuis cette page) :
+    <p>
+      Cliquez sur la ligne d'un enseignement ou d'un intervenant pour afficher
+      ici des informations détaillées. Si un enseignement et un intervenant sont
+      sélectionnés en même temps, ce sont les informations de l'enseignement qui
+      sont affichées. Vous pouvez désélectionner un enseignement ou un
+      intervenant en cliquant à nouveau sur la ligne correspondante.
+    </p>
+    <p>Boutons dans l'en-tête (accessibles uniquement depuis cette page) :</p>
     <ul>
       <li>
         Filtre intervenants (<QIcon name="sym_s_vertical_split" />) :
@@ -27,11 +27,14 @@
         sélectionner/désélectionner vous-même.
       </li>
     </ul>
-    Lorsqu'un intervenant est sélectionné, les enseignements qui apparaissent
-    dans la table ci-dessus sont seulement ceux qui ont été demandés par
-    l'intervenant ou attribués à l'intervenant. Le nom de l'intervenant apparaît
-    alors en haut de la table (à la place de «&nbsp;Enseignements&nbsp;»). Deux
-    raccourcis sont présents à droite du nom de l'intervenant :
+    <p>
+      Lorsqu'un intervenant est sélectionné, les enseignements qui apparaissent
+      dans la table ci-dessus sont seulement ceux qui ont été demandés par
+      l'intervenant ou attribués à l'intervenant. Le nom de l'intervenant
+      apparaît alors en haut de la table (à la place de
+      «&nbsp;Enseignements&nbsp;»). Deux raccourcis sont présents à droite du
+      nom de l'intervenant :
+    </p>
     <ul>
       <li>
         <QIcon name="sym_s_visibility" /> permet de désélectionner
