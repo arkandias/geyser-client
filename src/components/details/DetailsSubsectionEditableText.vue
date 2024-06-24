@@ -21,7 +21,7 @@ const edition: Ref<boolean> = ref(false);
 </script>
 
 <template>
-  <DetailsSubsection v-model="edition" title="Description" :editable>
+  <DetailsSubsection v-model="edition" :title="name" :editable>
     <EditableText v-model="edition" :name :text :default-text :set-text />
   </DetailsSubsection>
 </template>
