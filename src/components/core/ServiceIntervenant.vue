@@ -51,7 +51,7 @@ const typeModificationOptions: ComputedRef<TypeModification[]> = computed(
 );
 
 const openForm: Ref<boolean> = ref(false);
-const typeModification: Ref<string | null> = ref(null);
+const typeModification: Ref<TypeModification | null> = ref(null);
 const heuresEQTD: Ref<number> = ref(0);
 
 const onReset = (): void => {
@@ -77,7 +77,7 @@ const onSubmit = async (): Promise<void> => {
   const result = await insertModification.executeMutation({
     annee: anneeActive.value ?? 0,
     uid: props.uid,
-    typeModification: typeModification.value,
+    typeModification: typeModification.value.label,
     heuresEQTD: heuresEQTD.value,
   });
   if (result.data?.modificationService?.id && !result.error) {
