@@ -23,7 +23,11 @@ import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
-const { enCoursActive: anneeEnCoursActive, active: anneeActive } = useAnnees();
+const {
+  enCoursActive: anneeEnCoursActive,
+  active: anneeActive,
+  setActive: setAnneeActive,
+} = useAnnees();
 const { uid: moi } = useAuthentication();
 const perm = usePermissions();
 const { closeFilter, filtreIntervenants, openFilter } = useLayout();
@@ -38,23 +42,33 @@ const {
   setIntervenants,
 } = useData();
 
-// sync the selected enseignement/intervenant with the query parameter ens/uid
+// sync active annee and selected enseignement/intervenant with the
+// corresponding query parameters annee and ens/uid
 const router = useRouter();
 const route = useRoute();
-// update ens/uid if the selected enseignement/intervenant changes
+// update query parameters annee/ens/uid if active annee or selected
+// enseignement/intervenant change
 watch(
-  [enseignement, intervenant],
-  async ([rowEnseignement, rowIntervenant]) => {
+  [
+    () => (anneeEnCoursActive.value ? undefined : anneeActive.value),
+    enseignement,
+    intervenant,
+  ],
+  async ([annee, rowEnseignement, rowIntervenant]) => {
     await router.replace({
       name: "enseignements",
-      query: { ens: rowEnseignement?.id, uid: rowIntervenant?.uid },
+      query: { annee, ens: rowEnseignement?.id, uid: rowIntervenant?.uid },
     });
   },
 );
-// update the selected enseignement if ens changes
+// update the active year if query parameter annee changes
+watch(() => Number(route.query.annee), setAnneeActive, { immediate: true });
+// update the selected enseignement if query parameter ens changes
 watch(() => Number(route.query.ens), selectEnseignement, { immediate: true });
-// update the selected intervenant if uid changes
-watch(() => String(route.query.uid), selectIntervenant, { immediate: true });
+// update the selected intervenant if query parameter uid changes
+watch(() => String(route.query.uid ?? null), selectIntervenant, {
+  immediate: true,
+});
 
 // query for the list of enseignements
 const queryEnseignements = useQuery({

@@ -16,6 +16,13 @@ export const active: Ref<number | null> = ref(null);
 const enCoursActive: ComputedRef<boolean> = computed(
   () => active.value === enCours.value,
 );
+const setActive = (annee: number): void => {
+  if (annees.value.includes(annee)) {
+    active.value = annee;
+  } else {
+    active.value = enCours.value;
+  }
+};
 
 export const useAnnees = () => {
   const update = useMutation(UPDATE_ANNEE_EN_COURS);
@@ -33,5 +40,6 @@ export const useAnnees = () => {
     active: readonly(active),
     enCoursActive,
     setEnCours,
+    setActive,
   };
 };
