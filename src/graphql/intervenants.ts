@@ -67,7 +67,10 @@ export const GET_MY_ROW = graphql(/* GraphQL */ `
         id
         heuresEQTD: heures_eqtd
       }
-      modifications: modifications_service(where: { annee: { _eq: $annee } }) {
+      modifications: modifications_service(
+        where: { annee: { _eq: $annee } }
+        order_by: [{ type: asc }, { heures_eqtd: asc }]
+      ) {
         id
         typeModification: type
         heuresEQTD: heures_eqtd
@@ -143,7 +146,10 @@ export const GET_INTERVENANTS_TABLE_ROWS = graphql(/* GraphQL */ `
         id
         heuresEQTD: heures_eqtd
       }
-      modifications: modifications_service(where: { annee: { _eq: $annee } }) {
+      modifications: modifications_service(
+        where: { annee: { _eq: $annee } }
+        order_by: [{ type: asc }, { heures_eqtd: asc }]
+      ) {
         id
         typeModification: type
         heuresEQTD: heures_eqtd
