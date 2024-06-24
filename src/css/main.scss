@@ -4,17 +4,9 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-/* ajuste le layout de la page Enseignements à la hauteur de la fenêtre */
-#header {
-  height: $header-height;
-}
-#splitter-ens {
-  height: calc(100vh - $header-height);
-}
-
 /* sticky header table */
 .sticky-header-table {
-  max-height: calc(100vh - $header-height);
+  // N.B. height or max-height must be set (in SFC or here)
   thead tr:first-child th {
     background-color: #ffffff;
     top: 0;
@@ -37,12 +29,6 @@
 /* background color in dark mode */
 .body--dark .sticky-header-table thead tr:first-child th {
   background-color: $dark;
-}
-
-/* couleur de l'en-tête et des séparateurs (y compris en mode sombre) */
-#header,
-.q-splitter .q-splitter__separator {
-  background-color: $primary;
 }
 
 /* couleurs des liens hypertextes */

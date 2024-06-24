@@ -158,11 +158,11 @@ watch(
 
 <template>
   <QPage>
-    <QCard v-if="!anneeEnCoursActive" class="warning">
+    <QCard v-if="!anneeEnCoursActive" id="warning-archive">
       Vous consultez une archive ({{ anneeActive }})
     </QCard>
     <QSplitter
-      id="splitter-ens"
+      id="first-splitter"
       v-model="vSplitterRatio"
       :limits="[0, 100]"
       :disable="!filtreIntervenants"
@@ -171,7 +171,7 @@ watch(
         <PanelIntervenants v-if="perm.deVoirLeServiceDAutrui" />
       </template>
       <template #after>
-        <QSplitter v-model="hSplitterRatio" horizontal>
+        <QSplitter id="second-splitter" v-model="hSplitterRatio" horizontal>
           <template #before>
             <PanelEnseignements />
           </template>
@@ -185,8 +185,30 @@ watch(
 </template>
 
 <style scoped lang="scss">
-.warning {
+#warning-archive {
+  height: $warning-archive-height;
   text-align: center;
   background-color: $accent;
+  color: black;
+}
+.q-splitter :deep(.q-splitter__separator) {
+  background-color: $primary;
+}
+
+// adjust splitter's height to window's height
+#first-splitter,
+#first-splitter :deep(.sticky-header-table) {
+  height: calc(100vh - $header-height);
+}
+#warning-archive + #first-splitter,
+#warning-archive + #first-splitter :deep(.sticky-header-table) {
+  height: calc(100vh - $header-height - $warning-archive-height);
+}
+#first-splitter #second-splitter :deep(.sticky-header-table) {
+  height: calc((100vh - $header-height) * v-bind("hSplitterRatio") / 100);
+}
+/* prettier-ignore */
+#warning-archive + #first-splitter #second-splitter :deep(.sticky-header-table) {
+  height: calc((100vh - $header-height - $warning-archive-height) * v-bind('hSplitterRatio') / 100);
 }
 </style>

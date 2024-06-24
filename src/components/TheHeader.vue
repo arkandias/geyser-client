@@ -84,6 +84,10 @@ const version: ComputedRef<string | null> = computed(() =>
 </template>
 
 <style scoped lang="scss">
+#header {
+  height: $header-height;
+  background-color: $primary;
+}
 #transition-wrapper {
   display: flex;
   align-items: center;
