@@ -190,6 +190,8 @@ const filterMethod = (
       normalizeForSearch(String(col.field(row))).includes(terms.search),
     ),
   );
+
+const stickyHeader: Ref<boolean> = ref(false);
 </script>
 
 <template>
@@ -208,7 +210,7 @@ const filterMethod = (
     square
     dense
     virtual-scroll
-    class="sticky-header-table"
+    :class="{ 'sticky-header-table': stickyHeader }"
     @row-click="select"
   >
     <template #top>
@@ -226,6 +228,14 @@ const filterMethod = (
           @clear="clearSearch"
         >
         </QInput>
+        <QToggle
+          v-model="stickyHeader"
+          icon="sym_s_scrollable_header"
+          color="primary"
+          dense
+        >
+          <QTooltip>En-tête fixe</QTooltip>
+        </QToggle>
         <QBtn
           icon="sym_s_view_column"
           :color="menuColonnesOpen ? 'primary' : 'grey'"

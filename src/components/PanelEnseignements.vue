@@ -318,6 +318,8 @@ const filterMethod = (
         ),
   );
 
+const stickyHeader: Ref<boolean> = ref(false);
+
 const estAttribue = (row: RowEnseignement) =>
   intervenant.value?.demandes.some(
     (demande) =>
@@ -342,7 +344,7 @@ const estAttribue = (row: RowEnseignement) =>
     square
     dense
     virtual-scroll
-    class="sticky-header-table"
+    :class="{ 'sticky-header-table': stickyHeader }"
     @row-click="select"
   >
     <template #top>
@@ -465,6 +467,14 @@ const estAttribue = (row: RowEnseignement) =>
           @clear="clearSearch"
         >
         </QInput>
+        <QToggle
+          v-model="stickyHeader"
+          icon="sym_s_scrollable_header"
+          color="primary"
+          dense
+        >
+          <QTooltip>En-tête fixe</QTooltip>
+        </QToggle>
         <QBtn
           icon="sym_s_view_column"
           :color="menuColonnesOpen ? 'primary' : 'grey'"
