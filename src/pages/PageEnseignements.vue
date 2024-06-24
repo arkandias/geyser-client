@@ -23,7 +23,7 @@ import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
-const { active: anneeActive } = useAnnees();
+const { enCoursActive: anneeEnCoursActive, active: anneeActive } = useAnnees();
 const { uid: moi } = useAuthentication();
 const perm = usePermissions();
 const { closeFilter, filtreIntervenants, openFilter } = useLayout();
@@ -144,6 +144,9 @@ watch(
 
 <template>
   <QPage>
+    <QCard v-if="!anneeEnCoursActive" class="warning">
+      Vous consultez une archive ({{ anneeActive }})
+    </QCard>
     <QSplitter
       id="splitter-ens"
       v-model="vSplitterRatio"
@@ -167,4 +170,9 @@ watch(
   </QPage>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.warning {
+  text-align: center;
+  background-color: $accent;
+}
+</style>

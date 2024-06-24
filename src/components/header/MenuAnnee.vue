@@ -24,7 +24,7 @@ const options: ComputedRef<Option<number>[]> = computed(() =>
 </script>
 
 <template>
-  <MenuBase label="Historique" icon="sym_s_history">
+  <MenuBase label="Année" icon="sym_s_history">
     <QList dense>
       <QItem class="flex-center">
         <QItemLabel header>Année</QItemLabel>

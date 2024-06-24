@@ -5,6 +5,7 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
+import MenuAnnee from "@/components/header/MenuAnnee.vue";
 import { couleurBouton } from "@/helpers/format.ts";
 import { useData } from "@/stores/data.ts";
 import { useLayout } from "@/stores/layout.ts";
@@ -37,6 +38,7 @@ const { meSelected, myRow, toggleMonService } = useData();
   >
     <QTooltip>Mes demandes</QTooltip>
   </QBtn>
+  <MenuAnnee />
 </template>
 
 <style scoped lang="scss"></style>

@@ -10,7 +10,6 @@ import { computed, ComputedRef } from "vue";
 import { useRouter } from "vue-router";
 
 import MenuAdmin from "@/components/header/MenuAdmin.vue";
-import MenuAnnee from "@/components/header/MenuAnnee.vue";
 import MenuEnseignements from "@/components/header/MenuEnseignements.vue";
 import MenuUtilisateur from "@/components/header/MenuUtilisateur.vue";
 import { couleurBouton } from "@/helpers/format.ts";
@@ -78,7 +77,6 @@ const version: ComputedRef<string | null> = computed(() =>
       >
         <QTooltip>Mode sombre</QTooltip>
       </QBtn>
-      <MenuAnnee :disable />
       <MenuAdmin v-if="perm.dAdministrer" />
       <MenuUtilisateur />
     </QToolbar>
@@ -100,7 +98,7 @@ const version: ComputedRef<string | null> = computed(() =>
 }
 .v-enter-to,
 .v-leave-from {
-  width: 130px;
+  width: 185px;
 }
 .v-enter-from,
 .v-leave-to {

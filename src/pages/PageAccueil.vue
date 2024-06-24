@@ -20,16 +20,16 @@ import { RowIntervenant } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 
-const { active: anneeActive } = useAnnees();
+const { enCours: anneeEnCours } = useAnnees();
 const { intervenant, uid } = useAuthentication();
 
 const queryMyRow = useQuery({
   query: GET_MY_ROW,
   variables: reactive({
-    annee: computed(() => anneeActive.value ?? 0),
+    annee: computed(() => anneeEnCours.value ?? 0),
     uid,
   }),
-  pause: () => !anneeActive.value,
+  pause: () => !anneeEnCours.value,
   context: {
     additionalTypenames: [
       "ec_demande",
