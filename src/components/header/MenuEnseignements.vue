@@ -18,6 +18,7 @@ const { meSelected, myRow, toggleMonService } = useData();
 
 <template>
   <QIcon name="sym_s_chevron_right" />
+  <MenuAnnee />
   <QBtn
     icon="sym_s_vertical_split"
     :color="couleurBouton(filtreIntervenants)"
@@ -38,7 +39,6 @@ const { meSelected, myRow, toggleMonService } = useData();
   >
     <QTooltip>Mes demandes</QTooltip>
   </QBtn>
-  <MenuAnnee />
 </template>
 
 <style scoped lang="scss"></style>
