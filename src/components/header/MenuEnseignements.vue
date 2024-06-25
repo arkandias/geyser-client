@@ -9,9 +9,7 @@ import MenuAnnee from "@/components/header/MenuAnnee.vue";
 import { couleurBouton } from "@/helpers/format.ts";
 import { useData } from "@/stores/data.ts";
 import { useLayout } from "@/stores/layout.ts";
-import { usePermissions } from "@/stores/permissions.ts";
 
-const perm = usePermissions();
 const { filtreIntervenants, toggleFilter } = useLayout();
 const { meSelected, myRow, toggleMonService } = useData();
 </script>
@@ -22,7 +20,6 @@ const { meSelected, myRow, toggleMonService } = useData();
   <QBtn
     icon="sym_s_vertical_split"
     :color="couleurBouton(filtreIntervenants)"
-    :disable="!perm.deVoirLeServiceDAutrui"
     flat
     square
     @click="toggleFilter()"

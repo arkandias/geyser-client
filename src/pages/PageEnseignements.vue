@@ -168,7 +168,7 @@ watch(
       :disable="!filtreIntervenants"
     >
       <template #before>
-        <PanelIntervenants v-if="perm.deVoirLeServiceDAutrui" />
+        <PanelIntervenants />
       </template>
       <template #after>
         <QSplitter id="second-splitter" v-model="hSplitterRatio" horizontal>

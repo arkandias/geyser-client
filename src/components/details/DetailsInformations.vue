@@ -18,13 +18,20 @@
     <p>Boutons dans l'en-tête (accessibles uniquement depuis cette page) :</p>
     <ul>
       <li>
-        Filtre intervenants (<QIcon name="sym_s_vertical_split" />) :
-        afficher/masquer la liste des intervenants actifs (fonctionnalité
-        réservée aux commissaires et aux administrateurs).
+        Année (<QIcon name="sym_s_history" />) : permet de choisir l'année à
+        consulter (par défaut l'année en cours est affichée, mais il est
+        possible de consulter les demandes et les attributions des années
+        antérieures).
       </li>
       <li>
-        Mon service (<QIcon name="sym_s_assignment" />) : vous
-        sélectionner/désélectionner vous-même.
+        Filtre intervenants (<QIcon name="sym_s_vertical_split" />) : permet
+        d'afficher/masquer la liste des intervenants actifs (fonctionnalité
+        réservée aux membres de la commission et aux administrateurs).
+      </li>
+      <li>
+        Mon service (<QIcon name="sym_s_assignment" />) : permet de vous
+        sélectionner/désélectionner vous-même (sans passer par le filtre
+        intervenants).
       </li>
     </ul>
     <p>
