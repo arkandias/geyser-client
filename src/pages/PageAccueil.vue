@@ -54,12 +54,12 @@ const myRow: ComputedRef<RowIntervenant | null> = computed(
       <AccueilMessage />
       <DetailsVoletIntervenant v-if="myRow" :intervenant="myRow">
         <template #service="scope">
-          <AccueilSubsection title="Service">
+          <AccueilSubsection title="Mon service">
             <ServiceIntervenant v-bind="scope" />
           </AccueilSubsection>
         </template>
         <template #demandes="scope">
-          <AccueilSubsection title="Demandes">
+          <AccueilSubsection title="Mes demandes">
             <ResumeDemandes v-bind="scope" />
           </AccueilSubsection>
         </template>
