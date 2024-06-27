@@ -547,7 +547,7 @@ const estAttribue = (row: RowEnseignement) =>
   min-width: $select-filter-min-width;
 }
 .q-input {
-  min-width: $search-input-width;
+  width: $search-input-width;
 }
 .non-visible {
   background-color: rgba($negative, 0.1);

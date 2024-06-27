@@ -296,7 +296,7 @@ const stickyHeader: Ref<boolean> = ref(false);
 
 <style scoped lang="scss">
 .q-input {
-  min-width: $search-input-width;
+  width: $search-input-width;
 }
 .non-visible {
   background-color: rgba($negative, 0.1);
