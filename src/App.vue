@@ -54,10 +54,14 @@ watch(
   },
   { immediate: true },
 );
+const layoutClass = {
+  "text-body1": true,
+  dev: import.meta.env.DEV,
+};
 </script>
 
 <template>
-  <QLayout view="hHh lpR fFf" class="text-body1">
+  <QLayout view="hHh lpR fFf" :class="layoutClass">
     <TheHeader :disable="!logged || !perm.dAcceder" />
     <QPageContainer>
       <RouterView v-if="logged && perm.dAcceder" />

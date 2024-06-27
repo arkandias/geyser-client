@@ -194,6 +194,9 @@ watch(
 .q-splitter :deep(.q-splitter__separator) {
   background-color: $primary;
 }
+.dev .q-splitter :deep(.q-splitter__separator) {
+  background-color: $secondary;
+}
 
 // adjust splitter's height to window's height
 #first-splitter,

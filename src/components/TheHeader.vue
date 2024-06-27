@@ -88,6 +88,9 @@ const version: ComputedRef<string | null> = computed(() =>
   height: $header-height;
   background-color: $primary;
 }
+.dev #header {
+  background-color: $secondary;
+}
 #transition-wrapper {
   display: flex;
   align-items: center;
