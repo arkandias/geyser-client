@@ -1226,12 +1226,16 @@ export type Ec_Enseignement = {
   formation_id_import: Maybe<Scalars["String"]["output"]>;
   /** Le nombre de groupes. */
   groupes: Scalars["Int"]["output"];
-  /** Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes. */
+  /** Le nombre de groupes ouverts, et à défaut le nombre de groupes. */
   groupes_corriges: Maybe<Scalars["Int"]["output"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: Maybe<Scalars["Int"]["output"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: Scalars["Float"]["output"];
+  /** Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement. */
+  heures_corrigees: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'enseignement. */
   id: Scalars["Int"]["output"];
   /** An object relationship */
@@ -1430,12 +1434,16 @@ export type Ec_Enseignement_Avg_Fields = {
   annee_cycle: Maybe<Scalars["Float"]["output"]>;
   /** Le nombre de groupes. */
   groupes: Maybe<Scalars["Float"]["output"]>;
-  /** Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes. */
+  /** Le nombre de groupes ouverts, et à défaut le nombre de groupes. */
   groupes_corriges: Maybe<Scalars["Int"]["output"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: Maybe<Scalars["Float"]["output"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement. */
+  heures_corrigees: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'enseignement. */
   id: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -1460,8 +1468,10 @@ export type Ec_Enseignement_Avg_Order_By = {
   groupes: InputMaybe<Order_By>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Order_By>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Order_By>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Order_By>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Order_By>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -1495,6 +1505,8 @@ export type Ec_Enseignement_Bool_Exp = {
   groupes_corriges: InputMaybe<Int_Comparison_Exp>;
   groupes_ouverts: InputMaybe<Int_Comparison_Exp>;
   heures: InputMaybe<Float_Comparison_Exp>;
+  heures_corrigees: InputMaybe<Float_Comparison_Exp>;
+  heures_ouvertes: InputMaybe<Float_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   mention: InputMaybe<Ec_Mention_Bool_Exp>;
   mention_id: InputMaybe<Int_Comparison_Exp>;
@@ -1532,8 +1544,10 @@ export type Ec_Enseignement_Inc_Input = {
   groupes: InputMaybe<Scalars["Int"]["input"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Scalars["Int"]["input"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Scalars["Float"]["input"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Scalars["Float"]["input"]>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Scalars["Int"]["input"]>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -1563,8 +1577,10 @@ export type Ec_Enseignement_Insert_Input = {
   groupes: InputMaybe<Scalars["Int"]["input"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Scalars["Int"]["input"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Scalars["Float"]["input"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Scalars["Float"]["input"]>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Scalars["Int"]["input"]>;
   mention: InputMaybe<Ec_Mention_Obj_Rel_Insert_Input>;
@@ -1607,12 +1623,16 @@ export type Ec_Enseignement_Max_Fields = {
   formation_id_import: Maybe<Scalars["String"]["output"]>;
   /** Le nombre de groupes. */
   groupes: Maybe<Scalars["Int"]["output"]>;
-  /** Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes. */
+  /** Le nombre de groupes ouverts, et à défaut le nombre de groupes. */
   groupes_corriges: Maybe<Scalars["Int"]["output"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: Maybe<Scalars["Int"]["output"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement. */
+  heures_corrigees: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'enseignement. */
   id: Maybe<Scalars["Int"]["output"]>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -1648,8 +1668,10 @@ export type Ec_Enseignement_Max_Order_By = {
   groupes: InputMaybe<Order_By>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Order_By>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Order_By>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Order_By>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Order_By>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -1684,12 +1706,16 @@ export type Ec_Enseignement_Min_Fields = {
   formation_id_import: Maybe<Scalars["String"]["output"]>;
   /** Le nombre de groupes. */
   groupes: Maybe<Scalars["Int"]["output"]>;
-  /** Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes. */
+  /** Le nombre de groupes ouverts, et à défaut le nombre de groupes. */
   groupes_corriges: Maybe<Scalars["Int"]["output"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: Maybe<Scalars["Int"]["output"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement. */
+  heures_corrigees: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'enseignement. */
   id: Maybe<Scalars["Int"]["output"]>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -1725,8 +1751,10 @@ export type Ec_Enseignement_Min_Order_By = {
   groupes: InputMaybe<Order_By>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Order_By>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Order_By>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Order_By>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Order_By>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -1785,6 +1813,8 @@ export type Ec_Enseignement_Order_By = {
   groupes_corriges: InputMaybe<Order_By>;
   groupes_ouverts: InputMaybe<Order_By>;
   heures: InputMaybe<Order_By>;
+  heures_corrigees: InputMaybe<Order_By>;
+  heures_ouvertes: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   mention: InputMaybe<Ec_Mention_Order_By>;
   mention_id: InputMaybe<Order_By>;
@@ -1828,6 +1858,8 @@ export enum Ec_Enseignement_Select_Column {
   GroupesOuverts = "groupes_ouverts",
   /** column name */
   Heures = "heures",
+  /** column name */
+  HeuresOuvertes = "heures_ouvertes",
   /** column name */
   Id = "id",
   /** column name */
@@ -1876,8 +1908,10 @@ export type Ec_Enseignement_Set_Input = {
   groupes: InputMaybe<Scalars["Int"]["input"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Scalars["Int"]["input"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Scalars["Float"]["input"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Scalars["Float"]["input"]>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Scalars["Int"]["input"]>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -1910,12 +1944,16 @@ export type Ec_Enseignement_Stddev_Fields = {
   annee_cycle: Maybe<Scalars["Float"]["output"]>;
   /** Le nombre de groupes. */
   groupes: Maybe<Scalars["Float"]["output"]>;
-  /** Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes. */
+  /** Le nombre de groupes ouverts, et à défaut le nombre de groupes. */
   groupes_corriges: Maybe<Scalars["Int"]["output"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: Maybe<Scalars["Float"]["output"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement. */
+  heures_corrigees: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'enseignement. */
   id: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -1940,8 +1978,10 @@ export type Ec_Enseignement_Stddev_Order_By = {
   groupes: InputMaybe<Order_By>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Order_By>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Order_By>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Order_By>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Order_By>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -1965,12 +2005,16 @@ export type Ec_Enseignement_Stddev_Pop_Fields = {
   annee_cycle: Maybe<Scalars["Float"]["output"]>;
   /** Le nombre de groupes. */
   groupes: Maybe<Scalars["Float"]["output"]>;
-  /** Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes. */
+  /** Le nombre de groupes ouverts, et à défaut le nombre de groupes. */
   groupes_corriges: Maybe<Scalars["Int"]["output"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: Maybe<Scalars["Float"]["output"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement. */
+  heures_corrigees: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'enseignement. */
   id: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -1995,8 +2039,10 @@ export type Ec_Enseignement_Stddev_Pop_Order_By = {
   groupes: InputMaybe<Order_By>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Order_By>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Order_By>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Order_By>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Order_By>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -2020,12 +2066,16 @@ export type Ec_Enseignement_Stddev_Samp_Fields = {
   annee_cycle: Maybe<Scalars["Float"]["output"]>;
   /** Le nombre de groupes. */
   groupes: Maybe<Scalars["Float"]["output"]>;
-  /** Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes. */
+  /** Le nombre de groupes ouverts, et à défaut le nombre de groupes. */
   groupes_corriges: Maybe<Scalars["Int"]["output"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: Maybe<Scalars["Float"]["output"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement. */
+  heures_corrigees: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'enseignement. */
   id: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -2050,8 +2100,10 @@ export type Ec_Enseignement_Stddev_Samp_Order_By = {
   groupes: InputMaybe<Order_By>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Order_By>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Order_By>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Order_By>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Order_By>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -2088,8 +2140,10 @@ export type Ec_Enseignement_Stream_Cursor_Value_Input = {
   groupes: InputMaybe<Scalars["Int"]["input"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Scalars["Int"]["input"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Scalars["Float"]["input"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Scalars["Float"]["input"]>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Scalars["Int"]["input"]>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -2122,12 +2176,16 @@ export type Ec_Enseignement_Sum_Fields = {
   annee_cycle: Maybe<Scalars["Int"]["output"]>;
   /** Le nombre de groupes. */
   groupes: Maybe<Scalars["Int"]["output"]>;
-  /** Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes. */
+  /** Le nombre de groupes ouverts, et à défaut le nombre de groupes. */
   groupes_corriges: Maybe<Scalars["Int"]["output"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: Maybe<Scalars["Int"]["output"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement. */
+  heures_corrigees: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'enseignement. */
   id: Maybe<Scalars["Int"]["output"]>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -2152,8 +2210,10 @@ export type Ec_Enseignement_Sum_Order_By = {
   groupes: InputMaybe<Order_By>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Order_By>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Order_By>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Order_By>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Order_By>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -2184,6 +2244,8 @@ export enum Ec_Enseignement_Update_Column {
   GroupesOuverts = "groupes_ouverts",
   /** column name */
   Heures = "heures",
+  /** column name */
+  HeuresOuvertes = "heures_ouvertes",
   /** column name */
   Id = "id",
   /** column name */
@@ -2226,12 +2288,16 @@ export type Ec_Enseignement_Var_Pop_Fields = {
   annee_cycle: Maybe<Scalars["Float"]["output"]>;
   /** Le nombre de groupes. */
   groupes: Maybe<Scalars["Float"]["output"]>;
-  /** Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes. */
+  /** Le nombre de groupes ouverts, et à défaut le nombre de groupes. */
   groupes_corriges: Maybe<Scalars["Int"]["output"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: Maybe<Scalars["Float"]["output"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement. */
+  heures_corrigees: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'enseignement. */
   id: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -2256,8 +2322,10 @@ export type Ec_Enseignement_Var_Pop_Order_By = {
   groupes: InputMaybe<Order_By>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Order_By>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Order_By>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Order_By>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Order_By>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -2281,12 +2349,16 @@ export type Ec_Enseignement_Var_Samp_Fields = {
   annee_cycle: Maybe<Scalars["Float"]["output"]>;
   /** Le nombre de groupes. */
   groupes: Maybe<Scalars["Float"]["output"]>;
-  /** Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes. */
+  /** Le nombre de groupes ouverts, et à défaut le nombre de groupes. */
   groupes_corriges: Maybe<Scalars["Int"]["output"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: Maybe<Scalars["Float"]["output"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement. */
+  heures_corrigees: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'enseignement. */
   id: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -2311,8 +2383,10 @@ export type Ec_Enseignement_Var_Samp_Order_By = {
   groupes: InputMaybe<Order_By>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Order_By>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Order_By>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Order_By>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Order_By>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -2336,12 +2410,16 @@ export type Ec_Enseignement_Variance_Fields = {
   annee_cycle: Maybe<Scalars["Float"]["output"]>;
   /** Le nombre de groupes. */
   groupes: Maybe<Scalars["Float"]["output"]>;
-  /** Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes. */
+  /** Le nombre de groupes ouverts, et à défaut le nombre de groupes. */
   groupes_corriges: Maybe<Scalars["Int"]["output"]>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: Maybe<Scalars["Float"]["output"]>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement. */
+  heures_corrigees: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'enseignement. */
   id: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -2366,8 +2444,10 @@ export type Ec_Enseignement_Variance_Order_By = {
   groupes: InputMaybe<Order_By>;
   /** Le nombre de groupes ouverts (optionnel, si différent du nombre de groupes initial). */
   groupes_ouverts: InputMaybe<Order_By>;
-  /** Le nombre d'heures d'enseignement (devant les étudiants). */
+  /** Le nombre d'heures d'enseignement par groupe. */
   heures: InputMaybe<Order_By>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial). */
+  heures_ouvertes: InputMaybe<Order_By>;
   /** L'identifiant unique de l'enseignement. */
   id: InputMaybe<Order_By>;
   /** L'identifiant de la mention de l'enseignement. */
@@ -9389,9 +9469,9 @@ export type GetEnseignementsTableRowsQuery = {
     id: number;
     nom: string;
     semestre: number;
-    heures: number;
     visible: boolean;
     nomCourt: string | null;
+    heures: number | null;
     groupes: number | null;
     mention: {
       __typename?: "ec_mention";
@@ -11961,7 +12041,11 @@ export const GetEnseignementsTableRowsDocument = {
                   },
                 },
                 { kind: "Field", name: { kind: "Name", value: "semestre" } },
-                { kind: "Field", name: { kind: "Name", value: "heures" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "heures" },
+                  name: { kind: "Name", value: "heures_corrigees" },
+                },
                 {
                   kind: "Field",
                   alias: { kind: "Name", value: "groupes" },

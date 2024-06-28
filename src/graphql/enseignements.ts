@@ -112,7 +112,7 @@ export const GET_ENSEIGNEMENTS_TABLE_ROWS = graphql(/* GraphQL */ `
         labelCourt: label_court
       }
       semestre
-      heures
+      heures: heures_corrigees
       groupes: groupes_corriges
       totalAttributions: demandes_aggregate(
         where: { type: { _eq: "attribution" } }

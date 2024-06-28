@@ -2202,7 +2202,7 @@ type ec_enseignement {
   groupes: Int!
 
   """
-  Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes.
+  Le nombre de groupes ouverts, et à défaut le nombre de groupes.
   """
   groupes_corriges: Int
 
@@ -2212,9 +2212,19 @@ type ec_enseignement {
   groupes_ouverts: Int
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float!
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement.
+  """
+  heures_corrigees: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -2509,7 +2519,7 @@ type ec_enseignement_avg_fields {
   groupes: Float
 
   """
-  Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes.
+  Le nombre de groupes ouverts, et à défaut le nombre de groupes.
   """
   groupes_corriges: Int
 
@@ -2519,9 +2529,19 @@ type ec_enseignement_avg_fields {
   groupes_ouverts: Float
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement.
+  """
+  heures_corrigees: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -2579,9 +2599,14 @@ input ec_enseignement_avg_order_by {
   groupes_ouverts: order_by
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: order_by
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: order_by
 
   """
   L'identifiant unique de l'enseignement.
@@ -2635,6 +2660,8 @@ input ec_enseignement_bool_exp {
   groupes_corriges: Int_comparison_exp
   groupes_ouverts: Int_comparison_exp
   heures: Float_comparison_exp
+  heures_corrigees: Float_comparison_exp
+  heures_ouvertes: Float_comparison_exp
   id: Int_comparison_exp
   mention: ec_mention_bool_exp
   mention_id: Int_comparison_exp
@@ -2691,9 +2718,14 @@ input ec_enseignement_inc_input {
   groupes_ouverts: Int
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -2756,9 +2788,14 @@ input ec_enseignement_insert_input {
   groupes_ouverts: Int
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -2845,7 +2882,7 @@ type ec_enseignement_max_fields {
   groupes: Int
 
   """
-  Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes.
+  Le nombre de groupes ouverts, et à défaut le nombre de groupes.
   """
   groupes_corriges: Int
 
@@ -2855,9 +2892,19 @@ type ec_enseignement_max_fields {
   groupes_ouverts: Int
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement.
+  """
+  heures_corrigees: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -2938,9 +2985,14 @@ input ec_enseignement_max_order_by {
   groupes_ouverts: order_by
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: order_by
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: order_by
 
   """
   L'identifiant unique de l'enseignement.
@@ -3016,7 +3068,7 @@ type ec_enseignement_min_fields {
   groupes: Int
 
   """
-  Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes.
+  Le nombre de groupes ouverts, et à défaut le nombre de groupes.
   """
   groupes_corriges: Int
 
@@ -3026,9 +3078,19 @@ type ec_enseignement_min_fields {
   groupes_ouverts: Int
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement.
+  """
+  heures_corrigees: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -3109,9 +3171,14 @@ input ec_enseignement_min_order_by {
   groupes_ouverts: order_by
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: order_by
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: order_by
 
   """
   L'identifiant unique de l'enseignement.
@@ -3212,6 +3279,8 @@ input ec_enseignement_order_by {
   groupes_corriges: order_by
   groupes_ouverts: order_by
   heures: order_by
+  heures_corrigees: order_by
+  heures_ouvertes: order_by
   id: order_by
   mention: ec_mention_order_by
   mention_id: order_by
@@ -3284,6 +3353,11 @@ enum ec_enseignement_select_column {
   column name
   """
   heures
+
+  """
+  column name
+  """
+  heures_ouvertes
 
   """
   column name
@@ -3388,9 +3462,14 @@ input ec_enseignement_set_input {
   groupes_ouverts: Int
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -3464,7 +3543,7 @@ type ec_enseignement_stddev_fields {
   groupes: Float
 
   """
-  Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes.
+  Le nombre de groupes ouverts, et à défaut le nombre de groupes.
   """
   groupes_corriges: Int
 
@@ -3474,9 +3553,19 @@ type ec_enseignement_stddev_fields {
   groupes_ouverts: Float
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement.
+  """
+  heures_corrigees: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -3534,9 +3623,14 @@ input ec_enseignement_stddev_order_by {
   groupes_ouverts: order_by
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: order_by
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: order_by
 
   """
   L'identifiant unique de l'enseignement.
@@ -3589,7 +3683,7 @@ type ec_enseignement_stddev_pop_fields {
   groupes: Float
 
   """
-  Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes.
+  Le nombre de groupes ouverts, et à défaut le nombre de groupes.
   """
   groupes_corriges: Int
 
@@ -3599,9 +3693,19 @@ type ec_enseignement_stddev_pop_fields {
   groupes_ouverts: Float
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement.
+  """
+  heures_corrigees: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -3659,9 +3763,14 @@ input ec_enseignement_stddev_pop_order_by {
   groupes_ouverts: order_by
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: order_by
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: order_by
 
   """
   L'identifiant unique de l'enseignement.
@@ -3714,7 +3823,7 @@ type ec_enseignement_stddev_samp_fields {
   groupes: Float
 
   """
-  Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes.
+  Le nombre de groupes ouverts, et à défaut le nombre de groupes.
   """
   groupes_corriges: Int
 
@@ -3724,9 +3833,19 @@ type ec_enseignement_stddev_samp_fields {
   groupes_ouverts: Float
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement.
+  """
+  heures_corrigees: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -3784,9 +3903,14 @@ input ec_enseignement_stddev_samp_order_by {
   groupes_ouverts: order_by
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: order_by
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: order_by
 
   """
   L'identifiant unique de l'enseignement.
@@ -3866,9 +3990,14 @@ input ec_enseignement_stream_cursor_value_input {
   groupes_ouverts: Int
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -3942,7 +4071,7 @@ type ec_enseignement_sum_fields {
   groupes: Int
 
   """
-  Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes.
+  Le nombre de groupes ouverts, et à défaut le nombre de groupes.
   """
   groupes_corriges: Int
 
@@ -3952,9 +4081,19 @@ type ec_enseignement_sum_fields {
   groupes_ouverts: Int
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement.
+  """
+  heures_corrigees: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -4012,9 +4151,14 @@ input ec_enseignement_sum_order_by {
   groupes_ouverts: order_by
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: order_by
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: order_by
 
   """
   L'identifiant unique de l'enseignement.
@@ -4085,6 +4229,11 @@ enum ec_enseignement_update_column {
   column name
   """
   heures
+
+  """
+  column name
+  """
+  heures_ouvertes
 
   """
   column name
@@ -4179,7 +4328,7 @@ type ec_enseignement_var_pop_fields {
   groupes: Float
 
   """
-  Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes.
+  Le nombre de groupes ouverts, et à défaut le nombre de groupes.
   """
   groupes_corriges: Int
 
@@ -4189,9 +4338,19 @@ type ec_enseignement_var_pop_fields {
   groupes_ouverts: Float
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement.
+  """
+  heures_corrigees: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -4249,9 +4408,14 @@ input ec_enseignement_var_pop_order_by {
   groupes_ouverts: order_by
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: order_by
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: order_by
 
   """
   L'identifiant unique de l'enseignement.
@@ -4304,7 +4468,7 @@ type ec_enseignement_var_samp_fields {
   groupes: Float
 
   """
-  Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes.
+  Le nombre de groupes ouverts, et à défaut le nombre de groupes.
   """
   groupes_corriges: Int
 
@@ -4314,9 +4478,19 @@ type ec_enseignement_var_samp_fields {
   groupes_ouverts: Float
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement.
+  """
+  heures_corrigees: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -4374,9 +4548,14 @@ input ec_enseignement_var_samp_order_by {
   groupes_ouverts: order_by
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: order_by
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: order_by
 
   """
   L'identifiant unique de l'enseignement.
@@ -4429,7 +4608,7 @@ type ec_enseignement_variance_fields {
   groupes: Float
 
   """
-  Fonction qui renvoie, pour un enseignement donné, le nombre de groupes ouverts, et à défaut le nombre de groupes.
+  Le nombre de groupes ouverts, et à défaut le nombre de groupes.
   """
   groupes_corriges: Int
 
@@ -4439,9 +4618,19 @@ type ec_enseignement_variance_fields {
   groupes_ouverts: Float
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe, et à défaut le nombre d'heures d'enseignement.
+  """
+  heures_corrigees: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: Float
 
   """
   L'identifiant unique de l'enseignement.
@@ -4499,9 +4688,14 @@ input ec_enseignement_variance_order_by {
   groupes_ouverts: order_by
 
   """
-  Le nombre d'heures d'enseignement (devant les étudiants).
+  Le nombre d'heures d'enseignement par groupe.
   """
   heures: order_by
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe (optionnel, si différent du nombre d'heures d'enseignement initial).
+  """
+  heures_ouvertes: order_by
 
   """
   L'identifiant unique de l'enseignement.
