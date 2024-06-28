@@ -30,7 +30,7 @@ type TotalHeuresEQTD = {
 export type RowEnseignement = Identifiant & {
   visible: boolean;
   semestre: number;
-  heures: number;
+  heures: number | null;
   groupes: number | null;
   mention: Identifiant & {
     cursus: Identifiant;

@@ -162,7 +162,7 @@ const columns: Column<RowEnseignement>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
     field: (row) =>
-      row.heures * (row.groupes ?? 0) -
+      (row.heures ?? 0) * (row.groupes ?? 0) -
       (row.totalAttributions.aggregate?.sum?.heures ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
@@ -189,7 +189,7 @@ const columns: Column<RowEnseignement>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
     field: (row) =>
-      row.heures * (row.groupes ?? 0) -
+      (row.heures ?? 0) * (row.groupes ?? 0) -
       (row.totalPrincipales.aggregate?.sum?.heures ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
@@ -204,7 +204,7 @@ const columns: Column<RowEnseignement>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",
     field: (row) =>
-      row.heures * (row.groupes ?? 0) -
+      (row.heures ?? 0) * (row.groupes ?? 0) -
       (row.totalPrioritaire.aggregate?.sum?.heures ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
