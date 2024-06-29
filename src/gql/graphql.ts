@@ -9213,7 +9213,11 @@ export type DemandeFragment = {
     prenom: string;
     alias: string | null;
   };
-  enseignement: { __typename?: "ec_enseignement"; id: number; heures: number };
+  enseignement: {
+    __typename?: "ec_enseignement";
+    id: number;
+    heures: number | null;
+  };
 };
 
 export type TotalHeuresFragment = {
@@ -9380,7 +9384,7 @@ export type ArchiveFragment = {
     enseignement: {
       __typename?: "ec_enseignement";
       id: number;
-      heures: number;
+      heures: number | null;
     };
   }>;
 };
@@ -9413,7 +9417,7 @@ export type NestedArchivesFragment = {
         enseignement: {
           __typename?: "ec_enseignement";
           id: number;
-          heures: number;
+          heures: number | null;
         };
       }>;
     } | null;
@@ -9433,7 +9437,7 @@ export type NestedArchivesFragment = {
       enseignement: {
         __typename?: "ec_enseignement";
         id: number;
-        heures: number;
+        heures: number | null;
       };
     }>;
   } | null;
@@ -9453,7 +9457,7 @@ export type NestedArchivesFragment = {
     enseignement: {
       __typename?: "ec_enseignement";
       id: number;
-      heures: number;
+      heures: number | null;
     };
   }>;
 };
@@ -9566,7 +9570,7 @@ export type GetEnseignementDetailsQuery = {
       enseignement: {
         __typename?: "ec_enseignement";
         id: number;
-        heures: number;
+        heures: number | null;
       };
     }>;
     priorites: Array<{
@@ -9611,7 +9615,7 @@ export type GetEnseignementDetailsQuery = {
             enseignement: {
               __typename?: "ec_enseignement";
               id: number;
-              heures: number;
+              heures: number | null;
             };
           }>;
         } | null;
@@ -9631,7 +9635,7 @@ export type GetEnseignementDetailsQuery = {
           enseignement: {
             __typename?: "ec_enseignement";
             id: number;
-            heures: number;
+            heures: number | null;
           };
         }>;
       } | null;
@@ -9651,7 +9655,7 @@ export type GetEnseignementDetailsQuery = {
         enseignement: {
           __typename?: "ec_enseignement";
           id: number;
-          heures: number;
+          heures: number | null;
         };
       }>;
     } | null;
@@ -10522,7 +10526,11 @@ export const DemandeFragmentDoc = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "heures" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "heures" },
+                  name: { kind: "Name", value: "heures_corrigees" },
+                },
               ],
             },
           },
@@ -10714,7 +10722,11 @@ export const ArchiveFragmentDoc = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "heures" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "heures" },
+                  name: { kind: "Name", value: "heures_corrigees" },
+                },
               ],
             },
           },
@@ -10821,7 +10833,11 @@ export const NestedArchivesFragmentDoc = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "heures" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "heures" },
+                  name: { kind: "Name", value: "heures_corrigees" },
+                },
               ],
             },
           },
@@ -12608,7 +12624,11 @@ export const GetEnseignementDetailsDocument = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "heures" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "heures" },
+                  name: { kind: "Name", value: "heures_corrigees" },
+                },
               ],
             },
           },
