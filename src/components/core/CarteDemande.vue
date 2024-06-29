@@ -39,8 +39,10 @@ const onDelete = async (): Promise<void> => {
   await deleteDemande(client, props.demande.id, props.demande.typeDemande);
 };
 
-const groupes: ComputedRef<number> = computed(
-  () => props.demande.heures / props.demande.enseignement.heures,
+const groupes: ComputedRef<number> = computed(() =>
+  props.demande.enseignement.heures
+    ? props.demande.heures / props.demande.enseignement.heures
+    : 0,
 );
 </script>
 

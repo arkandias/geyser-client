@@ -17,7 +17,7 @@ graphql(/* GraphQL */ `
 
   fragment Resume on ec_enseignement {
     ensId: id
-    heuresParGroupe: heures
+    heuresParGroupe: heures_corrigees
     responsables(
       order_by: [
         { intervenant: { nom: asc } }

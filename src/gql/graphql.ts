@@ -9315,7 +9315,7 @@ export type ResumeFragment = {
   __typename?: "ec_enseignement";
   description: string | null;
   ensId: number;
-  heuresParGroupe: number;
+  heuresParGroupe: number | null;
   responsables: Array<{
     __typename?: "ec_responsable";
     id: number;
@@ -9549,7 +9549,7 @@ export type GetEnseignementDetailsQuery = {
     __typename?: "ec_enseignement";
     description: string | null;
     ensId: number;
-    heuresParGroupe: number;
+    heuresParGroupe: number | null;
     demandes: Array<{
       __typename?: "ec_demande";
       id: number;
@@ -10219,7 +10219,7 @@ export const ResumeFragmentDoc = {
           {
             kind: "Field",
             alias: { kind: "Name", value: "heuresParGroupe" },
-            name: { kind: "Name", value: "heures" },
+            name: { kind: "Name", value: "heures_corrigees" },
           },
           {
             kind: "Field",
@@ -12748,7 +12748,7 @@ export const GetEnseignementDetailsDocument = {
           {
             kind: "Field",
             alias: { kind: "Name", value: "heuresParGroupe" },
-            name: { kind: "Name", value: "heures" },
+            name: { kind: "Name", value: "heures_corrigees" },
           },
           {
             kind: "Field",

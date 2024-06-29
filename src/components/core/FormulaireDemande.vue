@@ -24,7 +24,7 @@ import { usePhases } from "@/stores/phases.ts";
 
 const props = defineProps<{
   ensId: number;
-  heuresParGroupe: number;
+  heuresParGroupe: number | null;
 }>();
 
 const { enCours: phaseEnCours } = usePhases();
@@ -42,13 +42,16 @@ watch(
 
 const groupes: WritableComputedRef<number | null> = computed({
   get: () =>
-    heures.value === null
+    heures.value === null || props.heuresParGroupe === null
       ? null
       : Math.round(
           (heures.value / props.heuresParGroupe + Number.EPSILON) * 100,
         ) / 100,
   set: (val) => {
-    heures.value = val === null ? null : val * props.heuresParGroupe;
+    heures.value =
+      val === null || props.heuresParGroupe === null
+        ? null
+        : val * props.heuresParGroupe;
   },
 });
 

@@ -14,7 +14,7 @@ graphql(/* GraphQL */ `
     }
     enseignement {
       id
-      heures
+      heures: heures_corrigees
     }
     typeDemande: type
     heures

@@ -98,7 +98,7 @@ export type Responsable = {
 };
 export type Resume = {
   ensId: number;
-  heuresParGroupe: number;
+  heuresParGroupe: number | null;
   responsables: Responsable[];
   mention: {
     responsables: Responsable[];
@@ -113,7 +113,7 @@ export type Demande = {
   intervenant: Intervenant;
   enseignement: {
     id: number;
-    heures: number;
+    heures: number | null;
   };
   typeDemande: string;
   heures: number;
