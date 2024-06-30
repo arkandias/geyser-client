@@ -9481,6 +9481,7 @@ export type GetEnseignementsTableRowsQuery = {
       __typename?: "ec_mention";
       id: number;
       nom: string;
+      visible: boolean;
       nomCourt: string | null;
       cursus: {
         __typename?: "ec_cursus";
@@ -9493,6 +9494,7 @@ export type GetEnseignementsTableRowsQuery = {
       __typename?: "ec_parcours";
       id: number;
       nom: string;
+      visible: boolean;
       nomCourt: string | null;
     } | null;
     typeEnseignement: {
@@ -12015,6 +12017,10 @@ export const GetEnseignementsTableRowsDocument = {
                           ],
                         },
                       },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "visible" },
+                      },
                     ],
                   },
                 },
@@ -12030,6 +12036,10 @@ export const GetEnseignementsTableRowsDocument = {
                         kind: "Field",
                         alias: { kind: "Name", value: "nomCourt" },
                         name: { kind: "Name", value: "nom_court" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "visible" },
                       },
                     ],
                   },

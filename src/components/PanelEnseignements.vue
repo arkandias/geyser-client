@@ -320,11 +320,19 @@ const filterMethod = (
 
 const stickyHeader: Ref<boolean> = ref(false);
 
+// check whether an enseignement is assigned to the selected intervenant
 const estAttribue = (row: RowEnseignement) =>
   intervenant.value?.demandes.some(
     (demande) =>
       demande.ensId === row.id && demande.typeDemande === "attribution",
   ) ?? false;
+
+// check whether an enseignement is visible
+const estVisible = (row: RowEnseignement) =>
+  !intervenant.value &&
+  row.visible &&
+  row.mention.visible &&
+  (row.parcours?.visible ?? true);
 </script>
 
 <template>
@@ -529,7 +537,7 @@ const estAttribue = (row: RowEnseignement) =>
       <QTd
         :props="scope"
         :class="{
-          'non-visible': !intervenant && !scope.row.visible,
+          'non-visible': !estVisible(scope.row),
           attribue: estAttribue(scope.row),
         }"
       >

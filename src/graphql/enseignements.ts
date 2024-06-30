@@ -99,11 +99,13 @@ export const GET_ENSEIGNEMENTS_TABLE_ROWS = graphql(/* GraphQL */ `
           nom
           nomCourt: nom_court
         }
+        visible
       }
       parcours {
         id
         nom
         nomCourt: nom_court
+        visible
       }
       nom
       nomCourt: nom_court

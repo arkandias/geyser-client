@@ -28,14 +28,14 @@ type TotalHeuresEQTD = {
   } | null;
 };
 export type RowEnseignement = Identifiant & {
-  visible: boolean;
   semestre: number;
   heures: number | null;
   groupes: number | null;
   mention: Identifiant & {
     cursus: Identifiant;
+    visible: boolean;
   };
-  parcours: Identifiant | null;
+  parcours: (Identifiant & { visible: boolean }) | null;
   typeEnseignement: {
     label: string;
     labelCourt: string | null;
@@ -44,6 +44,7 @@ export type RowEnseignement = Identifiant & {
   totalPrincipales: TotalHeures;
   totalSecondaires: TotalHeures;
   totalPrioritaire: TotalHeures;
+  visible: boolean;
 };
 export type RowIntervenant = Intervenant & {
   visible: boolean;
