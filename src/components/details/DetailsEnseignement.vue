@@ -13,10 +13,10 @@ import { processArchives } from "@/helpers/enseignement.ts";
 import { formatTypeDemandesTitre } from "@/helpers/format.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
-import DetailsSection from "@/components/details/DetailsSection.vue";
 import FormulaireDemande from "@/components/core/FormulaireDemande.vue";
 import PucePriorite from "@/components/core/PucePriorite.vue";
 import DetailsEnseignementDemandes from "@/components/details/DetailsEnseignementDemandes.vue";
+import DetailsSection from "@/components/details/DetailsSection.vue";
 
 const props = defineProps<{ details: Details }>();
 

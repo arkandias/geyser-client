@@ -19,8 +19,8 @@ import { useData } from "@/stores/data.ts";
 
 import ResumeDemandes from "@/components/core/ResumeDemandes.vue";
 import ServiceIntervenant from "@/components/core/ServiceIntervenant.vue";
-import DetailsInformations from "@/components/details/DetailsInformations.vue";
 import DetailsEnseignement from "@/components/details/DetailsEnseignement.vue";
+import DetailsInformations from "@/components/details/DetailsInformations.vue";
 import DetailsIntervenant from "@/components/details/DetailsIntervenant.vue";
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 import DetailsVolet from "@/components/details/volet/DetailsVolet.vue";
