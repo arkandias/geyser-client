@@ -31,7 +31,7 @@ const queryMyRow = useQuery({
     annee: computed(() => anneeEnCours.value ?? 0),
     uid,
   }),
-  pause: () => !anneeEnCours.value,
+  pause: () => anneeEnCours.value === null,
   context: {
     additionalTypenames: [
       "ec_demande",

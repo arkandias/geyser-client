@@ -91,7 +91,7 @@ watch(
 
 const client = useClientHandle().client;
 const onSubmit = async (): Promise<void> => {
-  if (!uid.value) {
+  if (uid.value === null) {
     errorNotify("Formulaire non valide", "Sélectionnez un intervenant");
     return;
   }

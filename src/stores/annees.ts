@@ -23,17 +23,13 @@ const enCoursActive: ComputedRef<boolean> = computed(
 );
 
 const select = (annee?: number | null): void => {
-  if (annee) {
-    selected.value = annee;
-  } else {
-    selected.value = enCours.value;
-  }
+  selected.value = annee ?? enCours.value;
 };
 
 export const useAnnees = () => {
   const update = useMutation(UPDATE_ANNEE_EN_COURS);
   const setEnCours = async (annee: number | null): Promise<void> => {
-    if (!annee) {
+    if (annee === null) {
       return;
     }
     await update.executeMutation({

@@ -72,7 +72,7 @@ export const updateDemande = async (
       typeDemande,
       heures,
     });
-    if (result.data?.demande?.id && !result.error) {
+    if (result.data?.demande && !result.error) {
       successNotify(
         formatTypeDemande(typeDemande) +
           (current === 0 ? " créée" : " mise à jour"),
@@ -89,7 +89,7 @@ export const deleteDemande = async (
   typeDemande: string,
 ): Promise<void> => {
   const result = await client.mutation(DELETE_DEMANDE_BY_ID, { id });
-  if (result.data?.demande?.id && !result.error) {
+  if (result.data?.demande && !result.error) {
     successNotify(formatTypeDemande(typeDemande) + " supprimée");
   } else {
     errorNotify("Échec de la suppression");

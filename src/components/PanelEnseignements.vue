@@ -53,7 +53,7 @@ const columns: Column<RowEnseignement>[] = [
     field: (row) => ({
       long: formatFormation(row.mention.cursus.nom, row.mention.nom),
       short:
-        row.mention.cursus.nomCourt || row.mention.nomCourt
+        row.mention.cursus.nomCourt !== null || row.mention.nomCourt !== null
           ? formatFormation(
               row.mention.cursus.nomCourt ?? row.mention.cursus.nom,
               row.mention.nomCourt ?? row.mention.nom,
@@ -308,7 +308,7 @@ const filterMethod = (
           normalizeForSearch(
             String(
               isAbbreviable(col)
-                ? col.field(row).long + " " + (col.field(row).short ?? "")
+                ? col.field(row).long + (col.field(row).short ?? "")
                 : col.field(row),
             ),
           ).includes(terms.search),
@@ -325,7 +325,7 @@ const estAttribue = (row: RowEnseignement) =>
   ) ?? false;
 
 // check whether an enseignement is visible
-const estVisible = (row: RowEnseignement) =>
+const estVisible = (row: RowEnseignement): boolean =>
   !intervenant.value &&
   row.visible &&
   row.mention.visible &&

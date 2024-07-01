@@ -63,14 +63,14 @@ export async function login(
         console.error("Login failed: Missing client with login flow 'LOOKUP'");
         return false;
       }
-      profile = (await getProfile(profile.uid, client)) ?? null;
+      profile = await getProfile(profile.uid, client);
       break;
     case "IMPORT":
       if (!client) {
         console.error("Login failed: Missing client with login flow 'IMPORT'");
         return false;
       }
-      profile = (await updateProfile(profile, client)) ?? null;
+      profile = await updateProfile(profile, client);
       break;
     case "DIRECT":
     case undefined:

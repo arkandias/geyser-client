@@ -86,11 +86,11 @@ export const formatTypeMessage = (typeMessage: string): string => {
 };
 
 export const indicateurMessage = (messages: Message[]): string =>
-  messages.find((message) => message.typeMessage === "message_intervenant")
-    ? messages.find((message) => message.typeMessage === "note_commission")
+  messages.some((message) => message.typeMessage === "message_intervenant")
+    ? messages.some((message) => message.typeMessage === "note_commission")
       ? "\u2021"
       : "\u002A"
-    : messages.find((message) => message.typeMessage === "note_commission")
+    : messages.some((message) => message.typeMessage === "note_commission")
       ? "\u2020"
       : "";
 

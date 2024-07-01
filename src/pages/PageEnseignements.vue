@@ -84,7 +84,7 @@ const queryEnseignements = useQuery({
   variables: reactive({
     annee: computed(() => anneeActive.value ?? 0),
   }),
-  pause: () => !anneeActive.value,
+  pause: () => anneeActive.value === null,
   context: { additionalTypenames: ["ec_demande"] },
 });
 // store the fetching status and result of the query result in the Data store
@@ -105,7 +105,7 @@ const queryIntervenants = useQuery({
   variables: reactive({
     annee: computed(() => anneeActive.value ?? 0),
   }),
-  pause: () => !perm.deVoirLeServiceDAutrui || !anneeActive.value,
+  pause: () => !perm.deVoirLeServiceDAutrui || anneeActive.value === null,
   context: {
     additionalTypenames: [
       "ec_demande",
@@ -120,7 +120,7 @@ const queryMyRow = useQuery({
     annee: computed(() => anneeActive.value ?? 0),
     uid: moi,
   }),
-  pause: () => perm.deVoirLeServiceDAutrui || !anneeActive.value,
+  pause: () => perm.deVoirLeServiceDAutrui || anneeActive.value === null,
   context: {
     additionalTypenames: [
       "ec_demande",

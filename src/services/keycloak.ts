@@ -43,36 +43,20 @@ keycloak.onTokenExpired = () => {
   console.debug("Token expired");
 };
 
-const claims: ComputedRef<KeycloakClaims | null> = computed(() =>
-  keycloak.tokenParsed?.["https://hasura.io/jwt/claims"]
-    ? {
-        allowedRoles:
-          keycloak.tokenParsed["https://hasura.io/jwt/claims"][
-            "x-hasura-allowed-roles"
-          ] ?? [],
-        defaultRole:
-          keycloak.tokenParsed["https://hasura.io/jwt/claims"][
-            "x-hasura-default-role"
-          ] ?? "",
-        userId:
-          keycloak.tokenParsed["https://hasura.io/jwt/claims"][
-            "x-hasura-user-id"
-          ] ?? "",
-        lastName:
-          keycloak.tokenParsed["https://hasura.io/jwt/claims"][
-            "x-hasura-last-name"
-          ] ?? null,
-        firstName:
-          keycloak.tokenParsed["https://hasura.io/jwt/claims"][
-            "x-hasura-first-name"
-          ] ?? null,
-        alias:
-          keycloak.tokenParsed["https://hasura.io/jwt/claims"][
-            "x-hasura-alias"
-          ] ?? null,
-      }
-    : null,
-);
+const claims: ComputedRef<KeycloakClaims | null> = computed(() => {
+  const hasuraClaims = keycloak.tokenParsed?.["https://hasura.io/jwt/claims"];
+  if (!hasuraClaims) {
+    return null;
+  }
+  return {
+    allowedRoles: hasuraClaims["x-hasura-allowed-roles"] ?? [],
+    defaultRole: hasuraClaims["x-hasura-default-role"] ?? "",
+    userId: hasuraClaims["x-hasura-user-id"] ?? "",
+    lastName: hasuraClaims["x-hasura-last-name"] ?? null,
+    firstName: hasuraClaims["x-hasura-first-name"] ?? null,
+    alias: hasuraClaims["x-hasura-alias"] ?? null,
+  };
+});
 
 export const getToken = (): string => keycloak.token ?? "";
 

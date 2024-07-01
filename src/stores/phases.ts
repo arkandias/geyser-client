@@ -15,7 +15,7 @@ export const enCours: Ref<string | null> = ref(null);
 export const usePhases = () => {
   const update = useMutation(UPDATE_PHASE_EN_COURS);
   const setEnCours = async (phase: string | null): Promise<void> => {
-    if (!phase) {
+    if (phase === null) {
       return;
     }
     await update.executeMutation({

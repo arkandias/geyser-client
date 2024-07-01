@@ -69,7 +69,7 @@ const onSubmit = async (): Promise<void> => {
     );
     return;
   }
-  if (!(heuresEQTD.value > 0)) {
+  if (heuresEQTD.value <= 0) {
     errorNotify(
       "Formulaire non valide",
       "Sélectionnez un nombre d'heures strictement positif",
@@ -82,7 +82,7 @@ const onSubmit = async (): Promise<void> => {
     typeModification: typeModification.value.label,
     heuresEQTD: heuresEQTD.value,
   });
-  if (result.data?.modificationService?.id && !result.error) {
+  if (result.data?.modificationService && !result.error) {
     successNotify("Modification ajoutée");
   } else {
     errorNotify("Échec de l'ajout");
@@ -91,7 +91,7 @@ const onSubmit = async (): Promise<void> => {
 };
 const onDelete = async (id: number): Promise<void> => {
   const result = await deleteModification.executeMutation({ id: id });
-  if (result.data?.modificationService?.id && !result.error) {
+  if (result.data?.modificationService && !result.error) {
     successNotify(`Modification supprimée`);
   } else {
     errorNotify("Échec de la suppression");

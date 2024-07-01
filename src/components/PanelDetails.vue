@@ -35,7 +35,7 @@ const queryDetails = useQuery({
   variables: reactive({
     ensId: computed(() => enseignement.value?.id ?? 0),
   }),
-  pause: () => !enseignement.value,
+  pause: () => enseignement.value === null,
   context: {
     additionalTypenames: ["ec_demande", "ec_priorite"],
   },
@@ -57,8 +57,9 @@ const caption: ComputedRef<string> = computed(() =>
       " \u2014 " +
       enseignement.value.mention.nom +
       " \u2014 " +
-      (enseignement.value.parcours?.nom ?? "") +
-      " \u2014 " +
+      (enseignement.value.parcours?.nom
+        ? enseignement.value.parcours.nom + " \u2014 "
+        : "") +
       `S${enseignement.value.semestre.toString()}` +
       " \u2014 " +
       enseignement.value.typeEnseignement.label
