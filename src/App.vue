@@ -12,8 +12,8 @@ import { GET_ANNEES } from "@/graphql/annees.ts";
 import { GET_PHASES } from "@/graphql/phases.ts";
 import {
   enCours as anneeEnCours,
-  selected as selectedAnnee,
   annees,
+  selected as selectedAnnee,
 } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { usePermissions } from "@/stores/permissions.ts";
