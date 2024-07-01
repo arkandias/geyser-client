@@ -34,7 +34,7 @@ export default tseslint.config(
       parserOptions: {
         extraFileExtensions: [".vue"],
         parser: tseslint.parser,
-        project: "./tsconfig.json",
+        project: ["./tsconfig.app.json", "./tsconfig.node.json"],
       },
     },
     rules: {
