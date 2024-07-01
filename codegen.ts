@@ -9,7 +9,7 @@ const config: CodegenConfig = {
   schema: {
     [process.env.VITE_GRAPHQL_URL ?? ""]: {
       headers: {
-        "x-hasura-admin-secret": process.env.VITE_HASURA_ADMIN_SECRET ?? "",
+        "X-Hasura-Admin-Secret": process.env.VITE_HASURA_ADMIN_SECRET ?? "",
       },
     },
   },
