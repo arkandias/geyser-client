@@ -9,12 +9,13 @@ import { useQuasar } from "quasar";
 import { computed, ComputedRef } from "vue";
 import { useRouter } from "vue-router";
 
-import MenuAdmin from "@/components/header/MenuAdmin.vue";
-import MenuEnseignements from "@/components/header/MenuEnseignements.vue";
-import MenuUtilisateur from "@/components/header/MenuUtilisateur.vue";
 import { couleurBouton } from "@/helpers/format.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 import { useRefresh } from "@/stores/refresh.ts";
+
+import MenuAdmin from "@/components/header/MenuAdmin.vue";
+import MenuEnseignements from "@/components/header/MenuEnseignements.vue";
+import MenuUtilisateur from "@/components/header/MenuUtilisateur.vue";
 
 defineProps<{ disable?: boolean }>();
 

@@ -15,12 +15,13 @@ import {
   watch,
 } from "vue";
 
-import SelectIntervenant from "@/components/core/SelectIntervenant.vue";
 import { updateDemande } from "@/helpers/demandes.ts";
 import { errorNotify } from "@/helpers/notify.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 import { usePhases } from "@/stores/phases.ts";
+
+import SelectIntervenant from "@/components/core/SelectIntervenant.vue";
 
 const props = defineProps<{
   ensId: number;

@@ -7,13 +7,14 @@
 <script setup lang="ts">
 import { Ref, computed, ref, toValue, watchEffect } from "vue";
 
+import type { ColumnNonAbbreviable, RowIntervenant } from "@/helpers/types.ts";
+
 import {
   indicateurMessage,
   nf,
   normalizeForSearch,
   tooltipDelay,
 } from "@/helpers/format.ts";
-import { ColumnNonAbbreviable, RowIntervenant } from "@/helpers/types.ts";
 import { selectedIntervenant as selected, useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 

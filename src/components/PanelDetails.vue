@@ -8,6 +8,15 @@
 import { useQuery } from "@urql/vue";
 import { computed, ComputedRef, reactive } from "vue";
 
+import type { Details } from "@/helpers/types.ts";
+
+import { GET_ENSEIGNEMENT_DETAILS } from "@/graphql/enseignements.ts";
+import {
+  formatIntervenant,
+  formatResumeIntervenant,
+} from "@/helpers/format.ts";
+import { useData } from "@/stores/data.ts";
+
 import ResumeDemandes from "@/components/core/ResumeDemandes.vue";
 import ServiceIntervenant from "@/components/core/ServiceIntervenant.vue";
 import DetailsInformations from "@/components/details/DetailsInformations.vue";
@@ -18,13 +27,6 @@ import DetailsVolet from "@/components/details/volet/DetailsVolet.vue";
 import DetailsVoletEnseignement from "@/components/details/volet/DetailsVoletEnseignement.vue";
 import DetailsVoletInformations from "@/components/details/volet/DetailsVoletInformations.vue";
 import DetailsVoletIntervenant from "@/components/details/volet/DetailsVoletIntervenant.vue";
-import { GET_ENSEIGNEMENT_DETAILS } from "@/graphql/enseignements.ts";
-import {
-  formatIntervenant,
-  formatResumeIntervenant,
-} from "@/helpers/format.ts";
-import { Details } from "@/helpers/types.ts";
-import { useData } from "@/stores/data.ts";
 
 const { enseignement, intervenant } = useData();
 

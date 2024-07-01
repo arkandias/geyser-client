@@ -8,7 +8,8 @@
 import { useMutation, useQuery } from "@urql/vue";
 import { ComputedRef, Ref, computed, ref } from "vue";
 
-import TableService from "@/components/core/TableService.vue";
+import type { Modification, TypeModification } from "@/helpers/types.ts";
+
 import {
   DELETE_MODIFICATION,
   GET_TYPES_MODIFICATION,
@@ -16,8 +17,9 @@ import {
 } from "@/graphql/modifications.ts";
 import { nf } from "@/helpers/format.ts";
 import { errorNotify, successNotify } from "@/helpers/notify.ts";
-import { Modification, TypeModification } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
+
+import TableService from "@/components/core/TableService.vue";
 
 const props = defineProps<{
   uid: string;

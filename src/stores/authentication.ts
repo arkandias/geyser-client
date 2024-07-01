@@ -7,8 +7,9 @@
 import { Client } from "@urql/vue";
 import { Ref, reactive, readonly, ref, toRef } from "vue";
 
+import type { Intervenant } from "@/helpers/types.ts";
+
 import { GET_INTERVENANT, UPSERT_INTERVENANT } from "@/graphql/intervenants.ts";
-import { Intervenant } from "@/helpers/types.ts";
 import { KeycloakClaims } from "@/services/keycloak.ts";
 
 export const activeRole: Ref<string> = ref("");

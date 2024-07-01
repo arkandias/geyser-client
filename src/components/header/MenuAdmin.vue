@@ -7,13 +7,15 @@
 <script setup lang="ts">
 import { computed, ComputedRef } from "vue";
 
-import MenuAdminOptions from "@/components/header/MenuAdminOptions.vue";
-import MenuBase from "@/components/header/MenuBase.vue";
+import type { Option } from "@/helpers/types.ts";
+
 import { formatPhase } from "@/helpers/format.ts";
-import { Option } from "@/helpers/types.ts";
 import { compareOrder } from "@/helpers/utils.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { usePhases } from "@/stores/phases.ts";
+
+import MenuAdminOptions from "@/components/header/MenuAdminOptions.vue";
+import MenuBase from "@/components/header/MenuBase.vue";
 
 const {
   annees,

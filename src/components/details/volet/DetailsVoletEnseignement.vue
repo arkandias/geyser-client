@@ -8,12 +8,14 @@
 import { useMutation } from "@urql/vue";
 import { computed, ComputedRef } from "vue";
 
+import type { Details, Intervenant, Responsable } from "@/helpers/types.ts";
+
+import { UPDATE_DESCRIPTION } from "@/graphql/enseignements.ts";
+import { usePermissions } from "@/stores/permissions.ts";
+
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
 import DetailsVoletEnseignementResponsables from "@/components/details/volet/DetailsVoletEnseignementResponsables.vue";
-import { UPDATE_DESCRIPTION } from "@/graphql/enseignements.ts";
-import { Details, Intervenant, Responsable } from "@/helpers/types.ts";
-import { usePermissions } from "@/stores/permissions.ts";
 
 const props = defineProps<{ details: Details }>();
 

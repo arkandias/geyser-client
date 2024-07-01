@@ -4,7 +4,7 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import {
+import type {
   Archive,
   NestedArchives,
   RowEnseignement,

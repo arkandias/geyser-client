@@ -5,10 +5,11 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import MenuAnnee from "@/components/header/MenuAnnee.vue";
 import { couleurBouton } from "@/helpers/format.ts";
 import { useData } from "@/stores/data.ts";
 import { useLayout } from "@/stores/layout.ts";
+
+import MenuAnnee from "@/components/header/MenuAnnee.vue";
 
 const { filtreIntervenants, toggleFilter } = useLayout();
 const { meSelected, myRow, toggleMonService } = useData();

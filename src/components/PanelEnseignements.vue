@@ -7,6 +7,8 @@
 <script setup lang="ts">
 import { computed, ComputedRef, Ref, ref, toValue, watchEffect } from "vue";
 
+import type { Column, Option, RowEnseignement } from "@/helpers/types.ts";
+
 import { demandeValue } from "@/helpers/enseignement.ts";
 import {
   formatFormation,
@@ -15,12 +17,7 @@ import {
   normalizeForSearch,
   tooltipDelay,
 } from "@/helpers/format.ts";
-import {
-  Column,
-  isAbbreviable,
-  Option,
-  RowEnseignement,
-} from "@/helpers/types.ts";
+import { isAbbreviable } from "@/helpers/types.ts";
 import { compare, uniqueValue } from "@/helpers/utils.ts";
 import { selectedEnseignement as selected, useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";

@@ -8,6 +8,8 @@
 import { useClientHandle } from "@urql/vue";
 import { ComputedRef, computed } from "vue";
 
+import type { Demande } from "@/helpers/types.ts";
+
 import { deleteDemande, updateDemande } from "@/helpers/demandes.ts";
 import {
   couleurPriorite,
@@ -15,7 +17,6 @@ import {
   nf,
   tooltipDelay,
 } from "@/helpers/format.ts";
-import { Demande } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
 const props = defineProps<{

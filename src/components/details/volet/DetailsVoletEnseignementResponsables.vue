@@ -5,8 +5,9 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
+import type { Responsable } from "@/helpers/types.ts";
+
 import { formatResponsables } from "@/helpers/format.ts";
-import { Responsable } from "@/helpers/types.ts";
 
 defineProps<{
   responsablesEnseignement: Responsable[];

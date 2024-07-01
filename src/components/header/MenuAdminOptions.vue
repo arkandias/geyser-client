@@ -7,7 +7,7 @@
 <script setup lang="ts" generic="T">
 import { ShallowRef, shallowRef, watch } from "vue";
 
-import { Nullable, Option } from "@/helpers/types.ts";
+import type { Nullable, Option } from "@/helpers/types.ts";
 
 const props = defineProps<{
   label: string;

@@ -7,9 +7,10 @@
 <script setup lang="ts">
 import { computed, ComputedRef } from "vue";
 
+import type { Message, RowIntervenant } from "@/helpers/types.ts";
+
 import DetailsIntervenantMessages from "@/components/details/DetailsIntervenantMessages.vue";
 import DetailsSection from "@/components/details/DetailsSection.vue";
-import { Message, RowIntervenant } from "@/helpers/types.ts";
 
 const props = defineProps<{ intervenant: RowIntervenant }>();
 

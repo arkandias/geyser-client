@@ -7,12 +7,14 @@
 <script setup lang="ts">
 import { ComputedRef, computed } from "vue";
 
-import MenuBase from "@/components/header/MenuBase.vue";
+import type { Option } from "@/helpers/types.ts";
+
 import { formatIntervenant, formatRole } from "@/helpers/format.ts";
-import { Option } from "@/helpers/types.ts";
 import { compareOrder } from "@/helpers/utils.ts";
 import { activeRole, useAuthentication } from "@/stores/authentication.ts";
 import { useRefresh } from "@/stores/refresh.ts";
+
+import MenuBase from "@/components/header/MenuBase.vue";
 
 const { intervenant, allowedRoles, logout } = useAuthentication();
 const { refresh } = useRefresh();

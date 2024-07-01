@@ -8,17 +8,19 @@
 import { useQuery } from "@urql/vue";
 import { computed, ComputedRef, reactive } from "vue";
 
+import type { RowIntervenant } from "@/helpers/types.ts";
+
+import { GET_MY_ROW } from "@/graphql/intervenants.ts";
+import { formatIntervenant } from "@/helpers/format.ts";
+import { useAnnees } from "@/stores/annees.ts";
+import { useAuthentication } from "@/stores/authentication.ts";
+
 import AccueilInformations from "@/components/accueil/AccueilInformations.vue";
 import AccueilMessage from "@/components/accueil/AccueilMessage.vue";
 import AccueilSubsection from "@/components/accueil/AccueilSubsection.vue";
 import ResumeDemandes from "@/components/core/ResumeDemandes.vue";
 import ServiceIntervenant from "@/components/core/ServiceIntervenant.vue";
 import DetailsVoletIntervenant from "@/components/details/volet/DetailsVoletIntervenant.vue";
-import { GET_MY_ROW } from "@/graphql/intervenants.ts";
-import { formatIntervenant } from "@/helpers/format.ts";
-import { RowIntervenant } from "@/helpers/types.ts";
-import { useAnnees } from "@/stores/annees.ts";
-import { useAuthentication } from "@/stores/authentication.ts";
 
 const { enCours: anneeEnCours } = useAnnees();
 const { intervenant, uid } = useAuthentication();

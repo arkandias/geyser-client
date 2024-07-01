@@ -5,8 +5,9 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
+import type { Priorite } from "@/helpers/types.ts";
+
 import { couleurPriorite, formatIntervenant } from "@/helpers/format.ts";
-import { Priorite } from "@/helpers/types.ts";
 
 defineProps<{ priorite: Priorite }>();
 </script>

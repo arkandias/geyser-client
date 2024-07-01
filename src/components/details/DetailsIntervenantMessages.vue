@@ -8,16 +8,18 @@
 import { useMutation, useQuery } from "@urql/vue";
 import { computed, ComputedRef } from "vue";
 
-import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
+import type { Message } from "@/helpers/types.ts";
+
 import {
   DELETE_MESSAGE,
   GET_TYPES_MESSAGE,
   UPSERT_MESSAGE,
 } from "@/graphql/messages.ts";
 import { formatTypeMessage } from "@/helpers/format.ts";
-import { Message } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { usePermissions } from "@/stores/permissions.ts";
+
+import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
 
 const props = defineProps<{
   uid: string;

@@ -6,7 +6,7 @@
 
 import { NamedColor } from "quasar";
 
-import {
+import type {
   Intervenant,
   Message,
   Responsable,

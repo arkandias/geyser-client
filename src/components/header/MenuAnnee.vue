@@ -7,9 +7,11 @@
 <script setup lang="ts">
 import { ComputedRef, computed } from "vue";
 
+import type { Option } from "@/helpers/types.ts";
+
+import { selected, useAnnees } from "@/stores/annees.ts";
+
 import MenuBase from "@/components/header/MenuBase.vue";
-import { Option } from "@/helpers/types.ts";
-import { active, useAnnees } from "@/stores/annees.ts";
 
 const { annees } = useAnnees();
 
@@ -31,7 +33,12 @@ const options: ComputedRef<Option<number>[]> = computed(() =>
       </QItem>
       <QSeparator />
       <QItem>
-        <QOptionGroup v-model="active" :options color="primary" type="radio" />
+        <QOptionGroup
+          v-model="selected"
+          :options
+          color="primary"
+          type="radio"
+        />
       </QItem>
     </QList>
   </MenuBase>

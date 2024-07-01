@@ -6,7 +6,8 @@
 
 import { ComputedRef, Ref, computed, readonly, ref } from "vue";
 
-import { RowEnseignement, RowIntervenant } from "@/helpers/types.ts";
+import type { RowEnseignement, RowIntervenant } from "@/helpers/types.ts";
+
 import { useAuthentication } from "@/stores/authentication.ts";
 
 const intervenants: Ref<RowIntervenant[]> = ref([]);

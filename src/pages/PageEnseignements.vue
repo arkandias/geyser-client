@@ -9,9 +9,6 @@ import { useQuery } from "@urql/vue";
 import { computed, reactive, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import PanelDetails from "@/components/PanelDetails.vue";
-import PanelEnseignements from "@/components/PanelEnseignements.vue";
-import PanelIntervenants from "@/components/PanelIntervenants.vue";
 import { GET_ENSEIGNEMENTS_TABLE_ROWS } from "@/graphql/enseignements.ts";
 import {
   GET_INTERVENANTS_TABLE_ROWS,
@@ -22,6 +19,10 @@ import { useAuthentication } from "@/stores/authentication.ts";
 import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { usePermissions } from "@/stores/permissions.ts";
+
+import PanelDetails from "@/components/PanelDetails.vue";
+import PanelEnseignements from "@/components/PanelEnseignements.vue";
+import PanelIntervenants from "@/components/PanelIntervenants.vue";
 
 const {
   enCoursActive: anneeEnCoursActive,

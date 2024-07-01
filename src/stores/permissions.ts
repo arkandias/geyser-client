@@ -6,7 +6,8 @@
 
 import { ComputedRef, computed, reactive } from "vue";
 
-import { Intervenant } from "@/helpers/types.ts";
+import type { Intervenant } from "@/helpers/types.ts";
+
 import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { usePhases } from "@/stores/phases.ts";

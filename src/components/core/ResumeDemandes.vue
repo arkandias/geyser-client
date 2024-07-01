@@ -5,9 +5,10 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import TableService from "@/components/core/TableService.vue";
 import { formatTypeDemandesTitre, nf } from "@/helpers/format.ts";
 import { usePermissions } from "@/stores/permissions.ts";
+
+import TableService from "@/components/core/TableService.vue";
 
 defineProps<{
   totalAttributions: number;

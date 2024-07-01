@@ -7,7 +7,8 @@
 <script setup lang="ts">
 import { computed, ComputedRef } from "vue";
 
-import { Modification, RowIntervenant } from "@/helpers/types.ts";
+import type { Modification, RowIntervenant } from "@/helpers/types.ts";
+
 import { usePermissions } from "@/stores/permissions.ts";
 
 const props = defineProps<{ intervenant: RowIntervenant }>();
