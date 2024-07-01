@@ -14,6 +14,7 @@ import {
   GET_INTERVENANTS_TABLE_ROWS,
   GET_MY_ROW,
 } from "@/graphql/intervenants.ts";
+import { getNumber, getValue } from "@/helpers/utils.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useData } from "@/stores/data.ts";
@@ -27,7 +28,7 @@ import PanelIntervenants from "@/components/PanelIntervenants.vue";
 const {
   enCoursActive: anneeEnCoursActive,
   active: anneeActive,
-  setActive: setAnneeActive,
+  select: selectAnnee,
 } = useAnnees();
 const { uid: moi } = useAuthentication();
 const perm = usePermissions();
@@ -50,24 +51,26 @@ const route = useRoute();
 // update query parameters annee/ens/uid if active annee or selected
 // enseignement/intervenant change
 watch(
-  [
-    () => (anneeEnCoursActive.value ? undefined : anneeActive.value),
-    enseignement,
-    intervenant,
-  ],
+  [anneeActive, enseignement, intervenant],
   async ([annee, rowEnseignement, rowIntervenant]) => {
     await router.replace({
       name: "enseignements",
-      query: { annee, ens: rowEnseignement?.id, uid: rowIntervenant?.uid },
+      query: {
+        annee: annee ?? undefined,
+        ens: rowEnseignement?.id,
+        uid: rowIntervenant?.uid,
+      },
     });
   },
 );
 // update the active year if query parameter annee changes
-watch(() => Number(route.query.annee), setAnneeActive, { immediate: true });
+watch(() => getNumber(route.query, "annee"), selectAnnee, { immediate: true });
 // update the selected enseignement if query parameter ens changes
-watch(() => Number(route.query.ens), selectEnseignement, { immediate: true });
+watch(() => getNumber(route.query, "ens"), selectEnseignement, {
+  immediate: true,
+});
 // update the selected intervenant if query parameter uid changes
-watch(() => String(route.query.uid ?? null), selectIntervenant, {
+watch(() => getValue(route.query, "uid"), selectIntervenant, {
   immediate: true,
 });
 

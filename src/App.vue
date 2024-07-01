@@ -11,8 +11,8 @@ import { watch } from "vue";
 import { GET_ANNEES } from "@/graphql/annees.ts";
 import { GET_PHASES } from "@/graphql/phases.ts";
 import {
-  active as anneeActive,
   enCours as anneeEnCours,
+  selected as selectedAnnee,
   annees,
 } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
@@ -42,7 +42,9 @@ watch(
     annees.value = value?.annees.map((annee) => annee.value) ?? [];
     anneeEnCours.value =
       value?.annees.find((annee) => annee.enCours)?.value ?? null;
-    anneeActive.value = anneeEnCours.value;
+    if (selectedAnnee.value === null) {
+      selectedAnnee.value = anneeEnCours.value;
+    }
   },
   { immediate: true },
 );
@@ -55,6 +57,7 @@ watch(
   },
   { immediate: true },
 );
+
 const layoutClass = {
   "text-body1": true,
   dev: import.meta.env.DEV,

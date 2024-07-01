@@ -4,6 +4,8 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
+import { LocationQuery } from "vue-router";
+
 export const uniqueValue = <V, T extends { value: V }>(
   element: T,
   index: number,
@@ -22,3 +24,23 @@ export const compare =
   <K extends string, T extends Record<K, string>>(name: K) =>
   (a: T, b: T): number =>
     compareStrings(a[name].toLowerCase(), b[name].toLowerCase());
+
+export const getValue = (
+  query: LocationQuery,
+  param: string,
+): string | null => {
+  const value = query[param];
+  return typeof value === "string" ? value : value?.[0] ?? null;
+};
+
+export const getNumber = (
+  query: LocationQuery,
+  param: string,
+): number | null => {
+  const value = getValue(query, param);
+  if (value === null) {
+    return value;
+  }
+  const num = Number(value);
+  return isNaN(num) ? null : num;
+};

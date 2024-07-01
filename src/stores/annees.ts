@@ -11,16 +11,22 @@ import { UPDATE_ANNEE_EN_COURS } from "@/graphql/annees.ts";
 
 export const annees: Ref<number[]> = ref([]);
 export const enCours: Ref<number | null> = ref(null);
-export const active: Ref<number | null> = ref(null);
+export const selected: Ref<number | null> = ref(null);
 
+export const active: ComputedRef<number | null> = computed(() =>
+  selected.value && annees.value.includes(selected.value)
+    ? selected.value
+    : enCours.value,
+);
 const enCoursActive: ComputedRef<boolean> = computed(
   () => active.value === enCours.value,
 );
-const setActive = (annee: number): void => {
-  if (annees.value.includes(annee)) {
-    active.value = annee;
+
+const select = (annee?: number | null): void => {
+  if (annee) {
+    selected.value = annee;
   } else {
-    active.value = enCours.value;
+    selected.value = enCours.value;
   }
 };
 
@@ -40,6 +46,6 @@ export const useAnnees = () => {
     active: readonly(active),
     enCoursActive,
     setEnCours,
-    setActive,
+    select,
   };
 };
