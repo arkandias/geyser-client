@@ -13,8 +13,8 @@ export const annees: Ref<number[]> = ref([]);
 export const enCours: Ref<number | null> = ref(null);
 export const selected: Ref<number | null> = ref(null);
 
-export const active: ComputedRef<number | null> = computed(() =>
-  selected.value && annees.value.includes(selected.value)
+const active: ComputedRef<number | null> = computed(() =>
+  selected.value !== null && annees.value.includes(selected.value)
     ? selected.value
     : enCours.value,
 );
@@ -43,7 +43,7 @@ export const useAnnees = () => {
   return {
     annees: readonly(annees),
     enCours: readonly(enCours),
-    active: readonly(active),
+    active,
     enCoursActive,
     setEnCours,
     select,

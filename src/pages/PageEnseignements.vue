@@ -15,7 +15,7 @@ import {
   GET_MY_ROW,
 } from "@/graphql/intervenants.ts";
 import { getNumber, getValue } from "@/helpers/utils.ts";
-import { useAnnees } from "@/stores/annees.ts";
+import { selected as selectedAnnee, useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
@@ -26,22 +26,23 @@ import PanelEnseignements from "@/components/PanelEnseignements.vue";
 import PanelIntervenants from "@/components/PanelIntervenants.vue";
 
 const {
-  enCoursActive: anneeEnCoursActive,
   active: anneeActive,
+  enCours: anneeEnCours,
+  enCoursActive: anneeEnCoursActive,
   select: selectAnnee,
 } = useAnnees();
 const { uid: moi } = useAuthentication();
 const perm = usePermissions();
 const { closeFilter, filtreIntervenants, openFilter } = useLayout();
 const {
-  enseignement,
-  intervenant,
+  selectedEnseignement,
+  selectedIntervenant,
   selectEnseignement,
   selectIntervenant,
   setEnseignements,
+  setIntervenants,
   setFetchingEnseignements,
   setFetchingIntervenants,
-  setIntervenants,
 } = useData();
 
 // sync active annee and selected enseignement/intervenant with the
@@ -49,17 +50,20 @@ const {
 const router = useRouter();
 const route = useRoute();
 // update query parameters annee/ens/uid if active annee or selected
-// enseignement/intervenant change
+// enseignement/intervenant changes
 watch(
-  [anneeActive, enseignement, intervenant],
-  async ([annee, rowEnseignement, rowIntervenant]) => {
+  [
+    () =>
+      anneeEnCours.value !== null && selectedAnnee.value === anneeEnCours.value
+        ? undefined
+        : selectedAnnee.value,
+    () => selectedEnseignement.value[0]?.id,
+    () => selectedIntervenant.value[0]?.uid,
+  ],
+  async ([annee, ens, uid]) => {
     await router.replace({
       name: "enseignements",
-      query: {
-        annee: annee ?? undefined,
-        ens: rowEnseignement?.id,
-        uid: rowIntervenant?.uid,
-      },
+      query: { annee, ens, uid },
     });
   },
 );

@@ -79,6 +79,8 @@ export const useData = () => {
     enseignements: readonly(enseignements),
     fetchingIntervenants: readonly(fetchingIntervenants),
     fetchingEnseignements: readonly(fetchingEnseignements),
+    selectedIntervenant: readonly(selectedIntervenant),
+    selectedEnseignement: readonly(selectedEnseignement),
     intervenant,
     enseignement,
     setIntervenants,
