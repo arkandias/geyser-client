@@ -37,10 +37,10 @@
     <p>
       Lorsqu'un intervenant est sélectionné, les enseignements qui apparaissent
       dans la table ci-dessus sont seulement ceux qui ont été demandés par
-      l'intervenant ou attribués à l'intervenant et les filtres sont désactivés.
-      Le nom de l'intervenant apparaît alors en haut de la table (à la place de
-      «&nbsp;Enseignements&nbsp;»). Deux raccourcis sont présents à droite du
-      nom de l'intervenant :
+      l'intervenant ou attribués à l'intervenant et les filtres de recherche
+      sont désactivés. Le nom de l'intervenant apparaît alors en haut de la
+      table (à la place de «&nbsp;Enseignements&nbsp;»). Deux raccourcis sont
+      présents à droite du nom de l'intervenant :
     </p>
     <ul>
       <li>

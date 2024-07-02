@@ -16,15 +16,18 @@ const { enCours: phaseEnCours } = usePhases();
     <p class="text-justify">
       Vérifiez que votre service de base (ci-dessous) est correct. Dans le cas
       contraire contactez un membre de la commission. Ajoutez ensuite vos
-      modifications de service éventuelles (délégation, décharge, congé, etc.),
-      afin d'indiquer à la commission le nombre d'heures d'enseignement total à
-      vous attribuer.
+      modifications de service éventuelles (délégation, décharge, congé, etc.).
+      <b>
+        Le total indiqué doit correspondre au nombre d'heures EQTD que la
+        commission doit vous attribuer avec des enseignements disponibles sur
+        Geyser.
+      </b>
     </p>
     <p class="text-justify">
-      Vous pouvez faire des demandes principales et secondaires sur la page
-      Enseignements (icône <QIcon name="sym_s_menu_book" /> dans l'en-tête).
-      Merci de demander l’équivalent de votre service total en demandes
-      principales et en demandes secondaires.
+      Vous pouvez ensuite faire des demandes principales et secondaires sur la
+      page Enseignements (icône <QIcon name="sym_s_menu_book" /> dans
+      l'en-tête). Merci de demander l’équivalent de votre service total en
+      demandes principales et en demandes secondaires.
     </p>
   </QCardSection>
   <QCardSection v-if="phaseEnCours === 'commission'">
@@ -41,7 +44,9 @@ const { enCours: phaseEnCours } = usePhases();
       Geyser est actuellement en phase de consultation
     </p>
     <p class="text-justify">
-      Vous pouvez à présent consulter les attributions des enseignements.
+      Vous pouvez à présent consulter les attributions des enseignements de
+      cette année. Vous avez également toujours accès aux demandes et aux
+      attributions des années précédentes. À l'année prochaine !
     </p>
   </QCardSection>
   <QCardSection v-if="phaseEnCours === 'fermeture'">
