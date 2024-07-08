@@ -13,7 +13,7 @@ import { defaultNotify, errorNotify, successNotify } from "@/helpers/notify.ts";
 const edition = defineModel<boolean>();
 const props = withDefaults(
   defineProps<{
-    name: string;
+    title: string;
     text: string | null;
     defaultText?: string;
     setText?: (text: string) => Promise<boolean>;
@@ -39,7 +39,7 @@ const onSave = async (): Promise<void> => {
   const success = await props.setText(editorText.value);
   if (success) {
     successNotify(
-      props.name + (editorText.value ? " mis(e) à jour" : " supprimé(e)"),
+      props.title + (editorText.value ? " mis(e) à jour" : " supprimé(e)"),
     );
   } else {
     errorNotify(
@@ -73,7 +73,6 @@ const toolbar = [
   ["bold", "italic", "underline", "strike", "subscript", "superscript"],
   ["hr", "link", "viewsource"],
   ["unordered", "ordered", "outdent", "indent"],
-  ["undo", "redo"],
   ["save", "delete"],
 ];
 

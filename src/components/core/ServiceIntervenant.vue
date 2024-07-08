@@ -149,7 +149,9 @@ const onDelete = async (id: number): Promise<void> => {
             <QItem v-bind="scope.itemProps">
               <QItemSection>
                 <QItemLabel>{{ scope.opt.label }}</QItemLabel>
-                <QItemLabel caption>{{ scope.opt.description }}</QItemLabel>
+                <QItemLabel v-if="scope.opt.description" caption>
+                  {{ scope.opt.description }}
+                </QItemLabel>
               </QItemSection>
             </QItem>
           </template>

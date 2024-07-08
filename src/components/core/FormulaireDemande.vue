@@ -60,10 +60,8 @@ const typeDemandeInit: ComputedRef<string | null> = computed(() => {
   switch (phaseEnCours.value) {
     case "voeux":
       return "principale";
-    case "commission":
-      return "attribution";
     default:
-      return null;
+      return "attribution";
   }
 });
 const typeDemande: Ref<string | null> = ref(null);

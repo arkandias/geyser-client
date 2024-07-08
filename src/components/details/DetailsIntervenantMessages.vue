@@ -77,7 +77,7 @@ const setMessage =
   <DetailsSubsectionEditableText
     v-for="typeMessage in typesMessageVisibles"
     :key="typeMessage"
-    :name="formatTypeMessage(typeMessage)"
+    :title="formatTypeMessage(typeMessage)"
     :text="getMessage(typeMessage)"
     default-text="[Pas de message]"
     :set-text="setMessage(typeMessage)"

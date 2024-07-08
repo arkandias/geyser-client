@@ -57,7 +57,7 @@ const setDescription = (text: string): Promise<boolean> =>
     />
   </DetailsSubsection>
   <DetailsSubsectionEditableText
-    name="Description"
+    title="Description"
     :text="details.description"
     default-text="Pas de description (contactez un responsable)"
     :set-text="setDescription"

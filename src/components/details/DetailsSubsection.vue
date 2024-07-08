@@ -6,13 +6,10 @@
 
 <script setup lang="ts">
 const edition = defineModel<boolean>();
-withDefaults(
-  defineProps<{
-    title: string;
-    editable?: boolean;
-  }>(),
-  { editable: false },
-);
+defineProps<{
+  title: string;
+  editable?: boolean;
+}>();
 defineSlots<{ default(): unknown }>();
 </script>
 
