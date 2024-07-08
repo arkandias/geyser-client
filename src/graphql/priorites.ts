@@ -7,7 +7,7 @@
 import { graphql } from "@/gql";
 
 graphql(/* GraphQL */ `
-  fragment Priorite on ec_priorite {
+  fragment Priorite on priorite {
     id
     intervenant {
       ...Intervenant

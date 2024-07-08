@@ -8,7 +8,7 @@ import { graphql } from "@/gql";
 
 export const GET_PHASES = graphql(/* GraphQL */ `
   query GetPhases {
-    phases: ec_phase(order_by: { value: desc }) {
+    phases: phase(order_by: { value: desc }) {
       value
       enCours: en_cours
       visible
@@ -18,7 +18,7 @@ export const GET_PHASES = graphql(/* GraphQL */ `
 
 export const UPDATE_PHASE_EN_COURS = graphql(/* GraphQL */ `
   mutation UpdatePhaseEnCours($value: String!) {
-    phases: update_ec_phase(
+    phases: update_phase(
       where: { value: { _neq: $value } }
       _set: { en_cours: null }
     ) {
@@ -26,7 +26,7 @@ export const UPDATE_PHASE_EN_COURS = graphql(/* GraphQL */ `
         value
       }
     }
-    enCours: update_ec_phase_by_pk(
+    enCours: update_phase_by_pk(
       pk_columns: { value: $value }
       _set: { en_cours: true }
     ) {

@@ -17,10 +17,10 @@ export const useRefresh = () => {
       {},
       {
         additionalTypenames: [
-          "ec_demande",
-          "ec_message",
-          "ec_modification_service",
-          "ec_priorite",
+          "demande",
+          "message",
+          "modification_service",
+          "priorite",
         ],
       },
     );

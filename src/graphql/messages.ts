@@ -8,7 +8,7 @@ import { graphql } from "@/gql";
 
 export const GET_TYPES_MESSAGE = graphql(/* GraphQL */ `
   query GetTypesMessage {
-    typesMessage: ec_type_message {
+    typesMessage: type_message {
       value
     }
   }
@@ -21,7 +21,7 @@ export const UPSERT_MESSAGE = graphql(/* GraphQL */ `
     $typeMessage: String!
     $contenu: String!
   ) {
-    message: insert_ec_message_one(
+    message: insert_message_one(
       object: {
         annee: $annee
         uid: $uid
@@ -40,7 +40,7 @@ export const UPSERT_MESSAGE = graphql(/* GraphQL */ `
 
 export const DELETE_MESSAGE = graphql(/* GraphQL */ `
   mutation DeleteMessage($annee: Int!, $uid: String!, $typeMessage: String!) {
-    messages: delete_ec_message(
+    messages: delete_message(
       where: {
         _and: [
           { annee: { _eq: $annee } }

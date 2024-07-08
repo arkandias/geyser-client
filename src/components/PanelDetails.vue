@@ -37,7 +37,7 @@ const queryDetails = useQuery({
   }),
   pause: () => enseignement.value === null,
   context: {
-    additionalTypenames: ["ec_demande", "ec_priorite"],
+    additionalTypenames: ["demande", "priorite"],
   },
 });
 const details: ComputedRef<Details | null> = computed(

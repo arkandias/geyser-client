@@ -7,7 +7,7 @@
 import { graphql } from "@/gql";
 
 graphql(/* GraphQL */ `
-  fragment Intervenant on ec_intervenant {
+  fragment Intervenant on intervenant {
     uid
     nom
     prenom
@@ -17,7 +17,7 @@ graphql(/* GraphQL */ `
 
 export const GET_INTERVENANT = graphql(/* GraphQL */ `
   query GetIntervenant($uid: String!) {
-    intervenant: ec_intervenant_by_pk(uid: $uid) {
+    intervenant: intervenant_by_pk(uid: $uid) {
       ...Intervenant
     }
   }
@@ -25,7 +25,7 @@ export const GET_INTERVENANT = graphql(/* GraphQL */ `
 
 export const UPSERT_INTERVENANT = graphql(/* GraphQL */ `
   mutation UpsertIntervenant($uid: String!, $nom: String!, $prenom: String!) {
-    intervenant: insert_ec_intervenant_one(
+    intervenant: insert_intervenant_one(
       object: { uid: $uid, nom: $nom, prenom: $prenom }
       on_conflict: {
         constraint: intervenant_pkey
@@ -42,7 +42,7 @@ export const UPSERT_INTERVENANT = graphql(/* GraphQL */ `
 
 export const GET_INTERVENANTS = graphql(/* GraphQL */ `
   query GetIntervenants {
-    intervenants: ec_intervenant(
+    intervenants: intervenant(
       where: { actif: { _eq: true } }
       order_by: [{ nom: asc }, { prenom: asc }]
     ) {
@@ -53,7 +53,7 @@ export const GET_INTERVENANTS = graphql(/* GraphQL */ `
 
 export const GET_MY_ROW = graphql(/* GraphQL */ `
   query GetMyRow($annee: Int!, $uid: String!) {
-    intervenant: ec_intervenant_by_pk(uid: $uid) {
+    intervenant: intervenant_by_pk(uid: $uid) {
       ...Intervenant
       demandes(where: { enseignement: { annee: { _eq: $annee } } }) {
         id
@@ -129,7 +129,7 @@ export const GET_MY_ROW = graphql(/* GraphQL */ `
 
 export const GET_INTERVENANTS_TABLE_ROWS = graphql(/* GraphQL */ `
   query GetIntervenantsTableRows($annee: Int!) {
-    intervenants: ec_intervenant(
+    intervenants: intervenant(
       where: { actif: { _eq: true } }
       order_by: [{ nom: asc }, { prenom: asc }]
     ) {

@@ -7,7 +7,7 @@
 import { graphql } from "@/gql";
 
 graphql(/* GraphQL */ `
-  fragment Responsable on ec_responsable {
+  fragment Responsable on responsable {
     id
     intervenant {
       ...Intervenant
@@ -15,7 +15,7 @@ graphql(/* GraphQL */ `
     commentaire
   }
 
-  fragment Resume on ec_enseignement {
+  fragment Resume on enseignement {
     ensId: id
     heuresParGroupe: heures_corrigees
     responsables(
@@ -49,7 +49,7 @@ graphql(/* GraphQL */ `
     description
   }
 
-  fragment Archive on ec_enseignement {
+  fragment Archive on enseignement {
     ensId: id
     annee
     demandes(
@@ -63,7 +63,7 @@ graphql(/* GraphQL */ `
     }
   }
 
-  fragment NestedArchives on ec_enseignement {
+  fragment NestedArchives on enseignement {
     ...Archive
     parent {
       ...Archive
@@ -76,7 +76,7 @@ graphql(/* GraphQL */ `
 
 export const GET_ENSEIGNEMENTS_TABLE_ROWS = graphql(/* GraphQL */ `
   query GetEnseignementsTableRows($annee: Int!) {
-    enseignements: ec_enseignement(
+    enseignements: enseignement(
       where: {
         _and: [{ annee: { _eq: $annee } }, { groupes_corriges: { _gt: 0 } }]
       }
@@ -152,7 +152,7 @@ export const GET_ENSEIGNEMENTS_TABLE_ROWS = graphql(/* GraphQL */ `
 
 export const GET_ENSEIGNEMENT_DETAILS = graphql(/* GraphQL */ `
   query GetEnseignementDetails($ensId: Int!) {
-    enseignement: ec_enseignement_by_pk(id: $ensId) {
+    enseignement: enseignement_by_pk(id: $ensId) {
       ...Resume
       demandes(
         order_by: [
@@ -179,7 +179,7 @@ export const GET_ENSEIGNEMENT_DETAILS = graphql(/* GraphQL */ `
 
 export const UPDATE_DESCRIPTION = graphql(/* GraphQL */ `
   mutation UpdateDescription($id: Int!, $description: String) {
-    description: update_ec_enseignement_by_pk(
+    description: update_enseignement_by_pk(
       pk_columns: { id: $id }
       _set: { description: $description }
     ) {

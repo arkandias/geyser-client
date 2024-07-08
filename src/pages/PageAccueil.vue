@@ -33,11 +33,7 @@ const queryMyRow = useQuery({
   }),
   pause: () => anneeEnCours.value === null,
   context: {
-    additionalTypenames: [
-      "ec_demande",
-      "ec_message",
-      "ec_modification_service",
-    ],
+    additionalTypenames: ["demande", "message", "modification_service"],
   },
 });
 const myRow: ComputedRef<RowIntervenant | null> = computed(

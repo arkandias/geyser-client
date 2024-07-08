@@ -85,7 +85,7 @@ const queryEnseignements = useQuery({
     annee: computed(() => anneeActive.value ?? 0),
   }),
   pause: () => anneeActive.value === null,
-  context: { additionalTypenames: ["ec_demande"] },
+  context: { additionalTypenames: ["demande"] },
 });
 // store the fetching status and result of the query result in the Data store
 // and update on change
@@ -107,11 +107,7 @@ const queryIntervenants = useQuery({
   }),
   pause: () => !perm.deVoirLeServiceDAutrui || anneeActive.value === null,
   context: {
-    additionalTypenames: [
-      "ec_demande",
-      "ec_message",
-      "ec_modification_service",
-    ],
+    additionalTypenames: ["demande", "message", "modification_service"],
   },
 });
 const queryMyRow = useQuery({
@@ -122,11 +118,7 @@ const queryMyRow = useQuery({
   }),
   pause: () => perm.deVoirLeServiceDAutrui || anneeActive.value === null,
   context: {
-    additionalTypenames: [
-      "ec_demande",
-      "ec_message",
-      "ec_modification_service",
-    ],
+    additionalTypenames: ["demande", "message", "modification_service"],
   },
 });
 // store the fetching status and result of the query result in the Data store

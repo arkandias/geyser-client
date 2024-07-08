@@ -7,7 +7,7 @@
 import { graphql } from "@/gql";
 
 graphql(/* GraphQL */ `
-  fragment Demande on ec_demande {
+  fragment Demande on demande {
     id
     intervenant {
       ...Intervenant
@@ -21,7 +21,7 @@ graphql(/* GraphQL */ `
     prioritaire
   }
 
-  fragment TotalHeures on ec_demande_aggregate {
+  fragment TotalHeures on demande_aggregate {
     aggregate {
       sum {
         heures
@@ -29,7 +29,7 @@ graphql(/* GraphQL */ `
     }
   }
 
-  fragment TotalHeuresEQTD on ec_demande_aggregate {
+  fragment TotalHeuresEQTD on demande_aggregate {
     aggregate {
       sum {
         heuresEQTD: heures_eqtd
@@ -41,7 +41,7 @@ graphql(/* GraphQL */ `
 export const GET_DEMANDE = graphql(/* GraphQL */ `
   query GetDemande($uid: String!, $ensId: Int!, $typeDemande: String!) {
     # limit: 1 car unique
-    demande: ec_demande(
+    demande: demande(
       where: {
         _and: [
           { uid: { _eq: $uid } }
@@ -67,7 +67,7 @@ export const UPSERT_DEMANDE = graphql(/* GraphQL */ `
     $typeDemande: String!
     $heures: Float!
   ) {
-    demande: insert_ec_demande_one(
+    demande: insert_demande_one(
       object: { uid: $uid, ens_id: $ensId, type: $typeDemande, heures: $heures }
       on_conflict: {
         constraint: demande_uid_ens_id_type_key
@@ -81,7 +81,7 @@ export const UPSERT_DEMANDE = graphql(/* GraphQL */ `
 
 export const DELETE_DEMANDE = graphql(/* GraphQL */ `
   mutation DeleteDemande($ensId: Int!, $uid: String!, $typeDemande: String!) {
-    demandes: delete_ec_demande(
+    demandes: delete_demande(
       where: {
         _and: [
           { uid: { _eq: $uid } }
@@ -99,7 +99,7 @@ export const DELETE_DEMANDE = graphql(/* GraphQL */ `
 
 export const DELETE_DEMANDE_BY_ID = graphql(/* GraphQL */ `
   mutation DeleteDemandeById($id: Int!) {
-    demande: delete_ec_demande_by_pk(id: $id) {
+    demande: delete_demande_by_pk(id: $id) {
       id
     }
   }
@@ -107,7 +107,7 @@ export const DELETE_DEMANDE_BY_ID = graphql(/* GraphQL */ `
 
 export const DUMMY_MUTATION = graphql(/* GraphQL */ `
   mutation DummyMutation {
-    demandes: insert_ec_demande(objects: []) {
+    demandes: insert_demande(objects: []) {
       returning {
         id
       }

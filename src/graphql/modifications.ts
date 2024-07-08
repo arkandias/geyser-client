@@ -8,7 +8,7 @@ import { graphql } from "@/gql";
 
 export const GET_TYPES_MODIFICATION = graphql(/* GraphQL */ `
   query GetTypesModification {
-    typesModification: ec_type_modification(order_by: { label: asc }) {
+    typesModification: type_modification(order_by: { label: asc }) {
       label
       description
     }
@@ -22,7 +22,7 @@ export const INSERT_MODIFICATION = graphql(/* GraphQL */ `
     $typeModification: String!
     $heuresEQTD: Float!
   ) {
-    modificationService: insert_ec_modification_service_one(
+    modificationService: insert_modification_service_one(
       object: {
         annee: $annee
         uid: $uid
@@ -37,7 +37,7 @@ export const INSERT_MODIFICATION = graphql(/* GraphQL */ `
 
 export const DELETE_MODIFICATION = graphql(/* GraphQL */ `
   mutation DeleteModification($id: Int!) {
-    modificationService: delete_ec_modification_service_by_pk(id: $id) {
+    modificationService: delete_modification_service_by_pk(id: $id) {
       id
     }
   }
