@@ -104,13 +104,12 @@ const onSubmit = async (): Promise<void> => {
     errorNotify("Formulaire non valide", "Sélectionnez un type de demande");
     return;
   }
-  await updateDemande(
-    client,
-    uid.value,
-    props.ensId,
-    typeDemande.value,
-    heures.value,
-  );
+  await updateDemande(client, {
+    uid: uid.value,
+    ensId: props.ensId,
+    typeDemande: typeDemande.value,
+    heures: heures.value,
+  });
 };
 const onReset = (): void => {
   uid.value = uidInit.value;

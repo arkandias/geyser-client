@@ -10,7 +10,7 @@ import { ComputedRef, computed } from "vue";
 
 import type { Demande } from "@/helpers/types.ts";
 
-import { deleteDemande, updateDemande } from "@/helpers/demandes.ts";
+import { deleteDemandeById, updateDemande } from "@/helpers/demandes.ts";
 import {
   couleurPriorite,
   formatIntervenant,
@@ -28,16 +28,15 @@ const perm = usePermissions();
 const client = useClientHandle().client;
 
 const onAttribute = async (): Promise<void> => {
-  await updateDemande(
-    client,
-    props.demande.intervenant.uid,
-    props.demande.enseignement.id,
-    "attribution",
-    props.demande.heures,
-  );
+  await updateDemande(client, {
+    uid: props.demande.intervenant.uid,
+    ensId: props.demande.enseignement.id,
+    typeDemande: "attribution",
+    heures: props.demande.heures,
+  });
 };
 const onDelete = async (): Promise<void> => {
-  await deleteDemande(client, props.demande.id, props.demande.typeDemande);
+  await deleteDemandeById(client, props.demande.id, props.demande.typeDemande);
 };
 
 const groupes: ComputedRef<number> = computed(() =>

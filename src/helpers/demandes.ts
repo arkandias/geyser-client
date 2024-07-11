@@ -17,15 +17,11 @@ import { defaultNotify, errorNotify, successNotify } from "@/helpers/notify.ts";
 
 const getCurrentDemande = async (
   client: Client,
-  uid: string,
-  ensId: number,
-  typeDemande: string,
+  variables: { uid: string; ensId: number; typeDemande: string },
 ): Promise<number | null> => {
-  const result = await client.query(
-    GET_DEMANDE,
-    { uid, ensId, typeDemande },
-    { requestPolicy: "network-only" },
-  );
+  const result = await client.query(GET_DEMANDE, variables, {
+    requestPolicy: "network-only",
+  });
   if (!result.data?.demande) {
     console.error(
       "Cannot get current demande. Please report this error to an administrator",
@@ -41,40 +37,33 @@ const getCurrentDemande = async (
 
 export const updateDemande = async (
   client: Client,
-  uid: string,
-  ensId: number,
-  typeDemande: string,
-  heures: number,
+  variables: {
+    uid: string;
+    ensId: number;
+    typeDemande: string;
+    heures: number;
+  },
 ): Promise<void> => {
-  const current = await getCurrentDemande(client, uid, ensId, typeDemande);
+  const current = await getCurrentDemande(client, variables);
   if (current === null) {
     return;
   }
-  if (heures === current) {
-    defaultNotify(formatTypeDemande(typeDemande) + " identique");
+  if (variables.heures === current) {
+    defaultNotify(formatTypeDemande(variables.typeDemande) + " identique");
     return;
   }
-  if (heures === 0) {
-    const result = await client.mutation(DELETE_DEMANDE, {
-      uid,
-      ensId,
-      typeDemande,
-    });
+  if (variables.heures === 0) {
+    const result = await client.mutation(DELETE_DEMANDE, variables);
     if (result.data?.demandes?.returning && !result.error) {
-      successNotify(formatTypeDemande(typeDemande) + " supprimée");
+      successNotify(formatTypeDemande(variables.typeDemande) + " supprimée");
     } else {
       errorNotify("Échec de la suppression");
     }
   } else {
-    const result = await client.mutation(UPSERT_DEMANDE, {
-      uid,
-      ensId,
-      typeDemande,
-      heures,
-    });
+    const result = await client.mutation(UPSERT_DEMANDE, variables);
     if (result.data?.demande && !result.error) {
       successNotify(
-        formatTypeDemande(typeDemande) +
+        formatTypeDemande(variables.typeDemande) +
           (current === 0 ? " créée" : " mise à jour"),
       );
     } else {
@@ -83,7 +72,7 @@ export const updateDemande = async (
   }
 };
 
-export const deleteDemande = async (
+export const deleteDemandeById = async (
   client: Client,
   id: number,
   typeDemande: string,
