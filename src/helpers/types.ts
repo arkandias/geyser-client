@@ -150,6 +150,7 @@ export type Modification = {
   heuresEQTD: number;
 };
 export type Message = {
+  id: number;
   typeMessage: string;
   contenu: string;
 };

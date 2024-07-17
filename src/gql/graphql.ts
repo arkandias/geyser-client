@@ -9937,13 +9937,6 @@ export type GetIntervenantsTableRowsQuery = {
   }>;
 };
 
-export type GetTypesMessageQueryVariables = Exact<{ [key: string]: never }>;
-
-export type GetTypesMessageQuery = {
-  __typename?: "query_root";
-  typesMessage: Array<{ __typename?: "type_message"; value: string }>;
-};
-
 export type UpsertMessageMutationVariables = Exact<{
   annee: Scalars["Int"]["input"];
   uid: Scalars["String"]["input"];
@@ -15068,35 +15061,6 @@ export const GetIntervenantsTableRowsDocument = {
 } as unknown as DocumentNode<
   GetIntervenantsTableRowsQuery,
   GetIntervenantsTableRowsQueryVariables
->;
-export const GetTypesMessageDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "GetTypesMessage" },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "typesMessage" },
-            name: { kind: "Name", value: "type_message" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "value" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetTypesMessageQuery,
-  GetTypesMessageQueryVariables
 >;
 export const UpsertMessageDocument = {
   kind: "Document",

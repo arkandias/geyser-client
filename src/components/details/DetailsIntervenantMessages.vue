@@ -29,19 +29,9 @@ const props = defineProps<{
 const { active: anneeActive } = useAnnees();
 const perm = usePermissions();
 
-const queryTypesMessage = useQuery({
-  query: GET_TYPES_MESSAGE,
-  variables: {},
-});
-
-const typesMessage: ComputedRef<string[]> = computed(
-  () =>
-    queryTypesMessage.data.value?.typesMessage.map(
-      (typeMessage) => typeMessage.value,
-    ) ?? [],
-);
+const typesMessage = ["message_intervenant", "note_commission"];
 const typesMessageVisibles: ComputedRef<string[]> = computed(() =>
-  typesMessage.value.filter((typeMessage) =>
+  typesMessage.filter((typeMessage) =>
     perm.deVoirUnMessage(typeMessage, props.uid),
   ),
 );
@@ -79,7 +69,7 @@ const setMessage =
     :key="typeMessage"
     :title="formatTypeMessage(typeMessage)"
     :text="getMessage(typeMessage)"
-    default-text="[Pas de message]"
+    default-text="Pas de contenu"
     :set-text="setMessage(typeMessage)"
     :editable="perm.deModifierUnMessage(typeMessage, uid)"
   />
