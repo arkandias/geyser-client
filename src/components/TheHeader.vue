@@ -25,7 +25,7 @@ const perm = usePermissions();
 const { refresh } = useRefresh();
 
 const version: ComputedRef<string | null> = computed(() =>
-  import.meta.env.DEV ? "dev" : import.meta.env.VITE_BUILD_VERSION ?? null,
+  import.meta.env.DEV ? "dev" : (import.meta.env.VITE_BUILD_VERSION ?? null),
 );
 </script>
 

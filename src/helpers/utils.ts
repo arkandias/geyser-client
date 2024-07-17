@@ -30,7 +30,7 @@ export const getValue = (
   param: string,
 ): string | null => {
   const value = query[param];
-  return typeof value === "string" ? value : value?.[0] ?? null;
+  return typeof value === "string" ? value : (value?.[0] ?? null);
 };
 
 export const getNumber = (

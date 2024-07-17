@@ -134,7 +134,7 @@ watch(
 watch(
   () =>
     perm.deVoirLeServiceDAutrui
-      ? queryIntervenants.data.value?.intervenants ?? []
+      ? (queryIntervenants.data.value?.intervenants ?? [])
       : queryMyRow.data.value?.intervenant
         ? [queryMyRow.data.value.intervenant]
         : [],
