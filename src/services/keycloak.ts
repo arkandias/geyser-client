@@ -31,7 +31,7 @@ export type KeycloakClaims = {
 
 const keycloak = new Keycloak({
   url: import.meta.env.VITE_KEYCLOAK_URL,
-  realm: "master",
+  realm: "geyser",
   clientId: "hasura",
 }) as CustomKeycloak;
 
