@@ -105,10 +105,11 @@ const getProfile = async (
     { requestPolicy: "network-only" },
   );
   const profile = result.data?.intervenant ?? null;
-  if (!profile) {
+  if (profile) {
+    console.debug("Profile retrieved:", profile);
+  } else {
     console.warn("Could not find user profile in the database");
   }
-  console.debug("Profile retrieved:", profile);
   return profile;
 };
 
