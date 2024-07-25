@@ -69,7 +69,7 @@ const myRow: ComputedRef<RowIntervenant | null> = computed(
 
 <style scoped lang="scss">
 .q-page > * {
-  width: $homepage-width;
+  max-width: $homepage-max-width;
   margin-bottom: 16px;
 }
 </style>
