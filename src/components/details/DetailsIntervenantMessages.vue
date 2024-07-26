@@ -5,16 +5,12 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { useMutation, useQuery } from "@urql/vue";
+import { useMutation } from "@urql/vue";
 import { computed, ComputedRef } from "vue";
 
 import type { Message } from "@/helpers/types.ts";
 
-import {
-  DELETE_MESSAGE,
-  GET_TYPES_MESSAGE,
-  UPSERT_MESSAGE,
-} from "@/graphql/messages.ts";
+import { DELETE_MESSAGE, UPSERT_MESSAGE } from "@/graphql/messages.ts";
 import { formatTypeMessage } from "@/helpers/format.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { usePermissions } from "@/stores/permissions.ts";
