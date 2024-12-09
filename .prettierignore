@@ -1,7 +1,9 @@
 .git
 .idea
 .pnpm-store
-dist
-node_modules
-public
+dist/
+node_modules/
+public/
 pnpm-lock.yaml
+schema.graphql
+src/gql/
