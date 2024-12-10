@@ -4,10 +4,10 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { ComputedRef, computed, reactive } from "vue";
+import type { ComputedRef } from "vue";
+import { computed, reactive } from "vue";
 
 import type { Intervenant } from "@/helpers/types.ts";
-
 import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { usePhases } from "@/stores/phases.ts";

@@ -4,10 +4,10 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { ComputedRef, Ref, computed, readonly, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
+import { computed, readonly, ref } from "vue";
 
 import type { RowEnseignement, RowIntervenant } from "@/helpers/types.ts";
-
 import { useAuthentication } from "@/stores/authentication.ts";
 
 const intervenants: Ref<RowIntervenant[]> = ref([]);

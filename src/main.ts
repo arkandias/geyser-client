@@ -4,23 +4,23 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import urql, { Client } from "@urql/vue";
+import type { Client } from "@urql/vue";
+import urql from "@urql/vue";
 import { Quasar } from "quasar";
 import { createApp } from "vue";
 
-// styles
 import "@quasar/extras/material-symbols-sharp/material-symbols-sharp.css";
 import "@quasar/extras/roboto-font/roboto-font.css";
 import "quasar/src/css/index.sass";
-// custom
+// load custom style after
 import "@/css/main.scss";
 
 import App from "@/App.vue";
 import { errorNotify } from "@/helpers/notify.ts";
+import type { KeycloakClaims } from "@/services/keycloak.ts";
 import {
   getToken,
   initKeycloak,
-  KeycloakClaims,
   logout,
   refreshToken,
 } from "@/services/keycloak.ts";

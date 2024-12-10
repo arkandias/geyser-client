@@ -12,7 +12,7 @@ declare module "*.vue" {
 
 interface ImportMetaEnv {
   readonly VITE_GRAPHQL_URL: string;
-  readonly VITE_KEYCLOAK_URL?: string;
+  readonly VITE_KEYCLOAK_URL: string;
   readonly VITE_LOGIN_FLOW?: string;
   readonly VITE_BUILD_VERSION?: string;
   readonly VITE_HASURA_ADMIN_SECRET?: string;

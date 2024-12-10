@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
+import type { Ref } from "vue";
 import { watch } from "vue";
 
 import { GET_ANNEES } from "@/graphql/annees.ts";
@@ -20,6 +21,7 @@ import { usePermissions } from "@/stores/permissions.ts";
 import { enCours as phaseEnCours, phases } from "@/stores/phases.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
+import type { Phase } from "@/helpers/types.ts";
 import PageMessage from "@/pages/PageMessage.vue";
 
 const { logged } = useAuthentication();
@@ -49,7 +51,9 @@ watch(
   { immediate: true },
 );
 watch(
-  queryPhases.data,
+  queryPhases.data as Ref<
+    { phases: { value: Phase; enCours: boolean }[] } | undefined
+  >,
   (value) => {
     phases.value = value?.phases.map((phase) => phase.value) ?? [];
     phaseEnCours.value =

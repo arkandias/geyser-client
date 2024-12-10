@@ -5,11 +5,11 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { computed, ComputedRef } from "vue";
-
-import type { Option } from "@/helpers/types.ts";
+import type { ComputedRef } from "vue";
+import { computed } from "vue";
 
 import { formatPhase } from "@/helpers/format.ts";
+import type { Option } from "@/helpers/types.ts";
 import { compareOrder } from "@/helpers/utils.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { usePhases } from "@/stores/phases.ts";

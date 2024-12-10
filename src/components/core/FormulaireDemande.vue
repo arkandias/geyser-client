@@ -6,14 +6,8 @@
 
 <script setup lang="ts">
 import { useClientHandle } from "@urql/vue";
-import {
-  ComputedRef,
-  Ref,
-  WritableComputedRef,
-  computed,
-  ref,
-  watch,
-} from "vue";
+import type { ComputedRef, Ref, WritableComputedRef } from "vue";
+import { computed, ref, watch } from "vue";
 
 import { updateDemande } from "@/helpers/demandes.ts";
 import { errorNotify } from "@/helpers/notify.ts";

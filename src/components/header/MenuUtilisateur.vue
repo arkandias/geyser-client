@@ -5,11 +5,11 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { ComputedRef, computed } from "vue";
-
-import type { Option } from "@/helpers/types.ts";
+import type { ComputedRef } from "vue";
+import { computed } from "vue";
 
 import { formatIntervenant, formatRole } from "@/helpers/format.ts";
+import type { Option } from "@/helpers/types.ts";
 import { compareOrder } from "@/helpers/utils.ts";
 import { activeRole, useAuthentication } from "@/stores/authentication.ts";
 import { useRefresh } from "@/stores/refresh.ts";

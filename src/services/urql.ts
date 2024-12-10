@@ -5,15 +5,16 @@
  ******************************************************************************/
 
 import { devtoolsExchange } from "@urql/devtools";
+import type { Client } from "@urql/vue";
 import {
   cacheExchange,
-  Client,
   createClient,
   debugExchange,
   fetchExchange,
   mapExchange,
 } from "@urql/vue";
-import { Ref, ref } from "vue";
+import type { Ref } from "vue";
+import { ref } from "vue";
 
 // enable/disable Quasar notifications
 const notifications: Ref<boolean> = ref(true);

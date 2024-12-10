@@ -5,12 +5,12 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { computed, ComputedRef } from "vue";
-
-import type { Archive, Details } from "@/helpers/types.ts";
+import type { ComputedRef } from "vue";
+import { computed } from "vue";
 
 import { processArchives } from "@/helpers/enseignement.ts";
 import { formatTypeDemandesTitre } from "@/helpers/format.ts";
+import type { Archive, Details } from "@/helpers/types.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
 import FormulaireDemande from "@/components/core/FormulaireDemande.vue";

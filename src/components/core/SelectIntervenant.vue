@@ -6,12 +6,12 @@
 
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { computed, ComputedRef, ref, Ref, watch } from "vue";
-
-import type { OptionSearch } from "@/helpers/types.ts";
+import type { ComputedRef, Ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 import { GET_INTERVENANTS } from "@/graphql/intervenants.ts";
 import { formatIntervenant, normalizeForSearch } from "@/helpers/format.ts";
+import type { OptionSearch } from "@/helpers/types.ts";
 
 const uid = defineModel<string | null>({ required: true });
 

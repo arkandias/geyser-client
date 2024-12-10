@@ -26,7 +26,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
     "useUnknownInCatchVariables": true,
     "verbatimModuleSyntax": true
   },

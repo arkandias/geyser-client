@@ -6,7 +6,8 @@
 
 <script setup lang="ts">
 import { useClientHandle } from "@urql/vue";
-import { ComputedRef, computed } from "vue";
+import type { ComputedRef } from "vue";
+import { computed } from "vue";
 
 import type { Demande } from "@/helpers/types.ts";
 

@@ -6,15 +6,15 @@
 
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { computed, ComputedRef, reactive } from "vue";
-
-import type { Details } from "@/helpers/types.ts";
+import type { ComputedRef } from "vue";
+import { computed, reactive } from "vue";
 
 import { GET_ENSEIGNEMENT_DETAILS } from "@/graphql/enseignements.ts";
 import {
   formatIntervenant,
   formatResumeIntervenant,
 } from "@/helpers/format.ts";
+import type { Details } from "@/helpers/types.ts";
 import { useData } from "@/stores/data.ts";
 
 import ResumeDemandes from "@/components/core/ResumeDemandes.vue";

@@ -4,17 +4,17 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { LocationQuery } from "vue-router";
+import type { LocationQuery } from "vue-router";
 
-export const uniqueValue = <V, T extends { value: V }>(
+export const uniqueValue = <T extends { value: unknown }>(
   element: T,
   index: number,
   array: Array<T>,
 ): boolean => array.findIndex((el) => el.value === element.value) === index;
 
 export const compareOrder =
-  (order: Record<string, number>) =>
-  <T extends { value: keyof typeof order }>(a: T, b: T): number =>
+  <K extends string>(order: Record<K, number>) =>
+  <T extends { value: K }>(a: T, b: T): number =>
     order[a.value] - order[b.value];
 
 const compareStrings = (a: string, b: string): number =>

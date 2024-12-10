@@ -5,9 +5,8 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { Ref, computed, ref, toValue, watchEffect } from "vue";
-
-import type { ColumnNonAbbreviable, RowIntervenant } from "@/helpers/types.ts";
+import type { Ref } from "vue";
+import { computed, ref, toValue, watchEffect } from "vue";
 
 import {
   indicateurMessage,
@@ -15,6 +14,7 @@ import {
   normalizeForSearch,
   tooltipDelay,
 } from "@/helpers/format.ts";
+import type { ColumnNonAbbreviable, RowIntervenant } from "@/helpers/types.ts";
 import { selectedIntervenant as selected, useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 

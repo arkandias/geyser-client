@@ -5,7 +5,8 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { ref, Ref } from "vue";
+import type { Ref } from "vue";
+import { ref } from "vue";
 
 import EditableText from "@/components/core/EditableText.vue";
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";

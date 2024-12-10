@@ -4,7 +4,7 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { NamedColor } from "quasar";
+import type { NamedColor } from "quasar";
 
 import type {
   Intervenant,

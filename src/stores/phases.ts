@@ -5,12 +5,14 @@
  ******************************************************************************/
 
 import { useMutation } from "@urql/vue";
-import { Ref, readonly, ref } from "vue";
+import type { Ref } from "vue";
+import { readonly, ref } from "vue";
 
 import { UPDATE_PHASE_EN_COURS } from "@/graphql/phases.ts";
+import type { Phase } from "@/helpers/types.ts";
 
-export const phases: Ref<string[]> = ref([]);
-export const enCours: Ref<string | null> = ref(null);
+export const phases: Ref<Phase[]> = ref([]);
+export const enCours: Ref<Phase | null> = ref(null);
 
 export const usePhases = () => {
   const update = useMutation(UPDATE_PHASE_EN_COURS);

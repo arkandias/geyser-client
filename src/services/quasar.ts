@@ -4,7 +4,8 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { Notify, QuasarPluginOptions } from "quasar";
+import type { QuasarPluginOptions } from "quasar";
+import { Notify } from "quasar";
 import quasarIconSet from "quasar/icon-set/material-symbols-sharp";
 import quasarLang from "quasar/lang/fr";
 

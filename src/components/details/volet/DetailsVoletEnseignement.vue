@@ -6,7 +6,8 @@
 
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed, ComputedRef } from "vue";
+import type { ComputedRef } from "vue";
+import { computed } from "vue";
 
 import type { Details, Intervenant, Responsable } from "@/helpers/types.ts";
 

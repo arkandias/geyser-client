@@ -4,7 +4,8 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { readonly, Ref, ref } from "vue";
+import type { Ref } from "vue";
+import { readonly, ref } from "vue";
 
 const filtreIntervenants: Ref<boolean> = ref(false);
 export const hSplitterRatio: Ref<number> = ref(50);

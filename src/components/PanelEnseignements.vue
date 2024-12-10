@@ -5,9 +5,8 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { computed, ComputedRef, Ref, ref, toValue, watchEffect } from "vue";
-
-import type { Column, Option, RowEnseignement } from "@/helpers/types.ts";
+import type { ComputedRef, Ref } from "vue";
+import { computed, ref, toValue, watchEffect } from "vue";
 
 import { demandeValue } from "@/helpers/enseignement.ts";
 import {
@@ -17,6 +16,7 @@ import {
   normalizeForSearch,
   tooltipDelay,
 } from "@/helpers/format.ts";
+import type { Column, Option, RowEnseignement } from "@/helpers/types.ts";
 import { isAbbreviable } from "@/helpers/types.ts";
 import { compare, uniqueValue } from "@/helpers/utils.ts";
 import { selectedEnseignement as selected, useData } from "@/stores/data.ts";

@@ -5,7 +5,8 @@
  ******************************************************************************/
 
 import { useMutation } from "@urql/vue";
-import { ComputedRef, Ref, computed, readonly, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
+import { computed, readonly, ref } from "vue";
 
 import { UPDATE_ANNEE_EN_COURS } from "@/graphql/annees.ts";
 

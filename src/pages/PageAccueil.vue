@@ -6,12 +6,12 @@
 
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { computed, ComputedRef, reactive } from "vue";
-
-import type { RowIntervenant } from "@/helpers/types.ts";
+import type { ComputedRef } from "vue";
+import { computed, reactive } from "vue";
 
 import { GET_MY_ROW } from "@/graphql/intervenants.ts";
 import { formatIntervenant } from "@/helpers/format.ts";
+import type { RowIntervenant } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 

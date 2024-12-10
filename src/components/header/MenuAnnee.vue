@@ -5,10 +5,10 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { ComputedRef, computed } from "vue";
+import type { ComputedRef } from "vue";
+import { computed } from "vue";
 
 import type { Option } from "@/helpers/types.ts";
-
 import { selected, useAnnees } from "@/stores/annees.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";

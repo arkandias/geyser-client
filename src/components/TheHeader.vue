@@ -6,7 +6,8 @@
 
 <script setup lang="ts">
 import { useQuasar } from "quasar";
-import { computed, ComputedRef } from "vue";
+import type { ComputedRef } from "vue";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 import { couleurBouton } from "@/helpers/format.ts";

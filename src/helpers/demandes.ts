@@ -4,7 +4,7 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { Client } from "@urql/vue";
+import type { Client } from "@urql/vue";
 
 import {
   DELETE_DEMANDE,

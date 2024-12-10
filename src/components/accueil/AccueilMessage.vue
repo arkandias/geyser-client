@@ -6,6 +6,8 @@
 
 <script setup lang="ts">
 import { usePhases } from "@/stores/phases.ts";
+import type { Ref } from "vue";
+import { ref } from "vue";
 
 const { enCours: phaseEnCours } = usePhases();
 </script>

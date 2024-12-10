@@ -4,13 +4,13 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import { Client } from "@urql/vue";
-import { Ref, reactive, readonly, ref, toRef } from "vue";
-
-import type { Intervenant } from "@/helpers/types.ts";
+import type { Client } from "@urql/vue";
+import type { Ref } from "vue";
+import { reactive, readonly, ref, toRef } from "vue";
 
 import { GET_INTERVENANT, UPSERT_INTERVENANT } from "@/graphql/intervenants.ts";
-import { KeycloakClaims } from "@/services/keycloak.ts";
+import type { Intervenant, Role } from "@/helpers/types.ts";
+import type { KeycloakClaims } from "@/services/keycloak.ts";
 
 export const activeRole: Ref<string> = ref("");
 
@@ -21,7 +21,7 @@ const intervenant: Intervenant = reactive({
   prenom: "",
   alias: null,
 });
-const allowedRoles: Ref<string[]> = ref([]);
+const allowedRoles: Ref<Role[]> = ref([]);
 const logout: Ref<(() => Promise<void>) | undefined> = ref(undefined);
 export const setLogout = (fn: () => Promise<void>): void => {
   logout.value = fn;

@@ -5,7 +5,8 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { computed, ComputedRef, Ref, ref, watch } from "vue";
+import type { ComputedRef, Ref } from "vue";
+import { computed, ref, watch } from "vue";
 import xss from "xss";
 
 import { defaultNotify, errorNotify, successNotify } from "@/helpers/notify.ts";

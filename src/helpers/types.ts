@@ -5,7 +5,11 @@
  ******************************************************************************/
 
 import type { QTableProps } from "quasar";
-import { MaybeRefOrGetter } from "vue";
+import type { MaybeRefOrGetter } from "vue";
+
+// Parameters
+export type Phase = "voeux" | "commission" | "consultation" | "fermeture";
+export type Role = "intervenant" | "commissaire" | "admin";
 
 // Rows
 type Identifiant = {

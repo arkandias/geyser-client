@@ -6,9 +6,8 @@
 
 <script setup lang="ts">
 import { useMutation, useQuery } from "@urql/vue";
-import { ComputedRef, Ref, computed, ref } from "vue";
-
-import type { Modification, TypeModification } from "@/helpers/types.ts";
+import type { ComputedRef, Ref } from "vue";
+import { computed, ref } from "vue";
 
 import {
   DELETE_MODIFICATION,
@@ -17,6 +16,7 @@ import {
 } from "@/graphql/modifications.ts";
 import { nf } from "@/helpers/format.ts";
 import { errorNotify, successNotify } from "@/helpers/notify.ts";
+import type { Modification, TypeModification } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
 
 import TableService from "@/components/core/TableService.vue";

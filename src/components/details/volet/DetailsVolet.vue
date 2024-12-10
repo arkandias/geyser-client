@@ -5,7 +5,8 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { Ref, ref, watch } from "vue";
+import type { Ref } from "vue";
+import { ref, watch } from "vue";
 
 import { useData } from "@/stores/data.ts";
 
