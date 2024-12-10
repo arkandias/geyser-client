@@ -5,8 +5,9 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { useMutation } from "@urql/vue";
-import { computed, ComputedRef } from "vue";
+import { useClientHandle } from "@urql/vue";
+import type { ComputedRef, Ref } from "vue";
+import { computed, ref } from "vue";
 
 import type { Message } from "@/helpers/types.ts";
 
