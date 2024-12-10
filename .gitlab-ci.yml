@@ -24,7 +24,7 @@ format:
     - when: on_success
       interruptible: true
   script:
-    - prettier . --check
+    - pnpm run prettier
 
 lint:
   stage: validate
@@ -33,7 +33,7 @@ lint:
     - when: on_success
       interruptible: true
   script:
-    - eslint .
+    - pnpm run eslint
 
 vite-build:
   stage: build
