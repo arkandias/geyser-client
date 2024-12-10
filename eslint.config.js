@@ -41,6 +41,9 @@ export default tseslint.config(
       },
     },
     rules: {
+      "@typescript-eslint/consistent-type-exports": "error",
+      "@typescript-eslint/consistent-type-imports": "error",
+      "@typescript-eslint/no-import-type-side-effects": "error",
       // The core 'no-unused-vars' rules (in the eslint:recommended ruleset)
       // does not work with type definitions
       "no-unused-vars": "off",
