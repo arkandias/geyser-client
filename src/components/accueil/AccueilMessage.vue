@@ -10,27 +10,46 @@ import type { Ref } from "vue";
 import { ref } from "vue";
 
 const { enCours: phaseEnCours } = usePhases();
+
+const demo: Ref<boolean> = ref(false);
 </script>
 
 <template>
   <QCardSection v-if="phaseEnCours === 'voeux'">
     <p class="text-subtitle2">Geyser est actuellement en phase de vœux</p>
-    <p class="text-justify">
-      Vérifiez que votre service de base (ci-dessous) est correct. Dans le cas
-      contraire contactez un membre de la commission. Ajoutez ensuite vos
-      modifications de service éventuelles (délégation, décharge, congé, etc.).
-      <b>
-        Le total indiqué doit correspondre au nombre d'heures EQTD que la
-        commission doit vous attribuer avec des enseignements disponibles sur
-        Geyser.
-      </b>
-    </p>
-    <p class="text-justify">
-      Vous pouvez ensuite faire des demandes principales et secondaires sur la
-      page Enseignements (icône <QIcon name="sym_s_menu_book" /> dans
-      l'en-tête). Merci de demander l’équivalent de votre service total en
-      demandes principales et en demandes secondaires.
-    </p>
+    <div class="text-justify">
+      <p>
+        Vérifiez que votre service de base (ci-dessous) est correct. Dans le cas
+        contraire contactez un membre de la commission. Ajoutez ensuite vos
+        modifications de service éventuelles (délégation, décharge, congé,
+        etc.).
+        <b>
+          Le total indiqué doit correspondre au nombre d'heures équivalent TD
+          que la commission doit vous attribuer avec des enseignements
+          disponibles sur Geyser.
+        </b>
+      </p>
+      <p>
+        Vous pouvez ensuite faire des demandes principales et secondaires sur la
+        page Enseignements (icône <QIcon name="sym_s_menu_book" /> dans
+        l'en-tête). Merci de demander l’équivalent de votre service total en
+        demandes principales et en demandes secondaires.
+      </p>
+      <p>
+        Enfin, vous avez la possibilité de laisser un message à la commission
+        afin de porter à sa connaissance toute information que vous jugez utile
+        pour son travail. Ce message ne sera visible que par la commission et
+        vous-même. Pour modifier votre message, cliquez sur le bouton à bascule
+        <QToggle
+          v-model="demo"
+          icon="sym_s_edit"
+          color="primary"
+          size="xs"
+          dense
+        />
+        qui apparaît à côté du titre de la section correspondante ci-dessous.
+      </p>
+    </div>
   </QCardSection>
   <QCardSection v-if="phaseEnCours === 'commission'">
     <p class="text-subtitle2">Geyser est actuellement en phase de commission</p>
