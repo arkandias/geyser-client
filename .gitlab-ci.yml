@@ -42,8 +42,6 @@ vite-build:
       variables:
         VITE_BUILD_VERSION: $CI_COMMIT_TAG
     - when: on_success
-      variables:
-        VITE_BUILD_VERSION: dev
       interruptible: true
   script:
     - pnpm run build
