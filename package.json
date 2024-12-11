@@ -16,7 +16,7 @@
     "prettier": "prettier . --check",
     "eslint": "eslint --flag unstable_ts_config .",
     "typecheck": "tsc --noEmit -p tsconfig.node.json && vue-tsc --noEmit -p tsconfig.app.json",
-    "check": "prettier . --check && eslint . && tsc -p tsconfig.node.json && vue-tsc --noEmit -p tsconfig.app.json",
+    "validate": "pnpm run prettier && pnpm run eslint && pnpm run typecheck",
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
