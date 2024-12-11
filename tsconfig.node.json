@@ -23,5 +23,5 @@
     "useUnknownInCatchVariables": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["vite.config.ts", "codegen.ts"]
+  "include": ["*.ts"]
 }

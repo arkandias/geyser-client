@@ -1,11 +1,6 @@
-// @ts-check
-
-// @ts-expect-error no types declaration for @eslint/js
 import eslint from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
-// @ts-expect-error no types declaration for eslint-plugin-vue
 import pluginVue from "eslint-plugin-vue";
-import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
@@ -16,9 +11,6 @@ export default tseslint.config(
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
-      globals: {
-        ...globals.node,
-      },
     },
   },
   {

@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config({ path: ".env.development" });
 dotenv.config({ path: ".env.development.local" });
 
-const config: CodegenConfig = {
+export default {
   overwrite: true,
   schema: {
     [process.env.VITE_GRAPHQL_URL ?? ""]: {
@@ -33,6 +33,4 @@ const config: CodegenConfig = {
   hooks: {
     afterOneFileWrite: ["prettier --write"],
   },
-};
-
-export default config;
+} satisfies CodegenConfig;
