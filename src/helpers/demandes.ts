@@ -44,7 +44,11 @@ export const updateDemande = async (
     heures: number;
   },
 ): Promise<void> => {
-  const current = await getCurrentDemande(client, variables);
+  const current = await getCurrentDemande(client, {
+    uid: variables.uid,
+    ensId: variables.ensId,
+    typeDemande: variables.typeDemande,
+  });
   if (current === null) {
     return;
   }
