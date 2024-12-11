@@ -110,7 +110,18 @@ const onDelete = async (id: number): Promise<void> => {
       <td>
         Modifications
         <QBtn
-          v-if="editable"
+          v-if="openForm"
+          form="addModification"
+          type="submit"
+          icon="sym_s_check_circle"
+          color="primary"
+          size="sm"
+          flat
+          square
+          dense
+        />
+        <QBtn
+          v-else-if="editable"
           icon="sym_s_add_circle"
           color="primary"
           size="sm"
@@ -167,16 +178,6 @@ const onDelete = async (id: number): Promise<void> => {
           dense
           form="addModification"
           class="inline-block"
-        />
-        <QBtn
-          form="addModification"
-          type="submit"
-          icon="sym_s_check_circle"
-          color="primary"
-          size="sm"
-          flat
-          square
-          dense
         />
       </td>
     </tr>
