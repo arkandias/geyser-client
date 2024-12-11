@@ -8,12 +8,7 @@
 import type { Ref } from "vue";
 import { computed, ref, toValue, watchEffect } from "vue";
 
-import {
-  indicateurMessage,
-  nf,
-  normalizeForSearch,
-  tooltipDelay,
-} from "@/helpers/format.ts";
+import { nf, normalizeForSearch, tooltipDelay } from "@/helpers/format.ts";
 import type { ColumnNonAbbreviable, RowIntervenant } from "@/helpers/types.ts";
 import { selectedIntervenant as selected, useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";
