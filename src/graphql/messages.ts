@@ -7,21 +7,11 @@
 import { graphql } from "@/gql";
 
 export const UPSERT_MESSAGE = graphql(/* GraphQL */ `
-  mutation UpsertMessage(
-    $annee: Int!
-    $uid: String!
-    $typeMessage: String!
-    $contenu: String!
-  ) {
+  mutation UpsertMessage($annee: Int!, $uid: String!, $contenu: String!) {
     message: insert_message_one(
-      object: {
-        annee: $annee
-        uid: $uid
-        type: $typeMessage
-        contenu: $contenu
-      }
+      object: { annee: $annee, uid: $uid, contenu: $contenu }
       on_conflict: {
-        constraint: message_annee_uid_type_key
+        constraint: message_annee_uid_key
         update_columns: [contenu]
       }
     ) {
@@ -31,15 +21,9 @@ export const UPSERT_MESSAGE = graphql(/* GraphQL */ `
 `);
 
 export const DELETE_MESSAGE = graphql(/* GraphQL */ `
-  mutation DeleteMessage($annee: Int!, $uid: String!, $typeMessage: String!) {
+  mutation DeleteMessage($annee: Int!, $uid: String!) {
     messages: delete_message(
-      where: {
-        _and: [
-          { annee: { _eq: $annee } }
-          { uid: { _eq: $uid } }
-          { type: { _eq: $typeMessage } }
-        ]
-      }
+      where: { _and: [{ annee: { _eq: $annee } }, { uid: { _eq: $uid } }] }
     ) {
       returning {
         id

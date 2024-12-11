@@ -117,9 +117,9 @@ export const GET_MY_ROW = graphql(/* GraphQL */ `
         ...TotalHeures
         ...TotalHeuresEQTD
       }
-      messages(where: { annee: { _eq: $annee } }) {
+      # limit: 1 car unique
+      messages(where: { annee: { _eq: $annee } }, limit: 1) {
         id
-        typeMessage: type
         contenu
       }
       visible
@@ -196,9 +196,9 @@ export const GET_INTERVENANTS_TABLE_ROWS = graphql(/* GraphQL */ `
         ...TotalHeures
         ...TotalHeuresEQTD
       }
-      messages(where: { annee: { _eq: $annee } }) {
+      # limit: 1 car unique
+      messages(where: { annee: { _eq: $annee } }, limit: 1) {
         id
-        typeMessage: type
         contenu
       }
       visible

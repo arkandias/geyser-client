@@ -71,7 +71,7 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     label: "M.",
     tooltip: "Messages",
     align: "left",
-    field: (row) => indicateurMessage(row.messages),
+    field: (row) => (row.messages.length ? "O" : "N"),
     sortable: true,
     visible: false,
     searchable: false,

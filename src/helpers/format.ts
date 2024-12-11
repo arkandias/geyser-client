@@ -8,7 +8,6 @@ import type { NamedColor } from "quasar";
 
 import type {
   Intervenant,
-  Message,
   Responsable,
   RowIntervenant,
 } from "@/helpers/types.ts";
@@ -72,27 +71,6 @@ export const formatTypeDemandesTitre = (typeDemande: string): string => {
       return "";
   }
 };
-
-export const formatTypeMessage = (typeMessage: string): string => {
-  switch (typeMessage) {
-    case "message_intervenant":
-      return "Message pour la commission";
-    case "note_commission":
-      return "Note de la commission";
-    default:
-      console.warn(`Type de message '${typeMessage}' inconnu`);
-      return "";
-  }
-};
-
-export const indicateurMessage = (messages: Message[]): string =>
-  messages.some((message) => message.typeMessage === "message_intervenant")
-    ? messages.some((message) => message.typeMessage === "note_commission")
-      ? "\u2021"
-      : "\u002A"
-    : messages.some((message) => message.typeMessage === "note_commission")
-      ? "\u2020"
-      : "";
 
 export const formatFormation = (
   nomCursus: string,

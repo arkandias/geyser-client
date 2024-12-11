@@ -155,7 +155,6 @@ export type Modification = {
 };
 export type Message = {
   id: number;
-  typeMessage: string;
   contenu: string;
 };
 

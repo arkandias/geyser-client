@@ -5,17 +5,36 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-defineProps<{ title: string }>();
+const edition = defineModel<boolean>();
+defineProps<{
+  title: string;
+  editable?: boolean;
+}>();
 defineSlots<{ default(): unknown }>();
 </script>
 
 <template>
   <QCardSection>
-    <div class="text-subtitle1 text-uppercase">{{ title }}</div>
-    <div style="display: flex; justify-content: center">
+    <div class="text-subtitle1 text-uppercase">
+      {{ title }}
+      <QToggle
+        v-if="editable"
+        v-model="edition"
+        icon="sym_s_edit"
+        color="primary"
+        size="sm"
+        dense
+      />
+    </div>
+    <div class="wrapper">
       <slot />
     </div>
   </QCardSection>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+</style>

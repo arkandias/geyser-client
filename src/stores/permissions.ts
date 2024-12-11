@@ -93,50 +93,21 @@ export const usePermissions = () => {
         anneeEnCoursActive.value &&
         uid === moi.value),
   );
-  const deModifierUnMessage: ComputedRef<
-    (typeMessage: string, uid: string) => boolean
-  > = computed(() => (typeMessage, uid) => {
-    switch (typeMessage) {
-      case "message_intervenant":
-        return (
-          activeRole.value === "admin" ||
-          (activeRole.value === "intervenant" &&
-            phaseEnCours.value === "voeux" &&
-            anneeEnCoursActive.value &&
-            uid === moi.value)
-        );
-      case "note_commission":
-        return (
-          activeRole.value === "admin" ||
-          (activeRole.value === "commissaire" &&
-            phaseEnCours.value === "commission" &&
-            anneeEnCoursActive.value)
-        );
-      default:
-        console.warn(`Type de message '${typeMessage}' inconnu`);
-        return activeRole.value === "admin";
-    }
-  });
-  const deVoirUnMessage: ComputedRef<
-    (typeMessage: string, uid: string) => boolean
-  > = computed(() => (typeMessage, uid) => {
-    if (deModifierUnMessage.value(typeMessage, uid)) {
-      return true;
-    }
-    switch (typeMessage) {
-      case "message_intervenant":
-        return (
-          (activeRole.value === "commissaire" &&
-            phaseEnCours.value === "commission") ||
-          (activeRole.value === "intervenant" && uid === moi.value)
-        );
-      case "note_commission":
-        return false;
-      default:
-        console.warn(`Type de message '${typeMessage}' inconnu`);
-        return activeRole.value === "admin";
-    }
-  });
+  const deModifierUnMessage: ComputedRef<(uid: string) => boolean> = computed(
+    () => (uid) =>
+      activeRole.value === "admin" ||
+      (activeRole.value === "intervenant" &&
+        phaseEnCours.value === "voeux" &&
+        anneeEnCoursActive.value &&
+        uid === moi.value),
+  );
+  const deVoirUnMessage: ComputedRef<(uid: string) => boolean> = computed(
+    () => (uid) =>
+      deModifierUnMessage.value(uid) ||
+      (activeRole.value === "commissaire" &&
+        phaseEnCours.value === "commission") ||
+      (activeRole.value === "intervenant" && uid === moi.value),
+  );
   return reactive({
     dAdministrer,
     dAcceder,

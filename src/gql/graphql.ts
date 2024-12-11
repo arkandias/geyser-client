@@ -3485,10 +3485,6 @@ export type Message = {
   id: Scalars['Int']['output'];
   /** An object relationship */
   intervenant: Intervenant;
-  /** Le type de message. */
-  type: Scalars['String']['output'];
-  /** An object relationship */
-  type_message: Type_Message;
   /** L'identifiant de l'intervenant concerné. */
   uid: Scalars['String']['output'];
 };
@@ -3583,15 +3579,13 @@ export type Message_Bool_Exp = {
   contenu: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   intervenant: InputMaybe<Intervenant_Bool_Exp>;
-  type: InputMaybe<String_Comparison_Exp>;
-  type_message: InputMaybe<Type_Message_Bool_Exp>;
   uid: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "message" */
 export enum Message_Constraint {
-  /** unique or primary key constraint on columns "uid", "type", "annee" */
-  MessageAnneeUidTypeKey = 'message_annee_uid_type_key',
+  /** unique or primary key constraint on columns "uid", "annee" */
+  MessageAnneeUidKey = 'message_annee_uid_key',
   /** unique or primary key constraint on columns "id" */
   MessagePkey = 'message_pkey'
 }
@@ -3614,9 +3608,6 @@ export type Message_Insert_Input = {
   /** L'identifiant unique du message. */
   id: InputMaybe<Scalars['Int']['input']>;
   intervenant: InputMaybe<Intervenant_Obj_Rel_Insert_Input>;
-  /** Le type de message. */
-  type: InputMaybe<Scalars['String']['input']>;
-  type_message: InputMaybe<Type_Message_Obj_Rel_Insert_Input>;
   /** L'identifiant de l'intervenant concerné. */
   uid: InputMaybe<Scalars['String']['input']>;
 };
@@ -3630,8 +3621,6 @@ export type Message_Max_Fields = {
   contenu: Maybe<Scalars['String']['output']>;
   /** L'identifiant unique du message. */
   id: Maybe<Scalars['Int']['output']>;
-  /** Le type de message. */
-  type: Maybe<Scalars['String']['output']>;
   /** L'identifiant de l'intervenant concerné. */
   uid: Maybe<Scalars['String']['output']>;
 };
@@ -3644,8 +3633,6 @@ export type Message_Max_Order_By = {
   contenu: InputMaybe<Order_By>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Order_By>;
-  /** Le type de message. */
-  type: InputMaybe<Order_By>;
   /** L'identifiant de l'intervenant concerné. */
   uid: InputMaybe<Order_By>;
 };
@@ -3659,8 +3646,6 @@ export type Message_Min_Fields = {
   contenu: Maybe<Scalars['String']['output']>;
   /** L'identifiant unique du message. */
   id: Maybe<Scalars['Int']['output']>;
-  /** Le type de message. */
-  type: Maybe<Scalars['String']['output']>;
   /** L'identifiant de l'intervenant concerné. */
   uid: Maybe<Scalars['String']['output']>;
 };
@@ -3673,8 +3658,6 @@ export type Message_Min_Order_By = {
   contenu: InputMaybe<Order_By>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Order_By>;
-  /** Le type de message. */
-  type: InputMaybe<Order_By>;
   /** L'identifiant de l'intervenant concerné. */
   uid: InputMaybe<Order_By>;
 };
@@ -3702,8 +3685,6 @@ export type Message_Order_By = {
   contenu: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   intervenant: InputMaybe<Intervenant_Order_By>;
-  type: InputMaybe<Order_By>;
-  type_message: InputMaybe<Type_Message_Order_By>;
   uid: InputMaybe<Order_By>;
 };
 
@@ -3722,8 +3703,6 @@ export enum Message_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Type = 'type',
-  /** column name */
   Uid = 'uid'
 }
 
@@ -3735,8 +3714,6 @@ export type Message_Set_Input = {
   contenu: InputMaybe<Scalars['String']['input']>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Scalars['Int']['input']>;
-  /** Le type de message. */
-  type: InputMaybe<Scalars['String']['input']>;
   /** L'identifiant de l'intervenant concerné. */
   uid: InputMaybe<Scalars['String']['input']>;
 };
@@ -3808,8 +3785,6 @@ export type Message_Stream_Cursor_Value_Input = {
   contenu: InputMaybe<Scalars['String']['input']>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Scalars['Int']['input']>;
-  /** Le type de message. */
-  type: InputMaybe<Scalars['String']['input']>;
   /** L'identifiant de l'intervenant concerné. */
   uid: InputMaybe<Scalars['String']['input']>;
 };
@@ -3839,8 +3814,6 @@ export enum Message_Update_Column {
   Contenu = 'contenu',
   /** column name */
   Id = 'id',
-  /** column name */
-  Type = 'type',
   /** column name */
   Uid = 'uid'
 }
@@ -4433,10 +4406,6 @@ export type Mutation_Root = {
   delete_type_enseignement: Maybe<Type_Enseignement_Mutation_Response>;
   /** delete single row from the table: "type_enseignement" */
   delete_type_enseignement_by_pk: Maybe<Type_Enseignement>;
-  /** delete data from the table: "type_message" */
-  delete_type_message: Maybe<Type_Message_Mutation_Response>;
-  /** delete single row from the table: "type_message" */
-  delete_type_message_by_pk: Maybe<Type_Message>;
   /** delete data from the table: "type_modification" */
   delete_type_modification: Maybe<Type_Modification_Mutation_Response>;
   /** delete single row from the table: "type_modification" */
@@ -4501,10 +4470,6 @@ export type Mutation_Root = {
   insert_type_enseignement: Maybe<Type_Enseignement_Mutation_Response>;
   /** insert a single row into the table: "type_enseignement" */
   insert_type_enseignement_one: Maybe<Type_Enseignement>;
-  /** insert data into the table: "type_message" */
-  insert_type_message: Maybe<Type_Message_Mutation_Response>;
-  /** insert a single row into the table: "type_message" */
-  insert_type_message_one: Maybe<Type_Message>;
   /** insert data into the table: "type_modification" */
   insert_type_modification: Maybe<Type_Modification_Mutation_Response>;
   /** insert a single row into the table: "type_modification" */
@@ -4599,12 +4564,6 @@ export type Mutation_Root = {
   update_type_enseignement_by_pk: Maybe<Type_Enseignement>;
   /** update multiples rows of table: "type_enseignement" */
   update_type_enseignement_many: Maybe<Array<Maybe<Type_Enseignement_Mutation_Response>>>;
-  /** update data of the table: "type_message" */
-  update_type_message: Maybe<Type_Message_Mutation_Response>;
-  /** update single row of the table: "type_message" */
-  update_type_message_by_pk: Maybe<Type_Message>;
-  /** update multiples rows of table: "type_message" */
-  update_type_message_many: Maybe<Array<Maybe<Type_Message_Mutation_Response>>>;
   /** update data of the table: "type_modification" */
   update_type_modification: Maybe<Type_Modification_Mutation_Response>;
   /** update single row of the table: "type_modification" */
@@ -4791,18 +4750,6 @@ export type Mutation_RootDelete_Type_EnseignementArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Type_Enseignement_By_PkArgs = {
   label: Scalars['String']['input'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Type_MessageArgs = {
-  where: Type_Message_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Type_Message_By_PkArgs = {
-  value: Scalars['String']['input'];
 };
 
 
@@ -5025,20 +4972,6 @@ export type Mutation_RootInsert_Type_EnseignementArgs = {
 export type Mutation_RootInsert_Type_Enseignement_OneArgs = {
   object: Type_Enseignement_Insert_Input;
   on_conflict: InputMaybe<Type_Enseignement_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Type_MessageArgs = {
-  objects: Array<Type_Message_Insert_Input>;
-  on_conflict: InputMaybe<Type_Message_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Type_Message_OneArgs = {
-  object: Type_Message_Insert_Input;
-  on_conflict: InputMaybe<Type_Message_On_Conflict>;
 };
 
 
@@ -5379,26 +5312,6 @@ export type Mutation_RootUpdate_Type_Enseignement_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Type_Enseignement_ManyArgs = {
   updates: Array<Type_Enseignement_Updates>;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Type_MessageArgs = {
-  _set: InputMaybe<Type_Message_Set_Input>;
-  where: Type_Message_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Type_Message_By_PkArgs = {
-  _set: InputMaybe<Type_Message_Set_Input>;
-  pk_columns: Type_Message_Pk_Columns_Input;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Type_Message_ManyArgs = {
-  updates: Array<Type_Message_Updates>;
 };
 
 
@@ -6657,12 +6570,6 @@ export type Query_Root = {
   type_enseignement_aggregate: Type_Enseignement_Aggregate;
   /** fetch data from the table: "type_enseignement" using primary key columns */
   type_enseignement_by_pk: Maybe<Type_Enseignement>;
-  /** fetch data from the table: "type_message" */
-  type_message: Array<Type_Message>;
-  /** fetch aggregated fields from the table: "type_message" */
-  type_message_aggregate: Type_Message_Aggregate;
-  /** fetch data from the table: "type_message" using primary key columns */
-  type_message_by_pk: Maybe<Type_Message>;
   /** fetch data from the table: "type_modification" */
   type_modification: Array<Type_Modification>;
   /** fetch aggregated fields from the table: "type_modification" */
@@ -7014,29 +6921,6 @@ export type Query_RootType_Enseignement_AggregateArgs = {
 
 export type Query_RootType_Enseignement_By_PkArgs = {
   label: Scalars['String']['input'];
-};
-
-
-export type Query_RootType_MessageArgs = {
-  distinct_on: InputMaybe<Array<Type_Message_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
-  order_by: InputMaybe<Array<Type_Message_Order_By>>;
-  where: InputMaybe<Type_Message_Bool_Exp>;
-};
-
-
-export type Query_RootType_Message_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Type_Message_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
-  order_by: InputMaybe<Array<Type_Message_Order_By>>;
-  where: InputMaybe<Type_Message_Bool_Exp>;
-};
-
-
-export type Query_RootType_Message_By_PkArgs = {
-  value: Scalars['String']['input'];
 };
 
 
@@ -8126,14 +8010,6 @@ export type Subscription_Root = {
   type_enseignement_by_pk: Maybe<Type_Enseignement>;
   /** fetch data from the table in a streaming manner: "type_enseignement" */
   type_enseignement_stream: Array<Type_Enseignement>;
-  /** fetch data from the table: "type_message" */
-  type_message: Array<Type_Message>;
-  /** fetch aggregated fields from the table: "type_message" */
-  type_message_aggregate: Type_Message_Aggregate;
-  /** fetch data from the table: "type_message" using primary key columns */
-  type_message_by_pk: Maybe<Type_Message>;
-  /** fetch data from the table in a streaming manner: "type_message" */
-  type_message_stream: Array<Type_Message>;
   /** fetch data from the table: "type_modification" */
   type_modification: Array<Type_Modification>;
   /** fetch aggregated fields from the table: "type_modification" */
@@ -8592,36 +8468,6 @@ export type Subscription_RootType_Enseignement_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Type_Enseignement_Stream_Cursor_Input>>;
   where: InputMaybe<Type_Enseignement_Bool_Exp>;
-};
-
-
-export type Subscription_RootType_MessageArgs = {
-  distinct_on: InputMaybe<Array<Type_Message_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
-  order_by: InputMaybe<Array<Type_Message_Order_By>>;
-  where: InputMaybe<Type_Message_Bool_Exp>;
-};
-
-
-export type Subscription_RootType_Message_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Type_Message_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
-  order_by: InputMaybe<Array<Type_Message_Order_By>>;
-  where: InputMaybe<Type_Message_Bool_Exp>;
-};
-
-
-export type Subscription_RootType_Message_By_PkArgs = {
-  value: Scalars['String']['input'];
-};
-
-
-export type Subscription_RootType_Message_StreamArgs = {
-  batch_size: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<Type_Message_Stream_Cursor_Input>>;
-  where: InputMaybe<Type_Message_Bool_Exp>;
 };
 
 
@@ -9108,188 +8954,6 @@ export type Type_Enseignement_Variance_Fields = {
   coefficient: Maybe<Scalars['Float']['output']>;
 };
 
-/** Table contenant les différents types de messages enregistrés sur Geyser. */
-export type Type_Message = {
-  __typename?: 'type_message';
-  /** Une brève description. */
-  description: Maybe<Scalars['String']['output']>;
-  /** An array relationship */
-  messages: Array<Message>;
-  /** An aggregate relationship */
-  messages_aggregate: Message_Aggregate;
-  /** Le type de message (unique). */
-  value: Scalars['String']['output'];
-};
-
-
-/** Table contenant les différents types de messages enregistrés sur Geyser. */
-export type Type_MessageMessagesArgs = {
-  distinct_on: InputMaybe<Array<Message_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
-  order_by: InputMaybe<Array<Message_Order_By>>;
-  where: InputMaybe<Message_Bool_Exp>;
-};
-
-
-/** Table contenant les différents types de messages enregistrés sur Geyser. */
-export type Type_MessageMessages_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Message_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  offset: InputMaybe<Scalars['Int']['input']>;
-  order_by: InputMaybe<Array<Message_Order_By>>;
-  where: InputMaybe<Message_Bool_Exp>;
-};
-
-/** aggregated selection of "type_message" */
-export type Type_Message_Aggregate = {
-  __typename?: 'type_message_aggregate';
-  aggregate: Maybe<Type_Message_Aggregate_Fields>;
-  nodes: Array<Type_Message>;
-};
-
-/** aggregate fields of "type_message" */
-export type Type_Message_Aggregate_Fields = {
-  __typename?: 'type_message_aggregate_fields';
-  count: Scalars['Int']['output'];
-  max: Maybe<Type_Message_Max_Fields>;
-  min: Maybe<Type_Message_Min_Fields>;
-};
-
-
-/** aggregate fields of "type_message" */
-export type Type_Message_Aggregate_FieldsCountArgs = {
-  columns: InputMaybe<Array<Type_Message_Select_Column>>;
-  distinct: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-/** Boolean expression to filter rows from the table "type_message". All fields are combined with a logical 'AND'. */
-export type Type_Message_Bool_Exp = {
-  _and: InputMaybe<Array<Type_Message_Bool_Exp>>;
-  _not: InputMaybe<Type_Message_Bool_Exp>;
-  _or: InputMaybe<Array<Type_Message_Bool_Exp>>;
-  description: InputMaybe<String_Comparison_Exp>;
-  messages: InputMaybe<Message_Bool_Exp>;
-  messages_aggregate: InputMaybe<Message_Aggregate_Bool_Exp>;
-  value: InputMaybe<String_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "type_message" */
-export enum Type_Message_Constraint {
-  /** unique or primary key constraint on columns "value" */
-  TypeMessagePkey = 'type_message_pkey'
-}
-
-/** input type for inserting data into table "type_message" */
-export type Type_Message_Insert_Input = {
-  /** Une brève description. */
-  description: InputMaybe<Scalars['String']['input']>;
-  messages: InputMaybe<Message_Arr_Rel_Insert_Input>;
-  /** Le type de message (unique). */
-  value: InputMaybe<Scalars['String']['input']>;
-};
-
-/** aggregate max on columns */
-export type Type_Message_Max_Fields = {
-  __typename?: 'type_message_max_fields';
-  /** Une brève description. */
-  description: Maybe<Scalars['String']['output']>;
-  /** Le type de message (unique). */
-  value: Maybe<Scalars['String']['output']>;
-};
-
-/** aggregate min on columns */
-export type Type_Message_Min_Fields = {
-  __typename?: 'type_message_min_fields';
-  /** Une brève description. */
-  description: Maybe<Scalars['String']['output']>;
-  /** Le type de message (unique). */
-  value: Maybe<Scalars['String']['output']>;
-};
-
-/** response of any mutation on the table "type_message" */
-export type Type_Message_Mutation_Response = {
-  __typename?: 'type_message_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int']['output'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Type_Message>;
-};
-
-/** input type for inserting object relation for remote table "type_message" */
-export type Type_Message_Obj_Rel_Insert_Input = {
-  data: Type_Message_Insert_Input;
-  /** upsert condition */
-  on_conflict: InputMaybe<Type_Message_On_Conflict>;
-};
-
-/** on_conflict condition type for table "type_message" */
-export type Type_Message_On_Conflict = {
-  constraint: Type_Message_Constraint;
-  update_columns: Array<Type_Message_Update_Column>;
-  where: InputMaybe<Type_Message_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "type_message". */
-export type Type_Message_Order_By = {
-  description: InputMaybe<Order_By>;
-  messages_aggregate: InputMaybe<Message_Aggregate_Order_By>;
-  value: InputMaybe<Order_By>;
-};
-
-/** primary key columns input for table: type_message */
-export type Type_Message_Pk_Columns_Input = {
-  /** Le type de message (unique). */
-  value: Scalars['String']['input'];
-};
-
-/** select columns of table "type_message" */
-export enum Type_Message_Select_Column {
-  /** column name */
-  Description = 'description',
-  /** column name */
-  Value = 'value'
-}
-
-/** input type for updating data in table "type_message" */
-export type Type_Message_Set_Input = {
-  /** Une brève description. */
-  description: InputMaybe<Scalars['String']['input']>;
-  /** Le type de message (unique). */
-  value: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Streaming cursor of the table "type_message" */
-export type Type_Message_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: Type_Message_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Type_Message_Stream_Cursor_Value_Input = {
-  /** Une brève description. */
-  description: InputMaybe<Scalars['String']['input']>;
-  /** Le type de message (unique). */
-  value: InputMaybe<Scalars['String']['input']>;
-};
-
-/** update columns of table "type_message" */
-export enum Type_Message_Update_Column {
-  /** column name */
-  Description = 'description',
-  /** column name */
-  Value = 'value'
-}
-
-export type Type_Message_Updates = {
-  /** sets the columns of the filtered rows to the given values */
-  _set: InputMaybe<Type_Message_Set_Input>;
-  /** filter the rows which have to be updated */
-  where: Type_Message_Bool_Exp;
-};
-
 /** Table contenant les différents types de modification de service. */
 export type Type_Modification = {
   __typename?: 'type_modification';
@@ -9589,19 +9253,18 @@ export type GetMyRowQueryVariables = Exact<{
 }>;
 
 
-export type GetMyRowQuery = { __typename?: 'query_root', intervenant: { __typename?: 'intervenant', visible: boolean, uid: string, nom: string, prenom: string, alias: string | null, demandes: Array<{ __typename?: 'demande', id: number, heures: number, ensId: number, typeDemande: string, heuresEQTD: number | null }>, services: Array<{ __typename?: 'service', id: number, heuresEQTD: number }>, modifications: Array<{ __typename?: 'modification_service', id: number, typeModification: string, heuresEQTD: number }>, totalModifications: { __typename?: 'modification_service_aggregate', aggregate: { __typename?: 'modification_service_aggregate_fields', sum: { __typename?: 'modification_service_sum_fields', heuresEQTD: number | null } | null } | null }, totalAttributions: { __typename?: 'demande_aggregate', aggregate: { __typename?: 'demande_aggregate_fields', sum: { __typename?: 'demande_sum_fields', heures: number | null, heuresEQTD: number | null } | null } | null }, totalPrincipales: { __typename?: 'demande_aggregate', aggregate: { __typename?: 'demande_aggregate_fields', sum: { __typename?: 'demande_sum_fields', heures: number | null, heuresEQTD: number | null } | null } | null }, totalSecondaires: { __typename?: 'demande_aggregate', aggregate: { __typename?: 'demande_aggregate_fields', sum: { __typename?: 'demande_sum_fields', heures: number | null, heuresEQTD: number | null } | null } | null }, messages: Array<{ __typename?: 'message', id: number, contenu: string, typeMessage: string }> } | null };
+export type GetMyRowQuery = { __typename?: 'query_root', intervenant: { __typename?: 'intervenant', visible: boolean, uid: string, nom: string, prenom: string, alias: string | null, demandes: Array<{ __typename?: 'demande', id: number, heures: number, ensId: number, typeDemande: string, heuresEQTD: number | null }>, services: Array<{ __typename?: 'service', id: number, heuresEQTD: number }>, modifications: Array<{ __typename?: 'modification_service', id: number, typeModification: string, heuresEQTD: number }>, totalModifications: { __typename?: 'modification_service_aggregate', aggregate: { __typename?: 'modification_service_aggregate_fields', sum: { __typename?: 'modification_service_sum_fields', heuresEQTD: number | null } | null } | null }, totalAttributions: { __typename?: 'demande_aggregate', aggregate: { __typename?: 'demande_aggregate_fields', sum: { __typename?: 'demande_sum_fields', heures: number | null, heuresEQTD: number | null } | null } | null }, totalPrincipales: { __typename?: 'demande_aggregate', aggregate: { __typename?: 'demande_aggregate_fields', sum: { __typename?: 'demande_sum_fields', heures: number | null, heuresEQTD: number | null } | null } | null }, totalSecondaires: { __typename?: 'demande_aggregate', aggregate: { __typename?: 'demande_aggregate_fields', sum: { __typename?: 'demande_sum_fields', heures: number | null, heuresEQTD: number | null } | null } | null }, messages: Array<{ __typename?: 'message', id: number, contenu: string }> } | null };
 
 export type GetIntervenantsTableRowsQueryVariables = Exact<{
   annee: Scalars['Int']['input'];
 }>;
 
 
-export type GetIntervenantsTableRowsQuery = { __typename?: 'query_root', intervenants: Array<{ __typename?: 'intervenant', visible: boolean, uid: string, nom: string, prenom: string, alias: string | null, demandes: Array<{ __typename?: 'demande', id: number, heures: number, ensId: number, typeDemande: string, heuresEQTD: number | null }>, services: Array<{ __typename?: 'service', id: number, heuresEQTD: number }>, modifications: Array<{ __typename?: 'modification_service', id: number, typeModification: string, heuresEQTD: number }>, totalModifications: { __typename?: 'modification_service_aggregate', aggregate: { __typename?: 'modification_service_aggregate_fields', sum: { __typename?: 'modification_service_sum_fields', heuresEQTD: number | null } | null } | null }, totalAttributions: { __typename?: 'demande_aggregate', aggregate: { __typename?: 'demande_aggregate_fields', sum: { __typename?: 'demande_sum_fields', heures: number | null, heuresEQTD: number | null } | null } | null }, totalPrincipales: { __typename?: 'demande_aggregate', aggregate: { __typename?: 'demande_aggregate_fields', sum: { __typename?: 'demande_sum_fields', heures: number | null, heuresEQTD: number | null } | null } | null }, totalSecondaires: { __typename?: 'demande_aggregate', aggregate: { __typename?: 'demande_aggregate_fields', sum: { __typename?: 'demande_sum_fields', heures: number | null, heuresEQTD: number | null } | null } | null }, messages: Array<{ __typename?: 'message', id: number, contenu: string, typeMessage: string }> }> };
+export type GetIntervenantsTableRowsQuery = { __typename?: 'query_root', intervenants: Array<{ __typename?: 'intervenant', visible: boolean, uid: string, nom: string, prenom: string, alias: string | null, demandes: Array<{ __typename?: 'demande', id: number, heures: number, ensId: number, typeDemande: string, heuresEQTD: number | null }>, services: Array<{ __typename?: 'service', id: number, heuresEQTD: number }>, modifications: Array<{ __typename?: 'modification_service', id: number, typeModification: string, heuresEQTD: number }>, totalModifications: { __typename?: 'modification_service_aggregate', aggregate: { __typename?: 'modification_service_aggregate_fields', sum: { __typename?: 'modification_service_sum_fields', heuresEQTD: number | null } | null } | null }, totalAttributions: { __typename?: 'demande_aggregate', aggregate: { __typename?: 'demande_aggregate_fields', sum: { __typename?: 'demande_sum_fields', heures: number | null, heuresEQTD: number | null } | null } | null }, totalPrincipales: { __typename?: 'demande_aggregate', aggregate: { __typename?: 'demande_aggregate_fields', sum: { __typename?: 'demande_sum_fields', heures: number | null, heuresEQTD: number | null } | null } | null }, totalSecondaires: { __typename?: 'demande_aggregate', aggregate: { __typename?: 'demande_aggregate_fields', sum: { __typename?: 'demande_sum_fields', heures: number | null, heuresEQTD: number | null } | null } | null }, messages: Array<{ __typename?: 'message', id: number, contenu: string }> }> };
 
 export type UpsertMessageMutationVariables = Exact<{
   annee: Scalars['Int']['input'];
   uid: Scalars['String']['input'];
-  typeMessage: Scalars['String']['input'];
   contenu: Scalars['String']['input'];
 }>;
 
@@ -9611,7 +9274,6 @@ export type UpsertMessageMutation = { __typename?: 'mutation_root', message: { _
 export type DeleteMessageMutationVariables = Exact<{
   annee: Scalars['Int']['input'];
   uid: Scalars['String']['input'];
-  typeMessage: Scalars['String']['input'];
 }>;
 
 
@@ -9675,10 +9337,10 @@ export const UpdateDescriptionDocument = {"kind":"Document","definitions":[{"kin
 export const GetIntervenantDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetIntervenant"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uid"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"intervenant"},"name":{"kind":"Name","value":"intervenant_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"uid"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uid"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Intervenant"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Intervenant"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"intervenant"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"nom"}},{"kind":"Field","name":{"kind":"Name","value":"prenom"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]} as unknown as DocumentNode<GetIntervenantQuery, GetIntervenantQueryVariables>;
 export const UpsertIntervenantDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertIntervenant"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uid"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"nom"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"prenom"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"intervenant"},"name":{"kind":"Name","value":"insert_intervenant_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"uid"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uid"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"nom"},"value":{"kind":"Variable","name":{"kind":"Name","value":"nom"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"prenom"},"value":{"kind":"Variable","name":{"kind":"Name","value":"prenom"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"on_conflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"intervenant_pkey"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"nom"},{"kind":"EnumValue","value":"prenom"}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"nom"}},{"kind":"Field","name":{"kind":"Name","value":"prenom"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]} as unknown as DocumentNode<UpsertIntervenantMutation, UpsertIntervenantMutationVariables>;
 export const GetIntervenantsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetIntervenants"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"intervenants"},"name":{"kind":"Name","value":"intervenant"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"actif"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"BooleanValue","value":true}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nom"},"value":{"kind":"EnumValue","value":"asc"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"prenom"},"value":{"kind":"EnumValue","value":"asc"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Intervenant"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Intervenant"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"intervenant"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"nom"}},{"kind":"Field","name":{"kind":"Name","value":"prenom"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]} as unknown as DocumentNode<GetIntervenantsQuery, GetIntervenantsQueryVariables>;
-export const GetMyRowDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMyRow"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"annee"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uid"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"intervenant"},"name":{"kind":"Name","value":"intervenant_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"uid"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uid"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Intervenant"}},{"kind":"Field","name":{"kind":"Name","value":"demandes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"ensId"},"name":{"kind":"Name","value":"ens_id"}},{"kind":"Field","alias":{"kind":"Name","value":"typeDemande"},"name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"heures"}},{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}},{"kind":"Field","name":{"kind":"Name","value":"services"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"modifications"},"name":{"kind":"Name","value":"modifications_service"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"EnumValue","value":"asc"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"heures_eqtd"},"value":{"kind":"EnumValue","value":"asc"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"typeModification"},"name":{"kind":"Name","value":"type"}},{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalModifications"},"name":{"kind":"Name","value":"modifications_service_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalAttributions"},"name":{"kind":"Name","value":"demandes_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"attribution","block":false}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeures"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeuresEQTD"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalPrincipales"},"name":{"kind":"Name","value":"demandes_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"principale","block":false}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeures"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeuresEQTD"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalSecondaires"},"name":{"kind":"Name","value":"demandes_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"secondaire","block":false}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeures"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeuresEQTD"}}]}},{"kind":"Field","name":{"kind":"Name","value":"messages"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"typeMessage"},"name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"contenu"}}]}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Intervenant"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"intervenant"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"nom"}},{"kind":"Field","name":{"kind":"Name","value":"prenom"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TotalHeures"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"demande_aggregate"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"heures"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TotalHeuresEQTD"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"demande_aggregate"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}}]}}]}}]} as unknown as DocumentNode<GetMyRowQuery, GetMyRowQueryVariables>;
-export const GetIntervenantsTableRowsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetIntervenantsTableRows"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"annee"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"intervenants"},"name":{"kind":"Name","value":"intervenant"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"actif"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"BooleanValue","value":true}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nom"},"value":{"kind":"EnumValue","value":"asc"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"prenom"},"value":{"kind":"EnumValue","value":"asc"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Intervenant"}},{"kind":"Field","name":{"kind":"Name","value":"demandes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"ensId"},"name":{"kind":"Name","value":"ens_id"}},{"kind":"Field","alias":{"kind":"Name","value":"typeDemande"},"name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"heures"}},{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}},{"kind":"Field","name":{"kind":"Name","value":"services"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"modifications"},"name":{"kind":"Name","value":"modifications_service"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"EnumValue","value":"asc"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"heures_eqtd"},"value":{"kind":"EnumValue","value":"asc"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"typeModification"},"name":{"kind":"Name","value":"type"}},{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalModifications"},"name":{"kind":"Name","value":"modifications_service_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalAttributions"},"name":{"kind":"Name","value":"demandes_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"attribution","block":false}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeures"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeuresEQTD"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalPrincipales"},"name":{"kind":"Name","value":"demandes_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"principale","block":false}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeures"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeuresEQTD"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalSecondaires"},"name":{"kind":"Name","value":"demandes_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"secondaire","block":false}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeures"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeuresEQTD"}}]}},{"kind":"Field","name":{"kind":"Name","value":"messages"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"typeMessage"},"name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"contenu"}}]}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Intervenant"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"intervenant"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"nom"}},{"kind":"Field","name":{"kind":"Name","value":"prenom"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TotalHeures"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"demande_aggregate"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"heures"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TotalHeuresEQTD"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"demande_aggregate"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}}]}}]}}]} as unknown as DocumentNode<GetIntervenantsTableRowsQuery, GetIntervenantsTableRowsQueryVariables>;
-export const UpsertMessageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertMessage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"annee"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uid"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"typeMessage"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"contenu"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"message"},"name":{"kind":"Name","value":"insert_message_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"uid"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uid"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"typeMessage"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"contenu"},"value":{"kind":"Variable","name":{"kind":"Name","value":"contenu"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"on_conflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"message_annee_uid_type_key"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"contenu"}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpsertMessageMutation, UpsertMessageMutationVariables>;
-export const DeleteMessageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteMessage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"annee"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uid"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"typeMessage"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"messages"},"name":{"kind":"Name","value":"delete_message"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"uid"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uid"}}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"typeMessage"}}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<DeleteMessageMutation, DeleteMessageMutationVariables>;
+export const GetMyRowDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMyRow"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"annee"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uid"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"intervenant"},"name":{"kind":"Name","value":"intervenant_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"uid"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uid"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Intervenant"}},{"kind":"Field","name":{"kind":"Name","value":"demandes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"ensId"},"name":{"kind":"Name","value":"ens_id"}},{"kind":"Field","alias":{"kind":"Name","value":"typeDemande"},"name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"heures"}},{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}},{"kind":"Field","name":{"kind":"Name","value":"services"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"modifications"},"name":{"kind":"Name","value":"modifications_service"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"EnumValue","value":"asc"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"heures_eqtd"},"value":{"kind":"EnumValue","value":"asc"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"typeModification"},"name":{"kind":"Name","value":"type"}},{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalModifications"},"name":{"kind":"Name","value":"modifications_service_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalAttributions"},"name":{"kind":"Name","value":"demandes_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"attribution","block":false}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeures"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeuresEQTD"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalPrincipales"},"name":{"kind":"Name","value":"demandes_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"principale","block":false}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeures"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeuresEQTD"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalSecondaires"},"name":{"kind":"Name","value":"demandes_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"secondaire","block":false}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeures"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeuresEQTD"}}]}},{"kind":"Field","name":{"kind":"Name","value":"messages"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"contenu"}}]}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Intervenant"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"intervenant"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"nom"}},{"kind":"Field","name":{"kind":"Name","value":"prenom"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TotalHeures"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"demande_aggregate"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"heures"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TotalHeuresEQTD"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"demande_aggregate"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}}]}}]}}]} as unknown as DocumentNode<GetMyRowQuery, GetMyRowQueryVariables>;
+export const GetIntervenantsTableRowsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetIntervenantsTableRows"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"annee"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"intervenants"},"name":{"kind":"Name","value":"intervenant"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"actif"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"BooleanValue","value":true}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"nom"},"value":{"kind":"EnumValue","value":"asc"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"prenom"},"value":{"kind":"EnumValue","value":"asc"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"Intervenant"}},{"kind":"Field","name":{"kind":"Name","value":"demandes"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"ensId"},"name":{"kind":"Name","value":"ens_id"}},{"kind":"Field","alias":{"kind":"Name","value":"typeDemande"},"name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"heures"}},{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}},{"kind":"Field","name":{"kind":"Name","value":"services"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"modifications"},"name":{"kind":"Name","value":"modifications_service"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"EnumValue","value":"asc"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"heures_eqtd"},"value":{"kind":"EnumValue","value":"asc"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"typeModification"},"name":{"kind":"Name","value":"type"}},{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalModifications"},"name":{"kind":"Name","value":"modifications_service_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalAttributions"},"name":{"kind":"Name","value":"demandes_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"attribution","block":false}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeures"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeuresEQTD"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalPrincipales"},"name":{"kind":"Name","value":"demandes_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"principale","block":false}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeures"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeuresEQTD"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"totalSecondaires"},"name":{"kind":"Name","value":"demandes_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"secondaire","block":false}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"enseignement"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeures"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TotalHeuresEQTD"}}]}},{"kind":"Field","name":{"kind":"Name","value":"messages"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"contenu"}}]}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"Intervenant"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"intervenant"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"nom"}},{"kind":"Field","name":{"kind":"Name","value":"prenom"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TotalHeures"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"demande_aggregate"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"heures"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TotalHeuresEQTD"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"demande_aggregate"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"heuresEQTD"},"name":{"kind":"Name","value":"heures_eqtd"}}]}}]}}]}}]} as unknown as DocumentNode<GetIntervenantsTableRowsQuery, GetIntervenantsTableRowsQueryVariables>;
+export const UpsertMessageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertMessage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"annee"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uid"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"contenu"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"message"},"name":{"kind":"Name","value":"insert_message_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"uid"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uid"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"contenu"},"value":{"kind":"Variable","name":{"kind":"Name","value":"contenu"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"on_conflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"message_annee_uid_key"}},{"kind":"ObjectField","name":{"kind":"Name","value":"update_columns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"contenu"}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpsertMessageMutation, UpsertMessageMutationVariables>;
+export const DeleteMessageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteMessage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"annee"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uid"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"messages"},"name":{"kind":"Name","value":"delete_message"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"uid"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uid"}}}]}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<DeleteMessageMutation, DeleteMessageMutationVariables>;
 export const GetTypesModificationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTypesModification"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"typesModification"},"name":{"kind":"Name","value":"type_modification"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"label"},"value":{"kind":"EnumValue","value":"asc"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}}]}}]} as unknown as DocumentNode<GetTypesModificationQuery, GetTypesModificationQueryVariables>;
 export const InsertModificationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertModification"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"annee"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uid"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"typeModification"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"heuresEQTD"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"modificationService"},"name":{"kind":"Name","value":"insert_modification_service_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"annee"},"value":{"kind":"Variable","name":{"kind":"Name","value":"annee"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"uid"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uid"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"typeModification"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"heures_eqtd"},"value":{"kind":"Variable","name":{"kind":"Name","value":"heuresEQTD"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<InsertModificationMutation, InsertModificationMutationVariables>;
 export const DeleteModificationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteModification"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"modificationService"},"name":{"kind":"Name","value":"delete_modification_service_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<DeleteModificationMutation, DeleteModificationMutationVariables>;
