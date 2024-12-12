@@ -7,9 +7,9 @@ dotenv.config({ path: ".env.development.local" });
 export default {
   overwrite: true,
   schema: {
-    [process.env.VITE_GRAPHQL_URL ?? ""]: {
+    [process.env["VITE_GRAPHQL_URL"] ?? ""]: {
       headers: {
-        "X-Hasura-Admin-Secret": process.env.VITE_HASURA_ADMIN_SECRET ?? "",
+        "X-Hasura-Admin-Secret": process.env["VITE_HASURA_ADMIN_SECRET"] ?? "",
       },
     },
   },
