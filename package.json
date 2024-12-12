@@ -13,10 +13,10 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "prettier": "prettier . --check",
-    "eslint": "eslint --flag unstable_ts_config .",
+    "format": "prettier . --check",
+    "lint": "eslint --flag unstable_ts_config .",
     "typecheck": "tsc --noEmit -p tsconfig.node.json && vue-tsc --noEmit -p tsconfig.app.json",
-    "validate": "pnpm run prettier && pnpm run eslint && pnpm run typecheck",
+    "validate": "pnpm run format && pnpm run lint && pnpm run typecheck",
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
