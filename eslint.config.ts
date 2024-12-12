@@ -1,12 +1,21 @@
 import eslint from "@eslint/js";
+import type { Linter } from "eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
-import pluginVue from "eslint-plugin-vue";
+import eslintPluginVue from "eslint-plugin-vue";
+import globals from "globals";
 import tseslint from "typescript-eslint";
 
+const tsrules: Linter.RulesRecord = {
+  // https://typescript-eslint.io/troubleshooting/faqs/eslint#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
+  "no-undef": "off",
+  "@typescript-eslint/no-unused-vars": ["error", { ignoreRestSiblings: true }],
+  "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+  "@typescript-eslint/consistent-type-exports": "error",
+  "@typescript-eslint/consistent-type-imports": "error",
+  "@typescript-eslint/no-import-type-side-effects": "error",
+};
+
 export default tseslint.config(
-  {
-    ignores: ["src/gql/"],
-  },
   {
     languageOptions: {
       ecmaVersion: "latest",
@@ -14,38 +23,46 @@ export default tseslint.config(
     },
   },
   {
-    files: ["*.js", "src/**/*.js"],
-    ...eslint.configs.recommended,
+    files: ["*.js"],
+    extends: [eslint.configs.recommended],
+    languageOptions: {
+      globals: globals.node,
+    },
   },
   {
-    files: ["*.ts", "src/**/*.ts", "src/**/*.vue"],
+    files: ["*.ts"],
     extends: [
       eslint.configs.recommended,
-      ...tseslint.configs.strictTypeChecked,
-      ...pluginVue.configs["flat/recommended"],
+      tseslint.configs.strictTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
     ],
-    plugins: { "typescript-eslint": tseslint.plugin },
     languageOptions: {
+      globals: globals.node,
+      parserOptions: {
+        project: ["./tsconfig.node.json"],
+      },
+    },
+    rules: tsrules,
+  },
+  {
+    files: ["src/**/*.ts", "src/**/*.vue"],
+    ignores: ["src/gql/"],
+    extends: [
+      eslint.configs.recommended,
+      tseslint.configs.strictTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+      eslintPluginVue.configs["flat/recommended"],
+    ],
+    languageOptions: {
+      globals: globals.browser,
       parserOptions: {
         extraFileExtensions: [".vue"],
         parser: tseslint.parser,
-        project: ["./tsconfig.app.json", "./tsconfig.node.json"],
+        project: ["./tsconfig.app.json"],
       },
     },
     rules: {
-      "@typescript-eslint/consistent-type-exports": "error",
-      "@typescript-eslint/consistent-type-imports": "error",
-      "@typescript-eslint/no-import-type-side-effects": "error",
-      // The core 'no-unused-vars' rules (in the eslint:recommended ruleset)
-      // does not work with type definitions
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
-        { ignoreRestSiblings: true },
-      ],
-      // TS already checks for that, and Typescript-Eslint recommends to disable it
-      // https://typescript-eslint.io/linting/troubleshooting#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
-      "no-undef": "off",
+      ...tsrules,
       // Uncategorized eslint-plugin-vue rules
       "vue/block-lang": ["error", { script: { lang: "ts" } }],
       "vue/block-order": ["warn", { order: ["script", "template", "style"] }],
