@@ -27,7 +27,7 @@ const props = withDefaults(
 
 // sanitize HTML to prevent XSS attacks
 const sanitizedText: ComputedRef<string> = computed(() =>
-  xss(props.text || props.defaultText),
+  xss(props.text ?? props.defaultText),
 );
 
 const editorText: Ref<string> = ref("");

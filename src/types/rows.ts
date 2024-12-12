@@ -51,21 +51,21 @@ export type RowEnseignement = Identifiant & {
 
 export type RowIntervenant = Intervenant & {
   visible: boolean;
-  demandes: Array<{
+  demandes: {
     ensId: number;
     typeDemande: string;
     heures: number;
     heuresEQTD: number | null;
-  }>;
-  services: Array<{ heuresEQTD: number }>;
-  modifications: Array<{
+  }[];
+  services: { heuresEQTD: number }[];
+  modifications: {
     id: number;
     typeModification: string;
     heuresEQTD: number;
-  }>;
+  }[];
   totalModifications: TotalHeuresEQTD;
   totalAttributions: TotalHeures & TotalHeuresEQTD;
   totalPrincipales: TotalHeures & TotalHeuresEQTD;
   totalSecondaires: TotalHeures & TotalHeuresEQTD;
-  messages: Array<Message>;
+  messages: Message[];
 };

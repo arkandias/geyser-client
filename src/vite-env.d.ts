@@ -10,6 +10,7 @@ declare module "*.vue" {
   export default component;
 }
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 interface ImportMetaEnv {
   readonly VITE_GRAPHQL_URL: string;
   readonly VITE_KEYCLOAK_URL: string;
@@ -18,6 +19,7 @@ interface ImportMetaEnv {
   readonly VITE_HASURA_ADMIN_SECRET?: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }

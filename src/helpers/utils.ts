@@ -9,7 +9,7 @@ import type { LocationQuery } from "vue-router";
 export const uniqueValue = <T extends { value: unknown }>(
   element: T,
   index: number,
-  array: Array<T>,
+  array: T[],
 ): boolean => array.findIndex((el) => el.value === element.value) === index;
 
 const compareStrings = (a: string, b: string): number =>

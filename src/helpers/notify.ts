@@ -15,7 +15,7 @@ export const defaultNotify = (message: string, caption?: string) => {
   });
 };
 
-const defaultErrorCaption: string =
+const defaultErrorCaption =
   "Essayez de recharcher la page ou contactez un administrateur";
 
 export const errorNotify = (message: string, caption?: string) => {

@@ -24,7 +24,7 @@ const expanded: Ref<boolean> = ref(false);
 watch(
   [
     () => enseignement.value?.id,
-    () => enseignement.value?.id || intervenant.value?.uid,
+    () => enseignement.value?.id ?? intervenant.value?.uid,
   ],
   () => {
     expanded.value = false;
