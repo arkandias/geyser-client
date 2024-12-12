@@ -5,33 +5,27 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { formatTypeDemandesTitre, nf } from "@/helpers/format.ts";
-import { usePermissions } from "@/stores/permissions.ts";
+import { nf } from "@/helpers/format.ts";
+import { useDemandes } from "@/stores/demandes.ts";
+import { TypeDemande } from "@/types/demandes.ts";
 
 import TableService from "@/components/core/TableService.vue";
 
 defineProps<{
-  totalAttributions: number;
-  totalPrincipales: number;
-  totalSecondaires: number;
+  totauxDemandes: Record<TypeDemande, number>;
 }>();
 
-const perm = usePermissions();
+const { typesAffiches: typesDemandeAffiches } = useDemandes();
 </script>
 
 <template>
   <TableService>
-    <tr v-if="perm.deVoirLesAttributions">
-      <td>{{ formatTypeDemandesTitre("attribution") }}</td>
-      <td>{{ nf.format(totalAttributions) + " htd" }}</td>
-    </tr>
-    <tr>
-      <td>{{ formatTypeDemandesTitre("principale") }}</td>
-      <td>{{ nf.format(totalPrincipales) + " htd" }}</td>
-    </tr>
-    <tr>
-      <td>{{ formatTypeDemandesTitre("secondaire") }}</td>
-      <td>{{ nf.format(totalSecondaires) + " htd" }}</td>
+    <tr
+      v-for="typeDemande in typesDemandeAffiches"
+      :key="TypeDemande[typeDemande].value"
+    >
+      <td>{{ TypeDemande[typeDemande].labelPlural }}</td>
+      <td>{{ nf.format(totauxDemandes[typeDemande]) + " htd" }}</td>
     </tr>
   </TableService>
 </template>

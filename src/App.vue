@@ -21,8 +21,8 @@ import { usePermissions } from "@/stores/permissions.ts";
 import { enCours as phaseEnCours, phases } from "@/stores/phases.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
-import type { Phase } from "@/helpers/types.ts";
 import PageMessage from "@/pages/PageMessage.vue";
+import type { Phase } from "@/types/phases.ts";
 
 const { logged } = useAuthentication();
 const perm = usePermissions();

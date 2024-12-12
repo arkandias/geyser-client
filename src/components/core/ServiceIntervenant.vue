@@ -16,8 +16,8 @@ import {
 } from "@/graphql/modifications.ts";
 import { nf } from "@/helpers/format.ts";
 import { errorNotify, successNotify } from "@/helpers/notify.ts";
-import type { Modification, TypeModification } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
+import type { Modification, TypeModification } from "@/types/services.ts";
 
 import TableService from "@/components/core/TableService.vue";
 

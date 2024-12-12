@@ -7,8 +7,8 @@
 import type { ComputedRef, Ref } from "vue";
 import { computed, readonly, ref } from "vue";
 
-import type { RowEnseignement, RowIntervenant } from "@/helpers/types.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
+import type { RowEnseignement, RowIntervenant } from "@/types/rows.ts";
 
 const intervenants: Ref<RowIntervenant[]> = ref([]);
 const enseignements: Ref<RowEnseignement[]> = ref([]);

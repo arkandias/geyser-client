@@ -6,13 +6,8 @@
 
 import type { NamedColor } from "quasar";
 
-import type {
-  Intervenant,
-  Responsable,
-  RowIntervenant,
-} from "@/helpers/types.ts";
-
-export const tooltipDelay: number = 500;
+import type { Intervenant, Responsable } from "@/types/intervenants.ts";
+import type { RowIntervenant } from "@/types/rows.ts";
 
 export const nf = new Intl.NumberFormat("fr-FR", {
   style: "decimal",
@@ -25,52 +20,8 @@ export const normalizeForSearch = (str: string): string =>
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase();
 
-export const formatRole = (role: string): string => {
-  switch (role) {
-    case "intervenant":
-      return "Intervenant";
-    case "commissaire":
-      return "Commissaire";
-    case "admin":
-      return "Administrateur";
-    default:
-      console.warn(`Rôle '${role}' inconnu`);
-      return "";
-  }
-};
-
-export const formatPhase = (phase: string): string => {
-  switch (phase) {
-    case "voeux":
-      return "Vœux";
-    case "commission":
-      return "Commission";
-    case "consultation":
-      return "Consultation";
-    case "fermeture":
-      return "Fermeture";
-    default:
-      console.warn(`Phase '${phase}' inconnue`);
-      return "";
-  }
-};
-
 export const formatTypeDemande = (typeDemande: string): string =>
   typeDemande === "attribution" ? "Attribution" : `Demande ${typeDemande}`;
-
-export const formatTypeDemandesTitre = (typeDemande: string): string => {
-  switch (typeDemande) {
-    case "attribution":
-      return "Attributions";
-    case "principale":
-      return "Principales";
-    case "secondaire":
-      return "Secondaires";
-    default:
-      console.warn(`Type de demande '${typeDemande}' inconnu`);
-      return "";
-  }
-};
 
 export const formatFormation = (
   nomCursus: string,

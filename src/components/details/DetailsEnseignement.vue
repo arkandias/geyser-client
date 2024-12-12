@@ -9,9 +9,11 @@ import type { ComputedRef } from "vue";
 import { computed } from "vue";
 
 import { processArchives } from "@/helpers/enseignement.ts";
-import { formatTypeDemandesTitre } from "@/helpers/format.ts";
-import type { Archive, Details } from "@/helpers/types.ts";
+import { useDemandes } from "@/stores/demandes.ts";
 import { usePermissions } from "@/stores/permissions.ts";
+import type { Archive } from "@/types/demandes.ts";
+import { TypeDemande } from "@/types/demandes.ts";
+import type { Details } from "@/types/enseignements.ts";
 
 import FormulaireDemande from "@/components/core/FormulaireDemande.vue";
 import PucePriorite from "@/components/core/PucePriorite.vue";
@@ -21,14 +23,10 @@ import DetailsSection from "@/components/details/DetailsSection.vue";
 const props = defineProps<{ details: Details }>();
 
 const perm = usePermissions();
+const { typesAffiches: typesDemandeAffiches } = useDemandes();
 
 const archives: ComputedRef<Archive[]> = computed(() =>
   processArchives(props.details.parent).sort((a, b) => b.annee - a.annee),
-);
-const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
-  perm.deVoirLesAttributions
-    ? ["attribution", "principale", "secondaire"]
-    : ["principale", "secondaire"],
 );
 </script>
 
@@ -42,7 +40,7 @@ const typesDemandeAffiches: ComputedRef<string[]> = computed(() =>
     <DetailsEnseignementDemandes
       v-for="typeDemande in typesDemandeAffiches"
       :key="typeDemande"
-      :title="formatTypeDemandesTitre(typeDemande)"
+      :title="TypeDemande[typeDemande].labelPlural"
       :demandes="
         details.demandes.filter(
           (demande) => demande.typeDemande === typeDemande,

@@ -12,11 +12,6 @@ export const uniqueValue = <T extends { value: unknown }>(
   array: Array<T>,
 ): boolean => array.findIndex((el) => el.value === element.value) === index;
 
-export const compareOrder =
-  <K extends string>(order: Record<K, number>) =>
-  <T extends { value: K }>(a: T, b: T): number =>
-    order[a.value] - order[b.value];
-
 const compareStrings = (a: string, b: string): number =>
   a < b ? -1 : b < a ? 1 : 0;
 

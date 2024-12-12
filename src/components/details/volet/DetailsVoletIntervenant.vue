@@ -8,9 +8,11 @@
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
 
-import type { Modification, RowIntervenant } from "@/helpers/types.ts";
+import type { RowIntervenant } from "@/types/rows.ts";
+import type { Modification } from "@/types/services.ts";
 
 import { usePermissions } from "@/stores/permissions.ts";
+import type { TypeDemande } from "@/types/demandes.ts";
 
 const props = defineProps<{ intervenant: RowIntervenant }>();
 defineSlots<{
@@ -21,11 +23,7 @@ defineSlots<{
     totalModifications: number;
     editable: boolean;
   }): unknown;
-  demandes(scope: {
-    totalAttributions: number;
-    totalPrincipales: number;
-    totalSecondaires: number;
-  }): unknown;
+  demandes(scope: { totauxDemandes: Record<TypeDemande, number> }): unknown;
 }>();
 
 const perm = usePermissions();
@@ -39,14 +37,15 @@ const modifications: ComputedRef<Modification[]> = computed(
 const totalModifications: ComputedRef<number> = computed(
   () => props.intervenant.totalModifications.aggregate?.sum?.heuresEQTD ?? 0,
 );
-const totalAttributions: ComputedRef<number> = computed(
-  () => props.intervenant.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0,
-);
-const totalPrincipales: ComputedRef<number> = computed(
-  () => props.intervenant.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0,
-);
-const totalSecondaires: ComputedRef<number> = computed(
-  () => props.intervenant.totalSecondaires.aggregate?.sum?.heuresEQTD ?? 0,
+const totauxDemandes: ComputedRef<Record<TypeDemande, number>> = computed(
+  () => ({
+    attribution:
+      props.intervenant.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0,
+    principale:
+      props.intervenant.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0,
+    secondaire:
+      props.intervenant.totalSecondaires.aggregate?.sum?.heuresEQTD ?? 0,
+  }),
 );
 </script>
 
@@ -59,12 +58,7 @@ const totalSecondaires: ComputedRef<number> = computed(
     :total-modifications
     :editable="perm.deModifierUnService(intervenant.uid)"
   />
-  <slot
-    name="demandes"
-    :total-attributions
-    :total-principales
-    :total-secondaires
-  />
+  <slot name="demandes" :totaux-demandes />
 </template>
 
 <style scoped lang="scss"></style>

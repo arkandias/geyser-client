@@ -9,8 +9,9 @@ import type { Ref } from "vue";
 import { reactive, readonly, ref, toRef } from "vue";
 
 import { GET_INTERVENANT, UPSERT_INTERVENANT } from "@/graphql/intervenants.ts";
-import type { Intervenant, Role } from "@/helpers/types.ts";
 import type { KeycloakClaims } from "@/services/keycloak.ts";
+import type { Intervenant } from "@/types/intervenants.ts";
+import type { Role } from "@/types/roles.ts";
 
 export const activeRole: Ref<string> = ref("");
 

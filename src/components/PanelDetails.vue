@@ -14,8 +14,8 @@ import {
   formatIntervenant,
   formatResumeIntervenant,
 } from "@/helpers/format.ts";
-import type { Details } from "@/helpers/types.ts";
 import { useData } from "@/stores/data.ts";
+import type { Details } from "@/types/enseignements.ts";
 
 import ResumeDemandes from "@/components/core/ResumeDemandes.vue";
 import ServiceIntervenant from "@/components/core/ServiceIntervenant.vue";

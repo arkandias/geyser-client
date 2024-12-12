@@ -5,7 +5,7 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import type { RowIntervenant } from "@/helpers/types.ts";
+import type { RowIntervenant } from "@/types/rows.ts";
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
 

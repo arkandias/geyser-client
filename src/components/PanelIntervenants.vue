@@ -8,10 +8,12 @@
 import type { Ref } from "vue";
 import { computed, ref, toValue, watchEffect } from "vue";
 
-import { nf, normalizeForSearch, tooltipDelay } from "@/helpers/format.ts";
-import type { ColumnNonAbbreviable, RowIntervenant } from "@/helpers/types.ts";
+import { TOOLTIP_DELAY } from "@/constants/ui/interactions.ts";
+import { nf, normalizeForSearch } from "@/helpers/format.ts";
 import { selectedIntervenant as selected, useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";
+import type { ColumnNonAbbreviable } from "@/types/columns.ts";
+import type { RowIntervenant } from "@/types/rows.ts";
 
 const perm = usePermissions();
 const {
@@ -274,7 +276,7 @@ const stickyHeader: Ref<boolean> = ref(false);
         {{ scope.col.label }}
         <QTooltip
           v-if="scope.col.tooltip"
-          :delay="tooltipDelay"
+          :delay="TOOLTIP_DELAY"
           anchor="top middle"
           self="center middle"
         >

@@ -8,8 +8,8 @@
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
 
-import type { Option } from "@/helpers/types.ts";
 import { selected, useAnnees } from "@/stores/annees.ts";
+import type { Option } from "@/types/common.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 

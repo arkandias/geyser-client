@@ -8,7 +8,7 @@
 import type { ShallowRef } from "vue";
 import { shallowRef, watch } from "vue";
 
-import type { Nullable, Option } from "@/helpers/types.ts";
+import type { Nullable, Option } from "@/types/common.ts";
 
 const props = defineProps<{
   label: string;

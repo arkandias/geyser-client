@@ -4,7 +4,7 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import type { Role } from "@/helpers/types.ts";
+import type { Role } from "@/types/roles.ts";
 import type { KeycloakTokenParsed } from "keycloak-js";
 import Keycloak from "keycloak-js";
 import type { ComputedRef } from "vue";

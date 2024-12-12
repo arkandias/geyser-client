@@ -8,25 +8,21 @@
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
 
-import { formatIntervenant, formatRole } from "@/helpers/format.ts";
-import type { Option } from "@/helpers/types.ts";
-import { compareOrder } from "@/helpers/utils.ts";
+import { formatIntervenant } from "@/helpers/format.ts";
 import { activeRole, useAuthentication } from "@/stores/authentication.ts";
 import { useRefresh } from "@/stores/refresh.ts";
+import type { Option } from "@/types/common.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
+import { Role } from "@/types/roles.ts";
 
 const { intervenant, allowedRoles, logout } = useAuthentication();
 const { refresh } = useRefresh();
 
-const order = { admin: 1, commissaire: 2, intervenant: 3 };
-const options: ComputedRef<Option<string>[]> = computed(() =>
+const options: ComputedRef<Option<Role>[]> = computed(() =>
   allowedRoles.value
-    .map((role) => ({
-      value: role,
-      label: formatRole(role),
-    }))
-    .sort(compareOrder(order)),
+    .map((role) => Role[role])
+    .sort((a, b) => a.order - b.order),
 );
 </script>
 

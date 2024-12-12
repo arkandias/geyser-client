@@ -8,11 +8,10 @@
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
 
-import { formatPhase } from "@/helpers/format.ts";
-import type { Option } from "@/helpers/types.ts";
-import { compareOrder } from "@/helpers/utils.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { usePhases } from "@/stores/phases.ts";
+import type { Option } from "@/types/common.ts";
+import { Phase } from "@/types/phases.ts";
 
 import MenuAdminOptions from "@/components/header/MenuAdminOptions.vue";
 import MenuBase from "@/components/header/MenuBase.vue";
@@ -37,14 +36,8 @@ const optionsAnnees: ComputedRef<Option<number>[]> = computed(() =>
     }))
     .sort((a, b) => b.value - a.value),
 );
-const orderPhases = { voeux: 1, commission: 2, consultation: 3, fermeture: 4 };
-const optionsPhases: ComputedRef<Option<string>[]> = computed(() =>
-  phases.value
-    .map((phase) => ({
-      value: phase,
-      label: formatPhase(phase),
-    }))
-    .sort(compareOrder(orderPhases)),
+const optionsPhases: ComputedRef<Option<Phase>[]> = computed(() =>
+  phases.value.map((phase) => Phase[phase]).sort((a, b) => a.order - b.order),
 );
 </script>
 

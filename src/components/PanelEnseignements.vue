@@ -8,19 +8,21 @@
 import type { ComputedRef, Ref } from "vue";
 import { computed, ref, toValue, watchEffect } from "vue";
 
+import { TOOLTIP_DELAY } from "@/constants/ui/interactions.ts";
 import { demandeValue } from "@/helpers/enseignement.ts";
 import {
   formatFormation,
   formatIntervenant,
   nf,
   normalizeForSearch,
-  tooltipDelay,
 } from "@/helpers/format.ts";
-import type { Column, Option, RowEnseignement } from "@/helpers/types.ts";
-import { isAbbreviable } from "@/helpers/types.ts";
 import { compare, uniqueValue } from "@/helpers/utils.ts";
 import { selectedEnseignement as selected, useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";
+import type { Column } from "@/types/columns.ts";
+import { isAbbreviable } from "@/types/columns.ts";
+import type { Option } from "@/types/common.ts";
+import type { RowEnseignement } from "@/types/rows.ts";
 
 const perm = usePermissions();
 const {
@@ -522,7 +524,7 @@ const estVisible = (row: RowEnseignement): boolean =>
         {{ scope.col.label }}
         <QTooltip
           v-if="scope.col.tooltip"
-          :delay="tooltipDelay"
+          :delay="TOOLTIP_DELAY"
           anchor="top middle"
           self="center middle"
         >
@@ -539,7 +541,7 @@ const estVisible = (row: RowEnseignement): boolean =>
         }"
       >
         {{ scope.value?.short ?? scope.value?.long ?? scope.value }}
-        <QTooltip v-if="scope.value?.short" :delay="tooltipDelay">
+        <QTooltip v-if="scope.value?.short" :delay="TOOLTIP_DELAY">
           {{ scope.value.long }}
         </QTooltip>
       </QTd>

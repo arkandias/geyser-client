@@ -11,7 +11,7 @@ import { computed, ref, watch } from "vue";
 
 import { GET_INTERVENANTS } from "@/graphql/intervenants.ts";
 import { formatIntervenant, normalizeForSearch } from "@/helpers/format.ts";
-import type { OptionSearch } from "@/helpers/types.ts";
+import type { OptionSearch } from "@/types/common.ts";
 
 const uid = defineModel<string | null>({ required: true });
 

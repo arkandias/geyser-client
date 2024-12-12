@@ -7,10 +7,10 @@
 import type { ComputedRef } from "vue";
 import { computed, reactive } from "vue";
 
-import type { Intervenant } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { usePhases } from "@/stores/phases.ts";
+import type { Intervenant } from "@/types/intervenants.ts";
 
 export const usePermissions = () => {
   const { enCoursActive: anneeEnCoursActive } = useAnnees();

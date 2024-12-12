@@ -5,7 +5,7 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import type { Demande } from "@/helpers/types.ts";
+import type { Demande } from "@/types/demandes.ts";
 
 import CarteDemande from "@/components/core/CarteDemande.vue";
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";

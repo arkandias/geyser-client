@@ -9,10 +9,10 @@ import { useMutation } from "@urql/vue";
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
 
-import type { Details, Intervenant, Responsable } from "@/helpers/types.ts";
-
 import { UPDATE_DESCRIPTION } from "@/graphql/enseignements.ts";
 import { usePermissions } from "@/stores/permissions.ts";
+import type { Details } from "@/types/enseignements.ts";
+import type { Intervenant, Responsable } from "@/types/intervenants.ts";
 
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";

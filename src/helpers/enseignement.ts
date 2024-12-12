@@ -4,12 +4,8 @@
  * Distributed under the GNU Affero General Public License, version 3.        *
  ******************************************************************************/
 
-import type {
-  Archive,
-  NestedArchives,
-  RowEnseignement,
-  RowIntervenant,
-} from "@/helpers/types.ts";
+import type { Archive, NestedArchives } from "@/types/demandes.ts";
+import type { RowEnseignement, RowIntervenant } from "@/types/rows.ts";
 
 export const demandeValue = (
   row: RowEnseignement,

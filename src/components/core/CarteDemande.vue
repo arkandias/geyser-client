@@ -9,16 +9,11 @@ import { useClientHandle } from "@urql/vue";
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
 
-import type { Demande } from "@/helpers/types.ts";
-
+import { TOOLTIP_DELAY } from "@/constants/ui/interactions.ts";
 import { deleteDemandeById, updateDemande } from "@/helpers/demandes.ts";
-import {
-  couleurPriorite,
-  formatIntervenant,
-  nf,
-  tooltipDelay,
-} from "@/helpers/format.ts";
+import { couleurPriorite, formatIntervenant, nf } from "@/helpers/format.ts";
 import { usePermissions } from "@/stores/permissions.ts";
+import type { Demande } from "@/types/demandes.ts";
 
 const props = defineProps<{
   demande: Demande;
@@ -56,7 +51,7 @@ const groupes: ComputedRef<number> = computed(() =>
         rounded
       />
       {{ formatIntervenant(demande.intervenant) }}
-      <QTooltip :delay="tooltipDelay" anchor="top middle" self="bottom middle">
+      <QTooltip :delay="TOOLTIP_DELAY" anchor="top middle" self="bottom middle">
         {{ formatIntervenant(demande.intervenant) }}
       </QTooltip>
     </QCardSection>
@@ -80,7 +75,7 @@ const groupes: ComputedRef<number> = computed(() =>
         @click="onAttribute()"
       >
         <QTooltip
-          :delay="tooltipDelay"
+          :delay="TOOLTIP_DELAY"
           anchor="bottom middle"
           self="top middle"
         >
@@ -103,7 +98,7 @@ const groupes: ComputedRef<number> = computed(() =>
         @click="onDelete()"
       >
         <QTooltip
-          :delay="tooltipDelay"
+          :delay="TOOLTIP_DELAY"
           anchor="bottom middle"
           self="top middle"
         >

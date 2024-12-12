@@ -11,9 +11,9 @@ import { computed, reactive } from "vue";
 
 import { GET_MY_ROW } from "@/graphql/intervenants.ts";
 import { formatIntervenant } from "@/helpers/format.ts";
-import type { RowIntervenant } from "@/helpers/types.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
+import type { RowIntervenant } from "@/types/rows.ts";
 
 import AccueilInformations from "@/components/accueil/AccueilInformations.vue";
 import AccueilMessage from "@/components/accueil/AccueilMessage.vue";
