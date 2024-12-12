@@ -1,7 +1,7 @@
-import * as Dotenv from "dotenv";
+import * as dotenv from "dotenv";
 
-Dotenv.config({ path: ".env.development" });
-Dotenv.config({ path: ".env.development.local" });
+dotenv.config({ path: ".env.development" });
+dotenv.config({ path: ".env.development.local" });
 
 export default {
   schema: "schema.graphql",
