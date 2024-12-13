@@ -99,32 +99,31 @@ export default tseslint.config(
       ],
       "vue/define-props-declaration": ["error", "type-based"],
       "vue/enforce-style-attribute": ["error", { allow: ["scoped"] }],
-      "vue/match-component-file-name": [
-        "error",
+      "vue/html-button-has-type": [
+        "warn",
         {
-          extensions: ["vue"],
-          shouldMatchCase: true,
+          button: true,
+          submit: true,
+          reset: true,
         },
       ],
-      "vue/match-component-import-name": ["error"],
-      "vue/next-tick-style": ["error", "promise"],
-      "vue/no-boolean-default": ["error", "default-false"],
+      "vue/next-tick-style": ["warn", "promise"],
+      "vue/no-boolean-default": ["warn", "no-default"],
       "vue/no-duplicate-attr-inheritance": ["warn"],
       "vue/no-ref-object-reactivity-loss": ["warn"],
       "vue/no-required-prop-with-default": ["warn"],
       "vue/no-root-v-if": ["warn"],
-      "vue/no-setup-props-reactivity-loss": ["warn"],
       "vue/no-template-target-blank": [
         "error",
         {
           allowReferrer: false,
-          enforceDynamicLinks: "never",
+          enforceDynamicLinks: "always",
         },
       ],
       "vue/no-undef-components": [
-        "error",
+        "warn",
         {
-          // Quasar components and Vue Router
+          // Quasar and Vue Router components
           ignorePatterns: ["q(\\-\\w+)+", "router\\-view", "router\\-link"],
         },
       ],
@@ -133,12 +132,28 @@ export default tseslint.config(
       "vue/no-unused-properties": ["warn"],
       "vue/no-unused-refs": ["warn"],
       "vue/no-use-v-else-with-v-for": ["warn"],
+      "vue/no-useless-mustaches": [
+        "warn",
+        {
+          ignoreIncludesComment: false,
+          ignoreStringEscape: false,
+        },
+      ],
+      "vue/no-useless-v-bind": [
+        "warn",
+        {
+          ignoreIncludesComment: false,
+          ignoreStringEscape: false,
+        },
+      ],
+      "vue/no-v-text": ["warn"],
       "vue/padding-line-between-blocks": ["warn", "always"],
       "vue/prefer-define-options": ["error"],
       "vue/prefer-prop-type-boolean-first": ["warn"],
+      "vue/prefer-separate-static-class": ["warn"],
       "vue/prefer-true-attribute-shorthand": ["warn"],
+      "vue/prefer-use-template-ref": ["warn"],
       "vue/require-explicit-slots": ["warn"],
-      "vue/require-expose": ["warn"],
       "vue/require-macro-variable-name": [
         "warn",
         {
@@ -151,6 +166,7 @@ export default tseslint.config(
       ],
       "vue/require-typed-object-prop": ["warn"],
       "vue/require-typed-ref": ["warn"],
+      "vue/slot-name-casing": ["warn", "camelCase"],
       "vue/v-for-delimiter-style": ["warn", "in"],
       "vue/valid-define-options": ["error"],
     },
