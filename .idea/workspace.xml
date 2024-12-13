@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AIAssistantCustomInstructionsStorage">
+    <option name="instructions">
+      <map>
+        <entry key="AIAssistant.VCS.GenerateCommitMessage">
+          <value>
+            <AIAssistantStoredInstruction>
+              <option name="actionId" value="AIAssistant.VCS.GenerateCommitMessage" />
+              <option name="content" value="Generate a conventional git commit message using this format:&#10;&lt;type&gt;(&lt;scope&gt;): &lt;description&gt;&#10;&#10;Rules:&#10;- Type must be one of: feat, fix, docs, style, refactor, perf, test, chore, ci, build&#10;- Scope is optional, in parentheses, describing section of codebase&#10;- Description must:&#10;  - Be in imperative mood (&quot;add&quot; not &quot;added&quot;)&#10;  - Not be capitalized&#10;  - Have no period at end&#10;  - Be 50 chars or less&#10;&#10;For breaking changes, add a footer with:&#10;BREAKING CHANGE: &lt;description&gt;&#10;&#10;Example:&#10;feat(auth): add password reset endpoint" />
+            </AIAssistantStoredInstruction>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="refactor(core): streamline function names and event handlers">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="tsconfig.json" />
+        <option value="GraphQL File" />
+        <option value="Dockerfile" />
+        <option value="Vue Composition API Component" />
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIEW_PUSH_PROTECTED_ONLY" value="true" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="MIXED" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;arkandias&quot;
+  }
+}</component>
+  <component name="GitLabMergeRequestFiltersHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPENED&quot;,
+    &quot;assignee&quot;: {
+      &quot;type&quot;: &quot;org.jetbrains.plugins.gitlab.mergerequest.ui.filters.GitLabMergeRequestsFiltersValue.MergeRequestsMemberFilterValue.MergeRequestsAssigneeFilterValue&quot;,
+      &quot;username&quot;: &quot;julien.hauseux&quot;,
+      &quot;fullname&quot;: &quot;Julien Hauseux&quot;
+    }
+  }
+}</component>
+  <component name="GitLabMergeRequestsSettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;first&quot;: &quot;git@gitlab-ssh.univ-lille.fr:julien.hauseux/geyser-frontend.git&quot;,
+    &quot;second&quot;: &quot;1a6c5ad5-1e68-4787-b892-679eb8db57ae&quot;
+  }
+}</component>
+  <component name="GitRewordedCommitMessages">
+    <option name="commitMessagesMapping">
+      <RewordedCommitMessageMapping>
+        <option name="originalMessage" value="Fix: conditional log" />
+        <option name="rewordedMessage" value="Fix: conditional log" />
+      </RewordedCommitMessageMapping>
+    </option>
+    <option name="currentCommit" value="1" />
+    <option name="onto" value="251dc6d1a8f19ecf89a0991b09e844fe85580a03" />
+  </component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="965936cb-05b6-4d8e-b05f-13a5328d090d" />
+  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:arkandias/geyser-frontend.git&quot;,
+    &quot;accountId&quot;: &quot;965936cb-05b6-4d8e-b05f-13a5328d090d&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/node_modules/.pnpm/@types+eslint-config-prettier@6.11.3/node_modules/@types/eslint-config-prettier/index.d.ts" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="JsBowerSettings">
+    <bower-package value="" />
+    <bower.json value="" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="NamedScopeManager">
+    <order>
+      <scope name="Copyrights" />
+    </order>
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2RpcLuYJEJMX94qd5J7Pp3sKNsX" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "javascript.nodejs.core.library.configured.version": "20.12.2",
+    "javascript.nodejs.core.library.typings.version": "20.12.14",
+    "js.linters.configure.manually.selectedeslint": "true",
+    "last_opened_file_path": "/Users/julienhauseux/Projets/geyser-frontend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.stylelint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.stylelint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_interpreter_path": "node",
+    "nodejs_package_manager_path": "pnpm",
+    "npm.generate.executor": "Run",
+    "prettierjs.PrettierConfiguration.Package": "/Users/julienhauseux/Projets/geyser-frontend/node_modules/prettier",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "project.scopes",
+    "ts.external.directory.path": "/Users/julienhauseux/Projets/geyser-frontend/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ],
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Shell Script"
+    ],
+    "vue.recent.templates": [
+      "Vue Composition API Component"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/stores" />
+      <recent name="$PROJECT_DIR$/src/constants/domain" />
+      <recent name="$PROJECT_DIR$/src/types" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src/types" />
+      <recent name="$PROJECT_DIR$/src/constants/ui" />
+      <recent name="$PROJECT_DIR$/src/constants/domain" />
+      <recent name="$PROJECT_DIR$/src/constants" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.112" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="" />
+      <created>1687950410892</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1687950410892</updated>
+      <workItem from="1687950412934" duration="4413000" />
+      <workItem from="1688046104739" duration="7302000" />
+      <workItem from="1688304578417" duration="1028000" />
+      <workItem from="1688307384048" duration="1866000" />
+      <workItem from="1688310179410" duration="5000" />
+      <workItem from="1688322799784" duration="864000" />
+      <workItem from="1688323728346" duration="2028000" />
+      <workItem from="1688330294320" duration="1808000" />
+      <workItem from="1688332176072" duration="841000" />
+      <workItem from="1688333028223" duration="79000" />
+      <workItem from="1688333112943" duration="2811000" />
+      <workItem from="1688336156064" duration="30620000" />
+      <workItem from="1688483478299" duration="1781000" />
+      <workItem from="1688765354792" duration="63000" />
+      <workItem from="1688765426885" duration="20000" />
+      <workItem from="1689005275460" duration="594000" />
+      <workItem from="1689006743736" duration="19000" />
+      <workItem from="1689006938504" duration="2199000" />
+      <workItem from="1689014880482" duration="3107000" />
+      <workItem from="1706205316758" duration="1134000" />
+      <workItem from="1710765945302" duration="730000" />
+      <workItem from="1710785436880" duration="14453000" />
+      <workItem from="1710815587844" duration="515000" />
+      <workItem from="1710817263895" duration="30437000" />
+      <workItem from="1711038061004" duration="29809000" />
+      <workItem from="1711119891542" duration="783000" />
+      <workItem from="1711121185897" duration="3500000" />
+      <workItem from="1711188939313" duration="1123000" />
+      <workItem from="1711190303055" duration="1163000" />
+      <workItem from="1711191738669" duration="99000" />
+      <workItem from="1711191857752" duration="5000" />
+      <workItem from="1711191930483" duration="24000" />
+      <workItem from="1711191965882" duration="25000" />
+      <workItem from="1711192005082" duration="21000" />
+      <workItem from="1711192035472" duration="22000" />
+      <workItem from="1711192070142" duration="44000" />
+      <workItem from="1711192125557" duration="7905000" />
+      <workItem from="1711284398942" duration="19635000" />
+      <workItem from="1711326815296" duration="3997000" />
+      <workItem from="1711334477593" duration="12918000" />
+      <workItem from="1711368233041" duration="4965000" />
+      <workItem from="1711375325312" duration="3391000" />
+      <workItem from="1711378887091" duration="14644000" />
+      <workItem from="1711412722082" duration="25526000" />
+      <workItem from="1711491626708" duration="5912000" />
+      <workItem from="1711500626840" duration="1506000" />
+      <workItem from="1711503190152" duration="50215000" />
+      <workItem from="1711636219484" duration="486000" />
+      <workItem from="1711636751111" duration="1326000" />
+      <workItem from="1711641964848" duration="6923000" />
+      <workItem from="1711662300003" duration="19504000" />
+      <workItem from="1711733192823" duration="3787000" />
+      <workItem from="1711741654104" duration="5917000" />
+      <workItem from="1711794068833" duration="55317000" />
+      <workItem from="1711930657064" duration="43686000" />
+      <workItem from="1712012305671" duration="10748000" />
+      <workItem from="1712023267466" duration="21593000" />
+      <workItem from="1712071315180" duration="4888000" />
+      <workItem from="1712097397374" duration="5717000" />
+      <workItem from="1712115037063" duration="19658000" />
+      <workItem from="1712236771315" duration="13139000" />
+      <workItem from="1712264392250" duration="339000" />
+      <workItem from="1712264745449" duration="71000" />
+      <workItem from="1712264827852" duration="44000" />
+      <workItem from="1712264895460" duration="10832000" />
+      <workItem from="1712275752102" duration="894000" />
+      <workItem from="1712276656191" duration="546000" />
+      <workItem from="1712277780587" duration="11357000" />
+      <workItem from="1712415958582" duration="32269000" />
+      <workItem from="1712752346230" duration="46905000" />
+      <workItem from="1713129506599" duration="53984000" />
+      <workItem from="1713263011076" duration="16567000" />
+      <workItem from="1713356901023" duration="8225000" />
+      <workItem from="1713456781260" duration="10114000" />
+      <workItem from="1713478040158" duration="21927000" />
+      <workItem from="1713534769855" duration="2443000" />
+      <workItem from="1713539550184" duration="6798000" />
+      <workItem from="1713721591004" duration="279000" />
+      <workItem from="1713775023950" duration="90803000" />
+      <workItem from="1714123608813" duration="81170000" />
+      <workItem from="1714527396243" duration="28226000" />
+      <workItem from="1714646631850" duration="19182000" />
+      <workItem from="1714672099881" duration="59958000" />
+      <workItem from="1714778009257" duration="1792000" />
+      <workItem from="1714815536140" duration="32213000" />
+      <workItem from="1714947545983" duration="43223000" />
+      <workItem from="1715065358198" duration="188000" />
+      <workItem from="1715066351991" duration="24017000" />
+      <workItem from="1715302476134" duration="54559000" />
+      <workItem from="1715970679240" duration="5880000" />
+      <workItem from="1715979082988" duration="13470000" />
+      <workItem from="1715994137852" duration="115000" />
+      <workItem from="1716039470997" duration="13951000" />
+      <workItem from="1716252626618" duration="56000" />
+      <workItem from="1716252707607" duration="461000" />
+      <workItem from="1716253244775" duration="65000" />
+      <workItem from="1716253399438" duration="43000" />
+      <workItem from="1716253457196" duration="26000" />
+      <workItem from="1716253521146" duration="17526000" />
+      <workItem from="1716310105680" duration="2024000" />
+      <workItem from="1716315956752" duration="165000" />
+      <workItem from="1716316177055" duration="328000" />
+      <workItem from="1716318304219" duration="84734000" />
+      <workItem from="1716590336549" duration="5264000" />
+      <workItem from="1716652817362" duration="1000" />
+      <workItem from="1716811299100" duration="88395000" />
+      <workItem from="1717192236602" duration="87882000" />
+      <workItem from="1718142688342" duration="59798000" />
+      <workItem from="1718563068411" duration="6986000" />
+      <workItem from="1718651444588" duration="9294000" />
+      <workItem from="1718694946780" duration="151474000" />
+      <workItem from="1718988711558" duration="2000" />
+      <workItem from="1718988884896" duration="82190000" />
+      <workItem from="1719360913942" duration="69000" />
+      <workItem from="1719360992663" duration="429000" />
+      <workItem from="1719361443090" duration="129000" />
+      <workItem from="1719361588541" duration="89712000" />
+      <workItem from="1720178672293" duration="64821000" />
+      <workItem from="1724265361697" duration="768000" />
+      <workItem from="1729967834944" duration="3576000" />
+      <workItem from="1730172722734" duration="106000" />
+      <workItem from="1730407068159" duration="24000" />
+      <workItem from="1733485986373" duration="101000" />
+      <workItem from="1733745632856" duration="26191000" />
+      <workItem from="1733787722811" duration="646000" />
+      <workItem from="1733788392700" duration="369000" />
+      <workItem from="1733789052639" duration="114000" />
+      <workItem from="1733789180095" duration="96000" />
+      <workItem from="1733789288644" duration="5178000" />
+      <workItem from="1733796456203" duration="16315000" />
+      <workItem from="1733870257201" duration="1864000" />
+      <workItem from="1733875906599" duration="970000" />
+      <workItem from="1733877943687" duration="19794000" />
+      <workItem from="1733958145291" duration="50354000" />
+    </task>
+    <task id="LOCAL-00236" summary="chore(ts): update tsconfig to sync with Vite's vue-ts default">
+      <option name="closed" value="true" />
+      <created>1733756742789</created>
+      <option name="number" value="00236" />
+      <option name="presentableId" value="LOCAL-00236" />
+      <option name="project" value="LOCAL" />
+      <updated>1733756742790</updated>
+    </task>
+    <task id="LOCAL-00237" summary="chore(eslint): ignore codegen outputs">
+      <option name="closed" value="true" />
+      <created>1733763499695</created>
+      <option name="number" value="00237" />
+      <option name="presentableId" value="LOCAL-00237" />
+      <option name="project" value="LOCAL" />
+      <updated>1733763499696</updated>
+    </task>
+    <task id="LOCAL-00238" summary="chore(deps): update dependencies to latest versions">
+      <option name="closed" value="true" />
+      <created>1733763811556</created>
+      <option name="number" value="00238" />
+      <option name="presentableId" value="LOCAL-00238" />
+      <option name="project" value="LOCAL" />
+      <updated>1733763811556</updated>
+    </task>
+    <task id="LOCAL-00239" summary="chore(ts): update tsconfig to sync with Vite's vue-ts default">
+      <option name="closed" value="true" />
+      <created>1733763834543</created>
+      <option name="number" value="00239" />
+      <option name="presentableId" value="LOCAL-00239" />
+      <option name="project" value="LOCAL" />
+      <updated>1733763834543</updated>
+    </task>
+    <task id="LOCAL-00240" summary="chore(eslint): ignore codegen outputs">
+      <option name="closed" value="true" />
+      <created>1733763846986</created>
+      <option name="number" value="00240" />
+      <option name="presentableId" value="LOCAL-00240" />
+      <option name="project" value="LOCAL" />
+      <updated>1733763846986</updated>
+    </task>
+    <task id="LOCAL-00241" summary="chore(vite): update vite config">
+      <option name="closed" value="true" />
+      <created>1733764018553</created>
+      <option name="number" value="00241" />
+      <option name="presentableId" value="LOCAL-00241" />
+      <option name="project" value="LOCAL" />
+      <updated>1733764018553</updated>
+    </task>
+    <task id="LOCAL-00242" summary="chore(ci): update GitLab CI/CD">
+      <option name="closed" value="true" />
+      <created>1733780085406</created>
+      <option name="number" value="00242" />
+      <option name="presentableId" value="LOCAL-00242" />
+      <option name="project" value="LOCAL" />
+      <updated>1733780085406</updated>
+    </task>
+    <task id="LOCAL-00243" summary="chore(format): update Prettier ignore">
+      <option name="closed" value="true" />
+      <created>1733784226155</created>
+      <option name="number" value="00243" />
+      <option name="presentableId" value="LOCAL-00243" />
+      <option name="project" value="LOCAL" />
+      <updated>1733784226155</updated>
+    </task>
+    <task id="LOCAL-00244" summary="chore(dev): update eslint rules and type checking scripts">
+      <option name="closed" value="true" />
+      <created>1733796601312</created>
+      <option name="number" value="00244" />
+      <option name="presentableId" value="LOCAL-00244" />
+      <option name="project" value="LOCAL" />
+      <updated>1733796601312</updated>
+    </task>
+    <task id="LOCAL-00245" summary="chore(deps): update dependencies and downgrade ts&#10;&#10;Downgrade ts to 5.6 until next release: https://github.com/vuejs/language-tools/issues/5018">
+      <option name="closed" value="true" />
+      <created>1733796782157</created>
+      <option name="number" value="00245" />
+      <option name="presentableId" value="LOCAL-00245" />
+      <option name="project" value="LOCAL" />
+      <updated>1733796782157</updated>
+    </task>
+    <task id="LOCAL-00246" summary="chore(deps): update dependencies and downgrade ts&#10;&#10;Downgrade ts to 5.6 until next release: https://github.com/vuejs/language-tools/issues/5018">
+      <option name="closed" value="true" />
+      <created>1733798607975</created>
+      <option name="number" value="00246" />
+      <option name="presentableId" value="LOCAL-00246" />
+      <option name="project" value="LOCAL" />
+      <updated>1733798607975</updated>
+    </task>
+    <task id="LOCAL-00247" summary="fix(dev): typecheck script">
+      <option name="closed" value="true" />
+      <created>1733798699431</created>
+      <option name="number" value="00247" />
+      <option name="presentableId" value="LOCAL-00247" />
+      <option name="project" value="LOCAL" />
+      <updated>1733798699431</updated>
+    </task>
+    <task id="LOCAL-00248" summary="fix(ts): update ts rules and fix issues">
+      <option name="closed" value="true" />
+      <created>1733841793608</created>
+      <option name="number" value="00248" />
+      <option name="presentableId" value="LOCAL-00248" />
+      <option name="project" value="LOCAL" />
+      <updated>1733841793608</updated>
+    </task>
+    <task id="LOCAL-00249" summary="feat(ts): update message accueil">
+      <option name="closed" value="true" />
+      <created>1733841879697</created>
+      <option name="number" value="00249" />
+      <option name="presentableId" value="LOCAL-00249" />
+      <option name="project" value="LOCAL" />
+      <updated>1733841879697</updated>
+    </task>
+    <task id="LOCAL-00250" summary="fix(ci): remove useless variable">
+      <option name="closed" value="true" />
+      <created>1733870293506</created>
+      <option name="number" value="00250" />
+      <option name="presentableId" value="LOCAL-00250" />
+      <option name="project" value="LOCAL" />
+      <updated>1733870293507</updated>
+    </task>
+    <task id="LOCAL-00251" summary="fix(vite): update quasar sass variable url">
+      <option name="closed" value="true" />
+      <created>1733870394988</created>
+      <option name="number" value="00251" />
+      <option name="presentableId" value="LOCAL-00251" />
+      <option name="project" value="LOCAL" />
+      <updated>1733870394988</updated>
+    </task>
+    <task id="LOCAL-00252" summary="fix(ci): use pnpm to run validation">
+      <option name="closed" value="true" />
+      <created>1733870576834</created>
+      <option name="number" value="00252" />
+      <option name="presentableId" value="LOCAL-00252" />
+      <option name="project" value="LOCAL" />
+      <updated>1733870576834</updated>
+    </task>
+    <task id="LOCAL-00253" summary="fix(ts): separate type import">
+      <option name="closed" value="true" />
+      <created>1733870782814</created>
+      <option name="number" value="00253" />
+      <option name="presentableId" value="LOCAL-00253" />
+      <option name="project" value="LOCAL" />
+      <updated>1733870782814</updated>
+    </task>
+    <task id="LOCAL-00254" summary="fix(graphql): remove variable heures for GET_DEMANDE">
+      <option name="closed" value="true" />
+      <created>1733877041444</created>
+      <option name="number" value="00254" />
+      <option name="presentableId" value="LOCAL-00254" />
+      <option name="project" value="LOCAL" />
+      <updated>1733877041444</updated>
+    </task>
+    <task id="LOCAL-00255" summary="chore(graphql): update codegen output">
+      <option name="closed" value="true" />
+      <created>1733877079303</created>
+      <option name="number" value="00255" />
+      <option name="presentableId" value="LOCAL-00255" />
+      <option name="project" value="LOCAL" />
+      <updated>1733877079303</updated>
+    </task>
+    <task id="LOCAL-00256" summary="feat(dev): update config files to ts">
+      <option name="closed" value="true" />
+      <created>1733925338692</created>
+      <option name="number" value="00256" />
+      <option name="presentableId" value="LOCAL-00256" />
+      <option name="project" value="LOCAL" />
+      <updated>1733925338695</updated>
+    </task>
+    <task id="LOCAL-00257" summary="chore(gql): update schema">
+      <option name="closed" value="true" />
+      <created>1733925539701</created>
+      <option name="number" value="00257" />
+      <option name="presentableId" value="LOCAL-00257" />
+      <option name="project" value="LOCAL" />
+      <updated>1733925539702</updated>
+    </task>
+    <task id="LOCAL-00258" summary="fix(ui): update logic for modification button visibility">
+      <option name="closed" value="true" />
+      <created>1733929964882</created>
+      <option name="number" value="00258" />
+      <option name="presentableId" value="LOCAL-00258" />
+      <option name="project" value="LOCAL" />
+      <updated>1733929964885</updated>
+    </task>
+    <task id="LOCAL-00259" summary="refactor(messages): removed message types&#10;&#10;BREAKING CHANGE: remove message type differentiation in CRUD operations">
+      <option name="closed" value="true" />
+      <created>1733958764813</created>
+      <option name="number" value="00259" />
+      <option name="presentableId" value="LOCAL-00259" />
+      <option name="project" value="LOCAL" />
+      <updated>1733958764814</updated>
+    </task>
+    <task id="LOCAL-00260" summary="refactor(messages): removed message types&#10;&#10;BREAKING CHANGE: remove message type differentiation in CRUD operations">
+      <option name="closed" value="true" />
+      <created>1733958914753</created>
+      <option name="number" value="00260" />
+      <option name="presentableId" value="LOCAL-00260" />
+      <option name="project" value="LOCAL" />
+      <updated>1733958914753</updated>
+    </task>
+    <task id="LOCAL-00261" summary="chore(scripts): update check script to validate with pnpm">
+      <option name="closed" value="true" />
+      <created>1733958931874</created>
+      <option name="number" value="00261" />
+      <option name="presentableId" value="LOCAL-00261" />
+      <option name="project" value="LOCAL" />
+      <updated>1733958931874</updated>
+    </task>
+    <task id="LOCAL-00262" summary="refactor(components): remove unused import">
+      <option name="closed" value="true" />
+      <created>1733959065569</created>
+      <option name="number" value="00262" />
+      <option name="presentableId" value="LOCAL-00262" />
+      <option name="project" value="LOCAL" />
+      <updated>1733959065569</updated>
+    </task>
+    <task id="LOCAL-00263" summary="test">
+      <option name="closed" value="true" />
+      <created>1733963160254</created>
+      <option name="number" value="00263" />
+      <option name="presentableId" value="LOCAL-00263" />
+      <option name="project" value="LOCAL" />
+      <updated>1733963160254</updated>
+    </task>
+    <task id="LOCAL-00264" summary="test">
+      <option name="closed" value="true" />
+      <created>1733963310280</created>
+      <option name="number" value="00264" />
+      <option name="presentableId" value="LOCAL-00264" />
+      <option name="project" value="LOCAL" />
+      <updated>1733963310280</updated>
+    </task>
+    <task id="LOCAL-00265" summary="refactor(types): reorganize types into dedicated files">
+      <option name="closed" value="true" />
+      <created>1733963970972</created>
+      <option name="number" value="00265" />
+      <option name="presentableId" value="LOCAL-00265" />
+      <option name="project" value="LOCAL" />
+      <updated>1733963970972</updated>
+    </task>
+    <task id="LOCAL-00266" summary="refactor(tsconfig): reorganize and enhance tsconfig settings">
+      <option name="closed" value="true" />
+      <created>1733968832028</created>
+      <option name="number" value="00266" />
+      <option name="presentableId" value="LOCAL-00266" />
+      <option name="project" value="LOCAL" />
+      <updated>1733968832028</updated>
+    </task>
+    <task id="LOCAL-00267" summary="feat(build): update build target to es2022">
+      <option name="closed" value="true" />
+      <created>1733968840734</created>
+      <option name="number" value="00267" />
+      <option name="presentableId" value="LOCAL-00267" />
+      <option name="project" value="LOCAL" />
+      <updated>1733968840735</updated>
+    </task>
+    <task id="LOCAL-00268" summary="chore(tsconfig): remove unused compilerOptions">
+      <option name="closed" value="true" />
+      <created>1733970533737</created>
+      <option name="number" value="00268" />
+      <option name="presentableId" value="LOCAL-00268" />
+      <option name="project" value="LOCAL" />
+      <updated>1733970533738</updated>
+    </task>
+    <task id="LOCAL-00269" summary="chore(prettier): update ignore list for gql directory">
+      <option name="closed" value="true" />
+      <created>1733971384211</created>
+      <option name="number" value="00269" />
+      <option name="presentableId" value="LOCAL-00269" />
+      <option name="project" value="LOCAL" />
+      <updated>1733971384211</updated>
+    </task>
+    <task id="LOCAL-00270" summary="fix(codegen): handle environment variable access issue">
+      <option name="closed" value="true" />
+      <created>1733971407277</created>
+      <option name="number" value="00270" />
+      <option name="presentableId" value="LOCAL-00270" />
+      <option name="project" value="LOCAL" />
+      <updated>1733971407277</updated>
+    </task>
+    <task id="LOCAL-00271" summary="chore(project): remove schema.graphql from .prettierignore">
+      <option name="closed" value="true" />
+      <created>1733972026640</created>
+      <option name="number" value="00271" />
+      <option name="presentableId" value="LOCAL-00271" />
+      <option name="project" value="LOCAL" />
+      <updated>1733972026640</updated>
+    </task>
+    <task id="LOCAL-00272" summary="docs(schema): standardize multiline descriptions">
+      <option name="closed" value="true" />
+      <created>1733972035431</created>
+      <option name="number" value="00272" />
+      <option name="presentableId" value="LOCAL-00272" />
+      <option name="project" value="LOCAL" />
+      <updated>1733972035431</updated>
+    </task>
+    <task id="LOCAL-00273" summary="refactor(gql): remove unused graphql generated files">
+      <option name="closed" value="true" />
+      <created>1733972610139</created>
+      <option name="number" value="00273" />
+      <option name="presentableId" value="LOCAL-00273" />
+      <option name="project" value="LOCAL" />
+      <updated>1733972610139</updated>
+    </task>
+    <task id="LOCAL-00274" summary="refactor(graphql): update dotenv import and env var access">
+      <option name="closed" value="true" />
+      <created>1733972625810</created>
+      <option name="number" value="00274" />
+      <option name="presentableId" value="LOCAL-00274" />
+      <option name="project" value="LOCAL" />
+      <updated>1733972625810</updated>
+    </task>
+    <task id="LOCAL-00275" summary="feat(graphql): add typed document nodes for queries">
+      <option name="closed" value="true" />
+      <created>1733972689298</created>
+      <option name="number" value="00275" />
+      <option name="presentableId" value="LOCAL-00275" />
+      <option name="project" value="LOCAL" />
+      <updated>1733972689298</updated>
+    </task>
+    <task id="LOCAL-00276" summary="feat(deps): update @types/node to 22.10.2 and add ts-node">
+      <option name="closed" value="true" />
+      <created>1733972746410</created>
+      <option name="number" value="00276" />
+      <option name="presentableId" value="LOCAL-00276" />
+      <option name="project" value="LOCAL" />
+      <updated>1733972746410</updated>
+    </task>
+    <task id="LOCAL-00277" summary="feat(tsconfig): enable esm support for ts-node&#10;&#10;For JetBrains GraphQL plugin">
+      <option name="closed" value="true" />
+      <created>1733972789181</created>
+      <option name="number" value="00277" />
+      <option name="presentableId" value="LOCAL-00277" />
+      <option name="project" value="LOCAL" />
+      <updated>1733972789181</updated>
+    </task>
+    <task id="LOCAL-00278" summary="refactor(config): standardize dotenv import style">
+      <option name="closed" value="true" />
+      <created>1734008745832</created>
+      <option name="number" value="00278" />
+      <option name="presentableId" value="LOCAL-00278" />
+      <option name="project" value="LOCAL" />
+      <updated>1734008745832</updated>
+    </task>
+    <task id="LOCAL-00279" summary="chore(scripts): rename prettier/eslint scripts for clarity">
+      <option name="closed" value="true" />
+      <created>1734020144193</created>
+      <option name="number" value="00279" />
+      <option name="presentableId" value="LOCAL-00279" />
+      <option name="project" value="LOCAL" />
+      <updated>1734020144197</updated>
+    </task>
+    <task id="LOCAL-00280" summary="refactor(eslint): update config">
+      <option name="closed" value="true" />
+      <created>1734029965086</created>
+      <option name="number" value="00280" />
+      <option name="presentableId" value="LOCAL-00280" />
+      <option name="project" value="LOCAL" />
+      <updated>1734029965086</updated>
+    </task>
+    <task id="LOCAL-00281" summary="refactor(format): enforce typescript-eslint stylistic rules">
+      <option name="closed" value="true" />
+      <created>1734030032260</created>
+      <option name="number" value="00281" />
+      <option name="presentableId" value="LOCAL-00281" />
+      <option name="project" value="LOCAL" />
+      <updated>1734030032260</updated>
+    </task>
+    <task id="LOCAL-00282" summary="refactor(format): enforce typescript-eslint stylistic rules">
+      <option name="closed" value="true" />
+      <created>1734048619886</created>
+      <option name="number" value="00282" />
+      <option name="presentableId" value="LOCAL-00282" />
+      <option name="project" value="LOCAL" />
+      <updated>1734048619903</updated>
+    </task>
+    <task id="LOCAL-00283" summary="style(eslint): update vue rules">
+      <option name="closed" value="true" />
+      <created>1734107061867</created>
+      <option name="number" value="00283" />
+      <option name="presentableId" value="LOCAL-00283" />
+      <option name="project" value="LOCAL" />
+      <updated>1734107061867</updated>
+    </task>
+    <task id="LOCAL-00284" summary="refactor(core): streamline function names and event handlers">
+      <option name="closed" value="true" />
+      <created>1734111256872</created>
+      <option name="number" value="00284" />
+      <option name="presentableId" value="LOCAL-00284" />
+      <option name="project" value="LOCAL" />
+      <updated>1734111256872</updated>
+    </task>
+    <option name="localTasksCounter" value="285" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+        <option value="GitHub.CommitStatus" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="RELOAD_CONTEXT" value="false" />
+    <MESSAGE value="test" />
+    <MESSAGE value="refactor(types): reorganize types into dedicated files" />
+    <MESSAGE value="refactor(tsconfig): reorganize and enhance tsconfig settings" />
+    <MESSAGE value="feat(build): update build target to es2022" />
+    <MESSAGE value="chore(tsconfig): remove unused compilerOptions" />
+    <MESSAGE value="chore(prettier): update ignore list for gql directory" />
+    <MESSAGE value="fix(codegen): handle environment variable access issue" />
+    <MESSAGE value="chore(config): update .prettierignore to remove schema.graphql" />
+    <MESSAGE value="style(schema): reformat comments for clarity and consistency" />
+    <MESSAGE value="chore(project): remove schema.graphql from .prettierignore" />
+    <MESSAGE value="docs(schema): standardize multiline descriptions" />
+    <MESSAGE value="refactor(gql): remove unused graphql generated files" />
+    <MESSAGE value="refactor(graphql): update dotenv import and env var access" />
+    <MESSAGE value="feat(deps): add new dependencies and update pnpm lockfile" />
+    <MESSAGE value="feat(graphql): add typed document nodes for queries" />
+    <MESSAGE value="feat(deps): update @types/node to 22.10.2 and add ts-node" />
+    <MESSAGE value="feat(tsconfig): enable esm support for ts-node&#10;&#10;For JetBrains GraphQL plugin" />
+    <MESSAGE value="refactor(config): standardize dotenv import style" />
+    <MESSAGE value="chore(scripts): rename prettier/eslint scripts for clarity" />
+    <MESSAGE value="chore(deps): remove pnpm-lock.yaml file" />
+    <MESSAGE value="refactor(eslint): update config" />
+    <MESSAGE value="fix(format): disable debug logs in production" />
+    <MESSAGE value="refactor(format): enforce typescript-eslint stylistic rules" />
+    <MESSAGE value="style(eslint): update vue rules" />
+    <MESSAGE value="refactor(core): streamline function names and event handlers" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor(core): streamline function names and event handlers" />
+  </component>
+</project>

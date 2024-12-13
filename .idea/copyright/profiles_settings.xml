@@ -1,0 +1,15 @@
+<component name="CopyrightManager">
+  <settings default="Geyser Frontend">
+    <module2copyright>
+      <element module="Copyrights" copyright="Geyser Frontend" />
+    </module2copyright>
+    <LanguageOptions name="Shell Script">
+      <option name="box" value="true" />
+    </LanguageOptions>
+    <LanguageOptions name="__TEMPLATE__">
+      <option name="separateBefore" value="true" />
+      <option name="separateAfter" value="true" />
+      <option name="box" value="true" />
+    </LanguageOptions>
+  </settings>
+</component>
