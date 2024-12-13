@@ -40,9 +40,10 @@ import {
 
 const { activeRole, uid } = useAuthentication();
 
-// disable debug logs in production
 if (import.meta.env.PROD) {
-  console.debug = () => {};
+  console.debug = () => {
+    /* Intentionally empty to disable debug logging in production */
+  };
 }
 
 // bypass Keycloak in development
