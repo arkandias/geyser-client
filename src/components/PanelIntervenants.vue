@@ -25,10 +25,10 @@ const {
 
 const select = (_: Event, row: RowIntervenant) => {
   if (selected.value[0]?.uid === row.uid) {
-    selectIntervenant();
+    selectIntervenant(null);
   } else {
     selectIntervenant(row.uid);
-    selectEnseignement();
+    selectEnseignement(null);
   }
 };
 

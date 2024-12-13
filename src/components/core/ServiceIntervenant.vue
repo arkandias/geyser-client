@@ -52,16 +52,16 @@ const typeModificationOptions: ComputedRef<TypeModification[]> = computed(
     ) ?? [],
 );
 
-const openForm: Ref<boolean> = ref(false);
+const formOpen: Ref<boolean> = ref(false);
 const typeModification: Ref<TypeModification | null> = ref(null);
 const heuresEQTD: Ref<number> = ref(0);
 
-const onReset = (): void => {
-  openForm.value = false;
+const resetForm = (): void => {
+  formOpen.value = false;
   typeModification.value = null;
   heuresEQTD.value = 0;
 };
-const onSubmit = async (): Promise<void> => {
+const submitForm = async (): Promise<void> => {
   if (!typeModification.value) {
     errorNotify(
       "Formulaire non valide",
@@ -87,9 +87,9 @@ const onSubmit = async (): Promise<void> => {
   } else {
     errorNotify("Échec de l'ajout");
   }
-  onReset();
+  resetForm();
 };
-const onDelete = async (id: number): Promise<void> => {
+const handleDeletion = async (id: number): Promise<void> => {
   const result = await deleteModification.executeMutation({ id: id });
   if (result.data?.modificationService && !result.error) {
     successNotify(`Modification supprimée`);
@@ -100,7 +100,7 @@ const onDelete = async (id: number): Promise<void> => {
 </script>
 
 <template>
-  <form id="addModification" @submit.prevent="onSubmit" @reset="onReset" />
+  <form id="addModification" @submit.prevent="submitForm" @reset="resetForm" />
   <TableService>
     <tr>
       <td>Base</td>
@@ -110,7 +110,7 @@ const onDelete = async (id: number): Promise<void> => {
       <td>
         Modifications
         <QBtn
-          v-if="openForm"
+          v-if="formOpen"
           form="addModification"
           type="submit"
           icon="sym_s_check_circle"
@@ -128,11 +128,11 @@ const onDelete = async (id: number): Promise<void> => {
           flat
           square
           dense
-          @click="openForm = true"
+          @click="formOpen = true"
         />
       </td>
     </tr>
-    <tr v-if="openForm">
+    <tr v-if="formOpen">
       <td>
         <QBtn
           form="addModification"
@@ -191,7 +191,7 @@ const onDelete = async (id: number): Promise<void> => {
           flat
           square
           dense
-          @click="onDelete(modification.id)"
+          @click="handleDeletion(modification.id)"
         />
         {{ modification.typeModification }}
       </td>

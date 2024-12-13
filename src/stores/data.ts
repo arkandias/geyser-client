@@ -30,14 +30,14 @@ const setFetchingEnseignements = (value: boolean) => {
 
 export const selectedIntervenant: Ref<{ uid: string }[]> = ref([]);
 export const selectedEnseignement: Ref<{ id: number }[]> = ref([]);
-const selectIntervenant = (uid?: string | null) => {
+const selectIntervenant = (uid: string | null) => {
   if (uid != null) {
     selectedIntervenant.value = [{ uid }];
   } else {
     selectedIntervenant.value = [];
   }
 };
-const selectEnseignement = (id?: number | null) => {
+const selectEnseignement = (id: number | null) => {
   if (id != null) {
     selectedEnseignement.value = [{ id }];
   } else {
@@ -68,10 +68,10 @@ export const useData = () => {
   );
   const toggleMonService = () => {
     if (meSelected.value) {
-      selectIntervenant();
+      selectIntervenant(null);
     } else if (myRow.value) {
       selectIntervenant(moi.value);
-      selectEnseignement();
+      selectEnseignement(null);
     }
   };
   return {

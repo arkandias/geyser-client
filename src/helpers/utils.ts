@@ -32,10 +32,6 @@ export const getNumber = (
   query: LocationQuery,
   param: string,
 ): number | null => {
-  const value = getValue(query, param);
-  if (value === null) {
-    return value;
-  }
-  const num = Number(value);
-  return isNaN(num) ? null : num;
+  const num = Number(getValue(query, param));
+  return Number.isFinite(num) ? num : null;
 };

@@ -82,7 +82,7 @@ watch(
 );
 
 const client = useClientHandle().client;
-const onSubmit = async (): Promise<void> => {
+const submitForm = async (): Promise<void> => {
   if (uid.value === null) {
     errorNotify("Formulaire non valide", "Sélectionnez un intervenant");
     return;
@@ -105,7 +105,7 @@ const onSubmit = async (): Promise<void> => {
     heures: heures.value,
   });
 };
-const onReset = (): void => {
+const resetForm = (): void => {
   uid.value = uidInit.value;
   heures.value = props.heuresParGroupe;
   typeDemande.value = typeDemandeInit.value;
@@ -117,8 +117,8 @@ const onReset = (): void => {
     <QForm
       dense
       class="row q-gutter-md text-body2"
-      @submit="onSubmit"
-      @reset="onReset"
+      @submit="submitForm"
+      @reset="resetForm"
     >
       <SelectIntervenant
         v-if="

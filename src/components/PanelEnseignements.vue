@@ -36,7 +36,7 @@ const {
 
 const select = (_: Event, row: RowEnseignement) => {
   if (selected.value[0]?.id === row.id) {
-    selectEnseignement();
+    selectEnseignement(null);
   } else {
     selectEnseignement(row.id);
   }
@@ -365,7 +365,7 @@ const estVisible = (row: RowEnseignement): boolean =>
           flat
           square
           dense
-          @click="selectEnseignement()"
+          @click="selectEnseignement(null)"
         />
         <QBtn
           v-if="intervenant"
@@ -375,7 +375,7 @@ const estVisible = (row: RowEnseignement): boolean =>
           flat
           square
           dense
-          @click="selectIntervenant()"
+          @click="selectIntervenant(null)"
         />
       </div>
       <QSpace />

@@ -23,7 +23,7 @@ const props = defineProps<{
 const perm = usePermissions();
 const client = useClientHandle().client;
 
-const onAttribute = async (): Promise<void> => {
+const assign = async (): Promise<void> => {
   await updateDemande(client, {
     uid: props.demande.intervenant.uid,
     ensId: props.demande.enseignement.id,
@@ -31,7 +31,7 @@ const onAttribute = async (): Promise<void> => {
     heures: props.demande.heures,
   });
 };
-const onDelete = async (): Promise<void> => {
+const remove = async (): Promise<void> => {
   await deleteDemandeById(client, props.demande.id, props.demande.typeDemande);
 };
 
@@ -72,7 +72,7 @@ const groupes: ComputedRef<number> = computed(() =>
         flat
         square
         dense
-        @click="onAttribute()"
+        @click="assign"
       >
         <QTooltip
           :delay="TOOLTIP_DELAY"
@@ -95,7 +95,7 @@ const groupes: ComputedRef<number> = computed(() =>
         flat
         square
         dense
-        @click="onDelete()"
+        @click="remove"
       >
         <QTooltip
           :delay="TOOLTIP_DELAY"

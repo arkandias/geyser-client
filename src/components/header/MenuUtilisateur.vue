@@ -17,7 +17,7 @@ import MenuBase from "@/components/header/MenuBase.vue";
 import { Role } from "@/types/roles.ts";
 
 const { intervenant, allowedRoles, logout } = useAuthentication();
-const { refresh } = useRefresh();
+const { refresh: refreshData } = useRefresh();
 
 const options: ComputedRef<Option<Role>[]> = computed(() =>
   allowedRoles.value
@@ -41,7 +41,7 @@ const options: ComputedRef<Option<Role>[]> = computed(() =>
           :options
           color="primary"
           type="radio"
-          @update:model-value="refresh"
+          @update:model-value="refreshData"
         />
       </QItem>
       <QSeparator />
