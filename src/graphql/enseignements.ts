@@ -55,8 +55,8 @@ graphql(/* GraphQL */ `
     demandes(
       where: { type: { _eq: "attribution" } }
       order_by: [
-        { intervenant: { nom: asc } }
-        { intervenant: { prenom: asc } }
+        { service: { intervenant: { nom: asc } } }
+        { service: { intervenant: { prenom: asc } } }
       ]
     ) {
       ...Demande
@@ -98,6 +98,7 @@ export const GET_ENSEIGNEMENTS_TABLE_ROWS = graphql(/* GraphQL */ `
           id
           nom
           nomCourt: nom_court
+          visible
         }
         visible
       }
@@ -109,7 +110,7 @@ export const GET_ENSEIGNEMENTS_TABLE_ROWS = graphql(/* GraphQL */ `
       }
       nom
       nomCourt: nom_court
-      typeEnseignement: type_enseignement {
+      typeEnseignement: typeByType {
         label
         labelCourt: label_court
       }
@@ -156,8 +157,8 @@ export const GET_ENSEIGNEMENT_DETAILS = graphql(/* GraphQL */ `
       ...Resume
       demandes(
         order_by: [
-          { intervenant: { nom: asc } }
-          { intervenant: { prenom: asc } }
+          { service: { intervenant: { nom: asc } } }
+          { service: { intervenant: { prenom: asc } } }
         ]
       ) {
         ...Demande

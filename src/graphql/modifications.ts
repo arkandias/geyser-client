@@ -17,15 +17,13 @@ export const GET_TYPES_MODIFICATION = graphql(/* GraphQL */ `
 
 export const INSERT_MODIFICATION = graphql(/* GraphQL */ `
   mutation InsertModification(
-    $annee: Int!
-    $uid: String!
+    $serviceId: Int!
     $typeModification: String!
     $heuresEQTD: Float!
   ) {
     modificationService: insert_modification_service_one(
       object: {
-        annee: $annee
-        uid: $uid
+        service_id: $serviceId
         type: $typeModification
         heures_eqtd: $heuresEQTD
       }

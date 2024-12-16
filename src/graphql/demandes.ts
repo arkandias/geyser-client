@@ -9,8 +9,10 @@ import { graphql } from "@/gql";
 graphql(/* GraphQL */ `
   fragment Demande on demande {
     id
-    intervenant {
-      ...Intervenant
+    service {
+      intervenant {
+        ...Intervenant
+      }
     }
     enseignement {
       id
@@ -39,12 +41,12 @@ graphql(/* GraphQL */ `
 `);
 
 export const GET_DEMANDE = graphql(/* GraphQL */ `
-  query GetDemande($uid: String!, $ensId: Int!, $typeDemande: String!) {
+  query GetDemande($serviceId: Int!, $ensId: Int!, $typeDemande: String!) {
     # limit: 1 car unique
     demande: demande(
       where: {
         _and: [
-          { uid: { _eq: $uid } }
+          { service_id: { _eq: $serviceId } }
           { ens_id: { _eq: $ensId } }
           { type: { _eq: $typeDemande } }
         ]
@@ -52,7 +54,7 @@ export const GET_DEMANDE = graphql(/* GraphQL */ `
       limit: 1
     ) {
       id
-      uid
+      serviceId: service_id
       ensId: ens_id
       typeDemande: type
       heures
@@ -62,15 +64,20 @@ export const GET_DEMANDE = graphql(/* GraphQL */ `
 
 export const UPSERT_DEMANDE = graphql(/* GraphQL */ `
   mutation UpsertDemande(
-    $uid: String!
+    $serviceId: Int!
     $ensId: Int!
     $typeDemande: String!
     $heures: Float!
   ) {
     demande: insert_demande_one(
-      object: { uid: $uid, ens_id: $ensId, type: $typeDemande, heures: $heures }
+      object: {
+        service_id: $serviceId
+        ens_id: $ensId
+        type: $typeDemande
+        heures: $heures
+      }
       on_conflict: {
-        constraint: demande_uid_ens_id_type_key
+        constraint: demande_service_id_ens_id_type_key
         update_columns: [heures]
       }
     ) {
@@ -80,11 +87,15 @@ export const UPSERT_DEMANDE = graphql(/* GraphQL */ `
 `);
 
 export const DELETE_DEMANDE = graphql(/* GraphQL */ `
-  mutation DeleteDemande($ensId: Int!, $uid: String!, $typeDemande: String!) {
+  mutation DeleteDemande(
+    $serviceId: Int!
+    $ensId: Int!
+    $typeDemande: String!
+  ) {
     demandes: delete_demande(
       where: {
         _and: [
-          { uid: { _eq: $uid } }
+          { service_id: { _eq: $serviceId } }
           { ens_id: { _eq: $ensId } }
           { type: { _eq: $typeDemande } }
         ]
