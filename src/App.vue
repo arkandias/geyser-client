@@ -6,7 +6,6 @@
 
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import type { Ref } from "vue";
 import { watch } from "vue";
 
 import { GET_ANNEES } from "@/graphql/annees.ts";
@@ -49,9 +48,7 @@ watch(
   (value) => {
     const validPhases =
       value?.phases.filter(
-        (
-          phase,
-        ): phase is { value: Phase; enCours: boolean; visible: boolean } =>
+        (phase): phase is { value: Phase; enCours: boolean } =>
           isPhase(phase.value),
       ) ?? [];
     phases.value = validPhases.map((phase) => phase.value);

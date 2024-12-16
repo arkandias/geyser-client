@@ -10427,11 +10427,6 @@ type phase {
   Le nom de la phase (unique).
   """
   value: String!
-
-  """
-  Indique si la phase correspondante est visible par les utilisateurs.
-  """
-  visible: Boolean!
 }
 
 """
@@ -10461,7 +10456,6 @@ input phase_bool_exp {
   description: String_comparison_exp
   en_cours: Boolean_comparison_exp
   value: String_comparison_exp
-  visible: Boolean_comparison_exp
 }
 
 """
@@ -10497,11 +10491,6 @@ input phase_insert_input {
   Le nom de la phase (unique).
   """
   value: String
-
-  """
-  Indique si la phase correspondante est visible par les utilisateurs.
-  """
-  visible: Boolean
 }
 
 """
@@ -10565,7 +10554,6 @@ input phase_order_by {
   description: order_by
   en_cours: order_by
   value: order_by
-  visible: order_by
 }
 
 """
@@ -10596,11 +10584,6 @@ enum phase_select_column {
   column name
   """
   value
-
-  """
-  column name
-  """
-  visible
 }
 
 """
@@ -10621,11 +10604,6 @@ input phase_set_input {
   Le nom de la phase (unique).
   """
   value: String
-
-  """
-  Indique si la phase correspondante est visible par les utilisateurs.
-  """
-  visible: Boolean
 }
 
 """
@@ -10661,11 +10639,6 @@ input phase_stream_cursor_value_input {
   Le nom de la phase (unique).
   """
   value: String
-
-  """
-  Indique si la phase correspondante est visible par les utilisateurs.
-  """
-  visible: Boolean
 }
 
 """
@@ -10686,11 +10659,6 @@ enum phase_update_column {
   column name
   """
   value
-
-  """
-  column name
-  """
-  visible
 }
 
 input phase_updates {

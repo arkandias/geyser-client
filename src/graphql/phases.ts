@@ -11,7 +11,6 @@ export const GET_PHASES = graphql(/* GraphQL */ `
     phases: phase(order_by: { value: desc }) {
       value
       enCours: en_cours
-      visible
     }
   }
 `);
