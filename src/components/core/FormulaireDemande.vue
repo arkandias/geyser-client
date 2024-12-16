@@ -173,9 +173,6 @@ const resetForm = (): void => {
       <QBtn type="submit" icon="sym_s_check" color="primary" flat square dense>
         <QTooltip>Valider la demande</QTooltip>
       </QBtn>
-      <QBtn type="reset" icon="sym_s_clear" color="primary" flat square dense>
-        <QTooltip>Réinitialiser le formulaire</QTooltip>
-      </QBtn>
     </QForm>
   </QCardSection>
 </template>
