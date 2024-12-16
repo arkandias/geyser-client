@@ -19,6 +19,7 @@ import { enCours as phaseEnCours, phases } from "@/stores/phases.ts";
 import TheHeader from "@/components/TheHeader.vue";
 import PageMessage from "@/pages/PageMessage.vue";
 import type { Phase } from "@/types/phases.ts";
+import { isPhase } from "@/types/phases.ts";
 
 const { logged } = useAuthentication();
 const perm = usePermissions();
@@ -44,13 +45,18 @@ watch(
   { immediate: true },
 );
 watch(
-  queryPhases.data as Ref<
-    { phases: { value: Phase; enCours: boolean }[] } | undefined
-  >,
+  queryPhases.data,
   (value) => {
-    phases.value = value?.phases.map((phase) => phase.value) ?? [];
+    const validPhases =
+      value?.phases.filter(
+        (
+          phase,
+        ): phase is { value: Phase; enCours: boolean; visible: boolean } =>
+          isPhase(phase.value),
+      ) ?? [];
+    phases.value = validPhases.map((phase) => phase.value);
     phaseEnCours.value =
-      value?.phases.find((phase) => phase.enCours)?.value ?? null;
+      validPhases.find((phase) => phase.enCours)?.value ?? null;
   },
   { immediate: true },
 );

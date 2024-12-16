@@ -11,3 +11,10 @@ export const Phase = {
   fermeture: { value: "fermeture", label: "Fermeture", order: 4 },
 } as const;
 export type Phase = keyof typeof Phase;
+
+export const isPhase = (phase: string): phase is Phase => {
+  if (!(phase in Phase)) {
+    console.warn(`Phase ${phase} inconnue`);
+  }
+  return phase in Phase;
+};
