@@ -24,7 +24,7 @@ const enCoursActive: ComputedRef<boolean> = computed(
 );
 
 const select = (annee?: number | null): void => {
-  selected.value = annee ?? enCours.value;
+  selected.value = annee ?? null;
 };
 
 export const useAnnees = () => {
@@ -40,6 +40,7 @@ export const useAnnees = () => {
   return {
     annees: readonly(annees),
     enCours: readonly(enCours),
+    selected: readonly(selected),
     active,
     enCoursActive,
     setEnCours,

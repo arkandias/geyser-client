@@ -11,11 +11,7 @@ import { watch } from "vue";
 
 import { GET_ANNEES } from "@/graphql/annees.ts";
 import { GET_PHASES } from "@/graphql/phases.ts";
-import {
-  enCours as anneeEnCours,
-  annees,
-  selected as selectedAnnee,
-} from "@/stores/annees.ts";
+import { enCours as anneeEnCours, annees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 import { enCours as phaseEnCours, phases } from "@/stores/phases.ts";
@@ -44,9 +40,6 @@ watch(
     annees.value = value?.annees.map((annee) => annee.value) ?? [];
     anneeEnCours.value =
       value?.annees.find((annee) => annee.enCours)?.value ?? null;
-    if (selectedAnnee.value === null) {
-      selectedAnnee.value = anneeEnCours.value;
-    }
   },
   { immediate: true },
 );
