@@ -5,18 +5,11 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
-import { computed, reactive, watch } from "vue";
+import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import { GET_ENSEIGNEMENTS_TABLE_ROWS } from "@/graphql/enseignements.ts";
-import {
-  GET_INTERVENANTS_TABLE_ROWS,
-  GET_MY_ROW,
-} from "@/graphql/intervenants.ts";
 import { getNumber, getValue } from "@/helpers/utils.ts";
-import { selected as selectedAnnee, useAnnees } from "@/stores/annees.ts";
-import { useAuthentication } from "@/stores/authentication.ts";
+import { useAnnees } from "@/stores/annees.ts";
 import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { usePermissions } from "@/stores/permissions.ts";
@@ -24,14 +17,16 @@ import { usePermissions } from "@/stores/permissions.ts";
 import PanelDetails from "@/components/PanelDetails.vue";
 import PanelEnseignements from "@/components/PanelEnseignements.vue";
 import PanelIntervenants from "@/components/PanelIntervenants.vue";
+import { useDataSync } from "@/composables/datasync.ts";
 
+const router = useRouter();
+const route = useRoute();
 const {
   active: anneeActive,
-  enCours: anneeEnCours,
   enCoursActive: anneeEnCoursActive,
+  selected: selectedAnnee,
   select: selectAnnee,
 } = useAnnees();
-const { uid: moi } = useAuthentication();
 const perm = usePermissions();
 const { closeFilter, filtreIntervenants, openFilter } = useLayout();
 const {
@@ -39,110 +34,38 @@ const {
   selectedIntervenant,
   selectEnseignement,
   selectIntervenant,
-  setEnseignements,
-  setIntervenants,
-  setFetchingEnseignements,
-  setFetchingIntervenants,
 } = useData();
+useDataSync();
 
-// sync active annee and selected enseignement/intervenant with the
-// corresponding query parameters annee and ens/uid
-const router = useRouter();
-const route = useRoute();
-// update query parameters annee/ens/uid if active annee or selected
-// enseignement/intervenant changes
+// sync query parameters with selection
+watch(
+  () =>
+    [
+      getNumber(route.query, "annee"),
+      getNumber(route.query, "ens"),
+      getValue(route.query, "uid"),
+    ] as const,
+  ([annee, ens, uid]) => {
+    selectAnnee(annee);
+    selectEnseignement(ens);
+    selectIntervenant(uid);
+  },
+  { immediate: true },
+);
 watch(
   [
-    () =>
-      anneeEnCours.value !== null && selectedAnnee.value === anneeEnCours.value
-        ? undefined
-        : selectedAnnee.value,
+    () => selectedAnnee.value ?? undefined,
     () => selectedEnseignement.value[0]?.id,
     () => selectedIntervenant.value[0]?.uid,
   ],
   async ([annee, ens, uid]) => {
     await router.replace({
-      name: "enseignements",
       query: { annee, ens, uid },
     });
   },
 );
-// update the active year if query parameter annee changes
-watch(() => getNumber(route.query, "annee"), selectAnnee, { immediate: true });
-// update the selected enseignement if query parameter ens changes
-watch(() => getNumber(route.query, "ens"), selectEnseignement, {
-  immediate: true,
-});
-// update the selected intervenant if query parameter uid changes
-watch(() => getValue(route.query, "uid"), selectIntervenant, {
-  immediate: true,
-});
 
-// query for the list of enseignements
-const queryEnseignements = useQuery({
-  query: GET_ENSEIGNEMENTS_TABLE_ROWS,
-  variables: reactive({
-    annee: computed(() => anneeActive.value ?? 0),
-  }),
-  pause: () => anneeActive.value === null,
-  context: { additionalTypenames: ["demande"] },
-});
-// store the fetching status and result of the query result in the Data store
-// and update on change
-watch(queryEnseignements.fetching, setFetchingEnseignements, {
-  immediate: true,
-});
-watch(
-  () => queryEnseignements.data.value?.enseignements ?? [],
-  setEnseignements,
-  { immediate: true },
-);
-
-// query for the list of all active intervenants or just for the user's row,
-// depending on whether or not the user has the corresponding permission
-const queryIntervenants = useQuery({
-  query: GET_INTERVENANTS_TABLE_ROWS,
-  variables: reactive({
-    annee: computed(() => anneeActive.value ?? 0),
-  }),
-  pause: () => !perm.deVoirLeServiceDAutrui || anneeActive.value === null,
-  context: {
-    additionalTypenames: ["demande", "message", "modification_service"],
-  },
-});
-const queryMyRow = useQuery({
-  query: GET_MY_ROW,
-  variables: reactive({
-    annee: computed(() => anneeActive.value ?? 0),
-    uid: moi,
-  }),
-  pause: () => perm.deVoirLeServiceDAutrui || anneeActive.value === null,
-  context: {
-    additionalTypenames: ["demande", "message", "modification_service"],
-  },
-});
-// store the fetching status and result of the query result in the Data store
-// and update on change
-watch(
-  () =>
-    perm.deVoirLeServiceDAutrui
-      ? queryIntervenants.fetching.value
-      : queryMyRow.fetching.value,
-  setFetchingIntervenants,
-  { immediate: true },
-);
-watch(
-  () =>
-    perm.deVoirLeServiceDAutrui
-      ? (queryIntervenants.data.value?.intervenants ?? [])
-      : queryMyRow.data.value?.intervenant
-        ? [queryMyRow.data.value.intervenant]
-        : [],
-  setIntervenants,
-  { immediate: true },
-);
-
-// open/close the intervenant filter based on user's permissions
+// open or close the intervenant filter based on user's permissions
 watch(
   () => perm.deVoirLeServiceDAutrui,
   (value) => {
@@ -158,6 +81,9 @@ watch(
 
 <template>
   <QPage>
+    {{ "ANNEE: " + selectedAnnee }}
+    {{ "ENS: " + selectedEnseignement[0]?.id }}
+    {{ "UID: " + selectedIntervenant[0]?.uid }}
     <QCard v-if="!anneeEnCoursActive" id="warning-archive">
       Vous consultez une archive ({{ anneeActive }})
     </QCard>

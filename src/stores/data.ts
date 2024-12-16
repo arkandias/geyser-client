@@ -30,19 +30,11 @@ const setFetchingEnseignements = (value: boolean) => {
 
 export const selectedIntervenant: Ref<{ uid: string }[]> = ref([]);
 export const selectedEnseignement: Ref<{ id: number }[]> = ref([]);
-const selectIntervenant = (uid: string | null) => {
-  if (uid != null) {
-    selectedIntervenant.value = [{ uid }];
-  } else {
-    selectedIntervenant.value = [];
-  }
+const selectIntervenant = (uid?: string | null) => {
+  selectedIntervenant.value = uid != null ? [{ uid }] : [];
 };
-const selectEnseignement = (id: number | null) => {
-  if (id != null) {
-    selectedEnseignement.value = [{ id }];
-  } else {
-    selectedEnseignement.value = [];
-  }
+const selectEnseignement = (id?: number | null) => {
+  selectedEnseignement.value = id != null ? [{ id }] : [];
 };
 
 const intervenant: ComputedRef<RowIntervenant | null> = computed(

@@ -9,7 +9,7 @@ import { useQuery } from "@urql/vue";
 import type { ComputedRef } from "vue";
 import { computed, reactive } from "vue";
 
-import { GET_MY_ROW } from "@/graphql/intervenants.ts";
+import { GET_INTERVENANTS_TABLE_ROWS } from "@/graphql/intervenants.ts";
 import { formatIntervenant } from "@/helpers/format.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
@@ -23,13 +23,13 @@ import ServiceIntervenant from "@/components/core/ServiceIntervenant.vue";
 import DetailsVoletIntervenant from "@/components/details/volet/DetailsVoletIntervenant.vue";
 
 const { enCours: anneeEnCours } = useAnnees();
-const { intervenant, uid } = useAuthentication();
+const { intervenant, uid: moi } = useAuthentication();
 
 const queryMyRow = useQuery({
-  query: GET_MY_ROW,
+  query: GET_INTERVENANTS_TABLE_ROWS,
   variables: reactive({
     annee: computed(() => anneeEnCours.value ?? 0),
-    uid,
+    where: { uid: { _eq: moi } },
   }),
   pause: () => anneeEnCours.value === null,
   context: {
@@ -37,7 +37,7 @@ const queryMyRow = useQuery({
   },
 });
 const myRow: ComputedRef<RowIntervenant | null> = computed(
-  () => queryMyRow.data.value?.intervenant ?? null,
+  () => queryMyRow.data.value?.intervenants[0] ?? null,
 );
 </script>
 

@@ -9541,6 +9541,7 @@ export type GetMyRowQuery = {
 
 export type GetIntervenantsTableRowsQueryVariables = Exact<{
   annee: Scalars["Int"]["input"];
+  where?: InputMaybe<Intervenant_Bool_Exp>;
 }>;
 
 export type GetIntervenantsTableRowsQuery = {
@@ -13935,6 +13936,18 @@ export const GetIntervenantsTableRowsDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "where" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "intervenant_bool_exp" },
+          },
+          defaultValue: { kind: "ObjectValue", fields: [] },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -13948,23 +13961,8 @@ export const GetIntervenantsTableRowsDocument = {
                 kind: "Argument",
                 name: { kind: "Name", value: "where" },
                 value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "actif" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: { kind: "BooleanValue", value: true },
-                          },
-                        ],
-                      },
-                    },
-                  ],
+                  kind: "Variable",
+                  name: { kind: "Name", value: "where" },
                 },
               },
               {

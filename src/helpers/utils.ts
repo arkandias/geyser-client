@@ -25,13 +25,13 @@ export const getValue = (
   param: string,
 ): string | null => {
   const value = query[param];
-  return typeof value === "string" ? value : (value?.[0] ?? null);
+  return (Array.isArray(value) ? value[0] : value) ?? null;
 };
 
 export const getNumber = (
   query: LocationQuery,
   param: string,
 ): number | null => {
-  const num = Number(getValue(query, param));
-  return Number.isFinite(num) ? num : null;
+  const value = getValue(query, param);
+  return value !== null ? Number(value) : null;
 };
