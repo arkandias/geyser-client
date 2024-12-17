@@ -9,6 +9,7 @@ import { graphql } from "@/gql";
 graphql(/* GraphQL */ `
   fragment Demande on demande {
     id
+    serviceId: service_id
     service {
       intervenant {
         ...Intervenant

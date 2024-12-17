@@ -16,20 +16,17 @@ import {
 } from "@/graphql/modifications.ts";
 import { nf } from "@/helpers/format.ts";
 import { errorNotify, successNotify } from "@/helpers/notify.ts";
-import { useAnnees } from "@/stores/annees.ts";
 import type { Modification, TypeModification } from "@/types/services.ts";
 
 import TableService from "@/components/core/TableService.vue";
 
 const props = defineProps<{
-  uid: string;
+  serviceId: number;
   serviceBase: number;
   modifications: Modification[];
   totalModifications: number;
   editable: boolean;
 }>();
-
-const { active: anneeActive } = useAnnees();
 
 const serviceCorrige: ComputedRef<number> = computed(
   () => props.serviceBase - props.totalModifications,
@@ -77,8 +74,7 @@ const submitForm = async (): Promise<void> => {
     return;
   }
   const result = await insertModification.executeMutation({
-    annee: anneeActive.value ?? 0,
-    uid: props.uid,
+    serviceId: props.serviceId,
     typeModification: typeModification.value.label,
     heuresEQTD: heuresEQTD.value,
   });

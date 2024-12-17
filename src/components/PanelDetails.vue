@@ -28,7 +28,7 @@ import DetailsVoletEnseignement from "@/components/details/volet/DetailsVoletEns
 import DetailsVoletInformations from "@/components/details/volet/DetailsVoletInformations.vue";
 import DetailsVoletIntervenant from "@/components/details/volet/DetailsVoletIntervenant.vue";
 
-const { enseignement, intervenant } = useData();
+const { enseignement, service } = useData();
 
 const queryDetails = useQuery({
   query: GET_ENSEIGNEMENT_DETAILS,
@@ -47,8 +47,8 @@ const details: ComputedRef<Details | null> = computed(
 const label: ComputedRef<string> = computed(() =>
   enseignement.value
     ? enseignement.value.nom
-    : intervenant.value
-      ? formatIntervenant(intervenant.value)
+    : service.value
+      ? formatIntervenant(service.value.intervenant)
       : "Ce volet contient des informations supplémentaires",
 );
 const caption: ComputedRef<string> = computed(() =>
@@ -63,8 +63,8 @@ const caption: ComputedRef<string> = computed(() =>
       `S${enseignement.value.semestre.toString()}` +
       " \u2014 " +
       enseignement.value.typeEnseignement.label
-    : intervenant.value
-      ? formatResumeIntervenant(intervenant.value)
+    : service.value
+      ? formatResumeIntervenant(service.value)
       : "Cliquez dessus pour afficher ces informations",
 );
 </script>
@@ -72,7 +72,7 @@ const caption: ComputedRef<string> = computed(() =>
 <template>
   <DetailsVolet :label :caption>
     <DetailsVoletEnseignement v-if="enseignement && details" :details />
-    <DetailsVoletIntervenant v-else-if="intervenant" :intervenant>
+    <DetailsVoletIntervenant v-else-if="service" :service>
       <template #service="scope">
         <DetailsSubsection title="Service">
           <ServiceIntervenant v-bind="scope" />
@@ -88,7 +88,7 @@ const caption: ComputedRef<string> = computed(() =>
   </DetailsVolet>
   <QCard flat square>
     <DetailsEnseignement v-if="enseignement && details" :details />
-    <DetailsIntervenant v-else-if="intervenant" :intervenant />
+    <DetailsIntervenant v-else-if="service" :service />
     <DetailsInformations v-else />
   </QCard>
 </template>

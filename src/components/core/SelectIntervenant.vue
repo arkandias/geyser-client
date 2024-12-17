@@ -9,26 +9,26 @@ import { useQuery } from "@urql/vue";
 import type { ComputedRef, Ref } from "vue";
 import { computed, ref, watch } from "vue";
 
-import { GET_INTERVENANTS } from "@/graphql/intervenants.ts";
+import { GET_SERVICES } from "@/graphql/services.ts";
 import { formatIntervenant, normalizeForSearch } from "@/helpers/format.ts";
 import type { OptionSearch } from "@/types/common.ts";
 
-const uid = defineModel<string | null>({ required: true });
+const serviceId = defineModel<number | null>({ required: true });
 
-const queryIntervenants = useQuery({
-  query: GET_INTERVENANTS,
+const queryServices = useQuery({
+  query: GET_SERVICES,
   variables: {},
 });
 
-const optionsInit: ComputedRef<OptionSearch<string>[]> = computed(() =>
-  (queryIntervenants.data.value?.intervenants ?? []).map((intervenant) => ({
-    value: intervenant.uid,
-    label: formatIntervenant(intervenant),
-    search: normalizeForSearch(formatIntervenant(intervenant)),
+const optionsInit: ComputedRef<OptionSearch<number>[]> = computed(() =>
+  (queryServices.data.value?.services ?? []).map((service) => ({
+    value: service.id,
+    label: formatIntervenant(service.intervenant),
+    search: normalizeForSearch(formatIntervenant(service.intervenant)),
   })),
 );
 
-const options: Ref<OptionSearch<string>[]> = ref([]);
+const options: Ref<OptionSearch<number>[]> = ref([]);
 
 watch(
   optionsInit,
@@ -49,7 +49,7 @@ const filter = (val: string, update: (x: () => void) => void) => {
 
 <template>
   <QSelect
-    v-model="uid"
+    v-model="serviceId"
     :options
     color="primary"
     label="Intervenant"

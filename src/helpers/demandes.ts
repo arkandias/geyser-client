@@ -17,7 +17,7 @@ import { defaultNotify, errorNotify, successNotify } from "@/helpers/notify.ts";
 
 const getCurrentDemande = async (
   client: Client,
-  variables: { uid: string; ensId: number; typeDemande: string },
+  variables: { serviceId: number; ensId: number; typeDemande: string },
 ): Promise<number | null> => {
   const result = await client.query(GET_DEMANDE, variables, {
     requestPolicy: "network-only",
@@ -38,14 +38,14 @@ const getCurrentDemande = async (
 export const updateDemande = async (
   client: Client,
   variables: {
-    uid: string;
+    serviceId: number;
     ensId: number;
     typeDemande: string;
     heures: number;
   },
 ): Promise<void> => {
   const current = await getCurrentDemande(client, {
-    uid: variables.uid,
+    serviceId: variables.serviceId,
     ensId: variables.ensId,
     typeDemande: variables.typeDemande,
   });

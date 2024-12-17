@@ -8745,6 +8745,7 @@ export type DemandeFragment = {
   id: number;
   heures: number;
   prioritaire: boolean | null;
+  serviceId: number;
   typeDemande: string;
   service: {
     __typename?: "service";
@@ -8916,6 +8917,7 @@ export type ArchiveFragment = {
     id: number;
     heures: number;
     prioritaire: boolean | null;
+    serviceId: number;
     typeDemande: string;
     service: {
       __typename?: "service";
@@ -8952,6 +8954,7 @@ export type NestedArchivesFragment = {
         id: number;
         heures: number;
         prioritaire: boolean | null;
+        serviceId: number;
         typeDemande: string;
         service: {
           __typename?: "service";
@@ -8975,6 +8978,7 @@ export type NestedArchivesFragment = {
       id: number;
       heures: number;
       prioritaire: boolean | null;
+      serviceId: number;
       typeDemande: string;
       service: {
         __typename?: "service";
@@ -8998,6 +9002,7 @@ export type NestedArchivesFragment = {
     id: number;
     heures: number;
     prioritaire: boolean | null;
+    serviceId: number;
     typeDemande: string;
     service: {
       __typename?: "service";
@@ -9117,6 +9122,7 @@ export type GetEnseignementDetailsQuery = {
       id: number;
       heures: number;
       prioritaire: boolean | null;
+      serviceId: number;
       typeDemande: string;
       service: {
         __typename?: "service";
@@ -9165,6 +9171,7 @@ export type GetEnseignementDetailsQuery = {
             id: number;
             heures: number;
             prioritaire: boolean | null;
+            serviceId: number;
             typeDemande: string;
             service: {
               __typename?: "service";
@@ -9188,6 +9195,7 @@ export type GetEnseignementDetailsQuery = {
           id: number;
           heures: number;
           prioritaire: boolean | null;
+          serviceId: number;
           typeDemande: string;
           service: {
             __typename?: "service";
@@ -9211,6 +9219,7 @@ export type GetEnseignementDetailsQuery = {
         id: number;
         heures: number;
         prioritaire: boolean | null;
+        serviceId: number;
         typeDemande: string;
         service: {
           __typename?: "service";
@@ -9432,6 +9441,7 @@ export type GetIntervenantsQuery = {
   __typename?: "query_root";
   services: Array<{
     __typename?: "service";
+    id: number;
     intervenant: {
       __typename?: "intervenant";
       uid: string;
@@ -9981,6 +9991,11 @@ export const DemandeFragmentDoc = {
           { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "serviceId" },
+            name: { kind: "Name", value: "service_id" },
+          },
+          {
+            kind: "Field",
             name: { kind: "Name", value: "service" },
             selectionSet: {
               kind: "SelectionSet",
@@ -10210,6 +10225,11 @@ export const ArchiveFragmentDoc = {
           { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "serviceId" },
+            name: { kind: "Name", value: "service_id" },
+          },
+          {
+            kind: "Field",
             name: { kind: "Name", value: "service" },
             selectionSet: {
               kind: "SelectionSet",
@@ -10328,6 +10348,11 @@ export const NestedArchivesFragmentDoc = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "serviceId" },
+            name: { kind: "Name", value: "service_id" },
+          },
           {
             kind: "Field",
             name: { kind: "Name", value: "service" },
@@ -12206,6 +12231,11 @@ export const GetEnseignementDetailsDocument = {
           { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "serviceId" },
+            name: { kind: "Name", value: "service_id" },
+          },
+          {
+            kind: "Field",
             name: { kind: "Name", value: "service" },
             selectionSet: {
               kind: "SelectionSet",
@@ -13674,6 +13704,7 @@ export const GetIntervenantsDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "intervenant" },

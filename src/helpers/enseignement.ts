@@ -5,11 +5,11 @@
  ******************************************************************************/
 
 import type { Archive, NestedArchives } from "@/types/demandes.ts";
-import type { RowEnseignement, RowIntervenant } from "@/types/rows.ts";
+import type { RowEnseignement, RowService } from "@/types/rows.ts";
 
 export const demandeValue = (
   row: RowEnseignement,
-  intervenant: RowIntervenant | null,
+  intervenant: RowService | null,
   typeDemande: string,
 ): number => {
   if (intervenant) {

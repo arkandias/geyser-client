@@ -34,7 +34,7 @@ export type RowEnseignement = Identifiant & {
   heures: number | null;
   groupes: number | null;
   mention: Identifiant & {
-    cursus: Identifiant;
+    cursus: Identifiant & { visible: boolean };
     visible: boolean;
   };
   parcours: (Identifiant & { visible: boolean }) | null;
@@ -49,21 +49,25 @@ export type RowEnseignement = Identifiant & {
   visible: boolean;
 };
 
-export type RowIntervenant = Intervenant & {
-  visible: boolean;
-  demandes: {
-    ensId: number;
-    typeDemande: string;
-    heures: number;
-    heuresEQTD: number | null;
-  }[];
-  services: { heuresEQTD: number }[];
+export type RowService = {
+  id: number;
+  heuresEQTD: number;
   modifications: {
     id: number;
     typeModification: string;
     heuresEQTD: number;
   }[];
   totalModifications: TotalHeuresEQTD;
+  intervenant: Intervenant & {
+    visible: boolean;
+  };
+  demandes: {
+    id: number;
+    ensId: number;
+    typeDemande: string;
+    heures: number;
+    heuresEQTD: number | null;
+  }[];
   totalAttributions: TotalHeures & TotalHeuresEQTD;
   totalPrincipales: TotalHeures & TotalHeuresEQTD;
   totalSecondaires: TotalHeures & TotalHeuresEQTD;

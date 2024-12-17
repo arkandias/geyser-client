@@ -9,11 +9,11 @@ import { useQuery } from "@urql/vue";
 import type { ComputedRef } from "vue";
 import { computed, reactive } from "vue";
 
-import { GET_INTERVENANTS_TABLE_ROWS } from "@/graphql/intervenants.ts";
+import { GET_SERVICES_TABLE_ROWS } from "@/graphql/services.ts";
 import { formatIntervenant } from "@/helpers/format.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
-import type { RowIntervenant } from "@/types/rows.ts";
+import type { RowService } from "@/types/rows.ts";
 
 import AccueilInformations from "@/components/accueil/AccueilInformations.vue";
 import AccueilMessage from "@/components/accueil/AccueilMessage.vue";
@@ -25,19 +25,19 @@ import DetailsVoletIntervenant from "@/components/details/volet/DetailsVoletInte
 const { enCours: anneeEnCours } = useAnnees();
 const { intervenant, uid: moi } = useAuthentication();
 
-const queryMyRow = useQuery({
-  query: GET_INTERVENANTS_TABLE_ROWS,
+const queryMyService = useQuery({
+  query: GET_SERVICES_TABLE_ROWS,
   variables: reactive({
     annee: computed(() => anneeEnCours.value ?? 0),
-    where: { uid: { _eq: moi } },
+    where: { intervenant: { uid: { _eq: moi } } },
   }),
   pause: () => anneeEnCours.value === null,
   context: {
     additionalTypenames: ["demande", "message", "modification_service"],
   },
 });
-const myRow: ComputedRef<RowIntervenant | null> = computed(
-  () => queryMyRow.data.value?.intervenants[0] ?? null,
+const myService: ComputedRef<RowService | null> = computed(
+  () => queryMyService.data.value?.services[0] ?? null,
 );
 </script>
 
@@ -50,7 +50,7 @@ const myRow: ComputedRef<RowIntervenant | null> = computed(
         {{ formatIntervenant(intervenant) }}
       </QCardSection>
       <AccueilMessage />
-      <DetailsVoletIntervenant v-if="myRow" :intervenant="myRow">
+      <DetailsVoletIntervenant v-if="myService" :service="myService">
         <template #service="scope">
           <AccueilSubsection title="Mon service">
             <ServiceIntervenant v-bind="scope" />

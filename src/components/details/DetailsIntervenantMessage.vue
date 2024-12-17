@@ -10,17 +10,16 @@ import type { ComputedRef } from "vue";
 import { computed } from "vue";
 
 import { updateMessage } from "@/helpers/messages.ts";
-import { useAnnees } from "@/stores/annees.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 
 import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
 
 const props = defineProps<{
+  serviceId: number;
   uid: string;
   contenu: string | null;
 }>();
 
-const { active: anneeActive } = useAnnees();
 const perm = usePermissions();
 const client = useClientHandle().client;
 
@@ -30,8 +29,7 @@ const getMessage: ComputedRef<string | null> = computed(
 const setMessage: ComputedRef<(contenu: string) => Promise<boolean>> = computed(
   () =>
     updateMessage(client, {
-      annee: anneeActive.value ?? 0,
-      uid: props.uid,
+      serviceId: props.serviceId,
     }),
 );
 </script>

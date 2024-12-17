@@ -8,16 +8,16 @@
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
 
-import type { RowIntervenant } from "@/types/rows.ts";
+import type { RowService } from "@/types/rows.ts";
 import type { Modification } from "@/types/services.ts";
 
 import { usePermissions } from "@/stores/permissions.ts";
 import type { TypeDemande } from "@/types/demandes.ts";
 
-const props = defineProps<{ intervenant: RowIntervenant }>();
+const props = defineProps<{ service: RowService }>();
 defineSlots<{
   service(scope: {
-    uid: string;
+    serviceId: number;
     serviceBase: number;
     modifications: Modification[];
     totalModifications: number;
@@ -29,22 +29,20 @@ defineSlots<{
 const perm = usePermissions();
 
 const serviceBase: ComputedRef<number> = computed(
-  () => props.intervenant.services[0]?.heuresEQTD ?? 0,
+  () => props.service.heuresEQTD,
 );
 const modifications: ComputedRef<Modification[]> = computed(
-  () => props.intervenant.modifications,
+  () => props.service.modifications,
 );
 const totalModifications: ComputedRef<number> = computed(
-  () => props.intervenant.totalModifications.aggregate?.sum?.heuresEQTD ?? 0,
+  () => props.service.totalModifications.aggregate?.sum?.heuresEQTD ?? 0,
 );
 const totauxDemandes: ComputedRef<Record<TypeDemande, number>> = computed(
   () => ({
     attribution:
-      props.intervenant.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0,
-    principale:
-      props.intervenant.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0,
-    secondaire:
-      props.intervenant.totalSecondaires.aggregate?.sum?.heuresEQTD ?? 0,
+      props.service.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0,
+    principale: props.service.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0,
+    secondaire: props.service.totalSecondaires.aggregate?.sum?.heuresEQTD ?? 0,
   }),
 );
 </script>
@@ -52,11 +50,11 @@ const totauxDemandes: ComputedRef<Record<TypeDemande, number>> = computed(
 <template>
   <slot
     name="service"
-    :uid="intervenant.uid"
+    :service-id="service.id"
     :service-base
     :modifications
     :total-modifications
-    :editable="perm.deModifierUnService(intervenant.uid)"
+    :editable="perm.deModifierUnService(service.intervenant.uid)"
   />
   <slot name="demandes" :totaux-demandes />
 </template>

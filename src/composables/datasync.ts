@@ -5,7 +5,7 @@
  ******************************************************************************/
 
 import { GET_ENSEIGNEMENTS_TABLE_ROWS } from "@/graphql/enseignements.ts";
-import { GET_INTERVENANTS_TABLE_ROWS } from "@/graphql/intervenants.ts";
+import { GET_SERVICES_TABLE_ROWS } from "@/graphql/services.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useData } from "@/stores/data.ts";
@@ -19,9 +19,9 @@ export const useDataSync = () => {
   const perm = usePermissions();
   const {
     setEnseignements,
-    setIntervenants,
+    setServices,
     setFetchingEnseignements,
-    setFetchingIntervenants,
+    setFetchingServices,
   } = useData();
 
   const queryEnseignements = useQuery({
@@ -32,12 +32,12 @@ export const useDataSync = () => {
     pause: () => anneeActive.value === null,
     context: { additionalTypenames: ["demande"] },
   });
-  const queryIntervenants = useQuery({
-    query: GET_INTERVENANTS_TABLE_ROWS,
+  const queryServices = useQuery({
+    query: GET_SERVICES_TABLE_ROWS,
     variables: reactive({
       annee: computed(() => anneeActive.value ?? 0),
       where: computed(() =>
-        perm.deVoirLeServiceDAutrui ? null : { uid: { _eq: moi } },
+        perm.deVoirLeServiceDAutrui ? {} : { uid: { _eq: moi } },
       ),
     }),
     pause: () => anneeActive.value === null,
@@ -50,7 +50,7 @@ export const useDataSync = () => {
   watch(queryEnseignements.fetching, setFetchingEnseignements, {
     immediate: true,
   });
-  watch(() => queryIntervenants.fetching.value, setFetchingIntervenants, {
+  watch(() => queryServices.fetching.value, setFetchingServices, {
     immediate: true,
   });
   watch(
@@ -58,11 +58,7 @@ export const useDataSync = () => {
     setEnseignements,
     { immediate: true },
   );
-  watch(
-    () => queryIntervenants.data.value?.intervenants ?? [],
-    setIntervenants,
-    {
-      immediate: true,
-    },
-  );
+  watch(() => queryServices.data.value?.services ?? [], setServices, {
+    immediate: true,
+  });
 };

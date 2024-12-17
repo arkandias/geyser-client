@@ -30,7 +30,10 @@ export type TypeDemande = keyof typeof TypeDemande;
 
 export type Demande = {
   id: number;
-  intervenant: Intervenant;
+  serviceId: number;
+  service: {
+    intervenant: Intervenant;
+  };
   enseignement: {
     id: number;
     heures: number | null;

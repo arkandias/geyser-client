@@ -5,23 +5,27 @@
   ----------------------------------------------------------------------------->
 
 <script setup lang="ts">
-import type { RowIntervenant } from "@/types/rows.ts";
+import type { RowService } from "@/types/rows.ts";
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
 
 import DetailsIntervenantMessage from "@/components/details/DetailsIntervenantMessage.vue";
 import DetailsSection from "@/components/details/DetailsSection.vue";
 
-const props = defineProps<{ intervenant: RowIntervenant }>();
+const props = defineProps<{ service: RowService }>();
 
 const contenu: ComputedRef<string | null> = computed(
-  () => props.intervenant.messages[0]?.contenu ?? null,
+  () => props.service.messages[0]?.contenu ?? null,
 );
 </script>
 
 <template>
   <DetailsSection title="Messages">
-    <DetailsIntervenantMessage :uid="intervenant.uid" :contenu />
+    <DetailsIntervenantMessage
+      :service-id="service.id"
+      :uid="service.intervenant.uid"
+      :contenu
+    />
   </DetailsSection>
 </template>
 

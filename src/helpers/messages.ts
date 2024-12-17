@@ -9,7 +9,7 @@ import type { Client } from "@urql/vue";
 import { DELETE_MESSAGE, UPSERT_MESSAGE } from "@/graphql/messages.ts";
 
 export const updateMessage =
-  (client: Client, variables: { annee: number; uid: string }) =>
+  (client: Client, variables: { serviceId: number }) =>
   (contenu: string): Promise<boolean> =>
     contenu
       ? client

@@ -25,7 +25,7 @@ const client = useClientHandle().client;
 
 const assign = async (): Promise<void> => {
   await updateDemande(client, {
-    uid: props.demande.intervenant.uid,
+    serviceId: props.demande.serviceId,
     ensId: props.demande.enseignement.id,
     typeDemande: "attribution",
     heures: props.demande.heures,
@@ -50,9 +50,9 @@ const groupes: ComputedRef<number> = computed(() =>
         :color="couleurPriorite(demande.prioritaire)"
         rounded
       />
-      {{ formatIntervenant(demande.intervenant) }}
+      {{ formatIntervenant(demande.service.intervenant) }}
       <QTooltip :delay="TOOLTIP_DELAY" anchor="top middle" self="bottom middle">
-        {{ formatIntervenant(demande.intervenant) }}
+        {{ formatIntervenant(demande.service.intervenant) }}
       </QTooltip>
     </QCardSection>
     <QCardSection class="q-pa-xs text-caption">
@@ -89,7 +89,7 @@ const groupes: ComputedRef<number> = computed(() =>
         :disable="
           !perm.deSupprimerUneDemande(
             demande.typeDemande,
-            demande.intervenant.uid,
+            demande.service.intervenant.uid,
           )
         "
         flat

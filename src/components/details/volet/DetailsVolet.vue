@@ -16,7 +16,7 @@ defineProps<{
 }>();
 defineSlots<{ default(): unknown }>();
 
-const { enseignement, intervenant } = useData();
+const { enseignement, service } = useData();
 
 const expanded: Ref<boolean> = ref(false);
 
@@ -24,7 +24,7 @@ const expanded: Ref<boolean> = ref(false);
 watch(
   [
     () => enseignement.value?.id,
-    () => enseignement.value?.id ?? intervenant.value?.uid,
+    () => enseignement.value?.id ?? service.value?.intervenant.uid,
   ],
   () => {
     expanded.value = false;

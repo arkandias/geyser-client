@@ -7,7 +7,7 @@
 import type { NamedColor } from "quasar";
 
 import type { Intervenant, Responsable } from "@/types/intervenants.ts";
-import type { RowIntervenant } from "@/types/rows.ts";
+import type { RowService } from "@/types/rows.ts";
 
 export const nf = new Intl.NumberFormat("fr-FR", {
   style: "decimal",
@@ -40,10 +40,9 @@ export const formatResponsables = (responsables: Responsable[]): string =>
     )
     .join(", ");
 
-export const formatResumeIntervenant = (row: RowIntervenant): string =>
+export const formatResumeIntervenant = (row: RowService): string =>
   `Service : ${String(
-    (row.services[0]?.heuresEQTD ?? 0) -
-      (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0),
+    row.heuresEQTD - (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0),
   )} htd` +
   " \u2014 " +
   `Attributions : ${String(row.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0)} htd` +

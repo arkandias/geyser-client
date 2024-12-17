@@ -10,34 +10,30 @@ import { computed, ref, toValue, watchEffect } from "vue";
 
 import { TOOLTIP_DELAY } from "@/constants/ui/interactions.ts";
 import { nf, normalizeForSearch } from "@/helpers/format.ts";
-import { selectedIntervenant as selected, useData } from "@/stores/data.ts";
+import { selectedService as selected, useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
-import type { RowIntervenant } from "@/types/rows.ts";
+import type { RowService } from "@/types/rows.ts";
 
 const perm = usePermissions();
-const {
-  intervenants,
-  fetchingIntervenants,
-  selectEnseignement,
-  selectIntervenant,
-} = useData();
+const { services, fetchingServices, selectEnseignement, selectService } =
+  useData();
 
-const select = (_: Event, row: RowIntervenant) => {
-  if (selected.value[0]?.uid === row.uid) {
-    selectIntervenant(null);
+const select = (_: Event, row: RowService) => {
+  if (selected.value[0]?.intervenant.uid === row.intervenant.uid) {
+    selectService(null);
   } else {
-    selectIntervenant(row.uid);
+    selectService(row.intervenant.uid);
     selectEnseignement(null);
   }
 };
 
-const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
+const columns: ColumnNonAbbreviable<RowService>[] = [
   {
     name: "nom",
     label: "Nom",
     align: "left",
-    field: (row) => row.nom,
+    field: (row) => row.intervenant.nom,
     sortable: true,
     visible: true,
     searchable: true,
@@ -47,7 +43,7 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     name: "prenom",
     label: "Prénom",
     align: "left",
-    field: (row) => row.prenom,
+    field: (row) => row.intervenant.prenom,
     sortable: true,
     visible: true,
     searchable: true,
@@ -57,7 +53,7 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     name: "alias",
     label: "Alias",
     align: "left",
-    field: (row) => row.alias,
+    field: (row) => row.intervenant.alias,
     sortable: true,
     visible: false,
     searchable: true,
@@ -79,8 +75,7 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     label: "S.",
     tooltip: "Service à réaliser (en heures EQTD)",
     field: (row) =>
-      (row.services[0]?.heuresEQTD ?? 0) -
-      (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0),
+      row.heuresEQTD - (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -106,7 +101,7 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD attribuées",
     field: (row) =>
-      (row.services[0]?.heuresEQTD ?? 0) -
+      row.heuresEQTD -
       (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0) -
       (row.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0),
     format: (val: number) => nf.format(val),
@@ -134,7 +129,7 @@ const columns: ColumnNonAbbreviable<RowIntervenant>[] = [
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",
     field: (row) =>
-      (row.services[0]?.heuresEQTD ?? 0) -
+      row.heuresEQTD -
       (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0) -
       (row.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0),
     format: (val: number) => nf.format(val),
@@ -180,9 +175,9 @@ const filterObj = computed(() => ({
   searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
 }));
 const filterMethod = (
-  rows: readonly RowIntervenant[],
+  rows: readonly RowService[],
   terms: typeof filterObj.value,
-): readonly RowIntervenant[] =>
+): readonly RowService[] =>
   rows.filter((row) =>
     terms.searchColumns.some((col) =>
       normalizeForSearch(String(col.field(row))).includes(terms.search),
@@ -197,8 +192,8 @@ const stickyHeader: Ref<boolean> = ref(false);
     v-model:selected="selected"
     :columns
     :visible-columns
-    :rows="intervenants"
-    :loading="fetchingIntervenants"
+    :rows="services"
+    :loading="fetchingServices"
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"
@@ -285,7 +280,10 @@ const stickyHeader: Ref<boolean> = ref(false);
       </QTh>
     </template>
     <template #body-cell="scope">
-      <QTd :props="scope" :class="{ 'non-visible': !scope.row.visible }">
+      <QTd
+        :props="scope"
+        :class="{ 'non-visible': !scope.row.intervenant.visible }"
+      >
         {{ scope.value }}
       </QTd>
     </template>

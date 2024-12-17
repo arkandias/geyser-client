@@ -11,11 +11,11 @@ import { computed, ref, watch } from "vue";
 
 import { updateDemande } from "@/helpers/demandes.ts";
 import { errorNotify } from "@/helpers/notify.ts";
-import { useAuthentication } from "@/stores/authentication.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 import { usePhases } from "@/stores/phases.ts";
 
 import SelectIntervenant from "@/components/core/SelectIntervenant.vue";
+import { useData } from "@/stores/data.ts";
 
 const props = defineProps<{
   ensId: number;
@@ -23,8 +23,8 @@ const props = defineProps<{
 }>();
 
 const { enCours: phaseEnCours } = usePhases();
-const { uid: moi } = useAuthentication();
 const perm = usePermissions();
+const { myService } = useData();
 
 const heures: Ref<number | null> = ref(null);
 watch(
@@ -67,23 +67,23 @@ watch(
   { immediate: true },
 );
 
-const uidInit: ComputedRef<string | null> = computed(() =>
+const serviceIdInit: ComputedRef<number | null> = computed(() =>
   perm.deFaireDesDemandesPourAutrui || perm.deModifierLesAttributions
     ? null
-    : moi.value,
+    : (myService.value?.id ?? null),
 );
-const uid: Ref<string | null> = ref(null);
+const serviceId: Ref<number | null> = ref(null);
 watch(
-  uidInit,
+  serviceIdInit,
   (value) => {
-    uid.value = value;
+    serviceId.value = value;
   },
   { immediate: true },
 );
 
 const client = useClientHandle().client;
 const submitForm = async (): Promise<void> => {
-  if (uid.value === null) {
+  if (serviceId.value === null) {
     errorNotify("Formulaire non valide", "Sélectionnez un intervenant");
     return;
   }
@@ -99,14 +99,14 @@ const submitForm = async (): Promise<void> => {
     return;
   }
   await updateDemande(client, {
-    uid: uid.value,
+    serviceId: serviceId.value,
     ensId: props.ensId,
     typeDemande: typeDemande.value,
     heures: heures.value,
   });
 };
 const resetForm = (): void => {
-  uid.value = uidInit.value;
+  serviceId.value = serviceIdInit.value;
   heures.value = props.heuresParGroupe;
   typeDemande.value = typeDemandeInit.value;
 };
@@ -124,7 +124,7 @@ const resetForm = (): void => {
         v-if="
           perm.deFaireDesDemandesPourAutrui || perm.deModifierLesAttributions
         "
-        v-model="uid"
+        v-model="serviceId"
         dense
         options-dense
       />

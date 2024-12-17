@@ -29,9 +29,9 @@ const {
   enseignement,
   enseignements,
   fetchingEnseignements,
-  intervenant,
+  service,
   selectEnseignement,
-  selectIntervenant,
+  selectService,
 } = useData();
 
 const select = (_: Event, row: RowEnseignement) => {
@@ -44,7 +44,9 @@ const select = (_: Event, row: RowEnseignement) => {
 
 // Titre de la table
 const title: ComputedRef<string> = computed(() =>
-  intervenant.value ? formatIntervenant(intervenant.value) : "Enseignements",
+  service.value
+    ? formatIntervenant(service.value.intervenant)
+    : "Enseignements",
 );
 
 // Colonnes
@@ -147,7 +149,7 @@ const columns: Column<RowEnseignement>[] = [
     name: "attributions",
     label: "A.",
     tooltip: "Nombre d'heures attribuées",
-    field: (row) => demandeValue(row, intervenant.value, "attribution"),
+    field: (row) => demandeValue(row, service.value, "attribution"),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -174,7 +176,7 @@ const columns: Column<RowEnseignement>[] = [
     name: "principales",
     label: "V1",
     tooltip: "Nombre d'heures demandées en vœux principaux",
-    field: (row) => demandeValue(row, intervenant.value, "principale"),
+    field: (row) => demandeValue(row, service.value, "principale"),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -216,7 +218,7 @@ const columns: Column<RowEnseignement>[] = [
     name: "secondaires",
     label: "V2",
     tooltip: "Nombre d'heures demandées en vœux secondaires",
-    field: (row) => demandeValue(row, intervenant.value, "secondaire"),
+    field: (row) => demandeValue(row, service.value, "secondaire"),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -284,7 +286,7 @@ const clearSearch = () => {
 };
 // Attributs du filtre
 const filterObj = computed(() => ({
-  demandesIntervenant: intervenant.value ? intervenant.value.demandes : null,
+  demandesIntervenant: service.value ? service.value.demandes : null,
   formations: formations.value,
   typesEnseignement: typesEnseignement.value,
   semestres: semestres.value,
@@ -321,14 +323,14 @@ const stickyHeader: Ref<boolean> = ref(false);
 
 // check whether an enseignement is assigned to the selected intervenant
 const estAttribue = (row: RowEnseignement) =>
-  intervenant.value?.demandes.some(
+  service.value?.demandes.some(
     (demande) =>
       demande.ensId === row.id && demande.typeDemande === "attribution",
   ) ?? false;
 
 // check whether an enseignement is visible
 const estVisible = (row: RowEnseignement): boolean =>
-  !intervenant.value &&
+  !service.value &&
   row.visible &&
   row.mention.visible &&
   (row.parcours?.visible ?? true);
@@ -358,7 +360,7 @@ const estVisible = (row: RowEnseignement): boolean =>
       <div class="q-table__title">
         {{ title }}
         <QBtn
-          v-if="intervenant"
+          v-if="service"
           icon="sym_s_visibility"
           :color="!enseignement ? 'primary' : 'grey'"
           size="sm"
@@ -368,14 +370,14 @@ const estVisible = (row: RowEnseignement): boolean =>
           @click="selectEnseignement(null)"
         />
         <QBtn
-          v-if="intervenant"
+          v-if="service"
           icon="sym_s_close"
           color="primary"
           size="sm"
           flat
           square
           dense
-          @click="selectIntervenant(null)"
+          @click="selectService(null)"
         />
       </div>
       <QSpace />
@@ -383,7 +385,7 @@ const estVisible = (row: RowEnseignement): boolean =>
         <QSelect
           v-model="formations"
           :options="formationOptions"
-          :disable="intervenant !== null"
+          :disable="service !== null"
           color="primary"
           label="Formation"
           emit-value
@@ -411,7 +413,7 @@ const estVisible = (row: RowEnseignement): boolean =>
         <QSelect
           v-model="typesEnseignement"
           :options="typeEnseignementOptions"
-          :disable="intervenant !== null"
+          :disable="service !== null"
           color="primary"
           label="Type"
           emit-value
@@ -438,7 +440,7 @@ const estVisible = (row: RowEnseignement): boolean =>
         <QSelect
           v-model="semestres"
           :options="semestreOptions"
-          :disable="intervenant !== null"
+          :disable="service !== null"
           color="primary"
           label="Semestre"
           emit-value
@@ -464,7 +466,7 @@ const estVisible = (row: RowEnseignement): boolean =>
         </QSelect>
         <QInput
           v-model="search"
-          :disable="intervenant !== null"
+          :disable="service !== null"
           color="primary"
           placeholder="Recherche"
           clear-icon="sym_s_close"

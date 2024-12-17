@@ -12,7 +12,7 @@ import { useLayout } from "@/stores/layout.ts";
 import MenuAnnee from "@/components/header/MenuAnnee.vue";
 
 const { filtreIntervenants, toggleFilter } = useLayout();
-const { meSelected, myRow, toggleMonService } = useData();
+const { myServiceSelected, myService, toggleMonService } = useData();
 </script>
 
 <template>
@@ -29,8 +29,8 @@ const { meSelected, myRow, toggleMonService } = useData();
   </QBtn>
   <QBtn
     icon="sym_s_assignment"
-    :color="couleurBouton(meSelected)"
-    :disable="!myRow"
+    :color="couleurBouton(myServiceSelected)"
+    :disable="!myService"
     flat
     square
     @click="toggleMonService"

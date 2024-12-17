@@ -31,9 +31,9 @@ const perm = usePermissions();
 const { closeFilter, filtreIntervenants, openFilter } = useLayout();
 const {
   selectedEnseignement,
-  selectedIntervenant,
+  selectedService,
   selectEnseignement,
-  selectIntervenant,
+  selectService,
 } = useData();
 useDataSync();
 
@@ -48,7 +48,7 @@ watch(
   ([annee, ens, uid]) => {
     selectAnnee(annee);
     selectEnseignement(ens);
-    selectIntervenant(uid);
+    selectService(uid);
   },
   { immediate: true },
 );
@@ -56,7 +56,7 @@ watch(
   [
     () => selectedAnnee.value ?? undefined,
     () => selectedEnseignement.value[0]?.id,
-    () => selectedIntervenant.value[0]?.uid,
+    () => selectedService.value[0]?.intervenant.uid,
   ],
   async ([annee, ens, uid]) => {
     await router.replace({
@@ -81,9 +81,6 @@ watch(
 
 <template>
   <QPage>
-    {{ "ANNEE: " + selectedAnnee }}
-    {{ "ENS: " + selectedEnseignement[0]?.id }}
-    {{ "UID: " + selectedIntervenant[0]?.uid }}
     <QCard v-if="!anneeEnCoursActive" id="warning-archive">
       Vous consultez une archive ({{ anneeActive }})
     </QCard>
