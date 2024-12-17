@@ -5,13 +5,18 @@ import { computed, ref, watch } from "vue";
 
 import { GET_SERVICES } from "@/graphql/services.ts";
 import { formatIntervenant, normalizeForSearch } from "@/helpers/format.ts";
+import { useAnnees } from "@/stores/annees.ts";
 import type { OptionSearch } from "@/types/common.ts";
 
 const serviceId = defineModel<number | null>({ required: true });
 
+const { enCours: anneeEnCours } = useAnnees();
+
 const queryServices = useQuery({
   query: GET_SERVICES,
-  variables: {},
+  variables: {
+    annee: computed(() => anneeEnCours.value ?? 0),
+  },
 });
 
 const optionsInit: ComputedRef<OptionSearch<number>[]> = computed(() =>

@@ -9433,11 +9433,11 @@ export type PrioriteFragment = {
   };
 };
 
-export type GetIntervenantsQueryVariables = Exact<{
+export type GetServicesQueryVariables = Exact<{
   annee: Scalars["Int"]["input"];
 }>;
 
-export type GetIntervenantsQuery = {
+export type GetServicesQuery = {
   __typename?: "query_root";
   services: Array<{
     __typename?: "service";
@@ -9452,12 +9452,12 @@ export type GetIntervenantsQuery = {
   }>;
 };
 
-export type GetIntervenantsTableRowsQueryVariables = Exact<{
+export type GetServicesTableRowsQueryVariables = Exact<{
   annee: Scalars["Int"]["input"];
   where?: InputMaybe<Service_Bool_Exp>;
 }>;
 
-export type GetIntervenantsTableRowsQuery = {
+export type GetServicesTableRowsQuery = {
   __typename?: "query_root";
   services: Array<{
     __typename?: "service";
@@ -13585,13 +13585,13 @@ export const UpdatePhaseEnCoursDocument = {
   UpdatePhaseEnCoursMutation,
   UpdatePhaseEnCoursMutationVariables
 >;
-export const GetIntervenantsDocument = {
+export const GetServicesDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "GetIntervenants" },
+      name: { kind: "Name", value: "GetServices" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -13742,17 +13742,14 @@ export const GetIntervenantsDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<
-  GetIntervenantsQuery,
-  GetIntervenantsQueryVariables
->;
-export const GetIntervenantsTableRowsDocument = {
+} as unknown as DocumentNode<GetServicesQuery, GetServicesQueryVariables>;
+export const GetServicesTableRowsDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "GetIntervenantsTableRows" },
+      name: { kind: "Name", value: "GetServicesTableRows" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -14363,6 +14360,6 @@ export const GetIntervenantsTableRowsDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetIntervenantsTableRowsQuery,
-  GetIntervenantsTableRowsQueryVariables
+  GetServicesTableRowsQuery,
+  GetServicesTableRowsQueryVariables
 >;

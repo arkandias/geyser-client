@@ -1,7 +1,7 @@
 import { graphql } from "@/gql";
 
 export const GET_SERVICES = graphql(/* GraphQL */ `
-  query GetIntervenants($annee: Int!) {
+  query GetServices($annee: Int!) {
     services: service(
       where: { _and: [{ annee: { _eq: $annee } }] }
       order_by: [
@@ -18,7 +18,7 @@ export const GET_SERVICES = graphql(/* GraphQL */ `
 `);
 
 export const GET_SERVICES_TABLE_ROWS = graphql(/* GraphQL */ `
-  query GetIntervenantsTableRows($annee: Int!, $where: service_bool_exp = {}) {
+  query GetServicesTableRows($annee: Int!, $where: service_bool_exp = {}) {
     services: service(
       where: { _and: [{ annee: { _eq: $annee } }, $where] }
       order_by: [
