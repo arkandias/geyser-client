@@ -6,9 +6,9 @@ import { formatIntervenant } from "@/helpers/format.ts";
 import { activeRole, useAuthentication } from "@/stores/authentication.ts";
 import { useRefresh } from "@/stores/refresh.ts";
 import type { Option } from "@/types/common.ts";
+import { Role } from "@/types/roles.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
-import { Role } from "@/types/roles.ts";
 
 const { intervenant, allowedRoles, logout } = useAuthentication();
 const { refresh: refreshData } = useRefresh();

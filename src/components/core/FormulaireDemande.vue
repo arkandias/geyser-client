@@ -5,11 +5,11 @@ import { computed, ref, watch } from "vue";
 
 import { updateDemande } from "@/helpers/demandes.ts";
 import { errorNotify } from "@/helpers/notify.ts";
+import { useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";
 import { usePhases } from "@/stores/phases.ts";
 
 import SelectIntervenant from "@/components/core/SelectIntervenant.vue";
-import { useData } from "@/stores/data.ts";
 
 const props = defineProps<{
   ensId: number;

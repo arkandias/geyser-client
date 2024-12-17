@@ -1,7 +1,8 @@
-import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
-import vue from "@vitejs/plugin-vue";
-import { fileURLToPath } from "url";
+// sort-imports-ignore
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({

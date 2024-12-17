@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { RowService } from "@/types/rows.ts";
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
+
+import type { RowService } from "@/types/rows.ts";
 
 import DetailsIntervenantMessage from "@/components/details/DetailsIntervenantMessage.vue";
 import DetailsSection from "@/components/details/DetailsSection.vue";

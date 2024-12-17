@@ -1,8 +1,9 @@
-import type { Role } from "@/types/roles.ts";
 import type { KeycloakTokenParsed } from "keycloak-js";
 import Keycloak from "keycloak-js";
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
+
+import type { Role } from "@/types/roles.ts";
 
 type CustomKeycloak = Keycloak & {
   tokenParsed?: KeycloakTokenParsed & {

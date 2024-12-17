@@ -2,11 +2,10 @@
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
 
-import type { RowService } from "@/types/rows.ts";
-import type { Modification } from "@/types/services.ts";
-
 import { usePermissions } from "@/stores/permissions.ts";
 import type { TypeDemande } from "@/types/demandes.ts";
+import type { RowService } from "@/types/rows.ts";
+import type { Modification } from "@/types/services.ts";
 
 const props = defineProps<{ service: RowService }>();
 defineSlots<{

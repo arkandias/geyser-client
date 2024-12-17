@@ -2,6 +2,7 @@
 import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
+import { useDataSync } from "@/composables/datasync.ts";
 import { getNumber, getValue } from "@/helpers/utils.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { useData } from "@/stores/data.ts";
@@ -11,7 +12,6 @@ import { usePermissions } from "@/stores/permissions.ts";
 import PanelDetails from "@/components/PanelDetails.vue";
 import PanelEnseignements from "@/components/PanelEnseignements.vue";
 import PanelIntervenants from "@/components/PanelIntervenants.vue";
-import { useDataSync } from "@/composables/datasync.ts";
 
 const router = useRouter();
 const route = useRoute();

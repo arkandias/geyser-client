@@ -1,11 +1,12 @@
+import { useQuery } from "@urql/vue";
+import { computed, reactive, watch } from "vue";
+
 import { GET_ENSEIGNEMENTS_TABLE_ROWS } from "@/graphql/enseignements.ts";
 import { GET_SERVICES_TABLE_ROWS } from "@/graphql/services.ts";
 import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useData } from "@/stores/data.ts";
 import { usePermissions } from "@/stores/permissions.ts";
-import { useQuery } from "@urql/vue";
-import { computed, reactive, watch } from "vue";
 
 export const useDataSync = () => {
   const { active: anneeActive } = useAnnees();

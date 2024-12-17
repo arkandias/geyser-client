@@ -1,16 +1,9 @@
+// sort-imports-ignore
+import { createApp } from "vue";
+import { Quasar } from "quasar";
 import type { Client } from "@urql/vue";
 import urql from "@urql/vue";
-import { Quasar } from "quasar";
-import { createApp } from "vue";
 
-import "@quasar/extras/material-symbols-sharp/material-symbols-sharp.css";
-import "@quasar/extras/roboto-font/roboto-font.css";
-import "quasar/src/css/index.sass";
-// load custom style after
-import "@/css/main.scss";
-
-import App from "@/App.vue";
-import { errorNotify } from "@/helpers/notify.ts";
 import type { KeycloakClaims } from "@/services/keycloak.ts";
 import {
   getToken,
@@ -26,11 +19,21 @@ import {
   disableNotifications,
   enableNotifications,
 } from "@/services/urql.ts";
+
 import {
   login,
   setLogout,
   useAuthentication,
 } from "@/stores/authentication.ts";
+
+import { errorNotify } from "@/helpers/notify.ts";
+
+import "@quasar/extras/material-symbols-sharp/material-symbols-sharp.css";
+import "@quasar/extras/roboto-font/roboto-font.css";
+import "quasar/src/css/index.sass";
+import "@/css/main.scss";
+
+import App from "@/App.vue";
 
 const { activeRole, uid } = useAuthentication();
 

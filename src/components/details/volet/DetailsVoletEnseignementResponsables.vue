@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { Responsable } from "@/types/intervenants.ts";
-
 import { formatResponsables } from "@/helpers/format.ts";
+import type { Responsable } from "@/types/intervenants.ts";
 
 defineProps<{
   responsablesEnseignement: Responsable[];
