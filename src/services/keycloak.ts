@@ -1,9 +1,3 @@
-/******************************************************************************
- * Copyright (c) 2021-2024 Amaël Broustet, Julien Hauseux.                    *
- * This file is part of Geyser.                                               *
- * Distributed under the GNU Affero General Public License, version 3.        *
- ******************************************************************************/
-
 import type { Role } from "@/types/roles.ts";
 import type { KeycloakTokenParsed } from "keycloak-js";
 import Keycloak from "keycloak-js";

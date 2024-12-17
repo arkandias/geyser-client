@@ -1,9 +1,3 @@
-/******************************************************************************
- * Copyright (c) 2021-2024 Amaël Broustet, Julien Hauseux.                    *
- * This file is part of Geyser.                                               *
- * Distributed under the GNU Affero General Public License, version 3.        *
- ******************************************************************************/
-
 export const Phase = {
   voeux: { value: "voeux", label: "Vœux", order: 1 },
   commission: { value: "commission", label: "Commission", order: 2 },

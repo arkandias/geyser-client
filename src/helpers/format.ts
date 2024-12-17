@@ -1,9 +1,3 @@
-/******************************************************************************
- * Copyright (c) 2021-2024 Amaël Broustet, Julien Hauseux.                    *
- * This file is part of Geyser.                                               *
- * Distributed under the GNU Affero General Public License, version 3.        *
- ******************************************************************************/
-
 import type { NamedColor } from "quasar";
 
 import type { Intervenant, Responsable } from "@/types/intervenants.ts";

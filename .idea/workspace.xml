@@ -18,9 +18,93 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="refactor(core): streamline function names and event handlers">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="chore(deps): update dependencies in pnpm-lock.yaml">
+      <change beforePath="$PROJECT_DIR$/.idea/copyright/Geyser_Frontend.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/scopes/Copyrights.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PanelDetails.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PanelDetails.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PanelEnseignements.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PanelEnseignements.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PanelIntervenants.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PanelIntervenants.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TheHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TheHeader.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/accueil/AccueilInformations.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/accueil/AccueilInformations.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/accueil/AccueilMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/accueil/AccueilMessage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/accueil/AccueilSubsection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/accueil/AccueilSubsection.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/accueil/AccueilSubsectionEditableText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/accueil/AccueilSubsectionEditableText.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/accueil/AccueilVolet.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/accueil/AccueilVolet.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/CarteDemande.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/CarteDemande.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/EditableText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/EditableText.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/FormulaireDemande.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/FormulaireDemande.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/PucePriorite.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/PucePriorite.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/ResumeDemandes.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/ResumeDemandes.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/SelectIntervenant.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/SelectIntervenant.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/ServiceIntervenant.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/ServiceIntervenant.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/TableService.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/TableService.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsEnseignement.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsEnseignement.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsEnseignementDemandes.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsEnseignementDemandes.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsInformations.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsInformations.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsIntervenant.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsIntervenant.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsIntervenantMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsIntervenantMessage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsSection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsSection.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsSubsection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsSubsection.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsSubsectionEditableText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsSubsectionEditableText.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/volet/DetailsVolet.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/volet/DetailsVolet.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletEnseignement.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletEnseignement.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletEnseignementResponsables.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletEnseignementResponsables.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletInformations.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletInformations.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletIntervenant.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletIntervenant.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdminOptions.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdminOptions.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAnnee.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAnnee.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuBase.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuBase.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuEnseignements.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuEnseignements.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuUtilisateur.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuUtilisateur.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/composables/datasync.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/datasync.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constants/ui/interactions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants/ui/interactions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/global.variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/global.variables.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/main.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/main.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/annees.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/annees.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/demandes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/demandes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/enseignements.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/enseignements.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/intervenants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/intervenants.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/messages.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/messages.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/modifications.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/modifications.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/phases.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/phases.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/priorites.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/priorites.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/services.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/services.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/demandes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/demandes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/enseignement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/enseignement.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/format.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/format.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/messages.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/messages.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/notify.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/notify.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/utils.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PageAccueil.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageAccueil.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PageEnseignements.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageEnseignements.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PageMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageMessage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/keycloak.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/keycloak.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/quasar.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/quasar.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/router.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/router.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/urql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/urql.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/annees.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/annees.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/authentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/authentication.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/data.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/demandes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/demandes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/layout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/layout.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/permissions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/permissions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/phases.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/phases.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/refresh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/refresh.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/columns.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/columns.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/common.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/common.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/demandes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/demandes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/enseignements.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/enseignements.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/intervenants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/intervenants.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/messages.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/messages.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/phases.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/phases.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/roles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/roles.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/rows.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/rows.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/services.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/services.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +185,7 @@
   </component>
   <component name="NamedScopeManager">
     <order>
-      <scope name="Copyrights" />
+      <scope name="Sources" />
     </order>
   </component>
   <component name="PackageJsonUpdateNotifier">
@@ -148,6 +232,7 @@
     "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "project.scopes",
     "ts.external.directory.path": "/Users/julienhauseux/Projets/geyser-frontend/node_modules/typescript/lib",
+    "update.copyright.on.save": "true",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -326,119 +411,7 @@
       <workItem from="1733870257201" duration="1864000" />
       <workItem from="1733875906599" duration="970000" />
       <workItem from="1733877943687" duration="19794000" />
-      <workItem from="1733958145291" duration="50354000" />
-    </task>
-    <task id="LOCAL-00236" summary="chore(ts): update tsconfig to sync with Vite's vue-ts default">
-      <option name="closed" value="true" />
-      <created>1733756742789</created>
-      <option name="number" value="00236" />
-      <option name="presentableId" value="LOCAL-00236" />
-      <option name="project" value="LOCAL" />
-      <updated>1733756742790</updated>
-    </task>
-    <task id="LOCAL-00237" summary="chore(eslint): ignore codegen outputs">
-      <option name="closed" value="true" />
-      <created>1733763499695</created>
-      <option name="number" value="00237" />
-      <option name="presentableId" value="LOCAL-00237" />
-      <option name="project" value="LOCAL" />
-      <updated>1733763499696</updated>
-    </task>
-    <task id="LOCAL-00238" summary="chore(deps): update dependencies to latest versions">
-      <option name="closed" value="true" />
-      <created>1733763811556</created>
-      <option name="number" value="00238" />
-      <option name="presentableId" value="LOCAL-00238" />
-      <option name="project" value="LOCAL" />
-      <updated>1733763811556</updated>
-    </task>
-    <task id="LOCAL-00239" summary="chore(ts): update tsconfig to sync with Vite's vue-ts default">
-      <option name="closed" value="true" />
-      <created>1733763834543</created>
-      <option name="number" value="00239" />
-      <option name="presentableId" value="LOCAL-00239" />
-      <option name="project" value="LOCAL" />
-      <updated>1733763834543</updated>
-    </task>
-    <task id="LOCAL-00240" summary="chore(eslint): ignore codegen outputs">
-      <option name="closed" value="true" />
-      <created>1733763846986</created>
-      <option name="number" value="00240" />
-      <option name="presentableId" value="LOCAL-00240" />
-      <option name="project" value="LOCAL" />
-      <updated>1733763846986</updated>
-    </task>
-    <task id="LOCAL-00241" summary="chore(vite): update vite config">
-      <option name="closed" value="true" />
-      <created>1733764018553</created>
-      <option name="number" value="00241" />
-      <option name="presentableId" value="LOCAL-00241" />
-      <option name="project" value="LOCAL" />
-      <updated>1733764018553</updated>
-    </task>
-    <task id="LOCAL-00242" summary="chore(ci): update GitLab CI/CD">
-      <option name="closed" value="true" />
-      <created>1733780085406</created>
-      <option name="number" value="00242" />
-      <option name="presentableId" value="LOCAL-00242" />
-      <option name="project" value="LOCAL" />
-      <updated>1733780085406</updated>
-    </task>
-    <task id="LOCAL-00243" summary="chore(format): update Prettier ignore">
-      <option name="closed" value="true" />
-      <created>1733784226155</created>
-      <option name="number" value="00243" />
-      <option name="presentableId" value="LOCAL-00243" />
-      <option name="project" value="LOCAL" />
-      <updated>1733784226155</updated>
-    </task>
-    <task id="LOCAL-00244" summary="chore(dev): update eslint rules and type checking scripts">
-      <option name="closed" value="true" />
-      <created>1733796601312</created>
-      <option name="number" value="00244" />
-      <option name="presentableId" value="LOCAL-00244" />
-      <option name="project" value="LOCAL" />
-      <updated>1733796601312</updated>
-    </task>
-    <task id="LOCAL-00245" summary="chore(deps): update dependencies and downgrade ts&#10;&#10;Downgrade ts to 5.6 until next release: https://github.com/vuejs/language-tools/issues/5018">
-      <option name="closed" value="true" />
-      <created>1733796782157</created>
-      <option name="number" value="00245" />
-      <option name="presentableId" value="LOCAL-00245" />
-      <option name="project" value="LOCAL" />
-      <updated>1733796782157</updated>
-    </task>
-    <task id="LOCAL-00246" summary="chore(deps): update dependencies and downgrade ts&#10;&#10;Downgrade ts to 5.6 until next release: https://github.com/vuejs/language-tools/issues/5018">
-      <option name="closed" value="true" />
-      <created>1733798607975</created>
-      <option name="number" value="00246" />
-      <option name="presentableId" value="LOCAL-00246" />
-      <option name="project" value="LOCAL" />
-      <updated>1733798607975</updated>
-    </task>
-    <task id="LOCAL-00247" summary="fix(dev): typecheck script">
-      <option name="closed" value="true" />
-      <created>1733798699431</created>
-      <option name="number" value="00247" />
-      <option name="presentableId" value="LOCAL-00247" />
-      <option name="project" value="LOCAL" />
-      <updated>1733798699431</updated>
-    </task>
-    <task id="LOCAL-00248" summary="fix(ts): update ts rules and fix issues">
-      <option name="closed" value="true" />
-      <created>1733841793608</created>
-      <option name="number" value="00248" />
-      <option name="presentableId" value="LOCAL-00248" />
-      <option name="project" value="LOCAL" />
-      <updated>1733841793608</updated>
-    </task>
-    <task id="LOCAL-00249" summary="feat(ts): update message accueil">
-      <option name="closed" value="true" />
-      <created>1733841879697</created>
-      <option name="number" value="00249" />
-      <option name="presentableId" value="LOCAL-00249" />
-      <option name="project" value="LOCAL" />
-      <updated>1733841879697</updated>
+      <workItem from="1733958145291" duration="99328000" />
     </task>
     <task id="LOCAL-00250" summary="fix(ci): remove useless variable">
       <option name="closed" value="true" />
@@ -720,7 +693,119 @@
       <option name="project" value="LOCAL" />
       <updated>1734111256872</updated>
     </task>
-    <option name="localTasksCounter" value="285" />
+    <task id="LOCAL-00285" summary="chore(idea): add project-specific IDE configuration files">
+      <option name="closed" value="true" />
+      <created>1734114434861</created>
+      <option name="number" value="00285" />
+      <option name="presentableId" value="LOCAL-00285" />
+      <option name="project" value="LOCAL" />
+      <updated>1734114434861</updated>
+    </task>
+    <task id="LOCAL-00286" summary="chore(gitignore): remove .idea from ignored files">
+      <option name="closed" value="true" />
+      <created>1734340723532</created>
+      <option name="number" value="00286" />
+      <option name="presentableId" value="LOCAL-00286" />
+      <option name="project" value="LOCAL" />
+      <updated>1734340723532</updated>
+    </task>
+    <task id="LOCAL-00287" summary="refactor(annees): simplify selected logic and export as readonly">
+      <option name="closed" value="true" />
+      <created>1734340822748</created>
+      <option name="number" value="00287" />
+      <option name="presentableId" value="LOCAL-00287" />
+      <option name="project" value="LOCAL" />
+      <updated>1734340822748</updated>
+    </task>
+    <task id="LOCAL-00288" summary="refactor(annees): simplify selected logic and export as readonly">
+      <option name="closed" value="true" />
+      <created>1734340861579</created>
+      <option name="number" value="00288" />
+      <option name="presentableId" value="LOCAL-00288" />
+      <option name="project" value="LOCAL" />
+      <updated>1734340861579</updated>
+    </task>
+    <task id="LOCAL-00289" summary="feat(phases): add phase validation with isPhase helper">
+      <option name="closed" value="true" />
+      <created>1734340910840</created>
+      <option name="number" value="00289" />
+      <option name="presentableId" value="LOCAL-00289" />
+      <option name="project" value="LOCAL" />
+      <updated>1734340910840</updated>
+    </task>
+    <task id="LOCAL-00290" summary="refactor(data): centralize data syncing with useDataSync">
+      <option name="closed" value="true" />
+      <created>1734341013646</created>
+      <option name="number" value="00290" />
+      <option name="presentableId" value="LOCAL-00290" />
+      <option name="project" value="LOCAL" />
+      <updated>1734341013646</updated>
+    </task>
+    <task id="LOCAL-00291" summary="refactor(FormulaireDemande): remove reset button from form">
+      <option name="closed" value="true" />
+      <created>1734341372539</created>
+      <option name="number" value="00291" />
+      <option name="presentableId" value="LOCAL-00291" />
+      <option name="project" value="LOCAL" />
+      <updated>1734341372540</updated>
+    </task>
+    <task id="LOCAL-00292" summary="```  &#10;refactor(phases): remove unused &quot;visible&quot; field from phase entity&#10;&#10;BREAKING CHANGE: &quot;visible&quot; field is removed from phase queries and schema  &#10;```">
+      <option name="closed" value="true" />
+      <created>1734343037034</created>
+      <option name="number" value="00292" />
+      <option name="presentableId" value="LOCAL-00292" />
+      <option name="project" value="LOCAL" />
+      <updated>1734343037034</updated>
+    </task>
+    <task id="LOCAL-00293" summary="refactor(graphql): adapt graphql operations to the new series of migrations of the backend&#10;&#10;BREAKING CHANGES">
+      <option name="closed" value="true" />
+      <created>1734389192544</created>
+      <option name="number" value="00293" />
+      <option name="presentableId" value="LOCAL-00293" />
+      <option name="project" value="LOCAL" />
+      <updated>1734389192545</updated>
+    </task>
+    <task id="LOCAL-00294" summary="refactor(graphql): adapt graphql operations to the new series of migrations of the backend&#10;&#10;BREAKING CHANGES">
+      <option name="closed" value="true" />
+      <created>1734390654441</created>
+      <option name="number" value="00294" />
+      <option name="presentableId" value="LOCAL-00294" />
+      <option name="project" value="LOCAL" />
+      <updated>1734390654442</updated>
+    </task>
+    <task id="LOCAL-00295" summary="refactor(graphql): adapt graphql operations to the new series of migrations of the backend&#10;&#10;BREAKING CHANGES">
+      <option name="closed" value="true" />
+      <created>1734398849981</created>
+      <option name="number" value="00295" />
+      <option name="presentableId" value="LOCAL-00295" />
+      <option name="project" value="LOCAL" />
+      <updated>1734398849982</updated>
+    </task>
+    <task id="LOCAL-00296" summary="refactor(services): replace intervenant references with service&#10;&#10;update codebase to use service structure instead of intervenant,&#10;including queries, types, and component props">
+      <option name="closed" value="true" />
+      <created>1734403735240</created>
+      <option name="number" value="00296" />
+      <option name="presentableId" value="LOCAL-00296" />
+      <option name="project" value="LOCAL" />
+      <updated>1734403735241</updated>
+    </task>
+    <task id="LOCAL-00297" summary="refactor(services): replace intervenant references with service&#10;&#10;update codebase to use service structure instead of intervenant,&#10;including queries, types, and component props">
+      <option name="closed" value="true" />
+      <created>1734403758595</created>
+      <option name="number" value="00297" />
+      <option name="presentableId" value="LOCAL-00297" />
+      <option name="project" value="LOCAL" />
+      <updated>1734403758595</updated>
+    </task>
+    <task id="LOCAL-00298" summary="chore(deps): update dependencies in pnpm-lock.yaml">
+      <option name="closed" value="true" />
+      <created>1734403772574</created>
+      <option name="number" value="00298" />
+      <option name="presentableId" value="LOCAL-00298" />
+      <option name="project" value="LOCAL" />
+      <updated>1734403772574</updated>
+    </task>
+    <option name="localTasksCounter" value="299" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -754,21 +839,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="RELOAD_CONTEXT" value="false" />
-    <MESSAGE value="test" />
-    <MESSAGE value="refactor(types): reorganize types into dedicated files" />
-    <MESSAGE value="refactor(tsconfig): reorganize and enhance tsconfig settings" />
-    <MESSAGE value="feat(build): update build target to es2022" />
-    <MESSAGE value="chore(tsconfig): remove unused compilerOptions" />
-    <MESSAGE value="chore(prettier): update ignore list for gql directory" />
-    <MESSAGE value="fix(codegen): handle environment variable access issue" />
-    <MESSAGE value="chore(config): update .prettierignore to remove schema.graphql" />
-    <MESSAGE value="style(schema): reformat comments for clarity and consistency" />
-    <MESSAGE value="chore(project): remove schema.graphql from .prettierignore" />
-    <MESSAGE value="docs(schema): standardize multiline descriptions" />
-    <MESSAGE value="refactor(gql): remove unused graphql generated files" />
-    <MESSAGE value="refactor(graphql): update dotenv import and env var access" />
-    <MESSAGE value="feat(deps): add new dependencies and update pnpm lockfile" />
-    <MESSAGE value="feat(graphql): add typed document nodes for queries" />
     <MESSAGE value="feat(deps): update @types/node to 22.10.2 and add ts-node" />
     <MESSAGE value="feat(tsconfig): enable esm support for ts-node&#10;&#10;For JetBrains GraphQL plugin" />
     <MESSAGE value="refactor(config): standardize dotenv import style" />
@@ -779,6 +849,21 @@
     <MESSAGE value="refactor(format): enforce typescript-eslint stylistic rules" />
     <MESSAGE value="style(eslint): update vue rules" />
     <MESSAGE value="refactor(core): streamline function names and event handlers" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor(core): streamline function names and event handlers" />
+    <MESSAGE value="chore(gitignore): remove .idea from ignored files" />
+    <MESSAGE value="fix(stores): handle null fallback for selected value" />
+    <MESSAGE value="refactor(annees): simplify selected logic and export as readonly" />
+    <MESSAGE value="feat(phases): add phase validation with isPhase helper" />
+    <MESSAGE value="refactor(data): centralize data syncing with useDataSync" />
+    <MESSAGE value="chore(idea): add project-specific IDE configuration files" />
+    <MESSAGE value="refactor(FormulaireDemande): remove reset button from form" />
+    <MESSAGE value="Refactor phase entity: eliminate unused &quot;visible&quot; attribute&#10;&#10;This update constitutes a significant breaking change as it removes the &quot;visible&quot; field from phase queries and the schema." />
+    <MESSAGE value="refactor(phases): remove &quot;visible&quot; field from phase entity&#10;&#10;BREAKING CHANGE: &quot;visible&quot; field is removed from phase queries and schema" />
+    <MESSAGE value="refactor(phases): remove &quot;visible&quot; field from phase entity&#10;&#10;BREAKING CHANGE: &quot;visible&quot; field is removed from phase queries and schema" />
+    <MESSAGE value="```  &#10;refactor(phases): remove unused &quot;visible&quot; field from phase entity&#10;&#10;BREAKING CHANGE: &quot;visible&quot; field is removed from phase queries and schema  &#10;```" />
+    <MESSAGE value="refactor(graphql): " />
+    <MESSAGE value="refactor(graphql): adapt graphql operations to the new series of migrations of the backend&#10;&#10;BREAKING CHANGES" />
+    <MESSAGE value="refactor(services): replace intervenant references with service&#10;&#10;update codebase to use service structure instead of intervenant,&#10;including queries, types, and component props" />
+    <MESSAGE value="chore(deps): update dependencies in pnpm-lock.yaml" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore(deps): update dependencies in pnpm-lock.yaml" />
   </component>
 </project>

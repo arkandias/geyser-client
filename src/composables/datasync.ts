@@ -1,9 +1,3 @@
-/******************************************************************************
- * Copyright (c) 2024 Amaël Broustet, Julien Hauseux.                         *
- * This file is part of Geyser.                                               *
- * Distributed under the GNU Affero General Public License, version 3.        *
- ******************************************************************************/
-
 import { GET_ENSEIGNEMENTS_TABLE_ROWS } from "@/graphql/enseignements.ts";
 import { GET_SERVICES_TABLE_ROWS } from "@/graphql/services.ts";
 import { useAnnees } from "@/stores/annees.ts";

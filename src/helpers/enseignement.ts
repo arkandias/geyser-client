@@ -1,9 +1,3 @@
-/******************************************************************************
- * Copyright (c) 2021-2024 Amaël Broustet, Julien Hauseux.                    *
- * This file is part of Geyser.                                               *
- * Distributed under the GNU Affero General Public License, version 3.        *
- ******************************************************************************/
-
 import type { Archive, NestedArchives } from "@/types/demandes.ts";
 import type { RowEnseignement, RowService } from "@/types/rows.ts";
 

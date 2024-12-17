@@ -1,9 +1,3 @@
-/******************************************************************************
- * Copyright (c) 2024 Amaël Broustet, Julien Hauseux.                         *
- * This file is part of Geyser.                                               *
- * Distributed under the GNU Affero General Public License, version 3.        *
- ******************************************************************************/
-
 import type { Client } from "@urql/vue";
 
 import { DELETE_MESSAGE, UPSERT_MESSAGE } from "@/graphql/messages.ts";

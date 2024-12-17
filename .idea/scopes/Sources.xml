@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Sources" pattern="file[geyser-frontend]:src//*&amp;&amp;!file[geyser-frontend]:src/gql/*&amp;&amp;!file[geyser-frontend]:src/gql//*&amp;&amp;!file:src/css/quasar.variables.scss&amp;&amp;!file:src/vite-env.d.ts" />
+</component>

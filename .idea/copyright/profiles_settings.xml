@@ -1,8 +1,5 @@
 <component name="CopyrightManager">
-  <settings default="Geyser Frontend">
-    <module2copyright>
-      <element module="Copyrights" copyright="Geyser Frontend" />
-    </module2copyright>
+  <settings>
     <LanguageOptions name="Shell Script">
       <option name="box" value="true" />
     </LanguageOptions>
