@@ -6,7 +6,7 @@ graphql(/* GraphQL */ `
     serviceId: service_id
     service {
       intervenant {
-        ...Intervenant
+        ...Profile
       }
     }
     enseignement {

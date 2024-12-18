@@ -1,16 +1,14 @@
 import { useMutation } from "@urql/vue";
-import type { Ref } from "vue";
-import { readonly, ref } from "vue";
+import { type Ref, readonly, ref } from "vue";
 
-import { UPDATE_PHASE_EN_COURS } from "@/graphql/phases.ts";
-import type { Phase } from "@/types/phases.ts";
+import type { Phase } from "@/config/types/phases.ts";
+import { SET_CURRENT_PHASE } from "@/graphql/phases.ts";
 
-export const phases: Ref<Phase[]> = ref([]);
-export const enCours: Ref<Phase | null> = ref(null);
+export const current: Ref<Phase | null> = ref(null);
 
 export const usePhases = () => {
-  const update = useMutation(UPDATE_PHASE_EN_COURS);
-  const setEnCours = async (phase: string | null): Promise<void> => {
+  const update = useMutation(SET_CURRENT_PHASE);
+  const setCurrent = async (phase: string | null): Promise<void> => {
     if (phase === null) {
       return;
     }
@@ -19,8 +17,7 @@ export const usePhases = () => {
     });
   };
   return {
-    phases: readonly(phases),
-    enCours: readonly(enCours),
-    setEnCours,
+    current: readonly(current),
+    setCurrent,
   };
 };

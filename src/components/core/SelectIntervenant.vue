@@ -1,21 +1,20 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import type { ComputedRef, Ref } from "vue";
-import { computed, ref, watch } from "vue";
+import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
 
 import { GET_SERVICES } from "@/graphql/services.ts";
 import { formatIntervenant, normalizeForSearch } from "@/helpers/format.ts";
-import { useAnnees } from "@/stores/annees.ts";
+import { useYears } from "@/stores/years.ts";
 import type { OptionSearch } from "@/types/common.ts";
 
 const serviceId = defineModel<number | null>({ required: true });
 
-const { enCours: anneeEnCours } = useAnnees();
+const { current: currentYear } = useYears();
 
 const queryServices = useQuery({
   query: GET_SERVICES,
   variables: {
-    annee: computed(() => anneeEnCours.value ?? 0),
+    year: computed(() => currentYear.value ?? 0),
   },
 });
 

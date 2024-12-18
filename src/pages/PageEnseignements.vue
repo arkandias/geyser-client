@@ -3,11 +3,11 @@ import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import { useDataSync } from "@/composables/datasync.ts";
-import { getNumber, getValue } from "@/helpers/utils.ts";
-import { useAnnees } from "@/stores/annees.ts";
+import { usePermissions } from "@/composables/permissions.ts";
+import { getNumber } from "@/helpers/utils.ts";
 import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
-import { usePermissions } from "@/stores/permissions.ts";
+import { useYears } from "@/stores/years.ts";
 
 import PanelDetails from "@/components/PanelDetails.vue";
 import PanelEnseignements from "@/components/PanelEnseignements.vue";
@@ -16,13 +16,13 @@ import PanelIntervenants from "@/components/PanelIntervenants.vue";
 const router = useRouter();
 const route = useRoute();
 const {
-  active: anneeActive,
-  enCoursActive: anneeEnCoursActive,
-  selected: selectedAnnee,
-  select: selectAnnee,
-} = useAnnees();
+  active: activeYear,
+  isCurrentActive: isCurrentYearActive,
+  selected: selectedYear,
+  select: selectYear,
+} = useYears();
 const perm = usePermissions();
-const { closeFilter, filtreIntervenants, openFilter } = useLayout();
+const { closeLeftPanel, filtreIntervenants, openLeftPanel } = useLayout();
 const {
   selectedEnseignement,
   selectedService,
@@ -35,38 +35,38 @@ useDataSync();
 watch(
   () =>
     [
-      getNumber(route.query, "annee"),
-      getNumber(route.query, "ens"),
-      getValue(route.query, "uid"),
+      getNumber(route.query, "year"),
+      getNumber(route.query, "course_id"),
+      getNumber(route.query, "service_id"),
     ] as const,
-  ([annee, ens, uid]) => {
-    selectAnnee(annee);
-    selectEnseignement(ens);
-    selectService(uid);
+  ([year, courseId, serviceId]) => {
+    selectYear(year);
+    selectEnseignement(courseId);
+    selectService(serviceId);
   },
   { immediate: true },
 );
 watch(
   [
-    () => selectedAnnee.value ?? undefined,
+    () => selectedYear.value ?? undefined,
     () => selectedEnseignement.value[0]?.id,
-    () => selectedService.value[0]?.intervenant.uid,
+    () => selectedService.value[0]?.id,
   ],
-  async ([annee, ens, uid]) => {
+  async ([year, courseId, serviceId]) => {
     await router.replace({
-      query: { annee, ens, uid },
+      query: { year: year, course_id: courseId, service_id: serviceId },
     });
   },
 );
 
-// open or close the intervenant filter based on user's permissions
+// open or close the left panel based on user's permissions
 watch(
   () => perm.deVoirLeServiceDAutrui,
   (value) => {
     if (value) {
-      openFilter();
+      openLeftPanel();
     } else {
-      closeFilter();
+      closeLeftPanel();
     }
   },
   { immediate: true },
@@ -75,8 +75,8 @@ watch(
 
 <template>
   <QPage>
-    <QCard v-if="!anneeEnCoursActive" id="warning-archive">
-      Vous consultez une archive ({{ anneeActive }})
+    <QCard v-if="!isCurrentYearActive" id="warning-archive">
+      Vous consultez une archive ({{ activeYear }})
     </QCard>
     <QSplitter
       id="first-splitter"

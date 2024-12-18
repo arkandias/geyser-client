@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import type { ComputedRef } from "vue";
-import { computed } from "vue";
+import { type ComputedRef, computed } from "vue";
 
-import type { RowService } from "@/types/rows.ts";
+import type { ServiceRow } from "@/types/rows.ts";
 
 import DetailsIntervenantMessage from "@/components/details/DetailsIntervenantMessage.vue";
 import DetailsSection from "@/components/details/DetailsSection.vue";
 
-const props = defineProps<{ service: RowService }>();
+const props = defineProps<{ service: ServiceRow }>();
 
 const contenu: ComputedRef<string | null> = computed(
-  () => props.service.messages[0]?.contenu ?? null,
+  () => props.service.messages[0]?.body ?? null,
 );
 </script>
 
@@ -18,7 +17,7 @@ const contenu: ComputedRef<string | null> = computed(
   <DetailsSection title="Messages">
     <DetailsIntervenantMessage
       :service-id="service.id"
-      :uid="service.intervenant.uid"
+      :uid="service.teacher.uid"
       :contenu
     />
   </DetailsSection>

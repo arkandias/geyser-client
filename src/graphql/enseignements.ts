@@ -4,7 +4,7 @@ graphql(/* GraphQL */ `
   fragment Responsable on responsable {
     id
     intervenant {
-      ...Intervenant
+      ...Profile
     }
     commentaire
   }
@@ -69,10 +69,10 @@ graphql(/* GraphQL */ `
 `);
 
 export const GET_ENSEIGNEMENTS_TABLE_ROWS = graphql(/* GraphQL */ `
-  query GetEnseignementsTableRows($annee: Int!) {
+  query GetEnseignementsTableRows($year: Int!) {
     enseignements: enseignement(
       where: {
-        _and: [{ annee: { _eq: $annee } }, { groupes_corriges: { _gt: 0 } }]
+        _and: [{ annee: { _eq: $year } }, { groupes_corriges: { _gt: 0 } }]
       }
       order_by: [
         { mention: { cursus: { nom: asc } } }

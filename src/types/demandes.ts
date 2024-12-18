@@ -1,54 +1,30 @@
-import type { Intervenant } from "./intervenants";
+import type { Service } from "@/gql/graphql.ts";
 
-export const TypeDemande = {
-  attribution: {
-    value: "attribution",
-    label: "Attribution",
-    labelPlural: "Attributions",
-    order: 1,
-  },
-  principale: {
-    value: "principale",
-    label: "Principale",
-    labelPlural: "Principales",
-    order: 2,
-  },
-  secondaire: {
-    value: "secondaire",
-    label: "Secondaire",
-    labelPlural: "Secondaires",
-    order: 3,
-  },
-} as const;
-export type TypeDemande = keyof typeof TypeDemande;
-
-export type Demande = {
+export type Request = {
   id: number;
   serviceId: number;
-  service: {
-    intervenant: Intervenant;
-  };
-  enseignement: {
+  service: Service;
+  course: {
     id: number;
-    heures: number | null;
+    hoursPerGroup: number | null;
   };
-  typeDemande: string;
-  heures: number;
-  prioritaire: boolean | null;
+  requestType: string;
+  hours: number;
+  isPriority: boolean | null;
 };
 
-export type Priorite = {
+export type Priority = {
   id: number;
-  intervenant: Intervenant;
+  service: Service;
   ensId: number;
-  anciennete: number | null;
-  prioritaire: boolean | null;
+  seniority: number | null;
+  isPriority: boolean | null;
 };
 
 export type Archive = {
-  annee: number;
-  ensId: number;
-  demandes: Demande[];
+  year: number;
+  courseId: number;
+  requests: Request[];
 };
 
 export type NestedArchives = Archive & {

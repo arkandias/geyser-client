@@ -1,33 +1,32 @@
 <script setup lang="ts">
-import type { Ref } from "vue";
-import { computed, ref, toValue, watchEffect } from "vue";
+import { type Ref, computed, ref, toValue, watchEffect } from "vue";
 
-import { TOOLTIP_DELAY } from "@/constants/ui/interactions.ts";
+import { usePermissions } from "@/composables/permissions.ts";
+import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { nf, normalizeForSearch } from "@/helpers/format.ts";
 import { selectedService as selected, useData } from "@/stores/data.ts";
-import { usePermissions } from "@/stores/permissions.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
-import type { RowService } from "@/types/rows.ts";
+import type { ServiceRow } from "@/types/rows.ts";
 
 const perm = usePermissions();
 const { services, fetchingServices, selectEnseignement, selectService } =
   useData();
 
-const select = (_: Event, row: RowService) => {
-  if (selected.value[0]?.intervenant.uid === row.intervenant.uid) {
+const select = (_: Event, row: ServiceRow) => {
+  if (selected.value[0]?.intervenant.uid === row.teacher.uid) {
     selectService(null);
   } else {
-    selectService(row.intervenant.uid);
+    selectService(row.teacher.uid);
     selectEnseignement(null);
   }
 };
 
-const columns: ColumnNonAbbreviable<RowService>[] = [
+const columns: ColumnNonAbbreviable<ServiceRow>[] = [
   {
     name: "nom",
     label: "Nom",
     align: "left",
-    field: (row) => row.intervenant.nom,
+    field: (row) => row.teacher.lastname,
     sortable: true,
     visible: true,
     searchable: true,
@@ -37,7 +36,7 @@ const columns: ColumnNonAbbreviable<RowService>[] = [
     name: "prenom",
     label: "Prénom",
     align: "left",
-    field: (row) => row.intervenant.prenom,
+    field: (row) => row.teacher.firstname,
     sortable: true,
     visible: true,
     searchable: true,
@@ -47,7 +46,7 @@ const columns: ColumnNonAbbreviable<RowService>[] = [
     name: "alias",
     label: "Alias",
     align: "left",
-    field: (row) => row.intervenant.alias,
+    field: (row) => row.teacher.alias,
     sortable: true,
     visible: false,
     searchable: true,
@@ -69,7 +68,8 @@ const columns: ColumnNonAbbreviable<RowService>[] = [
     label: "S.",
     tooltip: "Service à réaliser (en heures EQTD)",
     field: (row) =>
-      row.heuresEQTD - (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0),
+      row.weightedHours -
+      (row.totalModifications.aggregate?.sum?.weightedHours ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -81,7 +81,7 @@ const columns: ColumnNonAbbreviable<RowService>[] = [
     name: "attributions",
     label: "A.",
     tooltip: "Nombre d'heures EQTD attribuées",
-    field: (row) => row.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0,
+    field: (row) => row.totalAssigned.aggregate?.sum?.weightedHours ?? 0,
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -95,9 +95,9 @@ const columns: ColumnNonAbbreviable<RowService>[] = [
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD attribuées",
     field: (row) =>
-      row.heuresEQTD -
-      (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0) -
-      (row.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0),
+      row.weightedHours -
+      (row.totalModifications.aggregate?.sum?.weightedHours ?? 0) -
+      (row.totalAssigned.aggregate?.sum?.weightedHours ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -109,7 +109,7 @@ const columns: ColumnNonAbbreviable<RowService>[] = [
     name: "principales",
     label: "V1",
     tooltip: "Nombre d'heures EQTD demandées en vœux principaux",
-    field: (row) => row.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0,
+    field: (row) => row.totalPrimary.aggregate?.sum?.weightedHours ?? 0,
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -123,9 +123,9 @@ const columns: ColumnNonAbbreviable<RowService>[] = [
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",
     field: (row) =>
-      row.heuresEQTD -
-      (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0) -
-      (row.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0),
+      row.weightedHours -
+      (row.totalModifications.aggregate?.sum?.weightedHours ?? 0) -
+      (row.totalPrimary.aggregate?.sum?.weightedHours ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -137,7 +137,7 @@ const columns: ColumnNonAbbreviable<RowService>[] = [
     name: "secondaires",
     label: "V2",
     tooltip: "Nombre d'heures EQTD demandées en vœux secondaires",
-    field: (row) => row.totalSecondaires.aggregate?.sum?.heuresEQTD ?? 0,
+    field: (row) => row.totalSecondary.aggregate?.sum?.weightedHours ?? 0,
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -169,9 +169,9 @@ const filterObj = computed(() => ({
   searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
 }));
 const filterMethod = (
-  rows: readonly RowService[],
+  rows: readonly ServiceRow[],
   terms: typeof filterObj.value,
-): readonly RowService[] =>
+): readonly ServiceRow[] =>
   rows.filter((row) =>
     terms.searchColumns.some((col) =>
       normalizeForSearch(String(col.field(row))).includes(terms.search),

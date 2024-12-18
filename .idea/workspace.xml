@@ -18,26 +18,83 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="fix(graphql): missing variable $annee">
-      <change beforePath="$PROJECT_DIR$/.idea/prettier.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
+    <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="feat(imports): add sorting with trivago plugin">
+      <change afterPath="$PROJECT_DIR$/src/composables/request-types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/profile.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/years.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/types/profile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/.env.development" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env.production" beforeDir="false" afterPath="$PROJECT_DIR$/.env.production" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eslint.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/eslint.config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prettier.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/prettier.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PanelDetails.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PanelDetails.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PanelEnseignements.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PanelEnseignements.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PanelIntervenants.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PanelIntervenants.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TheHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TheHeader.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/accueil/AccueilMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/accueil/AccueilMessage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/accueil/AccueilSubsectionEditableText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/accueil/AccueilSubsectionEditableText.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/CarteDemande.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/CarteDemande.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/EditableText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/EditableText.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/core/FormulaireDemande.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/FormulaireDemande.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/PucePriorite.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/PucePriorite.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/ResumeDemandes.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/ResumeDemandes.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/SelectIntervenant.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/SelectIntervenant.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/ServiceIntervenant.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/ServiceIntervenant.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsEnseignement.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsEnseignement.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsEnseignementDemandes.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsEnseignementDemandes.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/details/DetailsIntervenant.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsIntervenant.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsIntervenantMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsIntervenantMessage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsSubsectionEditableText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsSubsectionEditableText.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/volet/DetailsVolet.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/volet/DetailsVolet.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletEnseignement.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletEnseignement.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletEnseignementResponsables.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletEnseignementResponsables.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletInformations.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletInformations.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletIntervenant.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/volet/DetailsVoletIntervenant.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuUtilisateur.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuUtilisateur.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdminOptions.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdminOptions.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAnnee.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuYear.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuBase.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuBase.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuEnseignements.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuCourses.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuUtilisateur.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuUser.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/composables/datasync.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/datasync.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constants/ui/interactions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/constants.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gql/gql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/gql.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gql/graphql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/graphql.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/annees.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/demandes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/demandes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/enseignements.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/enseignements.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/intervenants.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/phases.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/phases.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/priorites.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/priorites.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/services.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/services.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/enseignement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/enseignement.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/format.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/format.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PageAccueil.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageAccueil.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/PageEnseignements.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageEnseignements.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/keycloak.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/keycloak.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/quasar.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/quasar.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/router.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/router.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/urql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/urql.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/annees.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/years.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/authentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/authentication.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/data.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/demandes.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/layout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/layout.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/permissions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/permissions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/phases.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/phases.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/refresh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/refresh.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/demandes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/demandes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/enseignements.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/enseignements.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/intervenants.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/messages.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/messages.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/phases.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/roles.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/rows.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/rows.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/services.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/services.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/vite-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/vite-env.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,8 +108,8 @@
         <option value="GraphQL File" />
         <option value="Dockerfile" />
         <option value="Vue Composition API Component" />
-        <option value="TypeScript File" />
         <option value="JavaScript File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -150,7 +207,7 @@
     "javascript.nodejs.core.library.configured.version": "20.12.2",
     "javascript.nodejs.core.library.typings.version": "20.12.14",
     "js.linters.configure.manually.selectedeslint": "true",
-    "last_opened_file_path": "/Users/julienhauseux/Projets/geyser-frontend",
+    "last_opened_file_path": "/Users/julienhauseux/Projets/geyser-frontend/src/config/types",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.stylelint": "true",
@@ -183,18 +240,18 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/config/types" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/src/stores" />
       <recent name="$PROJECT_DIR$/src/constants/domain" />
-      <recent name="$PROJECT_DIR$/src/types" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/composables" />
+      <recent name="$PROJECT_DIR$/src/config/types" />
+      <recent name="$PROJECT_DIR$/src/config" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/types" />
-      <recent name="$PROJECT_DIR$/src/constants/ui" />
-      <recent name="$PROJECT_DIR$/src/constants/domain" />
-      <recent name="$PROJECT_DIR$/src/constants" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -346,15 +403,7 @@
       <workItem from="1733875906599" duration="970000" />
       <workItem from="1733877943687" duration="19794000" />
       <workItem from="1733958145291" duration="106853000" />
-      <workItem from="1734433311069" duration="5984000" />
-    </task>
-    <task id="LOCAL-00252" summary="fix(ci): use pnpm to run validation">
-      <option name="closed" value="true" />
-      <created>1733870576834</created>
-      <option name="number" value="00252" />
-      <option name="presentableId" value="LOCAL-00252" />
-      <option name="project" value="LOCAL" />
-      <updated>1733870576834</updated>
+      <workItem from="1734433311069" duration="54897000" />
     </task>
     <task id="LOCAL-00253" summary="fix(ts): separate type import">
       <option name="closed" value="true" />
@@ -740,7 +789,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734404642183</updated>
     </task>
-    <option name="localTasksCounter" value="301" />
+    <task id="LOCAL-00301" summary="feat(imports): add sorting with trivago plugin">
+      <option name="closed" value="true" />
+      <created>1734443595797</created>
+      <option name="number" value="00301" />
+      <option name="presentableId" value="LOCAL-00301" />
+      <option name="project" value="LOCAL" />
+      <updated>1734443595797</updated>
+    </task>
+    <option name="localTasksCounter" value="302" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -774,7 +831,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="RELOAD_CONTEXT" value="false" />
-    <MESSAGE value="refactor(config): standardize dotenv import style" />
     <MESSAGE value="chore(scripts): rename prettier/eslint scripts for clarity" />
     <MESSAGE value="chore(deps): remove pnpm-lock.yaml file" />
     <MESSAGE value="refactor(eslint): update config" />
@@ -799,6 +855,7 @@
     <MESSAGE value="chore(deps): update dependencies in pnpm-lock.yaml" />
     <MESSAGE value="chore(license): remove copyright headers throughout project" />
     <MESSAGE value="fix(graphql): missing variable $annee" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix(graphql): missing variable $annee" />
+    <MESSAGE value="feat(imports): add sorting with trivago plugin" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(imports): add sorting with trivago plugin" />
   </component>
 </project>

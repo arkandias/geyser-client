@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import type { ComputedRef } from "vue";
-import { computed } from "vue";
+import { type ComputedRef, computed } from "vue";
 
+import { usePermissions } from "@/composables/permissions.ts";
+import { useRequestTypes } from "@/composables/request-types.ts";
+import { labelRequestType } from "@/config/types/request-types.ts";
 import { processArchives } from "@/helpers/enseignement.ts";
-import { useDemandes } from "@/stores/demandes.ts";
-import { usePermissions } from "@/stores/permissions.ts";
 import type { Archive } from "@/types/demandes.ts";
-import { TypeDemande } from "@/types/demandes.ts";
 import type { Details } from "@/types/enseignements.ts";
 
 import FormulaireDemande from "@/components/core/FormulaireDemande.vue";
@@ -17,10 +16,10 @@ import DetailsSection from "@/components/details/DetailsSection.vue";
 const props = defineProps<{ details: Details }>();
 
 const perm = usePermissions();
-const { typesAffiches: typesDemandeAffiches } = useDemandes();
+const { shown: shownRequestTypes } = useRequestTypes();
 
 const archives: ComputedRef<Archive[]> = computed(() =>
-  processArchives(props.details.parent).sort((a, b) => b.annee - a.annee),
+  processArchives(props.details.parent).sort((a, b) => b.year - a.year),
 );
 </script>
 
@@ -28,16 +27,16 @@ const archives: ComputedRef<Archive[]> = computed(() =>
   <DetailsSection title="Demandes">
     <FormulaireDemande
       v-if="perm.deFaireDesDemandes || perm.deModifierLesAttributions"
-      :ens-id="details.ensId"
-      :heures-par-groupe="details.heuresParGroupe"
+      :ens-id="details.courseId"
+      :heures-par-groupe="details.hoursPerGroup"
     />
     <DetailsEnseignementDemandes
-      v-for="typeDemande in typesDemandeAffiches"
-      :key="typeDemande"
-      :title="TypeDemande[typeDemande].labelPlural"
+      v-for="requestType in shownRequestTypes"
+      :key="requestType"
+      :title="labelRequestType(requestType)"
       :demandes="
-        details.demandes.filter(
-          (demande) => demande.typeDemande === typeDemande,
+        details.requests.filter(
+          (demande) => demande.requestType === requestType,
         )
       "
     />
@@ -45,7 +44,7 @@ const archives: ComputedRef<Archive[]> = computed(() =>
   <DetailsSection title="Priorités">
     <QCardSection>
       <PucePriorite
-        v-for="priorite in details.priorites"
+        v-for="priorite in details.priorities"
         :key="priorite.id"
         :priorite
       />
@@ -54,9 +53,9 @@ const archives: ComputedRef<Archive[]> = computed(() =>
   <DetailsSection title="Archives">
     <DetailsEnseignementDemandes
       v-for="archive in archives"
-      :key="archive.annee"
-      :title="archive.annee.toString()"
-      :demandes="archive.demandes"
+      :key="archive.year"
+      :title="archive.year.toString()"
+      :demandes="archive.requests"
       archive
     />
   </DetailsSection>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { Ref } from "vue";
-import { ref } from "vue";
+import { type Ref, ref } from "vue";
 
 const demo: Ref<boolean> = ref(false);
 </script>

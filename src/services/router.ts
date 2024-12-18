@@ -1,5 +1,8 @@
-import type { RouteRecordRaw } from "vue-router";
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  type RouteRecordRaw,
+  createRouter,
+  createWebHistory,
+} from "vue-router";
 
 import PageAccueil from "@/pages/PageAccueil.vue";
 import PageEnseignements from "@/pages/PageEnseignements.vue";
@@ -8,17 +11,17 @@ import PageMessage from "@/pages/PageMessage.vue";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    name: "accueil",
+    name: "home",
     component: PageAccueil,
   },
   {
-    path: "/enseignements",
-    name: "enseignements",
+    path: "/courses",
+    name: "courses",
     component: PageEnseignements,
   },
   {
     path: "/:pathMatch(.*)*",
-    name: "non-trouvee",
+    name: "not-found",
     component: PageMessage,
     props: { message: "Page non trouvée" },
   },

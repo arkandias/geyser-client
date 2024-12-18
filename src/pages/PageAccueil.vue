@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import type { ComputedRef } from "vue";
-import { computed, reactive } from "vue";
+import { type ComputedRef, computed, reactive } from "vue";
 
 import { GET_SERVICES_TABLE_ROWS } from "@/graphql/services.ts";
 import { formatIntervenant } from "@/helpers/format.ts";
-import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
-import type { RowService } from "@/types/rows.ts";
+import { useYears } from "@/stores/years.ts";
+import type { ServiceRow } from "@/types/rows.ts";
 
 import AccueilInformations from "@/components/accueil/AccueilInformations.vue";
 import AccueilMessage from "@/components/accueil/AccueilMessage.vue";
@@ -16,21 +15,21 @@ import ResumeDemandes from "@/components/core/ResumeDemandes.vue";
 import ServiceIntervenant from "@/components/core/ServiceIntervenant.vue";
 import DetailsVoletIntervenant from "@/components/details/volet/DetailsVoletIntervenant.vue";
 
-const { enCours: anneeEnCours } = useAnnees();
-const { intervenant, uid: moi } = useAuthentication();
+const { current: currentYear } = useYears();
+const { profile, uid: moi } = useAuthentication();
 
 const queryMyService = useQuery({
   query: GET_SERVICES_TABLE_ROWS,
   variables: reactive({
-    annee: computed(() => anneeEnCours.value ?? 0),
+    year: computed(() => currentYear.value ?? 0),
     where: { intervenant: { uid: { _eq: moi } } },
   }),
-  pause: () => anneeEnCours.value === null,
+  pause: () => currentYear.value === null,
   context: {
     additionalTypenames: ["demande", "message", "modification_service"],
   },
 });
-const myService: ComputedRef<RowService | null> = computed(
+const myService: ComputedRef<ServiceRow | null> = computed(
   () => queryMyService.data.value?.services[0] ?? null,
 );
 </script>
@@ -41,7 +40,7 @@ const myService: ComputedRef<RowService | null> = computed(
       <QCardSection class="text-h5">
         Bienvenue,
         <br />
-        {{ formatIntervenant(intervenant) }}
+        {{ formatIntervenant(profile) }}
       </QCardSection>
       <AccueilMessage />
       <DetailsVoletIntervenant v-if="myService" :service="myService">

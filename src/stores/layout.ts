@@ -1,35 +1,34 @@
-import type { Ref } from "vue";
-import { readonly, ref } from "vue";
+import { type Ref, readonly, ref } from "vue";
 
-const filtreIntervenants: Ref<boolean> = ref(false);
+const isLeftPanelOpen: Ref<boolean> = ref(false);
 export const hSplitterRatio: Ref<number> = ref(50);
 export const vSplitterRatio: Ref<number> = ref(0);
 const vSplitterRatioSaved: Ref<number> = ref(30);
 
-const openFilter = (): void => {
-  if (!filtreIntervenants.value) {
-    filtreIntervenants.value = true;
+const openLeftPanel = (): void => {
+  if (!isLeftPanelOpen.value) {
+    isLeftPanelOpen.value = true;
     vSplitterRatio.value = vSplitterRatioSaved.value;
   }
 };
-const closeFilter = (): void => {
-  if (filtreIntervenants.value) {
-    filtreIntervenants.value = false;
+const closeLeftPanel = (): void => {
+  if (isLeftPanelOpen.value) {
+    isLeftPanelOpen.value = false;
     vSplitterRatioSaved.value = vSplitterRatio.value;
     vSplitterRatio.value = 0;
   }
 };
-const toggleFilter = (): void => {
-  if (filtreIntervenants.value) {
-    closeFilter();
+const toggleLeftPanel = (): void => {
+  if (isLeftPanelOpen.value) {
+    closeLeftPanel();
   } else {
-    openFilter();
+    openLeftPanel();
   }
 };
 
 export const useLayout = () => ({
-  filtreIntervenants: readonly(filtreIntervenants),
-  openFilter,
-  closeFilter,
-  toggleFilter,
+  filtreIntervenants: readonly(isLeftPanelOpen),
+  openLeftPanel,
+  closeLeftPanel,
+  toggleLeftPanel,
 });

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useMutation, useQuery } from "@urql/vue";
-import type { ComputedRef, Ref } from "vue";
-import { computed, ref } from "vue";
+import { type ComputedRef, type Ref, computed, ref } from "vue";
 
 import {
   DELETE_MODIFICATION,
@@ -10,7 +9,7 @@ import {
 } from "@/graphql/modifications.ts";
 import { nf } from "@/helpers/format.ts";
 import { errorNotify, successNotify } from "@/helpers/notify.ts";
-import type { Modification, TypeModification } from "@/types/services.ts";
+import type { Modification, ModificationType } from "@/types/services.ts";
 
 import TableService from "@/components/core/TableService.vue";
 
@@ -33,7 +32,7 @@ const queryTypesModification = useQuery({
 const insertModification = useMutation(INSERT_MODIFICATION);
 const deleteModification = useMutation(DELETE_MODIFICATION);
 
-const typeModificationOptions: ComputedRef<TypeModification[]> = computed(
+const typeModificationOptions: ComputedRef<ModificationType[]> = computed(
   () =>
     queryTypesModification.data.value?.typesModification.map(
       (typeModification) => ({
@@ -44,7 +43,7 @@ const typeModificationOptions: ComputedRef<TypeModification[]> = computed(
 );
 
 const formOpen: Ref<boolean> = ref(false);
-const typeModification: Ref<TypeModification | null> = ref(null);
+const typeModification: Ref<ModificationType | null> = ref(null);
 const heuresEQTD: Ref<number> = ref(0);
 
 const resetForm = (): void => {
@@ -183,7 +182,7 @@ const handleDeletion = async (id: number): Promise<void> => {
           dense
           @click="handleDeletion(modification.id)"
         />
-        {{ modification.typeModification }}
+        {{ modification.modificationType }}
       </td>
       <td>{{ nf.format(modification.heuresEQTD) + " htd" }}</td>
     </tr>

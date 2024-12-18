@@ -4,7 +4,7 @@ graphql(/* GraphQL */ `
   fragment Priorite on priorite {
     id
     intervenant {
-      ...Intervenant
+      ...Profile
     }
     ensId: ens_id
     anciennete

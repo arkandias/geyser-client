@@ -1,6 +1,5 @@
 <script setup lang="ts" generic="T">
-import type { ShallowRef } from "vue";
-import { shallowRef, watch } from "vue";
+import { type ShallowRef, shallowRef, watch } from "vue";
 
 import type { Nullable, Option } from "@/types/common.ts";
 

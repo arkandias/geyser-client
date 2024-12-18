@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { useQuasar } from "quasar";
-import type { ComputedRef } from "vue";
-import { computed } from "vue";
+import { type ComputedRef, computed } from "vue";
 import { useRouter } from "vue-router";
 
+import { usePermissions } from "@/composables/permissions.ts";
 import { couleurBouton } from "@/helpers/format.ts";
-import { usePermissions } from "@/stores/permissions.ts";
 import { useRefresh } from "@/stores/refresh.ts";
 
+import CoursesOptions from "@/components/header/CoursesOptions.vue";
 import MenuAdmin from "@/components/header/MenuAdmin.vue";
-import MenuEnseignements from "@/components/header/MenuEnseignements.vue";
-import MenuUtilisateur from "@/components/header/MenuUtilisateur.vue";
+import MenuUser from "@/components/header/MenuUser.vue";
 
 defineProps<{ disable?: boolean }>();
 
@@ -38,7 +37,7 @@ const version: ComputedRef<string | null> = computed(() =>
         :disable
         flat
         square
-        @click="router.replace({ name: 'accueil' })"
+        @click="router.replace({ name: 'home' })"
       >
         <QTooltip>Accueil</QTooltip>
       </QBtn>
@@ -48,7 +47,7 @@ const version: ComputedRef<string | null> = computed(() =>
         :disable
         flat
         square
-        @click="router.replace({ name: 'enseignements' })"
+        @click="router.replace({ name: 'courses' })"
       >
         <QTooltip>Enseignements</QTooltip>
       </QBtn>
@@ -57,7 +56,7 @@ const version: ComputedRef<string | null> = computed(() =>
           v-if="!disable && router.currentRoute.value.name === 'enseignements'"
           id="transition-wrapper"
         >
-          <MenuEnseignements />
+          <CoursesOptions />
         </div>
       </Transition>
       <QSeparator vertical inset color="white" />
@@ -74,7 +73,7 @@ const version: ComputedRef<string | null> = computed(() =>
         <QTooltip>Mode sombre</QTooltip>
       </QBtn>
       <MenuAdmin v-if="perm.dAdministrer" />
-      <MenuUtilisateur />
+      <MenuUser />
     </QToolbar>
   </QHeader>
 </template>

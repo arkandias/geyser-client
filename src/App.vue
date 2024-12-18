@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { watch } from "vue";
+import { type ComputedRef, computed, reactive, watch } from "vue";
 
-import { GET_ANNEES } from "@/graphql/annees.ts";
-import { GET_PHASES } from "@/graphql/phases.ts";
-import { enCours as anneeEnCours, annees } from "@/stores/annees.ts";
-import { useAuthentication } from "@/stores/authentication.ts";
-import { usePermissions } from "@/stores/permissions.ts";
-import { enCours as phaseEnCours, phases } from "@/stores/phases.ts";
-import type { Phase } from "@/types/phases.ts";
-import { isPhase } from "@/types/phases.ts";
+import { usePermissions } from "@/composables/permissions.ts";
+import { PHASES, isPhase } from "@/config/types/phases.ts";
+import { GET_CURRENT_PHASE } from "@/graphql/phases.ts";
+import { GET_PROFILE } from "@/graphql/profile.ts";
+import { GET_YEARS } from "@/graphql/years.ts";
+import { getClaims, logout } from "@/services/keycloak.ts";
+import { login, useAuthentication } from "@/stores/authentication.ts";
+import { current as currentPhase } from "@/stores/phases.ts";
+import { current as currentYear, years } from "@/stores/years.ts";
+import { isProfile } from "@/types/profile.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
 import PageMessage from "@/pages/PageMessage.vue";
@@ -17,57 +19,95 @@ import PageMessage from "@/pages/PageMessage.vue";
 const { logged } = useAuthentication();
 const perm = usePermissions();
 
-const queryAnnees = useQuery({
-  query: GET_ANNEES,
+// Global Parameters
+const queryYears = useQuery({
+  query: GET_YEARS,
   variables: {},
   pause: () => !logged.value,
 });
-const queryPhases = useQuery({
-  query: GET_PHASES,
+const queryCurrentPhase = useQuery({
+  query: GET_CURRENT_PHASE,
   variables: {},
   pause: () => !logged.value,
 });
-
 watch(
-  queryAnnees.data,
+  queryYears.data,
   (value) => {
-    annees.value = value?.annees.map((annee) => annee.value) ?? [];
-    anneeEnCours.value =
-      value?.annees.find((annee) => annee.enCours)?.value ?? null;
+    years.value = value?.years.map((year) => year.value) ?? [];
+    currentYear.value =
+      value?.years.find((year) => year.enCours)?.value ?? null;
   },
   { immediate: true },
 );
 watch(
-  queryPhases.data,
+  queryCurrentPhase.data,
   (value) => {
-    const validPhases =
-      value?.phases.filter(
-        (phase): phase is { value: Phase; enCours: boolean } =>
-          isPhase(phase.value),
-      ) ?? [];
-    phases.value = validPhases.map((phase) => phase.value);
-    phaseEnCours.value =
-      validPhases.find((phase) => phase.enCours)?.value ?? null;
+    if (value?.phases[0]?.value === undefined) {
+      return;
+    }
+    if (isPhase(value.phases[0].value)) {
+      currentPhase.value = value.phases[0].value;
+      return;
+    }
+    console.warn("Invalid current phase", value.phases[0].value);
+    currentPhase.value = null;
   },
   { immediate: true },
 );
 
-const layoutClass = {
-  "text-body1": true,
+// User Profile
+const claimsRef = computed(() => getClaims());
+const queryProfile = useQuery({
+  query: GET_PROFILE,
+  variables: reactive({
+    uid: computed(() => claimsRef.value?.userId ?? ""),
+  }),
+  pause: () => claimsRef.value === null,
+});
+watch(
+  [claimsRef, queryProfile.data],
+  ([claims, result]) => {
+    if (claims === null) {
+      console.warn("No claims found during logging");
+      return;
+    }
+    if (result?.profile === undefined) {
+      return;
+    }
+    if (!isProfile(result.profile)) {
+      console.warn("Invalid profile during logging", result.profile);
+      return;
+    }
+    login(result.profile, claims.allowedRoles, claims.defaultRole, logout);
+  },
+  { immediate: true },
+);
+
+const accessGranted = computed(() => logged.value && perm.dAcceder);
+const accessDeniedMessage: ComputedRef<string> = computed(() => {
+  if (!logged.value) {
+    return "Vous n'êtes pas connecté";
+  }
+  if (currentPhase.value === PHASES.SHUTDOWN) {
+    return "Geyser est actuellement fermé";
+  }
+  return "Vous n'avez pas la permission d'accéder à Geyser";
+});
+
+// Apply distinct styling in development vs production environments
+// to provide visual feedback to developers about which environment
+// they're using
+const devClass = {
   dev: import.meta.env.DEV,
 };
 </script>
 
 <template>
-  <QLayout view="hHh lpR fFf" :class="layoutClass">
-    <TheHeader :disable="!logged || !perm.dAcceder" />
+  <QLayout view="hHh lpR fFf" class="text-body-1" :class="devClass">
+    <TheHeader :disable="!accessGranted" />
     <QPageContainer>
-      <RouterView v-if="logged && perm.dAcceder" />
-      <PageMessage
-        v-else-if="phaseEnCours === 'fermeture'"
-        message="Geyser est actuellement fermé"
-      />
-      <PageMessage v-else message="Vous n'avez pas accès à Geyser" />
+      <RouterView v-if="accessGranted" />
+      <PageMessage v-else :message="accessDeniedMessage" />
     </QPageContainer>
   </QLayout>
 </template>

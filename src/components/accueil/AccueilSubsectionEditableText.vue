@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { Ref } from "vue";
-import { ref } from "vue";
+import { type Ref, ref } from "vue";
 
 import AccueilSubsection from "@/components/accueil/AccueilSubsection.vue";
 import EditableText from "@/components/core/EditableText.vue";

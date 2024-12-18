@@ -1,21 +1,26 @@
-import type { Demande, NestedArchives, Priorite } from "@/types/demandes.ts";
-import type { Responsable } from "@/types/intervenants.ts";
+import type { NestedArchives, Priority, Request } from "@/types/demandes.ts";
+import type { Profile } from "@/types/profile.ts";
+
+export type Coordinator = {
+  profile: Profile;
+  comment: string | null;
+};
 
 export type Resume = {
-  ensId: number;
-  heuresParGroupe: number | null;
-  responsables: Responsable[];
-  mention: {
-    responsables: Responsable[];
+  courseId: number;
+  hoursPerGroup: number | null;
+  coordinators: Coordinator[];
+  program: {
+    coordinators: Coordinator[];
   };
-  parcours: {
-    responsables: Responsable[];
+  track: {
+    coordinators: Coordinator[];
   } | null;
   description: string | null;
 };
 
 export type Details = Resume & {
-  demandes: Demande[];
-  priorites: Priorite[];
+  requests: Request[];
+  priorities: Priority[];
   parent: NestedArchives | null;
 };

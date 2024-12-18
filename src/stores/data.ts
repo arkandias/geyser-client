@@ -1,15 +1,14 @@
-import type { ComputedRef, Ref } from "vue";
-import { computed, readonly, ref } from "vue";
+import { type ComputedRef, type Ref, computed, readonly, ref } from "vue";
 
 import { useAuthentication } from "@/stores/authentication.ts";
-import type { RowEnseignement, RowService } from "@/types/rows.ts";
+import type { CourseRow, ServiceRow } from "@/types/rows.ts";
 
-const services: Ref<RowService[]> = ref([]);
-const enseignements: Ref<RowEnseignement[]> = ref([]);
-const setServices = (rows: RowService[]) => {
+const services: Ref<ServiceRow[]> = ref([]);
+const enseignements: Ref<CourseRow[]> = ref([]);
+const setServices = (rows: ServiceRow[]) => {
   services.value = rows;
 };
-const setEnseignements = (rows: RowEnseignement[]) => {
+const setEnseignements = (rows: CourseRow[]) => {
   enseignements.value = rows;
 };
 
@@ -31,21 +30,20 @@ export const selectedService: Ref<
   }[]
 > = ref([]);
 export const selectedEnseignement: Ref<{ id: number }[]> = ref([]);
-const selectService = (uid?: string | null) => {
-  selectedService.value = uid != null ? [{ intervenant: { uid } }] : [];
+const selectService = (id?: number | null) => {
+  selectedService.value = id != null ? [{ id }] : [];
 };
 const selectEnseignement = (id?: number | null) => {
   selectedEnseignement.value = id != null ? [{ id }] : [];
 };
 
-const service: ComputedRef<RowService | null> = computed(
+const service: ComputedRef<ServiceRow | null> = computed(
   () =>
     services.value.find(
-      (row) =>
-        row.intervenant.uid === selectedService.value[0]?.intervenant.uid,
+      (row) => row.teacher.uid === selectedService.value[0]?.intervenant.uid,
     ) ?? null,
 );
-const enseignement: ComputedRef<RowEnseignement | null> = computed(
+const enseignement: ComputedRef<CourseRow | null> = computed(
   () =>
     enseignements.value.find(
       (row) => row.id === selectedEnseignement.value[0]?.id,
@@ -54,12 +52,11 @@ const enseignement: ComputedRef<RowEnseignement | null> = computed(
 
 export const useData = () => {
   const { uid: moi } = useAuthentication();
-  const myService: ComputedRef<RowService | null> = computed(
-    () =>
-      services.value.find((row) => row.intervenant.uid === moi.value) ?? null,
+  const myService: ComputedRef<ServiceRow | null> = computed(
+    () => services.value.find((row) => row.teacher.uid === moi.value) ?? null,
   );
   const myServiceSelected: ComputedRef<boolean> = computed(
-    () => service.value?.intervenant.uid === moi.value,
+    () => service.value?.teacher.uid === moi.value,
   );
   const toggleMonService = () => {
     if (myServiceSelected.value) {

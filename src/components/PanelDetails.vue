@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import type { ComputedRef } from "vue";
-import { computed, reactive } from "vue";
+import { type ComputedRef, computed, reactive } from "vue";
 
 import { GET_ENSEIGNEMENT_DETAILS } from "@/graphql/enseignements.ts";
 import {
@@ -40,23 +39,23 @@ const details: ComputedRef<Details | null> = computed(
 
 const label: ComputedRef<string> = computed(() =>
   enseignement.value
-    ? enseignement.value.nom
+    ? enseignement.value.name
     : service.value
-      ? formatIntervenant(service.value.intervenant)
+      ? formatIntervenant(service.value.teacher)
       : "Ce volet contient des informations supplémentaires",
 );
 const caption: ComputedRef<string> = computed(() =>
   enseignement.value
-    ? enseignement.value.mention.cursus.nom +
+    ? enseignement.value.program.degree.name +
       " \u2014 " +
-      enseignement.value.mention.nom +
+      enseignement.value.program.name +
       " \u2014 " +
-      (enseignement.value.parcours?.nom
-        ? enseignement.value.parcours.nom + " \u2014 "
+      (enseignement.value.track?.name
+        ? enseignement.value.track.name + " \u2014 "
         : "") +
-      `S${enseignement.value.semestre.toString()}` +
+      `S${enseignement.value.semester.toString()}` +
       " \u2014 " +
-      enseignement.value.typeEnseignement.label
+      enseignement.value.courseType.label
     : service.value
       ? formatResumeIntervenant(service.value)
       : "Cliquez dessus pour afficher ces informations",

@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { Ref } from "vue";
-import { ref } from "vue";
+import { type Ref, ref } from "vue";
 
 import { usePhases } from "@/stores/phases.ts";
 
-const { enCours: phaseEnCours } = usePhases();
+const { current: phaseEnCours } = usePhases();
 
 const demo: Ref<boolean> = ref(false);
 </script>

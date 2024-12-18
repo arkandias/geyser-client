@@ -1,8 +1,15 @@
 <script setup lang="ts">
-import type { ComputedRef, Ref } from "vue";
-import { computed, ref, toValue, watchEffect } from "vue";
+import {
+  type ComputedRef,
+  type Ref,
+  computed,
+  ref,
+  toValue,
+  watchEffect,
+} from "vue";
 
-import { TOOLTIP_DELAY } from "@/constants/ui/interactions.ts";
+import { usePermissions } from "@/composables/permissions.ts";
+import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { demandeValue } from "@/helpers/enseignement.ts";
 import {
   formatFormation,
@@ -12,11 +19,9 @@ import {
 } from "@/helpers/format.ts";
 import { compare, uniqueValue } from "@/helpers/utils.ts";
 import { selectedEnseignement as selected, useData } from "@/stores/data.ts";
-import { usePermissions } from "@/stores/permissions.ts";
-import type { Column } from "@/types/columns.ts";
-import { isAbbreviable } from "@/types/columns.ts";
+import { type Column, isAbbreviable } from "@/types/columns.ts";
 import type { Option } from "@/types/common.ts";
-import type { RowEnseignement } from "@/types/rows.ts";
+import type { CourseRow } from "@/types/rows.ts";
 
 const perm = usePermissions();
 const {
@@ -28,7 +33,7 @@ const {
   selectService,
 } = useData();
 
-const select = (_: Event, row: RowEnseignement) => {
+const select = (_: Event, row: CourseRow) => {
   if (selected.value[0]?.id === row.id) {
     selectEnseignement(null);
   } else {
@@ -38,23 +43,21 @@ const select = (_: Event, row: RowEnseignement) => {
 
 // Titre de la table
 const title: ComputedRef<string> = computed(() =>
-  service.value
-    ? formatIntervenant(service.value.intervenant)
-    : "Enseignements",
+  service.value ? formatIntervenant(service.value.teacher) : "Enseignements",
 );
 
 // Colonnes
-const columns: Column<RowEnseignement>[] = [
+const columns: Column<CourseRow>[] = [
   {
     name: "formation",
     label: "Formation",
     field: (row) => ({
-      long: formatFormation(row.mention.cursus.nom, row.mention.nom),
+      long: formatFormation(row.program.degree.name, row.program.name),
       short:
-        row.mention.cursus.nomCourt !== null || row.mention.nomCourt !== null
+        row.program.degree.shortName !== null || row.program.shortName !== null
           ? formatFormation(
-              row.mention.cursus.nomCourt ?? row.mention.cursus.nom,
-              row.mention.nomCourt ?? row.mention.nom,
+              row.program.degree.shortName ?? row.program.degree.name,
+              row.program.shortName ?? row.program.name,
             )
           : null,
     }),
@@ -69,8 +72,8 @@ const columns: Column<RowEnseignement>[] = [
     name: "parcours",
     label: "Parcours",
     field: (row) => ({
-      long: row.parcours?.nom ?? "",
-      short: row.parcours?.nomCourt,
+      long: row.track?.name ?? "",
+      short: row.track?.shortName,
     }),
     align: "left",
     sortable: true,
@@ -83,8 +86,8 @@ const columns: Column<RowEnseignement>[] = [
     name: "nom",
     label: "Nom",
     field: (row) => ({
-      long: row.nom,
-      short: row.nomCourt,
+      long: row.name,
+      short: row.shortName,
     }),
     align: "left",
     sortable: true,
@@ -96,8 +99,7 @@ const columns: Column<RowEnseignement>[] = [
   {
     name: "type",
     label: "Type",
-    field: (row) =>
-      row.typeEnseignement.labelCourt ?? row.typeEnseignement.label,
+    field: (row) => row.courseType.shortLabel ?? row.courseType.label,
     align: "left",
     sortable: true,
     visible: true,
@@ -108,7 +110,7 @@ const columns: Column<RowEnseignement>[] = [
     name: "semestre",
     label: "S.",
     tooltip: "Semestre",
-    field: (row) => row.semestre,
+    field: (row) => row.semester,
     format: (val: number) => "S" + val.toString(),
     align: "left",
     sortable: true,
@@ -120,7 +122,7 @@ const columns: Column<RowEnseignement>[] = [
     name: "heures",
     label: "H.",
     tooltip: "Nombre d'heures par groupe",
-    field: (row) => row.heures,
+    field: (row) => row.hoursPerGroup,
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -132,7 +134,7 @@ const columns: Column<RowEnseignement>[] = [
     name: "groupes",
     label: "G.",
     tooltip: "Nombre de groupes ouverts",
-    field: (row) => row.groupes ?? 0,
+    field: (row) => row.numberOfGroups ?? 0,
     align: "left",
     sortable: true,
     visible: true,
@@ -157,8 +159,8 @@ const columns: Column<RowEnseignement>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
     field: (row) =>
-      (row.heures ?? 0) * (row.groupes ?? 0) -
-      (row.totalAttributions.aggregate?.sum?.heures ?? 0),
+      (row.hoursPerGroup ?? 0) * (row.numberOfGroups ?? 0) -
+      (row.totalAssigned.aggregate?.sum?.hours ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -184,8 +186,8 @@ const columns: Column<RowEnseignement>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
     field: (row) =>
-      (row.heures ?? 0) * (row.groupes ?? 0) -
-      (row.totalPrincipales.aggregate?.sum?.heures ?? 0),
+      (row.hoursPerGroup ?? 0) * (row.numberOfGroups ?? 0) -
+      (row.totalPrimary.aggregate?.sum?.hours ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -199,8 +201,8 @@ const columns: Column<RowEnseignement>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",
     field: (row) =>
-      (row.heures ?? 0) * (row.groupes ?? 0) -
-      (row.totalPrioritaire.aggregate?.sum?.heures ?? 0),
+      (row.hoursPerGroup ?? 0) * (row.numberOfGroups ?? 0) -
+      (row.totalPriority.aggregate?.sum?.hours ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -280,7 +282,7 @@ const clearSearch = () => {
 };
 // Attributs du filtre
 const filterObj = computed(() => ({
-  demandesIntervenant: service.value ? service.value.demandes : null,
+  demandesIntervenant: service.value ? service.value.requests : null,
   formations: formations.value,
   typesEnseignement: typesEnseignement.value,
   semestres: semestres.value,
@@ -288,20 +290,20 @@ const filterObj = computed(() => ({
   searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
 }));
 const filterMethod = (
-  rows: readonly RowEnseignement[],
+  rows: readonly CourseRow[],
   terms: typeof filterObj.value,
-): readonly RowEnseignement[] =>
+): readonly CourseRow[] =>
   rows.filter((row) =>
     terms.demandesIntervenant
-      ? terms.demandesIntervenant.some((demande) => demande.ensId === row.id)
+      ? terms.demandesIntervenant.some((demande) => demande.courseId === row.id)
       : (terms.formations.length === 0 ||
-          terms.formations.some((formation) => formation === row.mention.id)) &&
+          terms.formations.some((formation) => formation === row.program.id)) &&
         (terms.typesEnseignement.length === 0 ||
           terms.typesEnseignement.some(
-            (typeEns) => typeEns === row.typeEnseignement.label,
+            (typeEns) => typeEns === row.courseType.label,
           )) &&
         (terms.semestres.length === 0 ||
-          terms.semestres.includes(row.semestre)) &&
+          terms.semestres.includes(row.semester)) &&
         terms.searchColumns.some((col) =>
           normalizeForSearch(
             String(
@@ -316,18 +318,18 @@ const filterMethod = (
 const stickyHeader: Ref<boolean> = ref(false);
 
 // check whether an enseignement is assigned to the selected intervenant
-const estAttribue = (row: RowEnseignement) =>
-  service.value?.demandes.some(
+const estAttribue = (row: CourseRow) =>
+  service.value?.requests.some(
     (demande) =>
-      demande.ensId === row.id && demande.typeDemande === "attribution",
+      demande.courseId === row.id && demande.requestType === "attribution",
   ) ?? false;
 
 // check whether an enseignement is visible
-const estVisible = (row: RowEnseignement): boolean =>
+const estVisible = (row: CourseRow): boolean =>
   !service.value &&
   row.visible &&
-  row.mention.visible &&
-  (row.parcours?.visible ?? true);
+  row.program.visible &&
+  (row.track?.visible ?? true);
 </script>
 
 <template>

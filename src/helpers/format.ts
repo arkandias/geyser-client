@@ -1,7 +1,8 @@
 import type { NamedColor } from "quasar";
 
-import type { Intervenant, Responsable } from "@/types/intervenants.ts";
-import type { RowService } from "@/types/rows.ts";
+import type { Coordinator } from "@/types/enseignements.ts";
+import type { Profile } from "@/types/profile.ts";
+import type { ServiceRow } from "@/types/rows.ts";
 
 export const nf = new Intl.NumberFormat("fr-FR", {
   style: "decimal",
@@ -22,28 +23,28 @@ export const formatFormation = (
   nomMention: string,
 ): string => nomCursus + " " + nomMention;
 
-export const formatIntervenant = (intervenant: Intervenant): string =>
-  intervenant.alias ?? intervenant.prenom + " " + intervenant.nom;
+export const formatIntervenant = (intervenant: Profile): string =>
+  intervenant.alias ?? intervenant.firstname + " " + intervenant.lastname;
 
-export const formatResponsables = (responsables: Responsable[]): string =>
+export const formatResponsables = (responsables: Coordinator[]): string =>
   responsables
     .map(
-      ({ intervenant, commentaire }) =>
-        formatIntervenant(intervenant) +
-        (commentaire ? ` (${commentaire})` : ""),
+      ({ profile, comment }) =>
+        formatIntervenant(profile) + (comment ? ` (${comment})` : ""),
     )
     .join(", ");
 
-export const formatResumeIntervenant = (row: RowService): string =>
+export const formatResumeIntervenant = (row: ServiceRow): string =>
   `Service : ${String(
-    row.heuresEQTD - (row.totalModifications.aggregate?.sum?.heuresEQTD ?? 0),
+    row.weightedHours -
+      (row.totalModifications.aggregate?.sum?.weightedHours ?? 0),
   )} htd` +
   " \u2014 " +
-  `Attributions : ${String(row.totalAttributions.aggregate?.sum?.heuresEQTD ?? 0)} htd` +
+  `Attributions : ${String(row.totalAssigned.aggregate?.sum?.weightedHours ?? 0)} htd` +
   " \u2014 " +
-  `Vœux principaux : ${String(row.totalPrincipales.aggregate?.sum?.heuresEQTD ?? 0)} htd` +
+  `Vœux principaux : ${String(row.totalPrimary.aggregate?.sum?.weightedHours ?? 0)} htd` +
   " \u2014 " +
-  `Vœux secondaires : ${String(row.totalSecondaires.aggregate?.sum?.heuresEQTD ?? 0)} htd`;
+  `Vœux secondaires : ${String(row.totalSecondary.aggregate?.sum?.weightedHours ?? 0)} htd`;
 
 export const couleurBouton = (actif: boolean): NamedColor =>
   actif ? "accent" : "white";

@@ -1,15 +1,15 @@
 import { useQuery } from "@urql/vue";
 import { computed, reactive, watch } from "vue";
 
+import { usePermissions } from "@/composables/permissions.ts";
 import { GET_ENSEIGNEMENTS_TABLE_ROWS } from "@/graphql/enseignements.ts";
 import { GET_SERVICES_TABLE_ROWS } from "@/graphql/services.ts";
-import { useAnnees } from "@/stores/annees.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useData } from "@/stores/data.ts";
-import { usePermissions } from "@/stores/permissions.ts";
+import { useYears } from "@/stores/years.ts";
 
 export const useDataSync = () => {
-  const { active: anneeActive } = useAnnees();
+  const { active: activeYear } = useYears();
   const { uid: moi } = useAuthentication();
   const perm = usePermissions();
   const {
@@ -22,20 +22,20 @@ export const useDataSync = () => {
   const queryEnseignements = useQuery({
     query: GET_ENSEIGNEMENTS_TABLE_ROWS,
     variables: reactive({
-      annee: computed(() => anneeActive.value ?? 0),
+      year: computed(() => activeYear.value ?? 0),
     }),
-    pause: () => anneeActive.value === null,
+    pause: () => activeYear.value === null,
     context: { additionalTypenames: ["demande"] },
   });
   const queryServices = useQuery({
     query: GET_SERVICES_TABLE_ROWS,
     variables: reactive({
-      annee: computed(() => anneeActive.value ?? 0),
+      year: computed(() => activeYear.value ?? 0),
       where: computed(() =>
         perm.deVoirLeServiceDAutrui ? {} : { uid: { _eq: moi } },
       ),
     }),
-    pause: () => anneeActive.value === null,
+    pause: () => activeYear.value === null,
     context: {
       additionalTypenames: ["demande", "message", "modification_service"],
     },

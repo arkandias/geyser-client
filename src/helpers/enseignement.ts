@@ -1,26 +1,26 @@
 import type { Archive, NestedArchives } from "@/types/demandes.ts";
-import type { RowEnseignement, RowService } from "@/types/rows.ts";
+import type { CourseRow, ServiceRow } from "@/types/rows.ts";
 
 export const demandeValue = (
-  row: RowEnseignement,
-  intervenant: RowService | null,
+  row: CourseRow,
+  intervenant: ServiceRow | null,
   typeDemande: string,
 ): number => {
   if (intervenant) {
     return (
-      intervenant.demandes.find(
+      intervenant.requests.find(
         (demande) =>
-          demande.ensId === row.id && demande.typeDemande === typeDemande,
-      )?.heures ?? 0
+          demande.courseId === row.id && demande.requestType === typeDemande,
+      )?.hours ?? 0
     );
   }
   switch (typeDemande) {
     case "attribution":
-      return row.totalAttributions.aggregate?.sum?.heures ?? 0;
+      return row.totalAssigned.aggregate?.sum?.hours ?? 0;
     case "principale":
-      return row.totalPrincipales.aggregate?.sum?.heures ?? 0;
+      return row.totalPrimary.aggregate?.sum?.hours ?? 0;
     case "secondaire":
-      return row.totalSecondaires.aggregate?.sum?.heures ?? 0;
+      return row.totalSecondary.aggregate?.sum?.hours ?? 0;
     default:
       console.warn(`Type de demande '${typeDemande}' inconnu`);
       return 0;

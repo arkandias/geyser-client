@@ -1,9 +1,9 @@
 import { graphql } from "@/gql";
 
 export const GET_SERVICES = graphql(/* GraphQL */ `
-  query GetServices($annee: Int!) {
+  query GetServices($year: Int!) {
     services: service(
-      where: { _and: [{ annee: { _eq: $annee } }] }
+      where: { _and: [{ annee: { _eq: $year } }] }
       order_by: [
         { intervenant: { nom: asc } }
         { intervenant: { prenom: asc } }
@@ -11,16 +11,16 @@ export const GET_SERVICES = graphql(/* GraphQL */ `
     ) {
       id
       intervenant {
-        ...Intervenant
+        ...Profile
       }
     }
   }
 `);
 
 export const GET_SERVICES_TABLE_ROWS = graphql(/* GraphQL */ `
-  query GetServicesTableRows($annee: Int!, $where: service_bool_exp = {}) {
+  query GetServicesTableRows($year: Int!, $where: service_bool_exp = {}) {
     services: service(
-      where: { _and: [{ annee: { _eq: $annee } }, $where] }
+      where: { _and: [{ annee: { _eq: $year } }, $where] }
       order_by: [
         { intervenant: { nom: asc } }
         { intervenant: { prenom: asc } }
@@ -41,7 +41,7 @@ export const GET_SERVICES_TABLE_ROWS = graphql(/* GraphQL */ `
         }
       }
       intervenant {
-        ...Intervenant
+        ...Profile
         visible
       }
       demandes(order_by: [{ type: asc }, { ens_id: asc }]) {

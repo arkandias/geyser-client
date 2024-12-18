@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { formatResponsables } from "@/helpers/format.ts";
-import type { Responsable } from "@/types/intervenants.ts";
+import type { Coordinator } from "@/types/enseignements.ts";
 
 defineProps<{
-  responsablesEnseignement: Responsable[];
-  responsablesParcours: Responsable[];
-  responsablesMention: Responsable[];
+  responsablesEnseignement: Coordinator[];
+  responsablesParcours: Coordinator[];
+  responsablesMention: Coordinator[];
 }>();
 </script>
 

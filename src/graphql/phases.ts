@@ -1,16 +1,15 @@
 import { graphql } from "@/gql";
 
-export const GET_PHASES = graphql(/* GraphQL */ `
-  query GetPhases {
-    phases: phase(order_by: { value: desc }) {
+export const GET_CURRENT_PHASE = graphql(/* GraphQL */ `
+  query GetCurrentPhase {
+    phases: phase(where: { en_cours: { _eq: true } }, limit: 1) {
       value
-      enCours: en_cours
     }
   }
 `);
 
-export const UPDATE_PHASE_EN_COURS = graphql(/* GraphQL */ `
-  mutation UpdatePhaseEnCours($value: String!) {
+export const SET_CURRENT_PHASE = graphql(/* GraphQL */ `
+  mutation SetCurrentPhase($value: String!) {
     phases: update_phase(
       where: { value: { _neq: $value } }
       _set: { en_cours: null }

@@ -1,69 +1,67 @@
-import type { Intervenant } from "@/types/intervenants.ts";
+import type { Service } from "@/gql/graphql.ts";
 import type { Message } from "@/types/messages.ts";
 
-type Identifiant = {
+type Identifier = {
   id: number;
-  nom: string;
-  nomCourt: string | null;
+  name: string;
+  shortName: string | null;
 };
 
-type TotalHeures = {
+type TotalHours = {
   aggregate: {
     sum: {
-      heures: number | null;
+      hours: number | null;
     } | null;
   } | null;
 };
 
-type TotalHeuresEQTD = {
+type TotalWeightedHours = {
   aggregate: {
     sum: {
-      heuresEQTD: number | null;
+      weightedHours: number | null;
     } | null;
   } | null;
 };
 
-export type RowEnseignement = Identifiant & {
-  semestre: number;
-  heures: number | null;
-  groupes: number | null;
-  mention: Identifiant & {
-    cursus: Identifiant & { visible: boolean };
+export type CourseRow = Identifier & {
+  semester: number;
+  hoursPerGroup: number | null;
+  numberOfGroups: number | null;
+  program: Identifier & {
+    degree: Identifier & { visible: boolean };
     visible: boolean;
   };
-  parcours: (Identifiant & { visible: boolean }) | null;
-  typeEnseignement: {
+  track: (Identifier & { visible: boolean }) | null;
+  courseType: {
     label: string;
-    labelCourt: string | null;
+    shortLabel: string | null;
   };
-  totalAttributions: TotalHeures;
-  totalPrincipales: TotalHeures;
-  totalSecondaires: TotalHeures;
-  totalPrioritaire: TotalHeures;
+  totalAssigned: TotalHours;
+  totalPrimary: TotalHours;
+  totalSecondary: TotalHours;
+  totalPriority: TotalHours;
   visible: boolean;
 };
 
-export type RowService = {
-  id: number;
-  heuresEQTD: number;
+export type ServiceRow = Service & {
   modifications: {
     id: number;
-    typeModification: string;
-    heuresEQTD: number;
+    modificationType: string;
+    weightedHours: number;
   }[];
-  totalModifications: TotalHeuresEQTD;
-  intervenant: Intervenant & {
+  totalModifications: TotalWeightedHours;
+  teacher: {
     visible: boolean;
   };
-  demandes: {
+  requests: {
     id: number;
-    ensId: number;
-    typeDemande: string;
-    heures: number;
-    heuresEQTD: number | null;
+    courseId: number;
+    requestType: string;
+    hours: number;
+    weightedHours: number | null;
   }[];
-  totalAttributions: TotalHeures & TotalHeuresEQTD;
-  totalPrincipales: TotalHeures & TotalHeuresEQTD;
-  totalSecondaires: TotalHeures & TotalHeuresEQTD;
+  totalAssigned: TotalHours & TotalWeightedHours;
+  totalPrimary: TotalHours & TotalWeightedHours;
+  totalSecondary: TotalHours & TotalWeightedHours;
   messages: Message[];
 };

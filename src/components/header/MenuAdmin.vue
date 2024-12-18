@@ -1,37 +1,34 @@
 <script setup lang="ts">
-import type { ComputedRef } from "vue";
-import { computed } from "vue";
+import { type ComputedRef, computed } from "vue";
 
-import { useAnnees } from "@/stores/annees.ts";
+import { type Phase, labelPhase, orderPhase } from "@/config/types/phases.ts";
+import { PHASES } from "@/config/types/phases.ts";
 import { usePhases } from "@/stores/phases.ts";
+import { useYears } from "@/stores/years.ts";
 import type { Option } from "@/types/common.ts";
-import { Phase } from "@/types/phases.ts";
 
 import MenuAdminOptions from "@/components/header/MenuAdminOptions.vue";
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const {
-  annees,
-  enCours: anneeEnCours,
-  setEnCours: setAnneeEnCours,
-} = useAnnees();
+const { years, current: currentYear, setCurrent: setCurrentYear } = useYears();
 
-const {
-  phases,
-  enCours: phaseEnCours,
-  setEnCours: setPhaseEnCours,
-} = usePhases();
+const { current: currentPhase, setCurrent: setCurrentPhase } = usePhases();
 
-const optionsAnnees: ComputedRef<Option<number>[]> = computed(() =>
-  annees.value
-    .map((annee) => ({
-      value: annee,
-      label: annee.toString(),
+const optionsYears: ComputedRef<Option<number>[]> = computed(() =>
+  years.value
+    .map((year) => ({
+      value: year,
+      label: year.toString(),
     }))
     .sort((a, b) => b.value - a.value),
 );
-const optionsPhases: ComputedRef<Option<Phase>[]> = computed(() =>
-  phases.value.map((phase) => Phase[phase]).sort((a, b) => a.order - b.order),
+const optionsPhase: ComputedRef<Option<Phase>[]> = computed(() =>
+  Object.values(PHASES)
+    .map((phase) => ({
+      value: phase,
+      label: labelPhase(phase),
+    }))
+    .sort((a, b) => orderPhase(a.value) - orderPhase(b.value)),
 );
 </script>
 
@@ -43,16 +40,16 @@ const optionsPhases: ComputedRef<Option<Phase>[]> = computed(() =>
       </QItem>
       <QSeparator />
       <MenuAdminOptions
-        :get-value="anneeEnCours"
-        :set-value="setAnneeEnCours"
-        :options="optionsAnnees"
+        :get-value="currentYear"
+        :set-value="setCurrentYear"
+        :options="optionsYears"
         label="Année en cours"
         icon="sym_s_calendar_month"
       />
       <MenuAdminOptions
-        :get-value="phaseEnCours"
-        :set-value="setPhaseEnCours"
-        :options="optionsPhases"
+        :get-value="currentPhase"
+        :set-value="setCurrentPhase"
+        :options="optionsPhase"
         label="Phase en cours"
         icon="sym_s_schedule"
       />

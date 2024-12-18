@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import type { ComputedRef } from "vue";
-import { computed } from "vue";
+import { type ComputedRef, computed } from "vue";
 
-import { selected, useAnnees } from "@/stores/annees.ts";
+import { selected, useYears } from "@/stores/years.ts";
 import type { Option } from "@/types/common.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { annees } = useAnnees();
+const { years } = useYears();
 
 const options: ComputedRef<Option<number>[]> = computed(() =>
-  annees.value
-    .map((annee) => ({
-      value: annee,
-      label: annee.toString(),
+  years.value
+    .map((year) => ({
+      value: year,
+      label: year.toString(),
     }))
     .sort((a, b) => b.value - a.value),
 );

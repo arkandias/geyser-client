@@ -11,9 +11,9 @@ export default {
     "^[@.]/(components|pages)/",
   ],
   importOrderSeparation: true,
-  importOrderSortSpecifiers: false,
+  importOrderSortSpecifiers: true,
   importOrderGroupNamespaceSpecifiers: true,
   importOrderCaseInsensitive: false,
-  // importOrderParserPlugins: ["typescript"],
+  // importOrderParserPlugins: ["typescript", "jsx"],
   importOrderSideEffects: true,
 };

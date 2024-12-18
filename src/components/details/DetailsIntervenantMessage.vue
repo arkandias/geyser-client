@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useClientHandle } from "@urql/vue";
-import type { ComputedRef } from "vue";
-import { computed } from "vue";
+import { type ComputedRef, computed } from "vue";
 
+import { usePermissions } from "@/composables/permissions.ts";
 import { updateMessage } from "@/helpers/messages.ts";
-import { usePermissions } from "@/stores/permissions.ts";
 
 import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
 

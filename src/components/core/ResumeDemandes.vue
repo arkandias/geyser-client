@@ -1,25 +1,25 @@
 <script setup lang="ts">
+import { useRequestTypes } from "@/composables/request-types.ts";
+import {
+  type RequestType,
+  labelRequestType,
+} from "@/config/types/request-types.ts";
 import { nf } from "@/helpers/format.ts";
-import { useDemandes } from "@/stores/demandes.ts";
-import { TypeDemande } from "@/types/demandes.ts";
 
 import TableService from "@/components/core/TableService.vue";
 
 defineProps<{
-  totauxDemandes: Record<TypeDemande, number>;
+  totauxDemandes: Record<RequestType, number>;
 }>();
 
-const { typesAffiches: typesDemandeAffiches } = useDemandes();
+const { shown: shownRequestTypes } = useRequestTypes();
 </script>
 
 <template>
   <TableService>
-    <tr
-      v-for="typeDemande in typesDemandeAffiches"
-      :key="TypeDemande[typeDemande].value"
-    >
-      <td>{{ TypeDemande[typeDemande].labelPlural }}</td>
-      <td>{{ nf.format(totauxDemandes[typeDemande]) + " htd" }}</td>
+    <tr v-for="requestType in shownRequestTypes" :key="requestType">
+      <td>{{ labelRequestType(requestType) }}</td>
+      <td>{{ nf.format(totauxDemandes[requestType]) + " htd" }}</td>
     </tr>
   </TableService>
 </template>

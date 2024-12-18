@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { useClientHandle } from "@urql/vue";
-import type { ComputedRef, Ref, WritableComputedRef } from "vue";
-import { computed, ref, watch } from "vue";
+import {
+  type ComputedRef,
+  type Ref,
+  type WritableComputedRef,
+  computed,
+  ref,
+  watch,
+} from "vue";
 
+import { usePermissions } from "@/composables/permissions.ts";
 import { updateDemande } from "@/helpers/demandes.ts";
 import { errorNotify } from "@/helpers/notify.ts";
 import { useData } from "@/stores/data.ts";
-import { usePermissions } from "@/stores/permissions.ts";
 import { usePhases } from "@/stores/phases.ts";
 
 import SelectIntervenant from "@/components/core/SelectIntervenant.vue";
@@ -16,7 +22,7 @@ const props = defineProps<{
   heuresParGroupe: number | null;
 }>();
 
-const { enCours: phaseEnCours } = usePhases();
+const { current: phaseEnCours } = usePhases();
 const perm = usePermissions();
 const { myService } = useData();
 

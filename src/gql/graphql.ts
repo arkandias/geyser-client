@@ -9294,46 +9294,6 @@ export type UpdateDescriptionMutation = {
   description: { __typename?: "enseignement"; id: number } | null;
 };
 
-export type IntervenantFragment = {
-  __typename?: "intervenant";
-  uid: string;
-  nom: string;
-  prenom: string;
-  alias: string | null;
-};
-
-export type GetIntervenantQueryVariables = Exact<{
-  uid: Scalars["String"]["input"];
-}>;
-
-export type GetIntervenantQuery = {
-  __typename?: "query_root";
-  intervenant: {
-    __typename?: "intervenant";
-    uid: string;
-    nom: string;
-    prenom: string;
-    alias: string | null;
-  } | null;
-};
-
-export type UpsertIntervenantMutationVariables = Exact<{
-  uid: Scalars["String"]["input"];
-  nom: Scalars["String"]["input"];
-  prenom: Scalars["String"]["input"];
-}>;
-
-export type UpsertIntervenantMutation = {
-  __typename?: "mutation_root";
-  intervenant: {
-    __typename?: "intervenant";
-    uid: string;
-    nom: string;
-    prenom: string;
-    alias: string | null;
-  } | null;
-};
-
 export type UpsertMessageMutationVariables = Exact<{
   serviceId: Scalars["Int"]["input"];
   contenu: Scalars["String"]["input"];
@@ -9395,22 +9355,18 @@ export type DeleteModificationMutation = {
   } | null;
 };
 
-export type GetPhasesQueryVariables = Exact<{ [key: string]: never }>;
+export type GetCurrentPhaseQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetPhasesQuery = {
+export type GetCurrentPhaseQuery = {
   __typename?: "query_root";
-  phases: Array<{
-    __typename?: "phase";
-    value: string;
-    enCours: boolean | null;
-  }>;
+  phases: Array<{ __typename?: "phase"; value: string }>;
 };
 
-export type UpdatePhaseEnCoursMutationVariables = Exact<{
+export type SetCurrentPhaseMutationVariables = Exact<{
   value: Scalars["String"]["input"];
 }>;
 
-export type UpdatePhaseEnCoursMutation = {
+export type SetCurrentPhaseMutation = {
   __typename?: "mutation_root";
   phases: {
     __typename?: "phase_mutation_response";
@@ -9432,6 +9388,29 @@ export type PrioriteFragment = {
     prenom: string;
     alias: string | null;
   };
+};
+
+export type ProfileFragment = {
+  __typename?: "intervenant";
+  uid: string;
+  nom: string;
+  prenom: string;
+  alias: string | null;
+};
+
+export type GetProfileQueryVariables = Exact<{
+  uid: Scalars["String"]["input"];
+}>;
+
+export type GetProfileQuery = {
+  __typename?: "query_root";
+  profile: {
+    __typename?: "intervenant";
+    uid: string;
+    nom: string;
+    prenom: string;
+    alias: string | null;
+  } | null;
 };
 
 export type GetServicesQueryVariables = Exact<{
@@ -9614,12 +9593,12 @@ export const TotalHeuresEqtdFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<TotalHeuresEqtdFragment, unknown>;
-export const IntervenantFragmentDoc = {
+export const ProfileFragmentDoc = {
   kind: "Document",
   definitions: [
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Intervenant" },
+      name: { kind: "Name", value: "Profile" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "intervenant" },
@@ -9635,7 +9614,7 @@ export const IntervenantFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<IntervenantFragment, unknown>;
+} as unknown as DocumentNode<ProfileFragment, unknown>;
 export const ResponsableFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -9658,7 +9637,7 @@ export const ResponsableFragmentDoc = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Intervenant" },
+                  name: { kind: "Name", value: "Profile" },
                 },
               ],
             },
@@ -9669,7 +9648,7 @@ export const ResponsableFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Intervenant" },
+      name: { kind: "Name", value: "Profile" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "intervenant" },
@@ -9931,7 +9910,7 @@ export const ResumeFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Intervenant" },
+      name: { kind: "Name", value: "Profile" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "intervenant" },
@@ -9965,7 +9944,7 @@ export const ResumeFragmentDoc = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Intervenant" },
+                  name: { kind: "Name", value: "Profile" },
                 },
               ],
             },
@@ -10009,7 +9988,7 @@ export const DemandeFragmentDoc = {
                     selections: [
                       {
                         kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Intervenant" },
+                        name: { kind: "Name", value: "Profile" },
                       },
                     ],
                   },
@@ -10044,7 +10023,7 @@ export const DemandeFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Intervenant" },
+      name: { kind: "Name", value: "Profile" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "intervenant" },
@@ -10198,7 +10177,7 @@ export const ArchiveFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Intervenant" },
+      name: { kind: "Name", value: "Profile" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "intervenant" },
@@ -10243,7 +10222,7 @@ export const ArchiveFragmentDoc = {
                     selections: [
                       {
                         kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Intervenant" },
+                        name: { kind: "Name", value: "Profile" },
                       },
                     ],
                   },
@@ -10323,7 +10302,7 @@ export const NestedArchivesFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Intervenant" },
+      name: { kind: "Name", value: "Profile" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "intervenant" },
@@ -10368,7 +10347,7 @@ export const NestedArchivesFragmentDoc = {
                     selections: [
                       {
                         kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Intervenant" },
+                        name: { kind: "Name", value: "Profile" },
                       },
                     ],
                   },
@@ -10557,7 +10536,7 @@ export const PrioriteFragmentDoc = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Intervenant" },
+                  name: { kind: "Name", value: "Profile" },
                 },
               ],
             },
@@ -10574,7 +10553,7 @@ export const PrioriteFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Intervenant" },
+      name: { kind: "Name", value: "Profile" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "intervenant" },
@@ -12176,7 +12155,7 @@ export const GetEnseignementDetailsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Intervenant" },
+      name: { kind: "Name", value: "Profile" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "intervenant" },
@@ -12210,7 +12189,7 @@ export const GetEnseignementDetailsDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Intervenant" },
+                  name: { kind: "Name", value: "Profile" },
                 },
               ],
             },
@@ -12249,7 +12228,7 @@ export const GetEnseignementDetailsDocument = {
                     selections: [
                       {
                         kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Intervenant" },
+                        name: { kind: "Name", value: "Profile" },
                       },
                     ],
                   },
@@ -12673,7 +12652,7 @@ export const GetEnseignementDetailsDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Intervenant" },
+                  name: { kind: "Name", value: "Profile" },
                 },
               ],
             },
@@ -12815,205 +12794,6 @@ export const UpdateDescriptionDocument = {
 } as unknown as DocumentNode<
   UpdateDescriptionMutation,
   UpdateDescriptionMutationVariables
->;
-export const GetIntervenantDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "GetIntervenant" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "intervenant" },
-            name: { kind: "Name", value: "intervenant_by_pk" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "uid" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "uid" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Intervenant" },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Intervenant" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
-          { kind: "Field", name: { kind: "Name", value: "nom" } },
-          { kind: "Field", name: { kind: "Name", value: "prenom" } },
-          { kind: "Field", name: { kind: "Name", value: "alias" } },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<GetIntervenantQuery, GetIntervenantQueryVariables>;
-export const UpsertIntervenantDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "UpsertIntervenant" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "nom" } },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "prenom" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "intervenant" },
-            name: { kind: "Name", value: "insert_intervenant_one" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "object" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "uid" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "uid" },
-                      },
-                    },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "nom" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "nom" },
-                      },
-                    },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "prenom" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "prenom" },
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "on_conflict" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "constraint" },
-                      value: { kind: "EnumValue", value: "intervenant_pkey" },
-                    },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "update_columns" },
-                      value: {
-                        kind: "ListValue",
-                        values: [
-                          { kind: "EnumValue", value: "nom" },
-                          { kind: "EnumValue", value: "prenom" },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "uid" } },
-                { kind: "Field", name: { kind: "Name", value: "nom" } },
-                { kind: "Field", name: { kind: "Name", value: "prenom" } },
-                { kind: "Field", name: { kind: "Name", value: "alias" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  UpsertIntervenantMutation,
-  UpsertIntervenantMutationVariables
 >;
 export const UpsertMessageDocument = {
   kind: "Document",
@@ -13399,13 +13179,13 @@ export const DeleteModificationDocument = {
   DeleteModificationMutation,
   DeleteModificationMutationVariables
 >;
-export const GetPhasesDocument = {
+export const GetCurrentPhaseDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "GetPhases" },
+      name: { kind: "Name", value: "GetCurrentPhase" },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
@@ -13416,28 +13196,37 @@ export const GetPhasesDocument = {
             arguments: [
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
+                name: { kind: "Name", value: "where" },
                 value: {
                   kind: "ObjectValue",
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "value" },
-                      value: { kind: "EnumValue", value: "desc" },
+                      name: { kind: "Name", value: "en_cours" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: { kind: "BooleanValue", value: true },
+                          },
+                        ],
+                      },
                     },
                   ],
                 },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
               },
             ],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "value" } },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "enCours" },
-                  name: { kind: "Name", value: "en_cours" },
-                },
               ],
             },
           },
@@ -13445,14 +13234,17 @@ export const GetPhasesDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<GetPhasesQuery, GetPhasesQueryVariables>;
-export const UpdatePhaseEnCoursDocument = {
+} as unknown as DocumentNode<
+  GetCurrentPhaseQuery,
+  GetCurrentPhaseQueryVariables
+>;
+export const SetCurrentPhaseDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "mutation",
-      name: { kind: "Name", value: "UpdatePhaseEnCours" },
+      name: { kind: "Name", value: "SetCurrentPhase" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -13583,9 +13375,78 @@ export const UpdatePhaseEnCoursDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  UpdatePhaseEnCoursMutation,
-  UpdatePhaseEnCoursMutationVariables
+  SetCurrentPhaseMutation,
+  SetCurrentPhaseMutationVariables
 >;
+export const GetProfileDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetProfile" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "profile" },
+            name: { kind: "Name", value: "intervenant_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "uid" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "uid" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Profile" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          { kind: "Field", name: { kind: "Name", value: "nom" } },
+          { kind: "Field", name: { kind: "Name", value: "prenom" } },
+          { kind: "Field", name: { kind: "Name", value: "alias" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetProfileQuery, GetProfileQueryVariables>;
 export const GetServicesDocument = {
   kind: "Document",
   definitions: [
@@ -13714,7 +13575,7 @@ export const GetServicesDocument = {
                     selections: [
                       {
                         kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Intervenant" },
+                        name: { kind: "Name", value: "Profile" },
                       },
                     ],
                   },
@@ -13727,7 +13588,7 @@ export const GetServicesDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Intervenant" },
+      name: { kind: "Name", value: "Profile" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "intervenant" },
@@ -13983,7 +13844,7 @@ export const GetServicesTableRowsDocument = {
                     selections: [
                       {
                         kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Intervenant" },
+                        name: { kind: "Name", value: "Profile" },
                       },
                       {
                         kind: "Field",
@@ -14273,7 +14134,7 @@ export const GetServicesTableRowsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Intervenant" },
+      name: { kind: "Name", value: "Profile" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "intervenant" },

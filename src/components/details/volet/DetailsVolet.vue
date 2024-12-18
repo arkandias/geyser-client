@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { Ref } from "vue";
-import { ref, watch } from "vue";
+import { type Ref, ref, watch } from "vue";
 
 import { useData } from "@/stores/data.ts";
 
@@ -18,7 +17,7 @@ const expanded: Ref<boolean> = ref(false);
 watch(
   [
     () => enseignement.value?.id,
-    () => enseignement.value?.id ?? service.value?.intervenant.uid,
+    () => enseignement.value?.id ?? service.value?.teacher.uid,
   ],
   () => {
     expanded.value = false;

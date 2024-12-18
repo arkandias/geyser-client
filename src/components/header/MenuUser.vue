@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import type { ComputedRef } from "vue";
-import { computed } from "vue";
+import { type ComputedRef, computed } from "vue";
 
+import { type Role, labelRole, orderRole } from "@/config/types/roles.ts";
 import { formatIntervenant } from "@/helpers/format.ts";
 import { activeRole, useAuthentication } from "@/stores/authentication.ts";
 import { useRefresh } from "@/stores/refresh.ts";
 import type { Option } from "@/types/common.ts";
-import { Role } from "@/types/roles.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { intervenant, allowedRoles, logout } = useAuthentication();
+const { profile, allowedRoles, logout } = useAuthentication();
 const { refresh: refreshData } = useRefresh();
 
-const options: ComputedRef<Option<Role>[]> = computed(() =>
+const optionsRole: ComputedRef<Option<Role>[]> = computed(() =>
   allowedRoles.value
-    .map((role) => Role[role])
-    .sort((a, b) => a.order - b.order),
+    .map((role) => ({
+      value: role,
+      label: labelRole(role),
+    }))
+    .sort((a, b) => orderRole(a.value) - orderRole(b.value)),
 );
 </script>
 
@@ -25,14 +27,14 @@ const options: ComputedRef<Option<Role>[]> = computed(() =>
     <QList dense>
       <QItem class="flex-center text-no-wrap">
         <QItemLabel header>
-          {{ formatIntervenant(intervenant) }}
+          {{ formatIntervenant(profile) }}
         </QItemLabel>
       </QItem>
       <QSeparator />
       <QItem>
         <QOptionGroup
           v-model="activeRole"
-          :options
+          :options="optionsRole"
           color="primary"
           type="radio"
           @update:model-value="refreshData"
