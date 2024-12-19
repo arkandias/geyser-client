@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type ComputedRef, computed } from "vue";
 
-import type { TeacherRow } from "@/types/teachers.ts";
+import type { TeacherRow } from "@/types/teacher.ts";
 
 import DetailsIntervenantMessage from "@/components/details/DetailsIntervenantMessage.vue";
 import DetailsSection from "@/components/details/DetailsSection.vue";
@@ -9,17 +9,13 @@ import DetailsSection from "@/components/details/DetailsSection.vue";
 const props = defineProps<{ teacherRow: TeacherRow }>();
 
 const contenu: ComputedRef<string | null> = computed(
-  () => props.teacher.messages[0]?.body ?? null,
+  () => props.teacherRow.messages[0]?.body ?? null,
 );
 </script>
 
 <template>
   <DetailsSection title="Messages">
-    <DetailsIntervenantMessage
-      :service-id="teacherRow.id"
-      :uid="teacherRow.teacher.uid"
-      :contenu
-    />
+    <DetailsIntervenantMessage :uid="teacherRow.uid" :contenu />
   </DetailsSection>
 </template>
 

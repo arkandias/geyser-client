@@ -20,16 +20,20 @@ import {
 } from "@/helpers/format.ts";
 import { compare, uniqueValue } from "@/helpers/utils.ts";
 import { selectedCourse as selected, useData } from "@/stores/data.ts";
-import { type Column, isAbbreviable } from "@/types/columns.ts";
+import { type Column, isAbbreviable } from "@/types/column.ts";
 import type { Option } from "@/types/common.ts";
-import type { CourseRow } from "@/types/courses.ts";
+import type { CourseRow } from "@/types/course.ts";
+import type { TeacherDetails } from "@/types/teacher.ts";
+
+const { teacherDetails } = defineProps<{
+  teacherDetails: TeacherDetails | null;
+}>();
 
 const perm = usePermissions();
 const {
   courses,
   fetchingCourses,
   selectedCourse,
-  selectedTeacher,
   selectCourse,
   selectTeacher,
 } = useData();
@@ -43,9 +47,7 @@ const select = (_: Event, row: CourseRow) => {
 };
 
 const title: ComputedRef<string> = computed(() =>
-  selectedTeacher.value[0]
-    ? formatUser(selectedTeacher.value[0])
-    : "Enseignements",
+  teacherDetails ? formatUser(teacherDetails) : "Enseignements",
 );
 
 // Columns definition
@@ -148,7 +150,7 @@ const columns: Column<CourseRow>[] = [
     label: "A.",
     tooltip: "Nombre d'heures attribuées",
     field: (row) =>
-      getRequestTotal(row, REQUEST_TYPES.ASSIGNMENT, selectedTeacher.value[0]),
+      getRequestTotal(row, REQUEST_TYPES.ASSIGNMENT, teacherDetails),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -175,8 +177,7 @@ const columns: Column<CourseRow>[] = [
     name: "primary",
     label: "V1",
     tooltip: "Nombre d'heures demandées en vœux principaux",
-    field: (row) =>
-      getRequestTotal(row, REQUEST_TYPES.PRIMARY, selectedTeacher.value[0]),
+    field: (row) => getRequestTotal(row, REQUEST_TYPES.PRIMARY, teacherDetails),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -219,7 +220,7 @@ const columns: Column<CourseRow>[] = [
     label: "V2",
     tooltip: "Nombre d'heures demandées en vœux secondaires",
     field: (row) =>
-      getRequestTotal(row, REQUEST_TYPES.SECONDARY, selectedTeacher.value[0]),
+      getRequestTotal(row, REQUEST_TYPES.SECONDARY, teacherDetails),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -282,9 +283,7 @@ const clearSearch = () => {
 };
 // Filter attributes
 const filterObj = computed(() => ({
-  teacherRequests: selectedTeacher.value[0]
-    ? selectedTeacher.value[0].requests
-    : null,
+  teacherRequests: teacherDetails ? teacherDetails.requests : null,
   programs: programs.value,
   courseTypes: courseTypes.value,
   semesters: semesters.value,
@@ -320,12 +319,12 @@ const filterMethod = (
 // Styling options controllers
 const stickyHeader: Ref<boolean> = ref(false);
 const isAssigned = (row: CourseRow) =>
-  selectedTeacher.value[0]?.requests.some(
+  teacherDetails?.requests.some(
     (request) =>
       request.course.id === row.id && request.requestType === "attribution",
   ) ?? false;
 const isVisible = (row: CourseRow): boolean =>
-  !selectedTeacher.value[0] &&
+  !teacherDetails &&
   row.visible &&
   row.program.degree.visible &&
   row.program.visible &&
@@ -356,7 +355,7 @@ const isVisible = (row: CourseRow): boolean =>
       <div class="q-table__title">
         {{ title }}
         <QBtn
-          v-if="selectedTeacher[0]"
+          v-if="teacherDetails"
           icon="sym_s_visibility"
           :color="!selectedCourse[0] ? 'primary' : 'grey'"
           size="sm"
@@ -366,7 +365,7 @@ const isVisible = (row: CourseRow): boolean =>
           @click="selectCourse(null)"
         />
         <QBtn
-          v-if="selectedTeacher[0]"
+          v-if="teacherDetails"
           icon="sym_s_close"
           color="primary"
           size="sm"
@@ -381,7 +380,7 @@ const isVisible = (row: CourseRow): boolean =>
         <QSelect
           v-model="programs"
           :options="programsOptions"
-          :disable="!!selectedTeacher[0]"
+          :disable="!!teacherDetails"
           color="primary"
           label="Formation"
           emit-value
@@ -409,7 +408,7 @@ const isVisible = (row: CourseRow): boolean =>
         <QSelect
           v-model="courseTypes"
           :options="courseTypesOptions"
-          :disable="!!selectedTeacher[0]"
+          :disable="!!teacherDetails"
           color="primary"
           label="Type"
           emit-value
@@ -436,7 +435,7 @@ const isVisible = (row: CourseRow): boolean =>
         <QSelect
           v-model="semesters"
           :options="semestersOptions"
-          :disable="!!selectedTeacher[0]"
+          :disable="!!teacherDetails"
           color="primary"
           label="Semestre"
           emit-value
@@ -462,7 +461,7 @@ const isVisible = (row: CourseRow): boolean =>
         </QSelect>
         <QInput
           v-model="search"
-          :disable="!!selectedTeacher[0]"
+          :disable="!!teacherDetails"
           color="primary"
           placeholder="Recherche"
           clear-icon="sym_s_close"

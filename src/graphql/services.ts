@@ -7,15 +7,15 @@ graphql(/* GraphQL */ `
       ...Profile
     }
     weightedHours: heures_eqtd
+    totalModifications: modifications_aggregate {
+      ...ServiceModificationsTotalWeightedHours
+    }
   }
 
   fragment ServiceDetails on service {
     ...Service
     modifications(order_by: [{ type: asc }, { heures_eqtd: asc }]) {
       ...ServiceModification
-    }
-    totalModifications: modifications_aggregate {
-      ...ServiceModificationsTotalWeightedHours
     }
   }
 `);

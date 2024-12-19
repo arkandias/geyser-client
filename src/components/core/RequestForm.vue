@@ -11,7 +11,7 @@ import {
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
-import { errorNotify } from "@/helpers/notify.ts";
+import { NotifyType, notify } from "@/helpers/notify.ts";
 import { updateRequest } from "@/helpers/requests-operations.ts";
 import { useData } from "@/stores/data.ts";
 import { usePhases } from "@/stores/phases.ts";
@@ -85,18 +85,24 @@ watch(
 const client = useClientHandle().client;
 const submitForm = async (): Promise<void> => {
   if (uid.value === null) {
-    errorNotify("Formulaire non valide", "Sélectionnez un intervenant");
+    notify(NotifyType.Error, {
+      message: "Formulaire non valide",
+      caption: "Sélectionnez un intervenant",
+    });
     return;
   }
   if (heures.value === null || heures.value < 0) {
-    errorNotify(
-      "Formulaire non valide",
-      "Sélectionnez un nombre d'heures positif ou nul",
-    );
+    notify(NotifyType.Error, {
+      message: "Formulaire non valide",
+      caption: "Sélectionnez un nombre d'heures positif ou nul",
+    });
     return;
   }
   if (!requestType.value) {
-    errorNotify("Formulaire non valide", "Sélectionnez un type de demande");
+    notify(NotifyType.Error, {
+      message: "Formulaire non valide",
+      caption: "Sélectionnez un type de demande",
+    });
     return;
   }
   await updateRequest(client, {

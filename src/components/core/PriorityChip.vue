@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatUser, priorityColor } from "@/helpers/format.ts";
-import type { Priority } from "@/types/priorities.ts";
+import type { Priority } from "@/types/priority.ts";
 
 defineProps<{ priorite: Priority }>();
 </script>

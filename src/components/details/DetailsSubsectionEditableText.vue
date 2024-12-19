@@ -7,8 +7,8 @@ import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 defineProps<{
   title: string;
   text: string | null;
+  setText: (text: string) => Promise<boolean>;
   defaultText?: string;
-  setText?: (text: string) => Promise<boolean>;
   editable?: boolean;
 }>();
 
@@ -17,7 +17,7 @@ const edition: Ref<boolean> = ref(false);
 
 <template>
   <DetailsSubsection v-model="edition" :title :editable>
-    <EditableText v-model="edition" :title :text :default-text :set-text />
+    <EditableText v-model="edition" :text :set-text :default-text />
   </DetailsSubsection>
 </template>
 

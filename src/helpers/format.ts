@@ -1,9 +1,9 @@
 import type { NamedColor } from "quasar";
 
-import type { Coordinator } from "@/types/coordinators.ts";
-import type { CourseDetails } from "@/types/courses.ts";
+import type { Coordinator } from "@/types/coordinator.ts";
+import type { CourseDetails } from "@/types/course.ts";
 import type { Profile } from "@/types/profile.ts";
-import type { TeacherRow } from "@/types/teachers.ts";
+import type { TeacherRow } from "@/types/teacher.ts";
 
 export const nf = new Intl.NumberFormat("fr-FR", {
   style: "decimal",

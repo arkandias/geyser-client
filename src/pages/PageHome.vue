@@ -6,7 +6,7 @@ import { GET_TEACHERS_ROWS } from "@/graphql/teachers.ts";
 import { formatUser } from "@/helpers/format.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useYears } from "@/stores/years.ts";
-import type { TeacherRow } from "@/types/teachers.ts";
+import type { TeacherRow } from "@/types/teacher.ts";
 
 import DetailsVoletIntervenant from "@/components/details/volet/DetailsVoletIntervenant.vue";
 import HomeInfo from "@/components/home/HomeInfo.vue";

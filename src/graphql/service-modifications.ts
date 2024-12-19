@@ -3,7 +3,7 @@ import { graphql } from "@/gql";
 graphql(/* GraphQL */ `
   fragment ServiceModification on modification_service {
     id
-    serviceModificationType: type
+    modificationType: type
     weightedHours: heures_eqtd
   }
 
@@ -19,13 +19,13 @@ graphql(/* GraphQL */ `
 export const INSERT_SERVICE_MODIFICATION = graphql(/* GraphQL */ `
   mutation InsertServiceModification(
     $serviceId: Int!
-    $serviceModificationType: String!
+    $modificationType: String!
     $weightedHours: Float!
   ) {
     serviceModification: insert_modification_service_one(
       object: {
         service_id: $serviceId
-        type: $serviceModificationType
+        type: $modificationType
         heures_eqtd: $weightedHours
       }
     ) {

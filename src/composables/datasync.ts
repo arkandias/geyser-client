@@ -23,6 +23,7 @@ export const useDataSync = () => {
     pause: () => activeYear.value === null,
     context: { additionalTypenames: ["demande"] },
   });
+
   const queryTeachersRows = useQuery({
     query: GET_TEACHERS_ROWS,
     variables: reactive({

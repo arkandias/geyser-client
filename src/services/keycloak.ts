@@ -6,7 +6,7 @@ import {
 } from "@/config/constants.ts";
 import { bypassClaims, bypassKeycloak } from "@/config/env.ts";
 import { type Role, isRole } from "@/config/types/roles.ts";
-import { type HasuraClaims, isXHasuraClaims } from "@/types/claims.ts";
+import { type HasuraClaims, isXHasuraClaims } from "@/types/claim.ts";
 
 const keycloak = new Keycloak({
   url: import.meta.env.VITE_KEYCLOAK_URL ?? "",

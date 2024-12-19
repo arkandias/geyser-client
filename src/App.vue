@@ -10,7 +10,11 @@ import { GET_YEARS } from "@/graphql/years.ts";
 import { getClaims, logout } from "@/services/keycloak.ts";
 import { login, useAuthentication } from "@/stores/authentication.ts";
 import { current as currentPhase } from "@/stores/phases.ts";
-import { current as currentYear, years } from "@/stores/years.ts";
+import {
+  current as currentYear,
+  selected as selectedYear,
+  years,
+} from "@/stores/years.ts";
 import { isProfile } from "@/types/profile.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
@@ -36,6 +40,7 @@ watch(
     years.value = value?.years.map((year) => year.value) ?? [];
     currentYear.value =
       value?.years.find((year) => year.current)?.value ?? null;
+    selectedYear.value = currentYear.value;
   },
   { immediate: true },
 );

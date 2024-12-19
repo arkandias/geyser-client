@@ -3,7 +3,11 @@ import { type Ref, ref, watch } from "vue";
 
 import { useData } from "@/stores/data.ts";
 
-defineProps<{ label: string; caption: string }>();
+defineProps<{
+  label: string;
+  caption: string;
+  disable?: boolean;
+}>();
 defineSlots<{ default(): unknown }>();
 
 const { selectedCourse, selectedTeacher } = useData();
@@ -33,6 +37,7 @@ watch(
     expand-separator
     :label
     :caption
+    :disable
     dense
     dense-toggle
   >

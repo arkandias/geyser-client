@@ -1,5 +1,5 @@
 export type ServiceModification = {
   id: number;
-  serviceModificationType: string;
+  modificationType: string;
   weightedHours: number;
 };

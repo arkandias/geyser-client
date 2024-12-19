@@ -2,13 +2,13 @@ import {
   REQUEST_TYPES,
   type RequestType,
 } from "@/config/types/request-types.ts";
-import type { Archive, CourseRow, NestedArchives } from "@/types/courses.ts";
-import type { TeacherRow } from "@/types/teachers.ts";
+import type { Archive, CourseRow, NestedArchives } from "@/types/course.ts";
+import type { TeacherDetails } from "@/types/teacher.ts";
 
 export const getRequestTotal = (
   row: CourseRow,
   requestType: RequestType,
-  teacher?: TeacherRow,
+  teacher?: TeacherDetails | null,
 ) => {
   if (teacher) {
     return (

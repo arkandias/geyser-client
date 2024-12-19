@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RequestDetails } from "@/types/requests.ts";
+import type { RequestDetails } from "@/types/request.ts";
 
 import RequestCard from "@/components/core/RequestCard.vue";
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";

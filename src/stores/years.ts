@@ -16,8 +16,10 @@ const isCurrentActive: ComputedRef<boolean> = computed(
   () => active.value === current.value,
 );
 
-const select = (year?: number | null): void => {
-  selected.value = year ?? null;
+const select = (year: number | null): void => {
+  if (year !== null) {
+    selected.value = year;
+  }
 };
 
 export const useYears = () => {

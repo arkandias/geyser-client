@@ -1,8 +1,8 @@
 import { type ComputedRef, type Ref, computed, readonly, ref } from "vue";
 
 import { useAuthentication } from "@/stores/authentication.ts";
-import type { CourseRow } from "@/types/courses.ts";
-import type { TeacherRow } from "@/types/teachers.ts";
+import type { CourseRow } from "@/types/course.ts";
+import type { TeacherRow } from "@/types/teacher.ts";
 
 const courses: Ref<CourseRow[]> = ref([]);
 const teachers: Ref<TeacherRow[]> = ref([]);

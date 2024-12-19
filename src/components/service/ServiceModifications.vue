@@ -2,17 +2,15 @@
 import { useMutation, useQuery } from "@urql/vue";
 import { type ComputedRef, type Ref, computed, ref } from "vue";
 
-import { GET_SERVICE_MODIFICATION_TYPES } from "@/graphql/service-modification-types.ts";
+import { GET_MODIFICATION_TYPES } from "@/graphql/modification-types.ts";
 import {
   DELETE_SERVICE_MODIFICATION,
   INSERT_SERVICE_MODIFICATION,
 } from "@/graphql/service-modifications.ts";
 import { nf } from "@/helpers/format.ts";
-import { errorNotify, successNotify } from "@/helpers/notify.ts";
-import type {
-  ServiceModification,
-  ServiceModificationType,
-} from "@/types/services.ts";
+import { NotifyType, notify } from "@/helpers/notify.ts";
+import type { ModificationType } from "@/types/modification-type.ts";
+import type { ServiceModification } from "@/types/service-modification.ts";
 
 import ServiceTable from "@/components/service/ServiceTable.vue";
 
@@ -24,72 +22,65 @@ const props = defineProps<{
   editable: boolean;
 }>();
 
-const serviceCorrige: ComputedRef<number> = computed(
-  () => props.serviceBase - props.totalModifications,
-);
-
-const queryServiceModificationTypes = useQuery({
-  query: GET_SERVICE_MODIFICATION_TYPES,
+const queryModificationTypes = useQuery({
+  query: GET_MODIFICATION_TYPES,
   variables: {},
 });
 const insertModification = useMutation(INSERT_SERVICE_MODIFICATION);
 const deleteModification = useMutation(DELETE_SERVICE_MODIFICATION);
 
-const typeModificationOptions: ComputedRef<ServiceModificationType[]> =
-  computed(
-    () =>
-      queryServiceModificationTypes.data.value?.typesModification.map(
-        (typeModification) => ({
-          label: typeModification.label,
-          description: typeModification.description ?? null,
-        }),
-      ) ?? [],
-  );
+const modificationTypesOptions: ComputedRef<ModificationType[]> = computed(
+  () => queryModificationTypes.data.value?.modificationTypes ?? [],
+);
 
-const formOpen: Ref<boolean> = ref(false);
-const typeModification: Ref<ServiceModificationType | null> = ref(null);
-const heuresEQTD: Ref<number> = ref(0);
+const isFormOpen: Ref<boolean> = ref(false);
+const modificationTypes: Ref<ModificationType | null> = ref(null);
+const weightedHours: Ref<number> = ref(0);
 
 const resetForm = (): void => {
-  formOpen.value = false;
-  typeModification.value = null;
-  heuresEQTD.value = 0;
+  isFormOpen.value = false;
+  modificationTypes.value = null;
+  weightedHours.value = 0;
 };
 const submitForm = async (): Promise<void> => {
-  if (!typeModification.value) {
-    errorNotify(
-      "Formulaire non valide",
-      "Sélectionnez un type de modification de service",
-    );
+  if (!modificationTypes.value) {
+    notify(NotifyType.Error, {
+      message: "Formulaire non valide",
+      caption: "Sélectionnez un type de modification de service",
+    });
     return;
   }
-  if (heuresEQTD.value <= 0) {
-    errorNotify(
-      "Formulaire non valide",
-      "Sélectionnez un nombre d'heures strictement positif",
-    );
+  if (weightedHours.value <= 0) {
+    notify(NotifyType.Error, {
+      message: "Formulaire non valide",
+      caption: "Sélectionnez un nombre d'heures strictement positif",
+    });
     return;
   }
   const result = await insertModification.executeMutation({
     serviceId: props.serviceId,
-    typeModification: typeModification.value.label,
-    heuresEQTD: heuresEQTD.value,
+    modificationType: modificationTypes.value.value,
+    weightedHours: weightedHours.value,
   });
-  if (result.data?.modificationService && !result.error) {
-    successNotify("Modification ajoutée");
+  if (result.data?.serviceModification && !result.error) {
+    notify(NotifyType.Success, { message: "Modification ajoutée" });
   } else {
-    errorNotify("Échec de l'ajout");
+    notify(NotifyType.Error, { message: "Échec de l'ajout" });
   }
   resetForm();
 };
 const handleDeletion = async (id: number): Promise<void> => {
   const result = await deleteModification.executeMutation({ id: id });
-  if (result.data?.modificationService && !result.error) {
-    successNotify(`Modification supprimée`);
+  if (result.data?.serviceModification && !result.error) {
+    notify(NotifyType.Success, { message: "Modification supprimée" });
   } else {
-    errorNotify("Échec de la suppression");
+    notify(NotifyType.Error, { message: "Échec de la suppresssion" });
   }
 };
+
+const serviceCorrige: ComputedRef<number> = computed(
+  () => props.serviceBase - props.totalModifications,
+);
 </script>
 
 <template>
@@ -103,7 +94,7 @@ const handleDeletion = async (id: number): Promise<void> => {
       <td>
         Modifications
         <QBtn
-          v-if="formOpen"
+          v-if="isFormOpen"
           form="addModification"
           type="submit"
           icon="sym_s_check_circle"
@@ -121,11 +112,11 @@ const handleDeletion = async (id: number): Promise<void> => {
           flat
           square
           dense
-          @click="formOpen = true"
+          @click="isFormOpen = true"
         />
       </td>
     </tr>
-    <tr v-if="formOpen">
+    <tr v-if="isFormOpen">
       <td>
         <QBtn
           form="addModification"
@@ -138,8 +129,8 @@ const handleDeletion = async (id: number): Promise<void> => {
           dense
         />
         <QSelect
-          v-model="typeModification"
-          :options="typeModificationOptions"
+          v-model="modificationTypes"
+          :options="modificationTypesOptions"
           option-value="label"
           label-slot
           label="Type"
@@ -163,7 +154,7 @@ const handleDeletion = async (id: number): Promise<void> => {
       </td>
       <td>
         <QInput
-          v-model.number="heuresEQTD"
+          v-model.number="weightedHours"
           type="number"
           step="any"
           suffix="htd"
@@ -186,9 +177,9 @@ const handleDeletion = async (id: number): Promise<void> => {
           dense
           @click="handleDeletion(modification.id)"
         />
-        {{ modification.serviceModificationType }}
+        {{ modification.modificationType }}
       </td>
-      <td>{{ nf.format(modification.heuresEQTD) + " htd" }}</td>
+      <td>{{ nf.format(modification.weightedHours) + " htd" }}</td>
     </tr>
     <tr>
       <td colspan="100%" style="border-bottom: 1px solid black" />

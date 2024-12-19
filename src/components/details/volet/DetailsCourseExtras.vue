@@ -4,11 +4,10 @@ import { type ComputedRef, computed } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { UPDATE_DESCRIPTION } from "@/graphql/courses.ts";
-import type { Coordinator } from "@/types/coordinators.ts";
-import type { CourseDetails } from "@/types/courses.ts";
+import type { Coordinator } from "@/types/coordinator.ts";
+import type { CourseDetails } from "@/types/course.ts";
 import type { Profile } from "@/types/profile.ts";
 
-import EditableText from "@/components/core/EditableText.vue";
 import DetailsCourseCoordinators from "@/components/details/DetailsCourseCoordinators.vue";
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
@@ -51,9 +50,6 @@ const setDescription = (text: string): Promise<boolean> =>
       :track-coordinators
       :course-coordinators
     />
-  </DetailsSubsection>
-  <DetailsSubsection title="Description">
-    <EditableText title="" text="" set-text="" />
   </DetailsSubsection>
   <DetailsSubsectionEditableText
     title="Description"

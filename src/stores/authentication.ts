@@ -13,7 +13,7 @@ const profile: Profile = reactive({
   alias: null,
 });
 const allowedRoles: Ref<Role[]> = ref([]);
-const logout: Ref<(() => Promise<void>) | null> = ref(null);
+const logout: Ref<() => Promise<void>> = ref(() => Promise.resolve());
 
 export function login(
   newProfile: Profile,

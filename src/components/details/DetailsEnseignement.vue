@@ -5,7 +5,7 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { useShownRequestTypes } from "@/composables/shown-request-types.ts";
 import { labelRequestType } from "@/config/types/request-types.ts";
 import { processArchives } from "@/helpers/courses.ts";
-import type { Archive, CourseDetails } from "@/types/courses.ts";
+import type { Archive, CourseDetails } from "@/types/course.ts";
 
 import PriorityChip from "@/components/core/PriorityChip.vue";
 import RequestForm from "@/components/core/RequestForm.vue";
@@ -26,8 +26,8 @@ const archives: ComputedRef<Archive[]> = computed(() =>
   <DetailsSection title="Demandes">
     <RequestForm
       v-if="perm.deFaireDesDemandes || perm.deModifierLesAttributions"
-      :ens-id="details.courseId"
-      :heures-par-groupe="details.hoursPerGroup"
+      :course-id="details.courseId"
+      :hours-per-group="details.hoursPerGroup"
     />
     <DetailsEnseignementDemandes
       v-for="requestType in shownRequestTypes"

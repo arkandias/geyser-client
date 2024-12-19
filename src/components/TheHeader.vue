@@ -53,7 +53,7 @@ const version: ComputedRef<string | null> = computed(() =>
       </QBtn>
       <Transition>
         <div
-          v-if="!disable && router.currentRoute.value.name === 'enseignements'"
+          v-if="!disable && router.currentRoute.value.name === 'courses'"
           id="transition-wrapper"
         >
           <CoursesOptions />

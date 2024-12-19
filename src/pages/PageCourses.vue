@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import { watch, watchEffect } from "vue";
+import { useQuery } from "@urql/vue";
+import { type ComputedRef, computed, reactive, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import { useDataSync } from "@/composables/datasync.ts";
 import { usePermissions } from "@/composables/permissions.ts";
+import { GET_COURSE_DETAILS } from "@/graphql/courses.ts";
+import { GET_TEACHER_DETAILS } from "@/graphql/teachers.ts";
 import { getNumber, getValue } from "@/helpers/utils.ts";
 import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { useYears } from "@/stores/years.ts";
+import type { CourseDetails } from "@/types/course.ts";
+import type { TeacherDetails } from "@/types/teacher.ts";
 
 import DetailsCourse from "@/components/DetailsCourse.vue";
 import TableCourses from "@/components/TableCourses.vue";
@@ -25,14 +30,58 @@ const perm = usePermissions();
 const { closeLeftPanel, filtreIntervenants, openLeftPanel } = useLayout();
 const { selectedCourse, selectedTeacher, selectCourse, selectTeacher } =
   useData();
+
 useDataSync();
 
-// sync query parameters with selection
-watchEffect(() => {
-  selectYear(getNumber(route.query, "year"));
-  selectCourse(getNumber(route.query, "course_id"));
-  selectTeacher(getValue(route.query, "uid"));
+const queryCourseDetails = useQuery({
+  query: GET_COURSE_DETAILS,
+  variables: reactive({
+    courseId: computed(() => selectedCourse.value[0]?.id ?? -1),
+  }),
+  pause: () => !selectedCourse.value[0],
+  context: {
+    additionalTypenames: ["demande", "priorite"],
+  },
 });
+
+const queryTeacherDetails = useQuery({
+  query: GET_TEACHER_DETAILS,
+  variables: reactive({
+    year: computed(() => selectedYear.value ?? -1),
+    uid: computed(() => selectedTeacher.value[0]?.uid ?? ""),
+  }),
+  pause: () => !selectedYear.value || !selectedTeacher.value[0],
+  context: {
+    additionalTypenames: ["demande", "message", "modification_service"],
+  },
+});
+
+const courseDetails: ComputedRef<CourseDetails | null> = computed(() =>
+  selectedCourse.value[0]
+    ? (queryCourseDetails.data.value?.course ?? null)
+    : null,
+);
+
+const teacherDetails: ComputedRef<TeacherDetails | null> = computed(() =>
+  selectedTeacher.value[0]
+    ? (queryTeacherDetails.data.value?.teacher ?? null)
+    : null,
+);
+
+// sync query parameters with selection
+watch(
+  [
+    () => getNumber(route.query, "year"),
+    () => getNumber(route.query, "course_id"),
+    () => getValue(route.query, "uid"),
+  ],
+  () => {
+    selectYear(getNumber(route.query, "year"));
+    selectCourse(getNumber(route.query, "course_id"));
+    selectTeacher(getValue(route.query, "uid"));
+  },
+  { immediate: true },
+);
 watch(
   [
     () => selectedYear.value ?? undefined,
@@ -41,7 +90,7 @@ watch(
   ],
   async ([year, courseId, serviceId]) => {
     await router.replace({
-      query: { year: year, course_id: courseId, service_id: serviceId },
+      query: { year: year, course_id: courseId, uid: serviceId },
     });
   },
 );
@@ -77,10 +126,10 @@ watch(
       <template #after>
         <QSplitter id="second-splitter" v-model="hSplitterRatio" horizontal>
           <template #before>
-            <TableCourses />
+            <TableCourses :teacher-details />
           </template>
           <template #after>
-            <DetailsCourse :course-row="selectedCourse[0]" />
+            <DetailsCourse :course-details />
           </template>
         </QSplitter>
       </template>

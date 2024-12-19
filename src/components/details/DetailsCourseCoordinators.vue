@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { formatCoordinators } from "@/helpers/format.ts";
-import type { Coordinator } from "@/types/coordinators.ts";
+import type { Coordinator } from "@/types/coordinator.ts";
 
 defineProps<{
   programCoordinators: Coordinator[];

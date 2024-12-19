@@ -5,7 +5,6 @@ import xss from "xss";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 
 const edition = defineModel<boolean>();
-
 const {
   text,
   setText,

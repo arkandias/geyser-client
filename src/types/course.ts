@@ -1,8 +1,8 @@
 import type { Option } from "@/types/common.ts";
-import type { Coordinator } from "@/types/coordinators.ts";
-import type { Priority } from "@/types/priorities.ts";
-import type { RequestDetails } from "@/types/requests.ts";
-import type { TotalHours } from "@/types/rows.ts";
+import type { Coordinator } from "@/types/coordinator.ts";
+import type { Priority } from "@/types/priority.ts";
+import type { RequestDetails } from "@/types/request.ts";
+import type { TotalHours } from "@/types/row.ts";
 
 type Identifier = {
   id: number;
@@ -26,6 +26,7 @@ export type CourseDetails = {
   name: string;
   courseType: Option<string>;
   semester: number;
+  hoursPerGroup: number | null;
   coordinators: Coordinator[];
   program: {
     degree: {

@@ -7,7 +7,7 @@ import {
   mapExchange,
 } from "@urql/vue";
 
-import { errorNotify } from "@/helpers/notify.ts";
+import { NotifyType, notify } from "@/helpers/notify.ts";
 import { getAuthorizationHeaders, refreshToken } from "@/services/keycloak.ts";
 import { activeRole } from "@/stores/authentication.ts";
 
@@ -24,7 +24,7 @@ export const clientOptions: ClientOptions = {
       },
       onError(error) {
         console.error(error);
-        errorNotify(error.toString());
+        notify(NotifyType.Error, { message: error.toString() });
       },
     }),
     fetchExchange,

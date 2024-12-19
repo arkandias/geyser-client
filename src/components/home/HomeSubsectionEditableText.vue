@@ -8,7 +8,7 @@ defineProps<{
   title: string;
   text: string | null;
   defaultText?: string;
-  setText?: (text: string) => Promise<boolean>;
+  setText: (text: string) => Promise<boolean>;
   editable?: boolean;
 }>();
 

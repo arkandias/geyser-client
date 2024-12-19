@@ -4,19 +4,15 @@ import { type Ref, computed, ref, toValue, watchEffect } from "vue";
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { nf, normalizeForSearch } from "@/helpers/format.ts";
-import {
-  selectedTeacher as selected,
-  selectedTeacher,
-  useData,
-} from "@/stores/data.ts";
-import type { ColumnNonAbbreviable } from "@/types/columns.ts";
-import type { TeacherRow } from "@/types/teachers.ts";
+import { selectedTeacher as selected, useData } from "@/stores/data.ts";
+import type { ColumnNonAbbreviable } from "@/types/column.ts";
+import type { TeacherRow } from "@/types/teacher.ts";
 
 const perm = usePermissions();
 const { teachers, fetchingTeachers, selectCourse, selectTeacher } = useData();
 
 const select = (_: Event, row: TeacherRow) => {
-  if (selectedTeacher.value[0]?.uid === row.uid) {
+  if (selected.value[0]?.uid === row.uid) {
     selectTeacher(null);
   } else {
     selectTeacher(row.uid);
@@ -61,7 +57,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     label: "M.",
     tooltip: "Messages",
     align: "left",
-    field: (row) => (row.messages[0] ? "✓" : "✗"),
+    field: (row) => (row.messageCount.aggregate?.count ? "✓" : "✗"),
     sortable: true,
     visible: false,
     searchable: false,

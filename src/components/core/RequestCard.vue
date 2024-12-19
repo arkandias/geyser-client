@@ -10,7 +10,7 @@ import {
   deleteDemandeById,
   updateRequest,
 } from "@/helpers/requests-operations.ts";
-import type { RequestDetails } from "@/types/requests.ts";
+import type { RequestDetails } from "@/types/request.ts";
 
 const props = defineProps<{
   request: RequestDetails;
