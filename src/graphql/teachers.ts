@@ -12,6 +12,7 @@ graphql(/* GraphQL */ `
     services(where: { annee: { _eq: $year } }, limit: 1) {
       ...ServiceDetails
     }
+    # TODO: in DetailsTeacher
     requests: demandes(order_by: [{ type: asc }, { ens_id: asc }]) {
       ...RequestDetails
     }
@@ -33,7 +34,8 @@ graphql(/* GraphQL */ `
       ...RequestsTotalHours
       ...RequestsTotalWeightedHours
     }
-    # limit: 1 car unique
+    # TODO: in DetailsTeacher
+    #     limit: 1 car unique
     messages(where: { annee: { _eq: $year } }, limit: 1) {
       ...Message
     }

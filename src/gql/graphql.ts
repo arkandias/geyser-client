@@ -9350,8 +9350,8 @@ export type CoordinatorFragment = {
 
 export type ArchiveFragment = {
   __typename?: "enseignement";
-  courseId: number;
   year: number;
+  courseId: number;
   requests: Array<{
     __typename?: "demande";
     id: number;
@@ -9376,16 +9376,16 @@ export type ArchiveFragment = {
 
 export type NestedArchivesFragment = {
   __typename?: "enseignement";
-  courseId: number;
   year: number;
+  courseId: number;
   parent: {
     __typename?: "enseignement";
-    courseId: number;
     year: number;
+    courseId: number;
     parent: {
       __typename?: "enseignement";
-      courseId: number;
       year: number;
+      courseId: number;
       requests: Array<{
         __typename?: "demande";
         id: number;
@@ -9454,7 +9454,8 @@ export type CourseDetailsFragment = {
   __typename?: "enseignement";
   description: string | null;
   courseId: number;
-  hoursPerGroup: number | null;
+  name: string;
+  semester: number;
   coordinators: Array<{
     __typename?: "responsable";
     id: number;
@@ -9469,6 +9470,8 @@ export type CourseDetailsFragment = {
   }>;
   program: {
     __typename?: "mention";
+    name: string;
+    degree: { __typename?: "cursus"; name: string };
     coordinators: Array<{
       __typename?: "responsable";
       id: number;
@@ -9484,6 +9487,7 @@ export type CourseDetailsFragment = {
   };
   track: {
     __typename?: "parcours";
+    name: string;
     coordinators: Array<{
       __typename?: "responsable";
       id: number;
@@ -9533,16 +9537,16 @@ export type CourseDetailsFragment = {
   }>;
   parent: {
     __typename?: "enseignement";
-    courseId: number;
     year: number;
+    courseId: number;
     parent: {
       __typename?: "enseignement";
-      courseId: number;
       year: number;
+      courseId: number;
       parent: {
         __typename?: "enseignement";
-        courseId: number;
         year: number;
+        courseId: number;
         requests: Array<{
           __typename?: "demande";
           id: number;
@@ -9746,7 +9750,7 @@ export type GetCoursesTableRowsQuery = {
 };
 
 export type GetCourseDetailsQueryVariables = Exact<{
-  ensId: Scalars["Int"]["input"];
+  courseId: Scalars["Int"]["input"];
 }>;
 
 export type GetCourseDetailsQuery = {
@@ -9755,7 +9759,8 @@ export type GetCourseDetailsQuery = {
     __typename?: "enseignement";
     description: string | null;
     courseId: number;
-    hoursPerGroup: number | null;
+    name: string;
+    semester: number;
     coordinators: Array<{
       __typename?: "responsable";
       id: number;
@@ -9770,6 +9775,8 @@ export type GetCourseDetailsQuery = {
     }>;
     program: {
       __typename?: "mention";
+      name: string;
+      degree: { __typename?: "cursus"; name: string };
       coordinators: Array<{
         __typename?: "responsable";
         id: number;
@@ -9785,6 +9792,7 @@ export type GetCourseDetailsQuery = {
     };
     track: {
       __typename?: "parcours";
+      name: string;
       coordinators: Array<{
         __typename?: "responsable";
         id: number;
@@ -9834,16 +9842,16 @@ export type GetCourseDetailsQuery = {
     }>;
     parent: {
       __typename?: "enseignement";
-      courseId: number;
       year: number;
+      courseId: number;
       parent: {
         __typename?: "enseignement";
-        courseId: number;
         year: number;
+        courseId: number;
         parent: {
           __typename?: "enseignement";
-          courseId: number;
           year: number;
+          courseId: number;
           requests: Array<{
             __typename?: "demande";
             id: number;
@@ -10738,13 +10746,13 @@ export const ArchiveFragmentDoc = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "courseId" },
-            name: { kind: "Name", value: "id" },
+            alias: { kind: "Name", value: "year" },
+            name: { kind: "Name", value: "annee" },
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "year" },
-            name: { kind: "Name", value: "annee" },
+            alias: { kind: "Name", value: "courseId" },
+            name: { kind: "Name", value: "id" },
           },
           {
             kind: "Field",
@@ -11074,13 +11082,13 @@ export const NestedArchivesFragmentDoc = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "courseId" },
-            name: { kind: "Name", value: "id" },
+            alias: { kind: "Name", value: "year" },
+            name: { kind: "Name", value: "annee" },
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "year" },
-            name: { kind: "Name", value: "annee" },
+            alias: { kind: "Name", value: "courseId" },
+            name: { kind: "Name", value: "id" },
           },
           {
             kind: "Field",
@@ -11197,8 +11205,13 @@ export const CourseDetailsFragmentDoc = {
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "hoursPerGroup" },
-            name: { kind: "Name", value: "heures_corrigees" },
+            alias: { kind: "Name", value: "name" },
+            name: { kind: "Name", value: "nom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "semester" },
+            name: { kind: "Name", value: "semestre" },
           },
           {
             kind: "Field",
@@ -11270,6 +11283,26 @@ export const CourseDetailsFragmentDoc = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "degree" },
+                  name: { kind: "Name", value: "cursus" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "name" },
+                        name: { kind: "Name", value: "nom" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "name" },
+                  name: { kind: "Name", value: "nom" },
+                },
                 {
                   kind: "Field",
                   alias: { kind: "Name", value: "coordinators" },
@@ -11349,6 +11382,11 @@ export const CourseDetailsFragmentDoc = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "name" },
+                  name: { kind: "Name", value: "nom" },
+                },
                 {
                   kind: "Field",
                   alias: { kind: "Name", value: "coordinators" },
@@ -11665,13 +11703,13 @@ export const CourseDetailsFragmentDoc = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "courseId" },
-            name: { kind: "Name", value: "id" },
+            alias: { kind: "Name", value: "year" },
+            name: { kind: "Name", value: "annee" },
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "year" },
-            name: { kind: "Name", value: "annee" },
+            alias: { kind: "Name", value: "courseId" },
+            name: { kind: "Name", value: "id" },
           },
           {
             kind: "Field",
@@ -11972,18 +12010,6 @@ export const CourseRowFragmentDoc = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "name" },
-                  name: { kind: "Name", value: "nom" },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "shortName" },
-                  name: { kind: "Name", value: "nom_court" },
-                },
-                { kind: "Field", name: { kind: "Name", value: "visible" } },
                 {
                   kind: "Field",
                   alias: { kind: "Name", value: "degree" },
@@ -12009,6 +12035,18 @@ export const CourseRowFragmentDoc = {
                     ],
                   },
                 },
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "name" },
+                  name: { kind: "Name", value: "nom" },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "shortName" },
+                  name: { kind: "Name", value: "nom_court" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "visible" } },
               ],
             },
           },
@@ -13726,18 +13764,6 @@ export const GetCoursesTableRowsDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "name" },
-                  name: { kind: "Name", value: "nom" },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "shortName" },
-                  name: { kind: "Name", value: "nom_court" },
-                },
-                { kind: "Field", name: { kind: "Name", value: "visible" } },
                 {
                   kind: "Field",
                   alias: { kind: "Name", value: "degree" },
@@ -13763,6 +13789,18 @@ export const GetCoursesTableRowsDocument = {
                     ],
                   },
                 },
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "name" },
+                  name: { kind: "Name", value: "nom" },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "shortName" },
+                  name: { kind: "Name", value: "nom_court" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "visible" } },
               ],
             },
           },
@@ -14028,7 +14066,7 @@ export const GetCourseDetailsDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "ensId" },
+            name: { kind: "Name", value: "courseId" },
           },
           type: {
             kind: "NonNullType",
@@ -14049,7 +14087,7 @@ export const GetCourseDetailsDocument = {
                 name: { kind: "Name", value: "id" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "ensId" },
+                  name: { kind: "Name", value: "courseId" },
                 },
               },
             ],
@@ -14243,13 +14281,13 @@ export const GetCourseDetailsDocument = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "courseId" },
-            name: { kind: "Name", value: "id" },
+            alias: { kind: "Name", value: "year" },
+            name: { kind: "Name", value: "annee" },
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "year" },
-            name: { kind: "Name", value: "annee" },
+            alias: { kind: "Name", value: "courseId" },
+            name: { kind: "Name", value: "id" },
           },
           {
             kind: "Field",
@@ -14401,8 +14439,13 @@ export const GetCourseDetailsDocument = {
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "hoursPerGroup" },
-            name: { kind: "Name", value: "heures_corrigees" },
+            alias: { kind: "Name", value: "name" },
+            name: { kind: "Name", value: "nom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "semester" },
+            name: { kind: "Name", value: "semestre" },
           },
           {
             kind: "Field",
@@ -14474,6 +14517,26 @@ export const GetCourseDetailsDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "degree" },
+                  name: { kind: "Name", value: "cursus" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "name" },
+                        name: { kind: "Name", value: "nom" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "name" },
+                  name: { kind: "Name", value: "nom" },
+                },
                 {
                   kind: "Field",
                   alias: { kind: "Name", value: "coordinators" },
@@ -14553,6 +14616,11 @@ export const GetCourseDetailsDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "name" },
+                  name: { kind: "Name", value: "nom" },
+                },
                 {
                   kind: "Field",
                   alias: { kind: "Name", value: "coordinators" },

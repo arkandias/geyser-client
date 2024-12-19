@@ -10,16 +10,17 @@ import {
 } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
+import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { errorNotify } from "@/helpers/notify.ts";
 import { updateRequest } from "@/helpers/requests-operations.ts";
 import { useData } from "@/stores/data.ts";
 import { usePhases } from "@/stores/phases.ts";
 
-import SelectIntervenant from "@/components/core/SelectIntervenant.vue";
+import TeacherSelect from "@/components/core/TeacherSelect.vue";
 
 const props = defineProps<{
-  ensId: number;
-  heuresParGroupe: number | null;
+  courseId: number;
+  hoursPerGroup: number | null;
 }>();
 
 const { current: phaseEnCours } = usePhases();
@@ -28,7 +29,7 @@ const { myRow } = useData();
 
 const heures: Ref<number | null> = ref(null);
 watch(
-  () => props.heuresParGroupe,
+  () => props.hoursPerGroup,
   (value) => {
     heures.value = value;
   },
@@ -37,20 +38,20 @@ watch(
 
 const groupes: WritableComputedRef<number | null> = computed({
   get: () =>
-    heures.value === null || props.heuresParGroupe === null
+    heures.value === null || props.hoursPerGroup === null
       ? null
       : Math.round(
-          (heures.value / props.heuresParGroupe + Number.EPSILON) * 100,
+          (heures.value / props.hoursPerGroup + Number.EPSILON) * 100,
         ) / 100,
   set: (val) => {
     heures.value =
-      val === null || props.heuresParGroupe === null
+      val === null || props.hoursPerGroup === null
         ? null
-        : val * props.heuresParGroupe;
+        : val * props.hoursPerGroup;
   },
 });
 
-const typeDemandeInit: ComputedRef<string | null> = computed(() => {
+const requestTypeInit: ComputedRef<string | null> = computed(() => {
   switch (phaseEnCours.value) {
     case "voeux":
       return "principale";
@@ -58,32 +59,32 @@ const typeDemandeInit: ComputedRef<string | null> = computed(() => {
       return "attribution";
   }
 });
-const typeDemande: Ref<string | null> = ref(null);
+const requestType: Ref<string | null> = ref(null);
 watch(
-  typeDemandeInit,
+  requestTypeInit,
   (value) => {
-    typeDemande.value = value;
+    requestType.value = value;
   },
   { immediate: true },
 );
 
-const serviceIdInit: ComputedRef<number | null> = computed(() =>
+const uidInit: ComputedRef<string | null> = computed(() =>
   perm.deFaireDesDemandesPourAutrui || perm.deModifierLesAttributions
     ? null
-    : (myRow.value?.id ?? null),
+    : (myRow.value?.uid ?? null),
 );
-const serviceId: Ref<number | null> = ref(null);
+const uid: Ref<string | null> = ref(null);
 watch(
-  serviceIdInit,
+  uidInit,
   (value) => {
-    serviceId.value = value;
+    uid.value = value;
   },
   { immediate: true },
 );
 
 const client = useClientHandle().client;
 const submitForm = async (): Promise<void> => {
-  if (serviceId.value === null) {
+  if (uid.value === null) {
     errorNotify("Formulaire non valide", "Sélectionnez un intervenant");
     return;
   }
@@ -94,21 +95,21 @@ const submitForm = async (): Promise<void> => {
     );
     return;
   }
-  if (!typeDemande.value) {
+  if (!requestType.value) {
     errorNotify("Formulaire non valide", "Sélectionnez un type de demande");
     return;
   }
   await updateRequest(client, {
-    serviceId: serviceId.value,
-    ensId: props.ensId,
-    typeDemande: typeDemande.value,
-    heures: heures.value,
+    uid: uid.value,
+    courseId: props.courseId,
+    requestType: requestType.value,
+    hours: heures.value,
   });
 };
 const resetForm = (): void => {
-  serviceId.value = serviceIdInit.value;
-  heures.value = props.heuresParGroupe;
-  typeDemande.value = typeDemandeInit.value;
+  uid.value = uidInit.value;
+  heures.value = props.hoursPerGroup;
+  requestType.value = requestTypeInit.value;
 };
 </script>
 
@@ -120,11 +121,11 @@ const resetForm = (): void => {
       @submit="submitForm"
       @reset="resetForm"
     >
-      <SelectIntervenant
+      <TeacherSelect
         v-if="
           perm.deFaireDesDemandesPourAutrui || perm.deModifierLesAttributions
         "
-        v-model="serviceId"
+        v-model="uid"
         dense
         options-dense
       />
@@ -146,26 +147,27 @@ const resetForm = (): void => {
         square
         dense
       />
+      <!-- TODO: v-for -->
       <QRadio
         v-if="perm.deModifierLesAttributions"
-        v-model="typeDemande"
-        val="attribution"
+        v-model="requestType"
+        :val="REQUEST_TYPES.ASSIGNMENT"
         label="Attribution"
         color="primary"
         dense
       />
       <QRadio
         v-if="perm.deFaireDesDemandes"
-        v-model="typeDemande"
-        val="principale"
+        v-model="requestType"
+        :val="REQUEST_TYPES.PRIMARY"
         label="Principale"
         color="primary"
         dense
       />
       <QRadio
         v-if="perm.deFaireDesDemandes"
-        v-model="typeDemande"
-        val="secondaire"
+        v-model="requestType"
+        :val="REQUEST_TYPES.SECONDARY"
         label="Secondaire"
         color="primary"
         dense

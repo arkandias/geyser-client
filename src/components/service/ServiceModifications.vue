@@ -14,7 +14,7 @@ import type {
   ServiceModificationType,
 } from "@/types/services.ts";
 
-import TableService from "@/components/core/TableService.vue";
+import ServiceTable from "@/components/service/ServiceTable.vue";
 
 const props = defineProps<{
   serviceId: number;
@@ -94,7 +94,7 @@ const handleDeletion = async (id: number): Promise<void> => {
 
 <template>
   <form id="addModification" @submit.prevent="submitForm" @reset="resetForm" />
-  <TableService>
+  <ServiceTable>
     <tr>
       <td>Base</td>
       <td>{{ nf.format(serviceBase) + " htd" }}</td>
@@ -197,7 +197,7 @@ const handleDeletion = async (id: number): Promise<void> => {
       <td>Total</td>
       <td>{{ nf.format(serviceCorrige) + " htd" }}</td>
     </tr>
-  </TableService>
+  </ServiceTable>
 </template>
 
 <style scoped lang="scss">

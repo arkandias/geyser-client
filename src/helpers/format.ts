@@ -1,7 +1,7 @@
 import type { NamedColor } from "quasar";
 
 import type { Coordinator } from "@/types/coordinators.ts";
-import type { CourseRow } from "@/types/courses.ts";
+import type { CourseDetails } from "@/types/courses.ts";
 import type { Profile } from "@/types/profile.ts";
 import type { TeacherRow } from "@/types/teachers.ts";
 
@@ -33,11 +33,11 @@ export const formatCoordinators = (coordinators: Coordinator[]) =>
     )
     .join(", ");
 
-export const formatCourseCaption = (row: CourseRow) =>
-  `${row.program.degree.name} — ${row.program.name} — ` +
-  (row.track?.name ? `${row.track.name} — ` : "") +
-  `S${String(row.semester)} — ` +
-  row.courseType.label;
+export const formatCourseCaption = (details: CourseDetails) =>
+  `${details.program.degree.name} — ${details.program.name} — ` +
+  (details.track?.name ? `${details.track.name} — ` : "") +
+  `S${String(details.semester)} — ` +
+  details.courseType.label;
 
 export const formatTeacherCaption = (row: TeacherRow) => {
   const service = String(

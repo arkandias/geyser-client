@@ -5,36 +5,36 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { useShownRequestTypes } from "@/composables/shown-request-types.ts";
 import { labelRequestType } from "@/config/types/request-types.ts";
 import { processArchives } from "@/helpers/courses.ts";
-import type { CourseDetails } from "@/types/courses.ts";
+import type { Archive, CourseDetails } from "@/types/courses.ts";
 
-import FormulaireDemande from "@/components/core/FormulaireDemande.vue";
-import PucePriorite from "@/components/core/PucePriorite.vue";
+import PriorityChip from "@/components/core/PriorityChip.vue";
+import RequestForm from "@/components/core/RequestForm.vue";
 import DetailsEnseignementDemandes from "@/components/details/DetailsEnseignementDemandes.vue";
 import DetailsSection from "@/components/details/DetailsSection.vue";
 
-const props = defineProps<{ courseDetails: CourseDetails }>();
+const props = defineProps<{ details: CourseDetails }>();
 
 const perm = usePermissions();
 const { shown: shownRequestTypes } = useShownRequestTypes();
 
 const archives: ComputedRef<Archive[]> = computed(() =>
-  processArchives(props.courseDetails.parent).sort((a, b) => b.year - a.year),
+  processArchives(props.details.parent).sort((a, b) => b.year - a.year),
 );
 </script>
 
 <template>
   <DetailsSection title="Demandes">
-    <FormulaireDemande
+    <RequestForm
       v-if="perm.deFaireDesDemandes || perm.deModifierLesAttributions"
-      :ens-id="courseDetails.courseId"
-      :heures-par-groupe="courseDetails.hoursPerGroup"
+      :ens-id="details.courseId"
+      :heures-par-groupe="details.hoursPerGroup"
     />
     <DetailsEnseignementDemandes
       v-for="requestType in shownRequestTypes"
       :key="requestType"
       :title="labelRequestType(requestType)"
       :requests="
-        courseDetails.requests.filter(
+        details.requests.filter(
           (demande) => demande.requestType === requestType,
         )
       "
@@ -42,8 +42,8 @@ const archives: ComputedRef<Archive[]> = computed(() =>
   </DetailsSection>
   <DetailsSection title="Priorités">
     <QCardSection>
-      <PucePriorite
-        v-for="priorite in courseDetails.priorities"
+      <PriorityChip
+        v-for="priorite in details.priorities"
         :key="priorite.id"
         :priorite
       />

@@ -8,12 +8,12 @@ import { useAuthentication } from "@/stores/authentication.ts";
 import { useYears } from "@/stores/years.ts";
 import type { TeacherRow } from "@/types/teachers.ts";
 
-import ResumeDemandes from "@/components/core/ResumeDemandes.vue";
-import ServiceIntervenant from "@/components/core/ServiceIntervenant.vue";
 import DetailsVoletIntervenant from "@/components/details/volet/DetailsVoletIntervenant.vue";
 import HomeInfo from "@/components/home/HomeInfo.vue";
 import HomeMessage from "@/components/home/HomeMessage.vue";
 import HomeSubsection from "@/components/home/HomeSubsection.vue";
+import ServiceModifications from "@/components/service/ServiceModifications.vue";
+import ServiceRequests from "@/components/service/ServiceRequests.vue";
 
 const { current: currentYear } = useYears();
 const { profile, uid: myUid } = useAuthentication();
@@ -46,12 +46,12 @@ const myRow: ComputedRef<TeacherRow | null> = computed(
       <DetailsVoletIntervenant v-if="myRow" :teacher-row="myRow">
         <template #service="scope">
           <HomeSubsection title="Mon service">
-            <ServiceIntervenant v-bind="scope" />
+            <ServiceModifications v-bind="scope" />
           </HomeSubsection>
         </template>
         <template #requests="scope">
           <HomeSubsection title="Mes demandes">
-            <ResumeDemandes v-bind="scope" />
+            <ServiceRequests v-bind="scope" />
           </HomeSubsection>
         </template>
       </DetailsVoletIntervenant>

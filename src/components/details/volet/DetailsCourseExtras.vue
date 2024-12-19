@@ -8,36 +8,37 @@ import type { Coordinator } from "@/types/coordinators.ts";
 import type { CourseDetails } from "@/types/courses.ts";
 import type { Profile } from "@/types/profile.ts";
 
+import EditableText from "@/components/core/EditableText.vue";
+import DetailsCourseCoordinators from "@/components/details/DetailsCourseCoordinators.vue";
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
-import DetailsVoletEnseignementResponsables from "@/components/details/volet/DetailsVoletEnseignementResponsables.vue";
 
-const props = defineProps<{ courseDetails: CourseDetails }>();
+const props = defineProps<{ details: CourseDetails }>();
 
 const perm = usePermissions();
 
-// responsables
-const responsablesEnseignement: ComputedRef<Coordinator[]> = computed(
-  () => props.courseDetails.coordinators,
+// Coordinators
+const courseCoordinators: ComputedRef<Coordinator[]> = computed(
+  () => props.details.coordinators,
 );
-const responsablesParcours: ComputedRef<Coordinator[]> = computed(
-  () => props.courseDetails.track?.coordinators ?? [],
+const trackCoordinators: ComputedRef<Coordinator[]> = computed(
+  () => props.details.track?.coordinators ?? [],
 );
-const responsablesMention: ComputedRef<Coordinator[]> = computed(
-  () => props.courseDetails.program.coordinators,
+const programCoordinators: ComputedRef<Coordinator[]> = computed(
+  () => props.details.program.coordinators,
 );
-const responsables: ComputedRef<Profile[]> = computed(() => [
-  ...responsablesEnseignement.value.map(({ profile }) => profile),
-  ...responsablesParcours.value.map(({ profile }) => profile),
-  ...responsablesMention.value.map(({ profile }) => profile),
+const coordinators: ComputedRef<Profile[]> = computed(() => [
+  ...courseCoordinators.value.map(({ profile }) => profile),
+  ...trackCoordinators.value.map(({ profile }) => profile),
+  ...programCoordinators.value.map(({ profile }) => profile),
 ]);
 
-// description
+// Description
 const updateDescription = useMutation(UPDATE_DESCRIPTION);
 const setDescription = (text: string): Promise<boolean> =>
   updateDescription
     .executeMutation({
-      courseId: props.courseDetails.courseId,
+      courseId: props.details.courseId,
       description: text || null,
     })
     .then((result) => !!result.data?.course?.id && !result.error);
@@ -45,18 +46,21 @@ const setDescription = (text: string): Promise<boolean> =>
 
 <template>
   <DetailsSubsection title="Responsables">
-    <DetailsVoletEnseignementResponsables
-      :responsables-mention
-      :responsables-enseignement
-      :responsables-parcours
+    <DetailsCourseCoordinators
+      :program-coordinators
+      :track-coordinators
+      :course-coordinators
     />
+  </DetailsSubsection>
+  <DetailsSubsection title="Description">
+    <EditableText title="" text="" set-text="" />
   </DetailsSubsection>
   <DetailsSubsectionEditableText
     title="Description"
-    :text="courseDetails.description"
+    :text="details.description"
     default-text="Pas de description (contactez un responsable)"
     :set-text="setDescription"
-    :editable="perm.deModifierUneDescription(responsables)"
+    :editable="perm.deModifierUneDescription(coordinators)"
   />
 </template>
 

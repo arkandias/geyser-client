@@ -14,7 +14,7 @@ defineProps<{ priorite: Priority }>();
     >
       {{ priorite.seniority }}
     </QAvatar>
-    {{ formatUser(priorite.profile) }}
+    {{ formatUser(priorite.teacher) }}
   </QChip>
 </template>
 

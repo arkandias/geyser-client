@@ -10,9 +10,7 @@ import type { ServiceModification } from "@/types/service-modifications.ts";
 import type { ServiceDetails } from "@/types/services.ts";
 import type { TeacherRow } from "@/types/teachers.ts";
 
-const props = defineProps<{
-  teacherRow: TeacherRow;
-}>();
+const props = defineProps<{ teacherRow: TeacherRow }>();
 
 defineSlots<{
   service(scope: {

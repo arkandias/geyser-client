@@ -8,7 +8,7 @@ import { updateMessage } from "@/helpers/messages.ts";
 import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
 
 const props = defineProps<{
-  serviceId: number;
+  year: number;
   uid: string;
   contenu: string | null;
 }>();
@@ -22,7 +22,8 @@ const getMessage: ComputedRef<string | null> = computed(
 const setMessage: ComputedRef<(contenu: string) => Promise<boolean>> = computed(
   () =>
     updateMessage(client, {
-      serviceId: props.serviceId,
+      year: props.year,
+      uid: props.uid,
     }),
 );
 </script>

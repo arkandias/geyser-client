@@ -2,8 +2,8 @@ import { graphql } from "@/gql";
 
 graphql(/* GraphQL */ `
   fragment Archive on enseignement {
-    courseId: id
     year: annee
+    courseId: id
     requests: demandes(
       where: { type: { _eq: "attribution" } }
       order_by: [
@@ -27,7 +27,12 @@ graphql(/* GraphQL */ `
 
   fragment CourseDetails on enseignement {
     courseId: id
-    hoursPerGroup: heures_corrigees
+    name: nom
+    courseType: typeByType {
+      value
+      label
+    }
+    semester: semestre
     coordinators: responsables(
       order_by: [
         { intervenant: { nom: asc } }
@@ -37,6 +42,10 @@ graphql(/* GraphQL */ `
       ...Coordinator
     }
     program: mention {
+      degree: cursus {
+        name: nom
+      }
+      name: nom
       coordinators: responsables(
         order_by: [
           { intervenant: { nom: asc } }
@@ -47,6 +56,7 @@ graphql(/* GraphQL */ `
       }
     }
     track: parcours {
+      name: nom
       coordinators: responsables(
         order_by: [
           { intervenant: { nom: asc } }
@@ -83,20 +93,17 @@ graphql(/* GraphQL */ `
     name: nom
     shortName: nom_court
     visible
-    semester: semestre
-    hoursPerGroup: heures_corrigees
-    numberOfGroups: groupes_corriges
     program: mention {
-      id
-      name: nom
-      shortName: nom_court
-      visible
       degree: cursus {
         id
         name: nom
         shortName: nom_court
         visible
       }
+      id
+      name: nom
+      shortName: nom_court
+      visible
     }
     track: parcours {
       id
@@ -108,6 +115,9 @@ graphql(/* GraphQL */ `
       value
       label
     }
+    semester: semestre
+    hoursPerGroup: heures_corrigees
+    numberOfGroups: groupes_corriges
     totalAssigned: demandes_aggregate(where: { type: { _eq: "attribution" } }) {
       ...RequestsTotalHours
     }
@@ -152,8 +162,8 @@ export const GET_COURSES_ROWS = graphql(/* GraphQL */ `
 `);
 
 export const GET_COURSE_DETAILS = graphql(/* GraphQL */ `
-  query GetCourseDetails($ensId: Int!) {
-    course: enseignement_by_pk(id: $ensId) {
+  query GetCourseDetails($courseId: Int!) {
+    course: enseignement_by_pk(id: $courseId) {
       ...CourseDetails
     }
   }

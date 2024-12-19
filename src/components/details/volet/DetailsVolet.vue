@@ -3,10 +3,7 @@ import { type Ref, ref, watch } from "vue";
 
 import { useData } from "@/stores/data.ts";
 
-defineProps<{
-  label: string;
-  caption: string;
-}>();
+defineProps<{ label: string; caption: string }>();
 defineSlots<{ default(): unknown }>();
 
 const { selectedCourse, selectedTeacher } = useData();

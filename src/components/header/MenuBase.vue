@@ -3,10 +3,7 @@ import { type Ref, ref } from "vue";
 
 import { buttonColor } from "@/helpers/format.ts";
 
-defineProps<{
-  label: string;
-  icon: string;
-}>();
+defineProps<{ label: string; icon: string }>();
 defineSlots<{ default(): unknown }>();
 
 const open: Ref<boolean> = ref(false);

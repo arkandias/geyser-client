@@ -62,7 +62,7 @@ const queryProfile = useQuery({
   variables: reactive({
     uid: computed(() => claimsRef.value?.userId ?? ""),
   }),
-  pause: () => claimsRef.value === null,
+  pause: () => !claimsRef.value,
 });
 watch(
   [claimsRef, queryProfile.data],

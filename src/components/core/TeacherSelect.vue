@@ -7,7 +7,7 @@ import { formatUser, normalizeForSearch } from "@/helpers/format.ts";
 import { useYears } from "@/stores/years.ts";
 import type { OptionSearch } from "@/types/common.ts";
 
-const serviceId = defineModel<number | null>({ required: true });
+const uid = defineModel<string | null>({ required: true });
 
 const { current: currentYear } = useYears();
 
@@ -18,16 +18,14 @@ const queryTeachers = useQuery({
   },
 });
 
-const optionsInit: ComputedRef<OptionSearch<number>[]> = computed(() =>
-  (queryTeachers.data.value?.services ?? []).map((service) => ({
-    value: service.id,
-    label: formatUser(service.intervenant),
-    search: normalizeForSearch(formatUser(service.intervenant)),
+const optionsInit: ComputedRef<OptionSearch<string>[]> = computed(() =>
+  (queryTeachers.data.value?.teachers ?? []).map((teacher) => ({
+    value: teacher.uid,
+    label: formatUser(teacher),
+    search: normalizeForSearch(formatUser(teacher)),
   })),
 );
-
-const options: Ref<OptionSearch<number>[]> = ref([]);
-
+const options: Ref<OptionSearch<string>[]> = ref([]);
 watch(
   optionsInit,
   (value) => {
@@ -47,7 +45,7 @@ const filter = (val: string, update: (x: () => void) => void) => {
 
 <template>
   <QSelect
-    v-model="serviceId"
+    v-model="uid"
     :options
     color="primary"
     label="Intervenant"

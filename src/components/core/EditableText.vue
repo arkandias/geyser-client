@@ -2,50 +2,50 @@
 import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
 import xss from "xss";
 
-import { defaultNotify, errorNotify, successNotify } from "@/helpers/notify.ts";
+import { NotifyType, notify } from "@/helpers/notify.ts";
 
 const edition = defineModel<boolean>();
-const props = withDefaults(
-  defineProps<{
-    title: string;
-    text: string | null;
-    defaultText?: string;
-    setText?: (text: string) => Promise<boolean>;
-  }>(),
-  {
-    defaultText: "",
-    setText: () => Promise.resolve(false),
-  },
-);
+
+const {
+  text,
+  setText,
+  defaultText = "",
+} = defineProps<{
+  text: string | null;
+  setText: (text: string) => Promise<boolean>;
+  defaultText?: string;
+}>();
 
 // sanitize HTML to prevent XSS attacks
 const sanitizedText: ComputedRef<string> = computed(() =>
-  xss(props.text ?? props.defaultText),
+  xss(text ?? defaultText),
 );
-
 const editorText: Ref<string> = ref("");
 
 const onSave = async (): Promise<void> => {
-  if (editorText.value === props.text) {
-    defaultNotify("Pas de changements à enregistrer");
+  if (editorText.value === text) {
+    notify(NotifyType.Default, { message: "Pas de changement à enregistrer" });
     return;
   }
-  const success = await props.setText(editorText.value);
+  const success = await setText(editorText.value);
   if (success) {
-    successNotify(
-      props.title + (editorText.value ? " mis(e) à jour" : " supprimé(e)"),
-    );
+    notify(NotifyType.Success, {
+      message: "Texte " + (editorText.value ? "mis à jour" : " supprimé"),
+    });
   } else {
-    errorNotify(
-      `Échec de la ${editorText.value ? "mise à jour" : "suppression"}`,
-    );
+    notify(NotifyType.Error, {
+      message:
+        "Échec de la " + (editorText.value ? "mise à jour" : "suppression"),
+    });
   }
   edition.value = false;
 };
+
 const onAbort = (): void => {
-  editorText.value = props.text ?? "";
+  editorText.value = text ?? "";
   edition.value = false;
 };
+watch(() => text, onAbort, { immediate: true });
 
 const definitions = {
   save: {
@@ -69,21 +69,13 @@ const toolbar = [
   ["unordered", "ordered", "outdent", "indent"],
   ["save", "delete"],
 ];
-
-watch(
-  () => props.text,
-  () => {
-    onAbort();
-  },
-  { immediate: true },
-);
 </script>
 
 <template>
   <QCardSection v-if="edition">
     <QEditor v-model="editorText" :definitions :toolbar square dense />
   </QCardSection>
-  <!--eslint-disable-next-line-->
+  <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
   <QCardSection v-else-if="sanitizedText" v-html="sanitizedText" />
 </template>
 

@@ -9,9 +9,9 @@ import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { useYears } from "@/stores/years.ts";
 
-import PanelCourses from "@/components/PanelCourses.vue";
-import PanelDetails from "@/components/PanelDetails.vue";
-import PanelTeachers from "@/components/PanelTeachers.vue";
+import DetailsCourse from "@/components/DetailsCourse.vue";
+import TableCourses from "@/components/TableCourses.vue";
+import TableTeachers from "@/components/TableTeachers.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -72,15 +72,15 @@ watch(
       :disable="!filtreIntervenants"
     >
       <template #before>
-        <PanelTeachers />
+        <TableTeachers />
       </template>
       <template #after>
         <QSplitter id="second-splitter" v-model="hSplitterRatio" horizontal>
           <template #before>
-            <PanelCourses />
+            <TableCourses />
           </template>
           <template #after>
-            <PanelDetails />
+            <DetailsCourse :course-row="selectedCourse[0]" />
           </template>
         </QSplitter>
       </template>

@@ -4,6 +4,7 @@ import { type ComputedRef, computed } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
+import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { formatUser, nf, priorityColor } from "@/helpers/format.ts";
 import {
   deleteDemandeById,
@@ -21,10 +22,10 @@ const client = useClientHandle().client;
 
 const assign = async (): Promise<void> => {
   await updateRequest(client, {
-    serviceId: props.request.serviceId,
-    ensId: props.request.course.id,
-    typeDemande: "attribution",
-    heures: props.request.hours,
+    uid: props.request.teacher.uid,
+    courseId: props.request.course.id,
+    requestType: REQUEST_TYPES.ASSIGNMENT,
+    hours: props.request.hours,
   });
 };
 const remove = async (): Promise<void> => {
@@ -46,9 +47,9 @@ const groups: ComputedRef<number> = computed(() =>
         :color="priorityColor(request.isPriority)"
         rounded
       />
-      {{ formatUser(request.service.teacher) }}
+      {{ formatUser(request.teacher) }}
       <QTooltip :delay="TOOLTIP_DELAY" anchor="top middle" self="bottom middle">
-        {{ formatUser(request.service.teacher) }}
+        {{ formatUser(request.teacher) }}
       </QTooltip>
     </QCardSection>
     <QCardSection class="q-pa-xs text-caption">
@@ -81,10 +82,7 @@ const groups: ComputedRef<number> = computed(() =>
         color="negative"
         size="sm"
         :disable="
-          !perm.deSupprimerUneDemande(
-            request.requestType,
-            request.service.teacher.uid,
-          )
+          !perm.deSupprimerUneDemande(request.requestType, request.teacher.uid)
         "
         flat
         square

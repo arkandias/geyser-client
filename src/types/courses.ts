@@ -23,12 +23,19 @@ export type NestedArchives = Archive & {
 
 export type CourseDetails = {
   courseId: number;
-  hoursPerGroup: number | null;
+  name: string;
+  courseType: Option<string>;
+  semester: number;
   coordinators: Coordinator[];
   program: {
+    degree: {
+      name: string;
+    };
+    name: string;
     coordinators: Coordinator[];
   };
   track: {
+    name: string;
     coordinators: Coordinator[];
   } | null;
   description: string | null;
@@ -38,14 +45,14 @@ export type CourseDetails = {
 };
 
 export type CourseRow = Identifier & {
-  semester: number;
-  hoursPerGroup: number | null;
-  numberOfGroups: number | null;
   program: Identifier & {
     degree: Identifier;
   };
   track: Identifier | null;
   courseType: Option<string>;
+  semester: number;
+  hoursPerGroup: number | null;
+  numberOfGroups: number | null;
   totalAssigned: TotalHours;
   totalPrimary: TotalHours;
   totalSecondary: TotalHours;
