@@ -5,63 +5,67 @@ import type { CourseRow } from "@/types/courses.ts";
 import type { TeacherRow } from "@/types/teachers.ts";
 
 const courses: Ref<CourseRow[]> = ref([]);
-const services: Ref<TeacherRow[]> = ref([]);
+const teachers: Ref<TeacherRow[]> = ref([]);
 const setCourses = (rows: CourseRow[]) => {
   courses.value = rows;
 };
-const setServices = (rows: TeacherRow[]) => {
-  services.value = rows;
+const setTeachers = (rows: TeacherRow[]) => {
+  teachers.value = rows;
 };
 
 const fetchingCourses: Ref<boolean> = ref(false);
-const fetchingServices: Ref<boolean> = ref(false);
+const fetchingTeachers: Ref<boolean> = ref(false);
 const setFetchingCourses = (value: boolean) => {
   fetchingCourses.value = value;
 };
-const setFetchingServices = (value: boolean) => {
-  fetchingServices.value = value;
+const setFetchingTeachers = (value: boolean) => {
+  fetchingTeachers.value = value;
 };
 
 export const selectedCourse: Ref<CourseRow[]> = ref([]);
-export const selectedService: Ref<TeacherRow[]> = ref([]);
-const selectCourse = (course?: CourseRow | null) => {
-  selectedCourse.value = course ? [course] : [];
+export const selectedTeacher: Ref<TeacherRow[]> = ref([]);
+const selectCourse = (courseId?: number | null) => {
+  selectedCourse.value = courses.value.filter(
+    (course) => course.id === courseId,
+  );
 };
-const selectService = (service?: TeacherRow | null) => {
-  selectedService.value = service ? [service] : [];
+const selectTeacher = (uid?: string | null) => {
+  selectedTeacher.value = teachers.value.filter(
+    (teacher) => teacher.uid === uid,
+  );
 };
 
 export const useData = () => {
-  const { uid: myId } = useAuthentication();
-  const myService: ComputedRef<TeacherRow | null> = computed(
-    () => services.value.find((row) => row.teacher.uid === myId.value) ?? null,
+  const { uid: myUid } = useAuthentication();
+  const myRow: ComputedRef<TeacherRow | null> = computed(
+    () => teachers.value.find((row) => row.uid === myUid.value) ?? null,
   );
-  const isMyServiceSelected: ComputedRef<boolean> = computed(
-    () => selectedService.value[0]?.teacher.uid === myId.value,
+  const isMyRowSelected: ComputedRef<boolean> = computed(
+    () => selectedTeacher.value[0]?.uid === myUid.value,
   );
-  const toggleMyService = () => {
-    if (isMyServiceSelected.value) {
-      selectService(null);
-    } else if (myService.value) {
-      selectService(myService.value);
+  const toggleMyRow = () => {
+    if (isMyRowSelected.value) {
+      selectTeacher(null);
+    } else if (myRow.value) {
+      selectTeacher(myUid.value);
       selectCourse(null);
     }
   };
   return {
-    services: readonly(services),
     courses: readonly(courses),
-    fetchingServices: readonly(fetchingServices),
+    teachers: readonly(teachers),
     fetchingCourses: readonly(fetchingCourses),
-    selectedService: readonly(selectedService),
-    selectedCourse: readonly(selectedCourse),
-    myService,
-    isMyServiceSelected,
-    setServices,
+    fetchingTeachers: readonly(fetchingTeachers),
+    selectedCourse,
+    selectedTeacher,
+    myRow,
+    isMyRowSelected,
     setCourses,
-    setFetchingServices,
+    setTeachers,
     setFetchingCourses,
-    selectService,
+    setFetchingTeachers,
     selectCourse,
-    toggleMyService,
+    selectTeacher,
+    toggleMyRow,
   };
 };

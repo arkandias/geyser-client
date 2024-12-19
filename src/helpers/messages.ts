@@ -3,13 +3,13 @@ import type { Client } from "@urql/vue";
 import { DELETE_MESSAGE, UPSERT_MESSAGE } from "@/graphql/messages.ts";
 
 export const updateMessage =
-  (client: Client, variables: { serviceId: number }) =>
-  (contenu: string): Promise<boolean> =>
-    contenu
+  (client: Client, variables: { year: number; uid: string }) =>
+  (body: string): Promise<boolean> =>
+    body
       ? client
           .mutation(UPSERT_MESSAGE, {
             ...variables,
-            contenu,
+            body,
           })
           .toPromise()
           .then((result) => !!result.data?.message?.id && !result.error)

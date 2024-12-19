@@ -4,8 +4,11 @@ import { type ComputedRef, computed } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
-import { deleteDemandeById, updateDemande } from "@/helpers/demandes.ts";
 import { formatUser, nf, priorityColor } from "@/helpers/format.ts";
+import {
+  deleteDemandeById,
+  updateRequest,
+} from "@/helpers/requests-operations.ts";
 import type { RequestDetails } from "@/types/requests.ts";
 
 const props = defineProps<{
@@ -17,7 +20,7 @@ const perm = usePermissions();
 const client = useClientHandle().client;
 
 const assign = async (): Promise<void> => {
-  await updateDemande(client, {
+  await updateRequest(client, {
     serviceId: props.request.serviceId,
     ensId: props.request.course.id,
     typeDemande: "attribution",

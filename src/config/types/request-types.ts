@@ -29,8 +29,8 @@ export const getRequestType = (
   return entry[0] as keyof typeof REQUEST_TYPES;
 };
 
-export const labelRequestType = (type: RequestType): string =>
-  REQUEST_TYPE_METADATA[type].label;
+export const labelRequestType = (requestType: RequestType): string =>
+  REQUEST_TYPE_METADATA[requestType].label;
 
-export const orderRequestType = (type: RequestType): number =>
-  REQUEST_TYPE_METADATA[type].order;
+export const orderRequestType = (requestType: RequestType): number =>
+  REQUEST_TYPE_METADATA[requestType].order;

@@ -1,30 +1,30 @@
-import type { CourseRow } from "@/types/courses.ts";
-import type { Archive, NestedArchives } from "@/types/requests.ts";
+import {
+  REQUEST_TYPES,
+  type RequestType,
+} from "@/config/types/request-types.ts";
+import type { Archive, CourseRow, NestedArchives } from "@/types/courses.ts";
 import type { TeacherRow } from "@/types/teachers.ts";
 
-export const demandeValue = (
+export const getRequestTotal = (
   row: CourseRow,
-  intervenant: TeacherRow | null,
-  typeDemande: string,
-): number => {
-  if (intervenant) {
+  requestType: RequestType,
+  teacher?: TeacherRow,
+) => {
+  if (teacher) {
     return (
-      intervenant.requests.find(
-        (demande) =>
-          demande.courseId === row.id && demande.requestType === typeDemande,
+      teacher.requests.find(
+        (request) =>
+          request.course.id === row.id && request.requestType === requestType,
       )?.hours ?? 0
     );
   }
-  switch (typeDemande) {
-    case "attribution":
+  switch (requestType) {
+    case REQUEST_TYPES.ASSIGNMENT:
       return row.totalAssigned.aggregate?.sum?.hours ?? 0;
-    case "principale":
+    case REQUEST_TYPES.PRIMARY:
       return row.totalPrimary.aggregate?.sum?.hours ?? 0;
-    case "secondaire":
+    case REQUEST_TYPES.SECONDARY:
       return row.totalSecondary.aggregate?.sum?.hours ?? 0;
-    default:
-      console.warn(`Type de demande '${typeDemande}' inconnu`);
-      return 0;
   }
 };
 
@@ -32,6 +32,7 @@ const getArchive = (archives: NestedArchives): Archive => {
   const { parent, ...archive } = archives;
   return archive;
 };
+
 export const processArchives = (
   archives: NestedArchives | null | undefined,
 ): Archive[] =>

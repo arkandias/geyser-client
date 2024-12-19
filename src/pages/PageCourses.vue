@@ -4,14 +4,14 @@ import { useRoute, useRouter } from "vue-router";
 
 import { useDataSync } from "@/composables/datasync.ts";
 import { usePermissions } from "@/composables/permissions.ts";
-import { getNumber } from "@/helpers/utils.ts";
+import { getNumber, getValue } from "@/helpers/utils.ts";
 import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { useYears } from "@/stores/years.ts";
 
 import PanelCourses from "@/components/PanelCourses.vue";
 import PanelDetails from "@/components/PanelDetails.vue";
-import PanelServices from "@/components/PanelServices.vue";
+import PanelTeachers from "@/components/PanelTeachers.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -23,35 +23,21 @@ const {
 } = useYears();
 const perm = usePermissions();
 const { closeLeftPanel, filtreIntervenants, openLeftPanel } = useLayout();
-const {
-  courses,
-  services,
-  selectedCourse,
-  selectedService,
-  selectCourse,
-  selectService,
-} = useData();
+const { selectedCourse, selectedTeacher, selectCourse, selectTeacher } =
+  useData();
 useDataSync();
 
 // sync query parameters with selection
 watchEffect(() => {
   selectYear(getNumber(route.query, "year"));
-  selectCourse(
-    courses.value.find(
-      (course) => course.id === getNumber(route.query, "course_id"),
-    ),
-  );
-  selectService(
-    services.value.find(
-      (service) => service.id === getNumber(route.query, "service_id"),
-    ),
-  );
+  selectCourse(getNumber(route.query, "course_id"));
+  selectTeacher(getValue(route.query, "uid"));
 });
 watch(
   [
     () => selectedYear.value ?? undefined,
     () => selectedCourse.value[0]?.id,
-    () => selectedService.value[0]?.id,
+    () => selectedTeacher.value[0]?.uid,
   ],
   async ([year, courseId, serviceId]) => {
     await router.replace({
@@ -86,7 +72,7 @@ watch(
       :disable="!filtreIntervenants"
     >
       <template #before>
-        <PanelServices />
+        <PanelTeachers />
       </template>
       <template #after>
         <QSplitter id="second-splitter" v-model="hSplitterRatio" horizontal>

@@ -6,10 +6,14 @@ import {
   REQUEST_TYPES,
   type RequestType,
 } from "@/config/types/request-types.ts";
-import type { ServiceModification } from "@/types/services.ts";
+import type { ServiceModification } from "@/types/service-modifications.ts";
+import type { ServiceDetails } from "@/types/services.ts";
 import type { TeacherRow } from "@/types/teachers.ts";
 
-const props = defineProps<{ service: TeacherRow }>();
+const props = defineProps<{
+  teacherRow: TeacherRow;
+}>();
+
 defineSlots<{
   service(scope: {
     serviceId: number;
@@ -18,42 +22,46 @@ defineSlots<{
     totalModifications: number;
     editable: boolean;
   }): unknown;
-  demandes(scope: { totauxDemandes: Record<RequestType, number> }): unknown;
+  requests(scope: { totalRequests: Record<RequestType, number> }): unknown;
 }>();
 
 const perm = usePermissions();
 
+const service: ComputedRef<ServiceDetails | null> = computed(
+  () => props.teacherRow.services[0] ?? null,
+);
 const serviceBase: ComputedRef<number> = computed(
-  () => props.service.weightedHours,
+  () => service.value?.weightedHours ?? 0,
 );
 const modifications: ComputedRef<ServiceModification[]> = computed(
-  () => props.service.modifications,
+  () => service.value?.modifications ?? [],
 );
 const totalModifications: ComputedRef<number> = computed(
-  () => props.service.totalModifications.aggregate?.sum?.weightedHours ?? 0,
+  () => service.value?.totalModifications.aggregate?.sum?.weightedHours ?? 0,
 );
-const totauxDemandes: ComputedRef<Record<RequestType, number>> = computed(
+const totalRequests: ComputedRef<Record<RequestType, number>> = computed(
   () => ({
     [REQUEST_TYPES.ASSIGNMENT]:
-      props.service.totalAssigned.aggregate?.sum?.weightedHours ?? 0,
+      props.teacherRow.totalAssigned.aggregate?.sum?.weightedHours ?? 0,
     [REQUEST_TYPES.PRIMARY]:
-      props.service.totalPrimary.aggregate?.sum?.weightedHours ?? 0,
+      props.teacherRow.totalPrimary.aggregate?.sum?.weightedHours ?? 0,
     [REQUEST_TYPES.SECONDARY]:
-      props.service.totalSecondary.aggregate?.sum?.weightedHours ?? 0,
+      props.teacherRow.totalSecondary.aggregate?.sum?.weightedHours ?? 0,
   }),
 );
 </script>
 
 <template>
   <slot
+    v-if="service"
     name="service"
     :service-id="service.id"
     :service-base
     :modifications
     :total-modifications
-    :editable="perm.deModifierUnService(service.teacher.uid)"
+    :editable="perm.deModifierUnService(teacherRow.uid)"
   />
-  <slot name="demandes" :totaux-demandes />
+  <slot name="requests" :total-requests />
 </template>
 
 <style scoped lang="scss"></style>

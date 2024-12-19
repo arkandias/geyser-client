@@ -28,7 +28,7 @@ const serviceCorrige: ComputedRef<number> = computed(
   () => props.serviceBase - props.totalModifications,
 );
 
-const queryTypesModification = useQuery({
+const queryServiceModificationTypes = useQuery({
   query: GET_SERVICE_MODIFICATION_TYPES,
   variables: {},
 });
@@ -38,7 +38,7 @@ const deleteModification = useMutation(DELETE_SERVICE_MODIFICATION);
 const typeModificationOptions: ComputedRef<ServiceModificationType[]> =
   computed(
     () =>
-      queryTypesModification.data.value?.typesModification.map(
+      queryServiceModificationTypes.data.value?.typesModification.map(
         (typeModification) => ({
           label: typeModification.label,
           description: typeModification.description ?? null,

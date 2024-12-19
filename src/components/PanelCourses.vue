@@ -10,7 +10,8 @@ import {
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
-import { demandeValue } from "@/helpers/enseignement.ts";
+import { REQUEST_TYPES } from "@/config/types/request-types.ts";
+import { getRequestTotal } from "@/helpers/courses.ts";
 import {
   formatProgram,
   formatUser,
@@ -25,16 +26,16 @@ import type { CourseRow } from "@/types/courses.ts";
 
 const perm = usePermissions();
 const {
-  enseignement,
   courses,
   fetchingCourses,
-  service,
+  selectedCourse,
+  selectedTeacher,
   selectCourse,
-  selectService,
+  selectTeacher,
 } = useData();
 
 const select = (_: Event, row: CourseRow) => {
-  if (selected.value[0]?.id === row.id) {
+  if (selectedCourse.value[0]?.id === row.id) {
     selectCourse(null);
   } else {
     selectCourse(row.id);
@@ -42,9 +43,12 @@ const select = (_: Event, row: CourseRow) => {
 };
 
 const title: ComputedRef<string> = computed(() =>
-  service.value ? formatUser(service.value.teacher) : "Enseignements",
+  selectedTeacher.value[0]
+    ? formatUser(selectedTeacher.value[0])
+    : "Enseignements",
 );
 
+// Columns definition
 const columns: Column<CourseRow>[] = [
   {
     name: "program",
@@ -97,7 +101,7 @@ const columns: Column<CourseRow>[] = [
   {
     name: "type",
     label: "Type",
-    field: (row) => row.courseType.shortLabel ?? row.courseType.label,
+    field: (row) => row.courseType.label,
     align: "left",
     sortable: true,
     visible: true,
@@ -143,7 +147,8 @@ const columns: Column<CourseRow>[] = [
     name: "assigned",
     label: "A.",
     tooltip: "Nombre d'heures attribuées",
-    field: (row) => demandeValue(row, service.value, "attribution"),
+    field: (row) =>
+      getRequestTotal(row, REQUEST_TYPES.ASSIGNMENT, selectedTeacher.value[0]),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -153,7 +158,7 @@ const columns: Column<CourseRow>[] = [
   },
   {
     name: "diff_assigned",
-    label: "\u0394A",
+    label: "ΔA",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
     field: (row) =>
@@ -170,7 +175,8 @@ const columns: Column<CourseRow>[] = [
     name: "primary",
     label: "V1",
     tooltip: "Nombre d'heures demandées en vœux principaux",
-    field: (row) => demandeValue(row, service.value, "principale"),
+    field: (row) =>
+      getRequestTotal(row, REQUEST_TYPES.PRIMARY, selectedTeacher.value[0]),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -180,7 +186,7 @@ const columns: Column<CourseRow>[] = [
   },
   {
     name: "diff_primary",
-    label: "\u0394V1",
+    label: "ΔV1",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
     field: (row) =>
@@ -195,7 +201,7 @@ const columns: Column<CourseRow>[] = [
   },
   {
     name: "diff_primary_priority",
-    label: "\u0394V1 Prio",
+    label: "ΔV1 Prio",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",
     field: (row) =>
@@ -212,7 +218,8 @@ const columns: Column<CourseRow>[] = [
     name: "secondary",
     label: "V2",
     tooltip: "Nombre d'heures demandées en vœux secondaires",
-    field: (row) => demandeValue(row, service.value, "secondaire"),
+    field: (row) =>
+      getRequestTotal(row, REQUEST_TYPES.SECONDARY, selectedTeacher.value[0]),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -231,13 +238,13 @@ watchEffect(() => {
     .filter((col) => toValue(col.visible))
     .map((col) => col.name);
 });
-const menuColonnesOpen: Ref<boolean> = ref(false);
-const tooltipMenuColonnes: Ref<boolean> = ref(false);
+const isMenuColumnsOpen: Ref<boolean> = ref(false);
+const isMenuColumnsTooltipVisible: Ref<boolean> = ref(false);
 
 // Filters
-// Program
-const formations: Ref<number[]> = ref([]);
-const formationOptions: ComputedRef<Option<number>[]> = computed(() =>
+// Programs
+const programs: Ref<number[]> = ref([]);
+const programsOptions: ComputedRef<Option<number>[]> = computed(() =>
   courses.value
     .map((course) => ({
       value: course.program.id,
@@ -249,41 +256,38 @@ const formationOptions: ComputedRef<Option<number>[]> = computed(() =>
     .filter(uniqueValue)
     .sort(compare("label")),
 );
-// Type
-const typesEnseignement: Ref<string[]> = ref([]);
-const typeEnseignementOptions: ComputedRef<Option<string>[]> = computed(() =>
+// Course types
+const courseTypes: Ref<string[]> = ref([]);
+const courseTypesOptions: ComputedRef<Option<string>[]> = computed(() =>
   courses.value
-    .map((enseignement) => ({
-      value: enseignement.typeEnseignement.label,
-      label:
-        enseignement.typeEnseignement.labelCourt ??
-        enseignement.typeEnseignement.label,
+    .map((course) => course.courseType)
+    .filter(uniqueValue)
+    .sort(compare("label")),
+);
+// Semesters
+const semesters: Ref<number[]> = ref([]);
+const semestersOptions: ComputedRef<Option<number>[]> = computed(() =>
+  courses.value
+    .map((course) => ({
+      value: course.semester,
+      label: "S" + course.semester.toString(),
     }))
     .filter(uniqueValue)
     .sort(compare("label")),
 );
-// Semestre
-const semestres: Ref<number[]> = ref([]);
-const semestreOptions: ComputedRef<Option<number>[]> = computed(() =>
-  courses.value
-    .map((enseignement) => ({
-      value: enseignement.semestre,
-      label: "S" + enseignement.semestre.toString(),
-    }))
-    .filter(uniqueValue)
-    .sort(compare("label")),
-);
-// Recherche
+// Search
 const search: Ref<string> = ref("");
 const clearSearch = () => {
   search.value = "";
 };
-// Attributs du filtre
+// Filter attributes
 const filterObj = computed(() => ({
-  demandesIntervenant: service.value ? service.value.requests : null,
-  formations: formations.value,
-  typesEnseignement: typesEnseignement.value,
-  semestres: semestres.value,
+  teacherRequests: selectedTeacher.value[0]
+    ? selectedTeacher.value[0].requests
+    : null,
+  programs: programs.value,
+  courseTypes: courseTypes.value,
+  semesters: semesters.value,
   search: normalizeForSearch(search.value),
   searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
 }));
@@ -292,16 +296,16 @@ const filterMethod = (
   terms: typeof filterObj.value,
 ): readonly CourseRow[] =>
   rows.filter((row) =>
-    terms.demandesIntervenant
-      ? terms.demandesIntervenant.some((demande) => demande.courseId === row.id)
-      : (terms.formations.length === 0 ||
-          terms.formations.some((formation) => formation === row.program.id)) &&
-        (terms.typesEnseignement.length === 0 ||
-          terms.typesEnseignement.some(
+    terms.teacherRequests
+      ? terms.teacherRequests.some((request) => request.course.id === row.id)
+      : (terms.programs.length === 0 ||
+          terms.programs.some((program) => program === row.program.id)) &&
+        (terms.courseTypes.length === 0 ||
+          terms.courseTypes.some(
             (typeEns) => typeEns === row.courseType.label,
           )) &&
-        (terms.semestres.length === 0 ||
-          terms.semestres.includes(row.semester)) &&
+        (terms.semesters.length === 0 ||
+          terms.semesters.includes(row.semester)) &&
         terms.searchColumns.some((col) =>
           normalizeForSearch(
             String(
@@ -313,19 +317,17 @@ const filterMethod = (
         ),
   );
 
+// Styling options controllers
 const stickyHeader: Ref<boolean> = ref(false);
-
-// check whether an enseignement is assigned to the selected intervenant
-const estAttribue = (row: CourseRow) =>
-  service.value?.requests.some(
-    (demande) =>
-      demande.courseId === row.id && demande.requestType === "attribution",
+const isAssigned = (row: CourseRow) =>
+  selectedTeacher.value[0]?.requests.some(
+    (request) =>
+      request.course.id === row.id && request.requestType === "attribution",
   ) ?? false;
-
-// check whether an enseignement is visible
-const estVisible = (row: CourseRow): boolean =>
-  !service.value &&
+const isVisible = (row: CourseRow): boolean =>
+  !selectedTeacher.value[0] &&
   row.visible &&
+  row.program.degree.visible &&
   row.program.visible &&
   (row.track?.visible ?? true);
 </script>
@@ -354,9 +356,9 @@ const estVisible = (row: CourseRow): boolean =>
       <div class="q-table__title">
         {{ title }}
         <QBtn
-          v-if="service"
+          v-if="selectedTeacher[0]"
           icon="sym_s_visibility"
-          :color="!enseignement ? 'primary' : 'grey'"
+          :color="!selectedCourse[0] ? 'primary' : 'grey'"
           size="sm"
           flat
           square
@@ -364,22 +366,22 @@ const estVisible = (row: CourseRow): boolean =>
           @click="selectCourse(null)"
         />
         <QBtn
-          v-if="service"
+          v-if="selectedTeacher[0]"
           icon="sym_s_close"
           color="primary"
           size="sm"
           flat
           square
           dense
-          @click="selectService(null)"
+          @click="selectTeacher(null)"
         />
       </div>
       <QSpace />
       <div class="row q-gutter-md">
         <QSelect
-          v-model="formations"
-          :options="formationOptions"
-          :disable="service !== null"
+          v-model="programs"
+          :options="programsOptions"
+          :disable="!!selectedTeacher[0]"
           color="primary"
           label="Formation"
           emit-value
@@ -405,9 +407,9 @@ const estVisible = (row: CourseRow): boolean =>
           </template>
         </QSelect>
         <QSelect
-          v-model="typesEnseignement"
-          :options="typeEnseignementOptions"
-          :disable="service !== null"
+          v-model="courseTypes"
+          :options="courseTypesOptions"
+          :disable="!!selectedTeacher[0]"
           color="primary"
           label="Type"
           emit-value
@@ -432,9 +434,9 @@ const estVisible = (row: CourseRow): boolean =>
           </template>
         </QSelect>
         <QSelect
-          v-model="semestres"
-          :options="semestreOptions"
-          :disable="service !== null"
+          v-model="semesters"
+          :options="semestersOptions"
+          :disable="!!selectedTeacher[0]"
           color="primary"
           label="Semestre"
           emit-value
@@ -460,7 +462,7 @@ const estVisible = (row: CourseRow): boolean =>
         </QSelect>
         <QInput
           v-model="search"
-          :disable="service !== null"
+          :disable="!!selectedTeacher[0]"
           color="primary"
           placeholder="Recherche"
           clear-icon="sym_s_close"
@@ -480,18 +482,20 @@ const estVisible = (row: CourseRow): boolean =>
         </QToggle>
         <QBtn
           icon="sym_s_view_column"
-          :color="menuColonnesOpen ? 'primary' : 'grey'"
+          :color="isMenuColumnsOpen ? 'primary' : 'grey'"
           flat
           square
           dense
         >
-          <QTooltip v-model="tooltipMenuColonnes">Colonnes visibles</QTooltip>
+          <QTooltip v-model="isMenuColumnsTooltipVisible"
+            >Colonnes visibles</QTooltip
+          >
           <QMenu
-            v-model="menuColonnesOpen"
+            v-model="isMenuColumnsOpen"
             auto-close
             square
             dense
-            @show="tooltipMenuColonnes = false"
+            @show="isMenuColumnsTooltipVisible = false"
           >
             <QList dense>
               <QItem v-for="col in columns" :key="col.name" dense>
@@ -532,8 +536,8 @@ const estVisible = (row: CourseRow): boolean =>
       <QTd
         :props="scope"
         :class="{
-          'non-visible': !estVisible(scope.row),
-          attribue: estAttribue(scope.row),
+          'non-visible': !isVisible(scope.row),
+          attribue: isAssigned(scope.row),
         }"
       >
         {{ scope.value?.short ?? scope.value?.long ?? scope.value }}

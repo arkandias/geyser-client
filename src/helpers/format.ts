@@ -1,6 +1,7 @@
 import type { NamedColor } from "quasar";
 
-import type { Coordinator } from "@/types/courses.ts";
+import type { Coordinator } from "@/types/coordinators.ts";
+import type { CourseRow } from "@/types/courses.ts";
 import type { Profile } from "@/types/profile.ts";
 import type { TeacherRow } from "@/types/teachers.ts";
 
@@ -9,22 +10,22 @@ export const nf = new Intl.NumberFormat("fr-FR", {
   maximumFractionDigits: 2,
 });
 
-export const normalizeForSearch = (str: string): string =>
+export const normalizeForSearch = (str: string) =>
   str
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase();
 
-export const formatRequestType = (requestType: string): string =>
+export const formatRequestType = (requestType: string) =>
   requestType === "attribution" ? "Attribution" : `Demande ${requestType}`;
 
-export const formatProgram = (nomCursus: string, nomMention: string): string =>
+export const formatProgram = (nomCursus: string, nomMention: string) =>
   nomCursus + " " + nomMention;
 
-export const formatUser = (user: Profile): string =>
+export const formatUser = (user: Profile) =>
   user.alias ?? user.firstname + " " + user.lastname;
 
-export const formatCoordinators = (coordinators: Coordinator[]): string =>
+export const formatCoordinators = (coordinators: Coordinator[]) =>
   coordinators
     .map(
       ({ profile, comment }) =>
@@ -32,17 +33,29 @@ export const formatCoordinators = (coordinators: Coordinator[]): string =>
     )
     .join(", ");
 
-export const formatResumeIntervenant = (row: TeacherRow): string =>
-  `Service : ${String(
-    row.weightedHours -
-      (row.totalModifications.aggregate?.sum?.weightedHours ?? 0),
-  )} htd` +
-  " \u2014 " +
-  `Attributions : ${String(row.totalAssigned.aggregate?.sum?.weightedHours ?? 0)} htd` +
-  " \u2014 " +
-  `Vœux principaux : ${String(row.totalPrimary.aggregate?.sum?.weightedHours ?? 0)} htd` +
-  " \u2014 " +
-  `Vœux secondaires : ${String(row.totalSecondary.aggregate?.sum?.weightedHours ?? 0)} htd`;
+export const formatCourseCaption = (row: CourseRow) =>
+  `${row.program.degree.name} — ${row.program.name} — ` +
+  (row.track?.name ? `${row.track.name} — ` : "") +
+  `S${String(row.semester)} — ` +
+  row.courseType.label;
+
+export const formatTeacherCaption = (row: TeacherRow) => {
+  const service = String(
+    (row.services[0]?.weightedHours ?? 0) -
+      (row.services[0]?.totalModifications.aggregate?.sum?.weightedHours ?? 0),
+  );
+  const assigned = String(row.totalAssigned.aggregate?.sum?.weightedHours ?? 0);
+  const primary = String(row.totalPrimary.aggregate?.sum?.weightedHours ?? 0);
+  const secondary = String(
+    row.totalSecondary.aggregate?.sum?.weightedHours ?? 0,
+  );
+  return (
+    `Service : ${service} htd — ` +
+    `Attributions : ${assigned} htd — ` +
+    `Vœux principaux : ${primary} htd — ` +
+    `Vœux secondaires : ${secondary} htd`
+  );
+};
 
 export const buttonColor = (active: boolean): NamedColor =>
   active ? "accent" : "white";

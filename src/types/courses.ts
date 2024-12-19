@@ -1,7 +1,15 @@
+import type { Option } from "@/types/common.ts";
 import type { Coordinator } from "@/types/coordinators.ts";
 import type { Priority } from "@/types/priorities.ts";
 import type { RequestDetails } from "@/types/requests.ts";
-import type { Identifier, TotalHours } from "@/types/rows.ts";
+import type { TotalHours } from "@/types/rows.ts";
+
+type Identifier = {
+  id: number;
+  name: string;
+  shortName: string | null;
+  visible: boolean;
+};
 
 export type Archive = {
   courseId: number;
@@ -34,17 +42,12 @@ export type CourseRow = Identifier & {
   hoursPerGroup: number | null;
   numberOfGroups: number | null;
   program: Identifier & {
-    degree: Identifier & { visible: boolean };
-    visible: boolean;
+    degree: Identifier;
   };
-  track: (Identifier & { visible: boolean }) | null;
-  courseType: {
-    label: string;
-    shortLabel: string | null;
-  };
+  track: Identifier | null;
+  courseType: Option<string>;
   totalAssigned: TotalHours;
   totalPrimary: TotalHours;
   totalSecondary: TotalHours;
   totalPriority: TotalHours;
-  visible: boolean;
 };

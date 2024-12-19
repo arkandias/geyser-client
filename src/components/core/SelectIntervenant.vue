@@ -11,7 +11,7 @@ const serviceId = defineModel<number | null>({ required: true });
 
 const { current: currentYear } = useYears();
 
-const queryServices = useQuery({
+const queryTeachers = useQuery({
   query: GET_TEACHERS,
   variables: {
     year: computed(() => currentYear.value ?? 0),
@@ -19,7 +19,7 @@ const queryServices = useQuery({
 });
 
 const optionsInit: ComputedRef<OptionSearch<number>[]> = computed(() =>
-  (queryServices.data.value?.services ?? []).map((service) => ({
+  (queryTeachers.data.value?.services ?? []).map((service) => ({
     value: service.id,
     label: formatUser(service.intervenant),
     search: normalizeForSearch(formatUser(service.intervenant)),

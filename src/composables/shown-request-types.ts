@@ -11,7 +11,7 @@ const requestTypes = Object.values(REQUEST_TYPES).sort(
   (a, b) => orderRequestType(a) - orderRequestType(b),
 );
 
-export const useRequestTypes = () => {
+export const useShownRequestTypes = () => {
   const perm = usePermissions();
   const shown: ComputedRef<RequestType[]> = computed(() =>
     requestTypes.filter(

@@ -4,26 +4,27 @@ import { type ComputedRef, computed } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { UPDATE_DESCRIPTION } from "@/graphql/courses.ts";
-import type { Coordinator, CourseDetails } from "@/types/courses.ts";
+import type { Coordinator } from "@/types/coordinators.ts";
+import type { CourseDetails } from "@/types/courses.ts";
 import type { Profile } from "@/types/profile.ts";
 
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
 import DetailsVoletEnseignementResponsables from "@/components/details/volet/DetailsVoletEnseignementResponsables.vue";
 
-const props = defineProps<{ details: CourseDetails }>();
+const props = defineProps<{ courseDetails: CourseDetails }>();
 
 const perm = usePermissions();
 
 // responsables
 const responsablesEnseignement: ComputedRef<Coordinator[]> = computed(
-  () => props.details.coordinators,
+  () => props.courseDetails.coordinators,
 );
 const responsablesParcours: ComputedRef<Coordinator[]> = computed(
-  () => props.details.track?.coordinators ?? [],
+  () => props.courseDetails.track?.coordinators ?? [],
 );
 const responsablesMention: ComputedRef<Coordinator[]> = computed(
-  () => props.details.program.coordinators,
+  () => props.courseDetails.program.coordinators,
 );
 const responsables: ComputedRef<Profile[]> = computed(() => [
   ...responsablesEnseignement.value.map(({ profile }) => profile),
@@ -36,10 +37,10 @@ const updateDescription = useMutation(UPDATE_DESCRIPTION);
 const setDescription = (text: string): Promise<boolean> =>
   updateDescription
     .executeMutation({
-      id: props.details.courseId,
+      courseId: props.courseDetails.courseId,
       description: text || null,
     })
-    .then((result) => !!result.data?.description?.id && !result.error);
+    .then((result) => !!result.data?.course?.id && !result.error);
 </script>
 
 <template>
@@ -52,7 +53,7 @@ const setDescription = (text: string): Promise<boolean> =>
   </DetailsSubsection>
   <DetailsSubsectionEditableText
     title="Description"
-    :text="details.description"
+    :text="courseDetails.description"
     default-text="Pas de description (contactez un responsable)"
     :set-text="setDescription"
     :editable="perm.deModifierUneDescription(responsables)"

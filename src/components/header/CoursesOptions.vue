@@ -6,7 +6,7 @@ import { useLayout } from "@/stores/layout.ts";
 import MenuYear from "@/components/header/MenuYear.vue";
 
 const { filtreIntervenants, toggleLeftPanel } = useLayout();
-const { isMyServiceSelected, myService, toggleMyService } = useData();
+const { isMyRowSelected, myRow, toggleMyRow } = useData();
 </script>
 
 <template>
@@ -23,11 +23,11 @@ const { isMyServiceSelected, myService, toggleMyService } = useData();
   </QBtn>
   <QBtn
     icon="sym_s_assignment"
-    :color="buttonColor(isMyServiceSelected)"
-    :disable="!myService"
+    :color="buttonColor(isMyRowSelected)"
+    :disable="!myRow"
     flat
     square
-    @click="toggleMyService"
+    @click="toggleMyRow"
   >
     <QTooltip>Mes demandes</QTooltip>
   </QBtn>

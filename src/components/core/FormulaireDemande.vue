@@ -10,8 +10,8 @@ import {
 } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
-import { updateDemande } from "@/helpers/demandes.ts";
 import { errorNotify } from "@/helpers/notify.ts";
+import { updateRequest } from "@/helpers/requests-operations.ts";
 import { useData } from "@/stores/data.ts";
 import { usePhases } from "@/stores/phases.ts";
 
@@ -24,7 +24,7 @@ const props = defineProps<{
 
 const { current: phaseEnCours } = usePhases();
 const perm = usePermissions();
-const { myService } = useData();
+const { myRow } = useData();
 
 const heures: Ref<number | null> = ref(null);
 watch(
@@ -70,7 +70,7 @@ watch(
 const serviceIdInit: ComputedRef<number | null> = computed(() =>
   perm.deFaireDesDemandesPourAutrui || perm.deModifierLesAttributions
     ? null
-    : (myService.value?.id ?? null),
+    : (myRow.value?.id ?? null),
 );
 const serviceId: Ref<number | null> = ref(null);
 watch(
@@ -98,7 +98,7 @@ const submitForm = async (): Promise<void> => {
     errorNotify("Formulaire non valide", "Sélectionnez un type de demande");
     return;
   }
-  await updateDemande(client, {
+  await updateRequest(client, {
     serviceId: serviceId.value,
     ensId: props.ensId,
     typeDemande: typeDemande.value,

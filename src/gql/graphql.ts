@@ -112,6 +112,10 @@ export type Annee = {
   /** An aggregate relationship */
   enseignements_aggregate: Enseignement_Aggregate;
   /** An array relationship */
+  messages: Array<Message>;
+  /** An aggregate relationship */
+  messages_aggregate: Message_Aggregate;
+  /** An array relationship */
   services: Array<Service>;
   /** An aggregate relationship */
   services_aggregate: Service_Aggregate;
@@ -137,6 +141,24 @@ export type AnneeEnseignements_AggregateArgs = {
   offset: InputMaybe<Scalars["Int"]["input"]>;
   order_by: InputMaybe<Array<Enseignement_Order_By>>;
   where: InputMaybe<Enseignement_Bool_Exp>;
+};
+
+/** Table contenant les différentes années. */
+export type AnneeMessagesArgs = {
+  distinct_on: InputMaybe<Array<Message_Select_Column>>;
+  limit: InputMaybe<Scalars["Int"]["input"]>;
+  offset: InputMaybe<Scalars["Int"]["input"]>;
+  order_by: InputMaybe<Array<Message_Order_By>>;
+  where: InputMaybe<Message_Bool_Exp>;
+};
+
+/** Table contenant les différentes années. */
+export type AnneeMessages_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Message_Select_Column>>;
+  limit: InputMaybe<Scalars["Int"]["input"]>;
+  offset: InputMaybe<Scalars["Int"]["input"]>;
+  order_by: InputMaybe<Array<Message_Order_By>>;
+  where: InputMaybe<Message_Bool_Exp>;
 };
 
 /** Table contenant les différentes années. */
@@ -201,6 +223,8 @@ export type Annee_Bool_Exp = {
   en_cours: InputMaybe<Boolean_Comparison_Exp>;
   enseignements: InputMaybe<Enseignement_Bool_Exp>;
   enseignements_aggregate: InputMaybe<Enseignement_Aggregate_Bool_Exp>;
+  messages: InputMaybe<Message_Bool_Exp>;
+  messages_aggregate: InputMaybe<Message_Aggregate_Bool_Exp>;
   services: InputMaybe<Service_Bool_Exp>;
   services_aggregate: InputMaybe<Service_Aggregate_Bool_Exp>;
   value: InputMaybe<Int_Comparison_Exp>;
@@ -226,6 +250,7 @@ export type Annee_Insert_Input = {
   /** Indique si l'année correspondante est l'année en cours (TRUE) ou non (NULL). Une seule année peut être en cours à la fois. */
   en_cours: InputMaybe<Scalars["Boolean"]["input"]>;
   enseignements: InputMaybe<Enseignement_Arr_Rel_Insert_Input>;
+  messages: InputMaybe<Message_Arr_Rel_Insert_Input>;
   services: InputMaybe<Service_Arr_Rel_Insert_Input>;
   /** Le numéro de l'année (unique). */
   value: InputMaybe<Scalars["Int"]["input"]>;
@@ -274,6 +299,7 @@ export type Annee_On_Conflict = {
 export type Annee_Order_By = {
   en_cours: InputMaybe<Order_By>;
   enseignements_aggregate: InputMaybe<Enseignement_Aggregate_Order_By>;
+  messages_aggregate: InputMaybe<Message_Aggregate_Order_By>;
   services_aggregate: InputMaybe<Service_Aggregate_Order_By>;
   value: InputMaybe<Order_By>;
   visible: InputMaybe<Order_By>;
@@ -2413,6 +2439,259 @@ export type Enseignement_Variance_Order_By = {
   semestre: InputMaybe<Order_By>;
 };
 
+/** columns and relationships of "fonction" */
+export type Fonction = {
+  __typename?: "fonction";
+  description: Maybe<Scalars["String"]["output"]>;
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+  /** An array relationship */
+  intervenants: Array<Intervenant>;
+  /** An aggregate relationship */
+  intervenants_aggregate: Intervenant_Aggregate;
+  label: Scalars["String"]["output"];
+  value: Scalars["String"]["output"];
+};
+
+/** columns and relationships of "fonction" */
+export type FonctionIntervenantsArgs = {
+  distinct_on: InputMaybe<Array<Intervenant_Select_Column>>;
+  limit: InputMaybe<Scalars["Int"]["input"]>;
+  offset: InputMaybe<Scalars["Int"]["input"]>;
+  order_by: InputMaybe<Array<Intervenant_Order_By>>;
+  where: InputMaybe<Intervenant_Bool_Exp>;
+};
+
+/** columns and relationships of "fonction" */
+export type FonctionIntervenants_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Intervenant_Select_Column>>;
+  limit: InputMaybe<Scalars["Int"]["input"]>;
+  offset: InputMaybe<Scalars["Int"]["input"]>;
+  order_by: InputMaybe<Array<Intervenant_Order_By>>;
+  where: InputMaybe<Intervenant_Bool_Exp>;
+};
+
+/** aggregated selection of "fonction" */
+export type Fonction_Aggregate = {
+  __typename?: "fonction_aggregate";
+  aggregate: Maybe<Fonction_Aggregate_Fields>;
+  nodes: Array<Fonction>;
+};
+
+/** aggregate fields of "fonction" */
+export type Fonction_Aggregate_Fields = {
+  __typename?: "fonction_aggregate_fields";
+  avg: Maybe<Fonction_Avg_Fields>;
+  count: Scalars["Int"]["output"];
+  max: Maybe<Fonction_Max_Fields>;
+  min: Maybe<Fonction_Min_Fields>;
+  stddev: Maybe<Fonction_Stddev_Fields>;
+  stddev_pop: Maybe<Fonction_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Fonction_Stddev_Samp_Fields>;
+  sum: Maybe<Fonction_Sum_Fields>;
+  var_pop: Maybe<Fonction_Var_Pop_Fields>;
+  var_samp: Maybe<Fonction_Var_Samp_Fields>;
+  variance: Maybe<Fonction_Variance_Fields>;
+};
+
+/** aggregate fields of "fonction" */
+export type Fonction_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Fonction_Select_Column>>;
+  distinct: InputMaybe<Scalars["Boolean"]["input"]>;
+};
+
+/** aggregate avg on columns */
+export type Fonction_Avg_Fields = {
+  __typename?: "fonction_avg_fields";
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** Boolean expression to filter rows from the table "fonction". All fields are combined with a logical 'AND'. */
+export type Fonction_Bool_Exp = {
+  _and: InputMaybe<Array<Fonction_Bool_Exp>>;
+  _not: InputMaybe<Fonction_Bool_Exp>;
+  _or: InputMaybe<Array<Fonction_Bool_Exp>>;
+  description: InputMaybe<String_Comparison_Exp>;
+  heures_eqtd_service_base: InputMaybe<Float_Comparison_Exp>;
+  intervenants: InputMaybe<Intervenant_Bool_Exp>;
+  intervenants_aggregate: InputMaybe<Intervenant_Aggregate_Bool_Exp>;
+  label: InputMaybe<String_Comparison_Exp>;
+  value: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "fonction" */
+export enum Fonction_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  FonctionPkey = "fonction_pkey",
+}
+
+/** input type for incrementing numeric columns in table "fonction" */
+export type Fonction_Inc_Input = {
+  heures_eqtd_service_base: InputMaybe<Scalars["Float"]["input"]>;
+};
+
+/** input type for inserting data into table "fonction" */
+export type Fonction_Insert_Input = {
+  description: InputMaybe<Scalars["String"]["input"]>;
+  heures_eqtd_service_base: InputMaybe<Scalars["Float"]["input"]>;
+  intervenants: InputMaybe<Intervenant_Arr_Rel_Insert_Input>;
+  label: InputMaybe<Scalars["String"]["input"]>;
+  value: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** aggregate max on columns */
+export type Fonction_Max_Fields = {
+  __typename?: "fonction_max_fields";
+  description: Maybe<Scalars["String"]["output"]>;
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+  label: Maybe<Scalars["String"]["output"]>;
+  value: Maybe<Scalars["String"]["output"]>;
+};
+
+/** aggregate min on columns */
+export type Fonction_Min_Fields = {
+  __typename?: "fonction_min_fields";
+  description: Maybe<Scalars["String"]["output"]>;
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+  label: Maybe<Scalars["String"]["output"]>;
+  value: Maybe<Scalars["String"]["output"]>;
+};
+
+/** response of any mutation on the table "fonction" */
+export type Fonction_Mutation_Response = {
+  __typename?: "fonction_mutation_response";
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars["Int"]["output"];
+  /** data from the rows affected by the mutation */
+  returning: Array<Fonction>;
+};
+
+/** input type for inserting object relation for remote table "fonction" */
+export type Fonction_Obj_Rel_Insert_Input = {
+  data: Fonction_Insert_Input;
+  /** upsert condition */
+  on_conflict: InputMaybe<Fonction_On_Conflict>;
+};
+
+/** on_conflict condition type for table "fonction" */
+export type Fonction_On_Conflict = {
+  constraint: Fonction_Constraint;
+  update_columns: Array<Fonction_Update_Column>;
+  where: InputMaybe<Fonction_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "fonction". */
+export type Fonction_Order_By = {
+  description: InputMaybe<Order_By>;
+  heures_eqtd_service_base: InputMaybe<Order_By>;
+  intervenants_aggregate: InputMaybe<Intervenant_Aggregate_Order_By>;
+  label: InputMaybe<Order_By>;
+  value: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: fonction */
+export type Fonction_Pk_Columns_Input = {
+  value: Scalars["String"]["input"];
+};
+
+/** select columns of table "fonction" */
+export enum Fonction_Select_Column {
+  /** column name */
+  Description = "description",
+  /** column name */
+  HeuresEqtdServiceBase = "heures_eqtd_service_base",
+  /** column name */
+  Label = "label",
+  /** column name */
+  Value = "value",
+}
+
+/** input type for updating data in table "fonction" */
+export type Fonction_Set_Input = {
+  description: InputMaybe<Scalars["String"]["input"]>;
+  heures_eqtd_service_base: InputMaybe<Scalars["Float"]["input"]>;
+  label: InputMaybe<Scalars["String"]["input"]>;
+  value: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** aggregate stddev on columns */
+export type Fonction_Stddev_Fields = {
+  __typename?: "fonction_stddev_fields";
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Fonction_Stddev_Pop_Fields = {
+  __typename?: "fonction_stddev_pop_fields";
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Fonction_Stddev_Samp_Fields = {
+  __typename?: "fonction_stddev_samp_fields";
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** Streaming cursor of the table "fonction" */
+export type Fonction_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Fonction_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Fonction_Stream_Cursor_Value_Input = {
+  description: InputMaybe<Scalars["String"]["input"]>;
+  heures_eqtd_service_base: InputMaybe<Scalars["Float"]["input"]>;
+  label: InputMaybe<Scalars["String"]["input"]>;
+  value: InputMaybe<Scalars["String"]["input"]>;
+};
+
+/** aggregate sum on columns */
+export type Fonction_Sum_Fields = {
+  __typename?: "fonction_sum_fields";
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** update columns of table "fonction" */
+export enum Fonction_Update_Column {
+  /** column name */
+  Description = "description",
+  /** column name */
+  HeuresEqtdServiceBase = "heures_eqtd_service_base",
+  /** column name */
+  Label = "label",
+  /** column name */
+  Value = "value",
+}
+
+export type Fonction_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc: InputMaybe<Fonction_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set: InputMaybe<Fonction_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Fonction_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Fonction_Var_Pop_Fields = {
+  __typename?: "fonction_var_pop_fields";
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** aggregate var_samp on columns */
+export type Fonction_Var_Samp_Fields = {
+  __typename?: "fonction_var_samp_fields";
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** aggregate variance on columns */
+export type Fonction_Variance_Fields = {
+  __typename?: "fonction_variance_fields";
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+};
+
 /** Table contenant les intervenants. */
 export type Intervenant = {
   __typename?: "intervenant";
@@ -2425,6 +2704,8 @@ export type Intervenant = {
   /** An aggregate relationship */
   demandes_aggregate: Demande_Aggregate;
   fonction: Maybe<Scalars["String"]["output"]>;
+  /** An object relationship */
+  fonctionByFonction: Maybe<Fonction>;
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
   heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
   /** An array relationship */
@@ -2550,6 +2831,33 @@ export type Intervenant_Aggregate = {
   nodes: Array<Intervenant>;
 };
 
+export type Intervenant_Aggregate_Bool_Exp = {
+  bool_and: InputMaybe<Intervenant_Aggregate_Bool_Exp_Bool_And>;
+  bool_or: InputMaybe<Intervenant_Aggregate_Bool_Exp_Bool_Or>;
+  count: InputMaybe<Intervenant_Aggregate_Bool_Exp_Count>;
+};
+
+export type Intervenant_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Intervenant_Select_Column_Intervenant_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct: InputMaybe<Scalars["Boolean"]["input"]>;
+  filter: InputMaybe<Intervenant_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Intervenant_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Intervenant_Select_Column_Intervenant_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct: InputMaybe<Scalars["Boolean"]["input"]>;
+  filter: InputMaybe<Intervenant_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Intervenant_Aggregate_Bool_Exp_Count = {
+  arguments: InputMaybe<Array<Intervenant_Select_Column>>;
+  distinct: InputMaybe<Scalars["Boolean"]["input"]>;
+  filter: InputMaybe<Intervenant_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "intervenant" */
 export type Intervenant_Aggregate_Fields = {
   __typename?: "intervenant_aggregate_fields";
@@ -2572,11 +2880,39 @@ export type Intervenant_Aggregate_FieldsCountArgs = {
   distinct: InputMaybe<Scalars["Boolean"]["input"]>;
 };
 
+/** order by aggregate values of table "intervenant" */
+export type Intervenant_Aggregate_Order_By = {
+  avg: InputMaybe<Intervenant_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<Intervenant_Max_Order_By>;
+  min: InputMaybe<Intervenant_Min_Order_By>;
+  stddev: InputMaybe<Intervenant_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Intervenant_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Intervenant_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Intervenant_Sum_Order_By>;
+  var_pop: InputMaybe<Intervenant_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Intervenant_Var_Samp_Order_By>;
+  variance: InputMaybe<Intervenant_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "intervenant" */
+export type Intervenant_Arr_Rel_Insert_Input = {
+  data: Array<Intervenant_Insert_Input>;
+  /** upsert condition */
+  on_conflict: InputMaybe<Intervenant_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Intervenant_Avg_Fields = {
   __typename?: "intervenant_avg_fields";
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
   heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** order by avg() on columns of table "intervenant" */
+export type Intervenant_Avg_Order_By = {
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "intervenant". All fields are combined with a logical 'AND'. */
@@ -2589,6 +2925,7 @@ export type Intervenant_Bool_Exp = {
   demandes: InputMaybe<Demande_Bool_Exp>;
   demandes_aggregate: InputMaybe<Demande_Aggregate_Bool_Exp>;
   fonction: InputMaybe<String_Comparison_Exp>;
+  fonctionByFonction: InputMaybe<Fonction_Bool_Exp>;
   heures_eqtd_service_base: InputMaybe<Float_Comparison_Exp>;
   messages: InputMaybe<Message_Bool_Exp>;
   messages_aggregate: InputMaybe<Message_Aggregate_Bool_Exp>;
@@ -2624,6 +2961,7 @@ export type Intervenant_Insert_Input = {
   alias: InputMaybe<Scalars["String"]["input"]>;
   demandes: InputMaybe<Demande_Arr_Rel_Insert_Input>;
   fonction: InputMaybe<Scalars["String"]["input"]>;
+  fonctionByFonction: InputMaybe<Fonction_Obj_Rel_Insert_Input>;
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
   heures_eqtd_service_base: InputMaybe<Scalars["Float"]["input"]>;
   messages: InputMaybe<Message_Arr_Rel_Insert_Input>;
@@ -2656,6 +2994,21 @@ export type Intervenant_Max_Fields = {
   uid: Maybe<Scalars["String"]["output"]>;
 };
 
+/** order by max() on columns of table "intervenant" */
+export type Intervenant_Max_Order_By = {
+  /** Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel). */
+  alias: InputMaybe<Order_By>;
+  fonction: InputMaybe<Order_By>;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: InputMaybe<Order_By>;
+  /** Le nom de l'intervenant. */
+  nom: InputMaybe<Order_By>;
+  /** Le prénom de l'intervenant. */
+  prenom: InputMaybe<Order_By>;
+  /** L'identifiant unique de l'intervenant. */
+  uid: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Intervenant_Min_Fields = {
   __typename?: "intervenant_min_fields";
@@ -2670,6 +3023,21 @@ export type Intervenant_Min_Fields = {
   prenom: Maybe<Scalars["String"]["output"]>;
   /** L'identifiant unique de l'intervenant. */
   uid: Maybe<Scalars["String"]["output"]>;
+};
+
+/** order by min() on columns of table "intervenant" */
+export type Intervenant_Min_Order_By = {
+  /** Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel). */
+  alias: InputMaybe<Order_By>;
+  fonction: InputMaybe<Order_By>;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: InputMaybe<Order_By>;
+  /** Le nom de l'intervenant. */
+  nom: InputMaybe<Order_By>;
+  /** Le prénom de l'intervenant. */
+  prenom: InputMaybe<Order_By>;
+  /** L'identifiant unique de l'intervenant. */
+  uid: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "intervenant" */
@@ -2701,6 +3069,7 @@ export type Intervenant_Order_By = {
   alias: InputMaybe<Order_By>;
   demandes_aggregate: InputMaybe<Demande_Aggregate_Order_By>;
   fonction: InputMaybe<Order_By>;
+  fonctionByFonction: InputMaybe<Fonction_Order_By>;
   heures_eqtd_service_base: InputMaybe<Order_By>;
   messages_aggregate: InputMaybe<Message_Aggregate_Order_By>;
   nom: InputMaybe<Order_By>;
@@ -2738,6 +3107,22 @@ export enum Intervenant_Select_Column {
   Visible = "visible",
 }
 
+/** select "intervenant_aggregate_bool_exp_bool_and_arguments_columns" columns of table "intervenant" */
+export enum Intervenant_Select_Column_Intervenant_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  Actif = "actif",
+  /** column name */
+  Visible = "visible",
+}
+
+/** select "intervenant_aggregate_bool_exp_bool_or_arguments_columns" columns of table "intervenant" */
+export enum Intervenant_Select_Column_Intervenant_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  Actif = "actif",
+  /** column name */
+  Visible = "visible",
+}
+
 /** input type for updating data in table "intervenant" */
 export type Intervenant_Set_Input = {
   /** Indique si un service doit être automatiquement créé pour l'intervenant lors de la prochaine année. */
@@ -2764,6 +3149,12 @@ export type Intervenant_Stddev_Fields = {
   heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
 };
 
+/** order by stddev() on columns of table "intervenant" */
+export type Intervenant_Stddev_Order_By = {
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_pop on columns */
 export type Intervenant_Stddev_Pop_Fields = {
   __typename?: "intervenant_stddev_pop_fields";
@@ -2771,11 +3162,23 @@ export type Intervenant_Stddev_Pop_Fields = {
   heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
 };
 
+/** order by stddev_pop() on columns of table "intervenant" */
+export type Intervenant_Stddev_Pop_Order_By = {
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_samp on columns */
 export type Intervenant_Stddev_Samp_Fields = {
   __typename?: "intervenant_stddev_samp_fields";
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
   heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** order by stddev_samp() on columns of table "intervenant" */
+export type Intervenant_Stddev_Samp_Order_By = {
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "intervenant" */
@@ -2810,6 +3213,12 @@ export type Intervenant_Sum_Fields = {
   __typename?: "intervenant_sum_fields";
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
   heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** order by sum() on columns of table "intervenant" */
+export type Intervenant_Sum_Order_By = {
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: InputMaybe<Order_By>;
 };
 
 /** update columns of table "intervenant" */
@@ -2848,6 +3257,12 @@ export type Intervenant_Var_Pop_Fields = {
   heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
 };
 
+/** order by var_pop() on columns of table "intervenant" */
+export type Intervenant_Var_Pop_Order_By = {
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: InputMaybe<Order_By>;
+};
+
 /** aggregate var_samp on columns */
 export type Intervenant_Var_Samp_Fields = {
   __typename?: "intervenant_var_samp_fields";
@@ -2855,11 +3270,23 @@ export type Intervenant_Var_Samp_Fields = {
   heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
 };
 
+/** order by var_samp() on columns of table "intervenant" */
+export type Intervenant_Var_Samp_Order_By = {
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: InputMaybe<Order_By>;
+};
+
 /** aggregate variance on columns */
 export type Intervenant_Variance_Fields = {
   __typename?: "intervenant_variance_fields";
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
   heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+};
+
+/** order by variance() on columns of table "intervenant" */
+export type Intervenant_Variance_Order_By = {
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: InputMaybe<Order_By>;
 };
 
 /** Table contenant les différentes mentions. */
@@ -4206,6 +4633,10 @@ export type Mutation_Root = {
   delete_enseignement: Maybe<Enseignement_Mutation_Response>;
   /** delete single row from the table: "enseignement" */
   delete_enseignement_by_pk: Maybe<Enseignement>;
+  /** delete data from the table: "fonction" */
+  delete_fonction: Maybe<Fonction_Mutation_Response>;
+  /** delete single row from the table: "fonction" */
+  delete_fonction_by_pk: Maybe<Fonction>;
   /** delete data from the table: "intervenant" */
   delete_intervenant: Maybe<Intervenant_Mutation_Response>;
   /** delete single row from the table: "intervenant" */
@@ -4270,6 +4701,10 @@ export type Mutation_Root = {
   insert_enseignement: Maybe<Enseignement_Mutation_Response>;
   /** insert a single row into the table: "enseignement" */
   insert_enseignement_one: Maybe<Enseignement>;
+  /** insert data into the table: "fonction" */
+  insert_fonction: Maybe<Fonction_Mutation_Response>;
+  /** insert a single row into the table: "fonction" */
+  insert_fonction_one: Maybe<Fonction>;
   /** insert data into the table: "intervenant" */
   insert_intervenant: Maybe<Intervenant_Mutation_Response>;
   /** insert a single row into the table: "intervenant" */
@@ -4342,6 +4777,12 @@ export type Mutation_Root = {
   update_enseignement_by_pk: Maybe<Enseignement>;
   /** update multiples rows of table: "enseignement" */
   update_enseignement_many: Maybe<Array<Maybe<Enseignement_Mutation_Response>>>;
+  /** update data of the table: "fonction" */
+  update_fonction: Maybe<Fonction_Mutation_Response>;
+  /** update single row of the table: "fonction" */
+  update_fonction_by_pk: Maybe<Fonction>;
+  /** update multiples rows of table: "fonction" */
+  update_fonction_many: Maybe<Array<Maybe<Fonction_Mutation_Response>>>;
   /** update data of the table: "intervenant" */
   update_intervenant: Maybe<Intervenant_Mutation_Response>;
   /** update single row of the table: "intervenant" */
@@ -4463,6 +4904,16 @@ export type Mutation_RootDelete_Enseignement_By_PkArgs = {
 };
 
 /** mutation root */
+export type Mutation_RootDelete_FonctionArgs = {
+  where: Fonction_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootDelete_Fonction_By_PkArgs = {
+  value: Scalars["String"]["input"];
+};
+
+/** mutation root */
 export type Mutation_RootDelete_IntervenantArgs = {
   where: Intervenant_Bool_Exp;
 };
@@ -4569,7 +5020,7 @@ export type Mutation_RootDelete_Type_EnseignementArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Type_Enseignement_By_PkArgs = {
-  key: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 /** mutation root */
@@ -4579,7 +5030,7 @@ export type Mutation_RootDelete_Type_Modification_ServiceArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Type_Modification_Service_By_PkArgs = {
-  key: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 /** mutation root */
@@ -4628,6 +5079,18 @@ export type Mutation_RootInsert_EnseignementArgs = {
 export type Mutation_RootInsert_Enseignement_OneArgs = {
   object: Enseignement_Insert_Input;
   on_conflict: InputMaybe<Enseignement_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_FonctionArgs = {
+  objects: Array<Fonction_Insert_Input>;
+  on_conflict: InputMaybe<Fonction_On_Conflict>;
+};
+
+/** mutation root */
+export type Mutation_RootInsert_Fonction_OneArgs = {
+  object: Fonction_Insert_Input;
+  on_conflict: InputMaybe<Fonction_On_Conflict>;
 };
 
 /** mutation root */
@@ -4848,6 +5311,25 @@ export type Mutation_RootUpdate_Enseignement_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Enseignement_ManyArgs = {
   updates: Array<Enseignement_Updates>;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_FonctionArgs = {
+  _inc: InputMaybe<Fonction_Inc_Input>;
+  _set: InputMaybe<Fonction_Set_Input>;
+  where: Fonction_Bool_Exp;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Fonction_By_PkArgs = {
+  _inc: InputMaybe<Fonction_Inc_Input>;
+  _set: InputMaybe<Fonction_Set_Input>;
+  pk_columns: Fonction_Pk_Columns_Input;
+};
+
+/** mutation root */
+export type Mutation_RootUpdate_Fonction_ManyArgs = {
+  updates: Array<Fonction_Updates>;
 };
 
 /** mutation root */
@@ -6221,6 +6703,12 @@ export type Query_Root = {
   enseignement_aggregate: Enseignement_Aggregate;
   /** fetch data from the table: "enseignement" using primary key columns */
   enseignement_by_pk: Maybe<Enseignement>;
+  /** fetch data from the table: "fonction" */
+  fonction: Array<Fonction>;
+  /** fetch aggregated fields from the table: "fonction" */
+  fonction_aggregate: Fonction_Aggregate;
+  /** fetch data from the table: "fonction" using primary key columns */
+  fonction_by_pk: Maybe<Fonction>;
   /** fetch data from the table: "intervenant" */
   intervenant: Array<Intervenant>;
   /** fetch aggregated fields from the table: "intervenant" */
@@ -6373,6 +6861,26 @@ export type Query_RootEnseignement_AggregateArgs = {
 
 export type Query_RootEnseignement_By_PkArgs = {
   id: Scalars["Int"]["input"];
+};
+
+export type Query_RootFonctionArgs = {
+  distinct_on: InputMaybe<Array<Fonction_Select_Column>>;
+  limit: InputMaybe<Scalars["Int"]["input"]>;
+  offset: InputMaybe<Scalars["Int"]["input"]>;
+  order_by: InputMaybe<Array<Fonction_Order_By>>;
+  where: InputMaybe<Fonction_Bool_Exp>;
+};
+
+export type Query_RootFonction_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Fonction_Select_Column>>;
+  limit: InputMaybe<Scalars["Int"]["input"]>;
+  offset: InputMaybe<Scalars["Int"]["input"]>;
+  order_by: InputMaybe<Array<Fonction_Order_By>>;
+  where: InputMaybe<Fonction_Bool_Exp>;
+};
+
+export type Query_RootFonction_By_PkArgs = {
+  value: Scalars["String"]["input"];
 };
 
 export type Query_RootIntervenantArgs = {
@@ -6592,7 +7100,7 @@ export type Query_RootType_Enseignement_AggregateArgs = {
 };
 
 export type Query_RootType_Enseignement_By_PkArgs = {
-  key: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 export type Query_RootType_Modification_ServiceArgs = {
@@ -6612,7 +7120,7 @@ export type Query_RootType_Modification_Service_AggregateArgs = {
 };
 
 export type Query_RootType_Modification_Service_By_PkArgs = {
-  key: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 /** Table contenant les responsables d'une mention, d'un parcours ou d'un enseignement. Chaque ligne correspond à un et un seul de ces trois types de responsabilité. */
@@ -7622,6 +8130,14 @@ export type Subscription_Root = {
   enseignement_by_pk: Maybe<Enseignement>;
   /** fetch data from the table in a streaming manner: "enseignement" */
   enseignement_stream: Array<Enseignement>;
+  /** fetch data from the table: "fonction" */
+  fonction: Array<Fonction>;
+  /** fetch aggregated fields from the table: "fonction" */
+  fonction_aggregate: Fonction_Aggregate;
+  /** fetch data from the table: "fonction" using primary key columns */
+  fonction_by_pk: Maybe<Fonction>;
+  /** fetch data from the table in a streaming manner: "fonction" */
+  fonction_stream: Array<Fonction>;
   /** fetch data from the table: "intervenant" */
   intervenant: Array<Intervenant>;
   /** fetch aggregated fields from the table: "intervenant" */
@@ -7822,6 +8338,32 @@ export type Subscription_RootEnseignement_StreamArgs = {
   batch_size: Scalars["Int"]["input"];
   cursor: Array<InputMaybe<Enseignement_Stream_Cursor_Input>>;
   where: InputMaybe<Enseignement_Bool_Exp>;
+};
+
+export type Subscription_RootFonctionArgs = {
+  distinct_on: InputMaybe<Array<Fonction_Select_Column>>;
+  limit: InputMaybe<Scalars["Int"]["input"]>;
+  offset: InputMaybe<Scalars["Int"]["input"]>;
+  order_by: InputMaybe<Array<Fonction_Order_By>>;
+  where: InputMaybe<Fonction_Bool_Exp>;
+};
+
+export type Subscription_RootFonction_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Fonction_Select_Column>>;
+  limit: InputMaybe<Scalars["Int"]["input"]>;
+  offset: InputMaybe<Scalars["Int"]["input"]>;
+  order_by: InputMaybe<Array<Fonction_Order_By>>;
+  where: InputMaybe<Fonction_Bool_Exp>;
+};
+
+export type Subscription_RootFonction_By_PkArgs = {
+  value: Scalars["String"]["input"];
+};
+
+export type Subscription_RootFonction_StreamArgs = {
+  batch_size: Scalars["Int"]["input"];
+  cursor: Array<InputMaybe<Fonction_Stream_Cursor_Input>>;
+  where: InputMaybe<Fonction_Bool_Exp>;
 };
 
 export type Subscription_RootIntervenantArgs = {
@@ -8101,7 +8643,7 @@ export type Subscription_RootType_Enseignement_AggregateArgs = {
 };
 
 export type Subscription_RootType_Enseignement_By_PkArgs = {
-  key: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 export type Subscription_RootType_Enseignement_StreamArgs = {
@@ -8127,7 +8669,7 @@ export type Subscription_RootType_Modification_Service_AggregateArgs = {
 };
 
 export type Subscription_RootType_Modification_Service_By_PkArgs = {
-  key: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 export type Subscription_RootType_Modification_Service_StreamArgs = {
@@ -8320,14 +8862,15 @@ export type Type_Enseignement = {
   __typename?: "type_enseignement";
   /** Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type. */
   coefficient: Scalars["Float"]["output"];
+  description: Maybe<Scalars["String"]["output"]>;
   /** An array relationship */
   enseignements: Array<Enseignement>;
   /** An aggregate relationship */
   enseignements_aggregate: Enseignement_Aggregate;
-  /** La clé du type d'enseignement (unique). */
-  key: Scalars["String"]["output"];
   /** Le libellé type d'enseignement. */
   label: Scalars["String"]["output"];
+  /** La clé du type d'enseignement (unique). */
+  value: Scalars["String"]["output"];
 };
 
 /** Table contenant les différents types d'enseignement (CM, TD, etc.). */
@@ -8390,15 +8933,16 @@ export type Type_Enseignement_Bool_Exp = {
   _not: InputMaybe<Type_Enseignement_Bool_Exp>;
   _or: InputMaybe<Array<Type_Enseignement_Bool_Exp>>;
   coefficient: InputMaybe<Float_Comparison_Exp>;
+  description: InputMaybe<String_Comparison_Exp>;
   enseignements: InputMaybe<Enseignement_Bool_Exp>;
   enseignements_aggregate: InputMaybe<Enseignement_Aggregate_Bool_Exp>;
-  key: InputMaybe<String_Comparison_Exp>;
   label: InputMaybe<String_Comparison_Exp>;
+  value: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "type_enseignement" */
 export enum Type_Enseignement_Constraint {
-  /** unique or primary key constraint on columns "key" */
+  /** unique or primary key constraint on columns "value" */
   TypeEnseignementPkey = "type_enseignement_pkey",
 }
 
@@ -8412,11 +8956,12 @@ export type Type_Enseignement_Inc_Input = {
 export type Type_Enseignement_Insert_Input = {
   /** Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type. */
   coefficient: InputMaybe<Scalars["Float"]["input"]>;
+  description: InputMaybe<Scalars["String"]["input"]>;
   enseignements: InputMaybe<Enseignement_Arr_Rel_Insert_Input>;
-  /** La clé du type d'enseignement (unique). */
-  key: InputMaybe<Scalars["String"]["input"]>;
   /** Le libellé type d'enseignement. */
   label: InputMaybe<Scalars["String"]["input"]>;
+  /** La clé du type d'enseignement (unique). */
+  value: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** aggregate max on columns */
@@ -8424,10 +8969,11 @@ export type Type_Enseignement_Max_Fields = {
   __typename?: "type_enseignement_max_fields";
   /** Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type. */
   coefficient: Maybe<Scalars["Float"]["output"]>;
-  /** La clé du type d'enseignement (unique). */
-  key: Maybe<Scalars["String"]["output"]>;
+  description: Maybe<Scalars["String"]["output"]>;
   /** Le libellé type d'enseignement. */
   label: Maybe<Scalars["String"]["output"]>;
+  /** La clé du type d'enseignement (unique). */
+  value: Maybe<Scalars["String"]["output"]>;
 };
 
 /** aggregate min on columns */
@@ -8435,10 +8981,11 @@ export type Type_Enseignement_Min_Fields = {
   __typename?: "type_enseignement_min_fields";
   /** Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type. */
   coefficient: Maybe<Scalars["Float"]["output"]>;
-  /** La clé du type d'enseignement (unique). */
-  key: Maybe<Scalars["String"]["output"]>;
+  description: Maybe<Scalars["String"]["output"]>;
   /** Le libellé type d'enseignement. */
   label: Maybe<Scalars["String"]["output"]>;
+  /** La clé du type d'enseignement (unique). */
+  value: Maybe<Scalars["String"]["output"]>;
 };
 
 /** response of any mutation on the table "type_enseignement" */
@@ -8467,15 +9014,16 @@ export type Type_Enseignement_On_Conflict = {
 /** Ordering options when selecting data from "type_enseignement". */
 export type Type_Enseignement_Order_By = {
   coefficient: InputMaybe<Order_By>;
+  description: InputMaybe<Order_By>;
   enseignements_aggregate: InputMaybe<Enseignement_Aggregate_Order_By>;
-  key: InputMaybe<Order_By>;
   label: InputMaybe<Order_By>;
+  value: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: type_enseignement */
 export type Type_Enseignement_Pk_Columns_Input = {
   /** La clé du type d'enseignement (unique). */
-  key: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 /** select columns of table "type_enseignement" */
@@ -8483,19 +9031,22 @@ export enum Type_Enseignement_Select_Column {
   /** column name */
   Coefficient = "coefficient",
   /** column name */
-  Key = "key",
+  Description = "description",
   /** column name */
   Label = "label",
+  /** column name */
+  Value = "value",
 }
 
 /** input type for updating data in table "type_enseignement" */
 export type Type_Enseignement_Set_Input = {
   /** Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type. */
   coefficient: InputMaybe<Scalars["Float"]["input"]>;
-  /** La clé du type d'enseignement (unique). */
-  key: InputMaybe<Scalars["String"]["input"]>;
+  description: InputMaybe<Scalars["String"]["input"]>;
   /** Le libellé type d'enseignement. */
   label: InputMaybe<Scalars["String"]["input"]>;
+  /** La clé du type d'enseignement (unique). */
+  value: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** aggregate stddev on columns */
@@ -8531,10 +9082,11 @@ export type Type_Enseignement_Stream_Cursor_Input = {
 export type Type_Enseignement_Stream_Cursor_Value_Input = {
   /** Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type. */
   coefficient: InputMaybe<Scalars["Float"]["input"]>;
-  /** La clé du type d'enseignement (unique). */
-  key: InputMaybe<Scalars["String"]["input"]>;
+  description: InputMaybe<Scalars["String"]["input"]>;
   /** Le libellé type d'enseignement. */
   label: InputMaybe<Scalars["String"]["input"]>;
+  /** La clé du type d'enseignement (unique). */
+  value: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** aggregate sum on columns */
@@ -8549,9 +9101,11 @@ export enum Type_Enseignement_Update_Column {
   /** column name */
   Coefficient = "coefficient",
   /** column name */
-  Key = "key",
+  Description = "description",
   /** column name */
   Label = "label",
+  /** column name */
+  Value = "value",
 }
 
 export type Type_Enseignement_Updates = {
@@ -8589,14 +9143,14 @@ export type Type_Modification_Service = {
   __typename?: "type_modification_service";
   /** Une brève description. */
   description: Maybe<Scalars["String"]["output"]>;
-  /** La clé du type de modification (unique). */
-  key: Scalars["String"]["output"];
   /** Le libellé du type de modification. */
   label: Scalars["String"]["output"];
   /** An array relationship */
   modifications_service: Array<Modification_Service>;
   /** An aggregate relationship */
   modifications_service_aggregate: Modification_Service_Aggregate;
+  /** La clé du type de modification (unique). */
+  value: Scalars["String"]["output"];
 };
 
 /** Table contenant les différents types de modification de service. */
@@ -8644,15 +9198,15 @@ export type Type_Modification_Service_Bool_Exp = {
   _not: InputMaybe<Type_Modification_Service_Bool_Exp>;
   _or: InputMaybe<Array<Type_Modification_Service_Bool_Exp>>;
   description: InputMaybe<String_Comparison_Exp>;
-  key: InputMaybe<String_Comparison_Exp>;
   label: InputMaybe<String_Comparison_Exp>;
   modifications_service: InputMaybe<Modification_Service_Bool_Exp>;
   modifications_service_aggregate: InputMaybe<Modification_Service_Aggregate_Bool_Exp>;
+  value: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "type_modification_service" */
 export enum Type_Modification_Service_Constraint {
-  /** unique or primary key constraint on columns "key" */
+  /** unique or primary key constraint on columns "value" */
   TypeModificationPkey = "type_modification_pkey",
 }
 
@@ -8660,11 +9214,11 @@ export enum Type_Modification_Service_Constraint {
 export type Type_Modification_Service_Insert_Input = {
   /** Une brève description. */
   description: InputMaybe<Scalars["String"]["input"]>;
-  /** La clé du type de modification (unique). */
-  key: InputMaybe<Scalars["String"]["input"]>;
   /** Le libellé du type de modification. */
   label: InputMaybe<Scalars["String"]["input"]>;
   modifications_service: InputMaybe<Modification_Service_Arr_Rel_Insert_Input>;
+  /** La clé du type de modification (unique). */
+  value: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** aggregate max on columns */
@@ -8672,10 +9226,10 @@ export type Type_Modification_Service_Max_Fields = {
   __typename?: "type_modification_service_max_fields";
   /** Une brève description. */
   description: Maybe<Scalars["String"]["output"]>;
-  /** La clé du type de modification (unique). */
-  key: Maybe<Scalars["String"]["output"]>;
   /** Le libellé du type de modification. */
   label: Maybe<Scalars["String"]["output"]>;
+  /** La clé du type de modification (unique). */
+  value: Maybe<Scalars["String"]["output"]>;
 };
 
 /** aggregate min on columns */
@@ -8683,10 +9237,10 @@ export type Type_Modification_Service_Min_Fields = {
   __typename?: "type_modification_service_min_fields";
   /** Une brève description. */
   description: Maybe<Scalars["String"]["output"]>;
-  /** La clé du type de modification (unique). */
-  key: Maybe<Scalars["String"]["output"]>;
   /** Le libellé du type de modification. */
   label: Maybe<Scalars["String"]["output"]>;
+  /** La clé du type de modification (unique). */
+  value: Maybe<Scalars["String"]["output"]>;
 };
 
 /** response of any mutation on the table "type_modification_service" */
@@ -8715,15 +9269,15 @@ export type Type_Modification_Service_On_Conflict = {
 /** Ordering options when selecting data from "type_modification_service". */
 export type Type_Modification_Service_Order_By = {
   description: InputMaybe<Order_By>;
-  key: InputMaybe<Order_By>;
   label: InputMaybe<Order_By>;
   modifications_service_aggregate: InputMaybe<Modification_Service_Aggregate_Order_By>;
+  value: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: type_modification_service */
 export type Type_Modification_Service_Pk_Columns_Input = {
   /** La clé du type de modification (unique). */
-  key: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 /** select columns of table "type_modification_service" */
@@ -8731,19 +9285,19 @@ export enum Type_Modification_Service_Select_Column {
   /** column name */
   Description = "description",
   /** column name */
-  Key = "key",
-  /** column name */
   Label = "label",
+  /** column name */
+  Value = "value",
 }
 
 /** input type for updating data in table "type_modification_service" */
 export type Type_Modification_Service_Set_Input = {
   /** Une brève description. */
   description: InputMaybe<Scalars["String"]["input"]>;
-  /** La clé du type de modification (unique). */
-  key: InputMaybe<Scalars["String"]["input"]>;
   /** Le libellé du type de modification. */
   label: InputMaybe<Scalars["String"]["input"]>;
+  /** La clé du type de modification (unique). */
+  value: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Streaming cursor of the table "type_modification_service" */
@@ -8758,10 +9312,10 @@ export type Type_Modification_Service_Stream_Cursor_Input = {
 export type Type_Modification_Service_Stream_Cursor_Value_Input = {
   /** Une brève description. */
   description: InputMaybe<Scalars["String"]["input"]>;
-  /** La clé du type de modification (unique). */
-  key: InputMaybe<Scalars["String"]["input"]>;
   /** Le libellé du type de modification. */
   label: InputMaybe<Scalars["String"]["input"]>;
+  /** La clé du type de modification (unique). */
+  value: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** update columns of table "type_modification_service" */
@@ -8769,9 +9323,9 @@ export enum Type_Modification_Service_Update_Column {
   /** column name */
   Description = "description",
   /** column name */
-  Key = "key",
-  /** column name */
   Label = "label",
+  /** column name */
+  Value = "value",
 }
 
 export type Type_Modification_Service_Updates = {
@@ -9084,7 +9638,11 @@ export type CourseRowFragment = {
     name: string;
     shortName: string | null;
   } | null;
-  courseType: { __typename?: "type_enseignement"; key: string; label: string };
+  courseType: {
+    __typename?: "type_enseignement";
+    value: string;
+    label: string;
+  };
   totalAssigned: {
     __typename?: "demande_aggregate";
     aggregate: {
@@ -9153,7 +9711,7 @@ export type GetCoursesTableRowsQuery = {
     } | null;
     courseType: {
       __typename?: "type_enseignement";
-      key: string;
+      value: string;
       label: string;
     };
     totalAssigned: {
@@ -9471,7 +10029,7 @@ export type RequestDetailsFragment = {
   };
 };
 
-export type TotalRequestHoursFragment = {
+export type RequestsTotalHoursFragment = {
   __typename?: "demande_aggregate";
   aggregate: {
     __typename?: "demande_aggregate_fields";
@@ -9479,7 +10037,7 @@ export type TotalRequestHoursFragment = {
   } | null;
 };
 
-export type TotalRequestWeightedHoursFragment = {
+export type RequestsTotalWeightedHoursFragment = {
   __typename?: "demande_aggregate";
   aggregate: {
     __typename?: "demande_aggregate_fields";
@@ -9491,9 +10049,9 @@ export type TotalRequestWeightedHoursFragment = {
 };
 
 export type GetRequestQueryVariables = Exact<{
-  ensId: Scalars["Int"]["input"];
   uid: Scalars["String"]["input"];
-  typeDemande: Scalars["String"]["input"];
+  courseId: Scalars["Int"]["input"];
+  requestType: Scalars["String"]["input"];
 }>;
 
 export type GetRequestQuery = {
@@ -9520,25 +10078,25 @@ export type GetRequestQuery = {
   }>;
 };
 
-export type UpsertDemandeMutationVariables = Exact<{
+export type UpsertRequestMutationVariables = Exact<{
   uid: Scalars["String"]["input"];
   courseId: Scalars["Int"]["input"];
   requestType: Scalars["String"]["input"];
   hours: Scalars["Float"]["input"];
 }>;
 
-export type UpsertDemandeMutation = {
+export type UpsertRequestMutation = {
   __typename?: "mutation_root";
   request: { __typename?: "demande"; id: number } | null;
 };
 
-export type DeleteDemandeMutationVariables = Exact<{
+export type DeleteRequestMutationVariables = Exact<{
   uid: Scalars["String"]["input"];
   courseId: Scalars["Int"]["input"];
   requestType: Scalars["String"]["input"];
 }>;
 
-export type DeleteDemandeMutation = {
+export type DeleteRequestMutation = {
   __typename?: "mutation_root";
   requests: {
     __typename?: "demande_mutation_response";
@@ -9546,11 +10104,11 @@ export type DeleteDemandeMutation = {
   } | null;
 };
 
-export type DeleteDemandeByIdMutationVariables = Exact<{
+export type DeleteRequestByIdMutationVariables = Exact<{
   id: Scalars["Int"]["input"];
 }>;
 
-export type DeleteDemandeByIdMutation = {
+export type DeleteRequestByIdMutation = {
   __typename?: "mutation_root";
   request: { __typename?: "demande"; id: number } | null;
 };
@@ -9567,7 +10125,7 @@ export type DummyMutationMutation = {
 
 export type ServiceModificationTypeFragment = {
   __typename?: "type_modification_service";
-  key: string;
+  value: string;
   label: string;
   description: string | null;
 };
@@ -9580,7 +10138,7 @@ export type GetServiceModificationTypesQuery = {
   __typename?: "query_root";
   serviceModificationTypes: Array<{
     __typename?: "type_modification_service";
-    key: string;
+    value: string;
     label: string;
     description: string | null;
   }>;
@@ -9589,11 +10147,11 @@ export type GetServiceModificationTypesQuery = {
 export type ServiceModificationFragment = {
   __typename?: "modification_service";
   id: number;
-  type: string;
+  serviceModificationType: string;
   weightedHours: number;
 };
 
-export type TotalModificationWeightedHoursFragment = {
+export type ServiceModificationsTotalWeightedHoursFragment = {
   __typename?: "modification_service_aggregate";
   aggregate: {
     __typename?: "modification_service_aggregate_fields";
@@ -9650,7 +10208,7 @@ export type ServiceDetailsFragment = {
   modifications: Array<{
     __typename?: "modification_service";
     id: number;
-    type: string;
+    serviceModificationType: string;
     weightedHours: number;
   }>;
   totalModifications: {
@@ -9679,6 +10237,7 @@ export type TeacherRowFragment = {
   alias: string | null;
   firstname: string;
   lastname: string;
+  position: { __typename?: "fonction"; value: string; label: string } | null;
   services: Array<{
     __typename?: "service";
     id: number;
@@ -9686,7 +10245,7 @@ export type TeacherRowFragment = {
     modifications: Array<{
       __typename?: "modification_service";
       id: number;
-      type: string;
+      serviceModificationType: string;
       weightedHours: number;
     }>;
     totalModifications: {
@@ -9793,6 +10352,7 @@ export type GetTeachersTableRowsQuery = {
     alias: string | null;
     firstname: string;
     lastname: string;
+    position: { __typename?: "fonction"; value: string; label: string } | null;
     services: Array<{
       __typename?: "service";
       id: number;
@@ -9800,7 +10360,7 @@ export type GetTeachersTableRowsQuery = {
       modifications: Array<{
         __typename?: "modification_service";
         id: number;
-        type: string;
+        serviceModificationType: string;
         weightedHours: number;
       }>;
       totalModifications: {
@@ -11324,12 +11884,12 @@ export const CourseDetailsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<CourseDetailsFragment, unknown>;
-export const TotalRequestHoursFragmentDoc = {
+export const RequestsTotalHoursFragmentDoc = {
   kind: "Document",
   definitions: [
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalRequestHours" },
+      name: { kind: "Name", value: "RequestsTotalHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande_aggregate" },
@@ -11364,7 +11924,7 @@ export const TotalRequestHoursFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<TotalRequestHoursFragment, unknown>;
+} as unknown as DocumentNode<RequestsTotalHoursFragment, unknown>;
 export const CourseRowFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -11379,6 +11939,32 @@ export const CourseRowFragmentDoc = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "name" },
+            name: { kind: "Name", value: "nom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "shortName" },
+            name: { kind: "Name", value: "nom_court" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "visible" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "semester" },
+            name: { kind: "Name", value: "semestre" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hoursPerGroup" },
+            name: { kind: "Name", value: "heures_corrigees" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "numberOfGroups" },
+            name: { kind: "Name", value: "groupes_corriges" },
+          },
           {
             kind: "Field",
             alias: { kind: "Name", value: "program" },
@@ -11397,6 +11983,7 @@ export const CourseRowFragmentDoc = {
                   alias: { kind: "Name", value: "shortName" },
                   name: { kind: "Name", value: "nom_court" },
                 },
+                { kind: "Field", name: { kind: "Name", value: "visible" } },
                 {
                   kind: "Field",
                   alias: { kind: "Name", value: "degree" },
@@ -11422,7 +12009,6 @@ export const CourseRowFragmentDoc = {
                     ],
                   },
                 },
-                { kind: "Field", name: { kind: "Name", value: "visible" } },
               ],
             },
           },
@@ -11450,40 +12036,15 @@ export const CourseRowFragmentDoc = {
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "name" },
-            name: { kind: "Name", value: "nom" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "shortName" },
-            name: { kind: "Name", value: "nom_court" },
-          },
-          {
-            kind: "Field",
             alias: { kind: "Name", value: "courseType" },
             name: { kind: "Name", value: "typeByType" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "key" } },
+                { kind: "Field", name: { kind: "Name", value: "value" } },
                 { kind: "Field", name: { kind: "Name", value: "label" } },
               ],
             },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "semester" },
-            name: { kind: "Name", value: "semestre" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "hoursPerGroup" },
-            name: { kind: "Name", value: "heures_corrigees" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "numberOfGroups" },
-            name: { kind: "Name", value: "groupes_corriges" },
           },
           {
             kind: "Field",
@@ -11523,7 +12084,7 @@ export const CourseRowFragmentDoc = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
               ],
             },
@@ -11566,7 +12127,7 @@ export const CourseRowFragmentDoc = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
               ],
             },
@@ -11609,7 +12170,7 @@ export const CourseRowFragmentDoc = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
               ],
             },
@@ -11688,18 +12249,17 @@ export const CourseRowFragmentDoc = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
               ],
             },
           },
-          { kind: "Field", name: { kind: "Name", value: "visible" } },
         ],
       },
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalRequestHours" },
+      name: { kind: "Name", value: "RequestsTotalHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande_aggregate" },
@@ -11748,7 +12308,7 @@ export const ServiceModificationTypeFragmentDoc = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          { kind: "Field", name: { kind: "Name", value: "key" } },
+          { kind: "Field", name: { kind: "Name", value: "value" } },
           { kind: "Field", name: { kind: "Name", value: "label" } },
           { kind: "Field", name: { kind: "Name", value: "description" } },
         ],
@@ -11833,7 +12393,11 @@ export const ServiceModificationFragmentDoc = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "type" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "serviceModificationType" },
+            name: { kind: "Name", value: "type" },
+          },
           {
             kind: "Field",
             alias: { kind: "Name", value: "weightedHours" },
@@ -11844,12 +12408,12 @@ export const ServiceModificationFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<ServiceModificationFragment, unknown>;
-export const TotalModificationWeightedHoursFragmentDoc = {
+export const ServiceModificationsTotalWeightedHoursFragmentDoc = {
   kind: "Document",
   definitions: [
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalModificationWeightedHours" },
+      name: { kind: "Name", value: "ServiceModificationsTotalWeightedHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "modification_service_aggregate" },
@@ -11884,7 +12448,10 @@ export const TotalModificationWeightedHoursFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<TotalModificationWeightedHoursFragment, unknown>;
+} as unknown as DocumentNode<
+  ServiceModificationsTotalWeightedHoursFragment,
+  unknown
+>;
 export const ServiceDetailsFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -11954,7 +12521,7 @@ export const ServiceDetailsFragmentDoc = {
                   kind: "FragmentSpread",
                   name: {
                     kind: "Name",
-                    value: "TotalModificationWeightedHours",
+                    value: "ServiceModificationsTotalWeightedHours",
                   },
                 },
               ],
@@ -12032,7 +12599,11 @@ export const ServiceDetailsFragmentDoc = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "type" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "serviceModificationType" },
+            name: { kind: "Name", value: "type" },
+          },
           {
             kind: "Field",
             alias: { kind: "Name", value: "weightedHours" },
@@ -12043,7 +12614,7 @@ export const ServiceDetailsFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalModificationWeightedHours" },
+      name: { kind: "Name", value: "ServiceModificationsTotalWeightedHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "modification_service_aggregate" },
@@ -12079,12 +12650,12 @@ export const ServiceDetailsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<ServiceDetailsFragment, unknown>;
-export const TotalRequestWeightedHoursFragmentDoc = {
+export const RequestsTotalWeightedHoursFragmentDoc = {
   kind: "Document",
   definitions: [
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalRequestWeightedHours" },
+      name: { kind: "Name", value: "RequestsTotalWeightedHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande_aggregate" },
@@ -12119,7 +12690,7 @@ export const TotalRequestWeightedHoursFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<TotalRequestWeightedHoursFragment, unknown>;
+} as unknown as DocumentNode<RequestsTotalWeightedHoursFragment, unknown>;
 export const MessageFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -12159,6 +12730,18 @@ export const TeacherRowFragmentDoc = {
         selections: [
           { kind: "FragmentSpread", name: { kind: "Name", value: "Profile" } },
           { kind: "Field", name: { kind: "Name", value: "visible" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "position" },
+            name: { kind: "Name", value: "fonctionByFonction" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "value" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
           {
             kind: "Field",
             name: { kind: "Name", value: "services" },
@@ -12302,11 +12885,11 @@ export const TeacherRowFragmentDoc = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestWeightedHours" },
+                  name: { kind: "Name", value: "RequestsTotalWeightedHours" },
                 },
               ],
             },
@@ -12363,11 +12946,11 @@ export const TeacherRowFragmentDoc = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestWeightedHours" },
+                  name: { kind: "Name", value: "RequestsTotalWeightedHours" },
                 },
               ],
             },
@@ -12424,11 +13007,11 @@ export const TeacherRowFragmentDoc = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestWeightedHours" },
+                  name: { kind: "Name", value: "RequestsTotalWeightedHours" },
                 },
               ],
             },
@@ -12551,7 +13134,11 @@ export const TeacherRowFragmentDoc = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "type" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "serviceModificationType" },
+            name: { kind: "Name", value: "type" },
+          },
           {
             kind: "Field",
             alias: { kind: "Name", value: "weightedHours" },
@@ -12562,7 +13149,7 @@ export const TeacherRowFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalModificationWeightedHours" },
+      name: { kind: "Name", value: "ServiceModificationsTotalWeightedHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "modification_service_aggregate" },
@@ -12662,7 +13249,7 @@ export const TeacherRowFragmentDoc = {
                   kind: "FragmentSpread",
                   name: {
                     kind: "Name",
-                    value: "TotalModificationWeightedHours",
+                    value: "ServiceModificationsTotalWeightedHours",
                   },
                 },
               ],
@@ -12737,7 +13324,7 @@ export const TeacherRowFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalRequestHours" },
+      name: { kind: "Name", value: "RequestsTotalHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande_aggregate" },
@@ -12773,7 +13360,7 @@ export const TeacherRowFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalRequestWeightedHours" },
+      name: { kind: "Name", value: "RequestsTotalWeightedHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande_aggregate" },
@@ -13061,7 +13648,7 @@ export const GetCoursesTableRowsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalRequestHours" },
+      name: { kind: "Name", value: "RequestsTotalHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande_aggregate" },
@@ -13108,6 +13695,32 @@ export const GetCoursesTableRowsDocument = {
           { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "name" },
+            name: { kind: "Name", value: "nom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "shortName" },
+            name: { kind: "Name", value: "nom_court" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "visible" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "semester" },
+            name: { kind: "Name", value: "semestre" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hoursPerGroup" },
+            name: { kind: "Name", value: "heures_corrigees" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "numberOfGroups" },
+            name: { kind: "Name", value: "groupes_corriges" },
+          },
+          {
+            kind: "Field",
             alias: { kind: "Name", value: "program" },
             name: { kind: "Name", value: "mention" },
             selectionSet: {
@@ -13124,6 +13737,7 @@ export const GetCoursesTableRowsDocument = {
                   alias: { kind: "Name", value: "shortName" },
                   name: { kind: "Name", value: "nom_court" },
                 },
+                { kind: "Field", name: { kind: "Name", value: "visible" } },
                 {
                   kind: "Field",
                   alias: { kind: "Name", value: "degree" },
@@ -13149,7 +13763,6 @@ export const GetCoursesTableRowsDocument = {
                     ],
                   },
                 },
-                { kind: "Field", name: { kind: "Name", value: "visible" } },
               ],
             },
           },
@@ -13177,40 +13790,15 @@ export const GetCoursesTableRowsDocument = {
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "name" },
-            name: { kind: "Name", value: "nom" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "shortName" },
-            name: { kind: "Name", value: "nom_court" },
-          },
-          {
-            kind: "Field",
             alias: { kind: "Name", value: "courseType" },
             name: { kind: "Name", value: "typeByType" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "key" } },
+                { kind: "Field", name: { kind: "Name", value: "value" } },
                 { kind: "Field", name: { kind: "Name", value: "label" } },
               ],
             },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "semester" },
-            name: { kind: "Name", value: "semestre" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "hoursPerGroup" },
-            name: { kind: "Name", value: "heures_corrigees" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "numberOfGroups" },
-            name: { kind: "Name", value: "groupes_corriges" },
           },
           {
             kind: "Field",
@@ -13250,7 +13838,7 @@ export const GetCoursesTableRowsDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
               ],
             },
@@ -13293,7 +13881,7 @@ export const GetCoursesTableRowsDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
               ],
             },
@@ -13336,7 +13924,7 @@ export const GetCoursesTableRowsDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
               ],
             },
@@ -13415,12 +14003,11 @@ export const GetCoursesTableRowsDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
               ],
             },
           },
-          { kind: "Field", name: { kind: "Name", value: "visible" } },
         ],
       },
     },
@@ -14802,17 +15389,6 @@ export const GetRequestDocument = {
       variableDefinitions: [
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "ensId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
           variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
           type: {
             kind: "NonNullType",
@@ -14826,7 +15402,18 @@ export const GetRequestDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "typeDemande" },
+            name: { kind: "Name", value: "courseId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "requestType" },
           },
           type: {
             kind: "NonNullType",
@@ -14862,7 +15449,7 @@ export const GetRequestDocument = {
                             fields: [
                               {
                                 kind: "ObjectField",
-                                name: { kind: "Name", value: "ens_id" },
+                                name: { kind: "Name", value: "uid" },
                                 value: {
                                   kind: "ObjectValue",
                                   fields: [
@@ -14871,7 +15458,7 @@ export const GetRequestDocument = {
                                       name: { kind: "Name", value: "_eq" },
                                       value: {
                                         kind: "Variable",
-                                        name: { kind: "Name", value: "ensId" },
+                                        name: { kind: "Name", value: "uid" },
                                       },
                                     },
                                   ],
@@ -14884,7 +15471,7 @@ export const GetRequestDocument = {
                             fields: [
                               {
                                 kind: "ObjectField",
-                                name: { kind: "Name", value: "uid" },
+                                name: { kind: "Name", value: "ens_id" },
                                 value: {
                                   kind: "ObjectValue",
                                   fields: [
@@ -14893,7 +15480,10 @@ export const GetRequestDocument = {
                                       name: { kind: "Name", value: "_eq" },
                                       value: {
                                         kind: "Variable",
-                                        name: { kind: "Name", value: "uid" },
+                                        name: {
+                                          kind: "Name",
+                                          value: "courseId",
+                                        },
                                       },
                                     },
                                   ],
@@ -14917,7 +15507,7 @@ export const GetRequestDocument = {
                                         kind: "Variable",
                                         name: {
                                           kind: "Name",
-                                          value: "typeDemande",
+                                          value: "requestType",
                                         },
                                       },
                                     },
@@ -15042,13 +15632,13 @@ export const GetRequestDocument = {
     },
   ],
 } as unknown as DocumentNode<GetRequestQuery, GetRequestQueryVariables>;
-export const UpsertDemandeDocument = {
+export const UpsertRequestDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "mutation",
-      name: { kind: "Name", value: "UpsertDemande" },
+      name: { kind: "Name", value: "UpsertRequest" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -15185,16 +15775,16 @@ export const UpsertDemandeDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  UpsertDemandeMutation,
-  UpsertDemandeMutationVariables
+  UpsertRequestMutation,
+  UpsertRequestMutationVariables
 >;
-export const DeleteDemandeDocument = {
+export const DeleteRequestDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "mutation",
-      name: { kind: "Name", value: "DeleteDemande" },
+      name: { kind: "Name", value: "DeleteRequest" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -15353,16 +15943,16 @@ export const DeleteDemandeDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  DeleteDemandeMutation,
-  DeleteDemandeMutationVariables
+  DeleteRequestMutation,
+  DeleteRequestMutationVariables
 >;
-export const DeleteDemandeByIdDocument = {
+export const DeleteRequestByIdDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "mutation",
-      name: { kind: "Name", value: "DeleteDemandeById" },
+      name: { kind: "Name", value: "DeleteRequestById" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -15402,8 +15992,8 @@ export const DeleteDemandeByIdDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  DeleteDemandeByIdMutation,
-  DeleteDemandeByIdMutationVariables
+  DeleteRequestByIdMutation,
+  DeleteRequestByIdMutationVariables
 >;
 export const DummyMutationDocument = {
   kind: "Document",
@@ -15473,7 +16063,7 @@ export const GetServiceModificationTypesDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "key" },
+                      name: { kind: "Name", value: "value" },
                       value: { kind: "EnumValue", value: "asc" },
                     },
                   ],
@@ -15503,7 +16093,7 @@ export const GetServiceModificationTypesDocument = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          { kind: "Field", name: { kind: "Name", value: "key" } },
+          { kind: "Field", name: { kind: "Name", value: "value" } },
           { kind: "Field", name: { kind: "Name", value: "label" } },
           { kind: "Field", name: { kind: "Name", value: "description" } },
         ],
@@ -16042,7 +16632,11 @@ export const GetTeachersTableRowsDocument = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "type" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "serviceModificationType" },
+            name: { kind: "Name", value: "type" },
+          },
           {
             kind: "Field",
             alias: { kind: "Name", value: "weightedHours" },
@@ -16053,7 +16647,7 @@ export const GetTeachersTableRowsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalModificationWeightedHours" },
+      name: { kind: "Name", value: "ServiceModificationsTotalWeightedHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "modification_service_aggregate" },
@@ -16153,7 +16747,7 @@ export const GetTeachersTableRowsDocument = {
                   kind: "FragmentSpread",
                   name: {
                     kind: "Name",
-                    value: "TotalModificationWeightedHours",
+                    value: "ServiceModificationsTotalWeightedHours",
                   },
                 },
               ],
@@ -16228,7 +16822,7 @@ export const GetTeachersTableRowsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalRequestHours" },
+      name: { kind: "Name", value: "RequestsTotalHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande_aggregate" },
@@ -16264,7 +16858,7 @@ export const GetTeachersTableRowsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalRequestWeightedHours" },
+      name: { kind: "Name", value: "RequestsTotalWeightedHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande_aggregate" },
@@ -16329,6 +16923,18 @@ export const GetTeachersTableRowsDocument = {
         selections: [
           { kind: "FragmentSpread", name: { kind: "Name", value: "Profile" } },
           { kind: "Field", name: { kind: "Name", value: "visible" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "position" },
+            name: { kind: "Name", value: "fonctionByFonction" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "value" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
           {
             kind: "Field",
             name: { kind: "Name", value: "services" },
@@ -16472,11 +17078,11 @@ export const GetTeachersTableRowsDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestWeightedHours" },
+                  name: { kind: "Name", value: "RequestsTotalWeightedHours" },
                 },
               ],
             },
@@ -16533,11 +17139,11 @@ export const GetTeachersTableRowsDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestWeightedHours" },
+                  name: { kind: "Name", value: "RequestsTotalWeightedHours" },
                 },
               ],
             },
@@ -16594,11 +17200,11 @@ export const GetTeachersTableRowsDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestHours" },
+                  name: { kind: "Name", value: "RequestsTotalHours" },
                 },
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TotalRequestWeightedHours" },
+                  name: { kind: "Name", value: "RequestsTotalWeightedHours" },
                 },
               ],
             },

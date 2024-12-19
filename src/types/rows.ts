@@ -1,9 +1,3 @@
-export type Identifier = {
-  id: number;
-  name: string;
-  shortName: string | null;
-};
-
 export type TotalHours = {
   aggregate: {
     sum: {

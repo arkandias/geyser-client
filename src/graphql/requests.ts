@@ -34,14 +34,14 @@ graphql(/* GraphQL */ `
 `);
 
 export const GET_REQUEST = graphql(/* GraphQL */ `
-  query GetRequest($ensId: Int!, $uid: String!, $typeDemande: String!) {
+  query GetRequest($uid: String!, $courseId: Int!, $requestType: String!) {
     # limit: 1 car unique
     requests: demande(
       where: {
         _and: [
-          { ens_id: { _eq: $ensId } }
           { uid: { _eq: $uid } }
-          { type: { _eq: $typeDemande } }
+          { ens_id: { _eq: $courseId } }
+          { type: { _eq: $requestType } }
         ]
       }
       limit: 1
@@ -51,8 +51,8 @@ export const GET_REQUEST = graphql(/* GraphQL */ `
   }
 `);
 
-export const UPSERT_DEMANDE = graphql(/* GraphQL */ `
-  mutation UpsertDemande(
+export const UPSERT_REQUEST = graphql(/* GraphQL */ `
+  mutation UpsertRequest(
     $uid: String!
     $courseId: Int!
     $requestType: String!
@@ -75,8 +75,8 @@ export const UPSERT_DEMANDE = graphql(/* GraphQL */ `
   }
 `);
 
-export const DELETE_DEMANDE = graphql(/* GraphQL */ `
-  mutation DeleteDemande(
+export const DELETE_REQUEST = graphql(/* GraphQL */ `
+  mutation DeleteRequest(
     $uid: String!
     $courseId: Int!
     $requestType: String!
@@ -97,8 +97,8 @@ export const DELETE_DEMANDE = graphql(/* GraphQL */ `
   }
 `);
 
-export const DELETE_DEMANDE_BY_ID = graphql(/* GraphQL */ `
-  mutation DeleteDemandeById($id: Int!) {
+export const DELETE_REQUEST_BY_ID = graphql(/* GraphQL */ `
+  mutation DeleteRequestById($id: Int!) {
     request: delete_demande_by_pk(id: $id) {
       id
     }

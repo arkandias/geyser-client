@@ -80,17 +80,23 @@ graphql(/* GraphQL */ `
 
   fragment CourseRow on enseignement {
     id
+    name: nom
+    shortName: nom_court
+    visible
+    semester: semestre
+    hoursPerGroup: heures_corrigees
+    numberOfGroups: groupes_corriges
     program: mention {
       id
       name: nom
       shortName: nom_court
+      visible
       degree: cursus {
         id
         name: nom
         shortName: nom_court
         visible
       }
-      visible
     }
     track: parcours {
       id
@@ -98,15 +104,10 @@ graphql(/* GraphQL */ `
       shortName: nom_court
       visible
     }
-    name: nom
-    shortName: nom_court
     courseType: typeByType {
-      key
+      value
       label
     }
-    semester: semestre
-    hoursPerGroup: heures_corrigees
-    numberOfGroups: groupes_corriges
     totalAssigned: demandes_aggregate(where: { type: { _eq: "attribution" } }) {
       ...RequestsTotalHours
     }
@@ -123,11 +124,10 @@ graphql(/* GraphQL */ `
     ) {
       ...RequestsTotalHours
     }
-    visible
   }
 `);
 
-export const GET_COURSES_TABLE_ROWS = graphql(/* GraphQL */ `
+export const GET_COURSES_ROWS = graphql(/* GraphQL */ `
   query GetCoursesTableRows($year: Int!) {
     courses: enseignement(
       where: {

@@ -4,6 +4,10 @@ graphql(/* GraphQL */ `
   fragment TeacherRow on intervenant {
     ...Profile
     visible
+    position: fonctionByFonction {
+      value
+      label
+    }
     # limit: 1 car unique
     services(where: { annee: { _eq: $year } }, limit: 1) {
       ...ServiceDetails
@@ -47,7 +51,7 @@ export const GET_TEACHERS = graphql(/* GraphQL */ `
   }
 `);
 
-export const GET_TEACHERS_TABLE_ROWS = graphql(/* GraphQL */ `
+export const GET_TEACHERS_ROWS = graphql(/* GraphQL */ `
   query GetTeachersTableRows($year: Int!, $where: intervenant_bool_exp = {}) {
     teachers: intervenant(
       where: { _and: [{ services: { annee: { _eq: $year } } }, $where] }

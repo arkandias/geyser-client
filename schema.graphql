@@ -201,6 +201,66 @@ type annee {
   """
   An array relationship
   """
+  messages(
+    """
+    distinct select on columns
+    """
+    distinct_on: [message_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [message_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: message_bool_exp
+  ): [message!]!
+
+  """
+  An aggregate relationship
+  """
+  messages_aggregate(
+    """
+    distinct select on columns
+    """
+    distinct_on: [message_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [message_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: message_bool_exp
+  ): message_aggregate!
+
+  """
+  An array relationship
+  """
   services(
     """
     distinct select on columns
@@ -314,6 +374,8 @@ input annee_bool_exp {
   en_cours: Boolean_comparison_exp
   enseignements: enseignement_bool_exp
   enseignements_aggregate: enseignement_aggregate_bool_exp
+  messages: message_bool_exp
+  messages_aggregate: message_aggregate_bool_exp
   services: service_bool_exp
   services_aggregate: service_aggregate_bool_exp
   value: Int_comparison_exp
@@ -354,6 +416,7 @@ input annee_insert_input {
   """
   en_cours: Boolean
   enseignements: enseignement_arr_rel_insert_input
+  messages: message_arr_rel_insert_input
   services: service_arr_rel_insert_input
 
   """
@@ -429,6 +492,7 @@ Ordering options when selecting data from "annee".
 input annee_order_by {
   en_cours: order_by
   enseignements_aggregate: enseignement_aggregate_order_by
+  messages_aggregate: message_aggregate_order_by
   services_aggregate: service_aggregate_order_by
   value: order_by
   visible: order_by
@@ -4606,6 +4670,376 @@ input enseignement_variance_order_by {
 }
 
 """
+columns and relationships of "fonction"
+"""
+type fonction {
+  description: String
+  heures_eqtd_service_base: Float
+
+  """
+  An array relationship
+  """
+  intervenants(
+    """
+    distinct select on columns
+    """
+    distinct_on: [intervenant_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [intervenant_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: intervenant_bool_exp
+  ): [intervenant!]!
+
+  """
+  An aggregate relationship
+  """
+  intervenants_aggregate(
+    """
+    distinct select on columns
+    """
+    distinct_on: [intervenant_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [intervenant_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: intervenant_bool_exp
+  ): intervenant_aggregate!
+  label: String!
+  value: String!
+}
+
+"""
+aggregated selection of "fonction"
+"""
+type fonction_aggregate {
+  aggregate: fonction_aggregate_fields
+  nodes: [fonction!]!
+}
+
+"""
+aggregate fields of "fonction"
+"""
+type fonction_aggregate_fields {
+  avg: fonction_avg_fields
+  count(columns: [fonction_select_column!], distinct: Boolean): Int!
+  max: fonction_max_fields
+  min: fonction_min_fields
+  stddev: fonction_stddev_fields
+  stddev_pop: fonction_stddev_pop_fields
+  stddev_samp: fonction_stddev_samp_fields
+  sum: fonction_sum_fields
+  var_pop: fonction_var_pop_fields
+  var_samp: fonction_var_samp_fields
+  variance: fonction_variance_fields
+}
+
+"""
+aggregate avg on columns
+"""
+type fonction_avg_fields {
+  heures_eqtd_service_base: Float
+}
+
+"""
+Boolean expression to filter rows from the table "fonction". All fields are combined with a logical 'AND'.
+"""
+input fonction_bool_exp {
+  _and: [fonction_bool_exp!]
+  _not: fonction_bool_exp
+  _or: [fonction_bool_exp!]
+  description: String_comparison_exp
+  heures_eqtd_service_base: Float_comparison_exp
+  intervenants: intervenant_bool_exp
+  intervenants_aggregate: intervenant_aggregate_bool_exp
+  label: String_comparison_exp
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "fonction"
+"""
+enum fonction_constraint {
+  """
+  unique or primary key constraint on columns "value"
+  """
+  fonction_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "fonction"
+"""
+input fonction_inc_input {
+  heures_eqtd_service_base: Float
+}
+
+"""
+input type for inserting data into table "fonction"
+"""
+input fonction_insert_input {
+  description: String
+  heures_eqtd_service_base: Float
+  intervenants: intervenant_arr_rel_insert_input
+  label: String
+  value: String
+}
+
+"""
+aggregate max on columns
+"""
+type fonction_max_fields {
+  description: String
+  heures_eqtd_service_base: Float
+  label: String
+  value: String
+}
+
+"""
+aggregate min on columns
+"""
+type fonction_min_fields {
+  description: String
+  heures_eqtd_service_base: Float
+  label: String
+  value: String
+}
+
+"""
+response of any mutation on the table "fonction"
+"""
+type fonction_mutation_response {
+  """
+  number of rows affected by the mutation
+  """
+  affected_rows: Int!
+
+  """
+  data from the rows affected by the mutation
+  """
+  returning: [fonction!]!
+}
+
+"""
+input type for inserting object relation for remote table "fonction"
+"""
+input fonction_obj_rel_insert_input {
+  data: fonction_insert_input!
+
+  """
+  upsert condition
+  """
+  on_conflict: fonction_on_conflict
+}
+
+"""
+on_conflict condition type for table "fonction"
+"""
+input fonction_on_conflict {
+  constraint: fonction_constraint!
+  update_columns: [fonction_update_column!]! = []
+  where: fonction_bool_exp
+}
+
+"""
+Ordering options when selecting data from "fonction".
+"""
+input fonction_order_by {
+  description: order_by
+  heures_eqtd_service_base: order_by
+  intervenants_aggregate: intervenant_aggregate_order_by
+  label: order_by
+  value: order_by
+}
+
+"""
+primary key columns input for table: fonction
+"""
+input fonction_pk_columns_input {
+  value: String!
+}
+
+"""
+select columns of table "fonction"
+"""
+enum fonction_select_column {
+  """
+  column name
+  """
+  description
+
+  """
+  column name
+  """
+  heures_eqtd_service_base
+
+  """
+  column name
+  """
+  label
+
+  """
+  column name
+  """
+  value
+}
+
+"""
+input type for updating data in table "fonction"
+"""
+input fonction_set_input {
+  description: String
+  heures_eqtd_service_base: Float
+  label: String
+  value: String
+}
+
+"""
+aggregate stddev on columns
+"""
+type fonction_stddev_fields {
+  heures_eqtd_service_base: Float
+}
+
+"""
+aggregate stddev_pop on columns
+"""
+type fonction_stddev_pop_fields {
+  heures_eqtd_service_base: Float
+}
+
+"""
+aggregate stddev_samp on columns
+"""
+type fonction_stddev_samp_fields {
+  heures_eqtd_service_base: Float
+}
+
+"""
+Streaming cursor of the table "fonction"
+"""
+input fonction_stream_cursor_input {
+  """
+  Stream column input with initial value
+  """
+  initial_value: fonction_stream_cursor_value_input!
+
+  """
+  cursor ordering
+  """
+  ordering: cursor_ordering
+}
+
+"""
+Initial value of the column from where the streaming should start
+"""
+input fonction_stream_cursor_value_input {
+  description: String
+  heures_eqtd_service_base: Float
+  label: String
+  value: String
+}
+
+"""
+aggregate sum on columns
+"""
+type fonction_sum_fields {
+  heures_eqtd_service_base: Float
+}
+
+"""
+update columns of table "fonction"
+"""
+enum fonction_update_column {
+  """
+  column name
+  """
+  description
+
+  """
+  column name
+  """
+  heures_eqtd_service_base
+
+  """
+  column name
+  """
+  label
+
+  """
+  column name
+  """
+  value
+}
+
+input fonction_updates {
+  """
+  increments the numeric columns with given value of the filtered values
+  """
+  _inc: fonction_inc_input
+
+  """
+  sets the columns of the filtered rows to the given values
+  """
+  _set: fonction_set_input
+
+  """
+  filter the rows which have to be updated
+  """
+  where: fonction_bool_exp!
+}
+
+"""
+aggregate var_pop on columns
+"""
+type fonction_var_pop_fields {
+  heures_eqtd_service_base: Float
+}
+
+"""
+aggregate var_samp on columns
+"""
+type fonction_var_samp_fields {
+  heures_eqtd_service_base: Float
+}
+
+"""
+aggregate variance on columns
+"""
+type fonction_variance_fields {
+  heures_eqtd_service_base: Float
+}
+
+"""
 Table contenant les intervenants.
 """
 type intervenant {
@@ -4679,6 +5113,11 @@ type intervenant {
     where: demande_bool_exp
   ): demande_aggregate!
   fonction: String
+
+  """
+  An object relationship
+  """
+  fonctionByFonction: fonction
 
   """
   Le service de base en heures EQTD de l'intervenant (optionnel).
@@ -4954,6 +5393,33 @@ type intervenant_aggregate {
   nodes: [intervenant!]!
 }
 
+input intervenant_aggregate_bool_exp {
+  bool_and: intervenant_aggregate_bool_exp_bool_and
+  bool_or: intervenant_aggregate_bool_exp_bool_or
+  count: intervenant_aggregate_bool_exp_count
+}
+
+input intervenant_aggregate_bool_exp_bool_and {
+  arguments: intervenant_select_column_intervenant_aggregate_bool_exp_bool_and_arguments_columns!
+  distinct: Boolean
+  filter: intervenant_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input intervenant_aggregate_bool_exp_bool_or {
+  arguments: intervenant_select_column_intervenant_aggregate_bool_exp_bool_or_arguments_columns!
+  distinct: Boolean
+  filter: intervenant_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input intervenant_aggregate_bool_exp_count {
+  arguments: [intervenant_select_column!]
+  distinct: Boolean
+  filter: intervenant_bool_exp
+  predicate: Int_comparison_exp!
+}
+
 """
 aggregate fields of "intervenant"
 """
@@ -4972,6 +5438,35 @@ type intervenant_aggregate_fields {
 }
 
 """
+order by aggregate values of table "intervenant"
+"""
+input intervenant_aggregate_order_by {
+  avg: intervenant_avg_order_by
+  count: order_by
+  max: intervenant_max_order_by
+  min: intervenant_min_order_by
+  stddev: intervenant_stddev_order_by
+  stddev_pop: intervenant_stddev_pop_order_by
+  stddev_samp: intervenant_stddev_samp_order_by
+  sum: intervenant_sum_order_by
+  var_pop: intervenant_var_pop_order_by
+  var_samp: intervenant_var_samp_order_by
+  variance: intervenant_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "intervenant"
+"""
+input intervenant_arr_rel_insert_input {
+  data: [intervenant_insert_input!]!
+
+  """
+  upsert condition
+  """
+  on_conflict: intervenant_on_conflict
+}
+
+"""
 aggregate avg on columns
 """
 type intervenant_avg_fields {
@@ -4979,6 +5474,16 @@ type intervenant_avg_fields {
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
   heures_eqtd_service_base: Float
+}
+
+"""
+order by avg() on columns of table "intervenant"
+"""
+input intervenant_avg_order_by {
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: order_by
 }
 
 """
@@ -4993,6 +5498,7 @@ input intervenant_bool_exp {
   demandes: demande_bool_exp
   demandes_aggregate: demande_aggregate_bool_exp
   fonction: String_comparison_exp
+  fonctionByFonction: fonction_bool_exp
   heures_eqtd_service_base: Float_comparison_exp
   messages: message_bool_exp
   messages_aggregate: message_aggregate_bool_exp
@@ -5043,6 +5549,7 @@ input intervenant_insert_input {
   alias: String
   demandes: demande_arr_rel_insert_input
   fonction: String
+  fonctionByFonction: fonction_obj_rel_insert_input
 
   """
   Le service de base en heures EQTD de l'intervenant (optionnel).
@@ -5106,6 +5613,37 @@ type intervenant_max_fields {
 }
 
 """
+order by max() on columns of table "intervenant"
+"""
+input intervenant_max_order_by {
+  """
+  Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel).
+  """
+  alias: order_by
+  fonction: order_by
+
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: order_by
+
+  """
+  Le nom de l'intervenant.
+  """
+  nom: order_by
+
+  """
+  Le prénom de l'intervenant.
+  """
+  prenom: order_by
+
+  """
+  L'identifiant unique de l'intervenant.
+  """
+  uid: order_by
+}
+
+"""
 aggregate min on columns
 """
 type intervenant_min_fields {
@@ -5134,6 +5672,37 @@ type intervenant_min_fields {
   L'identifiant unique de l'intervenant.
   """
   uid: String
+}
+
+"""
+order by min() on columns of table "intervenant"
+"""
+input intervenant_min_order_by {
+  """
+  Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel).
+  """
+  alias: order_by
+  fonction: order_by
+
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: order_by
+
+  """
+  Le nom de l'intervenant.
+  """
+  nom: order_by
+
+  """
+  Le prénom de l'intervenant.
+  """
+  prenom: order_by
+
+  """
+  L'identifiant unique de l'intervenant.
+  """
+  uid: order_by
 }
 
 """
@@ -5180,6 +5749,7 @@ input intervenant_order_by {
   alias: order_by
   demandes_aggregate: demande_aggregate_order_by
   fonction: order_by
+  fonctionByFonction: fonction_order_by
   heures_eqtd_service_base: order_by
   messages_aggregate: message_aggregate_order_by
   nom: order_by
@@ -5247,6 +5817,36 @@ enum intervenant_select_column {
 }
 
 """
+select "intervenant_aggregate_bool_exp_bool_and_arguments_columns" columns of table "intervenant"
+"""
+enum intervenant_select_column_intervenant_aggregate_bool_exp_bool_and_arguments_columns {
+  """
+  column name
+  """
+  actif
+
+  """
+  column name
+  """
+  visible
+}
+
+"""
+select "intervenant_aggregate_bool_exp_bool_or_arguments_columns" columns of table "intervenant"
+"""
+enum intervenant_select_column_intervenant_aggregate_bool_exp_bool_or_arguments_columns {
+  """
+  column name
+  """
+  actif
+
+  """
+  column name
+  """
+  visible
+}
+
+"""
 input type for updating data in table "intervenant"
 """
 input intervenant_set_input {
@@ -5298,6 +5898,16 @@ type intervenant_stddev_fields {
 }
 
 """
+order by stddev() on columns of table "intervenant"
+"""
+input intervenant_stddev_order_by {
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: order_by
+}
+
+"""
 aggregate stddev_pop on columns
 """
 type intervenant_stddev_pop_fields {
@@ -5308,6 +5918,16 @@ type intervenant_stddev_pop_fields {
 }
 
 """
+order by stddev_pop() on columns of table "intervenant"
+"""
+input intervenant_stddev_pop_order_by {
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: order_by
+}
+
+"""
 aggregate stddev_samp on columns
 """
 type intervenant_stddev_samp_fields {
@@ -5315,6 +5935,16 @@ type intervenant_stddev_samp_fields {
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
   heures_eqtd_service_base: Float
+}
+
+"""
+order by stddev_samp() on columns of table "intervenant"
+"""
+input intervenant_stddev_samp_order_by {
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: order_by
 }
 
 """
@@ -5381,6 +6011,16 @@ type intervenant_sum_fields {
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
   heures_eqtd_service_base: Float
+}
+
+"""
+order by sum() on columns of table "intervenant"
+"""
+input intervenant_sum_order_by {
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: order_by
 }
 
 """
@@ -5456,6 +6096,16 @@ type intervenant_var_pop_fields {
 }
 
 """
+order by var_pop() on columns of table "intervenant"
+"""
+input intervenant_var_pop_order_by {
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: order_by
+}
+
+"""
 aggregate var_samp on columns
 """
 type intervenant_var_samp_fields {
@@ -5466,6 +6116,16 @@ type intervenant_var_samp_fields {
 }
 
 """
+order by var_samp() on columns of table "intervenant"
+"""
+input intervenant_var_samp_order_by {
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: order_by
+}
+
+"""
 aggregate variance on columns
 """
 type intervenant_variance_fields {
@@ -5473,6 +6133,16 @@ type intervenant_variance_fields {
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
   heures_eqtd_service_base: Float
+}
+
+"""
+order by variance() on columns of table "intervenant"
+"""
+input intervenant_variance_order_by {
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: order_by
 }
 
 """
@@ -7806,6 +8476,21 @@ type mutation_root {
   ): enseignement
 
   """
+  delete data from the table: "fonction"
+  """
+  delete_fonction(
+    """
+    filter the rows which have to be deleted
+    """
+    where: fonction_bool_exp!
+  ): fonction_mutation_response
+
+  """
+  delete single row from the table: "fonction"
+  """
+  delete_fonction_by_pk(value: String!): fonction
+
+  """
   delete data from the table: "intervenant"
   """
   delete_intervenant(
@@ -8012,7 +8697,7 @@ type mutation_root {
     """
     La clé du type d'enseignement (unique).
     """
-    key: String!
+    value: String!
   ): type_enseignement
 
   """
@@ -8032,7 +8717,7 @@ type mutation_root {
     """
     La clé du type de modification (unique).
     """
-    key: String!
+    value: String!
   ): type_modification_service
 
   """
@@ -8154,6 +8839,36 @@ type mutation_root {
     """
     on_conflict: enseignement_on_conflict
   ): enseignement
+
+  """
+  insert data into the table: "fonction"
+  """
+  insert_fonction(
+    """
+    the rows to be inserted
+    """
+    objects: [fonction_insert_input!]!
+
+    """
+    upsert condition
+    """
+    on_conflict: fonction_on_conflict
+  ): fonction_mutation_response
+
+  """
+  insert a single row into the table: "fonction"
+  """
+  insert_fonction_one(
+    """
+    the row to be inserted
+    """
+    object: fonction_insert_input!
+
+    """
+    upsert condition
+    """
+    on_conflict: fonction_on_conflict
+  ): fonction
 
   """
   insert data into the table: "intervenant"
@@ -8698,6 +9413,52 @@ type mutation_root {
     """
     updates: [enseignement_updates!]!
   ): [enseignement_mutation_response]
+
+  """
+  update data of the table: "fonction"
+  """
+  update_fonction(
+    """
+    increments the numeric columns with given value of the filtered values
+    """
+    _inc: fonction_inc_input
+
+    """
+    sets the columns of the filtered rows to the given values
+    """
+    _set: fonction_set_input
+
+    """
+    filter the rows which have to be updated
+    """
+    where: fonction_bool_exp!
+  ): fonction_mutation_response
+
+  """
+  update single row of the table: "fonction"
+  """
+  update_fonction_by_pk(
+    """
+    increments the numeric columns with given value of the filtered values
+    """
+    _inc: fonction_inc_input
+
+    """
+    sets the columns of the filtered rows to the given values
+    """
+    _set: fonction_set_input
+    pk_columns: fonction_pk_columns_input!
+  ): fonction
+
+  """
+  update multiples rows of table: "fonction"
+  """
+  update_fonction_many(
+    """
+    updates to execute, in order
+    """
+    updates: [fonction_updates!]!
+  ): [fonction_mutation_response]
 
   """
   update data of the table: "intervenant"
@@ -11349,6 +12110,71 @@ type query_root {
   ): enseignement
 
   """
+  fetch data from the table: "fonction"
+  """
+  fonction(
+    """
+    distinct select on columns
+    """
+    distinct_on: [fonction_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [fonction_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: fonction_bool_exp
+  ): [fonction!]!
+
+  """
+  fetch aggregated fields from the table: "fonction"
+  """
+  fonction_aggregate(
+    """
+    distinct select on columns
+    """
+    distinct_on: [fonction_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [fonction_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: fonction_bool_exp
+  ): fonction_aggregate!
+
+  """
+  fetch data from the table: "fonction" using primary key columns
+  """
+  fonction_by_pk(value: String!): fonction
+
+  """
   fetch data from the table: "intervenant"
   """
   intervenant(
@@ -12105,7 +12931,7 @@ type query_root {
     """
     La clé du type d'enseignement (unique).
     """
-    key: String!
+    value: String!
   ): type_enseignement
 
   """
@@ -12175,7 +13001,7 @@ type query_root {
     """
     La clé du type de modification (unique).
     """
-    key: String!
+    value: String!
   ): type_modification_service
 }
 
@@ -14264,6 +15090,91 @@ type subscription_root {
   ): [enseignement!]!
 
   """
+  fetch data from the table: "fonction"
+  """
+  fonction(
+    """
+    distinct select on columns
+    """
+    distinct_on: [fonction_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [fonction_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: fonction_bool_exp
+  ): [fonction!]!
+
+  """
+  fetch aggregated fields from the table: "fonction"
+  """
+  fonction_aggregate(
+    """
+    distinct select on columns
+    """
+    distinct_on: [fonction_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [fonction_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: fonction_bool_exp
+  ): fonction_aggregate!
+
+  """
+  fetch data from the table: "fonction" using primary key columns
+  """
+  fonction_by_pk(value: String!): fonction
+
+  """
+  fetch data from the table in a streaming manner: "fonction"
+  """
+  fonction_stream(
+    """
+    maximum number of rows returned in a single batch
+    """
+    batch_size: Int!
+
+    """
+    cursor to stream the results returned by the query
+    """
+    cursor: [fonction_stream_cursor_input]!
+
+    """
+    filter the rows returned
+    """
+    where: fonction_bool_exp
+  ): [fonction!]!
+
+  """
   fetch data from the table: "intervenant"
   """
   intervenant(
@@ -15220,7 +16131,7 @@ type subscription_root {
     """
     La clé du type d'enseignement (unique).
     """
-    key: String!
+    value: String!
   ): type_enseignement
 
   """
@@ -15310,7 +16221,7 @@ type subscription_root {
     """
     La clé du type de modification (unique).
     """
-    key: String!
+    value: String!
   ): type_modification_service
 
   """
@@ -15646,6 +16557,7 @@ type type_enseignement {
   Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type.
   """
   coefficient: Float!
+  description: String
 
   """
   An array relationship
@@ -15708,14 +16620,14 @@ type type_enseignement {
   ): enseignement_aggregate!
 
   """
-  La clé du type d'enseignement (unique).
-  """
-  key: String!
-
-  """
   Le libellé type d'enseignement.
   """
   label: String!
+
+  """
+  La clé du type d'enseignement (unique).
+  """
+  value: String!
 }
 
 """
@@ -15761,10 +16673,11 @@ input type_enseignement_bool_exp {
   _not: type_enseignement_bool_exp
   _or: [type_enseignement_bool_exp!]
   coefficient: Float_comparison_exp
+  description: String_comparison_exp
   enseignements: enseignement_bool_exp
   enseignements_aggregate: enseignement_aggregate_bool_exp
-  key: String_comparison_exp
   label: String_comparison_exp
+  value: String_comparison_exp
 }
 
 """
@@ -15772,7 +16685,7 @@ unique or primary key constraints on table "type_enseignement"
 """
 enum type_enseignement_constraint {
   """
-  unique or primary key constraint on columns "key"
+  unique or primary key constraint on columns "value"
   """
   type_enseignement_pkey
 }
@@ -15795,17 +16708,18 @@ input type_enseignement_insert_input {
   Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type.
   """
   coefficient: Float
+  description: String
   enseignements: enseignement_arr_rel_insert_input
-
-  """
-  La clé du type d'enseignement (unique).
-  """
-  key: String
 
   """
   Le libellé type d'enseignement.
   """
   label: String
+
+  """
+  La clé du type d'enseignement (unique).
+  """
+  value: String
 }
 
 """
@@ -15816,16 +16730,17 @@ type type_enseignement_max_fields {
   Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type.
   """
   coefficient: Float
-
-  """
-  La clé du type d'enseignement (unique).
-  """
-  key: String
+  description: String
 
   """
   Le libellé type d'enseignement.
   """
   label: String
+
+  """
+  La clé du type d'enseignement (unique).
+  """
+  value: String
 }
 
 """
@@ -15836,16 +16751,17 @@ type type_enseignement_min_fields {
   Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type.
   """
   coefficient: Float
-
-  """
-  La clé du type d'enseignement (unique).
-  """
-  key: String
+  description: String
 
   """
   Le libellé type d'enseignement.
   """
   label: String
+
+  """
+  La clé du type d'enseignement (unique).
+  """
+  value: String
 }
 
 """
@@ -15889,9 +16805,10 @@ Ordering options when selecting data from "type_enseignement".
 """
 input type_enseignement_order_by {
   coefficient: order_by
+  description: order_by
   enseignements_aggregate: enseignement_aggregate_order_by
-  key: order_by
   label: order_by
+  value: order_by
 }
 
 """
@@ -15901,7 +16818,7 @@ input type_enseignement_pk_columns_input {
   """
   La clé du type d'enseignement (unique).
   """
-  key: String!
+  value: String!
 }
 
 """
@@ -15916,12 +16833,17 @@ enum type_enseignement_select_column {
   """
   column name
   """
-  key
+  description
 
   """
   column name
   """
   label
+
+  """
+  column name
+  """
+  value
 }
 
 """
@@ -15932,16 +16854,17 @@ input type_enseignement_set_input {
   Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type.
   """
   coefficient: Float
-
-  """
-  La clé du type d'enseignement (unique).
-  """
-  key: String
+  description: String
 
   """
   Le libellé type d'enseignement.
   """
   label: String
+
+  """
+  La clé du type d'enseignement (unique).
+  """
+  value: String
 }
 
 """
@@ -15997,16 +16920,17 @@ input type_enseignement_stream_cursor_value_input {
   Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type.
   """
   coefficient: Float
-
-  """
-  La clé du type d'enseignement (unique).
-  """
-  key: String
+  description: String
 
   """
   Le libellé type d'enseignement.
   """
   label: String
+
+  """
+  La clé du type d'enseignement (unique).
+  """
+  value: String
 }
 
 """
@@ -16031,12 +16955,17 @@ enum type_enseignement_update_column {
   """
   column name
   """
-  key
+  description
 
   """
   column name
   """
   label
+
+  """
+  column name
+  """
+  value
 }
 
 input type_enseignement_updates {
@@ -16094,11 +17023,6 @@ type type_modification_service {
   Une brève description.
   """
   description: String
-
-  """
-  La clé du type de modification (unique).
-  """
-  key: String!
 
   """
   Le libellé du type de modification.
@@ -16164,6 +17088,11 @@ type type_modification_service {
     """
     where: modification_service_bool_exp
   ): modification_service_aggregate!
+
+  """
+  La clé du type de modification (unique).
+  """
+  value: String!
 }
 
 """
@@ -16194,10 +17123,10 @@ input type_modification_service_bool_exp {
   _not: type_modification_service_bool_exp
   _or: [type_modification_service_bool_exp!]
   description: String_comparison_exp
-  key: String_comparison_exp
   label: String_comparison_exp
   modifications_service: modification_service_bool_exp
   modifications_service_aggregate: modification_service_aggregate_bool_exp
+  value: String_comparison_exp
 }
 
 """
@@ -16205,7 +17134,7 @@ unique or primary key constraints on table "type_modification_service"
 """
 enum type_modification_service_constraint {
   """
-  unique or primary key constraint on columns "key"
+  unique or primary key constraint on columns "value"
   """
   type_modification_pkey
 }
@@ -16220,15 +17149,15 @@ input type_modification_service_insert_input {
   description: String
 
   """
-  La clé du type de modification (unique).
-  """
-  key: String
-
-  """
   Le libellé du type de modification.
   """
   label: String
   modifications_service: modification_service_arr_rel_insert_input
+
+  """
+  La clé du type de modification (unique).
+  """
+  value: String
 }
 
 """
@@ -16241,14 +17170,14 @@ type type_modification_service_max_fields {
   description: String
 
   """
-  La clé du type de modification (unique).
-  """
-  key: String
-
-  """
   Le libellé du type de modification.
   """
   label: String
+
+  """
+  La clé du type de modification (unique).
+  """
+  value: String
 }
 
 """
@@ -16261,14 +17190,14 @@ type type_modification_service_min_fields {
   description: String
 
   """
-  La clé du type de modification (unique).
-  """
-  key: String
-
-  """
   Le libellé du type de modification.
   """
   label: String
+
+  """
+  La clé du type de modification (unique).
+  """
+  value: String
 }
 
 """
@@ -16312,9 +17241,9 @@ Ordering options when selecting data from "type_modification_service".
 """
 input type_modification_service_order_by {
   description: order_by
-  key: order_by
   label: order_by
   modifications_service_aggregate: modification_service_aggregate_order_by
+  value: order_by
 }
 
 """
@@ -16324,7 +17253,7 @@ input type_modification_service_pk_columns_input {
   """
   La clé du type de modification (unique).
   """
-  key: String!
+  value: String!
 }
 
 """
@@ -16339,12 +17268,12 @@ enum type_modification_service_select_column {
   """
   column name
   """
-  key
+  label
 
   """
   column name
   """
-  label
+  value
 }
 
 """
@@ -16357,14 +17286,14 @@ input type_modification_service_set_input {
   description: String
 
   """
-  La clé du type de modification (unique).
-  """
-  key: String
-
-  """
   Le libellé du type de modification.
   """
   label: String
+
+  """
+  La clé du type de modification (unique).
+  """
+  value: String
 }
 
 """
@@ -16392,14 +17321,14 @@ input type_modification_service_stream_cursor_value_input {
   description: String
 
   """
-  La clé du type de modification (unique).
-  """
-  key: String
-
-  """
   Le libellé du type de modification.
   """
   label: String
+
+  """
+  La clé du type de modification (unique).
+  """
+  value: String
 }
 
 """
@@ -16414,12 +17343,12 @@ enum type_modification_service_update_column {
   """
   column name
   """
-  key
+  label
 
   """
   column name
   """
-  label
+  value
 }
 
 input type_modification_service_updates {

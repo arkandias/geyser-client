@@ -1,22 +1,22 @@
 import type { Client } from "@urql/vue";
 
 import {
-  DELETE_DEMANDE,
-  DELETE_DEMANDE_BY_ID,
+  DELETE_REQUEST,
+  DELETE_REQUEST_BY_ID,
   GET_REQUEST,
-  UPSERT_DEMANDE,
+  UPSERT_REQUEST,
 } from "@/graphql/requests.ts";
 import { formatRequestType } from "@/helpers/format.ts";
 import { defaultNotify, errorNotify, successNotify } from "@/helpers/notify.ts";
 
-const getCurrentDemande = async (
+const getCurrentRequest = async (
   client: Client,
-  variables: { serviceId: number; ensId: number; typeDemande: string },
+  variables: { uid: string; courseId: number; requestType: string },
 ): Promise<number | null> => {
   const result = await client.query(GET_REQUEST, variables, {
     requestPolicy: "network-only",
   });
-  if (!result.data?.demande) {
+  if (!result.data?.requests[0]) {
     console.error(
       "Cannot get current demande. Please report this error to an administrator",
     );
@@ -26,42 +26,38 @@ const getCurrentDemande = async (
     );
     return null;
   }
-  return result.data.demande[0]?.heures ?? 0;
+  return result.data.requests[0].hours;
 };
 
-export const updateDemande = async (
+export const updateRequest = async (
   client: Client,
   variables: {
-    serviceId: number;
-    ensId: number;
-    typeDemande: string;
-    heures: number;
+    uid: string;
+    courseId: number;
+    requestType: string;
+    hours: number;
   },
 ): Promise<void> => {
-  const current = await getCurrentDemande(client, {
-    serviceId: variables.serviceId,
-    ensId: variables.ensId,
-    typeDemande: variables.typeDemande,
-  });
+  const current = await getCurrentRequest(client, variables);
   if (current === null) {
     return;
   }
-  if (variables.heures === current) {
-    defaultNotify(formatRequestType(variables.typeDemande) + " identique");
+  if (variables.hours === current) {
+    defaultNotify(formatRequestType(variables.requestType) + " identique");
     return;
   }
-  if (variables.heures === 0) {
-    const result = await client.mutation(DELETE_DEMANDE, variables);
-    if (result.data?.demandes?.returning && !result.error) {
-      successNotify(formatRequestType(variables.typeDemande) + " supprimée");
+  if (variables.hours === 0) {
+    const result = await client.mutation(DELETE_REQUEST, variables);
+    if (result.data?.requests?.returning && !result.error) {
+      successNotify(formatRequestType(variables.requestType) + " supprimée");
     } else {
       errorNotify("Échec de la suppression");
     }
   } else {
-    const result = await client.mutation(UPSERT_DEMANDE, variables);
-    if (result.data?.demande && !result.error) {
+    const result = await client.mutation(UPSERT_REQUEST, variables);
+    if (result.data?.request && !result.error) {
       successNotify(
-        formatRequestType(variables.typeDemande) +
+        formatRequestType(variables.requestType) +
           (current === 0 ? " créée" : " mise à jour"),
       );
     } else {
@@ -75,8 +71,8 @@ export const deleteDemandeById = async (
   id: number,
   typeDemande: string,
 ): Promise<void> => {
-  const result = await client.mutation(DELETE_DEMANDE_BY_ID, { id });
-  if (result.data?.demande && !result.error) {
+  const result = await client.mutation(DELETE_REQUEST_BY_ID, { id });
+  if (result.data?.request && !result.error) {
     successNotify(formatRequestType(typeDemande) + " supprimée");
   } else {
     errorNotify("Échec de la suppression");

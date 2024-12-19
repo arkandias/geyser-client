@@ -1,5 +1,5 @@
-import type { TotalWeightedHours } from "@/types/common.ts";
 import type { Profile } from "@/types/profile.ts";
+import type { TotalWeightedHours } from "@/types/rows.ts";
 import type { ServiceModification } from "@/types/service-modifications.ts";
 
 export type Service = {

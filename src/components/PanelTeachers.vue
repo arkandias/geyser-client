@@ -4,28 +4,33 @@ import { type Ref, computed, ref, toValue, watchEffect } from "vue";
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { nf, normalizeForSearch } from "@/helpers/format.ts";
-import { selectedService as selected, useData } from "@/stores/data.ts";
+import {
+  selectedTeacher as selected,
+  selectedTeacher,
+  useData,
+} from "@/stores/data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
 import type { TeacherRow } from "@/types/teachers.ts";
 
 const perm = usePermissions();
-const { services, fetchingServices, selectCourse, selectService } = useData();
+const { teachers, fetchingTeachers, selectCourse, selectTeacher } = useData();
 
 const select = (_: Event, row: TeacherRow) => {
-  if (selected.value[0]?.id === row.id) {
-    selectService(null);
+  if (selectedTeacher.value[0]?.uid === row.uid) {
+    selectTeacher(null);
   } else {
-    selectService(row);
+    selectTeacher(row.uid);
     selectCourse(null);
   }
 };
 
+// Columns definition
 const columns: ColumnNonAbbreviable<TeacherRow>[] = [
   {
     name: "firstname",
     label: "Prénom",
     align: "left",
-    field: (row) => row.teacher.firstname,
+    field: (row) => row.firstname,
     sortable: true,
     visible: true,
     searchable: true,
@@ -35,7 +40,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     name: "lastname",
     label: "Nom",
     align: "left",
-    field: (row) => row.teacher.lastname,
+    field: (row) => row.lastname,
     sortable: true,
     visible: true,
     searchable: true,
@@ -45,7 +50,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     name: "alias",
     label: "Alias",
     align: "left",
-    field: (row) => row.teacher.alias,
+    field: (row) => row.alias,
     sortable: true,
     visible: false,
     searchable: true,
@@ -56,7 +61,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     label: "M.",
     tooltip: "Messages",
     align: "left",
-    field: (row) => (row.messages.length ? "O" : "N"),
+    field: (row) => (row.messages[0] ? "✓" : "✗"),
     sortable: true,
     visible: false,
     searchable: false,
@@ -67,8 +72,8 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     label: "S.",
     tooltip: "Service à réaliser (en heures EQTD)",
     field: (row) =>
-      row.weightedHours -
-      (row.totalModifications.aggregate?.sum?.weightedHours ?? 0),
+      (row.services[0]?.weightedHours ?? 0) -
+      (row.services[0]?.totalModifications.aggregate?.sum?.weightedHours ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -94,8 +99,8 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD attribuées",
     field: (row) =>
-      row.weightedHours -
-      (row.totalModifications.aggregate?.sum?.weightedHours ?? 0) -
+      (row.services[0]?.weightedHours ?? 0) -
+      (row.services[0]?.totalModifications.aggregate?.sum?.weightedHours ?? 0) -
       (row.totalAssigned.aggregate?.sum?.weightedHours ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
@@ -122,8 +127,8 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",
     field: (row) =>
-      row.weightedHours -
-      (row.totalModifications.aggregate?.sum?.weightedHours ?? 0) -
+      (row.services[0]?.weightedHours ?? 0) -
+      (row.services[0]?.totalModifications.aggregate?.sum?.weightedHours ?? 0) -
       (row.totalPrimary.aggregate?.sum?.weightedHours ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
@@ -158,7 +163,7 @@ watchEffect(() => {
 const menuColonnesOpen: Ref<boolean> = ref(false);
 const tooltipMenuColonnes: Ref<boolean> = ref(false);
 
-// Filtre recherche
+// Search filter
 const search: Ref<string> = ref("");
 const clearSearch = () => {
   search.value = "";
@@ -185,8 +190,8 @@ const stickyHeader: Ref<boolean> = ref(false);
     v-model:selected="selected"
     :columns
     :visible-columns
-    :rows="services"
-    :loading="fetchingServices"
+    :rows="teachers"
+    :loading="fetchingTeachers"
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"
@@ -273,10 +278,7 @@ const stickyHeader: Ref<boolean> = ref(false);
       </QTh>
     </template>
     <template #body-cell="scope">
-      <QTd
-        :props="scope"
-        :class="{ 'non-visible': !scope.row.intervenant.visible }"
-      >
+      <QTd :props="scope" :class="{ 'non-visible': !scope.row.visible }">
         {{ scope.value }}
       </QTd>
     </template>

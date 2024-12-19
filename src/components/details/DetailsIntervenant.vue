@@ -6,18 +6,18 @@ import type { TeacherRow } from "@/types/teachers.ts";
 import DetailsIntervenantMessage from "@/components/details/DetailsIntervenantMessage.vue";
 import DetailsSection from "@/components/details/DetailsSection.vue";
 
-const props = defineProps<{ service: TeacherRow }>();
+const props = defineProps<{ teacherRow: TeacherRow }>();
 
 const contenu: ComputedRef<string | null> = computed(
-  () => props.service.messages[0]?.body ?? null,
+  () => props.teacher.messages[0]?.body ?? null,
 );
 </script>
 
 <template>
   <DetailsSection title="Messages">
     <DetailsIntervenantMessage
-      :service-id="service.id"
-      :uid="service.teacher.uid"
+      :service-id="teacherRow.id"
+      :uid="teacherRow.teacher.uid"
       :contenu
     />
   </DetailsSection>

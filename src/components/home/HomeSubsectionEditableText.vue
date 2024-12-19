@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { type Ref, ref } from "vue";
 
-import AccueilSubsection from "@/components/accueil/AccueilSubsection.vue";
 import EditableText from "@/components/core/EditableText.vue";
+import HomeSubsection from "@/components/home/HomeSubsection.vue";
 
 defineProps<{
   title: string;
@@ -16,9 +16,9 @@ const edition: Ref<boolean> = ref(false);
 </script>
 
 <template>
-  <AccueilSubsection v-model="edition" :title :editable>
+  <HomeSubsection v-model="edition" :title :editable>
     <EditableText v-model="edition" :title :text :default-text :set-text />
-  </AccueilSubsection>
+  </HomeSubsection>
 </template>
 
 <style scoped lang="scss"></style>

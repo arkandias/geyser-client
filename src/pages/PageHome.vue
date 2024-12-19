@@ -2,35 +2,35 @@
 import { useQuery } from "@urql/vue";
 import { type ComputedRef, computed, reactive } from "vue";
 
-import { GET_TEACHERS_TABLE_ROWS } from "@/graphql/teachers.ts";
+import { GET_TEACHERS_ROWS } from "@/graphql/teachers.ts";
 import { formatUser } from "@/helpers/format.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useYears } from "@/stores/years.ts";
 import type { TeacherRow } from "@/types/teachers.ts";
 
-import AccueilInformations from "@/components/accueil/AccueilInformations.vue";
-import AccueilMessage from "@/components/accueil/AccueilMessage.vue";
-import AccueilSubsection from "@/components/accueil/AccueilSubsection.vue";
 import ResumeDemandes from "@/components/core/ResumeDemandes.vue";
 import ServiceIntervenant from "@/components/core/ServiceIntervenant.vue";
 import DetailsVoletIntervenant from "@/components/details/volet/DetailsVoletIntervenant.vue";
+import HomeInfo from "@/components/home/HomeInfo.vue";
+import HomeMessage from "@/components/home/HomeMessage.vue";
+import HomeSubsection from "@/components/home/HomeSubsection.vue";
 
 const { current: currentYear } = useYears();
-const { profile, uid: moi } = useAuthentication();
+const { profile, uid: myUid } = useAuthentication();
 
-const queryMyService = useQuery({
-  query: GET_TEACHERS_TABLE_ROWS,
+const queryMyRow = useQuery({
+  query: GET_TEACHERS_ROWS,
   variables: reactive({
     year: computed(() => currentYear.value ?? 0),
-    where: { intervenant: { uid: { _eq: moi } } },
+    where: { uid: { _eq: myUid } },
   }),
   pause: () => currentYear.value === null,
   context: {
     additionalTypenames: ["demande", "message", "modification_service"],
   },
 });
-const myService: ComputedRef<TeacherRow | null> = computed(
-  () => queryMyService.data.value?.services[0] ?? null,
+const myRow: ComputedRef<TeacherRow | null> = computed(
+  () => queryMyRow.data.value?.teachers[0] ?? null,
 );
 </script>
 
@@ -42,21 +42,21 @@ const myService: ComputedRef<TeacherRow | null> = computed(
         <br />
         {{ formatUser(profile) }}
       </QCardSection>
-      <AccueilMessage />
-      <DetailsVoletIntervenant v-if="myService" :service="myService">
+      <HomeMessage />
+      <DetailsVoletIntervenant v-if="myRow" :teacher-row="myRow">
         <template #service="scope">
-          <AccueilSubsection title="Mon service">
+          <HomeSubsection title="Mon service">
             <ServiceIntervenant v-bind="scope" />
-          </AccueilSubsection>
+          </HomeSubsection>
         </template>
-        <template #demandes="scope">
-          <AccueilSubsection title="Mes demandes">
+        <template #requests="scope">
+          <HomeSubsection title="Mes demandes">
             <ResumeDemandes v-bind="scope" />
-          </AccueilSubsection>
+          </HomeSubsection>
         </template>
       </DetailsVoletIntervenant>
     </QCard>
-    <AccueilInformations />
+    <HomeInfo />
   </QPage>
 </template>
 
