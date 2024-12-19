@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from "vue";
+import { watch, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import { useDataSync } from "@/composables/datasync.ts";
@@ -9,9 +9,9 @@ import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { useYears } from "@/stores/years.ts";
 
+import PanelCourses from "@/components/PanelCourses.vue";
 import PanelDetails from "@/components/PanelDetails.vue";
-import PanelEnseignements from "@/components/PanelEnseignements.vue";
-import PanelIntervenants from "@/components/PanelIntervenants.vue";
+import PanelServices from "@/components/PanelServices.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -24,32 +24,33 @@ const {
 const perm = usePermissions();
 const { closeLeftPanel, filtreIntervenants, openLeftPanel } = useLayout();
 const {
-  selectedEnseignement,
+  courses,
+  services,
+  selectedCourse,
   selectedService,
-  selectEnseignement,
+  selectCourse,
   selectService,
 } = useData();
 useDataSync();
 
 // sync query parameters with selection
-watch(
-  () =>
-    [
-      getNumber(route.query, "year"),
-      getNumber(route.query, "course_id"),
-      getNumber(route.query, "service_id"),
-    ] as const,
-  ([year, courseId, serviceId]) => {
-    selectYear(year);
-    selectEnseignement(courseId);
-    selectService(serviceId);
-  },
-  { immediate: true },
-);
+watchEffect(() => {
+  selectYear(getNumber(route.query, "year"));
+  selectCourse(
+    courses.value.find(
+      (course) => course.id === getNumber(route.query, "course_id"),
+    ),
+  );
+  selectService(
+    services.value.find(
+      (service) => service.id === getNumber(route.query, "service_id"),
+    ),
+  );
+});
 watch(
   [
     () => selectedYear.value ?? undefined,
-    () => selectedEnseignement.value[0]?.id,
+    () => selectedCourse.value[0]?.id,
     () => selectedService.value[0]?.id,
   ],
   async ([year, courseId, serviceId]) => {
@@ -85,12 +86,12 @@ watch(
       :disable="!filtreIntervenants"
     >
       <template #before>
-        <PanelIntervenants />
+        <PanelServices />
       </template>
       <template #after>
         <QSplitter id="second-splitter" v-model="hSplitterRatio" horizontal>
           <template #before>
-            <PanelEnseignements />
+            <PanelCourses />
           </template>
           <template #after>
             <PanelDetails />

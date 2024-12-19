@@ -1,88 +1,67 @@
 import { type ComputedRef, type Ref, computed, readonly, ref } from "vue";
 
 import { useAuthentication } from "@/stores/authentication.ts";
-import type { CourseRow, ServiceRow } from "@/types/rows.ts";
+import type { CourseRow } from "@/types/courses.ts";
+import type { TeacherRow } from "@/types/teachers.ts";
 
-const services: Ref<ServiceRow[]> = ref([]);
-const enseignements: Ref<CourseRow[]> = ref([]);
-const setServices = (rows: ServiceRow[]) => {
+const courses: Ref<CourseRow[]> = ref([]);
+const services: Ref<TeacherRow[]> = ref([]);
+const setCourses = (rows: CourseRow[]) => {
+  courses.value = rows;
+};
+const setServices = (rows: TeacherRow[]) => {
   services.value = rows;
 };
-const setEnseignements = (rows: CourseRow[]) => {
-  enseignements.value = rows;
-};
 
+const fetchingCourses: Ref<boolean> = ref(false);
 const fetchingServices: Ref<boolean> = ref(false);
-const fetchingEnseignements: Ref<boolean> = ref(false);
+const setFetchingCourses = (value: boolean) => {
+  fetchingCourses.value = value;
+};
 const setFetchingServices = (value: boolean) => {
   fetchingServices.value = value;
 };
-const setFetchingEnseignements = (value: boolean) => {
-  fetchingEnseignements.value = value;
-};
 
-// TODO: simplify these (need to tweek the QTable)
-export const selectedService: Ref<
-  {
-    intervenant: {
-      uid: string;
-    };
-  }[]
-> = ref([]);
-export const selectedEnseignement: Ref<{ id: number }[]> = ref([]);
-const selectService = (id?: number | null) => {
-  selectedService.value = id != null ? [{ id }] : [];
+export const selectedCourse: Ref<CourseRow[]> = ref([]);
+export const selectedService: Ref<TeacherRow[]> = ref([]);
+const selectCourse = (course?: CourseRow | null) => {
+  selectedCourse.value = course ? [course] : [];
 };
-const selectEnseignement = (id?: number | null) => {
-  selectedEnseignement.value = id != null ? [{ id }] : [];
+const selectService = (service?: TeacherRow | null) => {
+  selectedService.value = service ? [service] : [];
 };
-
-const service: ComputedRef<ServiceRow | null> = computed(
-  () =>
-    services.value.find(
-      (row) => row.teacher.uid === selectedService.value[0]?.intervenant.uid,
-    ) ?? null,
-);
-const enseignement: ComputedRef<CourseRow | null> = computed(
-  () =>
-    enseignements.value.find(
-      (row) => row.id === selectedEnseignement.value[0]?.id,
-    ) ?? null,
-);
 
 export const useData = () => {
-  const { uid: moi } = useAuthentication();
-  const myService: ComputedRef<ServiceRow | null> = computed(
-    () => services.value.find((row) => row.teacher.uid === moi.value) ?? null,
+  const { uid: myId } = useAuthentication();
+  const myService: ComputedRef<TeacherRow | null> = computed(
+    () => services.value.find((row) => row.teacher.uid === myId.value) ?? null,
   );
-  const myServiceSelected: ComputedRef<boolean> = computed(
-    () => service.value?.teacher.uid === moi.value,
+  const isMyServiceSelected: ComputedRef<boolean> = computed(
+    () => selectedService.value[0]?.teacher.uid === myId.value,
   );
-  const toggleMonService = () => {
-    if (myServiceSelected.value) {
+  const toggleMyService = () => {
+    if (isMyServiceSelected.value) {
       selectService(null);
     } else if (myService.value) {
-      selectService(moi.value);
-      selectEnseignement(null);
+      selectService(myService.value);
+      selectCourse(null);
     }
   };
   return {
     services: readonly(services),
-    enseignements: readonly(enseignements),
+    courses: readonly(courses),
     fetchingServices: readonly(fetchingServices),
-    fetchingEnseignements: readonly(fetchingEnseignements),
+    fetchingCourses: readonly(fetchingCourses),
     selectedService: readonly(selectedService),
-    selectedEnseignement: readonly(selectedEnseignement),
-    service,
-    enseignement,
-    setServices,
-    setEnseignements,
-    setFetchingServices,
-    setFetchingEnseignements,
-    selectService,
-    selectEnseignement,
+    selectedCourse: readonly(selectedCourse),
     myService,
-    myServiceSelected,
-    toggleMonService,
+    isMyServiceSelected,
+    setServices,
+    setCourses,
+    setFetchingServices,
+    setFetchingCourses,
+    selectService,
+    selectCourse,
+    toggleMyService,
   };
 };

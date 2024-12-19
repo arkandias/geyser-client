@@ -2,21 +2,24 @@
 import { useMutation, useQuery } from "@urql/vue";
 import { type ComputedRef, type Ref, computed, ref } from "vue";
 
+import { GET_SERVICE_MODIFICATION_TYPES } from "@/graphql/service-modification-types.ts";
 import {
-  DELETE_MODIFICATION,
-  GET_TYPES_MODIFICATION,
-  INSERT_MODIFICATION,
-} from "@/graphql/modifications.ts";
+  DELETE_SERVICE_MODIFICATION,
+  INSERT_SERVICE_MODIFICATION,
+} from "@/graphql/service-modifications.ts";
 import { nf } from "@/helpers/format.ts";
 import { errorNotify, successNotify } from "@/helpers/notify.ts";
-import type { Modification, ModificationType } from "@/types/services.ts";
+import type {
+  ServiceModification,
+  ServiceModificationType,
+} from "@/types/services.ts";
 
 import TableService from "@/components/core/TableService.vue";
 
 const props = defineProps<{
   serviceId: number;
   serviceBase: number;
-  modifications: Modification[];
+  modifications: ServiceModification[];
   totalModifications: number;
   editable: boolean;
 }>();
@@ -26,24 +29,25 @@ const serviceCorrige: ComputedRef<number> = computed(
 );
 
 const queryTypesModification = useQuery({
-  query: GET_TYPES_MODIFICATION,
+  query: GET_SERVICE_MODIFICATION_TYPES,
   variables: {},
 });
-const insertModification = useMutation(INSERT_MODIFICATION);
-const deleteModification = useMutation(DELETE_MODIFICATION);
+const insertModification = useMutation(INSERT_SERVICE_MODIFICATION);
+const deleteModification = useMutation(DELETE_SERVICE_MODIFICATION);
 
-const typeModificationOptions: ComputedRef<ModificationType[]> = computed(
-  () =>
-    queryTypesModification.data.value?.typesModification.map(
-      (typeModification) => ({
-        label: typeModification.label,
-        description: typeModification.description ?? null,
-      }),
-    ) ?? [],
-);
+const typeModificationOptions: ComputedRef<ServiceModificationType[]> =
+  computed(
+    () =>
+      queryTypesModification.data.value?.typesModification.map(
+        (typeModification) => ({
+          label: typeModification.label,
+          description: typeModification.description ?? null,
+        }),
+      ) ?? [],
+  );
 
 const formOpen: Ref<boolean> = ref(false);
-const typeModification: Ref<ModificationType | null> = ref(null);
+const typeModification: Ref<ServiceModificationType | null> = ref(null);
 const heuresEQTD: Ref<number> = ref(0);
 
 const resetForm = (): void => {
@@ -182,7 +186,7 @@ const handleDeletion = async (id: number): Promise<void> => {
           dense
           @click="handleDeletion(modification.id)"
         />
-        {{ modification.modificationType }}
+        {{ modification.serviceModificationType }}
       </td>
       <td>{{ nf.format(modification.heuresEQTD) + " htd" }}</td>
     </tr>

@@ -3,17 +3,17 @@ import type { Client } from "@urql/vue";
 import {
   DELETE_DEMANDE,
   DELETE_DEMANDE_BY_ID,
-  GET_DEMANDE,
+  GET_REQUEST,
   UPSERT_DEMANDE,
-} from "@/graphql/demandes.ts";
-import { formatTypeDemande } from "@/helpers/format.ts";
+} from "@/graphql/requests.ts";
+import { formatRequestType } from "@/helpers/format.ts";
 import { defaultNotify, errorNotify, successNotify } from "@/helpers/notify.ts";
 
 const getCurrentDemande = async (
   client: Client,
   variables: { serviceId: number; ensId: number; typeDemande: string },
 ): Promise<number | null> => {
-  const result = await client.query(GET_DEMANDE, variables, {
+  const result = await client.query(GET_REQUEST, variables, {
     requestPolicy: "network-only",
   });
   if (!result.data?.demande) {
@@ -47,13 +47,13 @@ export const updateDemande = async (
     return;
   }
   if (variables.heures === current) {
-    defaultNotify(formatTypeDemande(variables.typeDemande) + " identique");
+    defaultNotify(formatRequestType(variables.typeDemande) + " identique");
     return;
   }
   if (variables.heures === 0) {
     const result = await client.mutation(DELETE_DEMANDE, variables);
     if (result.data?.demandes?.returning && !result.error) {
-      successNotify(formatTypeDemande(variables.typeDemande) + " supprimée");
+      successNotify(formatRequestType(variables.typeDemande) + " supprimée");
     } else {
       errorNotify("Échec de la suppression");
     }
@@ -61,7 +61,7 @@ export const updateDemande = async (
     const result = await client.mutation(UPSERT_DEMANDE, variables);
     if (result.data?.demande && !result.error) {
       successNotify(
-        formatTypeDemande(variables.typeDemande) +
+        formatRequestType(variables.typeDemande) +
           (current === 0 ? " créée" : " mise à jour"),
       );
     } else {
@@ -77,7 +77,7 @@ export const deleteDemandeById = async (
 ): Promise<void> => {
   const result = await client.mutation(DELETE_DEMANDE_BY_ID, { id });
   if (result.data?.demande && !result.error) {
-    successNotify(formatTypeDemande(typeDemande) + " supprimée");
+    successNotify(formatRequestType(typeDemande) + " supprimée");
   } else {
     errorNotify("Échec de la suppression");
   }

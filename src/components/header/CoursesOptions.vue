@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { couleurBouton } from "@/helpers/format.ts";
+import { buttonColor } from "@/helpers/format.ts";
 import { useData } from "@/stores/data.ts";
 import { useLayout } from "@/stores/layout.ts";
 
 import MenuYear from "@/components/header/MenuYear.vue";
 
 const { filtreIntervenants, toggleLeftPanel } = useLayout();
-const { myServiceSelected, myService, toggleMonService } = useData();
+const { isMyServiceSelected, myService, toggleMyService } = useData();
 </script>
 
 <template>
@@ -14,7 +14,7 @@ const { myServiceSelected, myService, toggleMonService } = useData();
   <MenuYear />
   <QBtn
     icon="sym_s_vertical_split"
-    :color="couleurBouton(filtreIntervenants)"
+    :color="buttonColor(filtreIntervenants)"
     flat
     square
     @click="toggleLeftPanel"
@@ -23,11 +23,11 @@ const { myServiceSelected, myService, toggleMonService } = useData();
   </QBtn>
   <QBtn
     icon="sym_s_assignment"
-    :color="couleurBouton(myServiceSelected)"
+    :color="buttonColor(isMyServiceSelected)"
     :disable="!myService"
     flat
     square
-    @click="toggleMonService"
+    @click="toggleMyService"
   >
     <QTooltip>Mes demandes</QTooltip>
   </QBtn>

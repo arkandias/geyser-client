@@ -2,13 +2,10 @@
 import { useQuery } from "@urql/vue";
 import { type ComputedRef, computed, reactive } from "vue";
 
-import { GET_ENSEIGNEMENT_DETAILS } from "@/graphql/enseignements.ts";
-import {
-  formatIntervenant,
-  formatResumeIntervenant,
-} from "@/helpers/format.ts";
+import { GET_COURSE_DETAILS } from "@/graphql/courses.ts";
+import { formatResumeIntervenant, formatUser } from "@/helpers/format.ts";
 import { useData } from "@/stores/data.ts";
-import type { Details } from "@/types/enseignements.ts";
+import type { CourseDetails } from "@/types/courses.ts";
 
 import ResumeDemandes from "@/components/core/ResumeDemandes.vue";
 import ServiceIntervenant from "@/components/core/ServiceIntervenant.vue";
@@ -21,27 +18,27 @@ import DetailsVoletEnseignement from "@/components/details/volet/DetailsVoletEns
 import DetailsVoletInformations from "@/components/details/volet/DetailsVoletInformations.vue";
 import DetailsVoletIntervenant from "@/components/details/volet/DetailsVoletIntervenant.vue";
 
-const { enseignement, service } = useData();
+const { selectedService, selectedCourse } = useData();
 
 const queryDetails = useQuery({
-  query: GET_ENSEIGNEMENT_DETAILS,
+  query: GET_COURSE_DETAILS,
   variables: reactive({
-    ensId: computed(() => enseignement.value?.id ?? 0),
+    ensId: computed(() => selectedCourse.value[0]?.id ?? 0),
   }),
-  pause: () => enseignement.value === null,
+  pause: () => selectedCourse.value.length === 0,
   context: {
     additionalTypenames: ["demande", "priorite"],
   },
 });
-const details: ComputedRef<Details | null> = computed(
+const details: ComputedRef<CourseDetails | null> = computed(
   () => queryDetails.data.value?.enseignement ?? null,
 );
 
 const label: ComputedRef<string> = computed(() =>
-  enseignement.value
+  selectedCourse.value[0]
     ? enseignement.value.name
     : service.value
-      ? formatIntervenant(service.value.teacher)
+      ? formatUser(service.value.teacher)
       : "Ce volet contient des informations supplémentaires",
 );
 const caption: ComputedRef<string> = computed(() =>
@@ -64,7 +61,7 @@ const caption: ComputedRef<string> = computed(() =>
 
 <template>
   <DetailsVolet :label :caption>
-    <DetailsVoletEnseignement v-if="enseignement && details" :details />
+    <DetailsVoletEnseignement v-if="enseignement && details" :CourseDetails />
     <DetailsVoletIntervenant v-else-if="service" :service>
       <template #service="scope">
         <DetailsSubsection title="Service">
@@ -80,7 +77,7 @@ const caption: ComputedRef<string> = computed(() =>
     <DetailsVoletInformations v-else />
   </DetailsVolet>
   <QCard flat square>
-    <DetailsEnseignement v-if="enseignement && details" :details />
+    <DetailsEnseignement v-if="enseignement && details" :CourseDetails />
     <DetailsIntervenant v-else-if="service" :service />
     <DetailsInformations v-else />
   </QCard>

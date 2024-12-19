@@ -9,15 +9,15 @@ defineProps<{
 }>();
 defineSlots<{ default(): unknown }>();
 
-const { enseignement, service } = useData();
+const { selectedCourse, selectedService } = useData();
 
 const expanded: Ref<boolean> = ref(false);
 
 // on change: close and scroll to top (sync)
 watch(
   [
-    () => enseignement.value?.id,
-    () => enseignement.value?.id ?? service.value?.teacher.uid,
+    () => selectedCourse.value[0]?.id,
+    () => selectedCourse.value[0]?.id ?? selectedService.value[0]?.id,
   ],
   () => {
     expanded.value = false;

@@ -3,15 +3,15 @@ import { useMutation } from "@urql/vue";
 import { type ComputedRef, computed } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
-import { UPDATE_DESCRIPTION } from "@/graphql/enseignements.ts";
-import type { Coordinator, Details } from "@/types/enseignements.ts";
+import { UPDATE_DESCRIPTION } from "@/graphql/courses.ts";
+import type { Coordinator, CourseDetails } from "@/types/courses.ts";
 import type { Profile } from "@/types/profile.ts";
 
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
 import DetailsVoletEnseignementResponsables from "@/components/details/volet/DetailsVoletEnseignementResponsables.vue";
 
-const props = defineProps<{ details: Details }>();
+const props = defineProps<{ details: CourseDetails }>();
 
 const perm = usePermissions();
 

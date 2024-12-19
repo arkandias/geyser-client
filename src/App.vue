@@ -35,7 +35,7 @@ watch(
   (value) => {
     years.value = value?.years.map((year) => year.value) ?? [];
     currentYear.value =
-      value?.years.find((year) => year.enCours)?.value ?? null;
+      value?.years.find((year) => year.current)?.value ?? null;
   },
   { immediate: true },
 );

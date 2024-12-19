@@ -12,50 +12,48 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { demandeValue } from "@/helpers/enseignement.ts";
 import {
-  formatFormation,
-  formatIntervenant,
+  formatProgram,
+  formatUser,
   nf,
   normalizeForSearch,
 } from "@/helpers/format.ts";
 import { compare, uniqueValue } from "@/helpers/utils.ts";
-import { selectedEnseignement as selected, useData } from "@/stores/data.ts";
+import { selectedCourse as selected, useData } from "@/stores/data.ts";
 import { type Column, isAbbreviable } from "@/types/columns.ts";
 import type { Option } from "@/types/common.ts";
-import type { CourseRow } from "@/types/rows.ts";
+import type { CourseRow } from "@/types/courses.ts";
 
 const perm = usePermissions();
 const {
   enseignement,
-  enseignements,
-  fetchingEnseignements,
+  courses,
+  fetchingCourses,
   service,
-  selectEnseignement,
+  selectCourse,
   selectService,
 } = useData();
 
 const select = (_: Event, row: CourseRow) => {
   if (selected.value[0]?.id === row.id) {
-    selectEnseignement(null);
+    selectCourse(null);
   } else {
-    selectEnseignement(row.id);
+    selectCourse(row.id);
   }
 };
 
-// Titre de la table
 const title: ComputedRef<string> = computed(() =>
-  service.value ? formatIntervenant(service.value.teacher) : "Enseignements",
+  service.value ? formatUser(service.value.teacher) : "Enseignements",
 );
 
-// Colonnes
 const columns: Column<CourseRow>[] = [
   {
-    name: "formation",
+    name: "program",
     label: "Formation",
     field: (row) => ({
-      long: formatFormation(row.program.degree.name, row.program.name),
+      long: formatProgram(row.program.degree.name, row.program.name),
       short:
         row.program.degree.shortName !== null || row.program.shortName !== null
-          ? formatFormation(
+          ? formatProgram(
               row.program.degree.shortName ?? row.program.degree.name,
               row.program.shortName ?? row.program.name,
             )
@@ -69,7 +67,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: true,
   },
   {
-    name: "parcours",
+    name: "track",
     label: "Parcours",
     field: (row) => ({
       long: row.track?.name ?? "",
@@ -83,7 +81,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: true,
   },
   {
-    name: "nom",
+    name: "name",
     label: "Nom",
     field: (row) => ({
       long: row.name,
@@ -107,7 +105,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: false,
   },
   {
-    name: "semestre",
+    name: "semester",
     label: "S.",
     tooltip: "Semestre",
     field: (row) => row.semester,
@@ -119,7 +117,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: false,
   },
   {
-    name: "heures",
+    name: "hours",
     label: "H.",
     tooltip: "Nombre d'heures par groupe",
     field: (row) => row.hoursPerGroup,
@@ -131,7 +129,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: false,
   },
   {
-    name: "groupes",
+    name: "groups",
     label: "G.",
     tooltip: "Nombre de groupes ouverts",
     field: (row) => row.numberOfGroups ?? 0,
@@ -142,7 +140,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: false,
   },
   {
-    name: "attributions",
+    name: "assigned",
     label: "A.",
     tooltip: "Nombre d'heures attribuées",
     field: (row) => demandeValue(row, service.value, "attribution"),
@@ -154,7 +152,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: false,
   },
   {
-    name: "diff_attributions",
+    name: "diff_assigned",
     label: "\u0394A",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
@@ -169,7 +167,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: false,
   },
   {
-    name: "principales",
+    name: "primary",
     label: "V1",
     tooltip: "Nombre d'heures demandées en vœux principaux",
     field: (row) => demandeValue(row, service.value, "principale"),
@@ -181,7 +179,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: false,
   },
   {
-    name: "diff_principales",
+    name: "diff_primary",
     label: "\u0394V1",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
@@ -196,7 +194,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: false,
   },
   {
-    name: "diff_principales_prio",
+    name: "diff_primary_priority",
     label: "\u0394V1 Prio",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",
@@ -211,7 +209,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: false,
   },
   {
-    name: "secondaires",
+    name: "secondary",
     label: "V2",
     tooltip: "Nombre d'heures demandées en vœux secondaires",
     field: (row) => demandeValue(row, service.value, "secondaire"),
@@ -236,16 +234,16 @@ watchEffect(() => {
 const menuColonnesOpen: Ref<boolean> = ref(false);
 const tooltipMenuColonnes: Ref<boolean> = ref(false);
 
-// Filtres
-// Formation
+// Filters
+// Program
 const formations: Ref<number[]> = ref([]);
 const formationOptions: ComputedRef<Option<number>[]> = computed(() =>
-  enseignements.value
-    .map((enseignement) => ({
-      value: enseignement.mention.id,
-      label: formatFormation(
-        enseignement.mention.cursus.nomCourt ?? enseignement.mention.cursus.nom,
-        enseignement.mention.nomCourt ?? enseignement.mention.nom,
+  courses.value
+    .map((course) => ({
+      value: course.program.id,
+      label: formatProgram(
+        course.program.degree.shortName ?? course.program.degree.name,
+        course.program.shortName ?? course.program.name,
       ),
     }))
     .filter(uniqueValue)
@@ -254,7 +252,7 @@ const formationOptions: ComputedRef<Option<number>[]> = computed(() =>
 // Type
 const typesEnseignement: Ref<string[]> = ref([]);
 const typeEnseignementOptions: ComputedRef<Option<string>[]> = computed(() =>
-  enseignements.value
+  courses.value
     .map((enseignement) => ({
       value: enseignement.typeEnseignement.label,
       label:
@@ -267,7 +265,7 @@ const typeEnseignementOptions: ComputedRef<Option<string>[]> = computed(() =>
 // Semestre
 const semestres: Ref<number[]> = ref([]);
 const semestreOptions: ComputedRef<Option<number>[]> = computed(() =>
-  enseignements.value
+  courses.value
     .map((enseignement) => ({
       value: enseignement.semestre,
       label: "S" + enseignement.semestre.toString(),
@@ -338,8 +336,8 @@ const estVisible = (row: CourseRow): boolean =>
     :title
     :columns
     :visible-columns
-    :rows="enseignements"
-    :loading="fetchingEnseignements"
+    :rows="courses"
+    :loading="fetchingCourses"
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"
@@ -363,7 +361,7 @@ const estVisible = (row: CourseRow): boolean =>
           flat
           square
           dense
-          @click="selectEnseignement(null)"
+          @click="selectCourse(null)"
         />
         <QBtn
           v-if="service"

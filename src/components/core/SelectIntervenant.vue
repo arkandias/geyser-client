@@ -2,8 +2,8 @@
 import { useQuery } from "@urql/vue";
 import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
 
-import { GET_SERVICES } from "@/graphql/services.ts";
-import { formatIntervenant, normalizeForSearch } from "@/helpers/format.ts";
+import { GET_TEACHERS } from "@/graphql/teachers.ts";
+import { formatUser, normalizeForSearch } from "@/helpers/format.ts";
 import { useYears } from "@/stores/years.ts";
 import type { OptionSearch } from "@/types/common.ts";
 
@@ -12,7 +12,7 @@ const serviceId = defineModel<number | null>({ required: true });
 const { current: currentYear } = useYears();
 
 const queryServices = useQuery({
-  query: GET_SERVICES,
+  query: GET_TEACHERS,
   variables: {
     year: computed(() => currentYear.value ?? 0),
   },
@@ -21,8 +21,8 @@ const queryServices = useQuery({
 const optionsInit: ComputedRef<OptionSearch<number>[]> = computed(() =>
   (queryServices.data.value?.services ?? []).map((service) => ({
     value: service.id,
-    label: formatIntervenant(service.intervenant),
-    search: normalizeForSearch(formatIntervenant(service.intervenant)),
+    label: formatUser(service.intervenant),
+    search: normalizeForSearch(formatUser(service.intervenant)),
   })),
 );
 

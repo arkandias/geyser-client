@@ -12,17 +12,19 @@ export const REQUEST_TYPE_METADATA = {
 
 export type RequestType = (typeof REQUEST_TYPES)[keyof typeof REQUEST_TYPES];
 
-export const isRequestType = (type: unknown): type is RequestType =>
-  Object.values(REQUEST_TYPES).includes(type as RequestType);
+export const isRequestType = (
+  requestType: unknown,
+): requestType is RequestType =>
+  Object.values(REQUEST_TYPES).includes(requestType as RequestType);
 
 export const getRequestType = (
-  type: RequestType,
+  requestType: RequestType,
 ): keyof typeof REQUEST_TYPES => {
   const entry = Object.entries(REQUEST_TYPES).find(
-    ([_, value]) => value === type,
+    ([_, value]) => value === requestType,
   );
   if (!entry) {
-    throw new Error(`Invalid request type '${type}'`);
+    throw new Error(`Invalid request type '${requestType}'`);
   }
   return entry[0] as keyof typeof REQUEST_TYPES;
 };

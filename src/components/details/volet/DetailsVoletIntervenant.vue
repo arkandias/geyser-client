@@ -6,15 +6,15 @@ import {
   REQUEST_TYPES,
   type RequestType,
 } from "@/config/types/request-types.ts";
-import type { ServiceRow } from "@/types/rows.ts";
-import type { Modification } from "@/types/services.ts";
+import type { ServiceModification } from "@/types/services.ts";
+import type { TeacherRow } from "@/types/teachers.ts";
 
-const props = defineProps<{ service: ServiceRow }>();
+const props = defineProps<{ service: TeacherRow }>();
 defineSlots<{
   service(scope: {
     serviceId: number;
     serviceBase: number;
-    modifications: Modification[];
+    modifications: ServiceModification[];
     totalModifications: number;
     editable: boolean;
   }): unknown;
@@ -26,7 +26,7 @@ const perm = usePermissions();
 const serviceBase: ComputedRef<number> = computed(
   () => props.service.weightedHours,
 );
-const modifications: ComputedRef<Modification[]> = computed(
+const modifications: ComputedRef<ServiceModification[]> = computed(
   () => props.service.modifications,
 );
 const totalModifications: ComputedRef<number> = computed(

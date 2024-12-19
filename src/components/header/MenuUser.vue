@@ -2,7 +2,7 @@
 import { type ComputedRef, computed } from "vue";
 
 import { type Role, labelRole, orderRole } from "@/config/types/roles.ts";
-import { formatIntervenant } from "@/helpers/format.ts";
+import { formatUser } from "@/helpers/format.ts";
 import { activeRole, useAuthentication } from "@/stores/authentication.ts";
 import { useRefresh } from "@/stores/refresh.ts";
 import type { Option } from "@/types/common.ts";
@@ -27,7 +27,7 @@ const optionsRole: ComputedRef<Option<Role>[]> = computed(() =>
     <QList dense>
       <QItem class="flex-center text-no-wrap">
         <QItemLabel header>
-          {{ formatIntervenant(profile) }}
+          {{ formatUser(profile) }}
         </QItemLabel>
       </QItem>
       <QSeparator />

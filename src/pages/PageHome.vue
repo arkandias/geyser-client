@@ -2,11 +2,11 @@
 import { useQuery } from "@urql/vue";
 import { type ComputedRef, computed, reactive } from "vue";
 
-import { GET_SERVICES_TABLE_ROWS } from "@/graphql/services.ts";
-import { formatIntervenant } from "@/helpers/format.ts";
+import { GET_TEACHERS_TABLE_ROWS } from "@/graphql/teachers.ts";
+import { formatUser } from "@/helpers/format.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useYears } from "@/stores/years.ts";
-import type { ServiceRow } from "@/types/rows.ts";
+import type { TeacherRow } from "@/types/teachers.ts";
 
 import AccueilInformations from "@/components/accueil/AccueilInformations.vue";
 import AccueilMessage from "@/components/accueil/AccueilMessage.vue";
@@ -19,7 +19,7 @@ const { current: currentYear } = useYears();
 const { profile, uid: moi } = useAuthentication();
 
 const queryMyService = useQuery({
-  query: GET_SERVICES_TABLE_ROWS,
+  query: GET_TEACHERS_TABLE_ROWS,
   variables: reactive({
     year: computed(() => currentYear.value ?? 0),
     where: { intervenant: { uid: { _eq: moi } } },
@@ -29,7 +29,7 @@ const queryMyService = useQuery({
     additionalTypenames: ["demande", "message", "modification_service"],
   },
 });
-const myService: ComputedRef<ServiceRow | null> = computed(
+const myService: ComputedRef<TeacherRow | null> = computed(
   () => queryMyService.data.value?.services[0] ?? null,
 );
 </script>
@@ -40,7 +40,7 @@ const myService: ComputedRef<ServiceRow | null> = computed(
       <QCardSection class="text-h5">
         Bienvenue,
         <br />
-        {{ formatIntervenant(profile) }}
+        {{ formatUser(profile) }}
       </QCardSection>
       <AccueilMessage />
       <DetailsVoletIntervenant v-if="myService" :service="myService">

@@ -1,8 +1,8 @@
 import type { NamedColor } from "quasar";
 
-import type { Coordinator } from "@/types/enseignements.ts";
+import type { Coordinator } from "@/types/courses.ts";
 import type { Profile } from "@/types/profile.ts";
-import type { ServiceRow } from "@/types/rows.ts";
+import type { TeacherRow } from "@/types/teachers.ts";
 
 export const nf = new Intl.NumberFormat("fr-FR", {
   style: "decimal",
@@ -15,26 +15,24 @@ export const normalizeForSearch = (str: string): string =>
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase();
 
-export const formatTypeDemande = (typeDemande: string): string =>
-  typeDemande === "attribution" ? "Attribution" : `Demande ${typeDemande}`;
+export const formatRequestType = (requestType: string): string =>
+  requestType === "attribution" ? "Attribution" : `Demande ${requestType}`;
 
-export const formatFormation = (
-  nomCursus: string,
-  nomMention: string,
-): string => nomCursus + " " + nomMention;
+export const formatProgram = (nomCursus: string, nomMention: string): string =>
+  nomCursus + " " + nomMention;
 
-export const formatIntervenant = (intervenant: Profile): string =>
-  intervenant.alias ?? intervenant.firstname + " " + intervenant.lastname;
+export const formatUser = (user: Profile): string =>
+  user.alias ?? user.firstname + " " + user.lastname;
 
-export const formatResponsables = (responsables: Coordinator[]): string =>
-  responsables
+export const formatCoordinators = (coordinators: Coordinator[]): string =>
+  coordinators
     .map(
       ({ profile, comment }) =>
-        formatIntervenant(profile) + (comment ? ` (${comment})` : ""),
+        formatUser(profile) + (comment ? ` (${comment})` : ""),
     )
     .join(", ");
 
-export const formatResumeIntervenant = (row: ServiceRow): string =>
+export const formatResumeIntervenant = (row: TeacherRow): string =>
   `Service : ${String(
     row.weightedHours -
       (row.totalModifications.aggregate?.sum?.weightedHours ?? 0),
@@ -46,13 +44,13 @@ export const formatResumeIntervenant = (row: ServiceRow): string =>
   " \u2014 " +
   `Vœux secondaires : ${String(row.totalSecondary.aggregate?.sum?.weightedHours ?? 0)} htd`;
 
-export const couleurBouton = (actif: boolean): NamedColor =>
-  actif ? "accent" : "white";
+export const buttonColor = (active: boolean): NamedColor =>
+  active ? "accent" : "white";
 
-export const couleurPriorite = (
-  prioritaire: boolean | null | undefined,
+export const priorityColor = (
+  isPriority: boolean | null | undefined,
 ): NamedColor => {
-  switch (prioritaire) {
+  switch (isPriority) {
     case true:
       return "positive";
     case false:

@@ -3,8 +3,8 @@ import { graphql } from "@/gql";
 graphql(/* GraphQL */ `
   fragment Profile on intervenant {
     uid
-    nom
-    prenom
+    firstname: prenom
+    lastname: nom
     alias
   }
 `);

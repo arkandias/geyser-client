@@ -1,9 +1,10 @@
-import type { Archive, NestedArchives } from "@/types/demandes.ts";
-import type { CourseRow, ServiceRow } from "@/types/rows.ts";
+import type { CourseRow } from "@/types/courses.ts";
+import type { Archive, NestedArchives } from "@/types/requests.ts";
+import type { TeacherRow } from "@/types/teachers.ts";
 
 export const demandeValue = (
   row: CourseRow,
-  intervenant: ServiceRow | null,
+  intervenant: TeacherRow | null,
   typeDemande: string,
 ): number => {
   if (intervenant) {

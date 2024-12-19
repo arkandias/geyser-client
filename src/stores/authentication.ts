@@ -8,12 +8,12 @@ export const activeRole: Ref<Role | null> = ref(null);
 const logged: Ref<boolean> = ref(false);
 const profile: Profile = reactive({
   uid: "",
-  lastname: "",
   firstname: "",
+  lastname: "",
   alias: null,
 });
 const allowedRoles: Ref<Role[]> = ref([]);
-const logout: Ref<(() => Promise<void>) | undefined> = ref(undefined);
+const logout: Ref<(() => Promise<void>) | null> = ref(null);
 
 export function login(
   newProfile: Profile,
@@ -24,8 +24,8 @@ export function login(
   allowedRoles.value = newAllowedRoles;
   activeRole.value = newDefaultRole;
   profile.uid = newProfile.uid;
-  profile.lastname = newProfile.lastname;
   profile.firstname = newProfile.firstname;
+  profile.lastname = newProfile.lastname;
   profile.alias = newProfile.alias;
   logout.value = newLogout;
   logged.value = true;

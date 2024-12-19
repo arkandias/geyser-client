@@ -1152,15 +1152,14 @@ type demande {
   id: Int!
 
   """
+  An object relationship
+  """
+  intervenant: intervenant!
+
+  """
   Fonction qui indique, pour une demande donnée, si celle-ci est prioritaire.
   """
   prioritaire: Boolean
-
-  """
-  An object relationship
-  """
-  service: service!
-  service_id: Int!
 
   """
   Le type de demande.
@@ -1171,6 +1170,11 @@ type demande {
   An object relationship
   """
   typeByType: type_demande!
+
+  """
+  L'identifiant de l'intervenant correspondant à la demande.
+  """
+  uid: String!
 }
 
 """
@@ -1257,7 +1261,6 @@ type demande_avg_fields {
   """
   heures_eqtd: Float
   id: Float
-  service_id: Float
 }
 
 """
@@ -1274,7 +1277,6 @@ input demande_avg_order_by {
   """
   heures: order_by
   id: order_by
-  service_id: order_by
 }
 
 """
@@ -1289,11 +1291,11 @@ input demande_bool_exp {
   heures: Float_comparison_exp
   heures_eqtd: Float_comparison_exp
   id: Int_comparison_exp
+  intervenant: intervenant_bool_exp
   prioritaire: Boolean_comparison_exp
-  service: service_bool_exp
-  service_id: Int_comparison_exp
   type: String_comparison_exp
   typeByType: type_demande_bool_exp
+  uid: String_comparison_exp
 }
 
 """
@@ -1306,9 +1308,9 @@ enum demande_constraint {
   demande_pkey
 
   """
-  unique or primary key constraint on columns "type", "ens_id", "service_id"
+  unique or primary key constraint on columns "uid", "type", "ens_id"
   """
-  demande_service_id_ens_id_type_key
+  demande_uid_ens_id_type_key
 }
 
 """
@@ -1325,7 +1327,6 @@ input demande_inc_input {
   """
   heures: Float
   id: Int
-  service_id: Int
 }
 
 """
@@ -1343,14 +1344,18 @@ input demande_insert_input {
   """
   heures: Float
   id: Int
-  service: service_obj_rel_insert_input
-  service_id: Int
+  intervenant: intervenant_obj_rel_insert_input
 
   """
   Le type de demande.
   """
   type: String
   typeByType: type_demande_obj_rel_insert_input
+
+  """
+  L'identifiant de l'intervenant correspondant à la demande.
+  """
+  uid: String
 }
 
 """
@@ -1372,12 +1377,16 @@ type demande_max_fields {
   """
   heures_eqtd: Float
   id: Int
-  service_id: Int
 
   """
   Le type de demande.
   """
   type: String
+
+  """
+  L'identifiant de l'intervenant correspondant à la demande.
+  """
+  uid: String
 }
 
 """
@@ -1394,12 +1403,16 @@ input demande_max_order_by {
   """
   heures: order_by
   id: order_by
-  service_id: order_by
 
   """
   Le type de demande.
   """
   type: order_by
+
+  """
+  L'identifiant de l'intervenant correspondant à la demande.
+  """
+  uid: order_by
 }
 
 """
@@ -1421,12 +1434,16 @@ type demande_min_fields {
   """
   heures_eqtd: Float
   id: Int
-  service_id: Int
 
   """
   Le type de demande.
   """
   type: String
+
+  """
+  L'identifiant de l'intervenant correspondant à la demande.
+  """
+  uid: String
 }
 
 """
@@ -1443,12 +1460,16 @@ input demande_min_order_by {
   """
   heures: order_by
   id: order_by
-  service_id: order_by
 
   """
   Le type de demande.
   """
   type: order_by
+
+  """
+  L'identifiant de l'intervenant correspondant à la demande.
+  """
+  uid: order_by
 }
 
 """
@@ -1484,11 +1505,11 @@ input demande_order_by {
   heures: order_by
   heures_eqtd: order_by
   id: order_by
+  intervenant: intervenant_order_by
   prioritaire: order_by
-  service: service_order_by
-  service_id: order_by
   type: order_by
   typeByType: type_demande_order_by
+  uid: order_by
 }
 
 """
@@ -1520,12 +1541,12 @@ enum demande_select_column {
   """
   column name
   """
-  service_id
+  type
 
   """
   column name
   """
-  type
+  uid
 }
 
 """
@@ -1542,12 +1563,16 @@ input demande_set_input {
   """
   heures: Float
   id: Int
-  service_id: Int
 
   """
   Le type de demande.
   """
   type: String
+
+  """
+  L'identifiant de l'intervenant correspondant à la demande.
+  """
+  uid: String
 }
 
 """
@@ -1569,7 +1594,6 @@ type demande_stddev_fields {
   """
   heures_eqtd: Float
   id: Float
-  service_id: Float
 }
 
 """
@@ -1586,7 +1610,6 @@ input demande_stddev_order_by {
   """
   heures: order_by
   id: order_by
-  service_id: order_by
 }
 
 """
@@ -1608,7 +1631,6 @@ type demande_stddev_pop_fields {
   """
   heures_eqtd: Float
   id: Float
-  service_id: Float
 }
 
 """
@@ -1625,7 +1647,6 @@ input demande_stddev_pop_order_by {
   """
   heures: order_by
   id: order_by
-  service_id: order_by
 }
 
 """
@@ -1647,7 +1668,6 @@ type demande_stddev_samp_fields {
   """
   heures_eqtd: Float
   id: Float
-  service_id: Float
 }
 
 """
@@ -1664,7 +1684,6 @@ input demande_stddev_samp_order_by {
   """
   heures: order_by
   id: order_by
-  service_id: order_by
 }
 
 """
@@ -1696,12 +1715,16 @@ input demande_stream_cursor_value_input {
   """
   heures: Float
   id: Int
-  service_id: Int
 
   """
   Le type de demande.
   """
   type: String
+
+  """
+  L'identifiant de l'intervenant correspondant à la demande.
+  """
+  uid: String
 }
 
 """
@@ -1723,7 +1746,6 @@ type demande_sum_fields {
   """
   heures_eqtd: Float
   id: Int
-  service_id: Int
 }
 
 """
@@ -1740,7 +1762,6 @@ input demande_sum_order_by {
   """
   heures: order_by
   id: order_by
-  service_id: order_by
 }
 
 """
@@ -1765,12 +1786,12 @@ enum demande_update_column {
   """
   column name
   """
-  service_id
+  type
 
   """
   column name
   """
-  type
+  uid
 }
 
 input demande_updates {
@@ -1809,7 +1830,6 @@ type demande_var_pop_fields {
   """
   heures_eqtd: Float
   id: Float
-  service_id: Float
 }
 
 """
@@ -1826,7 +1846,6 @@ input demande_var_pop_order_by {
   """
   heures: order_by
   id: order_by
-  service_id: order_by
 }
 
 """
@@ -1848,7 +1867,6 @@ type demande_var_samp_fields {
   """
   heures_eqtd: Float
   id: Float
-  service_id: Float
 }
 
 """
@@ -1865,7 +1883,6 @@ input demande_var_samp_order_by {
   """
   heures: order_by
   id: order_by
-  service_id: order_by
 }
 
 """
@@ -1887,7 +1904,6 @@ type demande_variance_fields {
   """
   heures_eqtd: Float
   id: Float
-  service_id: Float
 }
 
 """
@@ -1904,7 +1920,6 @@ input demande_variance_order_by {
   """
   heures: order_by
   id: order_by
-  service_id: order_by
 }
 
 """
@@ -4595,14 +4610,140 @@ Table contenant les intervenants.
 """
 type intervenant {
   """
-  Indique si l'intervenant correspondant est actif, c'est-à-dire s'il intervient dans l'année en cours.
+  Indique si un service doit être automatiquement créé pour l'intervenant lors de la prochaine année.
   """
   actif: Boolean!
 
   """
-  Un alias pour l'intervenant (optionnel).
+  Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel).
   """
   alias: String
+
+  """
+  An array relationship
+  """
+  demandes(
+    """
+    distinct select on columns
+    """
+    distinct_on: [demande_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [demande_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: demande_bool_exp
+  ): [demande!]!
+
+  """
+  An aggregate relationship
+  """
+  demandes_aggregate(
+    """
+    distinct select on columns
+    """
+    distinct_on: [demande_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [demande_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: demande_bool_exp
+  ): demande_aggregate!
+  fonction: String
+
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: Float
+
+  """
+  An array relationship
+  """
+  messages(
+    """
+    distinct select on columns
+    """
+    distinct_on: [message_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [message_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: message_bool_exp
+  ): [message!]!
+
+  """
+  An aggregate relationship
+  """
+  messages_aggregate(
+    """
+    distinct select on columns
+    """
+    distinct_on: [message_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [message_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: message_bool_exp
+  ): message_aggregate!
 
   """
   Le nom de l'intervenant.
@@ -4735,11 +4876,6 @@ type intervenant {
   ): responsable_aggregate!
 
   """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
-  service: Float
-
-  """
   An array relationship
   """
   services(
@@ -4805,7 +4941,7 @@ type intervenant {
   uid: String!
 
   """
-  Indique si l'intervenant correspondant est visible par les utilisateurs.
+  Indique si l'intervenant est visible par les utilisateurs.
   """
   visible: Boolean!
 }
@@ -4842,7 +4978,7 @@ type intervenant_avg_fields {
   """
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
-  service: Float
+  heures_eqtd_service_base: Float
 }
 
 """
@@ -4854,13 +4990,18 @@ input intervenant_bool_exp {
   _or: [intervenant_bool_exp!]
   actif: Boolean_comparison_exp
   alias: String_comparison_exp
+  demandes: demande_bool_exp
+  demandes_aggregate: demande_aggregate_bool_exp
+  fonction: String_comparison_exp
+  heures_eqtd_service_base: Float_comparison_exp
+  messages: message_bool_exp
+  messages_aggregate: message_aggregate_bool_exp
   nom: String_comparison_exp
   prenom: String_comparison_exp
   priorites: priorite_bool_exp
   priorites_aggregate: priorite_aggregate_bool_exp
   responsables: responsable_bool_exp
   responsables_aggregate: responsable_aggregate_bool_exp
-  service: Float_comparison_exp
   services: service_bool_exp
   services_aggregate: service_aggregate_bool_exp
   uid: String_comparison_exp
@@ -4884,7 +5025,7 @@ input intervenant_inc_input {
   """
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
-  service: Float
+  heures_eqtd_service_base: Float
 }
 
 """
@@ -4892,14 +5033,22 @@ input type for inserting data into table "intervenant"
 """
 input intervenant_insert_input {
   """
-  Indique si l'intervenant correspondant est actif, c'est-à-dire s'il intervient dans l'année en cours.
+  Indique si un service doit être automatiquement créé pour l'intervenant lors de la prochaine année.
   """
   actif: Boolean
 
   """
-  Un alias pour l'intervenant (optionnel).
+  Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel).
   """
   alias: String
+  demandes: demande_arr_rel_insert_input
+  fonction: String
+
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: Float
+  messages: message_arr_rel_insert_input
 
   """
   Le nom de l'intervenant.
@@ -4912,11 +5061,6 @@ input intervenant_insert_input {
   prenom: String
   priorites: priorite_arr_rel_insert_input
   responsables: responsable_arr_rel_insert_input
-
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
-  service: Float
   services: service_arr_rel_insert_input
 
   """
@@ -4925,7 +5069,7 @@ input intervenant_insert_input {
   uid: String
 
   """
-  Indique si l'intervenant correspondant est visible par les utilisateurs.
+  Indique si l'intervenant est visible par les utilisateurs.
   """
   visible: Boolean
 }
@@ -4935,9 +5079,15 @@ aggregate max on columns
 """
 type intervenant_max_fields {
   """
-  Un alias pour l'intervenant (optionnel).
+  Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel).
   """
   alias: String
+  fonction: String
+
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: Float
 
   """
   Le nom de l'intervenant.
@@ -4948,11 +5098,6 @@ type intervenant_max_fields {
   Le prénom de l'intervenant.
   """
   prenom: String
-
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
-  service: Float
 
   """
   L'identifiant unique de l'intervenant.
@@ -4965,9 +5110,15 @@ aggregate min on columns
 """
 type intervenant_min_fields {
   """
-  Un alias pour l'intervenant (optionnel).
+  Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel).
   """
   alias: String
+  fonction: String
+
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: Float
 
   """
   Le nom de l'intervenant.
@@ -4978,11 +5129,6 @@ type intervenant_min_fields {
   Le prénom de l'intervenant.
   """
   prenom: String
-
-  """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
-  service: Float
 
   """
   L'identifiant unique de l'intervenant.
@@ -5032,11 +5178,14 @@ Ordering options when selecting data from "intervenant".
 input intervenant_order_by {
   actif: order_by
   alias: order_by
+  demandes_aggregate: demande_aggregate_order_by
+  fonction: order_by
+  heures_eqtd_service_base: order_by
+  messages_aggregate: message_aggregate_order_by
   nom: order_by
   prenom: order_by
   priorites_aggregate: priorite_aggregate_order_by
   responsables_aggregate: responsable_aggregate_order_by
-  service: order_by
   services_aggregate: service_aggregate_order_by
   uid: order_by
   visible: order_by
@@ -5069,17 +5218,22 @@ enum intervenant_select_column {
   """
   column name
   """
+  fonction
+
+  """
+  column name
+  """
+  heures_eqtd_service_base
+
+  """
+  column name
+  """
   nom
 
   """
   column name
   """
   prenom
-
-  """
-  column name
-  """
-  service
 
   """
   column name
@@ -5097,14 +5251,20 @@ input type for updating data in table "intervenant"
 """
 input intervenant_set_input {
   """
-  Indique si l'intervenant correspondant est actif, c'est-à-dire s'il intervient dans l'année en cours.
+  Indique si un service doit être automatiquement créé pour l'intervenant lors de la prochaine année.
   """
   actif: Boolean
 
   """
-  Un alias pour l'intervenant (optionnel).
+  Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel).
   """
   alias: String
+  fonction: String
+
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: Float
 
   """
   Le nom de l'intervenant.
@@ -5117,17 +5277,12 @@ input intervenant_set_input {
   prenom: String
 
   """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
-  service: Float
-
-  """
   L'identifiant unique de l'intervenant.
   """
   uid: String
 
   """
-  Indique si l'intervenant correspondant est visible par les utilisateurs.
+  Indique si l'intervenant est visible par les utilisateurs.
   """
   visible: Boolean
 }
@@ -5139,7 +5294,7 @@ type intervenant_stddev_fields {
   """
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
-  service: Float
+  heures_eqtd_service_base: Float
 }
 
 """
@@ -5149,7 +5304,7 @@ type intervenant_stddev_pop_fields {
   """
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
-  service: Float
+  heures_eqtd_service_base: Float
 }
 
 """
@@ -5159,7 +5314,7 @@ type intervenant_stddev_samp_fields {
   """
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
-  service: Float
+  heures_eqtd_service_base: Float
 }
 
 """
@@ -5182,14 +5337,20 @@ Initial value of the column from where the streaming should start
 """
 input intervenant_stream_cursor_value_input {
   """
-  Indique si l'intervenant correspondant est actif, c'est-à-dire s'il intervient dans l'année en cours.
+  Indique si un service doit être automatiquement créé pour l'intervenant lors de la prochaine année.
   """
   actif: Boolean
 
   """
-  Un alias pour l'intervenant (optionnel).
+  Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel).
   """
   alias: String
+  fonction: String
+
+  """
+  Le service de base en heures EQTD de l'intervenant (optionnel).
+  """
+  heures_eqtd_service_base: Float
 
   """
   Le nom de l'intervenant.
@@ -5202,17 +5363,12 @@ input intervenant_stream_cursor_value_input {
   prenom: String
 
   """
-  Le service de base en heures EQTD de l'intervenant (optionnel).
-  """
-  service: Float
-
-  """
   L'identifiant unique de l'intervenant.
   """
   uid: String
 
   """
-  Indique si l'intervenant correspondant est visible par les utilisateurs.
+  Indique si l'intervenant est visible par les utilisateurs.
   """
   visible: Boolean
 }
@@ -5224,7 +5380,7 @@ type intervenant_sum_fields {
   """
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
-  service: Float
+  heures_eqtd_service_base: Float
 }
 
 """
@@ -5244,17 +5400,22 @@ enum intervenant_update_column {
   """
   column name
   """
+  fonction
+
+  """
+  column name
+  """
+  heures_eqtd_service_base
+
+  """
+  column name
+  """
   nom
 
   """
   column name
   """
   prenom
-
-  """
-  column name
-  """
-  service
 
   """
   column name
@@ -5291,7 +5452,7 @@ type intervenant_var_pop_fields {
   """
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
-  service: Float
+  heures_eqtd_service_base: Float
 }
 
 """
@@ -5301,7 +5462,7 @@ type intervenant_var_samp_fields {
   """
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
-  service: Float
+  heures_eqtd_service_base: Float
 }
 
 """
@@ -5311,7 +5472,7 @@ type intervenant_variance_fields {
   """
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
-  service: Float
+  heures_eqtd_service_base: Float
 }
 
 """
@@ -6216,6 +6377,13 @@ input mention_variance_order_by {
 Table contenant les messages enregistrés sur Geyser.
 """
 type message {
+  annee: Int!
+
+  """
+  An object relationship
+  """
+  anneeByAnnee: annee!
+
   """
   Le contenu du message.
   """
@@ -6229,8 +6397,8 @@ type message {
   """
   An object relationship
   """
-  service: service!
-  service_id: Int!
+  intervenant: intervenant!
+  uid: String!
 }
 
 """
@@ -6302,22 +6470,24 @@ input message_arr_rel_insert_input {
 aggregate avg on columns
 """
 type message_avg_fields {
+  annee: Float
+
   """
   L'identifiant unique du message.
   """
   id: Float
-  service_id: Float
 }
 
 """
 order by avg() on columns of table "message"
 """
 input message_avg_order_by {
+  annee: order_by
+
   """
   L'identifiant unique du message.
   """
   id: order_by
-  service_id: order_by
 }
 
 """
@@ -6327,10 +6497,12 @@ input message_bool_exp {
   _and: [message_bool_exp!]
   _not: message_bool_exp
   _or: [message_bool_exp!]
+  annee: Int_comparison_exp
+  anneeByAnnee: annee_bool_exp
   contenu: String_comparison_exp
   id: Int_comparison_exp
-  service: service_bool_exp
-  service_id: Int_comparison_exp
+  intervenant: intervenant_bool_exp
+  uid: String_comparison_exp
 }
 
 """
@@ -6338,31 +6510,35 @@ unique or primary key constraints on table "message"
 """
 enum message_constraint {
   """
+  unique or primary key constraint on columns "uid", "annee"
+  """
+  message_annee_uid_key
+
+  """
   unique or primary key constraint on columns "id"
   """
   message_pkey
-
-  """
-  unique or primary key constraint on columns "service_id"
-  """
-  message_service_id_key
 }
 
 """
 input type for incrementing numeric columns in table "message"
 """
 input message_inc_input {
+  annee: Int
+
   """
   L'identifiant unique du message.
   """
   id: Int
-  service_id: Int
 }
 
 """
 input type for inserting data into table "message"
 """
 input message_insert_input {
+  annee: Int
+  anneeByAnnee: annee_obj_rel_insert_input
+
   """
   Le contenu du message.
   """
@@ -6372,14 +6548,16 @@ input message_insert_input {
   L'identifiant unique du message.
   """
   id: Int
-  service: service_obj_rel_insert_input
-  service_id: Int
+  intervenant: intervenant_obj_rel_insert_input
+  uid: String
 }
 
 """
 aggregate max on columns
 """
 type message_max_fields {
+  annee: Int
+
   """
   Le contenu du message.
   """
@@ -6389,13 +6567,15 @@ type message_max_fields {
   L'identifiant unique du message.
   """
   id: Int
-  service_id: Int
+  uid: String
 }
 
 """
 order by max() on columns of table "message"
 """
 input message_max_order_by {
+  annee: order_by
+
   """
   Le contenu du message.
   """
@@ -6405,13 +6585,15 @@ input message_max_order_by {
   L'identifiant unique du message.
   """
   id: order_by
-  service_id: order_by
+  uid: order_by
 }
 
 """
 aggregate min on columns
 """
 type message_min_fields {
+  annee: Int
+
   """
   Le contenu du message.
   """
@@ -6421,13 +6603,15 @@ type message_min_fields {
   L'identifiant unique du message.
   """
   id: Int
-  service_id: Int
+  uid: String
 }
 
 """
 order by min() on columns of table "message"
 """
 input message_min_order_by {
+  annee: order_by
+
   """
   Le contenu du message.
   """
@@ -6437,7 +6621,7 @@ input message_min_order_by {
   L'identifiant unique du message.
   """
   id: order_by
-  service_id: order_by
+  uid: order_by
 }
 
 """
@@ -6468,10 +6652,12 @@ input message_on_conflict {
 Ordering options when selecting data from "message".
 """
 input message_order_by {
+  annee: order_by
+  anneeByAnnee: annee_order_by
   contenu: order_by
   id: order_by
-  service: service_order_by
-  service_id: order_by
+  intervenant: intervenant_order_by
+  uid: order_by
 }
 
 """
@@ -6491,6 +6677,11 @@ enum message_select_column {
   """
   column name
   """
+  annee
+
+  """
+  column name
+  """
   contenu
 
   """
@@ -6501,13 +6692,15 @@ enum message_select_column {
   """
   column name
   """
-  service_id
+  uid
 }
 
 """
 input type for updating data in table "message"
 """
 input message_set_input {
+  annee: Int
+
   """
   Le contenu du message.
   """
@@ -6517,73 +6710,79 @@ input message_set_input {
   L'identifiant unique du message.
   """
   id: Int
-  service_id: Int
+  uid: String
 }
 
 """
 aggregate stddev on columns
 """
 type message_stddev_fields {
+  annee: Float
+
   """
   L'identifiant unique du message.
   """
   id: Float
-  service_id: Float
 }
 
 """
 order by stddev() on columns of table "message"
 """
 input message_stddev_order_by {
+  annee: order_by
+
   """
   L'identifiant unique du message.
   """
   id: order_by
-  service_id: order_by
 }
 
 """
 aggregate stddev_pop on columns
 """
 type message_stddev_pop_fields {
+  annee: Float
+
   """
   L'identifiant unique du message.
   """
   id: Float
-  service_id: Float
 }
 
 """
 order by stddev_pop() on columns of table "message"
 """
 input message_stddev_pop_order_by {
+  annee: order_by
+
   """
   L'identifiant unique du message.
   """
   id: order_by
-  service_id: order_by
 }
 
 """
 aggregate stddev_samp on columns
 """
 type message_stddev_samp_fields {
+  annee: Float
+
   """
   L'identifiant unique du message.
   """
   id: Float
-  service_id: Float
 }
 
 """
 order by stddev_samp() on columns of table "message"
 """
 input message_stddev_samp_order_by {
+  annee: order_by
+
   """
   L'identifiant unique du message.
   """
   id: order_by
-  service_id: order_by
 }
 
 """
@@ -6605,6 +6804,8 @@ input message_stream_cursor_input {
 Initial value of the column from where the streaming should start
 """
 input message_stream_cursor_value_input {
+  annee: Int
+
   """
   Le contenu du message.
   """
@@ -6614,35 +6815,42 @@ input message_stream_cursor_value_input {
   L'identifiant unique du message.
   """
   id: Int
-  service_id: Int
+  uid: String
 }
 
 """
 aggregate sum on columns
 """
 type message_sum_fields {
+  annee: Int
+
   """
   L'identifiant unique du message.
   """
   id: Int
-  service_id: Int
 }
 
 """
 order by sum() on columns of table "message"
 """
 input message_sum_order_by {
+  annee: order_by
+
   """
   L'identifiant unique du message.
   """
   id: order_by
-  service_id: order_by
 }
 
 """
 update columns of table "message"
 """
 enum message_update_column {
+  """
+  column name
+  """
+  annee
+
   """
   column name
   """
@@ -6656,7 +6864,7 @@ enum message_update_column {
   """
   column name
   """
-  service_id
+  uid
 }
 
 input message_updates {
@@ -6680,66 +6888,72 @@ input message_updates {
 aggregate var_pop on columns
 """
 type message_var_pop_fields {
+  annee: Float
+
   """
   L'identifiant unique du message.
   """
   id: Float
-  service_id: Float
 }
 
 """
 order by var_pop() on columns of table "message"
 """
 input message_var_pop_order_by {
+  annee: order_by
+
   """
   L'identifiant unique du message.
   """
   id: order_by
-  service_id: order_by
 }
 
 """
 aggregate var_samp on columns
 """
 type message_var_samp_fields {
+  annee: Float
+
   """
   L'identifiant unique du message.
   """
   id: Float
-  service_id: Float
 }
 
 """
 order by var_samp() on columns of table "message"
 """
 input message_var_samp_order_by {
+  annee: order_by
+
   """
   L'identifiant unique du message.
   """
   id: order_by
-  service_id: order_by
 }
 
 """
 aggregate variance on columns
 """
 type message_variance_fields {
+  annee: Float
+
   """
   L'identifiant unique du message.
   """
   id: Float
-  service_id: Float
 }
 
 """
 order by variance() on columns of table "message"
 """
 input message_variance_order_by {
+  annee: order_by
+
   """
   L'identifiant unique du message.
   """
   id: order_by
-  service_id: order_by
 }
 
 """
@@ -6760,6 +6974,10 @@ type modification_service {
   An object relationship
   """
   service: service!
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Int!
 
   """
@@ -6770,7 +6988,7 @@ type modification_service {
   """
   An object relationship
   """
-  typeByType: type_modification!
+  typeByType: type_modification_service!
 }
 
 """
@@ -6851,6 +7069,10 @@ type modification_service_avg_fields {
   L'identifiant unique de la modification.
   """
   id: Float
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Float
 }
 
@@ -6867,6 +7089,10 @@ input modification_service_avg_order_by {
   L'identifiant unique de la modification.
   """
   id: order_by
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: order_by
 }
 
@@ -6882,7 +7108,7 @@ input modification_service_bool_exp {
   service: service_bool_exp
   service_id: Int_comparison_exp
   type: String_comparison_exp
-  typeByType: type_modification_bool_exp
+  typeByType: type_modification_service_bool_exp
 }
 
 """
@@ -6908,6 +7134,10 @@ input modification_service_inc_input {
   L'identifiant unique de la modification.
   """
   id: Int
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Int
 }
 
@@ -6925,13 +7155,17 @@ input modification_service_insert_input {
   """
   id: Int
   service: service_obj_rel_insert_input
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Int
 
   """
   Le type de modification.
   """
   type: String
-  typeByType: type_modification_obj_rel_insert_input
+  typeByType: type_modification_service_obj_rel_insert_input
 }
 
 """
@@ -6947,6 +7181,10 @@ type modification_service_max_fields {
   L'identifiant unique de la modification.
   """
   id: Int
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Int
 
   """
@@ -6968,6 +7206,10 @@ input modification_service_max_order_by {
   L'identifiant unique de la modification.
   """
   id: order_by
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: order_by
 
   """
@@ -6989,6 +7231,10 @@ type modification_service_min_fields {
   L'identifiant unique de la modification.
   """
   id: Int
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Int
 
   """
@@ -7010,6 +7256,10 @@ input modification_service_min_order_by {
   L'identifiant unique de la modification.
   """
   id: order_by
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: order_by
 
   """
@@ -7051,7 +7301,7 @@ input modification_service_order_by {
   service: service_order_by
   service_id: order_by
   type: order_by
-  typeByType: type_modification_order_by
+  typeByType: type_modification_service_order_by
 }
 
 """
@@ -7102,6 +7352,10 @@ input modification_service_set_input {
   L'identifiant unique de la modification.
   """
   id: Int
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Int
 
   """
@@ -7123,6 +7377,10 @@ type modification_service_stddev_fields {
   L'identifiant unique de la modification.
   """
   id: Float
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Float
 }
 
@@ -7139,6 +7397,10 @@ input modification_service_stddev_order_by {
   L'identifiant unique de la modification.
   """
   id: order_by
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: order_by
 }
 
@@ -7155,6 +7417,10 @@ type modification_service_stddev_pop_fields {
   L'identifiant unique de la modification.
   """
   id: Float
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Float
 }
 
@@ -7171,6 +7437,10 @@ input modification_service_stddev_pop_order_by {
   L'identifiant unique de la modification.
   """
   id: order_by
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: order_by
 }
 
@@ -7187,6 +7457,10 @@ type modification_service_stddev_samp_fields {
   L'identifiant unique de la modification.
   """
   id: Float
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Float
 }
 
@@ -7203,6 +7477,10 @@ input modification_service_stddev_samp_order_by {
   L'identifiant unique de la modification.
   """
   id: order_by
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: order_by
 }
 
@@ -7234,6 +7512,10 @@ input modification_service_stream_cursor_value_input {
   L'identifiant unique de la modification.
   """
   id: Int
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Int
 
   """
@@ -7255,6 +7537,10 @@ type modification_service_sum_fields {
   L'identifiant unique de la modification.
   """
   id: Int
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Int
 }
 
@@ -7271,6 +7557,10 @@ input modification_service_sum_order_by {
   L'identifiant unique de la modification.
   """
   id: order_by
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: order_by
 }
 
@@ -7329,6 +7619,10 @@ type modification_service_var_pop_fields {
   L'identifiant unique de la modification.
   """
   id: Float
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Float
 }
 
@@ -7345,6 +7639,10 @@ input modification_service_var_pop_order_by {
   L'identifiant unique de la modification.
   """
   id: order_by
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: order_by
 }
 
@@ -7361,6 +7659,10 @@ type modification_service_var_samp_fields {
   L'identifiant unique de la modification.
   """
   id: Float
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Float
 }
 
@@ -7377,6 +7679,10 @@ input modification_service_var_samp_order_by {
   L'identifiant unique de la modification.
   """
   id: order_by
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: order_by
 }
 
@@ -7393,6 +7699,10 @@ type modification_service_variance_fields {
   L'identifiant unique de la modification.
   """
   id: Float
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: Float
 }
 
@@ -7409,6 +7719,10 @@ input modification_service_variance_order_by {
   L'identifiant unique de la modification.
   """
   id: order_by
+
+  """
+  L'identifiant du service modifié.
+  """
   service_id: order_by
 }
 
@@ -7696,30 +8010,30 @@ type mutation_root {
   """
   delete_type_enseignement_by_pk(
     """
-    Le type d'enseignement (unique).
+    La clé du type d'enseignement (unique).
     """
-    label: String!
+    key: String!
   ): type_enseignement
 
   """
-  delete data from the table: "type_modification"
+  delete data from the table: "type_modification_service"
   """
-  delete_type_modification(
+  delete_type_modification_service(
     """
     filter the rows which have to be deleted
     """
-    where: type_modification_bool_exp!
-  ): type_modification_mutation_response
+    where: type_modification_service_bool_exp!
+  ): type_modification_service_mutation_response
 
   """
-  delete single row from the table: "type_modification"
+  delete single row from the table: "type_modification_service"
   """
-  delete_type_modification_by_pk(
+  delete_type_modification_service_by_pk(
     """
-    Le type de modification (unique).
+    La clé du type de modification (unique).
     """
-    label: String!
-  ): type_modification
+    key: String!
+  ): type_modification_service
 
   """
   insert data into the table: "annee"
@@ -8172,34 +8486,34 @@ type mutation_root {
   ): type_enseignement
 
   """
-  insert data into the table: "type_modification"
+  insert data into the table: "type_modification_service"
   """
-  insert_type_modification(
+  insert_type_modification_service(
     """
     the rows to be inserted
     """
-    objects: [type_modification_insert_input!]!
+    objects: [type_modification_service_insert_input!]!
 
     """
     upsert condition
     """
-    on_conflict: type_modification_on_conflict
-  ): type_modification_mutation_response
+    on_conflict: type_modification_service_on_conflict
+  ): type_modification_service_mutation_response
 
   """
-  insert a single row into the table: "type_modification"
+  insert a single row into the table: "type_modification_service"
   """
-  insert_type_modification_one(
+  insert_type_modification_service_one(
     """
     the row to be inserted
     """
-    object: type_modification_insert_input!
+    object: type_modification_service_insert_input!
 
     """
     upsert condition
     """
-    on_conflict: type_modification_on_conflict
-  ): type_modification
+    on_conflict: type_modification_service_on_conflict
+  ): type_modification_service
 
   """
   update data of the table: "annee"
@@ -8872,40 +9186,40 @@ type mutation_root {
   ): [type_enseignement_mutation_response]
 
   """
-  update data of the table: "type_modification"
+  update data of the table: "type_modification_service"
   """
-  update_type_modification(
+  update_type_modification_service(
     """
     sets the columns of the filtered rows to the given values
     """
-    _set: type_modification_set_input
+    _set: type_modification_service_set_input
 
     """
     filter the rows which have to be updated
     """
-    where: type_modification_bool_exp!
-  ): type_modification_mutation_response
+    where: type_modification_service_bool_exp!
+  ): type_modification_service_mutation_response
 
   """
-  update single row of the table: "type_modification"
+  update single row of the table: "type_modification_service"
   """
-  update_type_modification_by_pk(
+  update_type_modification_service_by_pk(
     """
     sets the columns of the filtered rows to the given values
     """
-    _set: type_modification_set_input
-    pk_columns: type_modification_pk_columns_input!
-  ): type_modification
+    _set: type_modification_service_set_input
+    pk_columns: type_modification_service_pk_columns_input!
+  ): type_modification_service
 
   """
-  update multiples rows of table: "type_modification"
+  update multiples rows of table: "type_modification_service"
   """
-  update_type_modification_many(
+  update_type_modification_service_many(
     """
     updates to execute, in order
     """
-    updates: [type_modification_updates!]!
-  ): [type_modification_mutation_response]
+    updates: [type_modification_service_updates!]!
+  ): [type_modification_service_mutation_response]
 }
 
 """
@@ -11789,19 +12103,19 @@ type query_root {
   """
   type_enseignement_by_pk(
     """
-    Le type d'enseignement (unique).
+    La clé du type d'enseignement (unique).
     """
-    label: String!
+    key: String!
   ): type_enseignement
 
   """
-  fetch data from the table: "type_modification"
+  fetch data from the table: "type_modification_service"
   """
-  type_modification(
+  type_modification_service(
     """
     distinct select on columns
     """
-    distinct_on: [type_modification_select_column!]
+    distinct_on: [type_modification_service_select_column!]
 
     """
     limit the number of rows returned
@@ -11816,22 +12130,22 @@ type query_root {
     """
     sort the rows by one or more columns
     """
-    order_by: [type_modification_order_by!]
+    order_by: [type_modification_service_order_by!]
 
     """
     filter the rows returned
     """
-    where: type_modification_bool_exp
-  ): [type_modification!]!
+    where: type_modification_service_bool_exp
+  ): [type_modification_service!]!
 
   """
-  fetch aggregated fields from the table: "type_modification"
+  fetch aggregated fields from the table: "type_modification_service"
   """
-  type_modification_aggregate(
+  type_modification_service_aggregate(
     """
     distinct select on columns
     """
-    distinct_on: [type_modification_select_column!]
+    distinct_on: [type_modification_service_select_column!]
 
     """
     limit the number of rows returned
@@ -11846,23 +12160,23 @@ type query_root {
     """
     sort the rows by one or more columns
     """
-    order_by: [type_modification_order_by!]
+    order_by: [type_modification_service_order_by!]
 
     """
     filter the rows returned
     """
-    where: type_modification_bool_exp
-  ): type_modification_aggregate!
+    where: type_modification_service_bool_exp
+  ): type_modification_service_aggregate!
 
   """
-  fetch data from the table: "type_modification" using primary key columns
+  fetch data from the table: "type_modification_service" using primary key columns
   """
-  type_modification_by_pk(
+  type_modification_service_by_pk(
     """
-    Le type de modification (unique).
+    La clé du type de modification (unique).
     """
-    label: String!
-  ): type_modification
+    key: String!
+  ): type_modification_service
 }
 
 """
@@ -12757,66 +13071,6 @@ type service {
   anneeByAnnee: annee!
 
   """
-  An array relationship
-  """
-  demandes(
-    """
-    distinct select on columns
-    """
-    distinct_on: [demande_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [demande_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: demande_bool_exp
-  ): [demande!]!
-
-  """
-  An aggregate relationship
-  """
-  demandes_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [demande_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [demande_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: demande_bool_exp
-  ): demande_aggregate!
-
-  """
   Le nombre d'heures EQTD du service.
   """
   heures_eqtd: Float!
@@ -12830,66 +13084,6 @@ type service {
   An object relationship
   """
   intervenant: intervenant!
-
-  """
-  An array relationship
-  """
-  messages(
-    """
-    distinct select on columns
-    """
-    distinct_on: [message_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [message_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: message_bool_exp
-  ): [message!]!
-
-  """
-  An aggregate relationship
-  """
-  messages_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [message_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [message_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: message_bool_exp
-  ): message_aggregate!
 
   """
   An array relationship
@@ -13071,13 +13265,9 @@ input service_bool_exp {
   _or: [service_bool_exp!]
   annee: Int_comparison_exp
   anneeByAnnee: annee_bool_exp
-  demandes: demande_bool_exp
-  demandes_aggregate: demande_aggregate_bool_exp
   heures_eqtd: Float_comparison_exp
   id: Int_comparison_exp
   intervenant: intervenant_bool_exp
-  messages: message_bool_exp
-  messages_aggregate: message_aggregate_bool_exp
   modifications: modification_service_bool_exp
   modifications_aggregate: modification_service_aggregate_bool_exp
   uid: String_comparison_exp
@@ -13127,7 +13317,6 @@ input service_insert_input {
   """
   annee: Int
   anneeByAnnee: annee_obj_rel_insert_input
-  demandes: demande_arr_rel_insert_input
 
   """
   Le nombre d'heures EQTD du service.
@@ -13139,7 +13328,6 @@ input service_insert_input {
   """
   id: Int
   intervenant: intervenant_obj_rel_insert_input
-  messages: message_arr_rel_insert_input
   modifications: modification_service_arr_rel_insert_input
 
   """
@@ -13290,11 +13478,9 @@ Ordering options when selecting data from "service".
 input service_order_by {
   annee: order_by
   anneeByAnnee: annee_order_by
-  demandes_aggregate: demande_aggregate_order_by
   heures_eqtd: order_by
   id: order_by
   intervenant: intervenant_order_by
-  messages_aggregate: message_aggregate_order_by
   modifications_aggregate: modification_service_aggregate_order_by
   uid: order_by
 }
@@ -15032,9 +15218,9 @@ type subscription_root {
   """
   type_enseignement_by_pk(
     """
-    Le type d'enseignement (unique).
+    La clé du type d'enseignement (unique).
     """
-    label: String!
+    key: String!
   ): type_enseignement
 
   """
@@ -15058,13 +15244,13 @@ type subscription_root {
   ): [type_enseignement!]!
 
   """
-  fetch data from the table: "type_modification"
+  fetch data from the table: "type_modification_service"
   """
-  type_modification(
+  type_modification_service(
     """
     distinct select on columns
     """
-    distinct_on: [type_modification_select_column!]
+    distinct_on: [type_modification_service_select_column!]
 
     """
     limit the number of rows returned
@@ -15079,22 +15265,22 @@ type subscription_root {
     """
     sort the rows by one or more columns
     """
-    order_by: [type_modification_order_by!]
+    order_by: [type_modification_service_order_by!]
 
     """
     filter the rows returned
     """
-    where: type_modification_bool_exp
-  ): [type_modification!]!
+    where: type_modification_service_bool_exp
+  ): [type_modification_service!]!
 
   """
-  fetch aggregated fields from the table: "type_modification"
+  fetch aggregated fields from the table: "type_modification_service"
   """
-  type_modification_aggregate(
+  type_modification_service_aggregate(
     """
     distinct select on columns
     """
-    distinct_on: [type_modification_select_column!]
+    distinct_on: [type_modification_service_select_column!]
 
     """
     limit the number of rows returned
@@ -15109,28 +15295,28 @@ type subscription_root {
     """
     sort the rows by one or more columns
     """
-    order_by: [type_modification_order_by!]
+    order_by: [type_modification_service_order_by!]
 
     """
     filter the rows returned
     """
-    where: type_modification_bool_exp
-  ): type_modification_aggregate!
+    where: type_modification_service_bool_exp
+  ): type_modification_service_aggregate!
 
   """
-  fetch data from the table: "type_modification" using primary key columns
+  fetch data from the table: "type_modification_service" using primary key columns
   """
-  type_modification_by_pk(
+  type_modification_service_by_pk(
     """
-    Le type de modification (unique).
+    La clé du type de modification (unique).
     """
-    label: String!
-  ): type_modification
+    key: String!
+  ): type_modification_service
 
   """
-  fetch data from the table in a streaming manner: "type_modification"
+  fetch data from the table in a streaming manner: "type_modification_service"
   """
-  type_modification_stream(
+  type_modification_service_stream(
     """
     maximum number of rows returned in a single batch
     """
@@ -15139,13 +15325,13 @@ type subscription_root {
     """
     cursor to stream the results returned by the query
     """
-    cursor: [type_modification_stream_cursor_input]!
+    cursor: [type_modification_service_stream_cursor_input]!
 
     """
     filter the rows returned
     """
-    where: type_modification_bool_exp
-  ): [type_modification!]!
+    where: type_modification_service_bool_exp
+  ): [type_modification_service!]!
 }
 
 """
@@ -15522,14 +15708,14 @@ type type_enseignement {
   ): enseignement_aggregate!
 
   """
-  Le type d'enseignement (unique).
+  La clé du type d'enseignement (unique).
   """
-  label: String!
+  key: String!
 
   """
-  Le nom abrégé (optionnel).
+  Le libellé type d'enseignement.
   """
-  label_court: String
+  label: String!
 }
 
 """
@@ -15577,8 +15763,8 @@ input type_enseignement_bool_exp {
   coefficient: Float_comparison_exp
   enseignements: enseignement_bool_exp
   enseignements_aggregate: enseignement_aggregate_bool_exp
+  key: String_comparison_exp
   label: String_comparison_exp
-  label_court: String_comparison_exp
 }
 
 """
@@ -15586,7 +15772,7 @@ unique or primary key constraints on table "type_enseignement"
 """
 enum type_enseignement_constraint {
   """
-  unique or primary key constraint on columns "label"
+  unique or primary key constraint on columns "key"
   """
   type_enseignement_pkey
 }
@@ -15612,14 +15798,14 @@ input type_enseignement_insert_input {
   enseignements: enseignement_arr_rel_insert_input
 
   """
-  Le type d'enseignement (unique).
+  La clé du type d'enseignement (unique).
   """
-  label: String
+  key: String
 
   """
-  Le nom abrégé (optionnel).
+  Le libellé type d'enseignement.
   """
-  label_court: String
+  label: String
 }
 
 """
@@ -15632,14 +15818,14 @@ type type_enseignement_max_fields {
   coefficient: Float
 
   """
-  Le type d'enseignement (unique).
+  La clé du type d'enseignement (unique).
   """
-  label: String
+  key: String
 
   """
-  Le nom abrégé (optionnel).
+  Le libellé type d'enseignement.
   """
-  label_court: String
+  label: String
 }
 
 """
@@ -15652,14 +15838,14 @@ type type_enseignement_min_fields {
   coefficient: Float
 
   """
-  Le type d'enseignement (unique).
+  La clé du type d'enseignement (unique).
   """
-  label: String
+  key: String
 
   """
-  Le nom abrégé (optionnel).
+  Le libellé type d'enseignement.
   """
-  label_court: String
+  label: String
 }
 
 """
@@ -15704,8 +15890,8 @@ Ordering options when selecting data from "type_enseignement".
 input type_enseignement_order_by {
   coefficient: order_by
   enseignements_aggregate: enseignement_aggregate_order_by
+  key: order_by
   label: order_by
-  label_court: order_by
 }
 
 """
@@ -15713,9 +15899,9 @@ primary key columns input for table: type_enseignement
 """
 input type_enseignement_pk_columns_input {
   """
-  Le type d'enseignement (unique).
+  La clé du type d'enseignement (unique).
   """
-  label: String!
+  key: String!
 }
 
 """
@@ -15730,12 +15916,12 @@ enum type_enseignement_select_column {
   """
   column name
   """
-  label
+  key
 
   """
   column name
   """
-  label_court
+  label
 }
 
 """
@@ -15748,14 +15934,14 @@ input type_enseignement_set_input {
   coefficient: Float
 
   """
-  Le type d'enseignement (unique).
+  La clé du type d'enseignement (unique).
   """
-  label: String
+  key: String
 
   """
-  Le nom abrégé (optionnel).
+  Le libellé type d'enseignement.
   """
-  label_court: String
+  label: String
 }
 
 """
@@ -15813,14 +15999,14 @@ input type_enseignement_stream_cursor_value_input {
   coefficient: Float
 
   """
-  Le type d'enseignement (unique).
+  La clé du type d'enseignement (unique).
   """
-  label: String
+  key: String
 
   """
-  Le nom abrégé (optionnel).
+  Le libellé type d'enseignement.
   """
-  label_court: String
+  label: String
 }
 
 """
@@ -15845,12 +16031,12 @@ enum type_enseignement_update_column {
   """
   column name
   """
-  label
+  key
 
   """
   column name
   """
-  label_court
+  label
 }
 
 input type_enseignement_updates {
@@ -15903,21 +16089,26 @@ type type_enseignement_variance_fields {
 """
 Table contenant les différents types de modification de service.
 """
-type type_modification {
+type type_modification_service {
   """
   Une brève description.
   """
   description: String
 
   """
-  Le type de modification (unique).
+  La clé du type de modification (unique).
+  """
+  key: String!
+
+  """
+  Le libellé du type de modification.
   """
   label: String!
 
   """
   An array relationship
   """
-  modifications(
+  modifications_service(
     """
     distinct select on columns
     """
@@ -15947,7 +16138,7 @@ type type_modification {
   """
   An aggregate relationship
   """
-  modifications_aggregate(
+  modifications_service_aggregate(
     """
     distinct select on columns
     """
@@ -15976,72 +16167,86 @@ type type_modification {
 }
 
 """
-aggregated selection of "type_modification"
+aggregated selection of "type_modification_service"
 """
-type type_modification_aggregate {
-  aggregate: type_modification_aggregate_fields
-  nodes: [type_modification!]!
+type type_modification_service_aggregate {
+  aggregate: type_modification_service_aggregate_fields
+  nodes: [type_modification_service!]!
 }
 
 """
-aggregate fields of "type_modification"
+aggregate fields of "type_modification_service"
 """
-type type_modification_aggregate_fields {
-  count(columns: [type_modification_select_column!], distinct: Boolean): Int!
-  max: type_modification_max_fields
-  min: type_modification_min_fields
+type type_modification_service_aggregate_fields {
+  count(
+    columns: [type_modification_service_select_column!]
+    distinct: Boolean
+  ): Int!
+  max: type_modification_service_max_fields
+  min: type_modification_service_min_fields
 }
 
 """
-Boolean expression to filter rows from the table "type_modification". All fields are combined with a logical 'AND'.
+Boolean expression to filter rows from the table "type_modification_service". All fields are combined with a logical 'AND'.
 """
-input type_modification_bool_exp {
-  _and: [type_modification_bool_exp!]
-  _not: type_modification_bool_exp
-  _or: [type_modification_bool_exp!]
+input type_modification_service_bool_exp {
+  _and: [type_modification_service_bool_exp!]
+  _not: type_modification_service_bool_exp
+  _or: [type_modification_service_bool_exp!]
   description: String_comparison_exp
+  key: String_comparison_exp
   label: String_comparison_exp
-  modifications: modification_service_bool_exp
-  modifications_aggregate: modification_service_aggregate_bool_exp
+  modifications_service: modification_service_bool_exp
+  modifications_service_aggregate: modification_service_aggregate_bool_exp
 }
 
 """
-unique or primary key constraints on table "type_modification"
+unique or primary key constraints on table "type_modification_service"
 """
-enum type_modification_constraint {
+enum type_modification_service_constraint {
   """
-  unique or primary key constraint on columns "label"
+  unique or primary key constraint on columns "key"
   """
   type_modification_pkey
 }
 
 """
-input type for inserting data into table "type_modification"
+input type for inserting data into table "type_modification_service"
 """
-input type_modification_insert_input {
+input type_modification_service_insert_input {
   """
   Une brève description.
   """
   description: String
 
   """
-  Le type de modification (unique).
+  La clé du type de modification (unique).
+  """
+  key: String
+
+  """
+  Le libellé du type de modification.
   """
   label: String
-  modifications: modification_service_arr_rel_insert_input
+  modifications_service: modification_service_arr_rel_insert_input
 }
 
 """
 aggregate max on columns
 """
-type type_modification_max_fields {
+type type_modification_service_max_fields {
   """
   Une brève description.
   """
   description: String
 
   """
-  Le type de modification (unique).
+  La clé du type de modification (unique).
+  """
+  key: String
+
+  """
+  Le libellé du type de modification.
   """
   label: String
 }
@@ -16049,22 +16254,27 @@ type type_modification_max_fields {
 """
 aggregate min on columns
 """
-type type_modification_min_fields {
+type type_modification_service_min_fields {
   """
   Une brève description.
   """
   description: String
 
   """
-  Le type de modification (unique).
+  La clé du type de modification (unique).
+  """
+  key: String
+
+  """
+  Le libellé du type de modification.
   """
   label: String
 }
 
 """
-response of any mutation on the table "type_modification"
+response of any mutation on the table "type_modification_service"
 """
-type type_modification_mutation_response {
+type type_modification_service_mutation_response {
   """
   number of rows affected by the mutation
   """
@@ -16073,53 +16283,54 @@ type type_modification_mutation_response {
   """
   data from the rows affected by the mutation
   """
-  returning: [type_modification!]!
+  returning: [type_modification_service!]!
 }
 
 """
-input type for inserting object relation for remote table "type_modification"
+input type for inserting object relation for remote table "type_modification_service"
 """
-input type_modification_obj_rel_insert_input {
-  data: type_modification_insert_input!
+input type_modification_service_obj_rel_insert_input {
+  data: type_modification_service_insert_input!
 
   """
   upsert condition
   """
-  on_conflict: type_modification_on_conflict
+  on_conflict: type_modification_service_on_conflict
 }
 
 """
-on_conflict condition type for table "type_modification"
+on_conflict condition type for table "type_modification_service"
 """
-input type_modification_on_conflict {
-  constraint: type_modification_constraint!
-  update_columns: [type_modification_update_column!]! = []
-  where: type_modification_bool_exp
+input type_modification_service_on_conflict {
+  constraint: type_modification_service_constraint!
+  update_columns: [type_modification_service_update_column!]! = []
+  where: type_modification_service_bool_exp
 }
 
 """
-Ordering options when selecting data from "type_modification".
+Ordering options when selecting data from "type_modification_service".
 """
-input type_modification_order_by {
+input type_modification_service_order_by {
   description: order_by
+  key: order_by
   label: order_by
-  modifications_aggregate: modification_service_aggregate_order_by
+  modifications_service_aggregate: modification_service_aggregate_order_by
 }
 
 """
-primary key columns input for table: type_modification
+primary key columns input for table: type_modification_service
 """
-input type_modification_pk_columns_input {
+input type_modification_service_pk_columns_input {
   """
-  Le type de modification (unique).
+  La clé du type de modification (unique).
   """
-  label: String!
+  key: String!
 }
 
 """
-select columns of table "type_modification"
+select columns of table "type_modification_service"
 """
-enum type_modification_select_column {
+enum type_modification_service_select_column {
   """
   column name
   """
@@ -16128,32 +16339,42 @@ enum type_modification_select_column {
   """
   column name
   """
+  key
+
+  """
+  column name
+  """
   label
 }
 
 """
-input type for updating data in table "type_modification"
+input type for updating data in table "type_modification_service"
 """
-input type_modification_set_input {
+input type_modification_service_set_input {
   """
   Une brève description.
   """
   description: String
 
   """
-  Le type de modification (unique).
+  La clé du type de modification (unique).
+  """
+  key: String
+
+  """
+  Le libellé du type de modification.
   """
   label: String
 }
 
 """
-Streaming cursor of the table "type_modification"
+Streaming cursor of the table "type_modification_service"
 """
-input type_modification_stream_cursor_input {
+input type_modification_service_stream_cursor_input {
   """
   Stream column input with initial value
   """
-  initial_value: type_modification_stream_cursor_value_input!
+  initial_value: type_modification_service_stream_cursor_value_input!
 
   """
   cursor ordering
@@ -16164,22 +16385,27 @@ input type_modification_stream_cursor_input {
 """
 Initial value of the column from where the streaming should start
 """
-input type_modification_stream_cursor_value_input {
+input type_modification_service_stream_cursor_value_input {
   """
   Une brève description.
   """
   description: String
 
   """
-  Le type de modification (unique).
+  La clé du type de modification (unique).
+  """
+  key: String
+
+  """
+  Le libellé du type de modification.
   """
   label: String
 }
 
 """
-update columns of table "type_modification"
+update columns of table "type_modification_service"
 """
-enum type_modification_update_column {
+enum type_modification_service_update_column {
   """
   column name
   """
@@ -16188,17 +16414,22 @@ enum type_modification_update_column {
   """
   column name
   """
+  key
+
+  """
+  column name
+  """
   label
 }
 
-input type_modification_updates {
+input type_modification_service_updates {
   """
   sets the columns of the filtered rows to the given values
   """
-  _set: type_modification_set_input
+  _set: type_modification_service_set_input
 
   """
   filter the rows which have to be updated
   """
-  where: type_modification_bool_exp!
+  where: type_modification_service_bool_exp!
 }

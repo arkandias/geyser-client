@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { Request } from "@/types/demandes.ts";
+import type { RequestDetails } from "@/types/requests.ts";
 
 import CarteDemande from "@/components/core/CarteDemande.vue";
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 
 defineProps<{
   title: string;
-  demandes: Request[];
+  requests: RequestDetails[];
   archive?: boolean;
 }>();
 </script>
@@ -16,9 +16,9 @@ defineProps<{
     <QCardSection>
       <div class="row q-gutter-xs">
         <CarteDemande
-          v-for="demande in demandes"
-          :key="demande.id"
-          :Request
+          v-for="request in requests"
+          :key="request.id"
+          :RequestDetails
           :archive
         />
       </div>

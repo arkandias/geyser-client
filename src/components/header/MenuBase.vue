@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type Ref, ref } from "vue";
 
-import { couleurBouton } from "@/helpers/format.ts";
+import { buttonColor } from "@/helpers/format.ts";
 
 defineProps<{
   label: string;
@@ -14,7 +14,7 @@ const tooltip: Ref<boolean> = ref(false);
 </script>
 
 <template>
-  <QBtn :icon :color="couleurBouton(open)" flat square>
+  <QBtn :icon :color="buttonColor(open)" flat square>
     <QTooltip v-model="tooltip">{{ label }}</QTooltip>
     <QMenu v-model="open" square @show="tooltip = false">
       <slot />

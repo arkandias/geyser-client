@@ -5,15 +5,15 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { useRequestTypes } from "@/composables/request-types.ts";
 import { labelRequestType } from "@/config/types/request-types.ts";
 import { processArchives } from "@/helpers/enseignement.ts";
-import type { Archive } from "@/types/demandes.ts";
-import type { Details } from "@/types/enseignements.ts";
+import type { CourseDetails } from "@/types/courses.ts";
+import type { Archive } from "@/types/requests.ts";
 
 import FormulaireDemande from "@/components/core/FormulaireDemande.vue";
 import PucePriorite from "@/components/core/PucePriorite.vue";
 import DetailsEnseignementDemandes from "@/components/details/DetailsEnseignementDemandes.vue";
 import DetailsSection from "@/components/details/DetailsSection.vue";
 
-const props = defineProps<{ details: Details }>();
+const props = defineProps<{ details: CourseDetails }>();
 
 const perm = usePermissions();
 const { shown: shownRequestTypes } = useRequestTypes();
@@ -34,7 +34,7 @@ const archives: ComputedRef<Archive[]> = computed(() =>
       v-for="requestType in shownRequestTypes"
       :key="requestType"
       :title="labelRequestType(requestType)"
-      :demandes="
+      :requests="
         details.requests.filter(
           (demande) => demande.requestType === requestType,
         )
@@ -55,7 +55,7 @@ const archives: ComputedRef<Archive[]> = computed(() =>
       v-for="archive in archives"
       :key="archive.year"
       :title="archive.year.toString()"
-      :demandes="archive.requests"
+      :requests="archive.requests"
       archive
     />
   </DetailsSection>

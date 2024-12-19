@@ -15,7 +15,8 @@ export const useRequestTypes = () => {
   const perm = usePermissions();
   const shown: ComputedRef<RequestType[]> = computed(() =>
     requestTypes.filter(
-      (type) => perm.deVoirLesAttributions || type != REQUEST_TYPES.ASSIGNMENT,
+      (requestType) =>
+        perm.deVoirLesAttributions || requestType != REQUEST_TYPES.ASSIGNMENT,
     ),
   );
   return {

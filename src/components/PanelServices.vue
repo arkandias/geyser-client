@@ -6,37 +6,36 @@ import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { nf, normalizeForSearch } from "@/helpers/format.ts";
 import { selectedService as selected, useData } from "@/stores/data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
-import type { ServiceRow } from "@/types/rows.ts";
+import type { TeacherRow } from "@/types/teachers.ts";
 
 const perm = usePermissions();
-const { services, fetchingServices, selectEnseignement, selectService } =
-  useData();
+const { services, fetchingServices, selectCourse, selectService } = useData();
 
-const select = (_: Event, row: ServiceRow) => {
-  if (selected.value[0]?.intervenant.uid === row.teacher.uid) {
+const select = (_: Event, row: TeacherRow) => {
+  if (selected.value[0]?.id === row.id) {
     selectService(null);
   } else {
-    selectService(row.teacher.uid);
-    selectEnseignement(null);
+    selectService(row);
+    selectCourse(null);
   }
 };
 
-const columns: ColumnNonAbbreviable<ServiceRow>[] = [
+const columns: ColumnNonAbbreviable<TeacherRow>[] = [
   {
-    name: "nom",
-    label: "Nom",
+    name: "firstname",
+    label: "Prénom",
     align: "left",
-    field: (row) => row.teacher.lastname,
+    field: (row) => row.teacher.firstname,
     sortable: true,
     visible: true,
     searchable: true,
     abbreviable: false,
   },
   {
-    name: "prenom",
-    label: "Prénom",
+    name: "lastname",
+    label: "Nom",
     align: "left",
-    field: (row) => row.teacher.firstname,
+    field: (row) => row.teacher.lastname,
     sortable: true,
     visible: true,
     searchable: true,
@@ -169,9 +168,9 @@ const filterObj = computed(() => ({
   searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
 }));
 const filterMethod = (
-  rows: readonly ServiceRow[],
+  rows: readonly TeacherRow[],
   terms: typeof filterObj.value,
-): readonly ServiceRow[] =>
+): readonly TeacherRow[] =>
   rows.filter((row) =>
     terms.searchColumns.some((col) =>
       normalizeForSearch(String(col.field(row))).includes(terms.search),

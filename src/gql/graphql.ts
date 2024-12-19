@@ -696,15 +696,16 @@ export type Demande = {
   /** Fonction qui renvoie, pour une demande donnée, le nombre d'heures EQTD correspondant en utilisant le coefficient multiplicateur du type d'enseignement correspondant. */
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   id: Scalars["Int"]["output"];
+  /** An object relationship */
+  intervenant: Intervenant;
   /** Fonction qui indique, pour une demande donnée, si celle-ci est prioritaire. */
   prioritaire: Maybe<Scalars["Boolean"]["output"]>;
-  /** An object relationship */
-  service: Service;
-  service_id: Scalars["Int"]["output"];
   /** Le type de demande. */
   type: Scalars["String"]["output"];
   /** An object relationship */
   typeByType: Type_Demande;
+  /** L'identifiant de l'intervenant correspondant à la demande. */
+  uid: Scalars["String"]["output"];
 };
 
 /** aggregated selection of "demande" */
@@ -779,7 +780,6 @@ export type Demande_Avg_Fields = {
   /** Fonction qui renvoie, pour une demande donnée, le nombre d'heures EQTD correspondant en utilisant le coefficient multiplicateur du type d'enseignement correspondant. */
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by avg() on columns of table "demande" */
@@ -789,7 +789,6 @@ export type Demande_Avg_Order_By = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "demande". All fields are combined with a logical 'AND'. */
@@ -802,19 +801,19 @@ export type Demande_Bool_Exp = {
   heures: InputMaybe<Float_Comparison_Exp>;
   heures_eqtd: InputMaybe<Float_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  intervenant: InputMaybe<Intervenant_Bool_Exp>;
   prioritaire: InputMaybe<Boolean_Comparison_Exp>;
-  service: InputMaybe<Service_Bool_Exp>;
-  service_id: InputMaybe<Int_Comparison_Exp>;
   type: InputMaybe<String_Comparison_Exp>;
   typeByType: InputMaybe<Type_Demande_Bool_Exp>;
+  uid: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "demande" */
 export enum Demande_Constraint {
   /** unique or primary key constraint on columns "id" */
   DemandePkey = "demande_pkey",
-  /** unique or primary key constraint on columns "type", "ens_id", "service_id" */
-  DemandeServiceIdEnsIdTypeKey = "demande_service_id_ens_id_type_key",
+  /** unique or primary key constraint on columns "uid", "type", "ens_id" */
+  DemandeUidEnsIdTypeKey = "demande_uid_ens_id_type_key",
 }
 
 /** input type for incrementing numeric columns in table "demande" */
@@ -824,7 +823,6 @@ export type Demande_Inc_Input = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Scalars["Float"]["input"]>;
   id: InputMaybe<Scalars["Int"]["input"]>;
-  service_id: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** input type for inserting data into table "demande" */
@@ -835,11 +833,12 @@ export type Demande_Insert_Input = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Scalars["Float"]["input"]>;
   id: InputMaybe<Scalars["Int"]["input"]>;
-  service: InputMaybe<Service_Obj_Rel_Insert_Input>;
-  service_id: InputMaybe<Scalars["Int"]["input"]>;
+  intervenant: InputMaybe<Intervenant_Obj_Rel_Insert_Input>;
   /** Le type de demande. */
   type: InputMaybe<Scalars["String"]["input"]>;
   typeByType: InputMaybe<Type_Demande_Obj_Rel_Insert_Input>;
+  /** L'identifiant de l'intervenant correspondant à la demande. */
+  uid: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** aggregate max on columns */
@@ -852,9 +851,10 @@ export type Demande_Max_Fields = {
   /** Fonction qui renvoie, pour une demande donnée, le nombre d'heures EQTD correspondant en utilisant le coefficient multiplicateur du type d'enseignement correspondant. */
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   id: Maybe<Scalars["Int"]["output"]>;
-  service_id: Maybe<Scalars["Int"]["output"]>;
   /** Le type de demande. */
   type: Maybe<Scalars["String"]["output"]>;
+  /** L'identifiant de l'intervenant correspondant à la demande. */
+  uid: Maybe<Scalars["String"]["output"]>;
 };
 
 /** order by max() on columns of table "demande" */
@@ -864,9 +864,10 @@ export type Demande_Max_Order_By = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
   /** Le type de demande. */
   type: InputMaybe<Order_By>;
+  /** L'identifiant de l'intervenant correspondant à la demande. */
+  uid: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -879,9 +880,10 @@ export type Demande_Min_Fields = {
   /** Fonction qui renvoie, pour une demande donnée, le nombre d'heures EQTD correspondant en utilisant le coefficient multiplicateur du type d'enseignement correspondant. */
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   id: Maybe<Scalars["Int"]["output"]>;
-  service_id: Maybe<Scalars["Int"]["output"]>;
   /** Le type de demande. */
   type: Maybe<Scalars["String"]["output"]>;
+  /** L'identifiant de l'intervenant correspondant à la demande. */
+  uid: Maybe<Scalars["String"]["output"]>;
 };
 
 /** order by min() on columns of table "demande" */
@@ -891,9 +893,10 @@ export type Demande_Min_Order_By = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
   /** Le type de demande. */
   type: InputMaybe<Order_By>;
+  /** L'identifiant de l'intervenant correspondant à la demande. */
+  uid: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "demande" */
@@ -919,11 +922,11 @@ export type Demande_Order_By = {
   heures: InputMaybe<Order_By>;
   heures_eqtd: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  intervenant: InputMaybe<Intervenant_Order_By>;
   prioritaire: InputMaybe<Order_By>;
-  service: InputMaybe<Service_Order_By>;
-  service_id: InputMaybe<Order_By>;
   type: InputMaybe<Order_By>;
   typeByType: InputMaybe<Type_Demande_Order_By>;
+  uid: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: demande */
@@ -940,9 +943,9 @@ export enum Demande_Select_Column {
   /** column name */
   Id = "id",
   /** column name */
-  ServiceId = "service_id",
-  /** column name */
   Type = "type",
+  /** column name */
+  Uid = "uid",
 }
 
 /** input type for updating data in table "demande" */
@@ -952,9 +955,10 @@ export type Demande_Set_Input = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Scalars["Float"]["input"]>;
   id: InputMaybe<Scalars["Int"]["input"]>;
-  service_id: InputMaybe<Scalars["Int"]["input"]>;
   /** Le type de demande. */
   type: InputMaybe<Scalars["String"]["input"]>;
+  /** L'identifiant de l'intervenant correspondant à la demande. */
+  uid: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** aggregate stddev on columns */
@@ -967,7 +971,6 @@ export type Demande_Stddev_Fields = {
   /** Fonction qui renvoie, pour une demande donnée, le nombre d'heures EQTD correspondant en utilisant le coefficient multiplicateur du type d'enseignement correspondant. */
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by stddev() on columns of table "demande" */
@@ -977,7 +980,6 @@ export type Demande_Stddev_Order_By = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -990,7 +992,6 @@ export type Demande_Stddev_Pop_Fields = {
   /** Fonction qui renvoie, pour une demande donnée, le nombre d'heures EQTD correspondant en utilisant le coefficient multiplicateur du type d'enseignement correspondant. */
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by stddev_pop() on columns of table "demande" */
@@ -1000,7 +1001,6 @@ export type Demande_Stddev_Pop_Order_By = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -1013,7 +1013,6 @@ export type Demande_Stddev_Samp_Fields = {
   /** Fonction qui renvoie, pour une demande donnée, le nombre d'heures EQTD correspondant en utilisant le coefficient multiplicateur du type d'enseignement correspondant. */
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by stddev_samp() on columns of table "demande" */
@@ -1023,7 +1022,6 @@ export type Demande_Stddev_Samp_Order_By = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "demande" */
@@ -1041,9 +1039,10 @@ export type Demande_Stream_Cursor_Value_Input = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Scalars["Float"]["input"]>;
   id: InputMaybe<Scalars["Int"]["input"]>;
-  service_id: InputMaybe<Scalars["Int"]["input"]>;
   /** Le type de demande. */
   type: InputMaybe<Scalars["String"]["input"]>;
+  /** L'identifiant de l'intervenant correspondant à la demande. */
+  uid: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** aggregate sum on columns */
@@ -1056,7 +1055,6 @@ export type Demande_Sum_Fields = {
   /** Fonction qui renvoie, pour une demande donnée, le nombre d'heures EQTD correspondant en utilisant le coefficient multiplicateur du type d'enseignement correspondant. */
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   id: Maybe<Scalars["Int"]["output"]>;
-  service_id: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** order by sum() on columns of table "demande" */
@@ -1066,7 +1064,6 @@ export type Demande_Sum_Order_By = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** update columns of table "demande" */
@@ -1078,9 +1075,9 @@ export enum Demande_Update_Column {
   /** column name */
   Id = "id",
   /** column name */
-  ServiceId = "service_id",
-  /** column name */
   Type = "type",
+  /** column name */
+  Uid = "uid",
 }
 
 export type Demande_Updates = {
@@ -1102,7 +1099,6 @@ export type Demande_Var_Pop_Fields = {
   /** Fonction qui renvoie, pour une demande donnée, le nombre d'heures EQTD correspondant en utilisant le coefficient multiplicateur du type d'enseignement correspondant. */
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by var_pop() on columns of table "demande" */
@@ -1112,7 +1108,6 @@ export type Demande_Var_Pop_Order_By = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
@@ -1125,7 +1120,6 @@ export type Demande_Var_Samp_Fields = {
   /** Fonction qui renvoie, pour une demande donnée, le nombre d'heures EQTD correspondant en utilisant le coefficient multiplicateur du type d'enseignement correspondant. */
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by var_samp() on columns of table "demande" */
@@ -1135,7 +1129,6 @@ export type Demande_Var_Samp_Order_By = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
@@ -1148,7 +1141,6 @@ export type Demande_Variance_Fields = {
   /** Fonction qui renvoie, pour une demande donnée, le nombre d'heures EQTD correspondant en utilisant le coefficient multiplicateur du type d'enseignement correspondant. */
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by variance() on columns of table "demande" */
@@ -1158,7 +1150,6 @@ export type Demande_Variance_Order_By = {
   /** Le nombre d'heures demandées. */
   heures: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** Table contenant les enseignements. */
@@ -2425,10 +2416,21 @@ export type Enseignement_Variance_Order_By = {
 /** Table contenant les intervenants. */
 export type Intervenant = {
   __typename?: "intervenant";
-  /** Indique si l'intervenant correspondant est actif, c'est-à-dire s'il intervient dans l'année en cours. */
+  /** Indique si un service doit être automatiquement créé pour l'intervenant lors de la prochaine année. */
   actif: Scalars["Boolean"]["output"];
-  /** Un alias pour l'intervenant (optionnel). */
+  /** Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel). */
   alias: Maybe<Scalars["String"]["output"]>;
+  /** An array relationship */
+  demandes: Array<Demande>;
+  /** An aggregate relationship */
+  demandes_aggregate: Demande_Aggregate;
+  fonction: Maybe<Scalars["String"]["output"]>;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
+  /** An array relationship */
+  messages: Array<Message>;
+  /** An aggregate relationship */
+  messages_aggregate: Message_Aggregate;
   /** Le nom de l'intervenant. */
   nom: Scalars["String"]["output"];
   /** Le prénom de l'intervenant. */
@@ -2441,16 +2443,50 @@ export type Intervenant = {
   responsables: Array<Responsable>;
   /** An aggregate relationship */
   responsables_aggregate: Responsable_Aggregate;
-  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: Maybe<Scalars["Float"]["output"]>;
   /** An array relationship */
   services: Array<Service>;
   /** An aggregate relationship */
   services_aggregate: Service_Aggregate;
   /** L'identifiant unique de l'intervenant. */
   uid: Scalars["String"]["output"];
-  /** Indique si l'intervenant correspondant est visible par les utilisateurs. */
+  /** Indique si l'intervenant est visible par les utilisateurs. */
   visible: Scalars["Boolean"]["output"];
+};
+
+/** Table contenant les intervenants. */
+export type IntervenantDemandesArgs = {
+  distinct_on: InputMaybe<Array<Demande_Select_Column>>;
+  limit: InputMaybe<Scalars["Int"]["input"]>;
+  offset: InputMaybe<Scalars["Int"]["input"]>;
+  order_by: InputMaybe<Array<Demande_Order_By>>;
+  where: InputMaybe<Demande_Bool_Exp>;
+};
+
+/** Table contenant les intervenants. */
+export type IntervenantDemandes_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Demande_Select_Column>>;
+  limit: InputMaybe<Scalars["Int"]["input"]>;
+  offset: InputMaybe<Scalars["Int"]["input"]>;
+  order_by: InputMaybe<Array<Demande_Order_By>>;
+  where: InputMaybe<Demande_Bool_Exp>;
+};
+
+/** Table contenant les intervenants. */
+export type IntervenantMessagesArgs = {
+  distinct_on: InputMaybe<Array<Message_Select_Column>>;
+  limit: InputMaybe<Scalars["Int"]["input"]>;
+  offset: InputMaybe<Scalars["Int"]["input"]>;
+  order_by: InputMaybe<Array<Message_Order_By>>;
+  where: InputMaybe<Message_Bool_Exp>;
+};
+
+/** Table contenant les intervenants. */
+export type IntervenantMessages_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Message_Select_Column>>;
+  limit: InputMaybe<Scalars["Int"]["input"]>;
+  offset: InputMaybe<Scalars["Int"]["input"]>;
+  order_by: InputMaybe<Array<Message_Order_By>>;
+  where: InputMaybe<Message_Bool_Exp>;
 };
 
 /** Table contenant les intervenants. */
@@ -2540,7 +2576,7 @@ export type Intervenant_Aggregate_FieldsCountArgs = {
 export type Intervenant_Avg_Fields = {
   __typename?: "intervenant_avg_fields";
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: Maybe<Scalars["Float"]["output"]>;
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** Boolean expression to filter rows from the table "intervenant". All fields are combined with a logical 'AND'. */
@@ -2550,13 +2586,18 @@ export type Intervenant_Bool_Exp = {
   _or: InputMaybe<Array<Intervenant_Bool_Exp>>;
   actif: InputMaybe<Boolean_Comparison_Exp>;
   alias: InputMaybe<String_Comparison_Exp>;
+  demandes: InputMaybe<Demande_Bool_Exp>;
+  demandes_aggregate: InputMaybe<Demande_Aggregate_Bool_Exp>;
+  fonction: InputMaybe<String_Comparison_Exp>;
+  heures_eqtd_service_base: InputMaybe<Float_Comparison_Exp>;
+  messages: InputMaybe<Message_Bool_Exp>;
+  messages_aggregate: InputMaybe<Message_Aggregate_Bool_Exp>;
   nom: InputMaybe<String_Comparison_Exp>;
   prenom: InputMaybe<String_Comparison_Exp>;
   priorites: InputMaybe<Priorite_Bool_Exp>;
   priorites_aggregate: InputMaybe<Priorite_Aggregate_Bool_Exp>;
   responsables: InputMaybe<Responsable_Bool_Exp>;
   responsables_aggregate: InputMaybe<Responsable_Aggregate_Bool_Exp>;
-  service: InputMaybe<Float_Comparison_Exp>;
   services: InputMaybe<Service_Bool_Exp>;
   services_aggregate: InputMaybe<Service_Aggregate_Bool_Exp>;
   uid: InputMaybe<String_Comparison_Exp>;
@@ -2572,41 +2613,45 @@ export enum Intervenant_Constraint {
 /** input type for incrementing numeric columns in table "intervenant" */
 export type Intervenant_Inc_Input = {
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: InputMaybe<Scalars["Float"]["input"]>;
+  heures_eqtd_service_base: InputMaybe<Scalars["Float"]["input"]>;
 };
 
 /** input type for inserting data into table "intervenant" */
 export type Intervenant_Insert_Input = {
-  /** Indique si l'intervenant correspondant est actif, c'est-à-dire s'il intervient dans l'année en cours. */
+  /** Indique si un service doit être automatiquement créé pour l'intervenant lors de la prochaine année. */
   actif: InputMaybe<Scalars["Boolean"]["input"]>;
-  /** Un alias pour l'intervenant (optionnel). */
+  /** Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel). */
   alias: InputMaybe<Scalars["String"]["input"]>;
+  demandes: InputMaybe<Demande_Arr_Rel_Insert_Input>;
+  fonction: InputMaybe<Scalars["String"]["input"]>;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: InputMaybe<Scalars["Float"]["input"]>;
+  messages: InputMaybe<Message_Arr_Rel_Insert_Input>;
   /** Le nom de l'intervenant. */
   nom: InputMaybe<Scalars["String"]["input"]>;
   /** Le prénom de l'intervenant. */
   prenom: InputMaybe<Scalars["String"]["input"]>;
   priorites: InputMaybe<Priorite_Arr_Rel_Insert_Input>;
   responsables: InputMaybe<Responsable_Arr_Rel_Insert_Input>;
-  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: InputMaybe<Scalars["Float"]["input"]>;
   services: InputMaybe<Service_Arr_Rel_Insert_Input>;
   /** L'identifiant unique de l'intervenant. */
   uid: InputMaybe<Scalars["String"]["input"]>;
-  /** Indique si l'intervenant correspondant est visible par les utilisateurs. */
+  /** Indique si l'intervenant est visible par les utilisateurs. */
   visible: InputMaybe<Scalars["Boolean"]["input"]>;
 };
 
 /** aggregate max on columns */
 export type Intervenant_Max_Fields = {
   __typename?: "intervenant_max_fields";
-  /** Un alias pour l'intervenant (optionnel). */
+  /** Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel). */
   alias: Maybe<Scalars["String"]["output"]>;
+  fonction: Maybe<Scalars["String"]["output"]>;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
   /** Le nom de l'intervenant. */
   nom: Maybe<Scalars["String"]["output"]>;
   /** Le prénom de l'intervenant. */
   prenom: Maybe<Scalars["String"]["output"]>;
-  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'intervenant. */
   uid: Maybe<Scalars["String"]["output"]>;
 };
@@ -2614,14 +2659,15 @@ export type Intervenant_Max_Fields = {
 /** aggregate min on columns */
 export type Intervenant_Min_Fields = {
   __typename?: "intervenant_min_fields";
-  /** Un alias pour l'intervenant (optionnel). */
+  /** Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel). */
   alias: Maybe<Scalars["String"]["output"]>;
+  fonction: Maybe<Scalars["String"]["output"]>;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
   /** Le nom de l'intervenant. */
   nom: Maybe<Scalars["String"]["output"]>;
   /** Le prénom de l'intervenant. */
   prenom: Maybe<Scalars["String"]["output"]>;
-  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de l'intervenant. */
   uid: Maybe<Scalars["String"]["output"]>;
 };
@@ -2653,11 +2699,14 @@ export type Intervenant_On_Conflict = {
 export type Intervenant_Order_By = {
   actif: InputMaybe<Order_By>;
   alias: InputMaybe<Order_By>;
+  demandes_aggregate: InputMaybe<Demande_Aggregate_Order_By>;
+  fonction: InputMaybe<Order_By>;
+  heures_eqtd_service_base: InputMaybe<Order_By>;
+  messages_aggregate: InputMaybe<Message_Aggregate_Order_By>;
   nom: InputMaybe<Order_By>;
   prenom: InputMaybe<Order_By>;
   priorites_aggregate: InputMaybe<Priorite_Aggregate_Order_By>;
   responsables_aggregate: InputMaybe<Responsable_Aggregate_Order_By>;
-  service: InputMaybe<Order_By>;
   services_aggregate: InputMaybe<Service_Aggregate_Order_By>;
   uid: InputMaybe<Order_By>;
   visible: InputMaybe<Order_By>;
@@ -2676,11 +2725,13 @@ export enum Intervenant_Select_Column {
   /** column name */
   Alias = "alias",
   /** column name */
+  Fonction = "fonction",
+  /** column name */
+  HeuresEqtdServiceBase = "heures_eqtd_service_base",
+  /** column name */
   Nom = "nom",
   /** column name */
   Prenom = "prenom",
-  /** column name */
-  Service = "service",
   /** column name */
   Uid = "uid",
   /** column name */
@@ -2689,19 +2740,20 @@ export enum Intervenant_Select_Column {
 
 /** input type for updating data in table "intervenant" */
 export type Intervenant_Set_Input = {
-  /** Indique si l'intervenant correspondant est actif, c'est-à-dire s'il intervient dans l'année en cours. */
+  /** Indique si un service doit être automatiquement créé pour l'intervenant lors de la prochaine année. */
   actif: InputMaybe<Scalars["Boolean"]["input"]>;
-  /** Un alias pour l'intervenant (optionnel). */
+  /** Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel). */
   alias: InputMaybe<Scalars["String"]["input"]>;
+  fonction: InputMaybe<Scalars["String"]["input"]>;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: InputMaybe<Scalars["Float"]["input"]>;
   /** Le nom de l'intervenant. */
   nom: InputMaybe<Scalars["String"]["input"]>;
   /** Le prénom de l'intervenant. */
   prenom: InputMaybe<Scalars["String"]["input"]>;
-  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: InputMaybe<Scalars["Float"]["input"]>;
   /** L'identifiant unique de l'intervenant. */
   uid: InputMaybe<Scalars["String"]["input"]>;
-  /** Indique si l'intervenant correspondant est visible par les utilisateurs. */
+  /** Indique si l'intervenant est visible par les utilisateurs. */
   visible: InputMaybe<Scalars["Boolean"]["input"]>;
 };
 
@@ -2709,21 +2761,21 @@ export type Intervenant_Set_Input = {
 export type Intervenant_Stddev_Fields = {
   __typename?: "intervenant_stddev_fields";
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: Maybe<Scalars["Float"]["output"]>;
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Intervenant_Stddev_Pop_Fields = {
   __typename?: "intervenant_stddev_pop_fields";
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: Maybe<Scalars["Float"]["output"]>;
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Intervenant_Stddev_Samp_Fields = {
   __typename?: "intervenant_stddev_samp_fields";
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: Maybe<Scalars["Float"]["output"]>;
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** Streaming cursor of the table "intervenant" */
@@ -2736,19 +2788,20 @@ export type Intervenant_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Intervenant_Stream_Cursor_Value_Input = {
-  /** Indique si l'intervenant correspondant est actif, c'est-à-dire s'il intervient dans l'année en cours. */
+  /** Indique si un service doit être automatiquement créé pour l'intervenant lors de la prochaine année. */
   actif: InputMaybe<Scalars["Boolean"]["input"]>;
-  /** Un alias pour l'intervenant (optionnel). */
+  /** Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel). */
   alias: InputMaybe<Scalars["String"]["input"]>;
+  fonction: InputMaybe<Scalars["String"]["input"]>;
+  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
+  heures_eqtd_service_base: InputMaybe<Scalars["Float"]["input"]>;
   /** Le nom de l'intervenant. */
   nom: InputMaybe<Scalars["String"]["input"]>;
   /** Le prénom de l'intervenant. */
   prenom: InputMaybe<Scalars["String"]["input"]>;
-  /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: InputMaybe<Scalars["Float"]["input"]>;
   /** L'identifiant unique de l'intervenant. */
   uid: InputMaybe<Scalars["String"]["input"]>;
-  /** Indique si l'intervenant correspondant est visible par les utilisateurs. */
+  /** Indique si l'intervenant est visible par les utilisateurs. */
   visible: InputMaybe<Scalars["Boolean"]["input"]>;
 };
 
@@ -2756,7 +2809,7 @@ export type Intervenant_Stream_Cursor_Value_Input = {
 export type Intervenant_Sum_Fields = {
   __typename?: "intervenant_sum_fields";
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: Maybe<Scalars["Float"]["output"]>;
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** update columns of table "intervenant" */
@@ -2766,11 +2819,13 @@ export enum Intervenant_Update_Column {
   /** column name */
   Alias = "alias",
   /** column name */
+  Fonction = "fonction",
+  /** column name */
+  HeuresEqtdServiceBase = "heures_eqtd_service_base",
+  /** column name */
   Nom = "nom",
   /** column name */
   Prenom = "prenom",
-  /** column name */
-  Service = "service",
   /** column name */
   Uid = "uid",
   /** column name */
@@ -2790,21 +2845,21 @@ export type Intervenant_Updates = {
 export type Intervenant_Var_Pop_Fields = {
   __typename?: "intervenant_var_pop_fields";
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: Maybe<Scalars["Float"]["output"]>;
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** aggregate var_samp on columns */
 export type Intervenant_Var_Samp_Fields = {
   __typename?: "intervenant_var_samp_fields";
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: Maybe<Scalars["Float"]["output"]>;
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** aggregate variance on columns */
 export type Intervenant_Variance_Fields = {
   __typename?: "intervenant_variance_fields";
   /** Le service de base en heures EQTD de l'intervenant (optionnel). */
-  service: Maybe<Scalars["Float"]["output"]>;
+  heures_eqtd_service_base: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** Table contenant les différentes mentions. */
@@ -3326,13 +3381,16 @@ export type Mention_Variance_Order_By = {
 /** Table contenant les messages enregistrés sur Geyser. */
 export type Message = {
   __typename?: "message";
+  annee: Scalars["Int"]["output"];
+  /** An object relationship */
+  anneeByAnnee: Annee;
   /** Le contenu du message. */
   contenu: Scalars["String"]["output"];
   /** L'identifiant unique du message. */
   id: Scalars["Int"]["output"];
   /** An object relationship */
-  service: Service;
-  service_id: Scalars["Int"]["output"];
+  intervenant: Intervenant;
+  uid: Scalars["String"]["output"];
 };
 
 /** aggregated selection of "message" */
@@ -3400,16 +3458,16 @@ export type Message_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Message_Avg_Fields = {
   __typename?: "message_avg_fields";
+  annee: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique du message. */
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by avg() on columns of table "message" */
 export type Message_Avg_Order_By = {
+  annee: InputMaybe<Order_By>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "message". All fields are combined with a logical 'AND'. */
@@ -3417,73 +3475,81 @@ export type Message_Bool_Exp = {
   _and: InputMaybe<Array<Message_Bool_Exp>>;
   _not: InputMaybe<Message_Bool_Exp>;
   _or: InputMaybe<Array<Message_Bool_Exp>>;
+  annee: InputMaybe<Int_Comparison_Exp>;
+  anneeByAnnee: InputMaybe<Annee_Bool_Exp>;
   contenu: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
-  service: InputMaybe<Service_Bool_Exp>;
-  service_id: InputMaybe<Int_Comparison_Exp>;
+  intervenant: InputMaybe<Intervenant_Bool_Exp>;
+  uid: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "message" */
 export enum Message_Constraint {
+  /** unique or primary key constraint on columns "uid", "annee" */
+  MessageAnneeUidKey = "message_annee_uid_key",
   /** unique or primary key constraint on columns "id" */
   MessagePkey = "message_pkey",
-  /** unique or primary key constraint on columns "service_id" */
-  MessageServiceIdKey = "message_service_id_key",
 }
 
 /** input type for incrementing numeric columns in table "message" */
 export type Message_Inc_Input = {
+  annee: InputMaybe<Scalars["Int"]["input"]>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Scalars["Int"]["input"]>;
-  service_id: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** input type for inserting data into table "message" */
 export type Message_Insert_Input = {
+  annee: InputMaybe<Scalars["Int"]["input"]>;
+  anneeByAnnee: InputMaybe<Annee_Obj_Rel_Insert_Input>;
   /** Le contenu du message. */
   contenu: InputMaybe<Scalars["String"]["input"]>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Scalars["Int"]["input"]>;
-  service: InputMaybe<Service_Obj_Rel_Insert_Input>;
-  service_id: InputMaybe<Scalars["Int"]["input"]>;
+  intervenant: InputMaybe<Intervenant_Obj_Rel_Insert_Input>;
+  uid: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** aggregate max on columns */
 export type Message_Max_Fields = {
   __typename?: "message_max_fields";
+  annee: Maybe<Scalars["Int"]["output"]>;
   /** Le contenu du message. */
   contenu: Maybe<Scalars["String"]["output"]>;
   /** L'identifiant unique du message. */
   id: Maybe<Scalars["Int"]["output"]>;
-  service_id: Maybe<Scalars["Int"]["output"]>;
+  uid: Maybe<Scalars["String"]["output"]>;
 };
 
 /** order by max() on columns of table "message" */
 export type Message_Max_Order_By = {
+  annee: InputMaybe<Order_By>;
   /** Le contenu du message. */
   contenu: InputMaybe<Order_By>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
+  uid: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Message_Min_Fields = {
   __typename?: "message_min_fields";
+  annee: Maybe<Scalars["Int"]["output"]>;
   /** Le contenu du message. */
   contenu: Maybe<Scalars["String"]["output"]>;
   /** L'identifiant unique du message. */
   id: Maybe<Scalars["Int"]["output"]>;
-  service_id: Maybe<Scalars["Int"]["output"]>;
+  uid: Maybe<Scalars["String"]["output"]>;
 };
 
 /** order by min() on columns of table "message" */
 export type Message_Min_Order_By = {
+  annee: InputMaybe<Order_By>;
   /** Le contenu du message. */
   contenu: InputMaybe<Order_By>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
+  uid: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "message" */
@@ -3504,10 +3570,12 @@ export type Message_On_Conflict = {
 
 /** Ordering options when selecting data from "message". */
 export type Message_Order_By = {
+  annee: InputMaybe<Order_By>;
+  anneeByAnnee: InputMaybe<Annee_Order_By>;
   contenu: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  service: InputMaybe<Service_Order_By>;
-  service_id: InputMaybe<Order_By>;
+  intervenant: InputMaybe<Intervenant_Order_By>;
+  uid: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: message */
@@ -3519,65 +3587,68 @@ export type Message_Pk_Columns_Input = {
 /** select columns of table "message" */
 export enum Message_Select_Column {
   /** column name */
+  Annee = "annee",
+  /** column name */
   Contenu = "contenu",
   /** column name */
   Id = "id",
   /** column name */
-  ServiceId = "service_id",
+  Uid = "uid",
 }
 
 /** input type for updating data in table "message" */
 export type Message_Set_Input = {
+  annee: InputMaybe<Scalars["Int"]["input"]>;
   /** Le contenu du message. */
   contenu: InputMaybe<Scalars["String"]["input"]>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Scalars["Int"]["input"]>;
-  service_id: InputMaybe<Scalars["Int"]["input"]>;
+  uid: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** aggregate stddev on columns */
 export type Message_Stddev_Fields = {
   __typename?: "message_stddev_fields";
+  annee: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique du message. */
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by stddev() on columns of table "message" */
 export type Message_Stddev_Order_By = {
+  annee: InputMaybe<Order_By>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Message_Stddev_Pop_Fields = {
   __typename?: "message_stddev_pop_fields";
+  annee: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique du message. */
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by stddev_pop() on columns of table "message" */
 export type Message_Stddev_Pop_Order_By = {
+  annee: InputMaybe<Order_By>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Message_Stddev_Samp_Fields = {
   __typename?: "message_stddev_samp_fields";
+  annee: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique du message. */
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by stddev_samp() on columns of table "message" */
 export type Message_Stddev_Samp_Order_By = {
+  annee: InputMaybe<Order_By>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "message" */
@@ -3590,36 +3661,39 @@ export type Message_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Message_Stream_Cursor_Value_Input = {
+  annee: InputMaybe<Scalars["Int"]["input"]>;
   /** Le contenu du message. */
   contenu: InputMaybe<Scalars["String"]["input"]>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Scalars["Int"]["input"]>;
-  service_id: InputMaybe<Scalars["Int"]["input"]>;
+  uid: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** aggregate sum on columns */
 export type Message_Sum_Fields = {
   __typename?: "message_sum_fields";
+  annee: Maybe<Scalars["Int"]["output"]>;
   /** L'identifiant unique du message. */
   id: Maybe<Scalars["Int"]["output"]>;
-  service_id: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** order by sum() on columns of table "message" */
 export type Message_Sum_Order_By = {
+  annee: InputMaybe<Order_By>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** update columns of table "message" */
 export enum Message_Update_Column {
   /** column name */
+  Annee = "annee",
+  /** column name */
   Contenu = "contenu",
   /** column name */
   Id = "id",
   /** column name */
-  ServiceId = "service_id",
+  Uid = "uid",
 }
 
 export type Message_Updates = {
@@ -3634,46 +3708,46 @@ export type Message_Updates = {
 /** aggregate var_pop on columns */
 export type Message_Var_Pop_Fields = {
   __typename?: "message_var_pop_fields";
+  annee: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique du message. */
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by var_pop() on columns of table "message" */
 export type Message_Var_Pop_Order_By = {
+  annee: InputMaybe<Order_By>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Message_Var_Samp_Fields = {
   __typename?: "message_var_samp_fields";
+  annee: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique du message. */
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by var_samp() on columns of table "message" */
 export type Message_Var_Samp_Order_By = {
+  annee: InputMaybe<Order_By>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Message_Variance_Fields = {
   __typename?: "message_variance_fields";
+  annee: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique du message. */
   id: Maybe<Scalars["Float"]["output"]>;
-  service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by variance() on columns of table "message" */
 export type Message_Variance_Order_By = {
+  annee: InputMaybe<Order_By>;
   /** L'identifiant unique du message. */
   id: InputMaybe<Order_By>;
-  service_id: InputMaybe<Order_By>;
 };
 
 /** Table contenant les modifications du service de base d'un intervenant donné pour une année donnée. */
@@ -3685,11 +3759,12 @@ export type Modification_Service = {
   id: Scalars["Int"]["output"];
   /** An object relationship */
   service: Service;
+  /** L'identifiant du service modifié. */
   service_id: Scalars["Int"]["output"];
   /** Le type de modification. */
   type: Scalars["String"]["output"];
   /** An object relationship */
-  typeByType: Type_Modification;
+  typeByType: Type_Modification_Service;
 };
 
 /** aggregated selection of "modification_service" */
@@ -3761,6 +3836,7 @@ export type Modification_Service_Avg_Fields = {
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de la modification. */
   id: Maybe<Scalars["Float"]["output"]>;
+  /** L'identifiant du service modifié. */
   service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
@@ -3770,6 +3846,7 @@ export type Modification_Service_Avg_Order_By = {
   heures_eqtd: InputMaybe<Order_By>;
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Order_By>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Order_By>;
 };
 
@@ -3783,7 +3860,7 @@ export type Modification_Service_Bool_Exp = {
   service: InputMaybe<Service_Bool_Exp>;
   service_id: InputMaybe<Int_Comparison_Exp>;
   type: InputMaybe<String_Comparison_Exp>;
-  typeByType: InputMaybe<Type_Modification_Bool_Exp>;
+  typeByType: InputMaybe<Type_Modification_Service_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "modification_service" */
@@ -3798,6 +3875,7 @@ export type Modification_Service_Inc_Input = {
   heures_eqtd: InputMaybe<Scalars["Float"]["input"]>;
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Scalars["Int"]["input"]>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -3808,10 +3886,11 @@ export type Modification_Service_Insert_Input = {
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Scalars["Int"]["input"]>;
   service: InputMaybe<Service_Obj_Rel_Insert_Input>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Scalars["Int"]["input"]>;
   /** Le type de modification. */
   type: InputMaybe<Scalars["String"]["input"]>;
-  typeByType: InputMaybe<Type_Modification_Obj_Rel_Insert_Input>;
+  typeByType: InputMaybe<Type_Modification_Service_Obj_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -3821,6 +3900,7 @@ export type Modification_Service_Max_Fields = {
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de la modification. */
   id: Maybe<Scalars["Int"]["output"]>;
+  /** L'identifiant du service modifié. */
   service_id: Maybe<Scalars["Int"]["output"]>;
   /** Le type de modification. */
   type: Maybe<Scalars["String"]["output"]>;
@@ -3832,6 +3912,7 @@ export type Modification_Service_Max_Order_By = {
   heures_eqtd: InputMaybe<Order_By>;
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Order_By>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Order_By>;
   /** Le type de modification. */
   type: InputMaybe<Order_By>;
@@ -3844,6 +3925,7 @@ export type Modification_Service_Min_Fields = {
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de la modification. */
   id: Maybe<Scalars["Int"]["output"]>;
+  /** L'identifiant du service modifié. */
   service_id: Maybe<Scalars["Int"]["output"]>;
   /** Le type de modification. */
   type: Maybe<Scalars["String"]["output"]>;
@@ -3855,6 +3937,7 @@ export type Modification_Service_Min_Order_By = {
   heures_eqtd: InputMaybe<Order_By>;
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Order_By>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Order_By>;
   /** Le type de modification. */
   type: InputMaybe<Order_By>;
@@ -3883,7 +3966,7 @@ export type Modification_Service_Order_By = {
   service: InputMaybe<Service_Order_By>;
   service_id: InputMaybe<Order_By>;
   type: InputMaybe<Order_By>;
-  typeByType: InputMaybe<Type_Modification_Order_By>;
+  typeByType: InputMaybe<Type_Modification_Service_Order_By>;
 };
 
 /** primary key columns input for table: modification_service */
@@ -3910,6 +3993,7 @@ export type Modification_Service_Set_Input = {
   heures_eqtd: InputMaybe<Scalars["Float"]["input"]>;
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Scalars["Int"]["input"]>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Scalars["Int"]["input"]>;
   /** Le type de modification. */
   type: InputMaybe<Scalars["String"]["input"]>;
@@ -3922,6 +4006,7 @@ export type Modification_Service_Stddev_Fields = {
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de la modification. */
   id: Maybe<Scalars["Float"]["output"]>;
+  /** L'identifiant du service modifié. */
   service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
@@ -3931,6 +4016,7 @@ export type Modification_Service_Stddev_Order_By = {
   heures_eqtd: InputMaybe<Order_By>;
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Order_By>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Order_By>;
 };
 
@@ -3941,6 +4027,7 @@ export type Modification_Service_Stddev_Pop_Fields = {
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de la modification. */
   id: Maybe<Scalars["Float"]["output"]>;
+  /** L'identifiant du service modifié. */
   service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
@@ -3950,6 +4037,7 @@ export type Modification_Service_Stddev_Pop_Order_By = {
   heures_eqtd: InputMaybe<Order_By>;
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Order_By>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Order_By>;
 };
 
@@ -3960,6 +4048,7 @@ export type Modification_Service_Stddev_Samp_Fields = {
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de la modification. */
   id: Maybe<Scalars["Float"]["output"]>;
+  /** L'identifiant du service modifié. */
   service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
@@ -3969,6 +4058,7 @@ export type Modification_Service_Stddev_Samp_Order_By = {
   heures_eqtd: InputMaybe<Order_By>;
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Order_By>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Order_By>;
 };
 
@@ -3986,6 +4076,7 @@ export type Modification_Service_Stream_Cursor_Value_Input = {
   heures_eqtd: InputMaybe<Scalars["Float"]["input"]>;
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Scalars["Int"]["input"]>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Scalars["Int"]["input"]>;
   /** Le type de modification. */
   type: InputMaybe<Scalars["String"]["input"]>;
@@ -3998,6 +4089,7 @@ export type Modification_Service_Sum_Fields = {
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de la modification. */
   id: Maybe<Scalars["Int"]["output"]>;
+  /** L'identifiant du service modifié. */
   service_id: Maybe<Scalars["Int"]["output"]>;
 };
 
@@ -4007,6 +4099,7 @@ export type Modification_Service_Sum_Order_By = {
   heures_eqtd: InputMaybe<Order_By>;
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Order_By>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Order_By>;
 };
 
@@ -4038,6 +4131,7 @@ export type Modification_Service_Var_Pop_Fields = {
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de la modification. */
   id: Maybe<Scalars["Float"]["output"]>;
+  /** L'identifiant du service modifié. */
   service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
@@ -4047,6 +4141,7 @@ export type Modification_Service_Var_Pop_Order_By = {
   heures_eqtd: InputMaybe<Order_By>;
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Order_By>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Order_By>;
 };
 
@@ -4057,6 +4152,7 @@ export type Modification_Service_Var_Samp_Fields = {
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de la modification. */
   id: Maybe<Scalars["Float"]["output"]>;
+  /** L'identifiant du service modifié. */
   service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
@@ -4066,6 +4162,7 @@ export type Modification_Service_Var_Samp_Order_By = {
   heures_eqtd: InputMaybe<Order_By>;
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Order_By>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Order_By>;
 };
 
@@ -4076,6 +4173,7 @@ export type Modification_Service_Variance_Fields = {
   heures_eqtd: Maybe<Scalars["Float"]["output"]>;
   /** L'identifiant unique de la modification. */
   id: Maybe<Scalars["Float"]["output"]>;
+  /** L'identifiant du service modifié. */
   service_id: Maybe<Scalars["Float"]["output"]>;
 };
 
@@ -4085,6 +4183,7 @@ export type Modification_Service_Variance_Order_By = {
   heures_eqtd: InputMaybe<Order_By>;
   /** L'identifiant unique de la modification. */
   id: InputMaybe<Order_By>;
+  /** L'identifiant du service modifié. */
   service_id: InputMaybe<Order_By>;
 };
 
@@ -4151,10 +4250,10 @@ export type Mutation_Root = {
   delete_type_enseignement: Maybe<Type_Enseignement_Mutation_Response>;
   /** delete single row from the table: "type_enseignement" */
   delete_type_enseignement_by_pk: Maybe<Type_Enseignement>;
-  /** delete data from the table: "type_modification" */
-  delete_type_modification: Maybe<Type_Modification_Mutation_Response>;
-  /** delete single row from the table: "type_modification" */
-  delete_type_modification_by_pk: Maybe<Type_Modification>;
+  /** delete data from the table: "type_modification_service" */
+  delete_type_modification_service: Maybe<Type_Modification_Service_Mutation_Response>;
+  /** delete single row from the table: "type_modification_service" */
+  delete_type_modification_service_by_pk: Maybe<Type_Modification_Service>;
   /** insert data into the table: "annee" */
   insert_annee: Maybe<Annee_Mutation_Response>;
   /** insert a single row into the table: "annee" */
@@ -4215,10 +4314,10 @@ export type Mutation_Root = {
   insert_type_enseignement: Maybe<Type_Enseignement_Mutation_Response>;
   /** insert a single row into the table: "type_enseignement" */
   insert_type_enseignement_one: Maybe<Type_Enseignement>;
-  /** insert data into the table: "type_modification" */
-  insert_type_modification: Maybe<Type_Modification_Mutation_Response>;
-  /** insert a single row into the table: "type_modification" */
-  insert_type_modification_one: Maybe<Type_Modification>;
+  /** insert data into the table: "type_modification_service" */
+  insert_type_modification_service: Maybe<Type_Modification_Service_Mutation_Response>;
+  /** insert a single row into the table: "type_modification_service" */
+  insert_type_modification_service_one: Maybe<Type_Modification_Service>;
   /** update data of the table: "annee" */
   update_annee: Maybe<Annee_Mutation_Response>;
   /** update single row of the table: "annee" */
@@ -4313,13 +4412,13 @@ export type Mutation_Root = {
   update_type_enseignement_many: Maybe<
     Array<Maybe<Type_Enseignement_Mutation_Response>>
   >;
-  /** update data of the table: "type_modification" */
-  update_type_modification: Maybe<Type_Modification_Mutation_Response>;
-  /** update single row of the table: "type_modification" */
-  update_type_modification_by_pk: Maybe<Type_Modification>;
-  /** update multiples rows of table: "type_modification" */
-  update_type_modification_many: Maybe<
-    Array<Maybe<Type_Modification_Mutation_Response>>
+  /** update data of the table: "type_modification_service" */
+  update_type_modification_service: Maybe<Type_Modification_Service_Mutation_Response>;
+  /** update single row of the table: "type_modification_service" */
+  update_type_modification_service_by_pk: Maybe<Type_Modification_Service>;
+  /** update multiples rows of table: "type_modification_service" */
+  update_type_modification_service_many: Maybe<
+    Array<Maybe<Type_Modification_Service_Mutation_Response>>
   >;
 };
 
@@ -4470,17 +4569,17 @@ export type Mutation_RootDelete_Type_EnseignementArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Type_Enseignement_By_PkArgs = {
-  label: Scalars["String"]["input"];
+  key: Scalars["String"]["input"];
 };
 
 /** mutation root */
-export type Mutation_RootDelete_Type_ModificationArgs = {
-  where: Type_Modification_Bool_Exp;
+export type Mutation_RootDelete_Type_Modification_ServiceArgs = {
+  where: Type_Modification_Service_Bool_Exp;
 };
 
 /** mutation root */
-export type Mutation_RootDelete_Type_Modification_By_PkArgs = {
-  label: Scalars["String"]["input"];
+export type Mutation_RootDelete_Type_Modification_Service_By_PkArgs = {
+  key: Scalars["String"]["input"];
 };
 
 /** mutation root */
@@ -4664,15 +4763,15 @@ export type Mutation_RootInsert_Type_Enseignement_OneArgs = {
 };
 
 /** mutation root */
-export type Mutation_RootInsert_Type_ModificationArgs = {
-  objects: Array<Type_Modification_Insert_Input>;
-  on_conflict: InputMaybe<Type_Modification_On_Conflict>;
+export type Mutation_RootInsert_Type_Modification_ServiceArgs = {
+  objects: Array<Type_Modification_Service_Insert_Input>;
+  on_conflict: InputMaybe<Type_Modification_Service_On_Conflict>;
 };
 
 /** mutation root */
-export type Mutation_RootInsert_Type_Modification_OneArgs = {
-  object: Type_Modification_Insert_Input;
-  on_conflict: InputMaybe<Type_Modification_On_Conflict>;
+export type Mutation_RootInsert_Type_Modification_Service_OneArgs = {
+  object: Type_Modification_Service_Insert_Input;
+  on_conflict: InputMaybe<Type_Modification_Service_On_Conflict>;
 };
 
 /** mutation root */
@@ -4957,20 +5056,20 @@ export type Mutation_RootUpdate_Type_Enseignement_ManyArgs = {
 };
 
 /** mutation root */
-export type Mutation_RootUpdate_Type_ModificationArgs = {
-  _set: InputMaybe<Type_Modification_Set_Input>;
-  where: Type_Modification_Bool_Exp;
+export type Mutation_RootUpdate_Type_Modification_ServiceArgs = {
+  _set: InputMaybe<Type_Modification_Service_Set_Input>;
+  where: Type_Modification_Service_Bool_Exp;
 };
 
 /** mutation root */
-export type Mutation_RootUpdate_Type_Modification_By_PkArgs = {
-  _set: InputMaybe<Type_Modification_Set_Input>;
-  pk_columns: Type_Modification_Pk_Columns_Input;
+export type Mutation_RootUpdate_Type_Modification_Service_By_PkArgs = {
+  _set: InputMaybe<Type_Modification_Service_Set_Input>;
+  pk_columns: Type_Modification_Service_Pk_Columns_Input;
 };
 
 /** mutation root */
-export type Mutation_RootUpdate_Type_Modification_ManyArgs = {
-  updates: Array<Type_Modification_Updates>;
+export type Mutation_RootUpdate_Type_Modification_Service_ManyArgs = {
+  updates: Array<Type_Modification_Service_Updates>;
 };
 
 /** column ordering options */
@@ -6188,12 +6287,12 @@ export type Query_Root = {
   type_enseignement_aggregate: Type_Enseignement_Aggregate;
   /** fetch data from the table: "type_enseignement" using primary key columns */
   type_enseignement_by_pk: Maybe<Type_Enseignement>;
-  /** fetch data from the table: "type_modification" */
-  type_modification: Array<Type_Modification>;
-  /** fetch aggregated fields from the table: "type_modification" */
-  type_modification_aggregate: Type_Modification_Aggregate;
-  /** fetch data from the table: "type_modification" using primary key columns */
-  type_modification_by_pk: Maybe<Type_Modification>;
+  /** fetch data from the table: "type_modification_service" */
+  type_modification_service: Array<Type_Modification_Service>;
+  /** fetch aggregated fields from the table: "type_modification_service" */
+  type_modification_service_aggregate: Type_Modification_Service_Aggregate;
+  /** fetch data from the table: "type_modification_service" using primary key columns */
+  type_modification_service_by_pk: Maybe<Type_Modification_Service>;
 };
 
 export type Query_RootAnneeArgs = {
@@ -6493,27 +6592,27 @@ export type Query_RootType_Enseignement_AggregateArgs = {
 };
 
 export type Query_RootType_Enseignement_By_PkArgs = {
-  label: Scalars["String"]["input"];
+  key: Scalars["String"]["input"];
 };
 
-export type Query_RootType_ModificationArgs = {
-  distinct_on: InputMaybe<Array<Type_Modification_Select_Column>>;
+export type Query_RootType_Modification_ServiceArgs = {
+  distinct_on: InputMaybe<Array<Type_Modification_Service_Select_Column>>;
   limit: InputMaybe<Scalars["Int"]["input"]>;
   offset: InputMaybe<Scalars["Int"]["input"]>;
-  order_by: InputMaybe<Array<Type_Modification_Order_By>>;
-  where: InputMaybe<Type_Modification_Bool_Exp>;
+  order_by: InputMaybe<Array<Type_Modification_Service_Order_By>>;
+  where: InputMaybe<Type_Modification_Service_Bool_Exp>;
 };
 
-export type Query_RootType_Modification_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Type_Modification_Select_Column>>;
+export type Query_RootType_Modification_Service_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Type_Modification_Service_Select_Column>>;
   limit: InputMaybe<Scalars["Int"]["input"]>;
   offset: InputMaybe<Scalars["Int"]["input"]>;
-  order_by: InputMaybe<Array<Type_Modification_Order_By>>;
-  where: InputMaybe<Type_Modification_Bool_Exp>;
+  order_by: InputMaybe<Array<Type_Modification_Service_Order_By>>;
+  where: InputMaybe<Type_Modification_Service_Bool_Exp>;
 };
 
-export type Query_RootType_Modification_By_PkArgs = {
-  label: Scalars["String"]["input"];
+export type Query_RootType_Modification_Service_By_PkArgs = {
+  key: Scalars["String"]["input"];
 };
 
 /** Table contenant les responsables d'une mention, d'un parcours ou d'un enseignement. Chaque ligne correspond à un et un seul de ces trois types de responsabilité. */
@@ -7024,10 +7123,6 @@ export type Service = {
   annee: Scalars["Int"]["output"];
   /** An object relationship */
   anneeByAnnee: Annee;
-  /** An array relationship */
-  demandes: Array<Demande>;
-  /** An aggregate relationship */
-  demandes_aggregate: Demande_Aggregate;
   /** Le nombre d'heures EQTD du service. */
   heures_eqtd: Scalars["Float"]["output"];
   /** L'identifiant unique du service. */
@@ -7035,51 +7130,11 @@ export type Service = {
   /** An object relationship */
   intervenant: Intervenant;
   /** An array relationship */
-  messages: Array<Message>;
-  /** An aggregate relationship */
-  messages_aggregate: Message_Aggregate;
-  /** An array relationship */
   modifications: Array<Modification_Service>;
   /** An aggregate relationship */
   modifications_aggregate: Modification_Service_Aggregate;
   /** L'identifiant de l'intervenant correspond au service. */
   uid: Scalars["String"]["output"];
-};
-
-/** Table contenant les services de base, c'est-à-dire le nombre d'heures EQTD qu'un intervenant donné doit réaliser lors d'une année donnée avant modifications éventuelles. */
-export type ServiceDemandesArgs = {
-  distinct_on: InputMaybe<Array<Demande_Select_Column>>;
-  limit: InputMaybe<Scalars["Int"]["input"]>;
-  offset: InputMaybe<Scalars["Int"]["input"]>;
-  order_by: InputMaybe<Array<Demande_Order_By>>;
-  where: InputMaybe<Demande_Bool_Exp>;
-};
-
-/** Table contenant les services de base, c'est-à-dire le nombre d'heures EQTD qu'un intervenant donné doit réaliser lors d'une année donnée avant modifications éventuelles. */
-export type ServiceDemandes_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Demande_Select_Column>>;
-  limit: InputMaybe<Scalars["Int"]["input"]>;
-  offset: InputMaybe<Scalars["Int"]["input"]>;
-  order_by: InputMaybe<Array<Demande_Order_By>>;
-  where: InputMaybe<Demande_Bool_Exp>;
-};
-
-/** Table contenant les services de base, c'est-à-dire le nombre d'heures EQTD qu'un intervenant donné doit réaliser lors d'une année donnée avant modifications éventuelles. */
-export type ServiceMessagesArgs = {
-  distinct_on: InputMaybe<Array<Message_Select_Column>>;
-  limit: InputMaybe<Scalars["Int"]["input"]>;
-  offset: InputMaybe<Scalars["Int"]["input"]>;
-  order_by: InputMaybe<Array<Message_Order_By>>;
-  where: InputMaybe<Message_Bool_Exp>;
-};
-
-/** Table contenant les services de base, c'est-à-dire le nombre d'heures EQTD qu'un intervenant donné doit réaliser lors d'une année donnée avant modifications éventuelles. */
-export type ServiceMessages_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Message_Select_Column>>;
-  limit: InputMaybe<Scalars["Int"]["input"]>;
-  offset: InputMaybe<Scalars["Int"]["input"]>;
-  order_by: InputMaybe<Array<Message_Order_By>>;
-  where: InputMaybe<Message_Bool_Exp>;
 };
 
 /** Table contenant les services de base, c'est-à-dire le nombre d'heures EQTD qu'un intervenant donné doit réaliser lors d'une année donnée avant modifications éventuelles. */
@@ -7190,13 +7245,9 @@ export type Service_Bool_Exp = {
   _or: InputMaybe<Array<Service_Bool_Exp>>;
   annee: InputMaybe<Int_Comparison_Exp>;
   anneeByAnnee: InputMaybe<Annee_Bool_Exp>;
-  demandes: InputMaybe<Demande_Bool_Exp>;
-  demandes_aggregate: InputMaybe<Demande_Aggregate_Bool_Exp>;
   heures_eqtd: InputMaybe<Float_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   intervenant: InputMaybe<Intervenant_Bool_Exp>;
-  messages: InputMaybe<Message_Bool_Exp>;
-  messages_aggregate: InputMaybe<Message_Aggregate_Bool_Exp>;
   modifications: InputMaybe<Modification_Service_Bool_Exp>;
   modifications_aggregate: InputMaybe<Modification_Service_Aggregate_Bool_Exp>;
   uid: InputMaybe<String_Comparison_Exp>;
@@ -7225,13 +7276,11 @@ export type Service_Insert_Input = {
   /** L'année correspondant au service. */
   annee: InputMaybe<Scalars["Int"]["input"]>;
   anneeByAnnee: InputMaybe<Annee_Obj_Rel_Insert_Input>;
-  demandes: InputMaybe<Demande_Arr_Rel_Insert_Input>;
   /** Le nombre d'heures EQTD du service. */
   heures_eqtd: InputMaybe<Scalars["Float"]["input"]>;
   /** L'identifiant unique du service. */
   id: InputMaybe<Scalars["Int"]["input"]>;
   intervenant: InputMaybe<Intervenant_Obj_Rel_Insert_Input>;
-  messages: InputMaybe<Message_Arr_Rel_Insert_Input>;
   modifications: InputMaybe<Modification_Service_Arr_Rel_Insert_Input>;
   /** L'identifiant de l'intervenant correspond au service. */
   uid: InputMaybe<Scalars["String"]["input"]>;
@@ -7314,11 +7363,9 @@ export type Service_On_Conflict = {
 export type Service_Order_By = {
   annee: InputMaybe<Order_By>;
   anneeByAnnee: InputMaybe<Annee_Order_By>;
-  demandes_aggregate: InputMaybe<Demande_Aggregate_Order_By>;
   heures_eqtd: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   intervenant: InputMaybe<Intervenant_Order_By>;
-  messages_aggregate: InputMaybe<Message_Aggregate_Order_By>;
   modifications_aggregate: InputMaybe<Modification_Service_Aggregate_Order_By>;
   uid: InputMaybe<Order_By>;
 };
@@ -7663,14 +7710,14 @@ export type Subscription_Root = {
   type_enseignement_by_pk: Maybe<Type_Enseignement>;
   /** fetch data from the table in a streaming manner: "type_enseignement" */
   type_enseignement_stream: Array<Type_Enseignement>;
-  /** fetch data from the table: "type_modification" */
-  type_modification: Array<Type_Modification>;
-  /** fetch aggregated fields from the table: "type_modification" */
-  type_modification_aggregate: Type_Modification_Aggregate;
-  /** fetch data from the table: "type_modification" using primary key columns */
-  type_modification_by_pk: Maybe<Type_Modification>;
-  /** fetch data from the table in a streaming manner: "type_modification" */
-  type_modification_stream: Array<Type_Modification>;
+  /** fetch data from the table: "type_modification_service" */
+  type_modification_service: Array<Type_Modification_Service>;
+  /** fetch aggregated fields from the table: "type_modification_service" */
+  type_modification_service_aggregate: Type_Modification_Service_Aggregate;
+  /** fetch data from the table: "type_modification_service" using primary key columns */
+  type_modification_service_by_pk: Maybe<Type_Modification_Service>;
+  /** fetch data from the table in a streaming manner: "type_modification_service" */
+  type_modification_service_stream: Array<Type_Modification_Service>;
 };
 
 export type Subscription_RootAnneeArgs = {
@@ -8054,7 +8101,7 @@ export type Subscription_RootType_Enseignement_AggregateArgs = {
 };
 
 export type Subscription_RootType_Enseignement_By_PkArgs = {
-  label: Scalars["String"]["input"];
+  key: Scalars["String"]["input"];
 };
 
 export type Subscription_RootType_Enseignement_StreamArgs = {
@@ -8063,30 +8110,30 @@ export type Subscription_RootType_Enseignement_StreamArgs = {
   where: InputMaybe<Type_Enseignement_Bool_Exp>;
 };
 
-export type Subscription_RootType_ModificationArgs = {
-  distinct_on: InputMaybe<Array<Type_Modification_Select_Column>>;
+export type Subscription_RootType_Modification_ServiceArgs = {
+  distinct_on: InputMaybe<Array<Type_Modification_Service_Select_Column>>;
   limit: InputMaybe<Scalars["Int"]["input"]>;
   offset: InputMaybe<Scalars["Int"]["input"]>;
-  order_by: InputMaybe<Array<Type_Modification_Order_By>>;
-  where: InputMaybe<Type_Modification_Bool_Exp>;
+  order_by: InputMaybe<Array<Type_Modification_Service_Order_By>>;
+  where: InputMaybe<Type_Modification_Service_Bool_Exp>;
 };
 
-export type Subscription_RootType_Modification_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Type_Modification_Select_Column>>;
+export type Subscription_RootType_Modification_Service_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Type_Modification_Service_Select_Column>>;
   limit: InputMaybe<Scalars["Int"]["input"]>;
   offset: InputMaybe<Scalars["Int"]["input"]>;
-  order_by: InputMaybe<Array<Type_Modification_Order_By>>;
-  where: InputMaybe<Type_Modification_Bool_Exp>;
+  order_by: InputMaybe<Array<Type_Modification_Service_Order_By>>;
+  where: InputMaybe<Type_Modification_Service_Bool_Exp>;
 };
 
-export type Subscription_RootType_Modification_By_PkArgs = {
-  label: Scalars["String"]["input"];
+export type Subscription_RootType_Modification_Service_By_PkArgs = {
+  key: Scalars["String"]["input"];
 };
 
-export type Subscription_RootType_Modification_StreamArgs = {
+export type Subscription_RootType_Modification_Service_StreamArgs = {
   batch_size: Scalars["Int"]["input"];
-  cursor: Array<InputMaybe<Type_Modification_Stream_Cursor_Input>>;
-  where: InputMaybe<Type_Modification_Bool_Exp>;
+  cursor: Array<InputMaybe<Type_Modification_Service_Stream_Cursor_Input>>;
+  where: InputMaybe<Type_Modification_Service_Bool_Exp>;
 };
 
 /** Table contenant les différents types de demande (principale, secondaire, attribution). */
@@ -8277,10 +8324,10 @@ export type Type_Enseignement = {
   enseignements: Array<Enseignement>;
   /** An aggregate relationship */
   enseignements_aggregate: Enseignement_Aggregate;
-  /** Le type d'enseignement (unique). */
+  /** La clé du type d'enseignement (unique). */
+  key: Scalars["String"]["output"];
+  /** Le libellé type d'enseignement. */
   label: Scalars["String"]["output"];
-  /** Le nom abrégé (optionnel). */
-  label_court: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Table contenant les différents types d'enseignement (CM, TD, etc.). */
@@ -8345,13 +8392,13 @@ export type Type_Enseignement_Bool_Exp = {
   coefficient: InputMaybe<Float_Comparison_Exp>;
   enseignements: InputMaybe<Enseignement_Bool_Exp>;
   enseignements_aggregate: InputMaybe<Enseignement_Aggregate_Bool_Exp>;
+  key: InputMaybe<String_Comparison_Exp>;
   label: InputMaybe<String_Comparison_Exp>;
-  label_court: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "type_enseignement" */
 export enum Type_Enseignement_Constraint {
-  /** unique or primary key constraint on columns "label" */
+  /** unique or primary key constraint on columns "key" */
   TypeEnseignementPkey = "type_enseignement_pkey",
 }
 
@@ -8366,10 +8413,10 @@ export type Type_Enseignement_Insert_Input = {
   /** Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type. */
   coefficient: InputMaybe<Scalars["Float"]["input"]>;
   enseignements: InputMaybe<Enseignement_Arr_Rel_Insert_Input>;
-  /** Le type d'enseignement (unique). */
+  /** La clé du type d'enseignement (unique). */
+  key: InputMaybe<Scalars["String"]["input"]>;
+  /** Le libellé type d'enseignement. */
   label: InputMaybe<Scalars["String"]["input"]>;
-  /** Le nom abrégé (optionnel). */
-  label_court: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** aggregate max on columns */
@@ -8377,10 +8424,10 @@ export type Type_Enseignement_Max_Fields = {
   __typename?: "type_enseignement_max_fields";
   /** Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type. */
   coefficient: Maybe<Scalars["Float"]["output"]>;
-  /** Le type d'enseignement (unique). */
+  /** La clé du type d'enseignement (unique). */
+  key: Maybe<Scalars["String"]["output"]>;
+  /** Le libellé type d'enseignement. */
   label: Maybe<Scalars["String"]["output"]>;
-  /** Le nom abrégé (optionnel). */
-  label_court: Maybe<Scalars["String"]["output"]>;
 };
 
 /** aggregate min on columns */
@@ -8388,10 +8435,10 @@ export type Type_Enseignement_Min_Fields = {
   __typename?: "type_enseignement_min_fields";
   /** Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type. */
   coefficient: Maybe<Scalars["Float"]["output"]>;
-  /** Le type d'enseignement (unique). */
+  /** La clé du type d'enseignement (unique). */
+  key: Maybe<Scalars["String"]["output"]>;
+  /** Le libellé type d'enseignement. */
   label: Maybe<Scalars["String"]["output"]>;
-  /** Le nom abrégé (optionnel). */
-  label_court: Maybe<Scalars["String"]["output"]>;
 };
 
 /** response of any mutation on the table "type_enseignement" */
@@ -8421,14 +8468,14 @@ export type Type_Enseignement_On_Conflict = {
 export type Type_Enseignement_Order_By = {
   coefficient: InputMaybe<Order_By>;
   enseignements_aggregate: InputMaybe<Enseignement_Aggregate_Order_By>;
+  key: InputMaybe<Order_By>;
   label: InputMaybe<Order_By>;
-  label_court: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: type_enseignement */
 export type Type_Enseignement_Pk_Columns_Input = {
-  /** Le type d'enseignement (unique). */
-  label: Scalars["String"]["input"];
+  /** La clé du type d'enseignement (unique). */
+  key: Scalars["String"]["input"];
 };
 
 /** select columns of table "type_enseignement" */
@@ -8436,19 +8483,19 @@ export enum Type_Enseignement_Select_Column {
   /** column name */
   Coefficient = "coefficient",
   /** column name */
-  Label = "label",
+  Key = "key",
   /** column name */
-  LabelCourt = "label_court",
+  Label = "label",
 }
 
 /** input type for updating data in table "type_enseignement" */
 export type Type_Enseignement_Set_Input = {
   /** Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type. */
   coefficient: InputMaybe<Scalars["Float"]["input"]>;
-  /** Le type d'enseignement (unique). */
+  /** La clé du type d'enseignement (unique). */
+  key: InputMaybe<Scalars["String"]["input"]>;
+  /** Le libellé type d'enseignement. */
   label: InputMaybe<Scalars["String"]["input"]>;
-  /** Le nom abrégé (optionnel). */
-  label_court: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** aggregate stddev on columns */
@@ -8484,10 +8531,10 @@ export type Type_Enseignement_Stream_Cursor_Input = {
 export type Type_Enseignement_Stream_Cursor_Value_Input = {
   /** Le coefficient multiplicateur pour obtenir le nombre d'heures EQTD à partir du nombre d'heures d'enseignement de ce type. */
   coefficient: InputMaybe<Scalars["Float"]["input"]>;
-  /** Le type d'enseignement (unique). */
+  /** La clé du type d'enseignement (unique). */
+  key: InputMaybe<Scalars["String"]["input"]>;
+  /** Le libellé type d'enseignement. */
   label: InputMaybe<Scalars["String"]["input"]>;
-  /** Le nom abrégé (optionnel). */
-  label_court: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** aggregate sum on columns */
@@ -8502,9 +8549,9 @@ export enum Type_Enseignement_Update_Column {
   /** column name */
   Coefficient = "coefficient",
   /** column name */
-  Label = "label",
+  Key = "key",
   /** column name */
-  LabelCourt = "label_court",
+  Label = "label",
 }
 
 export type Type_Enseignement_Updates = {
@@ -8538,20 +8585,22 @@ export type Type_Enseignement_Variance_Fields = {
 };
 
 /** Table contenant les différents types de modification de service. */
-export type Type_Modification = {
-  __typename?: "type_modification";
+export type Type_Modification_Service = {
+  __typename?: "type_modification_service";
   /** Une brève description. */
   description: Maybe<Scalars["String"]["output"]>;
-  /** Le type de modification (unique). */
+  /** La clé du type de modification (unique). */
+  key: Scalars["String"]["output"];
+  /** Le libellé du type de modification. */
   label: Scalars["String"]["output"];
   /** An array relationship */
-  modifications: Array<Modification_Service>;
+  modifications_service: Array<Modification_Service>;
   /** An aggregate relationship */
-  modifications_aggregate: Modification_Service_Aggregate;
+  modifications_service_aggregate: Modification_Service_Aggregate;
 };
 
 /** Table contenant les différents types de modification de service. */
-export type Type_ModificationModificationsArgs = {
+export type Type_Modification_ServiceModifications_ServiceArgs = {
   distinct_on: InputMaybe<Array<Modification_Service_Select_Column>>;
   limit: InputMaybe<Scalars["Int"]["input"]>;
   offset: InputMaybe<Scalars["Int"]["input"]>;
@@ -8560,7 +8609,7 @@ export type Type_ModificationModificationsArgs = {
 };
 
 /** Table contenant les différents types de modification de service. */
-export type Type_ModificationModifications_AggregateArgs = {
+export type Type_Modification_ServiceModifications_Service_AggregateArgs = {
   distinct_on: InputMaybe<Array<Modification_Service_Select_Column>>;
   limit: InputMaybe<Scalars["Int"]["input"]>;
   offset: InputMaybe<Scalars["Int"]["input"]>;
@@ -8568,716 +8617,735 @@ export type Type_ModificationModifications_AggregateArgs = {
   where: InputMaybe<Modification_Service_Bool_Exp>;
 };
 
-/** aggregated selection of "type_modification" */
-export type Type_Modification_Aggregate = {
-  __typename?: "type_modification_aggregate";
-  aggregate: Maybe<Type_Modification_Aggregate_Fields>;
-  nodes: Array<Type_Modification>;
+/** aggregated selection of "type_modification_service" */
+export type Type_Modification_Service_Aggregate = {
+  __typename?: "type_modification_service_aggregate";
+  aggregate: Maybe<Type_Modification_Service_Aggregate_Fields>;
+  nodes: Array<Type_Modification_Service>;
 };
 
-/** aggregate fields of "type_modification" */
-export type Type_Modification_Aggregate_Fields = {
-  __typename?: "type_modification_aggregate_fields";
+/** aggregate fields of "type_modification_service" */
+export type Type_Modification_Service_Aggregate_Fields = {
+  __typename?: "type_modification_service_aggregate_fields";
   count: Scalars["Int"]["output"];
-  max: Maybe<Type_Modification_Max_Fields>;
-  min: Maybe<Type_Modification_Min_Fields>;
+  max: Maybe<Type_Modification_Service_Max_Fields>;
+  min: Maybe<Type_Modification_Service_Min_Fields>;
 };
 
-/** aggregate fields of "type_modification" */
-export type Type_Modification_Aggregate_FieldsCountArgs = {
-  columns: InputMaybe<Array<Type_Modification_Select_Column>>;
+/** aggregate fields of "type_modification_service" */
+export type Type_Modification_Service_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Type_Modification_Service_Select_Column>>;
   distinct: InputMaybe<Scalars["Boolean"]["input"]>;
 };
 
-/** Boolean expression to filter rows from the table "type_modification". All fields are combined with a logical 'AND'. */
-export type Type_Modification_Bool_Exp = {
-  _and: InputMaybe<Array<Type_Modification_Bool_Exp>>;
-  _not: InputMaybe<Type_Modification_Bool_Exp>;
-  _or: InputMaybe<Array<Type_Modification_Bool_Exp>>;
+/** Boolean expression to filter rows from the table "type_modification_service". All fields are combined with a logical 'AND'. */
+export type Type_Modification_Service_Bool_Exp = {
+  _and: InputMaybe<Array<Type_Modification_Service_Bool_Exp>>;
+  _not: InputMaybe<Type_Modification_Service_Bool_Exp>;
+  _or: InputMaybe<Array<Type_Modification_Service_Bool_Exp>>;
   description: InputMaybe<String_Comparison_Exp>;
+  key: InputMaybe<String_Comparison_Exp>;
   label: InputMaybe<String_Comparison_Exp>;
-  modifications: InputMaybe<Modification_Service_Bool_Exp>;
-  modifications_aggregate: InputMaybe<Modification_Service_Aggregate_Bool_Exp>;
+  modifications_service: InputMaybe<Modification_Service_Bool_Exp>;
+  modifications_service_aggregate: InputMaybe<Modification_Service_Aggregate_Bool_Exp>;
 };
 
-/** unique or primary key constraints on table "type_modification" */
-export enum Type_Modification_Constraint {
-  /** unique or primary key constraint on columns "label" */
+/** unique or primary key constraints on table "type_modification_service" */
+export enum Type_Modification_Service_Constraint {
+  /** unique or primary key constraint on columns "key" */
   TypeModificationPkey = "type_modification_pkey",
 }
 
-/** input type for inserting data into table "type_modification" */
-export type Type_Modification_Insert_Input = {
+/** input type for inserting data into table "type_modification_service" */
+export type Type_Modification_Service_Insert_Input = {
   /** Une brève description. */
   description: InputMaybe<Scalars["String"]["input"]>;
-  /** Le type de modification (unique). */
+  /** La clé du type de modification (unique). */
+  key: InputMaybe<Scalars["String"]["input"]>;
+  /** Le libellé du type de modification. */
   label: InputMaybe<Scalars["String"]["input"]>;
-  modifications: InputMaybe<Modification_Service_Arr_Rel_Insert_Input>;
+  modifications_service: InputMaybe<Modification_Service_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
-export type Type_Modification_Max_Fields = {
-  __typename?: "type_modification_max_fields";
+export type Type_Modification_Service_Max_Fields = {
+  __typename?: "type_modification_service_max_fields";
   /** Une brève description. */
   description: Maybe<Scalars["String"]["output"]>;
-  /** Le type de modification (unique). */
+  /** La clé du type de modification (unique). */
+  key: Maybe<Scalars["String"]["output"]>;
+  /** Le libellé du type de modification. */
   label: Maybe<Scalars["String"]["output"]>;
 };
 
 /** aggregate min on columns */
-export type Type_Modification_Min_Fields = {
-  __typename?: "type_modification_min_fields";
+export type Type_Modification_Service_Min_Fields = {
+  __typename?: "type_modification_service_min_fields";
   /** Une brève description. */
   description: Maybe<Scalars["String"]["output"]>;
-  /** Le type de modification (unique). */
+  /** La clé du type de modification (unique). */
+  key: Maybe<Scalars["String"]["output"]>;
+  /** Le libellé du type de modification. */
   label: Maybe<Scalars["String"]["output"]>;
 };
 
-/** response of any mutation on the table "type_modification" */
-export type Type_Modification_Mutation_Response = {
-  __typename?: "type_modification_mutation_response";
+/** response of any mutation on the table "type_modification_service" */
+export type Type_Modification_Service_Mutation_Response = {
+  __typename?: "type_modification_service_mutation_response";
   /** number of rows affected by the mutation */
   affected_rows: Scalars["Int"]["output"];
   /** data from the rows affected by the mutation */
-  returning: Array<Type_Modification>;
+  returning: Array<Type_Modification_Service>;
 };
 
-/** input type for inserting object relation for remote table "type_modification" */
-export type Type_Modification_Obj_Rel_Insert_Input = {
-  data: Type_Modification_Insert_Input;
+/** input type for inserting object relation for remote table "type_modification_service" */
+export type Type_Modification_Service_Obj_Rel_Insert_Input = {
+  data: Type_Modification_Service_Insert_Input;
   /** upsert condition */
-  on_conflict: InputMaybe<Type_Modification_On_Conflict>;
+  on_conflict: InputMaybe<Type_Modification_Service_On_Conflict>;
 };
 
-/** on_conflict condition type for table "type_modification" */
-export type Type_Modification_On_Conflict = {
-  constraint: Type_Modification_Constraint;
-  update_columns: Array<Type_Modification_Update_Column>;
-  where: InputMaybe<Type_Modification_Bool_Exp>;
+/** on_conflict condition type for table "type_modification_service" */
+export type Type_Modification_Service_On_Conflict = {
+  constraint: Type_Modification_Service_Constraint;
+  update_columns: Array<Type_Modification_Service_Update_Column>;
+  where: InputMaybe<Type_Modification_Service_Bool_Exp>;
 };
 
-/** Ordering options when selecting data from "type_modification". */
-export type Type_Modification_Order_By = {
+/** Ordering options when selecting data from "type_modification_service". */
+export type Type_Modification_Service_Order_By = {
   description: InputMaybe<Order_By>;
+  key: InputMaybe<Order_By>;
   label: InputMaybe<Order_By>;
-  modifications_aggregate: InputMaybe<Modification_Service_Aggregate_Order_By>;
+  modifications_service_aggregate: InputMaybe<Modification_Service_Aggregate_Order_By>;
 };
 
-/** primary key columns input for table: type_modification */
-export type Type_Modification_Pk_Columns_Input = {
-  /** Le type de modification (unique). */
-  label: Scalars["String"]["input"];
+/** primary key columns input for table: type_modification_service */
+export type Type_Modification_Service_Pk_Columns_Input = {
+  /** La clé du type de modification (unique). */
+  key: Scalars["String"]["input"];
 };
 
-/** select columns of table "type_modification" */
-export enum Type_Modification_Select_Column {
+/** select columns of table "type_modification_service" */
+export enum Type_Modification_Service_Select_Column {
   /** column name */
   Description = "description",
+  /** column name */
+  Key = "key",
   /** column name */
   Label = "label",
 }
 
-/** input type for updating data in table "type_modification" */
-export type Type_Modification_Set_Input = {
+/** input type for updating data in table "type_modification_service" */
+export type Type_Modification_Service_Set_Input = {
   /** Une brève description. */
   description: InputMaybe<Scalars["String"]["input"]>;
-  /** Le type de modification (unique). */
+  /** La clé du type de modification (unique). */
+  key: InputMaybe<Scalars["String"]["input"]>;
+  /** Le libellé du type de modification. */
   label: InputMaybe<Scalars["String"]["input"]>;
 };
 
-/** Streaming cursor of the table "type_modification" */
-export type Type_Modification_Stream_Cursor_Input = {
+/** Streaming cursor of the table "type_modification_service" */
+export type Type_Modification_Service_Stream_Cursor_Input = {
   /** Stream column input with initial value */
-  initial_value: Type_Modification_Stream_Cursor_Value_Input;
+  initial_value: Type_Modification_Service_Stream_Cursor_Value_Input;
   /** cursor ordering */
   ordering: InputMaybe<Cursor_Ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
-export type Type_Modification_Stream_Cursor_Value_Input = {
+export type Type_Modification_Service_Stream_Cursor_Value_Input = {
   /** Une brève description. */
   description: InputMaybe<Scalars["String"]["input"]>;
-  /** Le type de modification (unique). */
+  /** La clé du type de modification (unique). */
+  key: InputMaybe<Scalars["String"]["input"]>;
+  /** Le libellé du type de modification. */
   label: InputMaybe<Scalars["String"]["input"]>;
 };
 
-/** update columns of table "type_modification" */
-export enum Type_Modification_Update_Column {
+/** update columns of table "type_modification_service" */
+export enum Type_Modification_Service_Update_Column {
   /** column name */
   Description = "description",
+  /** column name */
+  Key = "key",
   /** column name */
   Label = "label",
 }
 
-export type Type_Modification_Updates = {
+export type Type_Modification_Service_Updates = {
   /** sets the columns of the filtered rows to the given values */
-  _set: InputMaybe<Type_Modification_Set_Input>;
+  _set: InputMaybe<Type_Modification_Service_Set_Input>;
   /** filter the rows which have to be updated */
-  where: Type_Modification_Bool_Exp;
+  where: Type_Modification_Service_Bool_Exp;
 };
 
-export type GetAnneesQueryVariables = Exact<{ [key: string]: never }>;
-
-export type GetAnneesQuery = {
-  __typename?: "query_root";
-  annees: Array<{
-    __typename?: "annee";
-    value: number;
-    visible: boolean;
-    enCours: boolean | null;
-  }>;
-};
-
-export type UpdateAnneeEnCoursMutationVariables = Exact<{
-  value: Scalars["Int"]["input"];
-}>;
-
-export type UpdateAnneeEnCoursMutation = {
-  __typename?: "mutation_root";
-  annees: {
-    __typename?: "annee_mutation_response";
-    returning: Array<{ __typename?: "annee"; value: number }>;
-  } | null;
-  enCours: { __typename?: "annee"; value: number } | null;
-};
-
-export type DemandeFragment = {
-  __typename?: "demande";
-  id: number;
-  heures: number;
-  prioritaire: boolean | null;
-  serviceId: number;
-  typeDemande: string;
-  service: {
-    __typename?: "service";
-    intervenant: {
-      __typename?: "intervenant";
-      uid: string;
-      nom: string;
-      prenom: string;
-      alias: string | null;
-    };
-  };
-  enseignement: {
-    __typename?: "enseignement";
-    id: number;
-    heures: number | null;
-  };
-};
-
-export type TotalHeuresFragment = {
-  __typename?: "demande_aggregate";
-  aggregate: {
-    __typename?: "demande_aggregate_fields";
-    sum: { __typename?: "demande_sum_fields"; heures: number | null } | null;
-  } | null;
-};
-
-export type TotalHeuresEqtdFragment = {
-  __typename?: "demande_aggregate";
-  aggregate: {
-    __typename?: "demande_aggregate_fields";
-    sum: {
-      __typename?: "demande_sum_fields";
-      heuresEQTD: number | null;
-    } | null;
-  } | null;
-};
-
-export type GetDemandeQueryVariables = Exact<{
-  serviceId: Scalars["Int"]["input"];
-  ensId: Scalars["Int"]["input"];
-  typeDemande: Scalars["String"]["input"];
-}>;
-
-export type GetDemandeQuery = {
-  __typename?: "query_root";
-  demande: Array<{
-    __typename?: "demande";
-    id: number;
-    heures: number;
-    serviceId: number;
-    ensId: number;
-    typeDemande: string;
-  }>;
-};
-
-export type UpsertDemandeMutationVariables = Exact<{
-  serviceId: Scalars["Int"]["input"];
-  ensId: Scalars["Int"]["input"];
-  typeDemande: Scalars["String"]["input"];
-  heures: Scalars["Float"]["input"];
-}>;
-
-export type UpsertDemandeMutation = {
-  __typename?: "mutation_root";
-  demande: { __typename?: "demande"; id: number } | null;
-};
-
-export type DeleteDemandeMutationVariables = Exact<{
-  serviceId: Scalars["Int"]["input"];
-  ensId: Scalars["Int"]["input"];
-  typeDemande: Scalars["String"]["input"];
-}>;
-
-export type DeleteDemandeMutation = {
-  __typename?: "mutation_root";
-  demandes: {
-    __typename?: "demande_mutation_response";
-    returning: Array<{ __typename?: "demande"; id: number }>;
-  } | null;
-};
-
-export type DeleteDemandeByIdMutationVariables = Exact<{
-  id: Scalars["Int"]["input"];
-}>;
-
-export type DeleteDemandeByIdMutation = {
-  __typename?: "mutation_root";
-  demande: { __typename?: "demande"; id: number } | null;
-};
-
-export type DummyMutationMutationVariables = Exact<{ [key: string]: never }>;
-
-export type DummyMutationMutation = {
-  __typename?: "mutation_root";
-  demandes: {
-    __typename?: "demande_mutation_response";
-    returning: Array<{ __typename?: "demande"; id: number }>;
-  } | null;
-};
-
-export type ResponsableFragment = {
+export type CoordinatorFragment = {
   __typename?: "responsable";
   id: number;
-  commentaire: string | null;
-  intervenant: {
+  comment: string | null;
+  profile: {
     __typename?: "intervenant";
     uid: string;
-    nom: string;
-    prenom: string;
     alias: string | null;
+    firstname: string;
+    lastname: string;
   };
-};
-
-export type ResumeFragment = {
-  __typename?: "enseignement";
-  description: string | null;
-  ensId: number;
-  heuresParGroupe: number | null;
-  responsables: Array<{
-    __typename?: "responsable";
-    id: number;
-    commentaire: string | null;
-    intervenant: {
-      __typename?: "intervenant";
-      uid: string;
-      nom: string;
-      prenom: string;
-      alias: string | null;
-    };
-  }>;
-  mention: {
-    __typename?: "mention";
-    responsables: Array<{
-      __typename?: "responsable";
-      id: number;
-      commentaire: string | null;
-      intervenant: {
-        __typename?: "intervenant";
-        uid: string;
-        nom: string;
-        prenom: string;
-        alias: string | null;
-      };
-    }>;
-  };
-  parcours: {
-    __typename?: "parcours";
-    responsables: Array<{
-      __typename?: "responsable";
-      id: number;
-      commentaire: string | null;
-      intervenant: {
-        __typename?: "intervenant";
-        uid: string;
-        nom: string;
-        prenom: string;
-        alias: string | null;
-      };
-    }>;
-  } | null;
 };
 
 export type ArchiveFragment = {
   __typename?: "enseignement";
-  annee: number;
-  ensId: number;
-  demandes: Array<{
+  courseId: number;
+  year: number;
+  requests: Array<{
     __typename?: "demande";
     id: number;
-    heures: number;
-    prioritaire: boolean | null;
-    serviceId: number;
-    typeDemande: string;
-    service: {
-      __typename?: "service";
-      intervenant: {
-        __typename?: "intervenant";
-        uid: string;
-        nom: string;
-        prenom: string;
-        alias: string | null;
-      };
+    requestType: string;
+    hours: number;
+    weightedHours: number | null;
+    isPriority: boolean | null;
+    teacher: {
+      __typename?: "intervenant";
+      uid: string;
+      alias: string | null;
+      firstname: string;
+      lastname: string;
     };
-    enseignement: {
+    course: {
       __typename?: "enseignement";
       id: number;
-      heures: number | null;
+      hoursPerGroup: number | null;
     };
   }>;
 };
 
 export type NestedArchivesFragment = {
   __typename?: "enseignement";
-  annee: number;
-  ensId: number;
+  courseId: number;
+  year: number;
   parent: {
     __typename?: "enseignement";
-    annee: number;
-    ensId: number;
+    courseId: number;
+    year: number;
     parent: {
       __typename?: "enseignement";
-      annee: number;
-      ensId: number;
-      demandes: Array<{
+      courseId: number;
+      year: number;
+      requests: Array<{
         __typename?: "demande";
         id: number;
-        heures: number;
-        prioritaire: boolean | null;
-        serviceId: number;
-        typeDemande: string;
-        service: {
-          __typename?: "service";
-          intervenant: {
-            __typename?: "intervenant";
-            uid: string;
-            nom: string;
-            prenom: string;
-            alias: string | null;
-          };
+        requestType: string;
+        hours: number;
+        weightedHours: number | null;
+        isPriority: boolean | null;
+        teacher: {
+          __typename?: "intervenant";
+          uid: string;
+          alias: string | null;
+          firstname: string;
+          lastname: string;
         };
-        enseignement: {
+        course: {
           __typename?: "enseignement";
           id: number;
-          heures: number | null;
+          hoursPerGroup: number | null;
         };
       }>;
     } | null;
-    demandes: Array<{
+    requests: Array<{
       __typename?: "demande";
       id: number;
-      heures: number;
-      prioritaire: boolean | null;
-      serviceId: number;
-      typeDemande: string;
-      service: {
-        __typename?: "service";
-        intervenant: {
-          __typename?: "intervenant";
-          uid: string;
-          nom: string;
-          prenom: string;
-          alias: string | null;
-        };
+      requestType: string;
+      hours: number;
+      weightedHours: number | null;
+      isPriority: boolean | null;
+      teacher: {
+        __typename?: "intervenant";
+        uid: string;
+        alias: string | null;
+        firstname: string;
+        lastname: string;
       };
-      enseignement: {
+      course: {
         __typename?: "enseignement";
         id: number;
-        heures: number | null;
+        hoursPerGroup: number | null;
       };
     }>;
   } | null;
-  demandes: Array<{
+  requests: Array<{
     __typename?: "demande";
     id: number;
-    heures: number;
-    prioritaire: boolean | null;
-    serviceId: number;
-    typeDemande: string;
-    service: {
-      __typename?: "service";
-      intervenant: {
-        __typename?: "intervenant";
-        uid: string;
-        nom: string;
-        prenom: string;
-        alias: string | null;
-      };
+    requestType: string;
+    hours: number;
+    weightedHours: number | null;
+    isPriority: boolean | null;
+    teacher: {
+      __typename?: "intervenant";
+      uid: string;
+      alias: string | null;
+      firstname: string;
+      lastname: string;
     };
-    enseignement: {
+    course: {
       __typename?: "enseignement";
       id: number;
-      heures: number | null;
+      hoursPerGroup: number | null;
     };
   }>;
 };
 
-export type GetEnseignementsTableRowsQueryVariables = Exact<{
-  annee: Scalars["Int"]["input"];
+export type CourseDetailsFragment = {
+  __typename?: "enseignement";
+  description: string | null;
+  courseId: number;
+  hoursPerGroup: number | null;
+  coordinators: Array<{
+    __typename?: "responsable";
+    id: number;
+    comment: string | null;
+    profile: {
+      __typename?: "intervenant";
+      uid: string;
+      alias: string | null;
+      firstname: string;
+      lastname: string;
+    };
+  }>;
+  program: {
+    __typename?: "mention";
+    coordinators: Array<{
+      __typename?: "responsable";
+      id: number;
+      comment: string | null;
+      profile: {
+        __typename?: "intervenant";
+        uid: string;
+        alias: string | null;
+        firstname: string;
+        lastname: string;
+      };
+    }>;
+  };
+  track: {
+    __typename?: "parcours";
+    coordinators: Array<{
+      __typename?: "responsable";
+      id: number;
+      comment: string | null;
+      profile: {
+        __typename?: "intervenant";
+        uid: string;
+        alias: string | null;
+        firstname: string;
+        lastname: string;
+      };
+    }>;
+  } | null;
+  requests: Array<{
+    __typename?: "demande";
+    id: number;
+    requestType: string;
+    hours: number;
+    weightedHours: number | null;
+    isPriority: boolean | null;
+    teacher: {
+      __typename?: "intervenant";
+      uid: string;
+      alias: string | null;
+      firstname: string;
+      lastname: string;
+    };
+    course: {
+      __typename?: "enseignement";
+      id: number;
+      hoursPerGroup: number | null;
+    };
+  }>;
+  priorities: Array<{
+    __typename?: "priorite";
+    id: number;
+    courseId: number;
+    seniority: number | null;
+    isPriority: boolean | null;
+    teacher: {
+      __typename?: "intervenant";
+      uid: string;
+      alias: string | null;
+      firstname: string;
+      lastname: string;
+    };
+  }>;
+  parent: {
+    __typename?: "enseignement";
+    courseId: number;
+    year: number;
+    parent: {
+      __typename?: "enseignement";
+      courseId: number;
+      year: number;
+      parent: {
+        __typename?: "enseignement";
+        courseId: number;
+        year: number;
+        requests: Array<{
+          __typename?: "demande";
+          id: number;
+          requestType: string;
+          hours: number;
+          weightedHours: number | null;
+          isPriority: boolean | null;
+          teacher: {
+            __typename?: "intervenant";
+            uid: string;
+            alias: string | null;
+            firstname: string;
+            lastname: string;
+          };
+          course: {
+            __typename?: "enseignement";
+            id: number;
+            hoursPerGroup: number | null;
+          };
+        }>;
+      } | null;
+      requests: Array<{
+        __typename?: "demande";
+        id: number;
+        requestType: string;
+        hours: number;
+        weightedHours: number | null;
+        isPriority: boolean | null;
+        teacher: {
+          __typename?: "intervenant";
+          uid: string;
+          alias: string | null;
+          firstname: string;
+          lastname: string;
+        };
+        course: {
+          __typename?: "enseignement";
+          id: number;
+          hoursPerGroup: number | null;
+        };
+      }>;
+    } | null;
+    requests: Array<{
+      __typename?: "demande";
+      id: number;
+      requestType: string;
+      hours: number;
+      weightedHours: number | null;
+      isPriority: boolean | null;
+      teacher: {
+        __typename?: "intervenant";
+        uid: string;
+        alias: string | null;
+        firstname: string;
+        lastname: string;
+      };
+      course: {
+        __typename?: "enseignement";
+        id: number;
+        hoursPerGroup: number | null;
+      };
+    }>;
+  } | null;
+};
+
+export type CourseRowFragment = {
+  __typename?: "enseignement";
+  id: number;
+  visible: boolean;
+  name: string;
+  shortName: string | null;
+  semester: number;
+  hoursPerGroup: number | null;
+  numberOfGroups: number | null;
+  program: {
+    __typename?: "mention";
+    id: number;
+    visible: boolean;
+    name: string;
+    shortName: string | null;
+    degree: {
+      __typename?: "cursus";
+      id: number;
+      visible: boolean;
+      name: string;
+      shortName: string | null;
+    };
+  };
+  track: {
+    __typename?: "parcours";
+    id: number;
+    visible: boolean;
+    name: string;
+    shortName: string | null;
+  } | null;
+  courseType: { __typename?: "type_enseignement"; key: string; label: string };
+  totalAssigned: {
+    __typename?: "demande_aggregate";
+    aggregate: {
+      __typename?: "demande_aggregate_fields";
+      sum: { __typename?: "demande_sum_fields"; hours: number | null } | null;
+    } | null;
+  };
+  totalPrimary: {
+    __typename?: "demande_aggregate";
+    aggregate: {
+      __typename?: "demande_aggregate_fields";
+      sum: { __typename?: "demande_sum_fields"; hours: number | null } | null;
+    } | null;
+  };
+  totalSecondary: {
+    __typename?: "demande_aggregate";
+    aggregate: {
+      __typename?: "demande_aggregate_fields";
+      sum: { __typename?: "demande_sum_fields"; hours: number | null } | null;
+    } | null;
+  };
+  totalPriority: {
+    __typename?: "demande_aggregate";
+    aggregate: {
+      __typename?: "demande_aggregate_fields";
+      sum: { __typename?: "demande_sum_fields"; hours: number | null } | null;
+    } | null;
+  };
+};
+
+export type GetCoursesTableRowsQueryVariables = Exact<{
+  year: Scalars["Int"]["input"];
 }>;
 
-export type GetEnseignementsTableRowsQuery = {
+export type GetCoursesTableRowsQuery = {
   __typename?: "query_root";
-  enseignements: Array<{
+  courses: Array<{
     __typename?: "enseignement";
     id: number;
-    nom: string;
-    semestre: number;
     visible: boolean;
-    nomCourt: string | null;
-    heures: number | null;
-    groupes: number | null;
-    mention: {
+    name: string;
+    shortName: string | null;
+    semester: number;
+    hoursPerGroup: number | null;
+    numberOfGroups: number | null;
+    program: {
       __typename?: "mention";
       id: number;
-      nom: string;
       visible: boolean;
-      nomCourt: string | null;
-      cursus: {
+      name: string;
+      shortName: string | null;
+      degree: {
         __typename?: "cursus";
         id: number;
-        nom: string;
         visible: boolean;
-        nomCourt: string | null;
+        name: string;
+        shortName: string | null;
       };
     };
-    parcours: {
+    track: {
       __typename?: "parcours";
       id: number;
-      nom: string;
       visible: boolean;
-      nomCourt: string | null;
+      name: string;
+      shortName: string | null;
     } | null;
-    typeEnseignement: {
+    courseType: {
       __typename?: "type_enseignement";
+      key: string;
       label: string;
-      labelCourt: string | null;
     };
-    totalAttributions: {
+    totalAssigned: {
       __typename?: "demande_aggregate";
       aggregate: {
         __typename?: "demande_aggregate_fields";
-        sum: {
-          __typename?: "demande_sum_fields";
-          heures: number | null;
-        } | null;
+        sum: { __typename?: "demande_sum_fields"; hours: number | null } | null;
       } | null;
     };
-    totalPrincipales: {
+    totalPrimary: {
       __typename?: "demande_aggregate";
       aggregate: {
         __typename?: "demande_aggregate_fields";
-        sum: {
-          __typename?: "demande_sum_fields";
-          heures: number | null;
-        } | null;
+        sum: { __typename?: "demande_sum_fields"; hours: number | null } | null;
       } | null;
     };
-    totalSecondaires: {
+    totalSecondary: {
       __typename?: "demande_aggregate";
       aggregate: {
         __typename?: "demande_aggregate_fields";
-        sum: {
-          __typename?: "demande_sum_fields";
-          heures: number | null;
-        } | null;
+        sum: { __typename?: "demande_sum_fields"; hours: number | null } | null;
       } | null;
     };
-    totalPrioritaire: {
+    totalPriority: {
       __typename?: "demande_aggregate";
       aggregate: {
         __typename?: "demande_aggregate_fields";
-        sum: {
-          __typename?: "demande_sum_fields";
-          heures: number | null;
-        } | null;
+        sum: { __typename?: "demande_sum_fields"; hours: number | null } | null;
       } | null;
     };
   }>;
 };
 
-export type GetEnseignementDetailsQueryVariables = Exact<{
+export type GetCourseDetailsQueryVariables = Exact<{
   ensId: Scalars["Int"]["input"];
 }>;
 
-export type GetEnseignementDetailsQuery = {
+export type GetCourseDetailsQuery = {
   __typename?: "query_root";
-  enseignement: {
+  course: {
     __typename?: "enseignement";
     description: string | null;
-    ensId: number;
-    heuresParGroupe: number | null;
-    demandes: Array<{
-      __typename?: "demande";
+    courseId: number;
+    hoursPerGroup: number | null;
+    coordinators: Array<{
+      __typename?: "responsable";
       id: number;
-      heures: number;
-      prioritaire: boolean | null;
-      serviceId: number;
-      typeDemande: string;
-      service: {
-        __typename?: "service";
-        intervenant: {
-          __typename?: "intervenant";
-          uid: string;
-          nom: string;
-          prenom: string;
-          alias: string | null;
-        };
-      };
-      enseignement: {
-        __typename?: "enseignement";
-        id: number;
-        heures: number | null;
-      };
-    }>;
-    priorites: Array<{
-      __typename?: "priorite";
-      id: number;
-      anciennete: number | null;
-      prioritaire: boolean | null;
-      ensId: number;
-      intervenant: {
+      comment: string | null;
+      profile: {
         __typename?: "intervenant";
         uid: string;
-        nom: string;
-        prenom: string;
         alias: string | null;
+        firstname: string;
+        lastname: string;
+      };
+    }>;
+    program: {
+      __typename?: "mention";
+      coordinators: Array<{
+        __typename?: "responsable";
+        id: number;
+        comment: string | null;
+        profile: {
+          __typename?: "intervenant";
+          uid: string;
+          alias: string | null;
+          firstname: string;
+          lastname: string;
+        };
+      }>;
+    };
+    track: {
+      __typename?: "parcours";
+      coordinators: Array<{
+        __typename?: "responsable";
+        id: number;
+        comment: string | null;
+        profile: {
+          __typename?: "intervenant";
+          uid: string;
+          alias: string | null;
+          firstname: string;
+          lastname: string;
+        };
+      }>;
+    } | null;
+    requests: Array<{
+      __typename?: "demande";
+      id: number;
+      requestType: string;
+      hours: number;
+      weightedHours: number | null;
+      isPriority: boolean | null;
+      teacher: {
+        __typename?: "intervenant";
+        uid: string;
+        alias: string | null;
+        firstname: string;
+        lastname: string;
+      };
+      course: {
+        __typename?: "enseignement";
+        id: number;
+        hoursPerGroup: number | null;
+      };
+    }>;
+    priorities: Array<{
+      __typename?: "priorite";
+      id: number;
+      courseId: number;
+      seniority: number | null;
+      isPriority: boolean | null;
+      teacher: {
+        __typename?: "intervenant";
+        uid: string;
+        alias: string | null;
+        firstname: string;
+        lastname: string;
       };
     }>;
     parent: {
       __typename?: "enseignement";
-      annee: number;
-      ensId: number;
+      courseId: number;
+      year: number;
       parent: {
         __typename?: "enseignement";
-        annee: number;
-        ensId: number;
+        courseId: number;
+        year: number;
         parent: {
           __typename?: "enseignement";
-          annee: number;
-          ensId: number;
-          demandes: Array<{
+          courseId: number;
+          year: number;
+          requests: Array<{
             __typename?: "demande";
             id: number;
-            heures: number;
-            prioritaire: boolean | null;
-            serviceId: number;
-            typeDemande: string;
-            service: {
-              __typename?: "service";
-              intervenant: {
-                __typename?: "intervenant";
-                uid: string;
-                nom: string;
-                prenom: string;
-                alias: string | null;
-              };
+            requestType: string;
+            hours: number;
+            weightedHours: number | null;
+            isPriority: boolean | null;
+            teacher: {
+              __typename?: "intervenant";
+              uid: string;
+              alias: string | null;
+              firstname: string;
+              lastname: string;
             };
-            enseignement: {
+            course: {
               __typename?: "enseignement";
               id: number;
-              heures: number | null;
+              hoursPerGroup: number | null;
             };
           }>;
         } | null;
-        demandes: Array<{
+        requests: Array<{
           __typename?: "demande";
           id: number;
-          heures: number;
-          prioritaire: boolean | null;
-          serviceId: number;
-          typeDemande: string;
-          service: {
-            __typename?: "service";
-            intervenant: {
-              __typename?: "intervenant";
-              uid: string;
-              nom: string;
-              prenom: string;
-              alias: string | null;
-            };
+          requestType: string;
+          hours: number;
+          weightedHours: number | null;
+          isPriority: boolean | null;
+          teacher: {
+            __typename?: "intervenant";
+            uid: string;
+            alias: string | null;
+            firstname: string;
+            lastname: string;
           };
-          enseignement: {
+          course: {
             __typename?: "enseignement";
             id: number;
-            heures: number | null;
+            hoursPerGroup: number | null;
           };
         }>;
       } | null;
-      demandes: Array<{
+      requests: Array<{
         __typename?: "demande";
         id: number;
-        heures: number;
-        prioritaire: boolean | null;
-        serviceId: number;
-        typeDemande: string;
-        service: {
-          __typename?: "service";
-          intervenant: {
-            __typename?: "intervenant";
-            uid: string;
-            nom: string;
-            prenom: string;
-            alias: string | null;
-          };
+        requestType: string;
+        hours: number;
+        weightedHours: number | null;
+        isPriority: boolean | null;
+        teacher: {
+          __typename?: "intervenant";
+          uid: string;
+          alias: string | null;
+          firstname: string;
+          lastname: string;
         };
-        enseignement: {
+        course: {
           __typename?: "enseignement";
           id: number;
-          heures: number | null;
-        };
-      }>;
-    } | null;
-    responsables: Array<{
-      __typename?: "responsable";
-      id: number;
-      commentaire: string | null;
-      intervenant: {
-        __typename?: "intervenant";
-        uid: string;
-        nom: string;
-        prenom: string;
-        alias: string | null;
-      };
-    }>;
-    mention: {
-      __typename?: "mention";
-      responsables: Array<{
-        __typename?: "responsable";
-        id: number;
-        commentaire: string | null;
-        intervenant: {
-          __typename?: "intervenant";
-          uid: string;
-          nom: string;
-          prenom: string;
-          alias: string | null;
-        };
-      }>;
-    };
-    parcours: {
-      __typename?: "parcours";
-      responsables: Array<{
-        __typename?: "responsable";
-        id: number;
-        commentaire: string | null;
-        intervenant: {
-          __typename?: "intervenant";
-          uid: string;
-          nom: string;
-          prenom: string;
-          alias: string | null;
+          hoursPerGroup: number | null;
         };
       }>;
     } | null;
@@ -9285,18 +9353,25 @@ export type GetEnseignementDetailsQuery = {
 };
 
 export type UpdateDescriptionMutationVariables = Exact<{
-  id: Scalars["Int"]["input"];
+  courseId: Scalars["Int"]["input"];
   description: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type UpdateDescriptionMutation = {
   __typename?: "mutation_root";
-  description: { __typename?: "enseignement"; id: number } | null;
+  course: { __typename?: "enseignement"; id: number } | null;
+};
+
+export type MessageFragment = {
+  __typename?: "message";
+  id: number;
+  body: string;
 };
 
 export type UpsertMessageMutationVariables = Exact<{
-  serviceId: Scalars["Int"]["input"];
-  contenu: Scalars["String"]["input"];
+  year: Scalars["Int"]["input"];
+  uid: Scalars["String"]["input"];
+  body: Scalars["String"]["input"];
 }>;
 
 export type UpsertMessageMutation = {
@@ -9305,7 +9380,8 @@ export type UpsertMessageMutation = {
 };
 
 export type DeleteMessageMutationVariables = Exact<{
-  serviceId: Scalars["Int"]["input"];
+  year: Scalars["Int"]["input"];
+  uid: Scalars["String"]["input"];
 }>;
 
 export type DeleteMessageMutation = {
@@ -9313,45 +9389,6 @@ export type DeleteMessageMutation = {
   messages: {
     __typename?: "message_mutation_response";
     returning: Array<{ __typename?: "message"; id: number }>;
-  } | null;
-};
-
-export type GetTypesModificationQueryVariables = Exact<{
-  [key: string]: never;
-}>;
-
-export type GetTypesModificationQuery = {
-  __typename?: "query_root";
-  typesModification: Array<{
-    __typename?: "type_modification";
-    label: string;
-    description: string | null;
-  }>;
-};
-
-export type InsertModificationMutationVariables = Exact<{
-  serviceId: Scalars["Int"]["input"];
-  typeModification: Scalars["String"]["input"];
-  heuresEQTD: Scalars["Float"]["input"];
-}>;
-
-export type InsertModificationMutation = {
-  __typename?: "mutation_root";
-  modificationService: {
-    __typename?: "modification_service";
-    id: number;
-  } | null;
-};
-
-export type DeleteModificationMutationVariables = Exact<{
-  id: Scalars["Int"]["input"];
-}>;
-
-export type DeleteModificationMutation = {
-  __typename?: "mutation_root";
-  modificationService: {
-    __typename?: "modification_service";
-    id: number;
   } | null;
 };
 
@@ -9375,27 +9412,27 @@ export type SetCurrentPhaseMutation = {
   enCours: { __typename?: "phase"; value: string } | null;
 };
 
-export type PrioriteFragment = {
+export type PriorityFragment = {
   __typename?: "priorite";
   id: number;
-  anciennete: number | null;
-  prioritaire: boolean | null;
-  ensId: number;
-  intervenant: {
+  courseId: number;
+  seniority: number | null;
+  isPriority: boolean | null;
+  teacher: {
     __typename?: "intervenant";
     uid: string;
-    nom: string;
-    prenom: string;
     alias: string | null;
+    firstname: string;
+    lastname: string;
   };
 };
 
 export type ProfileFragment = {
   __typename?: "intervenant";
   uid: string;
-  nom: string;
-  prenom: string;
   alias: string | null;
+  firstname: string;
+  lastname: string;
 };
 
 export type GetProfileQueryVariables = Exact<{
@@ -9407,47 +9444,250 @@ export type GetProfileQuery = {
   profile: {
     __typename?: "intervenant";
     uid: string;
-    nom: string;
-    prenom: string;
     alias: string | null;
+    firstname: string;
+    lastname: string;
   } | null;
 };
 
-export type GetServicesQueryVariables = Exact<{
-  annee: Scalars["Int"]["input"];
+export type RequestDetailsFragment = {
+  __typename?: "demande";
+  id: number;
+  requestType: string;
+  hours: number;
+  weightedHours: number | null;
+  isPriority: boolean | null;
+  teacher: {
+    __typename?: "intervenant";
+    uid: string;
+    alias: string | null;
+    firstname: string;
+    lastname: string;
+  };
+  course: {
+    __typename?: "enseignement";
+    id: number;
+    hoursPerGroup: number | null;
+  };
+};
+
+export type TotalRequestHoursFragment = {
+  __typename?: "demande_aggregate";
+  aggregate: {
+    __typename?: "demande_aggregate_fields";
+    sum: { __typename?: "demande_sum_fields"; hours: number | null } | null;
+  } | null;
+};
+
+export type TotalRequestWeightedHoursFragment = {
+  __typename?: "demande_aggregate";
+  aggregate: {
+    __typename?: "demande_aggregate_fields";
+    sum: {
+      __typename?: "demande_sum_fields";
+      weightedHours: number | null;
+    } | null;
+  } | null;
+};
+
+export type GetRequestQueryVariables = Exact<{
+  ensId: Scalars["Int"]["input"];
+  uid: Scalars["String"]["input"];
+  typeDemande: Scalars["String"]["input"];
 }>;
 
-export type GetServicesQuery = {
+export type GetRequestQuery = {
   __typename?: "query_root";
-  services: Array<{
-    __typename?: "service";
+  requests: Array<{
+    __typename?: "demande";
     id: number;
-    intervenant: {
+    requestType: string;
+    hours: number;
+    weightedHours: number | null;
+    isPriority: boolean | null;
+    teacher: {
       __typename?: "intervenant";
       uid: string;
-      nom: string;
-      prenom: string;
       alias: string | null;
+      firstname: string;
+      lastname: string;
+    };
+    course: {
+      __typename?: "enseignement";
+      id: number;
+      hoursPerGroup: number | null;
     };
   }>;
 };
 
-export type GetServicesTableRowsQueryVariables = Exact<{
-  annee: Scalars["Int"]["input"];
-  where?: InputMaybe<Service_Bool_Exp>;
+export type UpsertDemandeMutationVariables = Exact<{
+  uid: Scalars["String"]["input"];
+  courseId: Scalars["Int"]["input"];
+  requestType: Scalars["String"]["input"];
+  hours: Scalars["Float"]["input"];
 }>;
 
-export type GetServicesTableRowsQuery = {
+export type UpsertDemandeMutation = {
+  __typename?: "mutation_root";
+  request: { __typename?: "demande"; id: number } | null;
+};
+
+export type DeleteDemandeMutationVariables = Exact<{
+  uid: Scalars["String"]["input"];
+  courseId: Scalars["Int"]["input"];
+  requestType: Scalars["String"]["input"];
+}>;
+
+export type DeleteDemandeMutation = {
+  __typename?: "mutation_root";
+  requests: {
+    __typename?: "demande_mutation_response";
+    returning: Array<{ __typename?: "demande"; id: number }>;
+  } | null;
+};
+
+export type DeleteDemandeByIdMutationVariables = Exact<{
+  id: Scalars["Int"]["input"];
+}>;
+
+export type DeleteDemandeByIdMutation = {
+  __typename?: "mutation_root";
+  request: { __typename?: "demande"; id: number } | null;
+};
+
+export type DummyMutationMutationVariables = Exact<{ [key: string]: never }>;
+
+export type DummyMutationMutation = {
+  __typename?: "mutation_root";
+  requests: {
+    __typename?: "demande_mutation_response";
+    returning: Array<{ __typename?: "demande"; id: number }>;
+  } | null;
+};
+
+export type ServiceModificationTypeFragment = {
+  __typename?: "type_modification_service";
+  key: string;
+  label: string;
+  description: string | null;
+};
+
+export type GetServiceModificationTypesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetServiceModificationTypesQuery = {
   __typename?: "query_root";
+  serviceModificationTypes: Array<{
+    __typename?: "type_modification_service";
+    key: string;
+    label: string;
+    description: string | null;
+  }>;
+};
+
+export type ServiceModificationFragment = {
+  __typename?: "modification_service";
+  id: number;
+  type: string;
+  weightedHours: number;
+};
+
+export type TotalModificationWeightedHoursFragment = {
+  __typename?: "modification_service_aggregate";
+  aggregate: {
+    __typename?: "modification_service_aggregate_fields";
+    sum: {
+      __typename?: "modification_service_sum_fields";
+      weightedHours: number | null;
+    } | null;
+  } | null;
+};
+
+export type InsertServiceModificationMutationVariables = Exact<{
+  serviceId: Scalars["Int"]["input"];
+  serviceModificationType: Scalars["String"]["input"];
+  weightedHours: Scalars["Float"]["input"];
+}>;
+
+export type InsertServiceModificationMutation = {
+  __typename?: "mutation_root";
+  serviceModification: {
+    __typename?: "modification_service";
+    id: number;
+  } | null;
+};
+
+export type DeleteServiceModificationMutationVariables = Exact<{
+  id: Scalars["Int"]["input"];
+}>;
+
+export type DeleteServiceModificationMutation = {
+  __typename?: "mutation_root";
+  serviceModification: {
+    __typename?: "modification_service";
+    id: number;
+  } | null;
+};
+
+export type ServiceFragment = {
+  __typename?: "service";
+  id: number;
+  weightedHours: number;
+  teacher: {
+    __typename?: "intervenant";
+    uid: string;
+    alias: string | null;
+    firstname: string;
+    lastname: string;
+  };
+};
+
+export type ServiceDetailsFragment = {
+  __typename?: "service";
+  id: number;
+  weightedHours: number;
+  modifications: Array<{
+    __typename?: "modification_service";
+    id: number;
+    type: string;
+    weightedHours: number;
+  }>;
+  totalModifications: {
+    __typename?: "modification_service_aggregate";
+    aggregate: {
+      __typename?: "modification_service_aggregate_fields";
+      sum: {
+        __typename?: "modification_service_sum_fields";
+        weightedHours: number | null;
+      } | null;
+    } | null;
+  };
+  teacher: {
+    __typename?: "intervenant";
+    uid: string;
+    alias: string | null;
+    firstname: string;
+    lastname: string;
+  };
+};
+
+export type TeacherRowFragment = {
+  __typename?: "intervenant";
+  visible: boolean;
+  uid: string;
+  alias: string | null;
+  firstname: string;
+  lastname: string;
   services: Array<{
     __typename?: "service";
     id: number;
-    heuresEQTD: number;
+    weightedHours: number;
     modifications: Array<{
       __typename?: "modification_service";
       id: number;
-      typeModification: string;
-      heuresEQTD: number;
+      type: string;
+      weightedHours: number;
     }>;
     totalModifications: {
       __typename?: "modification_service_aggregate";
@@ -9455,144 +9695,214 @@ export type GetServicesTableRowsQuery = {
         __typename?: "modification_service_aggregate_fields";
         sum: {
           __typename?: "modification_service_sum_fields";
-          heuresEQTD: number | null;
+          weightedHours: number | null;
         } | null;
       } | null;
     };
-    intervenant: {
+    teacher: {
       __typename?: "intervenant";
-      visible: boolean;
       uid: string;
-      nom: string;
-      prenom: string;
       alias: string | null;
+      firstname: string;
+      lastname: string;
     };
-    demandes: Array<{
-      __typename?: "demande";
+  }>;
+  requests: Array<{
+    __typename?: "demande";
+    id: number;
+    requestType: string;
+    hours: number;
+    weightedHours: number | null;
+    isPriority: boolean | null;
+    teacher: {
+      __typename?: "intervenant";
+      uid: string;
+      alias: string | null;
+      firstname: string;
+      lastname: string;
+    };
+    course: {
+      __typename?: "enseignement";
       id: number;
-      heures: number;
-      ensId: number;
-      typeDemande: string;
-      heuresEQTD: number | null;
-    }>;
-    totalAttributions: {
-      __typename?: "demande_aggregate";
-      aggregate: {
-        __typename?: "demande_aggregate_fields";
-        sum: {
-          __typename?: "demande_sum_fields";
-          heures: number | null;
-          heuresEQTD: number | null;
-        } | null;
-      } | null;
+      hoursPerGroup: number | null;
     };
-    totalPrincipales: {
-      __typename?: "demande_aggregate";
-      aggregate: {
-        __typename?: "demande_aggregate_fields";
-        sum: {
-          __typename?: "demande_sum_fields";
-          heures: number | null;
-          heuresEQTD: number | null;
-        } | null;
+  }>;
+  totalAssigned: {
+    __typename?: "demande_aggregate";
+    aggregate: {
+      __typename?: "demande_aggregate_fields";
+      sum: {
+        __typename?: "demande_sum_fields";
+        hours: number | null;
+        weightedHours: number | null;
       } | null;
-    };
-    totalSecondaires: {
-      __typename?: "demande_aggregate";
-      aggregate: {
-        __typename?: "demande_aggregate_fields";
-        sum: {
-          __typename?: "demande_sum_fields";
-          heures: number | null;
-          heuresEQTD: number | null;
-        } | null;
+    } | null;
+  };
+  totalPrimary: {
+    __typename?: "demande_aggregate";
+    aggregate: {
+      __typename?: "demande_aggregate_fields";
+      sum: {
+        __typename?: "demande_sum_fields";
+        hours: number | null;
+        weightedHours: number | null;
       } | null;
-    };
-    messages: Array<{ __typename?: "message"; id: number; contenu: string }>;
+    } | null;
+  };
+  totalSecondary: {
+    __typename?: "demande_aggregate";
+    aggregate: {
+      __typename?: "demande_aggregate_fields";
+      sum: {
+        __typename?: "demande_sum_fields";
+        hours: number | null;
+        weightedHours: number | null;
+      } | null;
+    } | null;
+  };
+  messages: Array<{ __typename?: "message"; id: number; body: string }>;
+};
+
+export type GetTeachersQueryVariables = Exact<{
+  year: Scalars["Int"]["input"];
+  where?: InputMaybe<Intervenant_Bool_Exp>;
+}>;
+
+export type GetTeachersQuery = {
+  __typename?: "query_root";
+  teachers: Array<{
+    __typename?: "intervenant";
+    uid: string;
+    alias: string | null;
+    firstname: string;
+    lastname: string;
   }>;
 };
 
-export const TotalHeuresFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalHeures" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "demande_aggregate" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "aggregate" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "sum" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "heures" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<TotalHeuresFragment, unknown>;
-export const TotalHeuresEqtdFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalHeuresEQTD" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "demande_aggregate" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "aggregate" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "sum" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "heuresEQTD" },
-                        name: { kind: "Name", value: "heures_eqtd" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<TotalHeuresEqtdFragment, unknown>;
+export type GetTeachersTableRowsQueryVariables = Exact<{
+  year: Scalars["Int"]["input"];
+  where?: InputMaybe<Intervenant_Bool_Exp>;
+}>;
+
+export type GetTeachersTableRowsQuery = {
+  __typename?: "query_root";
+  teachers: Array<{
+    __typename?: "intervenant";
+    visible: boolean;
+    uid: string;
+    alias: string | null;
+    firstname: string;
+    lastname: string;
+    services: Array<{
+      __typename?: "service";
+      id: number;
+      weightedHours: number;
+      modifications: Array<{
+        __typename?: "modification_service";
+        id: number;
+        type: string;
+        weightedHours: number;
+      }>;
+      totalModifications: {
+        __typename?: "modification_service_aggregate";
+        aggregate: {
+          __typename?: "modification_service_aggregate_fields";
+          sum: {
+            __typename?: "modification_service_sum_fields";
+            weightedHours: number | null;
+          } | null;
+        } | null;
+      };
+      teacher: {
+        __typename?: "intervenant";
+        uid: string;
+        alias: string | null;
+        firstname: string;
+        lastname: string;
+      };
+    }>;
+    requests: Array<{
+      __typename?: "demande";
+      id: number;
+      requestType: string;
+      hours: number;
+      weightedHours: number | null;
+      isPriority: boolean | null;
+      teacher: {
+        __typename?: "intervenant";
+        uid: string;
+        alias: string | null;
+        firstname: string;
+        lastname: string;
+      };
+      course: {
+        __typename?: "enseignement";
+        id: number;
+        hoursPerGroup: number | null;
+      };
+    }>;
+    totalAssigned: {
+      __typename?: "demande_aggregate";
+      aggregate: {
+        __typename?: "demande_aggregate_fields";
+        sum: {
+          __typename?: "demande_sum_fields";
+          hours: number | null;
+          weightedHours: number | null;
+        } | null;
+      } | null;
+    };
+    totalPrimary: {
+      __typename?: "demande_aggregate";
+      aggregate: {
+        __typename?: "demande_aggregate_fields";
+        sum: {
+          __typename?: "demande_sum_fields";
+          hours: number | null;
+          weightedHours: number | null;
+        } | null;
+      } | null;
+    };
+    totalSecondary: {
+      __typename?: "demande_aggregate";
+      aggregate: {
+        __typename?: "demande_aggregate_fields";
+        sum: {
+          __typename?: "demande_sum_fields";
+          hours: number | null;
+          weightedHours: number | null;
+        } | null;
+      } | null;
+    };
+    messages: Array<{ __typename?: "message"; id: number; body: string }>;
+  }>;
+};
+
+export type GetYearsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetYearsQuery = {
+  __typename?: "query_root";
+  years: Array<{
+    __typename?: "annee";
+    value: number;
+    visible: boolean;
+    current: boolean | null;
+  }>;
+};
+
+export type UpdateCurrentYearMutationVariables = Exact<{
+  value: Scalars["Int"]["input"];
+}>;
+
+export type UpdateCurrentYearMutation = {
+  __typename?: "mutation_root";
+  years: {
+    __typename?: "annee_mutation_response";
+    returning: Array<{ __typename?: "annee"; value: number }>;
+  } | null;
+  current: { __typename?: "annee"; value: number } | null;
+};
+
 export const ProfileFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -9607,20 +9917,28 @@ export const ProfileFragmentDoc = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "uid" } },
-          { kind: "Field", name: { kind: "Name", value: "nom" } },
-          { kind: "Field", name: { kind: "Name", value: "prenom" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
         ],
       },
     },
   ],
 } as unknown as DocumentNode<ProfileFragment, unknown>;
-export const ResponsableFragmentDoc = {
+export const CoordinatorFragmentDoc = {
   kind: "Document",
   definitions: [
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Responsable" },
+      name: { kind: "Name", value: "Coordinator" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "responsable" },
@@ -9631,6 +9949,7 @@ export const ResponsableFragmentDoc = {
           { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "profile" },
             name: { kind: "Name", value: "intervenant" },
             selectionSet: {
               kind: "SelectionSet",
@@ -9642,7 +9961,11 @@ export const ResponsableFragmentDoc = {
               ],
             },
           },
-          { kind: "Field", name: { kind: "Name", value: "commentaire" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "comment" },
+            name: { kind: "Name", value: "commentaire" },
+          },
         ],
       },
     },
@@ -9657,20 +9980,195 @@ export const ResponsableFragmentDoc = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "uid" } },
-          { kind: "Field", name: { kind: "Name", value: "nom" } },
-          { kind: "Field", name: { kind: "Name", value: "prenom" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
         ],
       },
     },
   ],
-} as unknown as DocumentNode<ResponsableFragment, unknown>;
-export const ResumeFragmentDoc = {
+} as unknown as DocumentNode<CoordinatorFragment, unknown>;
+export const RequestDetailsFragmentDoc = {
   kind: "Document",
   definitions: [
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Resume" },
+      name: { kind: "Name", value: "RequestDetails" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "demande" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "course" },
+            name: { kind: "Name", value: "enseignement" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "hoursPerGroup" },
+                  name: { kind: "Name", value: "heures_corrigees" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "requestType" },
+            name: { kind: "Name", value: "type" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hours" },
+            name: { kind: "Name", value: "heures" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "isPriority" },
+            name: { kind: "Name", value: "prioritaire" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Profile" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "alias" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<RequestDetailsFragment, unknown>;
+export const PriorityFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Priority" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "priorite" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "courseId" },
+            name: { kind: "Name", value: "ens_id" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "seniority" },
+            name: { kind: "Name", value: "anciennete" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "isPriority" },
+            name: { kind: "Name", value: "prioritaire" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Profile" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "alias" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PriorityFragment, unknown>;
+export const ArchiveFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Archive" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "enseignement" },
@@ -9680,18 +10178,46 @@ export const ResumeFragmentDoc = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "ensId" },
+            alias: { kind: "Name", value: "courseId" },
             name: { kind: "Name", value: "id" },
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "heuresParGroupe" },
-            name: { kind: "Name", value: "heures_corrigees" },
+            alias: { kind: "Name", value: "year" },
+            name: { kind: "Name", value: "annee" },
           },
           {
             kind: "Field",
-            name: { kind: "Name", value: "responsables" },
+            alias: { kind: "Name", value: "requests" },
+            name: { kind: "Name", value: "demandes" },
             arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "type" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "StringValue",
+                              value: "attribution",
+                              block: false,
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "order_by" },
@@ -9745,166 +10271,11 @@ export const ResumeFragmentDoc = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Responsable" },
+                  name: { kind: "Name", value: "RequestDetails" },
                 },
               ],
             },
           },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "mention" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "responsables" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "order_by" },
-                      value: {
-                        kind: "ListValue",
-                        values: [
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "intervenant" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "nom" },
-                                      value: {
-                                        kind: "EnumValue",
-                                        value: "asc",
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "intervenant" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "prenom" },
-                                      value: {
-                                        kind: "EnumValue",
-                                        value: "asc",
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Responsable" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "parcours" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "responsables" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "order_by" },
-                      value: {
-                        kind: "ListValue",
-                        values: [
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "intervenant" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "nom" },
-                                      value: {
-                                        kind: "EnumValue",
-                                        value: "asc",
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "intervenant" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "prenom" },
-                                      value: {
-                                        kind: "EnumValue",
-                                        value: "asc",
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Responsable" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          { kind: "Field", name: { kind: "Name", value: "description" } },
         ],
       },
     },
@@ -9919,18 +10290,26 @@ export const ResumeFragmentDoc = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "uid" } },
-          { kind: "Field", name: { kind: "Name", value: "nom" } },
-          { kind: "Field", name: { kind: "Name", value: "prenom" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
         ],
       },
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Responsable" },
+      name: { kind: "Name", value: "RequestDetails" },
       typeCondition: {
         kind: "NamedType",
-        name: { kind: "Name", value: "responsable" },
+        name: { kind: "Name", value: "demande" },
       },
       selectionSet: {
         kind: "SelectionSet",
@@ -9938,6 +10317,7 @@ export const ResumeFragmentDoc = {
           { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
             name: { kind: "Name", value: "intervenant" },
             selectionSet: {
               kind: "SelectionSet",
@@ -9949,55 +10329,9 @@ export const ResumeFragmentDoc = {
               ],
             },
           },
-          { kind: "Field", name: { kind: "Name", value: "commentaire" } },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<ResumeFragment, unknown>;
-export const DemandeFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Demande" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "demande" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "serviceId" },
-            name: { kind: "Name", value: "service_id" },
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "service" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "intervenant" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Profile" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
+            alias: { kind: "Name", value: "course" },
             name: { kind: "Name", value: "enseignement" },
             selectionSet: {
               kind: "SelectionSet",
@@ -10005,7 +10339,7 @@ export const DemandeFragmentDoc = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
                   kind: "Field",
-                  alias: { kind: "Name", value: "heures" },
+                  alias: { kind: "Name", value: "hoursPerGroup" },
                   name: { kind: "Name", value: "heures_corrigees" },
                 },
               ],
@@ -10013,245 +10347,24 @@ export const DemandeFragmentDoc = {
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "typeDemande" },
+            alias: { kind: "Name", value: "requestType" },
             name: { kind: "Name", value: "type" },
           },
-          { kind: "Field", name: { kind: "Name", value: "heures" } },
-          { kind: "Field", name: { kind: "Name", value: "prioritaire" } },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Profile" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
-          { kind: "Field", name: { kind: "Name", value: "nom" } },
-          { kind: "Field", name: { kind: "Name", value: "prenom" } },
-          { kind: "Field", name: { kind: "Name", value: "alias" } },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<DemandeFragment, unknown>;
-export const ArchiveFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Archive" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "enseignement" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "ensId" },
-            name: { kind: "Name", value: "id" },
-          },
-          { kind: "Field", name: { kind: "Name", value: "annee" } },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "demandes" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "type" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: {
-                              kind: "StringValue",
-                              value: "attribution",
-                              block: false,
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ListValue",
-                  values: [
-                    {
-                      kind: "ObjectValue",
-                      fields: [
-                        {
-                          kind: "ObjectField",
-                          name: { kind: "Name", value: "service" },
-                          value: {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "intervenant" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "nom" },
-                                      value: {
-                                        kind: "EnumValue",
-                                        value: "asc",
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                        },
-                      ],
-                    },
-                    {
-                      kind: "ObjectValue",
-                      fields: [
-                        {
-                          kind: "ObjectField",
-                          name: { kind: "Name", value: "service" },
-                          value: {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "intervenant" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "prenom" },
-                                      value: {
-                                        kind: "EnumValue",
-                                        value: "asc",
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                        },
-                      ],
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Demande" },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Profile" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
-          { kind: "Field", name: { kind: "Name", value: "nom" } },
-          { kind: "Field", name: { kind: "Name", value: "prenom" } },
-          { kind: "Field", name: { kind: "Name", value: "alias" } },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Demande" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "demande" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "serviceId" },
-            name: { kind: "Name", value: "service_id" },
+            alias: { kind: "Name", value: "hours" },
+            name: { kind: "Name", value: "heures" },
           },
           {
             kind: "Field",
-            name: { kind: "Name", value: "service" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "intervenant" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Profile" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
           },
           {
             kind: "Field",
-            name: { kind: "Name", value: "enseignement" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "heures" },
-                  name: { kind: "Name", value: "heures_corrigees" },
-                },
-              ],
-            },
+            alias: { kind: "Name", value: "isPriority" },
+            name: { kind: "Name", value: "prioritaire" },
           },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "typeDemande" },
-            name: { kind: "Name", value: "type" },
-          },
-          { kind: "Field", name: { kind: "Name", value: "heures" } },
-          { kind: "Field", name: { kind: "Name", value: "prioritaire" } },
         ],
       },
     },
@@ -10311,15 +10424,23 @@ export const NestedArchivesFragmentDoc = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "uid" } },
-          { kind: "Field", name: { kind: "Name", value: "nom" } },
-          { kind: "Field", name: { kind: "Name", value: "prenom" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
         ],
       },
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Demande" },
+      name: { kind: "Name", value: "RequestDetails" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande" },
@@ -10330,33 +10451,21 @@ export const NestedArchivesFragmentDoc = {
           { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "serviceId" },
-            name: { kind: "Name", value: "service_id" },
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "service" },
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "intervenant" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Profile" },
-                      },
-                    ],
-                  },
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
                 },
               ],
             },
           },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "course" },
             name: { kind: "Name", value: "enseignement" },
             selectionSet: {
               kind: "SelectionSet",
@@ -10364,7 +10473,7 @@ export const NestedArchivesFragmentDoc = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
                   kind: "Field",
-                  alias: { kind: "Name", value: "heures" },
+                  alias: { kind: "Name", value: "hoursPerGroup" },
                   name: { kind: "Name", value: "heures_corrigees" },
                 },
               ],
@@ -10372,11 +10481,24 @@ export const NestedArchivesFragmentDoc = {
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "typeDemande" },
+            alias: { kind: "Name", value: "requestType" },
             name: { kind: "Name", value: "type" },
           },
-          { kind: "Field", name: { kind: "Name", value: "heures" } },
-          { kind: "Field", name: { kind: "Name", value: "prioritaire" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hours" },
+            name: { kind: "Name", value: "heures" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "isPriority" },
+            name: { kind: "Name", value: "prioritaire" },
+          },
         ],
       },
     },
@@ -10392,12 +10514,17 @@ export const NestedArchivesFragmentDoc = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "ensId" },
+            alias: { kind: "Name", value: "courseId" },
             name: { kind: "Name", value: "id" },
           },
-          { kind: "Field", name: { kind: "Name", value: "annee" } },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "year" },
+            name: { kind: "Name", value: "annee" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "requests" },
             name: { kind: "Name", value: "demandes" },
             arguments: [
               {
@@ -10438,8 +10565,163 @@ export const NestedArchivesFragmentDoc = {
                       fields: [
                         {
                           kind: "ObjectField",
-                          name: { kind: "Name", value: "service" },
+                          name: { kind: "Name", value: "intervenant" },
                           value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "RequestDetails" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<NestedArchivesFragment, unknown>;
+export const CourseDetailsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CourseDetails" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "enseignement" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "courseId" },
+            name: { kind: "Name", value: "id" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hoursPerGroup" },
+            name: { kind: "Name", value: "heures_corrigees" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "coordinators" },
+            name: { kind: "Name", value: "responsables" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Coordinator" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "program" },
+            name: { kind: "Name", value: "mention" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "coordinators" },
+                  name: { kind: "Name", value: "responsables" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          {
                             kind: "ObjectValue",
                             fields: [
                               {
@@ -10461,16 +10743,7 @@ export const NestedArchivesFragmentDoc = {
                               },
                             ],
                           },
-                        },
-                      ],
-                    },
-                    {
-                      kind: "ObjectValue",
-                      fields: [
-                        {
-                          kind: "ObjectField",
-                          name: { kind: "Name", value: "service" },
-                          value: {
+                          {
                             kind: "ObjectValue",
                             fields: [
                               {
@@ -10492,6 +10765,149 @@ export const NestedArchivesFragmentDoc = {
                               },
                             ],
                           },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "Coordinator" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "track" },
+            name: { kind: "Name", value: "parcours" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "coordinators" },
+                  name: { kind: "Name", value: "responsables" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "order_by" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "nom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "prenom" },
+                                      value: {
+                                        kind: "EnumValue",
+                                        value: "asc",
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "Coordinator" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "description" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "requests" },
+            name: { kind: "Name", value: "demandes" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
                         },
                       ],
                     },
@@ -10504,50 +10920,87 @@ export const NestedArchivesFragmentDoc = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Demande" },
+                  name: { kind: "Name", value: "RequestDetails" },
                 },
               ],
             },
           },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<NestedArchivesFragment, unknown>;
-export const PrioriteFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Priorite" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "priorite" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
-            name: { kind: "Name", value: "intervenant" },
+            alias: { kind: "Name", value: "priorities" },
+            name: { kind: "Name", value: "priorites" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Profile" },
+                  name: { kind: "Name", value: "Priority" },
                 },
               ],
             },
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "ensId" },
-            name: { kind: "Name", value: "ens_id" },
+            name: { kind: "Name", value: "parent" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "NestedArchives" },
+                },
+              ],
+            },
           },
-          { kind: "Field", name: { kind: "Name", value: "anciennete" } },
-          { kind: "Field", name: { kind: "Name", value: "prioritaire" } },
         ],
       },
     },
@@ -10562,89 +11015,108 @@ export const PrioriteFragmentDoc = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "uid" } },
-          { kind: "Field", name: { kind: "Name", value: "nom" } },
-          { kind: "Field", name: { kind: "Name", value: "prenom" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
         ],
       },
     },
-  ],
-} as unknown as DocumentNode<PrioriteFragment, unknown>;
-export const GetAnneesDocument = {
-  kind: "Document",
-  definitions: [
     {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "GetAnnees" },
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RequestDetails" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "demande" },
+      },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "annees" },
-            name: { kind: "Name", value: "annee" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "value" },
-                      value: { kind: "EnumValue", value: "desc" },
-                    },
-                  ],
-                },
-              },
-            ],
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "value" } },
                 {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "enCours" },
-                  name: { kind: "Name", value: "en_cours" },
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
                 },
-                { kind: "Field", name: { kind: "Name", value: "visible" } },
               ],
             },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "course" },
+            name: { kind: "Name", value: "enseignement" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "hoursPerGroup" },
+                  name: { kind: "Name", value: "heures_corrigees" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "requestType" },
+            name: { kind: "Name", value: "type" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hours" },
+            name: { kind: "Name", value: "heures" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "isPriority" },
+            name: { kind: "Name", value: "prioritaire" },
           },
         ],
       },
     },
-  ],
-} as unknown as DocumentNode<GetAnneesQuery, GetAnneesQueryVariables>;
-export const UpdateAnneeEnCoursDocument = {
-  kind: "Document",
-  definitions: [
     {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "UpdateAnneeEnCours" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "value" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-      ],
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Archive" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "enseignement" },
+      },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "annees" },
-            name: { kind: "Name", value: "update_annee" },
+            alias: { kind: "Name", value: "courseId" },
+            name: { kind: "Name", value: "id" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "year" },
+            name: { kind: "Name", value: "annee" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "requests" },
+            name: { kind: "Name", value: "demandes" },
             arguments: [
               {
                 kind: "Argument",
@@ -10654,16 +11126,17 @@ export const UpdateAnneeEnCoursDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "value" },
+                      name: { kind: "Name", value: "type" },
                       value: {
                         kind: "ObjectValue",
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "_neq" },
+                            name: { kind: "Name", value: "_eq" },
                             value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "value" },
+                              kind: "StringValue",
+                              value: "attribution",
+                              block: false,
                             },
                           },
                         ],
@@ -10674,14 +11147,47 @@ export const UpdateAnneeEnCoursDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "_set" },
+                name: { kind: "Name", value: "order_by" },
                 value: {
-                  kind: "ObjectValue",
-                  fields: [
+                  kind: "ListValue",
+                  values: [
                     {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "en_cours" },
-                      value: { kind: "NullValue" },
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
                     },
                   ],
                 },
@@ -10691,50 +11197,322 @@ export const UpdateAnneeEnCoursDocument = {
               kind: "SelectionSet",
               selections: [
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "returning" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "value" } },
-                    ],
-                  },
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "RequestDetails" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Coordinator" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "responsable" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "profile" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
                 },
               ],
             },
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "enCours" },
-            name: { kind: "Name", value: "update_annee_by_pk" },
+            alias: { kind: "Name", value: "comment" },
+            name: { kind: "Name", value: "commentaire" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Priority" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "priorite" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "courseId" },
+            name: { kind: "Name", value: "ens_id" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "seniority" },
+            name: { kind: "Name", value: "anciennete" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "isPriority" },
+            name: { kind: "Name", value: "prioritaire" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "NestedArchives" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "enseignement" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "FragmentSpread", name: { kind: "Name", value: "Archive" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "parent" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Archive" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "parent" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "Archive" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CourseDetailsFragment, unknown>;
+export const TotalRequestHoursFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TotalRequestHours" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "demande_aggregate" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "sum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "hours" },
+                        name: { kind: "Name", value: "heures" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TotalRequestHoursFragment, unknown>;
+export const CourseRowFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CourseRow" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "enseignement" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "program" },
+            name: { kind: "Name", value: "mention" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "name" },
+                  name: { kind: "Name", value: "nom" },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "shortName" },
+                  name: { kind: "Name", value: "nom_court" },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "degree" },
+                  name: { kind: "Name", value: "cursus" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "name" },
+                        name: { kind: "Name", value: "nom" },
+                      },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "shortName" },
+                        name: { kind: "Name", value: "nom_court" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "visible" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "visible" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "track" },
+            name: { kind: "Name", value: "parcours" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "name" },
+                  name: { kind: "Name", value: "nom" },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "shortName" },
+                  name: { kind: "Name", value: "nom_court" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "visible" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "name" },
+            name: { kind: "Name", value: "nom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "shortName" },
+            name: { kind: "Name", value: "nom_court" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "courseType" },
+            name: { kind: "Name", value: "typeByType" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "key" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "semester" },
+            name: { kind: "Name", value: "semestre" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hoursPerGroup" },
+            name: { kind: "Name", value: "heures_corrigees" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "numberOfGroups" },
+            name: { kind: "Name", value: "groupes_corriges" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalAssigned" },
+            name: { kind: "Name", value: "demandes_aggregate" },
             arguments: [
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "pk_columns" },
+                name: { kind: "Name", value: "where" },
                 value: {
                   kind: "ObjectValue",
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "value" },
+                      name: { kind: "Name", value: "type" },
                       value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "value" },
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "StringValue",
+                              value: "attribution",
+                              block: false,
+                            },
+                          },
+                        ],
                       },
-                    },
-                  ],
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "_set" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "en_cours" },
-                      value: { kind: "BooleanValue", value: true },
                     },
                   ],
                 },
@@ -10743,70 +11521,103 @@ export const UpdateAnneeEnCoursDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "value" } },
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
               ],
             },
           },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  UpdateAnneeEnCoursMutation,
-  UpdateAnneeEnCoursMutationVariables
->;
-export const GetDemandeDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "GetDemande" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "serviceId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "ensId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "typeDemande" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "demande" },
-            name: { kind: "Name", value: "demande" },
+            alias: { kind: "Name", value: "totalPrimary" },
+            name: { kind: "Name", value: "demandes_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "type" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "StringValue",
+                              value: "principale",
+                              block: false,
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalSecondary" },
+            name: { kind: "Name", value: "demandes_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "type" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "StringValue",
+                              value: "secondaire",
+                              block: false,
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalPriority" },
+            name: { kind: "Name", value: "demandes_aggregate" },
             arguments: [
               {
                 kind: "Argument",
@@ -10825,53 +11636,6 @@ export const GetDemandeDocument = {
                             fields: [
                               {
                                 kind: "ObjectField",
-                                name: { kind: "Name", value: "service_id" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "_eq" },
-                                      value: {
-                                        kind: "Variable",
-                                        name: {
-                                          kind: "Name",
-                                          value: "serviceId",
-                                        },
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "ens_id" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "_eq" },
-                                      value: {
-                                        kind: "Variable",
-                                        name: { kind: "Name", value: "ensId" },
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
                                 name: { kind: "Name", value: "type" },
                                 value: {
                                   kind: "ObjectValue",
@@ -10880,17 +11644,544 @@ export const GetDemandeDocument = {
                                       kind: "ObjectField",
                                       name: { kind: "Name", value: "_eq" },
                                       value: {
-                                        kind: "Variable",
-                                        name: {
-                                          kind: "Name",
-                                          value: "typeDemande",
-                                        },
+                                        kind: "StringValue",
+                                        value: "principale",
+                                        block: false,
                                       },
                                     },
                                   ],
                                 },
                               },
                             ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prioritaire" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "BooleanValue",
+                                        value: true,
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "visible" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TotalRequestHours" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "demande_aggregate" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "sum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "hours" },
+                        name: { kind: "Name", value: "heures" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CourseRowFragment, unknown>;
+export const ServiceModificationTypeFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ServiceModificationType" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "type_modification_service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "key" } },
+          { kind: "Field", name: { kind: "Name", value: "label" } },
+          { kind: "Field", name: { kind: "Name", value: "description" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ServiceModificationTypeFragment, unknown>;
+export const ServiceFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Service" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Profile" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "alias" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ServiceFragment, unknown>;
+export const ServiceModificationFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ServiceModification" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "modification_service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "type" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ServiceModificationFragment, unknown>;
+export const TotalModificationWeightedHoursFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TotalModificationWeightedHours" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "modification_service_aggregate" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "sum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "weightedHours" },
+                        name: { kind: "Name", value: "heures_eqtd" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TotalModificationWeightedHoursFragment, unknown>;
+export const ServiceDetailsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ServiceDetails" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "FragmentSpread", name: { kind: "Name", value: "Service" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "modifications" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "type" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "heures_eqtd" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ServiceModification" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalModifications" },
+            name: { kind: "Name", value: "modifications_aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "TotalModificationWeightedHours",
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Profile" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "alias" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Service" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ServiceModification" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "modification_service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "type" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TotalModificationWeightedHours" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "modification_service_aggregate" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "sum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "weightedHours" },
+                        name: { kind: "Name", value: "heures_eqtd" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ServiceDetailsFragment, unknown>;
+export const TotalRequestWeightedHoursFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TotalRequestWeightedHours" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "demande_aggregate" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "sum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "weightedHours" },
+                        name: { kind: "Name", value: "heures_eqtd" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TotalRequestWeightedHoursFragment, unknown>;
+export const MessageFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Message" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "message" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "body" },
+            name: { kind: "Name", value: "contenu" },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<MessageFragment, unknown>;
+export const TeacherRowFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TeacherRow" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "FragmentSpread", name: { kind: "Name", value: "Profile" } },
+          { kind: "Field", name: { kind: "Name", value: "visible" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "services" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "annee" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "year" },
+                            },
                           },
                         ],
                       },
@@ -10907,157 +12198,43 @@ export const GetDemandeDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "serviceId" },
-                  name: { kind: "Name", value: "service_id" },
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ServiceDetails" },
                 },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "ensId" },
-                  name: { kind: "Name", value: "ens_id" },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "typeDemande" },
-                  name: { kind: "Name", value: "type" },
-                },
-                { kind: "Field", name: { kind: "Name", value: "heures" } },
               ],
             },
           },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<GetDemandeQuery, GetDemandeQueryVariables>;
-export const UpsertDemandeDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "UpsertDemande" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "serviceId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "ensId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "typeDemande" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "heures" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "demande" },
-            name: { kind: "Name", value: "insert_demande_one" },
+            alias: { kind: "Name", value: "requests" },
+            name: { kind: "Name", value: "demandes" },
             arguments: [
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "object" },
+                name: { kind: "Name", value: "order_by" },
                 value: {
-                  kind: "ObjectValue",
-                  fields: [
+                  kind: "ListValue",
+                  values: [
                     {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "service_id" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "serviceId" },
-                      },
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "type" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
                     },
                     {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "ens_id" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "ensId" },
-                      },
-                    },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "type" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "typeDemande" },
-                      },
-                    },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "heures" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "heures" },
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "on_conflict" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "constraint" },
-                      value: {
-                        kind: "EnumValue",
-                        value: "demande_service_id_ens_id_type_key",
-                      },
-                    },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "update_columns" },
-                      value: {
-                        kind: "ListValue",
-                        values: [{ kind: "EnumValue", value: "heures" }],
-                      },
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "ens_id" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
                     },
                   ],
                 },
@@ -11066,70 +12243,17 @@ export const UpsertDemandeDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "RequestDetails" },
+                },
               ],
             },
           },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  UpsertDemandeMutation,
-  UpsertDemandeMutationVariables
->;
-export const DeleteDemandeDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "DeleteDemande" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "serviceId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "ensId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "typeDemande" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "demandes" },
-            name: { kind: "Name", value: "delete_demande" },
+            alias: { kind: "Name", value: "totalAssigned" },
+            name: { kind: "Name", value: "demandes_aggregate" },
             arguments: [
               {
                 kind: "Argument",
@@ -11148,53 +12272,6 @@ export const DeleteDemandeDocument = {
                             fields: [
                               {
                                 kind: "ObjectField",
-                                name: { kind: "Name", value: "service_id" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "_eq" },
-                                      value: {
-                                        kind: "Variable",
-                                        name: {
-                                          kind: "Name",
-                                          value: "serviceId",
-                                        },
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "ens_id" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "_eq" },
-                                      value: {
-                                        kind: "Variable",
-                                        name: { kind: "Name", value: "ensId" },
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
                                 name: { kind: "Name", value: "type" },
                                 value: {
                                   kind: "ObjectValue",
@@ -11203,11 +12280,9 @@ export const DeleteDemandeDocument = {
                                       kind: "ObjectField",
                                       name: { kind: "Name", value: "_eq" },
                                       value: {
-                                        kind: "Variable",
-                                        name: {
-                                          kind: "Name",
-                                          value: "typeDemande",
-                                        },
+                                        kind: "StringValue",
+                                        value: "attribution",
+                                        block: false,
                                       },
                                     },
                                   ],
@@ -11226,106 +12301,292 @@ export const DeleteDemandeDocument = {
               kind: "SelectionSet",
               selections: [
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "returning" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                    ],
-                  },
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestWeightedHours" },
                 },
               ],
             },
           },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  DeleteDemandeMutation,
-  DeleteDemandeMutationVariables
->;
-export const DeleteDemandeByIdDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "DeleteDemandeById" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "demande" },
-            name: { kind: "Name", value: "delete_demande_by_pk" },
+            alias: { kind: "Name", value: "totalPrimary" },
+            name: { kind: "Name", value: "demandes_aggregate" },
             arguments: [
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "id" },
+                name: { kind: "Name", value: "where" },
                 value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "id" },
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "_and" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "type" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "StringValue",
+                                        value: "principale",
+                                        block: false,
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
                 },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  DeleteDemandeByIdMutation,
-  DeleteDemandeByIdMutationVariables
->;
-export const DummyMutationDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "DummyMutation" },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "demandes" },
-            name: { kind: "Name", value: "insert_demande" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "objects" },
-                value: { kind: "ListValue", values: [] },
               },
             ],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestWeightedHours" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalSecondary" },
+            name: { kind: "Name", value: "demandes_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "_and" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "type" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "StringValue",
+                                        value: "secondaire",
+                                        block: false,
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestWeightedHours" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "messages" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "annee" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "year" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Message" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Profile" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "alias" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Service" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ServiceModification" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "modification_service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "type" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TotalModificationWeightedHours" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "modification_service_aggregate" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
                   kind: "Field",
-                  name: { kind: "Name", value: "returning" },
+                  name: { kind: "Name", value: "sum" },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "weightedHours" },
+                        name: { kind: "Name", value: "heures_eqtd" },
+                      },
                     ],
                   },
                 },
@@ -11335,25 +12596,249 @@ export const DummyMutationDocument = {
         ],
       },
     },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ServiceDetails" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "FragmentSpread", name: { kind: "Name", value: "Service" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "modifications" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "type" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "heures_eqtd" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ServiceModification" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalModifications" },
+            name: { kind: "Name", value: "modifications_aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "TotalModificationWeightedHours",
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RequestDetails" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "demande" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "course" },
+            name: { kind: "Name", value: "enseignement" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "hoursPerGroup" },
+                  name: { kind: "Name", value: "heures_corrigees" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "requestType" },
+            name: { kind: "Name", value: "type" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hours" },
+            name: { kind: "Name", value: "heures" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "isPriority" },
+            name: { kind: "Name", value: "prioritaire" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TotalRequestHours" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "demande_aggregate" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "sum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "hours" },
+                        name: { kind: "Name", value: "heures" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TotalRequestWeightedHours" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "demande_aggregate" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "sum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "weightedHours" },
+                        name: { kind: "Name", value: "heures_eqtd" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Message" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "message" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "body" },
+            name: { kind: "Name", value: "contenu" },
+          },
+        ],
+      },
+    },
   ],
-} as unknown as DocumentNode<
-  DummyMutationMutation,
-  DummyMutationMutationVariables
->;
-export const GetEnseignementsTableRowsDocument = {
+} as unknown as DocumentNode<TeacherRowFragment, unknown>;
+export const GetCoursesTableRowsDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "GetEnseignementsTableRows" },
+      name: { kind: "Name", value: "GetCoursesTableRows" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "annee" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "year" } },
           type: {
             kind: "NonNullType",
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
@@ -11365,7 +12850,7 @@ export const GetEnseignementsTableRowsDocument = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "enseignements" },
+            alias: { kind: "Name", value: "courses" },
             name: { kind: "Name", value: "enseignement" },
             arguments: [
               {
@@ -11394,8 +12879,30 @@ export const GetEnseignementsTableRowsDocument = {
                                       name: { kind: "Name", value: "_eq" },
                                       value: {
                                         kind: "Variable",
-                                        name: { kind: "Name", value: "annee" },
+                                        name: { kind: "Name", value: "year" },
                                       },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: {
+                                  kind: "Name",
+                                  value: "heures_corrigees",
+                                },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_gt" },
+                                      value: { kind: "IntValue", value: "0" },
                                     },
                                   ],
                                 },
@@ -11542,342 +13049,10 @@ export const GetEnseignementsTableRowsDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "mention" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      { kind: "Field", name: { kind: "Name", value: "nom" } },
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "nomCourt" },
-                        name: { kind: "Name", value: "nom_court" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "cursus" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "nom" },
-                            },
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "nomCourt" },
-                              name: { kind: "Name", value: "nom_court" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "visible" },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "visible" },
-                      },
-                    ],
-                  },
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "CourseRow" },
                 },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "parcours" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      { kind: "Field", name: { kind: "Name", value: "nom" } },
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "nomCourt" },
-                        name: { kind: "Name", value: "nom_court" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "visible" },
-                      },
-                    ],
-                  },
-                },
-                { kind: "Field", name: { kind: "Name", value: "nom" } },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "nomCourt" },
-                  name: { kind: "Name", value: "nom_court" },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "typeEnseignement" },
-                  name: { kind: "Name", value: "typeByType" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "label" } },
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "labelCourt" },
-                        name: { kind: "Name", value: "label_court" },
-                      },
-                    ],
-                  },
-                },
-                { kind: "Field", name: { kind: "Name", value: "semestre" } },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "heures" },
-                  name: { kind: "Name", value: "heures_corrigees" },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "groupes" },
-                  name: { kind: "Name", value: "groupes_corriges" },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "totalAttributions" },
-                  name: { kind: "Name", value: "demandes_aggregate" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "where" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "type" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: {
-                                    kind: "StringValue",
-                                    value: "attribution",
-                                    block: false,
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "aggregate" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "sum" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "heures" },
-                                  },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "totalPrincipales" },
-                  name: { kind: "Name", value: "demandes_aggregate" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "where" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "type" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: {
-                                    kind: "StringValue",
-                                    value: "principale",
-                                    block: false,
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "TotalHeures" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "totalSecondaires" },
-                  name: { kind: "Name", value: "demandes_aggregate" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "where" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "type" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: {
-                                    kind: "StringValue",
-                                    value: "secondaire",
-                                    block: false,
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "TotalHeures" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "totalPrioritaire" },
-                  name: { kind: "Name", value: "demandes_aggregate" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "where" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_and" },
-                            value: {
-                              kind: "ListValue",
-                              values: [
-                                {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "type" },
-                                      value: {
-                                        kind: "ObjectValue",
-                                        fields: [
-                                          {
-                                            kind: "ObjectField",
-                                            name: {
-                                              kind: "Name",
-                                              value: "_eq",
-                                            },
-                                            value: {
-                                              kind: "StringValue",
-                                              value: "principale",
-                                              block: false,
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
-                                },
-                                {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: {
-                                        kind: "Name",
-                                        value: "prioritaire",
-                                      },
-                                      value: {
-                                        kind: "ObjectValue",
-                                        fields: [
-                                          {
-                                            kind: "ObjectField",
-                                            name: {
-                                              kind: "Name",
-                                              value: "_eq",
-                                            },
-                                            value: {
-                                              kind: "BooleanValue",
-                                              value: true,
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "TotalHeures" },
-                      },
-                    ],
-                  },
-                },
-                { kind: "Field", name: { kind: "Name", value: "visible" } },
               ],
             },
           },
@@ -11886,7 +13061,7 @@ export const GetEnseignementsTableRowsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalHeures" },
+      name: { kind: "Name", value: "TotalRequestHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande_aggregate" },
@@ -11908,6 +13083,7 @@ export const GetEnseignementsTableRowsDocument = {
                     selections: [
                       {
                         kind: "Field",
+                        alias: { kind: "Name", value: "hours" },
                         name: { kind: "Name", value: "heures" },
                       },
                     ],
@@ -11919,18 +13095,347 @@ export const GetEnseignementsTableRowsDocument = {
         ],
       },
     },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CourseRow" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "enseignement" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "program" },
+            name: { kind: "Name", value: "mention" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "name" },
+                  name: { kind: "Name", value: "nom" },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "shortName" },
+                  name: { kind: "Name", value: "nom_court" },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "degree" },
+                  name: { kind: "Name", value: "cursus" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "name" },
+                        name: { kind: "Name", value: "nom" },
+                      },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "shortName" },
+                        name: { kind: "Name", value: "nom_court" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "visible" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "visible" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "track" },
+            name: { kind: "Name", value: "parcours" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "name" },
+                  name: { kind: "Name", value: "nom" },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "shortName" },
+                  name: { kind: "Name", value: "nom_court" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "visible" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "name" },
+            name: { kind: "Name", value: "nom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "shortName" },
+            name: { kind: "Name", value: "nom_court" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "courseType" },
+            name: { kind: "Name", value: "typeByType" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "key" } },
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "semester" },
+            name: { kind: "Name", value: "semestre" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hoursPerGroup" },
+            name: { kind: "Name", value: "heures_corrigees" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "numberOfGroups" },
+            name: { kind: "Name", value: "groupes_corriges" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalAssigned" },
+            name: { kind: "Name", value: "demandes_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "type" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "StringValue",
+                              value: "attribution",
+                              block: false,
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalPrimary" },
+            name: { kind: "Name", value: "demandes_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "type" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "StringValue",
+                              value: "principale",
+                              block: false,
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalSecondary" },
+            name: { kind: "Name", value: "demandes_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "type" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "StringValue",
+                              value: "secondaire",
+                              block: false,
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalPriority" },
+            name: { kind: "Name", value: "demandes_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "_and" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "type" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "StringValue",
+                                        value: "principale",
+                                        block: false,
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prioritaire" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "BooleanValue",
+                                        value: true,
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
+              ],
+            },
+          },
+          { kind: "Field", name: { kind: "Name", value: "visible" } },
+        ],
+      },
+    },
   ],
 } as unknown as DocumentNode<
-  GetEnseignementsTableRowsQuery,
-  GetEnseignementsTableRowsQueryVariables
+  GetCoursesTableRowsQuery,
+  GetCoursesTableRowsQueryVariables
 >;
-export const GetEnseignementDetailsDocument = {
+export const GetCourseDetailsDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "GetEnseignementDetails" },
+      name: { kind: "Name", value: "GetCourseDetails" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -11949,7 +13454,7 @@ export const GetEnseignementDetailsDocument = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "enseignement" },
+            alias: { kind: "Name", value: "course" },
             name: { kind: "Name", value: "enseignement_by_pk" },
             arguments: [
               {
@@ -11966,186 +13471,7 @@ export const GetEnseignementDetailsDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Resume" },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "demandes" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "order_by" },
-                      value: {
-                        kind: "ListValue",
-                        values: [
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "service" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: {
-                                        kind: "Name",
-                                        value: "intervenant",
-                                      },
-                                      value: {
-                                        kind: "ObjectValue",
-                                        fields: [
-                                          {
-                                            kind: "ObjectField",
-                                            name: {
-                                              kind: "Name",
-                                              value: "nom",
-                                            },
-                                            value: {
-                                              kind: "EnumValue",
-                                              value: "asc",
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "service" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: {
-                                        kind: "Name",
-                                        value: "intervenant",
-                                      },
-                                      value: {
-                                        kind: "ObjectValue",
-                                        fields: [
-                                          {
-                                            kind: "ObjectField",
-                                            name: {
-                                              kind: "Name",
-                                              value: "prenom",
-                                            },
-                                            value: {
-                                              kind: "EnumValue",
-                                              value: "asc",
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Demande" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "priorites" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "order_by" },
-                      value: {
-                        kind: "ListValue",
-                        values: [
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "intervenant" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "nom" },
-                                      value: {
-                                        kind: "EnumValue",
-                                        value: "asc",
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "intervenant" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "prenom" },
-                                      value: {
-                                        kind: "EnumValue",
-                                        value: "asc",
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Priorite" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "parent" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "NestedArchives" },
-                      },
-                    ],
-                  },
+                  name: { kind: "Name", value: "CourseDetails" },
                 },
               ],
             },
@@ -12164,15 +13490,23 @@ export const GetEnseignementDetailsDocument = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "uid" } },
-          { kind: "Field", name: { kind: "Name", value: "nom" } },
-          { kind: "Field", name: { kind: "Name", value: "prenom" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
         ],
       },
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Responsable" },
+      name: { kind: "Name", value: "Coordinator" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "responsable" },
@@ -12183,6 +13517,7 @@ export const GetEnseignementDetailsDocument = {
           { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "profile" },
             name: { kind: "Name", value: "intervenant" },
             selectionSet: {
               kind: "SelectionSet",
@@ -12194,13 +13529,17 @@ export const GetEnseignementDetailsDocument = {
               ],
             },
           },
-          { kind: "Field", name: { kind: "Name", value: "commentaire" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "comment" },
+            name: { kind: "Name", value: "commentaire" },
+          },
         ],
       },
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Demande" },
+      name: { kind: "Name", value: "RequestDetails" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande" },
@@ -12211,33 +13550,21 @@ export const GetEnseignementDetailsDocument = {
           { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "serviceId" },
-            name: { kind: "Name", value: "service_id" },
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "service" },
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "intervenant" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Profile" },
-                      },
-                    ],
-                  },
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
                 },
               ],
             },
           },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "course" },
             name: { kind: "Name", value: "enseignement" },
             selectionSet: {
               kind: "SelectionSet",
@@ -12245,7 +13572,7 @@ export const GetEnseignementDetailsDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
                   kind: "Field",
-                  alias: { kind: "Name", value: "heures" },
+                  alias: { kind: "Name", value: "hoursPerGroup" },
                   name: { kind: "Name", value: "heures_corrigees" },
                 },
               ],
@@ -12253,11 +13580,67 @@ export const GetEnseignementDetailsDocument = {
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "typeDemande" },
+            alias: { kind: "Name", value: "requestType" },
             name: { kind: "Name", value: "type" },
           },
-          { kind: "Field", name: { kind: "Name", value: "heures" } },
-          { kind: "Field", name: { kind: "Name", value: "prioritaire" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hours" },
+            name: { kind: "Name", value: "heures" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "isPriority" },
+            name: { kind: "Name", value: "prioritaire" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Priority" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "priorite" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "courseId" },
+            name: { kind: "Name", value: "ens_id" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "seniority" },
+            name: { kind: "Name", value: "anciennete" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "isPriority" },
+            name: { kind: "Name", value: "prioritaire" },
+          },
         ],
       },
     },
@@ -12273,12 +13656,17 @@ export const GetEnseignementDetailsDocument = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "ensId" },
+            alias: { kind: "Name", value: "courseId" },
             name: { kind: "Name", value: "id" },
           },
-          { kind: "Field", name: { kind: "Name", value: "annee" } },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "year" },
+            name: { kind: "Name", value: "annee" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "requests" },
             name: { kind: "Name", value: "demandes" },
             arguments: [
               {
@@ -12319,26 +13707,14 @@ export const GetEnseignementDetailsDocument = {
                       fields: [
                         {
                           kind: "ObjectField",
-                          name: { kind: "Name", value: "service" },
+                          name: { kind: "Name", value: "intervenant" },
                           value: {
                             kind: "ObjectValue",
                             fields: [
                               {
                                 kind: "ObjectField",
-                                name: { kind: "Name", value: "intervenant" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "nom" },
-                                      value: {
-                                        kind: "EnumValue",
-                                        value: "asc",
-                                      },
-                                    },
-                                  ],
-                                },
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
                               },
                             ],
                           },
@@ -12350,26 +13726,14 @@ export const GetEnseignementDetailsDocument = {
                       fields: [
                         {
                           kind: "ObjectField",
-                          name: { kind: "Name", value: "service" },
+                          name: { kind: "Name", value: "intervenant" },
                           value: {
                             kind: "ObjectValue",
                             fields: [
                               {
                                 kind: "ObjectField",
-                                name: { kind: "Name", value: "intervenant" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "prenom" },
-                                      value: {
-                                        kind: "EnumValue",
-                                        value: "asc",
-                                      },
-                                    },
-                                  ],
-                                },
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
                               },
                             ],
                           },
@@ -12385,7 +13749,7 @@ export const GetEnseignementDetailsDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Demande" },
+                  name: { kind: "Name", value: "RequestDetails" },
                 },
               ],
             },
@@ -12395,7 +13759,47 @@ export const GetEnseignementDetailsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Resume" },
+      name: { kind: "Name", value: "NestedArchives" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "enseignement" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "FragmentSpread", name: { kind: "Name", value: "Archive" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "parent" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Archive" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "parent" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "Archive" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "CourseDetails" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "enseignement" },
@@ -12405,16 +13809,17 @@ export const GetEnseignementDetailsDocument = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "ensId" },
+            alias: { kind: "Name", value: "courseId" },
             name: { kind: "Name", value: "id" },
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "heuresParGroupe" },
+            alias: { kind: "Name", value: "hoursPerGroup" },
             name: { kind: "Name", value: "heures_corrigees" },
           },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "coordinators" },
             name: { kind: "Name", value: "responsables" },
             arguments: [
               {
@@ -12470,19 +13875,21 @@ export const GetEnseignementDetailsDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Responsable" },
+                  name: { kind: "Name", value: "Coordinator" },
                 },
               ],
             },
           },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "program" },
             name: { kind: "Name", value: "mention" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
                   kind: "Field",
+                  alias: { kind: "Name", value: "coordinators" },
                   name: { kind: "Name", value: "responsables" },
                   arguments: [
                     {
@@ -12544,7 +13951,7 @@ export const GetEnseignementDetailsDocument = {
                     selections: [
                       {
                         kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Responsable" },
+                        name: { kind: "Name", value: "Coordinator" },
                       },
                     ],
                   },
@@ -12554,12 +13961,14 @@ export const GetEnseignementDetailsDocument = {
           },
           {
             kind: "Field",
+            alias: { kind: "Name", value: "track" },
             name: { kind: "Name", value: "parcours" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
                   kind: "Field",
+                  alias: { kind: "Name", value: "coordinators" },
                   name: { kind: "Name", value: "responsables" },
                   arguments: [
                     {
@@ -12621,7 +14030,7 @@ export const GetEnseignementDetailsDocument = {
                     selections: [
                       {
                         kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Responsable" },
+                        name: { kind: "Name", value: "Coordinator" },
                       },
                     ],
                   },
@@ -12630,54 +14039,132 @@ export const GetEnseignementDetailsDocument = {
             },
           },
           { kind: "Field", name: { kind: "Name", value: "description" } },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Priorite" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "priorite" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
-            name: { kind: "Name", value: "intervenant" },
+            alias: { kind: "Name", value: "requests" },
+            name: { kind: "Name", value: "demandes" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Profile" },
+                  name: { kind: "Name", value: "RequestDetails" },
                 },
               ],
             },
           },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "ensId" },
-            name: { kind: "Name", value: "ens_id" },
+            alias: { kind: "Name", value: "priorities" },
+            name: { kind: "Name", value: "priorites" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Priority" },
+                },
+              ],
+            },
           },
-          { kind: "Field", name: { kind: "Name", value: "anciennete" } },
-          { kind: "Field", name: { kind: "Name", value: "prioritaire" } },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "NestedArchives" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "enseignement" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "FragmentSpread", name: { kind: "Name", value: "Archive" } },
           {
             kind: "Field",
             name: { kind: "Name", value: "parent" },
@@ -12686,20 +14173,7 @@ export const GetEnseignementDetailsDocument = {
               selections: [
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Archive" },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "parent" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Archive" },
-                      },
-                    ],
-                  },
+                  name: { kind: "Name", value: "NestedArchives" },
                 },
               ],
             },
@@ -12709,8 +14183,8 @@ export const GetEnseignementDetailsDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetEnseignementDetailsQuery,
-  GetEnseignementDetailsQueryVariables
+  GetCourseDetailsQuery,
+  GetCourseDetailsQueryVariables
 >;
 export const UpdateDescriptionDocument = {
   kind: "Document",
@@ -12722,7 +14196,10 @@ export const UpdateDescriptionDocument = {
       variableDefinitions: [
         {
           kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "courseId" },
+          },
           type: {
             kind: "NonNullType",
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
@@ -12742,7 +14219,7 @@ export const UpdateDescriptionDocument = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "description" },
+            alias: { kind: "Name", value: "course" },
             name: { kind: "Name", value: "update_enseignement_by_pk" },
             arguments: [
               {
@@ -12756,7 +14233,7 @@ export const UpdateDescriptionDocument = {
                       name: { kind: "Name", value: "id" },
                       value: {
                         kind: "Variable",
-                        name: { kind: "Name", value: "id" },
+                        name: { kind: "Name", value: "courseId" },
                       },
                     },
                   ],
@@ -12805,10 +14282,7 @@ export const UpsertMessageDocument = {
       variableDefinitions: [
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "serviceId" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "year" } },
           type: {
             kind: "NonNullType",
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
@@ -12816,10 +14290,18 @@ export const UpsertMessageDocument = {
         },
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "contenu" },
+          variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
           },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "body" } },
           type: {
             kind: "NonNullType",
             type: {
@@ -12845,10 +14327,18 @@ export const UpsertMessageDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "service_id" },
+                      name: { kind: "Name", value: "annee" },
                       value: {
                         kind: "Variable",
-                        name: { kind: "Name", value: "serviceId" },
+                        name: { kind: "Name", value: "year" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "uid" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "uid" },
                       },
                     },
                     {
@@ -12856,7 +14346,7 @@ export const UpsertMessageDocument = {
                       name: { kind: "Name", value: "contenu" },
                       value: {
                         kind: "Variable",
-                        name: { kind: "Name", value: "contenu" },
+                        name: { kind: "Name", value: "body" },
                       },
                     },
                   ],
@@ -12873,7 +14363,7 @@ export const UpsertMessageDocument = {
                       name: { kind: "Name", value: "constraint" },
                       value: {
                         kind: "EnumValue",
-                        value: "message_service_id_key",
+                        value: "message_annee_uid_key",
                       },
                     },
                     {
@@ -12913,13 +14403,21 @@ export const DeleteMessageDocument = {
       variableDefinitions: [
         {
           kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "serviceId" },
-          },
+          variable: { kind: "Variable", name: { kind: "Name", value: "year" } },
           type: {
             kind: "NonNullType",
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
           },
         },
       ],
@@ -12939,17 +14437,53 @@ export const DeleteMessageDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "service_id" },
+                      name: { kind: "Name", value: "_and" },
                       value: {
-                        kind: "ObjectValue",
-                        fields: [
+                        kind: "ListValue",
+                        values: [
                           {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "serviceId" },
-                            },
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "annee" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "Variable",
+                                        name: { kind: "Name", value: "year" },
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "uid" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "Variable",
+                                        name: { kind: "Name", value: "uid" },
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
                           },
                         ],
                       },
@@ -12981,203 +14515,6 @@ export const DeleteMessageDocument = {
 } as unknown as DocumentNode<
   DeleteMessageMutation,
   DeleteMessageMutationVariables
->;
-export const GetTypesModificationDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "GetTypesModification" },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "typesModification" },
-            name: { kind: "Name", value: "type_modification" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "label" },
-                      value: { kind: "EnumValue", value: "asc" },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "label" } },
-                { kind: "Field", name: { kind: "Name", value: "description" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetTypesModificationQuery,
-  GetTypesModificationQueryVariables
->;
-export const InsertModificationDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "InsertModification" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "serviceId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "typeModification" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "heuresEQTD" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "modificationService" },
-            name: { kind: "Name", value: "insert_modification_service_one" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "object" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "service_id" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "serviceId" },
-                      },
-                    },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "type" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "typeModification" },
-                      },
-                    },
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "heures_eqtd" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "heuresEQTD" },
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  InsertModificationMutation,
-  InsertModificationMutationVariables
->;
-export const DeleteModificationDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "DeleteModification" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "modificationService" },
-            name: { kind: "Name", value: "delete_modification_service_by_pk" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "id" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "id" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  DeleteModificationMutation,
-  DeleteModificationMutationVariables
 >;
 export const GetCurrentPhaseDocument = {
   kind: "Document",
@@ -13439,31 +14776,64 @@ export const GetProfileDocument = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "uid" } },
-          { kind: "Field", name: { kind: "Name", value: "nom" } },
-          { kind: "Field", name: { kind: "Name", value: "prenom" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
         ],
       },
     },
   ],
 } as unknown as DocumentNode<GetProfileQuery, GetProfileQueryVariables>;
-export const GetServicesDocument = {
+export const GetRequestDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "GetServices" },
+      name: { kind: "Name", value: "GetRequest" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "annee" },
+            name: { kind: "Name", value: "ensId" },
           },
           type: {
             kind: "NonNullType",
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "typeDemande" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
           },
         },
       ],
@@ -13472,8 +14842,8 @@ export const GetServicesDocument = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "services" },
-            name: { kind: "Name", value: "service" },
+            alias: { kind: "Name", value: "requests" },
+            name: { kind: "Name", value: "demande" },
             arguments: [
               {
                 kind: "Argument",
@@ -13492,7 +14862,7 @@ export const GetServicesDocument = {
                             fields: [
                               {
                                 kind: "ObjectField",
-                                name: { kind: "Name", value: "annee" },
+                                name: { kind: "Name", value: "ens_id" },
                                 value: {
                                   kind: "ObjectValue",
                                   fields: [
@@ -13501,7 +14871,54 @@ export const GetServicesDocument = {
                                       name: { kind: "Name", value: "_eq" },
                                       value: {
                                         kind: "Variable",
-                                        name: { kind: "Name", value: "annee" },
+                                        name: { kind: "Name", value: "ensId" },
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "uid" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "Variable",
+                                        name: { kind: "Name", value: "uid" },
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "type" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "Variable",
+                                        name: {
+                                          kind: "Name",
+                                          value: "typeDemande",
+                                        },
                                       },
                                     },
                                   ],
@@ -13517,68 +14934,16 @@ export const GetServicesDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ListValue",
-                  values: [
-                    {
-                      kind: "ObjectValue",
-                      fields: [
-                        {
-                          kind: "ObjectField",
-                          name: { kind: "Name", value: "intervenant" },
-                          value: {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "nom" },
-                                value: { kind: "EnumValue", value: "asc" },
-                              },
-                            ],
-                          },
-                        },
-                      ],
-                    },
-                    {
-                      kind: "ObjectValue",
-                      fields: [
-                        {
-                          kind: "ObjectField",
-                          name: { kind: "Name", value: "intervenant" },
-                          value: {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "prenom" },
-                                value: { kind: "EnumValue", value: "asc" },
-                              },
-                            ],
-                          },
-                        },
-                      ],
-                    },
-                  ],
-                },
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
               },
             ],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "intervenant" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Profile" },
-                      },
-                    ],
-                  },
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "RequestDetails" },
                 },
               ],
             },
@@ -13597,27 +14962,110 @@ export const GetServicesDocument = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "uid" } },
-          { kind: "Field", name: { kind: "Name", value: "nom" } },
-          { kind: "Field", name: { kind: "Name", value: "prenom" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
         ],
       },
     },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RequestDetails" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "demande" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "course" },
+            name: { kind: "Name", value: "enseignement" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "hoursPerGroup" },
+                  name: { kind: "Name", value: "heures_corrigees" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "requestType" },
+            name: { kind: "Name", value: "type" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hours" },
+            name: { kind: "Name", value: "heures" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "isPriority" },
+            name: { kind: "Name", value: "prioritaire" },
+          },
+        ],
+      },
+    },
   ],
-} as unknown as DocumentNode<GetServicesQuery, GetServicesQueryVariables>;
-export const GetServicesTableRowsDocument = {
+} as unknown as DocumentNode<GetRequestQuery, GetRequestQueryVariables>;
+export const UpsertDemandeDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "GetServicesTableRows" },
+      operation: "mutation",
+      name: { kind: "Name", value: "UpsertDemande" },
       variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
         {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "annee" },
+            name: { kind: "Name", value: "courseId" },
           },
           type: {
             kind: "NonNullType",
@@ -13628,13 +15076,26 @@ export const GetServicesTableRowsDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "where" },
+            name: { kind: "Name", value: "requestType" },
           },
           type: {
-            kind: "NamedType",
-            name: { kind: "Name", value: "service_bool_exp" },
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
           },
-          defaultValue: { kind: "ObjectValue", fields: [] },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "hours" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
         },
       ],
       selectionSet: {
@@ -13642,8 +15103,143 @@ export const GetServicesTableRowsDocument = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "services" },
-            name: { kind: "Name", value: "service" },
+            alias: { kind: "Name", value: "request" },
+            name: { kind: "Name", value: "insert_demande_one" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "object" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "uid" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "uid" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "ens_id" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "courseId" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "type" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "requestType" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "heures" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "hours" },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "on_conflict" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "constraint" },
+                      value: {
+                        kind: "EnumValue",
+                        value: "demande_uid_ens_id_type_key",
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "update_columns" },
+                      value: {
+                        kind: "ListValue",
+                        values: [{ kind: "EnumValue", value: "heures" }],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpsertDemandeMutation,
+  UpsertDemandeMutationVariables
+>;
+export const DeleteDemandeDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteDemande" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "courseId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "requestType" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "requests" },
+            name: { kind: "Name", value: "delete_demande" },
             arguments: [
               {
                 kind: "Argument",
@@ -13662,7 +15258,7 @@ export const GetServicesTableRowsDocument = {
                             fields: [
                               {
                                 kind: "ObjectField",
-                                name: { kind: "Name", value: "annee" },
+                                name: { kind: "Name", value: "uid" },
                                 value: {
                                   kind: "ObjectValue",
                                   fields: [
@@ -13671,7 +15267,486 @@ export const GetServicesTableRowsDocument = {
                                       name: { kind: "Name", value: "_eq" },
                                       value: {
                                         kind: "Variable",
-                                        name: { kind: "Name", value: "annee" },
+                                        name: { kind: "Name", value: "uid" },
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "ens_id" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "Variable",
+                                        name: {
+                                          kind: "Name",
+                                          value: "courseId",
+                                        },
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "type" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "Variable",
+                                        name: {
+                                          kind: "Name",
+                                          value: "requestType",
+                                        },
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "returning" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteDemandeMutation,
+  DeleteDemandeMutationVariables
+>;
+export const DeleteDemandeByIdDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteDemandeById" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "request" },
+            name: { kind: "Name", value: "delete_demande_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteDemandeByIdMutation,
+  DeleteDemandeByIdMutationVariables
+>;
+export const DummyMutationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DummyMutation" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "requests" },
+            name: { kind: "Name", value: "insert_demande" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "objects" },
+                value: { kind: "ListValue", values: [] },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "returning" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DummyMutationMutation,
+  DummyMutationMutationVariables
+>;
+export const GetServiceModificationTypesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetServiceModificationTypes" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "serviceModificationTypes" },
+            name: { kind: "Name", value: "type_modification_service" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "key" },
+                      value: { kind: "EnumValue", value: "asc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ServiceModificationType" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ServiceModificationType" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "type_modification_service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "key" } },
+          { kind: "Field", name: { kind: "Name", value: "label" } },
+          { kind: "Field", name: { kind: "Name", value: "description" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetServiceModificationTypesQuery,
+  GetServiceModificationTypesQueryVariables
+>;
+export const InsertServiceModificationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "InsertServiceModification" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "serviceId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "serviceModificationType" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "weightedHours" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "serviceModification" },
+            name: { kind: "Name", value: "insert_modification_service_one" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "object" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "service_id" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "serviceId" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "type" },
+                      value: {
+                        kind: "Variable",
+                        name: {
+                          kind: "Name",
+                          value: "serviceModificationType",
+                        },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "heures_eqtd" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "weightedHours" },
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  InsertServiceModificationMutation,
+  InsertServiceModificationMutationVariables
+>;
+export const DeleteServiceModificationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteServiceModification" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "serviceModification" },
+            name: { kind: "Name", value: "delete_modification_service_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteServiceModificationMutation,
+  DeleteServiceModificationMutationVariables
+>;
+export const GetTeachersDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetTeachers" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "year" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "where" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "intervenant_bool_exp" },
+          },
+          defaultValue: { kind: "ObjectValue", fields: [] },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teachers" },
+            name: { kind: "Name", value: "intervenant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "_and" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "services" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "annee" },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "_eq",
+                                            },
+                                            value: {
+                                              kind: "Variable",
+                                              name: {
+                                                kind: "Name",
+                                                value: "year",
+                                              },
+                                            },
+                                          },
+                                        ],
                                       },
                                     },
                                   ],
@@ -13700,17 +15775,8 @@ export const GetServicesTableRowsDocument = {
                       fields: [
                         {
                           kind: "ObjectField",
-                          name: { kind: "Name", value: "intervenant" },
-                          value: {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "nom" },
-                                value: { kind: "EnumValue", value: "asc" },
-                              },
-                            ],
-                          },
+                          name: { kind: "Name", value: "nom" },
+                          value: { kind: "EnumValue", value: "asc" },
                         },
                       ],
                     },
@@ -13719,17 +15785,8 @@ export const GetServicesTableRowsDocument = {
                       fields: [
                         {
                           kind: "ObjectField",
-                          name: { kind: "Name", value: "intervenant" },
-                          value: {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "prenom" },
-                                value: { kind: "EnumValue", value: "asc" },
-                              },
-                            ],
-                          },
+                          name: { kind: "Name", value: "prenom" },
+                          value: { kind: "EnumValue", value: "asc" },
                         },
                       ],
                     },
@@ -13740,391 +15797,9 @@ export const GetServicesTableRowsDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "heuresEQTD" },
-                  name: { kind: "Name", value: "heures_eqtd" },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "modifications" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "order_by" },
-                      value: {
-                        kind: "ListValue",
-                        values: [
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "type" },
-                                value: { kind: "EnumValue", value: "asc" },
-                              },
-                            ],
-                          },
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "heures_eqtd" },
-                                value: { kind: "EnumValue", value: "asc" },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "typeModification" },
-                        name: { kind: "Name", value: "type" },
-                      },
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "heuresEQTD" },
-                        name: { kind: "Name", value: "heures_eqtd" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "totalModifications" },
-                  name: { kind: "Name", value: "modifications_aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "aggregate" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "sum" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    alias: {
-                                      kind: "Name",
-                                      value: "heuresEQTD",
-                                    },
-                                    name: {
-                                      kind: "Name",
-                                      value: "heures_eqtd",
-                                    },
-                                  },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "intervenant" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "Profile" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "visible" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "demandes" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "order_by" },
-                      value: {
-                        kind: "ListValue",
-                        values: [
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "type" },
-                                value: { kind: "EnumValue", value: "asc" },
-                              },
-                            ],
-                          },
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "ens_id" },
-                                value: { kind: "EnumValue", value: "asc" },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "ensId" },
-                        name: { kind: "Name", value: "ens_id" },
-                      },
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "typeDemande" },
-                        name: { kind: "Name", value: "type" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "heures" },
-                      },
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "heuresEQTD" },
-                        name: { kind: "Name", value: "heures_eqtd" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "totalAttributions" },
-                  name: { kind: "Name", value: "demandes_aggregate" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "where" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_and" },
-                            value: {
-                              kind: "ListValue",
-                              values: [
-                                {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "type" },
-                                      value: {
-                                        kind: "ObjectValue",
-                                        fields: [
-                                          {
-                                            kind: "ObjectField",
-                                            name: {
-                                              kind: "Name",
-                                              value: "_eq",
-                                            },
-                                            value: {
-                                              kind: "StringValue",
-                                              value: "attribution",
-                                              block: false,
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "TotalHeures" },
-                      },
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "TotalHeuresEQTD" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "totalPrincipales" },
-                  name: { kind: "Name", value: "demandes_aggregate" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "where" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_and" },
-                            value: {
-                              kind: "ListValue",
-                              values: [
-                                {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "type" },
-                                      value: {
-                                        kind: "ObjectValue",
-                                        fields: [
-                                          {
-                                            kind: "ObjectField",
-                                            name: {
-                                              kind: "Name",
-                                              value: "_eq",
-                                            },
-                                            value: {
-                                              kind: "StringValue",
-                                              value: "principale",
-                                              block: false,
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "TotalHeures" },
-                      },
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "TotalHeuresEQTD" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "totalSecondaires" },
-                  name: { kind: "Name", value: "demandes_aggregate" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "where" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_and" },
-                            value: {
-                              kind: "ListValue",
-                              values: [
-                                {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "type" },
-                                      value: {
-                                        kind: "ObjectValue",
-                                        fields: [
-                                          {
-                                            kind: "ObjectField",
-                                            name: {
-                                              kind: "Name",
-                                              value: "_eq",
-                                            },
-                                            value: {
-                                              kind: "StringValue",
-                                              value: "secondaire",
-                                              block: false,
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "TotalHeures" },
-                      },
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "TotalHeuresEQTD" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "messages" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "limit" },
-                      value: { kind: "IntValue", value: "1" },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "contenu" },
-                      },
-                    ],
-                  },
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
                 },
               ],
             },
@@ -14143,15 +15818,417 @@ export const GetServicesTableRowsDocument = {
         kind: "SelectionSet",
         selections: [
           { kind: "Field", name: { kind: "Name", value: "uid" } },
-          { kind: "Field", name: { kind: "Name", value: "nom" } },
-          { kind: "Field", name: { kind: "Name", value: "prenom" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "alias" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetTeachersQuery, GetTeachersQueryVariables>;
+export const GetTeachersTableRowsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetTeachersTableRows" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "year" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "where" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "intervenant_bool_exp" },
+          },
+          defaultValue: { kind: "ObjectValue", fields: [] },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teachers" },
+            name: { kind: "Name", value: "intervenant" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "_and" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "services" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "annee" },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "_eq",
+                                            },
+                                            value: {
+                                              kind: "Variable",
+                                              name: {
+                                                kind: "Name",
+                                                value: "year",
+                                              },
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                          {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "where" },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "nom" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "prenom" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TeacherRow" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Profile" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
         ],
       },
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalHeures" },
+      name: { kind: "Name", value: "Service" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ServiceModification" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "modification_service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "type" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TotalModificationWeightedHours" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "modification_service_aggregate" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "sum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "weightedHours" },
+                        name: { kind: "Name", value: "heures_eqtd" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ServiceDetails" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "FragmentSpread", name: { kind: "Name", value: "Service" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "modifications" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "type" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "heures_eqtd" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ServiceModification" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalModifications" },
+            name: { kind: "Name", value: "modifications_aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: {
+                    kind: "Name",
+                    value: "TotalModificationWeightedHours",
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RequestDetails" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "demande" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Profile" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "course" },
+            name: { kind: "Name", value: "enseignement" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "hoursPerGroup" },
+                  name: { kind: "Name", value: "heures_corrigees" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "requestType" },
+            name: { kind: "Name", value: "type" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "hours" },
+            name: { kind: "Name", value: "heures" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "isPriority" },
+            name: { kind: "Name", value: "prioritaire" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TotalRequestHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande_aggregate" },
@@ -14173,6 +16250,7 @@ export const GetServicesTableRowsDocument = {
                     selections: [
                       {
                         kind: "Field",
+                        alias: { kind: "Name", value: "hours" },
                         name: { kind: "Name", value: "heures" },
                       },
                     ],
@@ -14186,7 +16264,7 @@ export const GetServicesTableRowsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TotalHeuresEQTD" },
+      name: { kind: "Name", value: "TotalRequestWeightedHours" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande_aggregate" },
@@ -14208,7 +16286,7 @@ export const GetServicesTableRowsDocument = {
                     selections: [
                       {
                         kind: "Field",
-                        alias: { kind: "Name", value: "heuresEQTD" },
+                        alias: { kind: "Name", value: "weightedHours" },
                         name: { kind: "Name", value: "heures_eqtd" },
                       },
                     ],
@@ -14220,8 +16298,547 @@ export const GetServicesTableRowsDocument = {
         ],
       },
     },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Message" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "message" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "body" },
+            name: { kind: "Name", value: "contenu" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TeacherRow" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "FragmentSpread", name: { kind: "Name", value: "Profile" } },
+          { kind: "Field", name: { kind: "Name", value: "visible" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "services" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "annee" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "year" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ServiceDetails" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "requests" },
+            name: { kind: "Name", value: "demandes" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "type" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "ens_id" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "RequestDetails" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalAssigned" },
+            name: { kind: "Name", value: "demandes_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "_and" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "type" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "StringValue",
+                                        value: "attribution",
+                                        block: false,
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestWeightedHours" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalPrimary" },
+            name: { kind: "Name", value: "demandes_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "_and" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "type" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "StringValue",
+                                        value: "principale",
+                                        block: false,
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestWeightedHours" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalSecondary" },
+            name: { kind: "Name", value: "demandes_aggregate" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "_and" },
+                      value: {
+                        kind: "ListValue",
+                        values: [
+                          {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "type" },
+                                value: {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "_eq" },
+                                      value: {
+                                        kind: "StringValue",
+                                        value: "secondaire",
+                                        block: false,
+                                      },
+                                    },
+                                  ],
+                                },
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestHours" },
+                },
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TotalRequestWeightedHours" },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "messages" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "annee" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "year" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: { kind: "IntValue", value: "1" },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "Message" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 } as unknown as DocumentNode<
-  GetServicesTableRowsQuery,
-  GetServicesTableRowsQueryVariables
+  GetTeachersTableRowsQuery,
+  GetTeachersTableRowsQueryVariables
+>;
+export const GetYearsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetYears" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "years" },
+            name: { kind: "Name", value: "annee" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "value" },
+                      value: { kind: "EnumValue", value: "desc" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "value" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "current" },
+                  name: { kind: "Name", value: "en_cours" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "visible" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetYearsQuery, GetYearsQueryVariables>;
+export const UpdateCurrentYearDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateCurrentYear" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "value" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "years" },
+            name: { kind: "Name", value: "update_annee" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "where" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "value" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_neq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "value" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "_set" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "en_cours" },
+                      value: { kind: "NullValue" },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "returning" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "value" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "current" },
+            name: { kind: "Name", value: "update_annee_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "pk_columns" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "value" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "value" },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "_set" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "en_cours" },
+                      value: { kind: "BooleanValue", value: true },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "value" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateCurrentYearMutation,
+  UpdateCurrentYearMutationVariables
 >;

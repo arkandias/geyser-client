@@ -1,7 +1,7 @@
 export type Profile = {
   uid: string;
-  lastname: string;
   firstname: string;
+  lastname: string;
   alias: string | null;
 };
 
@@ -11,12 +11,12 @@ export const isProfile = (profile: unknown): profile is Profile => {
   }
   return (
     "uid" in profile &&
-    "lastname" in profile &&
     "firstname" in profile &&
+    "lastname" in profile &&
     "alias" in profile &&
     typeof profile.uid === "string" &&
-    typeof profile.lastname === "string" &&
     typeof profile.firstname === "string" &&
+    typeof profile.lastname === "string" &&
     (profile.alias === null || typeof profile.alias === "string")
   );
 };

@@ -4,20 +4,20 @@ import {
   createWebHistory,
 } from "vue-router";
 
-import PageAccueil from "@/pages/PageAccueil.vue";
-import PageEnseignements from "@/pages/PageEnseignements.vue";
+import PageCourses from "@/pages/PageCourses.vue";
+import PageHome from "@/pages/PageHome.vue";
 import PageMessage from "@/pages/PageMessage.vue";
 
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "home",
-    component: PageAccueil,
+    component: PageHome,
   },
   {
     path: "/courses",
     name: "courses",
-    component: PageEnseignements,
+    component: PageCourses,
   },
   {
     path: "/:pathMatch(.*)*",

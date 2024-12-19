@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { couleurPriorite, formatIntervenant } from "@/helpers/format.ts";
-import type { Priority } from "@/types/demandes.ts";
+import { formatUser, priorityColor } from "@/helpers/format.ts";
+import type { Priority } from "@/types/priorities.ts";
 
 defineProps<{ priorite: Priority }>();
 </script>
 
 <template>
-  <QChip :color="couleurPriorite(priorite.isPriority)" outline square dense>
+  <QChip :color="priorityColor(priorite.isPriority)" outline square dense>
     <QAvatar
-      :color="couleurPriorite(priorite.isPriority)"
+      :color="priorityColor(priorite.isPriority)"
       text-color="white"
       square
     >
       {{ priorite.seniority }}
     </QAvatar>
-    {{ formatIntervenant(priorite.profile) }}
+    {{ formatUser(priorite.profile) }}
   </QChip>
 </template>
 

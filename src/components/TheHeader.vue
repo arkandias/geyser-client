@@ -4,7 +4,7 @@ import { type ComputedRef, computed } from "vue";
 import { useRouter } from "vue-router";
 
 import { usePermissions } from "@/composables/permissions.ts";
-import { couleurBouton } from "@/helpers/format.ts";
+import { buttonColor } from "@/helpers/format.ts";
 import { useRefresh } from "@/stores/refresh.ts";
 
 import CoursesOptions from "@/components/header/CoursesOptions.vue";
@@ -65,7 +65,7 @@ const version: ComputedRef<string | null> = computed(() =>
       </QBtn>
       <QBtn
         icon="sym_s_dark_mode"
-        :color="couleurBouton($q.dark.isActive)"
+        :color="buttonColor($q.dark.isActive)"
         flat
         square
         @click="$q.dark.toggle"

@@ -5,11 +5,11 @@ import { type ComputedRef, computed } from "vue";
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { deleteDemandeById, updateDemande } from "@/helpers/demandes.ts";
-import { couleurPriorite, formatIntervenant, nf } from "@/helpers/format.ts";
-import type { Request } from "@/types/demandes.ts";
+import { formatUser, nf, priorityColor } from "@/helpers/format.ts";
+import type { RequestDetails } from "@/types/requests.ts";
 
 const props = defineProps<{
-  demande: Request;
+  request: RequestDetails;
   archive?: boolean;
 }>();
 
@@ -18,19 +18,19 @@ const client = useClientHandle().client;
 
 const assign = async (): Promise<void> => {
   await updateDemande(client, {
-    serviceId: props.demande.serviceId,
-    ensId: props.demande.course.id,
+    serviceId: props.request.serviceId,
+    ensId: props.request.course.id,
     typeDemande: "attribution",
-    heures: props.demande.hours,
+    heures: props.request.hours,
   });
 };
 const remove = async (): Promise<void> => {
-  await deleteDemandeById(client, props.demande.id, props.demande.requestType);
+  await deleteDemandeById(client, props.request.id, props.request.requestType);
 };
 
-const groupes: ComputedRef<number> = computed(() =>
-  props.demande.course.hoursPerGroup
-    ? props.demande.hours / props.demande.course.hoursPerGroup
+const groups: ComputedRef<number> = computed(() =>
+  props.request.course.hoursPerGroup
+    ? props.request.hours / props.request.course.hoursPerGroup
     : 0,
 );
 </script>
@@ -39,19 +39,19 @@ const groupes: ComputedRef<number> = computed(() =>
   <QCard bordered square class="carte-demande">
     <QCardSection class="carte-demande__titre q-pa-xs text-body2">
       <QBadge
-        v-if="demande.isPriority !== null"
-        :color="couleurPriorite(demande.isPriority)"
+        v-if="request.isPriority !== null"
+        :color="priorityColor(request.isPriority)"
         rounded
       />
-      {{ formatIntervenant(demande.service.teacher) }}
+      {{ formatUser(request.service.teacher) }}
       <QTooltip :delay="TOOLTIP_DELAY" anchor="top middle" self="bottom middle">
-        {{ formatIntervenant(demande.service.teacher) }}
+        {{ formatUser(request.service.teacher) }}
       </QTooltip>
     </QCardSection>
     <QCardSection class="q-pa-xs text-caption">
-      {{ nf.format(groupes) + " groupe" + (groupes > 1 ? "s" : "") }}
+      {{ nf.format(groups) + " groupe" + (groups > 1 ? "s" : "") }}
       <br />
-      {{ nf.format(demande.hours) + " heure" + (demande.hours > 1 ? "s" : "") }}
+      {{ nf.format(request.hours) + " heure" + (request.hours > 1 ? "s" : "") }}
     </QCardSection>
     <QSeparator />
     <QCardActions v-if="!archive" align="evenly" class="q-pa-xs">
@@ -79,8 +79,8 @@ const groupes: ComputedRef<number> = computed(() =>
         size="sm"
         :disable="
           !perm.deSupprimerUneDemande(
-            demande.requestType,
-            demande.service.teacher.uid,
+            request.requestType,
+            request.service.teacher.uid,
           )
         "
         flat

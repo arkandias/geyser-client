@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { formatResponsables } from "@/helpers/format.ts";
-import type { Coordinator } from "@/types/enseignements.ts";
+import { formatCoordinators } from "@/helpers/format.ts";
+import type { Coordinator } from "@/types/courses.ts";
 
 defineProps<{
   responsablesEnseignement: Coordinator[];
@@ -13,15 +13,15 @@ defineProps<{
   <QCardSection>
     <div v-if="responsablesMention.length">
       Responsable(s) de la mention :
-      {{ formatResponsables(responsablesMention) }}
+      {{ formatCoordinators(responsablesMention) }}
     </div>
     <div v-if="responsablesParcours.length">
       Responsable(s) du parcours :
-      {{ formatResponsables(responsablesParcours) }}
+      {{ formatCoordinators(responsablesParcours) }}
     </div>
     <div v-if="responsablesEnseignement.length">
       Responsable(s) de l'enseignement :
-      {{ formatResponsables(responsablesEnseignement) }}
+      {{ formatCoordinators(responsablesEnseignement) }}
     </div>
   </QCardSection>
 </template>

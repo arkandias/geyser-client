@@ -1,6 +1,6 @@
 import { useMutation } from "@urql/vue";
 
-import { DUMMY_MUTATION } from "@/graphql/demandes.ts";
+import { DUMMY_MUTATION } from "@/graphql/requests.ts";
 
 export const useRefresh = () => {
   // this is an ugly hack to invalidate cache (using urql's Document Caching):

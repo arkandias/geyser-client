@@ -2,6 +2,7 @@ import { graphql } from "@/gql";
 
 export const GET_CURRENT_PHASE = graphql(/* GraphQL */ `
   query GetCurrentPhase {
+    # limit: 1 car unique
     phases: phase(where: { en_cours: { _eq: true } }, limit: 1) {
       value
     }
