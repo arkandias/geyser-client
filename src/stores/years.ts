@@ -12,9 +12,14 @@ const active: ComputedRef<number | null> = computed(() =>
     ? selected.value
     : current.value,
 );
+
 const isCurrentActive: ComputedRef<boolean> = computed(
   () => active.value === current.value,
 );
+
+const set = (values: number[]) => {
+  years.value = values;
+};
 
 const select = (year: number | null): void => {
   if (year !== null) {
@@ -23,6 +28,7 @@ const select = (year: number | null): void => {
 };
 
 export const useYears = () => {
+  // TODO: remove overload
   const update = useMutation(UPDATE_CURRENT_YEAR);
   const setCurrent = async (year: number | null): Promise<void> => {
     if (year === null) {
@@ -38,6 +44,7 @@ export const useYears = () => {
     selected: readonly(selected),
     active,
     isCurrentActive,
+    set,
     setCurrent,
     select,
   };

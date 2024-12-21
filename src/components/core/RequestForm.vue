@@ -12,7 +12,7 @@ import {
 import { usePermissions } from "@/composables/permissions.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
-import { updateRequest } from "@/helpers/requests-operations.ts";
+import { updateRequest } from "@/helpers/operations-requests.ts";
 import { useData } from "@/stores/data.ts";
 import { usePhases } from "@/stores/phases.ts";
 
@@ -69,7 +69,7 @@ watch(
 );
 
 const uidInit: ComputedRef<string | null> = computed(() =>
-  perm.deFaireDesDemandesPourAutrui || perm.deModifierLesAttributions
+  perm.toSubmitRequestsForOthers || perm.toEditAssignments
     ? null
     : (myRow.value?.uid ?? null),
 );
@@ -128,9 +128,7 @@ const resetForm = (): void => {
       @reset="resetForm"
     >
       <TeacherSelect
-        v-if="
-          perm.deFaireDesDemandesPourAutrui || perm.deModifierLesAttributions
-        "
+        v-if="perm.toSubmitRequestsForOthers || perm.toEditAssignments"
         v-model="uid"
         dense
         options-dense
@@ -155,7 +153,7 @@ const resetForm = (): void => {
       />
       <!-- TODO: v-for -->
       <QRadio
-        v-if="perm.deModifierLesAttributions"
+        v-if="perm.toEditAssignments"
         v-model="requestType"
         :val="REQUEST_TYPES.ASSIGNMENT"
         label="Attribution"
@@ -163,7 +161,7 @@ const resetForm = (): void => {
         dense
       />
       <QRadio
-        v-if="perm.deFaireDesDemandes"
+        v-if="perm.toSubmitRequests"
         v-model="requestType"
         :val="REQUEST_TYPES.PRIMARY"
         label="Principale"
@@ -171,7 +169,7 @@ const resetForm = (): void => {
         dense
       />
       <QRadio
-        v-if="perm.deFaireDesDemandes"
+        v-if="perm.toSubmitRequests"
         v-model="requestType"
         :val="REQUEST_TYPES.SECONDARY"
         label="Secondaire"

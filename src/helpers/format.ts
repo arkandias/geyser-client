@@ -41,7 +41,7 @@ export const formatCourseCaption = (details: CourseDetails) =>
 
 export const formatTeacherCaption = (row: TeacherRow) => {
   const service = String(
-    (row.services[0]?.weightedHours ?? 0) -
+    (row.services[0]?.base ?? 0) -
       (row.services[0]?.totalModifications.aggregate?.sum?.weightedHours ?? 0),
   );
   const assigned = String(row.totalAssigned.aggregate?.sum?.weightedHours ?? 0);

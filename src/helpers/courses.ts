@@ -14,7 +14,7 @@ export const getRequestTotal = (
     return (
       teacher.requests.find(
         (request) =>
-          request.course.id === row.id && request.requestType === requestType,
+          request.course.id === row.id && request.type === requestType,
       )?.hours ?? 0
     );
   }

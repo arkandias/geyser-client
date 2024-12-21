@@ -43,6 +43,16 @@ const version: ComputedRef<string | null> = computed(() =>
       </QBtn>
       <QSeparator vertical inset color="white" />
       <QBtn
+        icon="sym_s_badge"
+        :disable
+        flat
+        square
+        @click="router.replace({ name: 'teacher' })"
+      >
+        <QTooltip>Mes informations</QTooltip>
+      </QBtn>
+      <QSeparator vertical inset color="white" />
+      <QBtn
         icon="sym_s_menu_book"
         :disable
         flat
@@ -72,7 +82,7 @@ const version: ComputedRef<string | null> = computed(() =>
       >
         <QTooltip>Mode sombre</QTooltip>
       </QBtn>
-      <MenuAdmin v-if="perm.dAdministrer" />
+      <MenuAdmin v-if="perm.toAdmin" />
       <MenuUser />
     </QToolbar>
   </QHeader>

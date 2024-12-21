@@ -1,9 +1,10 @@
 import { type Ref, readonly, ref } from "vue";
 
-const isLeftPanelOpen: Ref<boolean> = ref(false);
 export const hSplitterRatio: Ref<number> = ref(50);
 export const vSplitterRatio: Ref<number> = ref(0);
+
 const vSplitterRatioSaved: Ref<number> = ref(30);
+const isLeftPanelOpen: Ref<boolean> = ref(false);
 
 const openLeftPanel = (): void => {
   if (!isLeftPanelOpen.value) {
@@ -11,6 +12,7 @@ const openLeftPanel = (): void => {
     vSplitterRatio.value = vSplitterRatioSaved.value;
   }
 };
+
 const closeLeftPanel = (): void => {
   if (isLeftPanelOpen.value) {
     isLeftPanelOpen.value = false;
@@ -18,6 +20,7 @@ const closeLeftPanel = (): void => {
     vSplitterRatio.value = 0;
   }
 };
+
 const toggleLeftPanel = (): void => {
   if (isLeftPanelOpen.value) {
     closeLeftPanel();

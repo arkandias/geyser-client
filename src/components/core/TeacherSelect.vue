@@ -14,7 +14,7 @@ const { current: currentYear } = useYears();
 const queryTeachers = useQuery({
   query: GET_TEACHERS,
   variables: {
-    year: computed(() => currentYear.value ?? 0),
+    year: computed(() => currentYear.value ?? -1),
   },
 });
 

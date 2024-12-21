@@ -10,15 +10,12 @@ import {
 import { nf } from "@/helpers/format.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 import type { ModificationType } from "@/types/modification-type.ts";
-import type { ServiceModification } from "@/types/service-modification.ts";
+import type { ServiceDetails } from "@/types/service.ts";
 
 import ServiceTable from "@/components/service/ServiceTable.vue";
 
-const props = defineProps<{
-  serviceId: number;
-  serviceBase: number;
-  modifications: ServiceModification[];
-  totalModifications: number;
+const { service, editable } = defineProps<{
+  service: ServiceDetails;
   editable: boolean;
 }>();
 
@@ -34,23 +31,24 @@ const modificationTypesOptions: ComputedRef<ModificationType[]> = computed(
 );
 
 const isFormOpen: Ref<boolean> = ref(false);
-const modificationTypes: Ref<ModificationType | null> = ref(null);
-const weightedHours: Ref<number> = ref(0);
+const modificationType: Ref<string | null> = ref(null);
+const hours: Ref<number> = ref(0);
 
 const resetForm = (): void => {
   isFormOpen.value = false;
-  modificationTypes.value = null;
-  weightedHours.value = 0;
+  modificationType.value = null;
+  hours.value = 0;
 };
+
 const submitForm = async (): Promise<void> => {
-  if (!modificationTypes.value) {
+  if (!modificationType.value) {
     notify(NotifyType.Error, {
       message: "Formulaire non valide",
       caption: "Sélectionnez un type de modification de service",
     });
     return;
   }
-  if (weightedHours.value <= 0) {
+  if (hours.value <= 0) {
     notify(NotifyType.Error, {
       message: "Formulaire non valide",
       caption: "Sélectionnez un nombre d'heures strictement positif",
@@ -58,9 +56,9 @@ const submitForm = async (): Promise<void> => {
     return;
   }
   const result = await insertModification.executeMutation({
-    serviceId: props.serviceId,
-    modificationType: modificationTypes.value.value,
-    weightedHours: weightedHours.value,
+    serviceId: service.id,
+    modificationType: modificationType.value,
+    weightedHours: hours.value,
   });
   if (result.data?.serviceModification && !result.error) {
     notify(NotifyType.Success, { message: "Modification ajoutée" });
@@ -69,6 +67,7 @@ const submitForm = async (): Promise<void> => {
   }
   resetForm();
 };
+
 const handleDeletion = async (id: number): Promise<void> => {
   const result = await deleteModification.executeMutation({ id: id });
   if (result.data?.serviceModification && !result.error) {
@@ -78,8 +77,10 @@ const handleDeletion = async (id: number): Promise<void> => {
   }
 };
 
-const serviceCorrige: ComputedRef<number> = computed(
-  () => props.serviceBase - props.totalModifications,
+const modifiedService: ComputedRef<number> = computed(
+  () =>
+    service.base -
+    (service.totalModifications.aggregate?.sum?.weightedHours ?? 0),
 );
 </script>
 
@@ -88,7 +89,7 @@ const serviceCorrige: ComputedRef<number> = computed(
   <ServiceTable>
     <tr>
       <td>Base</td>
-      <td>{{ nf.format(serviceBase) + " htd" }}</td>
+      <td>{{ nf.format(service.base) + " htd" }}</td>
     </tr>
     <tr>
       <td>
@@ -129,11 +130,11 @@ const serviceCorrige: ComputedRef<number> = computed(
           dense
         />
         <QSelect
-          v-model="modificationTypes"
+          v-model="modificationType"
           :options="modificationTypesOptions"
-          option-value="label"
-          label-slot
           label="Type"
+          emit-value
+          map-options
           square
           dense
           options-dense
@@ -154,7 +155,7 @@ const serviceCorrige: ComputedRef<number> = computed(
       </td>
       <td>
         <QInput
-          v-model.number="weightedHours"
+          v-model.number="hours"
           type="number"
           step="any"
           suffix="htd"
@@ -165,7 +166,7 @@ const serviceCorrige: ComputedRef<number> = computed(
         />
       </td>
     </tr>
-    <tr v-for="modification in modifications" :key="modification.id">
+    <tr v-for="modification in service.modifications" :key="modification.id">
       <td>
         <QBtn
           v-if="editable"
@@ -177,7 +178,7 @@ const serviceCorrige: ComputedRef<number> = computed(
           dense
           @click="handleDeletion(modification.id)"
         />
-        {{ modification.modificationType }}
+        {{ modification.modificationType.label }}
       </td>
       <td>{{ nf.format(modification.weightedHours) + " htd" }}</td>
     </tr>
@@ -186,7 +187,7 @@ const serviceCorrige: ComputedRef<number> = computed(
     </tr>
     <tr>
       <td>Total</td>
-      <td>{{ nf.format(serviceCorrige) + " htd" }}</td>
+      <td>{{ nf.format(modifiedService) + " htd" }}</td>
     </tr>
   </ServiceTable>
 </template>

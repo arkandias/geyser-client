@@ -4,35 +4,37 @@ import { type ComputedRef, computed } from "vue";
 import { formatCourseCaption } from "@/helpers/format.ts";
 import type { CourseDetails } from "@/types/course.ts";
 
-import DetailsEnseignement from "@/components/details/DetailsEnseignement.vue";
-import DetailsInformations from "@/components/details/DetailsInformations.vue";
-import DetailsCourseExtras from "@/components/details/volet/DetailsCourseExtras.vue";
-import DetailsExpandable from "@/components/details/volet/DetailsExpandable.vue";
-import DetailsVoletInformations from "@/components/details/volet/DetailsVoletInformations.vue";
+import DetailsExpansion from "@/components/details/DetailsExpansion.vue";
+import DetailsCourseExtraInformation from "@/components/details/course/DetailsCourseExtraInformation.vue";
+import DetailsCourseExtras from "@/components/details/course/DetailsCourseExtras.vue";
+import DetailsCourseInformation from "@/components/details/course/DetailsCourseInformation.vue";
+import DetailsCourseRequests from "@/components/details/course/DetailsCourseRequests.vue";
 
-const { courseDetails: details } = defineProps<{
-  courseDetails: CourseDetails | null;
+const { details } = defineProps<{
+  details: CourseDetails | null;
 }>();
 
 const label: ComputedRef<string> = computed(() =>
-  details ? details.name : "Ce volet contient des informations supplémentaires",
+  details
+    ? details.name
+    : "Sélectionnez un enseignement dans la liste ci-dessus",
 );
 
 const caption: ComputedRef<string> = computed(() =>
   details
     ? formatCourseCaption(details)
-    : "Cliquez dessus pour afficher ces informations",
+    : "Cliquez sur ce volet pour afficher des informations supplémentaires",
 );
 </script>
 
 <template>
-  <DetailsExpandable :label :caption :disable="!details">
+  <DetailsExpansion :label :caption>
     <DetailsCourseExtras v-if="details" :details />
-    <DetailsVoletInformations v-else />
-  </DetailsExpandable>
+    <DetailsCourseExtraInformation v-else />
+  </DetailsExpansion>
   <QCard flat square>
-    <DetailsEnseignement v-if="details" :details />
-    <DetailsInformations v-else />
+    <DetailsCourseRequests v-if="details" :details="details" />
+    <DetailsCourseInformation v-else />
   </QCard>
 </template>
 

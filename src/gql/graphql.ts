@@ -9355,7 +9355,7 @@ export type ArchiveFragment = {
   requests: Array<{
     __typename?: "demande";
     id: number;
-    requestType: string;
+    type: string;
     hours: number;
     weightedHours: number | null;
     isPriority: boolean | null;
@@ -9389,7 +9389,7 @@ export type NestedArchivesFragment = {
       requests: Array<{
         __typename?: "demande";
         id: number;
-        requestType: string;
+        type: string;
         hours: number;
         weightedHours: number | null;
         isPriority: boolean | null;
@@ -9410,7 +9410,7 @@ export type NestedArchivesFragment = {
     requests: Array<{
       __typename?: "demande";
       id: number;
-      requestType: string;
+      type: string;
       hours: number;
       weightedHours: number | null;
       isPriority: boolean | null;
@@ -9431,7 +9431,7 @@ export type NestedArchivesFragment = {
   requests: Array<{
     __typename?: "demande";
     id: number;
-    requestType: string;
+    type: string;
     hours: number;
     weightedHours: number | null;
     isPriority: boolean | null;
@@ -9588,7 +9588,7 @@ export type GetCourseDetailsQuery = {
     requests: Array<{
       __typename?: "demande";
       id: number;
-      requestType: string;
+      type: string;
       hours: number;
       weightedHours: number | null;
       isPriority: boolean | null;
@@ -9634,7 +9634,7 @@ export type GetCourseDetailsQuery = {
           requests: Array<{
             __typename?: "demande";
             id: number;
-            requestType: string;
+            type: string;
             hours: number;
             weightedHours: number | null;
             isPriority: boolean | null;
@@ -9655,7 +9655,7 @@ export type GetCourseDetailsQuery = {
         requests: Array<{
           __typename?: "demande";
           id: number;
-          requestType: string;
+          type: string;
           hours: number;
           weightedHours: number | null;
           isPriority: boolean | null;
@@ -9676,7 +9676,7 @@ export type GetCourseDetailsQuery = {
       requests: Array<{
         __typename?: "demande";
         id: number;
-        requestType: string;
+        type: string;
         hours: number;
         weightedHours: number | null;
         isPriority: boolean | null;
@@ -9819,7 +9819,7 @@ export type GetProfileQuery = {
 export type RequestDetailsFragment = {
   __typename?: "demande";
   id: number;
-  requestType: string;
+  type: string;
   hours: number;
   weightedHours: number | null;
   isPriority: boolean | null;
@@ -9867,7 +9867,7 @@ export type GetRequestQuery = {
   requests: Array<{
     __typename?: "demande";
     id: number;
-    requestType: string;
+    type: string;
     hours: number;
     weightedHours: number | null;
     isPriority: boolean | null;
@@ -9934,8 +9934,13 @@ export type DummyMutationMutation = {
 export type ServiceModificationFragment = {
   __typename?: "modification_service";
   id: number;
-  modificationType: string;
   weightedHours: number;
+  modificationType: {
+    __typename?: "type_modification_service";
+    value: string;
+    label: string;
+    description: string | null;
+  };
 };
 
 export type ServiceModificationsTotalWeightedHoursFragment = {
@@ -9977,15 +9982,9 @@ export type DeleteServiceModificationMutation = {
 
 export type ServiceFragment = {
   __typename?: "service";
-  id: number;
-  weightedHours: number;
-  teacher: {
-    __typename?: "intervenant";
-    uid: string;
-    alias: string | null;
-    firstname: string;
-    lastname: string;
-  };
+  uid: string;
+  year: number;
+  base: number;
   totalModifications: {
     __typename?: "modification_service_aggregate";
     aggregate: {
@@ -10000,21 +9999,20 @@ export type ServiceFragment = {
 
 export type ServiceDetailsFragment = {
   __typename?: "service";
-  id: number;
-  weightedHours: number;
+  uid: string;
+  year: number;
+  base: number;
   modifications: Array<{
     __typename?: "modification_service";
     id: number;
-    modificationType: string;
     weightedHours: number;
+    modificationType: {
+      __typename?: "type_modification_service";
+      value: string;
+      label: string;
+      description: string | null;
+    };
   }>;
-  teacher: {
-    __typename?: "intervenant";
-    uid: string;
-    alias: string | null;
-    firstname: string;
-    lastname: string;
-  };
   totalModifications: {
     __typename?: "modification_service_aggregate";
     aggregate: {
@@ -10059,15 +10057,9 @@ export type GetTeachersRowsQuery = {
     lastname: string;
     services: Array<{
       __typename?: "service";
-      id: number;
-      weightedHours: number;
-      teacher: {
-        __typename?: "intervenant";
-        uid: string;
-        alias: string | null;
-        firstname: string;
-        lastname: string;
-      };
+      uid: string;
+      year: number;
+      base: number;
       totalModifications: {
         __typename?: "modification_service_aggregate";
         aggregate: {
@@ -10136,6 +10128,33 @@ export type GetTeacherDetailsQuery = {
     firstname: string;
     lastname: string;
     position: { __typename?: "fonction"; value: string; label: string } | null;
+    services: Array<{
+      __typename?: "service";
+      uid: string;
+      year: number;
+      base: number;
+      modifications: Array<{
+        __typename?: "modification_service";
+        id: number;
+        weightedHours: number;
+        modificationType: {
+          __typename?: "type_modification_service";
+          value: string;
+          label: string;
+          description: string | null;
+        };
+      }>;
+      totalModifications: {
+        __typename?: "modification_service_aggregate";
+        aggregate: {
+          __typename?: "modification_service_aggregate_fields";
+          sum: {
+            __typename?: "modification_service_sum_fields";
+            weightedHours: number | null;
+          } | null;
+        } | null;
+      };
+    }>;
     priorities: Array<{
       __typename?: "priorite";
       id: number;
@@ -10153,7 +10172,7 @@ export type GetTeacherDetailsQuery = {
     requests: Array<{
       __typename?: "demande";
       id: number;
-      requestType: string;
+      type: string;
       hours: number;
       weightedHours: number | null;
       isPriority: boolean | null;
@@ -10170,34 +10189,39 @@ export type GetTeacherDetailsQuery = {
         hoursPerGroup: number | null;
       };
     }>;
-    services: Array<{
-      __typename?: "service";
-      id: number;
-      weightedHours: number;
-      modifications: Array<{
-        __typename?: "modification_service";
-        id: number;
-        modificationType: string;
-        weightedHours: number;
-      }>;
-      teacher: {
-        __typename?: "intervenant";
-        uid: string;
-        alias: string | null;
-        firstname: string;
-        lastname: string;
-      };
-      totalModifications: {
-        __typename?: "modification_service_aggregate";
-        aggregate: {
-          __typename?: "modification_service_aggregate_fields";
-          sum: {
-            __typename?: "modification_service_sum_fields";
-            weightedHours: number | null;
-          } | null;
+    totalAssigned: {
+      __typename?: "demande_aggregate";
+      aggregate: {
+        __typename?: "demande_aggregate_fields";
+        sum: {
+          __typename?: "demande_sum_fields";
+          hours: number | null;
+          weightedHours: number | null;
         } | null;
-      };
-    }>;
+      } | null;
+    };
+    totalPrimary: {
+      __typename?: "demande_aggregate";
+      aggregate: {
+        __typename?: "demande_aggregate_fields";
+        sum: {
+          __typename?: "demande_sum_fields";
+          hours: number | null;
+          weightedHours: number | null;
+        } | null;
+      } | null;
+    };
+    totalSecondary: {
+      __typename?: "demande_aggregate";
+      aggregate: {
+        __typename?: "demande_aggregate_fields";
+        sum: {
+          __typename?: "demande_sum_fields";
+          hours: number | null;
+          weightedHours: number | null;
+        } | null;
+      } | null;
+    };
     messages: Array<{ __typename?: "message"; id: number; body: string }>;
   } | null;
 };
@@ -10364,11 +10388,7 @@ export const RequestDetailsFragmentDoc = {
               ],
             },
           },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "requestType" },
-            name: { kind: "Name", value: "type" },
-          },
+          { kind: "Field", name: { kind: "Name", value: "type" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "hours" },
@@ -10596,11 +10616,7 @@ export const ArchiveFragmentDoc = {
               ],
             },
           },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "requestType" },
-            name: { kind: "Name", value: "type" },
-          },
+          { kind: "Field", name: { kind: "Name", value: "type" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "hours" },
@@ -10730,11 +10746,7 @@ export const NestedArchivesFragmentDoc = {
               ],
             },
           },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "requestType" },
-            name: { kind: "Name", value: "type" },
-          },
+          { kind: "Field", name: { kind: "Name", value: "type" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "hours" },
@@ -10892,27 +10904,6 @@ export const MessageFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<MessageFragment, unknown>;
-export const ModificationTypeFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "ModificationType" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "type_modification_service" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "value" } },
-          { kind: "Field", name: { kind: "Name", value: "label" } },
-          { kind: "Field", name: { kind: "Name", value: "description" } },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<ModificationTypeFragment, unknown>;
 export const PriorityFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -11125,24 +11116,15 @@ export const ServiceFragmentDoc = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "teacher" },
-            name: { kind: "Name", value: "intervenant" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Profile" },
-                },
-              ],
-            },
+            alias: { kind: "Name", value: "year" },
+            name: { kind: "Name", value: "annee" },
           },
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "weightedHours" },
+            alias: { kind: "Name", value: "base" },
             name: { kind: "Name", value: "heures_eqtd" },
           },
           {
@@ -11162,31 +11144,6 @@ export const ServiceFragmentDoc = {
               ],
             },
           },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Profile" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "firstname" },
-            name: { kind: "Name", value: "prenom" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "lastname" },
-            name: { kind: "Name", value: "nom" },
-          },
-          { kind: "Field", name: { kind: "Name", value: "alias" } },
         ],
       },
     },
@@ -11228,6 +11185,27 @@ export const ServiceFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<ServiceFragment, unknown>;
+export const ModificationTypeFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ModificationType" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "type_modification_service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "value" } },
+          { kind: "Field", name: { kind: "Name", value: "label" } },
+          { kind: "Field", name: { kind: "Name", value: "description" } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ModificationTypeFragment, unknown>;
 export const ServiceModificationFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -11245,13 +11223,38 @@ export const ServiceModificationFragmentDoc = {
           {
             kind: "Field",
             alias: { kind: "Name", value: "modificationType" },
-            name: { kind: "Name", value: "type" },
+            name: { kind: "Name", value: "typeByType" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ModificationType" },
+                },
+              ],
+            },
           },
           {
             kind: "Field",
             alias: { kind: "Name", value: "weightedHours" },
             name: { kind: "Name", value: "heures_eqtd" },
           },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ModificationType" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "type_modification_service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "value" } },
+          { kind: "Field", name: { kind: "Name", value: "label" } },
+          { kind: "Field", name: { kind: "Name", value: "description" } },
         ],
       },
     },
@@ -11320,31 +11323,6 @@ export const ServiceDetailsFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Profile" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "firstname" },
-            name: { kind: "Name", value: "prenom" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "lastname" },
-            name: { kind: "Name", value: "nom" },
-          },
-          { kind: "Field", name: { kind: "Name", value: "alias" } },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
       name: { kind: "Name", value: "ServiceModificationsTotalWeightedHours" },
       typeCondition: {
         kind: "NamedType",
@@ -11381,6 +11359,22 @@ export const ServiceDetailsFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ModificationType" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "type_modification_service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "value" } },
+          { kind: "Field", name: { kind: "Name", value: "label" } },
+          { kind: "Field", name: { kind: "Name", value: "description" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
       name: { kind: "Name", value: "Service" },
       typeCondition: {
         kind: "NamedType",
@@ -11389,24 +11383,15 @@ export const ServiceDetailsFragmentDoc = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "teacher" },
-            name: { kind: "Name", value: "intervenant" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Profile" },
-                },
-              ],
-            },
+            alias: { kind: "Name", value: "year" },
+            name: { kind: "Name", value: "annee" },
           },
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "weightedHours" },
+            alias: { kind: "Name", value: "base" },
             name: { kind: "Name", value: "heures_eqtd" },
           },
           {
@@ -11443,7 +11428,16 @@ export const ServiceDetailsFragmentDoc = {
           {
             kind: "Field",
             alias: { kind: "Name", value: "modificationType" },
-            name: { kind: "Name", value: "type" },
+            name: { kind: "Name", value: "typeByType" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ModificationType" },
+                },
+              ],
+            },
           },
           {
             kind: "Field",
@@ -12626,11 +12620,7 @@ export const GetCourseDetailsDocument = {
               ],
             },
           },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "requestType" },
-            name: { kind: "Name", value: "type" },
-          },
+          { kind: "Field", name: { kind: "Name", value: "type" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "hours" },
@@ -13781,11 +13771,7 @@ export const GetRequestDocument = {
               ],
             },
           },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "requestType" },
-            name: { kind: "Name", value: "type" },
-          },
+          { kind: "Field", name: { kind: "Name", value: "type" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "hours" },
@@ -14976,31 +14962,6 @@ export const GetTeachersRowsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Profile" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "firstname" },
-            name: { kind: "Name", value: "prenom" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "lastname" },
-            name: { kind: "Name", value: "nom" },
-          },
-          { kind: "Field", name: { kind: "Name", value: "alias" } },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
       name: { kind: "Name", value: "ServiceModificationsTotalWeightedHours" },
       typeCondition: {
         kind: "NamedType",
@@ -15037,6 +14998,31 @@ export const GetTeachersRowsDocument = {
     },
     {
       kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Profile" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "alias" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
       name: { kind: "Name", value: "Service" },
       typeCondition: {
         kind: "NamedType",
@@ -15045,24 +15031,15 @@ export const GetTeachersRowsDocument = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "teacher" },
-            name: { kind: "Name", value: "intervenant" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Profile" },
-                },
-              ],
-            },
+            alias: { kind: "Name", value: "year" },
+            name: { kind: "Name", value: "annee" },
           },
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "weightedHours" },
+            alias: { kind: "Name", value: "base" },
             name: { kind: "Name", value: "heures_eqtd" },
           },
           {
@@ -15228,6 +15205,52 @@ export const GetTeacherDetailsDocument = {
                 },
                 {
                   kind: "Field",
+                  name: { kind: "Name", value: "services" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "annee" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "year" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "ServiceDetails" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
                   alias: { kind: "Name", value: "priorities" },
                   name: { kind: "Name", value: "priorites" },
                   arguments: [
@@ -15373,7 +15396,8 @@ export const GetTeacherDetailsDocument = {
                 },
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "services" },
+                  alias: { kind: "Name", value: "totalAssigned" },
+                  name: { kind: "Name", value: "demandes_aggregate" },
                   arguments: [
                     {
                       kind: "Argument",
@@ -15383,17 +15407,35 @@ export const GetTeacherDetailsDocument = {
                         fields: [
                           {
                             kind: "ObjectField",
-                            name: { kind: "Name", value: "annee" },
+                            name: { kind: "Name", value: "_and" },
                             value: {
-                              kind: "ObjectValue",
-                              fields: [
+                              kind: "ListValue",
+                              values: [
                                 {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "year" },
-                                  },
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "type" },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "_eq",
+                                            },
+                                            value: {
+                                              kind: "StringValue",
+                                              value: "attribution",
+                                              block: false,
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
                                 },
                               ],
                             },
@@ -15401,10 +15443,72 @@ export const GetTeacherDetailsDocument = {
                         ],
                       },
                     },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "RequestsTotalHours" },
+                      },
+                      {
+                        kind: "FragmentSpread",
+                        name: {
+                          kind: "Name",
+                          value: "RequestsTotalWeightedHours",
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "totalPrimary" },
+                  name: { kind: "Name", value: "demandes_aggregate" },
+                  arguments: [
                     {
                       kind: "Argument",
-                      name: { kind: "Name", value: "limit" },
-                      value: { kind: "IntValue", value: "1" },
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_and" },
+                            value: {
+                              kind: "ListValue",
+                              values: [
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "type" },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "_eq",
+                                            },
+                                            value: {
+                                              kind: "StringValue",
+                                              value: "principale",
+                                              block: false,
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
                     },
                   ],
                   selectionSet: {
@@ -15412,7 +15516,81 @@ export const GetTeacherDetailsDocument = {
                     selections: [
                       {
                         kind: "FragmentSpread",
-                        name: { kind: "Name", value: "ServiceDetails" },
+                        name: { kind: "Name", value: "RequestsTotalHours" },
+                      },
+                      {
+                        kind: "FragmentSpread",
+                        name: {
+                          kind: "Name",
+                          value: "RequestsTotalWeightedHours",
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "totalSecondary" },
+                  name: { kind: "Name", value: "demandes_aggregate" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_and" },
+                            value: {
+                              kind: "ListValue",
+                              values: [
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "type" },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "_eq",
+                                            },
+                                            value: {
+                                              kind: "StringValue",
+                                              value: "secondaire",
+                                              block: false,
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "RequestsTotalHours" },
+                      },
+                      {
+                        kind: "FragmentSpread",
+                        name: {
+                          kind: "Name",
+                          value: "RequestsTotalWeightedHours",
+                        },
                       },
                     ],
                   },
@@ -15471,31 +15649,6 @@ export const GetTeacherDetailsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Profile" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "firstname" },
-            name: { kind: "Name", value: "prenom" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "lastname" },
-            name: { kind: "Name", value: "nom" },
-          },
-          { kind: "Field", name: { kind: "Name", value: "alias" } },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
       name: { kind: "Name", value: "ServiceModificationsTotalWeightedHours" },
       typeCondition: {
         kind: "NamedType",
@@ -15540,24 +15693,15 @@ export const GetTeacherDetailsDocument = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "teacher" },
-            name: { kind: "Name", value: "intervenant" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "Profile" },
-                },
-              ],
-            },
+            alias: { kind: "Name", value: "year" },
+            name: { kind: "Name", value: "annee" },
           },
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "weightedHours" },
+            alias: { kind: "Name", value: "base" },
             name: { kind: "Name", value: "heures_eqtd" },
           },
           {
@@ -15582,6 +15726,22 @@ export const GetTeacherDetailsDocument = {
     },
     {
       kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ModificationType" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "type_modification_service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "value" } },
+          { kind: "Field", name: { kind: "Name", value: "label" } },
+          { kind: "Field", name: { kind: "Name", value: "description" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
       name: { kind: "Name", value: "ServiceModification" },
       typeCondition: {
         kind: "NamedType",
@@ -15594,12 +15754,104 @@ export const GetTeacherDetailsDocument = {
           {
             kind: "Field",
             alias: { kind: "Name", value: "modificationType" },
-            name: { kind: "Name", value: "type" },
+            name: { kind: "Name", value: "typeByType" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ModificationType" },
+                },
+              ],
+            },
           },
           {
             kind: "Field",
             alias: { kind: "Name", value: "weightedHours" },
             name: { kind: "Name", value: "heures_eqtd" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Profile" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "alias" } },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "ServiceDetails" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "FragmentSpread", name: { kind: "Name", value: "Service" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "modifications" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "order_by" },
+                value: {
+                  kind: "ListValue",
+                  values: [
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "type" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                    {
+                      kind: "ObjectValue",
+                      fields: [
+                        {
+                          kind: "ObjectField",
+                          name: { kind: "Name", value: "heures_eqtd" },
+                          value: { kind: "EnumValue", value: "asc" },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "ServiceModification" },
+                },
+              ],
+            },
           },
         ],
       },
@@ -15688,11 +15940,7 @@ export const GetTeacherDetailsDocument = {
               ],
             },
           },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "requestType" },
-            name: { kind: "Name", value: "type" },
-          },
+          { kind: "Field", name: { kind: "Name", value: "type" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "hours" },
@@ -15713,55 +15961,69 @@ export const GetTeacherDetailsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "ServiceDetails" },
+      name: { kind: "Name", value: "RequestsTotalHours" },
       typeCondition: {
         kind: "NamedType",
-        name: { kind: "Name", value: "service" },
+        name: { kind: "Name", value: "demande_aggregate" },
       },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          { kind: "FragmentSpread", name: { kind: "Name", value: "Service" } },
           {
             kind: "Field",
-            name: { kind: "Name", value: "modifications" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ListValue",
-                  values: [
-                    {
-                      kind: "ObjectValue",
-                      fields: [
-                        {
-                          kind: "ObjectField",
-                          name: { kind: "Name", value: "type" },
-                          value: { kind: "EnumValue", value: "asc" },
-                        },
-                      ],
-                    },
-                    {
-                      kind: "ObjectValue",
-                      fields: [
-                        {
-                          kind: "ObjectField",
-                          name: { kind: "Name", value: "heures_eqtd" },
-                          value: { kind: "EnumValue", value: "asc" },
-                        },
-                      ],
-                    },
-                  ],
-                },
-              },
-            ],
+            name: { kind: "Name", value: "aggregate" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "ServiceModification" },
+                  kind: "Field",
+                  name: { kind: "Name", value: "sum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "hours" },
+                        name: { kind: "Name", value: "heures" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "RequestsTotalWeightedHours" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "demande_aggregate" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "sum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "weightedHours" },
+                        name: { kind: "Name", value: "heures_eqtd" },
+                      },
+                    ],
+                  },
                 },
               ],
             },

@@ -21,9 +21,9 @@ import TableTeachers from "@/components/TableTeachers.vue";
 const router = useRouter();
 const route = useRoute();
 const {
+  selected: selectedYear,
   active: activeYear,
   isCurrentActive: isCurrentYearActive,
-  selected: selectedYear,
   select: selectYear,
 } = useYears();
 const perm = usePermissions();
@@ -47,10 +47,10 @@ const queryCourseDetails = useQuery({
 const queryTeacherDetails = useQuery({
   query: GET_TEACHER_DETAILS,
   variables: reactive({
-    year: computed(() => selectedYear.value ?? -1),
+    year: computed(() => activeYear.value ?? -1),
     uid: computed(() => selectedTeacher.value[0]?.uid ?? ""),
   }),
-  pause: () => !selectedYear.value || !selectedTeacher.value[0],
+  pause: () => !activeYear.value || !selectedTeacher.value[0],
   context: {
     additionalTypenames: ["demande", "message", "modification_service"],
   },
@@ -97,7 +97,7 @@ watch(
 
 // open or close the left panel based on user's permissions
 watch(
-  () => perm.deVoirLeServiceDAutrui,
+  () => perm.toViewAllServices,
   (value) => {
     if (value) {
       openLeftPanel();
@@ -126,10 +126,10 @@ watch(
       <template #after>
         <QSplitter id="second-splitter" v-model="hSplitterRatio" horizontal>
           <template #before>
-            <TableCourses :teacher-details />
+            <TableCourses :teacher="teacherDetails" />
           </template>
           <template #after>
-            <DetailsCourse :course-details />
+            <DetailsCourse :details="courseDetails" />
           </template>
         </QSplitter>
       </template>

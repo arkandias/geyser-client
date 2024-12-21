@@ -3,6 +3,7 @@ const edition = defineModel<boolean>();
 defineProps<{
   title: string;
   editable?: boolean;
+  center?: boolean;
 }>();
 defineSlots<{ default(): unknown }>();
 </script>

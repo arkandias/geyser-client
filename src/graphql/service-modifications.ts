@@ -3,7 +3,9 @@ import { graphql } from "@/gql";
 graphql(/* GraphQL */ `
   fragment ServiceModification on modification_service {
     id
-    modificationType: type
+    modificationType: typeByType {
+      ...ModificationType
+    }
     weightedHours: heures_eqtd
   }
 

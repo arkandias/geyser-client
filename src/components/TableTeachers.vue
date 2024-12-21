@@ -68,7 +68,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     label: "S.",
     tooltip: "Service à réaliser (en heures EQTD)",
     field: (row) =>
-      (row.services[0]?.weightedHours ?? 0) -
+      (row.services[0]?.base ?? 0) -
       (row.services[0]?.totalModifications.aggregate?.sum?.weightedHours ?? 0),
     format: (val: number) => nf.format(val),
     align: "left",
@@ -85,7 +85,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
-    visible: () => perm.deVoirLesAttributions,
+    visible: () => perm.toViewAssignments,
     searchable: false,
     abbreviable: false,
   },
@@ -95,7 +95,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD attribuées",
     field: (row) =>
-      (row.services[0]?.weightedHours ?? 0) -
+      (row.services[0]?.base ?? 0) -
       (row.services[0]?.totalModifications.aggregate?.sum?.weightedHours ?? 0) -
       (row.totalAssigned.aggregate?.sum?.weightedHours ?? 0),
     format: (val: number) => nf.format(val),
@@ -123,7 +123,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",
     field: (row) =>
-      (row.services[0]?.weightedHours ?? 0) -
+      (row.services[0]?.base ?? 0) -
       (row.services[0]?.totalModifications.aggregate?.sum?.weightedHours ?? 0) -
       (row.totalPrimary.aggregate?.sum?.weightedHours ?? 0),
     format: (val: number) => nf.format(val),

@@ -8,9 +8,9 @@ import type { Coordinator } from "@/types/coordinator.ts";
 import type { CourseDetails } from "@/types/course.ts";
 import type { Profile } from "@/types/profile.ts";
 
-import DetailsCourseCoordinators from "@/components/details/DetailsCourseCoordinators.vue";
 import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
 import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
+import DetailsCourseCoordinators from "@/components/details/course/DetailsCourseCoordinators.vue";
 
 const props = defineProps<{ details: CourseDetails }>();
 
@@ -56,7 +56,7 @@ const setDescription = (text: string): Promise<boolean> =>
     :text="details.description"
     default-text="Pas de description (contactez un responsable)"
     :set-text="setDescription"
-    :editable="perm.deModifierUneDescription(coordinators)"
+    :editable="perm.toEditADescription(coordinators)"
   />
 </template>
 

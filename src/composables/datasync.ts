@@ -18,7 +18,7 @@ export const useDataSync = () => {
   const queryCoursesRows = useQuery({
     query: GET_COURSES_ROWS,
     variables: reactive({
-      year: computed(() => activeYear.value ?? 0),
+      year: computed(() => activeYear.value ?? -1),
     }),
     pause: () => activeYear.value === null,
     context: { additionalTypenames: ["demande"] },
@@ -27,9 +27,9 @@ export const useDataSync = () => {
   const queryTeachersRows = useQuery({
     query: GET_TEACHERS_ROWS,
     variables: reactive({
-      year: computed(() => activeYear.value ?? 0),
+      year: computed(() => activeYear.value ?? -1),
       where: computed(() =>
-        perm.deVoirLeServiceDAutrui ? {} : { uid: { _eq: moi } },
+        perm.toViewAllServices ? {} : { uid: { _eq: moi } },
       ),
     }),
     pause: () => activeYear.value === null,

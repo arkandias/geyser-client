@@ -10,7 +10,7 @@ graphql(/* GraphQL */ `
       id
       hoursPerGroup: heures_corrigees
     }
-    requestType: type
+    type
     hours: heures
     weightedHours: heures_eqtd
     isPriority: prioritaire

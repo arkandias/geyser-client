@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import HomeExpandable from "@/components/home/HomeExpandable.vue";
+import HomeExpansion from "@/components/home/HomeExpansion.vue";
 </script>
 
 <template>
   <QList bordered>
-    <HomeExpandable label="Guide d'utilisation">
+    <HomeExpansion label="Guide d'utilisation">
       <p>
         Pour toute question, remarque, suggestion d'améliorations, signalement
         d'erreurs ou de bugs éventuels, merci d'utiliser l'adresse électronique
@@ -14,8 +14,8 @@ import HomeExpandable from "@/components/home/HomeExpandable.vue";
       <a href="mailto:julien.hauseux@univ-lille.fr"
         >julien.hauseux@univ-lille.fr</a
       >
-    </HomeExpandable>
-    <HomeExpandable label="Mention d'information">
+    </HomeExpansion>
+    <HomeExpansion label="Mention d'information">
       <p>
         Les informations recueillies dans cette application sont enregistrées
         dans un fichier informatisé par le département de mathématiques pour
@@ -72,8 +72,8 @@ import HomeExpandable from "@/components/home/HomeExpandable.vue";
         mathématiques, que vos droits «&nbsp;Informatique et Libertés&nbsp;» ne
         sont pas respectés, vous pouvez adresser une réclamation à la CNIL.
       </p>
-    </HomeExpandable>
-    <HomeExpandable label="Licence">
+    </HomeExpansion>
+    <HomeExpansion label="Licence">
       <p>
         Geyser &mdash; Gestion des enseignements prévisionnels<br />
         Copyright &copy; 2021-2024 Amaël Broustet, Julien Hauseux
@@ -126,7 +126,7 @@ import HomeExpandable from "@/components/home/HomeExpandable.vue";
           >
         </li>
       </ol>
-    </HomeExpandable>
+    </HomeExpansion>
   </QList>
 </template>
 

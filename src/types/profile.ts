@@ -20,3 +20,10 @@ export const isProfile = (profile: unknown): profile is Profile => {
     (profile.alias === null || typeof profile.alias === "string")
   );
 };
+
+export const getProfile = (p: Profile) => ({
+  uid: p.uid,
+  firstname: p.firstname,
+  lastname: p.lastname,
+  alias: p.alias,
+});

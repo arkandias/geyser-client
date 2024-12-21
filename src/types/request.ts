@@ -7,7 +7,7 @@ export type RequestDetails = {
     id: number;
     hoursPerGroup: number | null;
   };
-  requestType: string;
+  type: string;
   hours: number;
   weightedHours: number | null;
   isPriority: boolean | null;

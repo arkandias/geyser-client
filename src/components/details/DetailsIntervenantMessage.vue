@@ -3,7 +3,7 @@ import { useClientHandle } from "@urql/vue";
 import { type ComputedRef, computed } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
-import { updateMessage } from "@/helpers/messages.ts";
+import { updateMessage } from "@/helpers/operations-messages.ts";
 
 import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
 
@@ -34,7 +34,7 @@ const setMessage: ComputedRef<(contenu: string) => Promise<boolean>> = computed(
     :text="getMessage"
     default-text="Pas de contenu"
     :set-text="setMessage"
-    :editable="perm.deModifierUnMessage(uid)"
+    :editable="perm.toEditAMessage(uid)"
   />
 </template>
 

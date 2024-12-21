@@ -88,7 +88,7 @@ watch(
   { immediate: true },
 );
 
-const accessGranted = computed(() => logged.value && perm.dAcceder);
+const accessGranted = computed(() => logged.value && perm.toAccess);
 const accessDeniedMessage: ComputedRef<string> = computed(() => {
   if (!logged.value) {
     return "Vous n'êtes pas connecté";

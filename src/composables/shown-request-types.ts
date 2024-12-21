@@ -16,7 +16,7 @@ export const useShownRequestTypes = () => {
   const shown: ComputedRef<RequestType[]> = computed(() =>
     requestTypes.filter(
       (requestType) =>
-        perm.deVoirLesAttributions || requestType != REQUEST_TYPES.ASSIGNMENT,
+        perm.toViewAssignments || requestType != REQUEST_TYPES.ASSIGNMENT,
     ),
   );
   return {

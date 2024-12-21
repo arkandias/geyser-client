@@ -61,6 +61,10 @@ export const GET_TEACHER_DETAILS = graphql(/* GraphQL */ `
         value
         label
       }
+      # limit: 1 car unique
+      services(where: { annee: { _eq: $year } }, limit: 1) {
+        ...ServiceDetails
+      }
       priorities: priorites(
         where: { enseignement: { annee: { _eq: $year } } }
         order_by: { ens_id: asc }
@@ -73,9 +77,23 @@ export const GET_TEACHER_DETAILS = graphql(/* GraphQL */ `
       ) {
         ...RequestDetails
       }
-      # limit: 1 car unique
-      services(where: { annee: { _eq: $year } }, limit: 1) {
-        ...ServiceDetails
+      totalAssigned: demandes_aggregate(
+        where: { _and: [{ type: { _eq: "attribution" } }] }
+      ) {
+        ...RequestsTotalHours
+        ...RequestsTotalWeightedHours
+      }
+      totalPrimary: demandes_aggregate(
+        where: { _and: [{ type: { _eq: "principale" } }] }
+      ) {
+        ...RequestsTotalHours
+        ...RequestsTotalWeightedHours
+      }
+      totalSecondary: demandes_aggregate(
+        where: { _and: [{ type: { _eq: "secondaire" } }] }
+      ) {
+        ...RequestsTotalHours
+        ...RequestsTotalWeightedHours
       }
       # limit: 1 car unique
       messages(where: { annee: { _eq: $year } }, limit: 1) {

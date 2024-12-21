@@ -1,128 +1,128 @@
 import { type ComputedRef, computed, reactive } from "vue";
 
+import { PHASES } from "@/config/types/phases.ts";
+import { REQUEST_TYPES } from "@/config/types/request-types.ts";
+import { ROLES } from "@/config/types/roles.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { usePhases } from "@/stores/phases.ts";
 import { useYears } from "@/stores/years.ts";
 import type { Profile } from "@/types/profile.ts";
+import type { RequestDetails } from "@/types/request.ts";
 
 export const usePermissions = () => {
   const { isCurrentActive: isCurrentYearActive } = useYears();
-  const { current: phaseEnCours } = usePhases();
+  const { current: currentPhase } = usePhases();
   const { activeRole, uid: moi } = useAuthentication();
 
-  const dAdministrer: ComputedRef<boolean> = computed(
-    () => activeRole.value === "admin",
+  const toAdmin: ComputedRef<boolean> = computed(
+    () => activeRole.value === ROLES.ADMIN,
   );
 
-  const dAcceder: ComputedRef<boolean> = computed(
-    () => activeRole.value === "admin" || phaseEnCours.value !== "fermeture",
-  );
-
-  const deFaireDesDemandesPourAutrui: ComputedRef<boolean> = computed(
-    () => activeRole.value === "admin",
-  );
-
-  const deFaireDesDemandes: ComputedRef<boolean> = computed(
+  const toAccess: ComputedRef<boolean> = computed(
     () =>
-      deFaireDesDemandesPourAutrui.value ||
-      (activeRole.value === "intervenant" &&
-        phaseEnCours.value === "voeux" &&
+      activeRole.value === ROLES.ADMIN ||
+      currentPhase.value !== PHASES.SHUTDOWN,
+  );
+
+  const toSubmitRequestsForOthers: ComputedRef<boolean> = computed(
+    () => activeRole.value === ROLES.ADMIN,
+  );
+
+  const toSubmitRequests: ComputedRef<boolean> = computed(
+    () =>
+      toSubmitRequestsForOthers.value ||
+      (activeRole.value === ROLES.USER &&
+        currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value),
   );
 
-  const deModifierLesAttributions: ComputedRef<boolean> = computed(
+  const toEditAssignments: ComputedRef<boolean> = computed(
     () =>
-      activeRole.value === "admin" ||
-      (activeRole.value === "commissaire" &&
-        phaseEnCours.value === "commission" &&
+      activeRole.value === ROLES.ADMIN ||
+      (activeRole.value === ROLES.COMMISSIONER &&
+        currentPhase.value === PHASES.ASSIGNMENTS &&
         isCurrentYearActive.value),
   );
 
-  const deVoirLesAttributions: ComputedRef<boolean> = computed(
+  const toViewAssignments: ComputedRef<boolean> = computed(
     () =>
-      deModifierLesAttributions.value ||
-      phaseEnCours.value === "consultation" ||
+      toEditAssignments.value ||
+      currentPhase.value === PHASES.RESULTS ||
       !isCurrentYearActive.value,
   );
 
-  const deSupprimerUneDemande: ComputedRef<
-    (typeDemande: string, uid: string) => boolean
-  > = computed(() => (typeDemande, uid) => {
-    switch (typeDemande) {
-      case "attribution":
-        return deModifierLesAttributions.value;
-      case "principale":
-      case "secondaire":
-        return uid === moi.value
-          ? deFaireDesDemandes.value
-          : deFaireDesDemandesPourAutrui.value;
-      default:
-        console.warn(`Type de demande '${typeDemande}' inconnu`);
-        return activeRole.value === "admin";
-    }
-  });
+  const toDeleteARequest: ComputedRef<(details: RequestDetails) => boolean> =
+    computed(() => (details) => {
+      switch (details.type) {
+        case REQUEST_TYPES.ASSIGNMENT:
+          return toEditAssignments.value;
+        default:
+          return details.teacher.uid === moi.value
+            ? toSubmitRequests.value
+            : toSubmitRequestsForOthers.value;
+      }
+    });
 
-  const deModifierUneDescription: ComputedRef<
-    (responsables: Profile[]) => boolean
-  > = computed(
-    () => (responsables) =>
-      activeRole.value === "admin" ||
-      (isCurrentYearActive.value &&
-        responsables.some((responsable) => responsable.uid === moi.value)),
-  );
+  const toEditADescription: ComputedRef<(responsables: Profile[]) => boolean> =
+    computed(
+      () => (responsables) =>
+        activeRole.value === ROLES.ADMIN ||
+        (isCurrentYearActive.value &&
+          responsables.some((responsable) => responsable.uid === moi.value)),
+    );
 
-  const deVoirLeServiceDAutrui: ComputedRef<boolean> = computed(
+  const toViewAllServices: ComputedRef<boolean> = computed(
     () =>
-      activeRole.value === "admin" ||
-      (activeRole.value === "commissaire" &&
-        phaseEnCours.value === "commission"),
+      activeRole.value === ROLES.ADMIN ||
+      (activeRole.value === ROLES.COMMISSIONER &&
+        currentPhase.value === PHASES.ASSIGNMENTS),
   );
 
-  const deVoirUnService: ComputedRef<(uid: string) => boolean> = computed(
+  const toViewAService: ComputedRef<(uid: string) => boolean> = computed(
     () => (uid) =>
-      deVoirLeServiceDAutrui.value ||
-      (activeRole.value === "intervenant" && uid === moi.value),
+      toViewAllServices.value ||
+      (activeRole.value === ROLES.USER && uid === moi.value),
   );
 
-  const deModifierUnService: ComputedRef<(uid: string) => boolean> = computed(
+  const toEditAService: ComputedRef<(uid: string) => boolean> = computed(
     () => (uid) =>
-      activeRole.value === "admin" ||
-      (activeRole.value === "intervenant" &&
-        phaseEnCours.value === "voeux" &&
+      activeRole.value === ROLES.ADMIN ||
+      (activeRole.value === ROLES.USER &&
+        currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value &&
         uid === moi.value),
   );
 
-  const deModifierUnMessage: ComputedRef<(uid: string) => boolean> = computed(
+  const toEditAMessage: ComputedRef<(uid: string) => boolean> = computed(
     () => (uid) =>
-      activeRole.value === "admin" ||
-      (activeRole.value === "intervenant" &&
-        phaseEnCours.value === "voeux" &&
+      activeRole.value === ROLES.ADMIN ||
+      (activeRole.value === ROLES.USER &&
+        currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value &&
         uid === moi.value),
   );
 
-  const deVoirUnMessage: ComputedRef<(uid: string) => boolean> = computed(
+  const toViewAMessage: ComputedRef<(uid: string) => boolean> = computed(
     () => (uid) =>
-      deModifierUnMessage.value(uid) ||
-      (activeRole.value === "commissaire" &&
-        phaseEnCours.value === "commission") ||
-      (activeRole.value === "intervenant" && uid === moi.value),
+      toEditAMessage.value(uid) ||
+      (activeRole.value === ROLES.COMMISSIONER &&
+        currentPhase.value === PHASES.ASSIGNMENTS) ||
+      (activeRole.value === ROLES.USER && uid === moi.value),
   );
 
   return reactive({
-    dAdministrer,
-    dAcceder,
-    deFaireDesDemandesPourAutrui,
-    deFaireDesDemandes,
-    deVoirLesAttributions,
-    deModifierLesAttributions,
-    deSupprimerUneDemande,
-    deModifierUneDescription,
-    deVoirLeServiceDAutrui,
-    deVoirUnService,
-    deModifierUnService,
-    deVoirUnMessage,
-    deModifierUnMessage,
+    toAdmin,
+    toAccess,
+    toSubmitRequestsForOthers,
+    toSubmitRequests,
+    toViewAssignments,
+    toEditAssignments,
+    toDeleteARequest,
+    toEditADescription,
+    toViewAllServices,
+    toViewAService,
+    toEditAService,
+    toViewAMessage,
+    toEditAMessage,
   });
 };

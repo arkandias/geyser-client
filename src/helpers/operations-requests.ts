@@ -16,7 +16,7 @@ const getCurrentRequest = async (
   const result = await client.query(GET_REQUEST, variables, {
     requestPolicy: "network-only",
   });
-  if (!result.data?.requests[0]) {
+  if (!result.data?.requests) {
     console.error(
       "Cannot get current demande. Please report this error to an administrator",
     );
@@ -26,7 +26,7 @@ const getCurrentRequest = async (
     });
     return null;
   }
-  return result.data.requests[0].hours;
+  return result.data.requests[0]?.hours ?? 0;
 };
 
 export const updateRequest = async (
@@ -38,7 +38,8 @@ export const updateRequest = async (
     hours: number;
   },
 ): Promise<void> => {
-  const current = await getCurrentRequest(client, variables);
+  const { hours, ...rest } = variables;
+  const current = await getCurrentRequest(client, rest);
   if (current === null) {
     return;
   }

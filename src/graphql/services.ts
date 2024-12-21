@@ -2,11 +2,9 @@ import { graphql } from "@/gql";
 
 graphql(/* GraphQL */ `
   fragment Service on service {
-    id
-    teacher: intervenant {
-      ...Profile
-    }
-    weightedHours: heures_eqtd
+    year: annee
+    uid
+    base: heures_eqtd
     totalModifications: modifications_aggregate {
       ...ServiceModificationsTotalWeightedHours
     }

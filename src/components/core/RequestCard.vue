@@ -9,10 +9,10 @@ import { formatUser, nf, priorityColor } from "@/helpers/format.ts";
 import {
   deleteDemandeById,
   updateRequest,
-} from "@/helpers/requests-operations.ts";
+} from "@/helpers/operations-requests.ts";
 import type { RequestDetails } from "@/types/request.ts";
 
-const props = defineProps<{
+const { request, archive } = defineProps<{
   request: RequestDetails;
   archive?: boolean;
 }>();
@@ -22,21 +22,38 @@ const client = useClientHandle().client;
 
 const assign = async (): Promise<void> => {
   await updateRequest(client, {
-    uid: props.request.teacher.uid,
-    courseId: props.request.course.id,
+    uid: request.teacher.uid,
+    courseId: request.course.id,
     requestType: REQUEST_TYPES.ASSIGNMENT,
-    hours: props.request.hours,
+    hours: request.hours,
   });
 };
 const remove = async (): Promise<void> => {
-  await deleteDemandeById(client, props.request.id, props.request.requestType);
+  await deleteDemandeById(client, request.id, request.type);
 };
 
 const groups: ComputedRef<number> = computed(() =>
-  props.request.course.hoursPerGroup
-    ? props.request.hours / props.request.course.hoursPerGroup
+  request.course.hoursPerGroup
+    ? request.hours / request.course.hoursPerGroup
     : 0,
 );
+
+const displayActions: ComputedRef<(requestType: string) => boolean> = computed(
+  () => (requestType) => {
+    switch (requestType) {
+      case REQUEST_TYPES.ASSIGNMENT:
+        return perm.toEditAssignments;
+      default:
+        return perm.toSubmitRequests;
+    }
+  },
+);
+
+const displayAssignButton: ComputedRef<(requestType: string) => boolean> =
+  computed(
+    () => (requestType) =>
+      requestType !== REQUEST_TYPES.ASSIGNMENT && perm.toEditAssignments,
+  );
 </script>
 
 <template>
@@ -57,13 +74,17 @@ const groups: ComputedRef<number> = computed(() =>
       <br />
       {{ nf.format(request.hours) + " heure" + (request.hours > 1 ? "s" : "") }}
     </QCardSection>
-    <QSeparator />
-    <QCardActions v-if="!archive" align="evenly" class="q-pa-xs">
+    <QSeparator v-if="!archive && displayActions(request.type)" />
+    <QCardActions
+      v-if="!archive && displayActions(request.type)"
+      align="evenly"
+      class="q-pa-xs"
+    >
       <QBtn
+        v-if="displayAssignButton(request.type)"
         icon="sym_s_check"
         color="positive"
         size="sm"
-        :disable="!perm.deModifierLesAttributions"
         flat
         square
         dense
@@ -81,9 +102,7 @@ const groups: ComputedRef<number> = computed(() =>
         icon="sym_s_close"
         color="negative"
         size="sm"
-        :disable="
-          !perm.deSupprimerUneDemande(request.requestType, request.teacher.uid)
-        "
+        :disable="!perm.toDeleteARequest(request)"
         flat
         square
         dense
