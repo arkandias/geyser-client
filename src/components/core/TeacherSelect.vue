@@ -9,7 +9,7 @@ import type { OptionSearch } from "@/types/common.ts";
 
 const uid = defineModel<string | null>({ required: true });
 
-const { current: currentYear } = useYears();
+const { currentYear } = useYears();
 
 const queryTeachers = useQuery({
   query: GET_TEACHERS,

@@ -10,8 +10,8 @@ import type { Profile } from "@/types/profile.ts";
 import type { RequestDetails } from "@/types/request.ts";
 
 export const usePermissions = () => {
-  const { isCurrentActive: isCurrentYearActive } = useYears();
-  const { current: currentPhase } = usePhases();
+  const { isCurrentYearActive } = useYears();
+  const { currentPhase } = usePhases();
   const { activeRole, uid: moi } = useAuthentication();
 
   const toAdmin: ComputedRef<boolean> = computed(

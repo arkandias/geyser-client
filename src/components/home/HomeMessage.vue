@@ -3,13 +3,13 @@ import { type Ref, ref } from "vue";
 
 import { usePhases } from "@/stores/phases.ts";
 
-const { current: phaseEnCours } = usePhases();
+const { currentPhase } = usePhases();
 
 const demo: Ref<boolean> = ref(false);
 </script>
 
 <template>
-  <QCardSection v-if="phaseEnCours === 'voeux'">
+  <QCardSection v-if="currentPhase === 'voeux'">
     <p class="text-subtitle2">Geyser est actuellement en phase de vœux</p>
     <div class="text-justify">
       <p>
@@ -45,7 +45,7 @@ const demo: Ref<boolean> = ref(false);
       </p>
     </div>
   </QCardSection>
-  <QCardSection v-if="phaseEnCours === 'commission'">
+  <QCardSection v-if="currentPhase === 'commission'">
     <p class="text-subtitle2">Geyser est actuellement en phase de commission</p>
     <p class="text-justify">
       Les travaux de la commission sont en cours. Vous serez informé lorsqu'ils
@@ -54,7 +54,7 @@ const demo: Ref<boolean> = ref(false);
       modifier.
     </p>
   </QCardSection>
-  <QCardSection v-if="phaseEnCours === 'consultation'">
+  <QCardSection v-if="currentPhase === 'consultation'">
     <p class="text-subtitle2">
       Geyser est actuellement en phase de consultation
     </p>
@@ -64,7 +64,7 @@ const demo: Ref<boolean> = ref(false);
       attributions des années précédentes. À l'année prochaine !
     </p>
   </QCardSection>
-  <QCardSection v-if="phaseEnCours === 'fermeture'">
+  <QCardSection v-if="currentPhase === 'fermeture'">
     <p class="text-subtitle2">Geyser est actuellement fermé</p>
   </QCardSection>
 </template>

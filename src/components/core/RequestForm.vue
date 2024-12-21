@@ -23,7 +23,7 @@ const props = defineProps<{
   hoursPerGroup: number | null;
 }>();
 
-const { current: phaseEnCours } = usePhases();
+const { currentPhase } = usePhases();
 const perm = usePermissions();
 const { myRow } = useData();
 
@@ -52,7 +52,7 @@ const groupes: WritableComputedRef<number | null> = computed({
 });
 
 const requestTypeInit: ComputedRef<string | null> = computed(() => {
-  switch (phaseEnCours.value) {
+  switch (currentPhase.value) {
     case "voeux":
       return "principale";
     default:

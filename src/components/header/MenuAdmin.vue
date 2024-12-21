@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { useMutation } from "@urql/vue";
 import { type ComputedRef, computed } from "vue";
 
 import { type Phase, labelPhase, orderPhase } from "@/config/types/phases.ts";
 import { PHASES } from "@/config/types/phases.ts";
+import { SET_CURRENT_PHASE } from "@/graphql/phases.ts";
+import { UPDATE_CURRENT_YEAR } from "@/graphql/years.ts";
 import { usePhases } from "@/stores/phases.ts";
 import { useYears } from "@/stores/years.ts";
 import type { Option } from "@/types/common.ts";
@@ -10,9 +13,28 @@ import type { Option } from "@/types/common.ts";
 import MenuAdminOptions from "@/components/header/MenuAdminOptions.vue";
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { years, current: currentYear, setCurrent: setCurrentYear } = useYears();
+const { years, currentYear } = useYears();
+const { currentPhase } = usePhases();
 
-const { current: currentPhase, setCurrent: setCurrentPhase } = usePhases();
+const updateYear = useMutation(UPDATE_CURRENT_YEAR);
+const updatePhase = useMutation(SET_CURRENT_PHASE);
+
+const setCurrentYear = async (year: number | null): Promise<void> => {
+  if (year === null) {
+    return;
+  }
+  await updateYear.executeMutation({
+    value: year,
+  });
+};
+const setCurrentPhase = async (phase: string | null): Promise<void> => {
+  if (phase === null) {
+    return;
+  }
+  await updatePhase.executeMutation({
+    value: phase,
+  });
+};
 
 const optionsYears: ComputedRef<Option<number>[]> = computed(() =>
   years.value

@@ -24,7 +24,7 @@ keycloak.onTokenExpired = () => {
 
 export const initKeycloak = async (): Promise<void> => {
   if (bypassKeycloak) {
-    console.debug("Bypassing Keycloak authentication...");
+    console.debug("Bypassing Keycloak authentication");
     return;
   }
   try {

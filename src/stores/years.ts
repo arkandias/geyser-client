@@ -1,51 +1,36 @@
-import { useMutation } from "@urql/vue";
 import { type ComputedRef, type Ref, computed, readonly, ref } from "vue";
 
-import { UPDATE_CURRENT_YEAR } from "@/graphql/years.ts";
+export const selectedYear: Ref<number | null> = ref(null);
 
-export const years: Ref<number[]> = ref([]);
-export const current: Ref<number | null> = ref(null);
-export const selected: Ref<number | null> = ref(null);
+const years: Ref<number[]> = ref([]);
+const currentYear: Ref<number | null> = ref(null);
 
-const active: ComputedRef<number | null> = computed(() =>
-  selected.value !== null && years.value.includes(selected.value)
-    ? selected.value
-    : current.value,
+const activeYear: ComputedRef<number | null> = computed(() =>
+  selectedYear.value !== null && years.value.includes(selectedYear.value)
+    ? selectedYear.value
+    : currentYear.value,
+);
+const isCurrentYearActive: ComputedRef<boolean> = computed(
+  () => activeYear.value === currentYear.value,
 );
 
-const isCurrentActive: ComputedRef<boolean> = computed(
-  () => active.value === current.value,
-);
-
-const set = (values: number[]) => {
+const setYears = (values: number[]) => {
   years.value = values;
 };
-
-const select = (year: number | null): void => {
-  if (year !== null) {
-    selected.value = year;
-  }
+const setCurrentYear = (year: number | null) => {
+  currentYear.value = year;
+};
+const selectYear = (year: number | null): void => {
+  selectedYear.value = year ?? currentYear.value;
 };
 
-export const useYears = () => {
-  // TODO: remove overload
-  const update = useMutation(UPDATE_CURRENT_YEAR);
-  const setCurrent = async (year: number | null): Promise<void> => {
-    if (year === null) {
-      return;
-    }
-    await update.executeMutation({
-      value: year,
-    });
-  };
-  return {
-    years: readonly(years),
-    current: readonly(current),
-    selected: readonly(selected),
-    active,
-    isCurrentActive,
-    set,
-    setCurrent,
-    select,
-  };
-};
+export const useYears = () => ({
+  years: readonly(years),
+  currentYear: readonly(currentYear),
+  selectedYear: readonly(selectedYear),
+  activeYear,
+  isCurrentYearActive,
+  setYears,
+  selectYear,
+  setCurrentYear,
+});

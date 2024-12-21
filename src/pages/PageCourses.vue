@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
 import { type ComputedRef, computed, reactive, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 
-import { useDataSync } from "@/composables/datasync.ts";
 import { usePermissions } from "@/composables/permissions.ts";
-import { GET_COURSE_DETAILS } from "@/graphql/courses.ts";
-import { GET_TEACHER_DETAILS } from "@/graphql/teachers.ts";
+import { GET_COURSES_ROWS, GET_COURSE_DETAILS } from "@/graphql/courses.ts";
+import { GET_TEACHERS_ROWS, GET_TEACHER_DETAILS } from "@/graphql/teachers.ts";
 import { getNumber, getValue } from "@/helpers/utils.ts";
+import { useAuthentication } from "@/stores/authentication.ts";
 import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { useYears } from "@/stores/years.ts";
@@ -18,20 +18,74 @@ import DetailsCourse from "@/components/DetailsCourse.vue";
 import TableCourses from "@/components/TableCourses.vue";
 import TableTeachers from "@/components/TableTeachers.vue";
 
-const router = useRouter();
 const route = useRoute();
-const {
-  selected: selectedYear,
-  active: activeYear,
-  isCurrentActive: isCurrentYearActive,
-  select: selectYear,
-} = useYears();
+
+const { activeYear, isCurrentYearActive, selectYear } = useYears();
+const { uid } = useAuthentication();
 const perm = usePermissions();
 const { closeLeftPanel, filtreIntervenants, openLeftPanel } = useLayout();
-const { selectedCourse, selectedTeacher, selectCourse, selectTeacher } =
-  useData();
+const {
+  selectedCourse,
+  selectedTeacher,
+  selectCourse,
+  selectTeacher,
+  setCourses,
+  setTeachers,
+  setFetchingCourses,
+  setFetchingTeachers,
+} = useData();
 
-useDataSync();
+// Get selections from query parameters
+watch(
+  [
+    () => getNumber(route.query, "year"),
+    () => getNumber(route.query, "courseId"),
+    () => getValue(route.query, "uid"),
+  ],
+  () => {
+    selectYear(getNumber(route.query, "year"));
+    selectCourse(getNumber(route.query, "courseId"));
+    selectTeacher(getValue(route.query, "uid"));
+  },
+  { immediate: true },
+);
+
+const queryCoursesRows = useQuery({
+  query: GET_COURSES_ROWS,
+  variables: reactive({
+    year: computed(() => activeYear.value ?? -1),
+  }),
+  pause: () => activeYear.value === null,
+  context: { additionalTypenames: ["demande"] },
+});
+
+const queryTeachersRows = useQuery({
+  query: GET_TEACHERS_ROWS,
+  variables: reactive({
+    year: computed(() => activeYear.value ?? -1),
+    where: computed(() =>
+      perm.toViewAllServices ? {} : { uid: { _eq: uid.value } },
+    ),
+  }),
+  pause: () => activeYear.value === null,
+  context: {
+    additionalTypenames: ["demande", "message", "modification_service"],
+  },
+});
+
+// Store the fetching status and query result and update on change
+watch(queryCoursesRows.fetching, setFetchingCourses, {
+  immediate: true,
+});
+watch(() => queryTeachersRows.fetching.value, setFetchingTeachers, {
+  immediate: true,
+});
+watch(() => queryCoursesRows.data.value?.courses ?? [], setCourses, {
+  immediate: true,
+});
+watch(() => queryTeachersRows.data.value?.teachers ?? [], setTeachers, {
+  immediate: true,
+});
 
 const queryCourseDetails = useQuery({
   query: GET_COURSE_DETAILS,
@@ -68,34 +122,7 @@ const teacherDetails: ComputedRef<TeacherDetails | null> = computed(() =>
     : null,
 );
 
-// sync query parameters with selection
-watch(
-  [
-    () => getNumber(route.query, "year"),
-    () => getNumber(route.query, "course_id"),
-    () => getValue(route.query, "uid"),
-  ],
-  () => {
-    selectYear(getNumber(route.query, "year"));
-    selectCourse(getNumber(route.query, "course_id"));
-    selectTeacher(getValue(route.query, "uid"));
-  },
-  { immediate: true },
-);
-watch(
-  [
-    () => selectedYear.value ?? undefined,
-    () => selectedCourse.value[0]?.id,
-    () => selectedTeacher.value[0]?.uid,
-  ],
-  async ([year, courseId, serviceId]) => {
-    await router.replace({
-      query: { year: year, course_id: courseId, uid: serviceId },
-    });
-  },
-);
-
-// open or close the left panel based on user's permissions
+// Toggle the left panel based on user's permissions
 watch(
   () => perm.toViewAllServices,
   (value) => {

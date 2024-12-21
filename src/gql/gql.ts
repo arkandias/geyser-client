@@ -63,7 +63,7 @@ const documents = {
     types.InsertServiceModificationDocument,
   "\n  mutation DeleteServiceModification($id: Int!) {\n    serviceModification: delete_modification_service_by_pk(id: $id) {\n      id\n    }\n  }\n":
     types.DeleteServiceModificationDocument,
-  "\n  fragment Service on service {\n    year: annee\n    uid\n    base: heures_eqtd\n    totalModifications: modifications_aggregate {\n      ...ServiceModificationsTotalWeightedHours\n    }\n  }\n\n  fragment ServiceDetails on service {\n    ...Service\n    modifications(order_by: [{ type: asc }, { heures_eqtd: asc }]) {\n      ...ServiceModification\n    }\n  }\n":
+  "\n  fragment Service on service {\n    id\n    year: annee\n    uid\n    base: heures_eqtd\n    totalModifications: modifications_aggregate {\n      ...ServiceModificationsTotalWeightedHours\n    }\n  }\n\n  fragment ServiceDetails on service {\n    ...Service\n    modifications(order_by: [{ type: asc }, { heures_eqtd: asc }]) {\n      ...ServiceModification\n    }\n  }\n":
     types.ServiceFragmentDoc,
   "\n  query GetTeachers($year: Int!, $where: intervenant_bool_exp = {}) {\n    teachers: intervenant(\n      where: { _and: [{ services: { annee: { _eq: $year } } }, $where] }\n      order_by: [{ nom: asc }, { prenom: asc }]\n    ) {\n      ...Profile\n    }\n  }\n":
     types.GetTeachersDocument,
@@ -239,8 +239,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  fragment Service on service {\n    year: annee\n    uid\n    base: heures_eqtd\n    totalModifications: modifications_aggregate {\n      ...ServiceModificationsTotalWeightedHours\n    }\n  }\n\n  fragment ServiceDetails on service {\n    ...Service\n    modifications(order_by: [{ type: asc }, { heures_eqtd: asc }]) {\n      ...ServiceModification\n    }\n  }\n",
-): (typeof documents)["\n  fragment Service on service {\n    year: annee\n    uid\n    base: heures_eqtd\n    totalModifications: modifications_aggregate {\n      ...ServiceModificationsTotalWeightedHours\n    }\n  }\n\n  fragment ServiceDetails on service {\n    ...Service\n    modifications(order_by: [{ type: asc }, { heures_eqtd: asc }]) {\n      ...ServiceModification\n    }\n  }\n"];
+  source: "\n  fragment Service on service {\n    id\n    year: annee\n    uid\n    base: heures_eqtd\n    totalModifications: modifications_aggregate {\n      ...ServiceModificationsTotalWeightedHours\n    }\n  }\n\n  fragment ServiceDetails on service {\n    ...Service\n    modifications(order_by: [{ type: asc }, { heures_eqtd: asc }]) {\n      ...ServiceModification\n    }\n  }\n",
+): (typeof documents)["\n  fragment Service on service {\n    id\n    year: annee\n    uid\n    base: heures_eqtd\n    totalModifications: modifications_aggregate {\n      ...ServiceModificationsTotalWeightedHours\n    }\n  }\n\n  fragment ServiceDetails on service {\n    ...Service\n    modifications(order_by: [{ type: asc }, { heures_eqtd: asc }]) {\n      ...ServiceModification\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

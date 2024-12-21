@@ -18,7 +18,7 @@ const uid: ComputedRef<string | null> = computed(
   () => getValue(route.query, "uid") ?? myUid.value,
 );
 
-const { current: currentYear } = useYears();
+const { currentYear } = useYears();
 
 const queryTeacherDetails = useQuery({
   query: GET_TEACHER_DETAILS,

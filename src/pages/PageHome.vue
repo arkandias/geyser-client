@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import HomeInfo from "@/components/home/HomeInfo.vue";
 import HomeMessage from "@/components/home/HomeMessage.vue";
 
 defineProps<{ message?: string }>();

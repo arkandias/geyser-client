@@ -9,17 +9,15 @@ import { GET_PROFILE } from "@/graphql/profile.ts";
 import { GET_YEARS } from "@/graphql/years.ts";
 import { getClaims, logout } from "@/services/keycloak.ts";
 import { login, useAuthentication } from "@/stores/authentication.ts";
-import { current as currentPhase } from "@/stores/phases.ts";
-import {
-  current as currentYear,
-  selected as selectedYear,
-  years,
-} from "@/stores/years.ts";
+import { usePhases } from "@/stores/phases.ts";
+import { selectedYear, useYears } from "@/stores/years.ts";
 import { isProfile } from "@/types/profile.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
 import PageHome from "@/pages/PageHome.vue";
 
+const { currentYear, setYears, setCurrentYear } = useYears();
+const { currentPhase, setCurrentPhase } = usePhases();
 const { logged } = useAuthentication();
 const perm = usePermissions();
 
@@ -37,9 +35,8 @@ const queryCurrentPhase = useQuery({
 watch(
   queryYears.data,
   (value) => {
-    years.value = value?.years.map((year) => year.value) ?? [];
-    currentYear.value =
-      value?.years.find((year) => year.current)?.value ?? null;
+    setYears(value?.years.map((year) => year.value) ?? []);
+    setCurrentYear(value?.years.find((year) => year.current)?.value ?? null);
     selectedYear.value = currentYear.value;
   },
   { immediate: true },
@@ -51,11 +48,11 @@ watch(
       return;
     }
     if (isPhase(value.phases[0].value)) {
-      currentPhase.value = value.phases[0].value;
+      setCurrentPhase(value.phases[0].value);
       return;
     }
     console.warn("Invalid current phase", value.phases[0].value);
-    currentPhase.value = null;
+    setCurrentPhase(null);
   },
   { immediate: true },
 );
@@ -99,9 +96,8 @@ const accessDeniedMessage: ComputedRef<string> = computed(() => {
   return "Vous n'avez pas la permission d'accéder à Geyser";
 });
 
-// Apply distinct styling in development vs production environments
-// to provide visual feedback to developers about which environment
-// they're using
+// Apply distinct styling in development vs production environments to provide
+// visual feedback to developers about which environment they're using
 const devClass = {
   dev: import.meta.env.DEV,
 };

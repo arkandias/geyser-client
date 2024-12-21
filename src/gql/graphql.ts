@@ -9982,6 +9982,7 @@ export type DeleteServiceModificationMutation = {
 
 export type ServiceFragment = {
   __typename?: "service";
+  id: number;
   uid: string;
   year: number;
   base: number;
@@ -9999,6 +10000,7 @@ export type ServiceFragment = {
 
 export type ServiceDetailsFragment = {
   __typename?: "service";
+  id: number;
   uid: string;
   year: number;
   base: number;
@@ -10057,6 +10059,7 @@ export type GetTeachersRowsQuery = {
     lastname: string;
     services: Array<{
       __typename?: "service";
+      id: number;
       uid: string;
       year: number;
       base: number;
@@ -10130,6 +10133,7 @@ export type GetTeacherDetailsQuery = {
     position: { __typename?: "fonction"; value: string; label: string } | null;
     services: Array<{
       __typename?: "service";
+      id: number;
       uid: string;
       year: number;
       base: number;
@@ -11116,6 +11120,7 @@ export const ServiceFragmentDoc = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "year" },
@@ -11383,6 +11388,7 @@ export const ServiceDetailsFragmentDoc = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "year" },
@@ -15031,6 +15037,7 @@ export const GetTeachersRowsDocument = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "year" },
@@ -15693,6 +15700,7 @@ export const GetTeacherDetailsDocument = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
           {
             kind: "Field",
             alias: { kind: "Name", value: "year" },

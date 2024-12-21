@@ -7,6 +7,7 @@ import {
   toValue,
   watchEffect,
 } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
@@ -29,6 +30,9 @@ const { teacher } = defineProps<{
   teacher: TeacherDetails | null;
 }>();
 
+const router = useRouter();
+const route = useRoute();
+
 const perm = usePermissions();
 const {
   courses,
@@ -38,11 +42,15 @@ const {
   selectTeacher,
 } = useData();
 
-const select = (_: Event, row: CourseRow) => {
+const select = async (_: Event, row: CourseRow) => {
   if (selectedCourse.value[0]?.id === row.id) {
-    selectCourse(null);
+    await router.replace({
+      query: { ...route.query, courseId: undefined },
+    });
   } else {
-    selectCourse(row.id);
+    await router.replace({
+      query: { ...route.query, courseId: row.id },
+    });
   }
 };
 

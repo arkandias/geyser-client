@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { type Ref, computed, ref, toValue, watchEffect } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
@@ -8,15 +9,21 @@ import { selectedTeacher as selected, useData } from "@/stores/data.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import type { TeacherRow } from "@/types/teacher.ts";
 
-const perm = usePermissions();
-const { teachers, fetchingTeachers, selectCourse, selectTeacher } = useData();
+const router = useRouter();
+const route = useRoute();
 
-const select = (_: Event, row: TeacherRow) => {
+const perm = usePermissions();
+const { teachers, fetchingTeachers } = useData();
+
+const select = async (_: Event, row: TeacherRow) => {
   if (selected.value[0]?.uid === row.uid) {
-    selectTeacher(null);
+    await router.replace({
+      query: { ...route.query, uid: undefined },
+    });
   } else {
-    selectTeacher(row.uid);
-    selectCourse(null);
+    await router.replace({
+      query: { ...route.query, courseId: undefined, uid: row.uid },
+    });
   }
 };
 

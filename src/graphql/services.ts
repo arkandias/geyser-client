@@ -2,6 +2,7 @@ import { graphql } from "@/gql";
 
 graphql(/* GraphQL */ `
   fragment Service on service {
+    id
     year: annee
     uid
     base: heures_eqtd

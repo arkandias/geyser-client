@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { type ComputedRef, computed } from "vue";
+import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 
-import { selected, useYears } from "@/stores/years.ts";
+import { useYears } from "@/stores/years.ts";
 import type { Option } from "@/types/common.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { years } = useYears();
+const router = useRouter();
+
+const { years, currentYear } = useYears();
 
 const options: ComputedRef<Option<number>[]> = computed(() =>
   years.value
@@ -16,6 +19,22 @@ const options: ComputedRef<Option<number>[]> = computed(() =>
     }))
     .sort((a, b) => b.value - a.value),
 );
+
+const selected: Ref<number | null> = ref(null);
+watch(
+  currentYear,
+  () => {
+    selected.value = currentYear.value;
+  },
+  { immediate: true },
+);
+// TODO: DEBUG
+
+const update = async () => {
+  await router.replace({
+    query: { year: selected.value ?? undefined },
+  });
+};
 </script>
 
 <template>
@@ -31,6 +50,7 @@ const options: ComputedRef<Option<number>[]> = computed(() =>
           :options
           color="primary"
           type="radio"
+          @update:model-value="update"
         />
       </QItem>
     </QList>

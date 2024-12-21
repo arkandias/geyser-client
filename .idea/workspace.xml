@@ -21,8 +21,23 @@
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PageHome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageHome.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/router.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/router.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TableCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableCourses.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TableTeachers.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableTeachers.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/RequestForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestForm.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsSubsection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsSubsection.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuYear.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuYear.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/HomeMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomeMessage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/composables/datasync.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/composables/permissions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/permissions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/services.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/services.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PageCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageCourses.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PageTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageTeacher.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/keycloak.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/keycloak.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/phases.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/phases.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/years.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/years.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -333,15 +348,7 @@
       <workItem from="1733958145291" duration="106853000" />
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
-      <workItem from="1734622570180" duration="51936000" />
-    </task>
-    <task id="LOCAL-00259" summary="refactor(messages): removed message types&#10;&#10;BREAKING CHANGE: remove message type differentiation in CRUD operations">
-      <option name="closed" value="true" />
-      <created>1733958764813</created>
-      <option name="number" value="00259" />
-      <option name="presentableId" value="LOCAL-00259" />
-      <option name="project" value="LOCAL" />
-      <updated>1733958764814</updated>
+      <workItem from="1734622570180" duration="58765000" />
     </task>
     <task id="LOCAL-00260" summary="refactor(messages): removed message types&#10;&#10;BREAKING CHANGE: remove message type differentiation in CRUD operations">
       <option name="closed" value="true" />
@@ -727,7 +734,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734748329940</updated>
     </task>
-    <option name="localTasksCounter" value="308" />
+    <task id="LOCAL-00308" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1734749008311</created>
+      <option name="number" value="00308" />
+      <option name="presentableId" value="LOCAL-00308" />
+      <option name="project" value="LOCAL" />
+      <updated>1734749008311</updated>
+    </task>
+    <option name="localTasksCounter" value="309" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
