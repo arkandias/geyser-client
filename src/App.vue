@@ -18,7 +18,7 @@ import {
 import { isProfile } from "@/types/profile.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
-import PageMessage from "@/pages/PageMessage.vue";
+import PageHome from "@/pages/PageHome.vue";
 
 const { logged } = useAuthentication();
 const perm = usePermissions();
@@ -112,7 +112,7 @@ const devClass = {
     <TheHeader :disable="!accessGranted" />
     <QPageContainer>
       <RouterView v-if="accessGranted" />
-      <PageMessage v-else :message="accessDeniedMessage" />
+      <PageHome v-else :message="accessDeniedMessage" />
     </QPageContainer>
   </QLayout>
 </template>

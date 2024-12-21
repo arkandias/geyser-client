@@ -1,44 +1,20 @@
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
-import { type ComputedRef, computed, reactive } from "vue";
-
-import { GET_TEACHER_DETAILS } from "@/graphql/teachers.ts";
-import { formatUser } from "@/helpers/format.ts";
-import { useAuthentication } from "@/stores/authentication.ts";
-import { useYears } from "@/stores/years.ts";
-import type { TeacherDetails } from "@/types/teacher.ts";
-
-import DetailsTeacher from "@/components/DetailsTeacher.vue";
 import HomeInfo from "@/components/home/HomeInfo.vue";
 import HomeMessage from "@/components/home/HomeMessage.vue";
 
-const { current: currentYear } = useYears();
-const { profile } = useAuthentication();
-
-const queryMyDetails = useQuery({
-  query: GET_TEACHER_DETAILS,
-  variables: reactive({
-    year: computed(() => currentYear.value ?? -1),
-    uid: computed(() => profile.uid),
-  }),
-  pause: () => currentYear.value === null,
-  context: {
-    additionalTypenames: ["demande", "message", "modification_service"],
-  },
-});
-
-const myDetails: ComputedRef<TeacherDetails | null> = computed(
-  () => queryMyDetails.data.value?.teacher ?? null,
-);
+defineProps<{ message?: string }>();
 </script>
 
 <template>
   <QPage class="column items-center">
     <QCard flat square class="text-center">
       <QCardSection class="text-h4"> Bienvenue </QCardSection>
-      <HomeMessage />
+      <QCardSection v-if="message" class="text-h6 text-center">
+        {{ message }}
+      </QCardSection>
+      <HomeMessage v-else />
     </QCard>
-    <HomeInfo />
+    <!-- TODO: <HomeInfo />-->
   </QPage>
 </template>
 
