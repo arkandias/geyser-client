@@ -5,7 +5,7 @@ import { useRoute, useRouter } from "vue-router";
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { nf, normalizeForSearch } from "@/helpers/format.ts";
-import { selectedTeacher as selected, useData } from "@/stores/data.ts";
+import { useData } from "@/stores/data.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import type { TeacherRow } from "@/types/teacher.ts";
 
@@ -13,10 +13,10 @@ const router = useRouter();
 const route = useRoute();
 
 const perm = usePermissions();
-const { teachers, fetchingTeachers } = useData();
+const { teachers, fetchingTeachers, selectedTeacher } = useData();
 
 const select = async (_: Event, row: TeacherRow) => {
-  if (selected.value[0]?.uid === row.uid) {
+  if (selectedTeacher.value[0]?.uid === row.uid) {
     await router.replace({
       query: { ...route.query, uid: undefined },
     });
@@ -190,7 +190,7 @@ const stickyHeader: Ref<boolean> = ref(false);
 
 <template>
   <QTable
-    v-model:selected="selected"
+    v-model:selected="selectedTeacher"
     :columns
     :visible-columns
     :rows="teachers"

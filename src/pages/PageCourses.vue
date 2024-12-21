@@ -21,7 +21,7 @@ import TableTeachers from "@/components/TableTeachers.vue";
 const route = useRoute();
 
 const { activeYear, isCurrentYearActive, selectYear } = useYears();
-const { uid } = useAuthentication();
+const { profile } = useAuthentication();
 const perm = usePermissions();
 const { closeLeftPanel, filtreIntervenants, openLeftPanel } = useLayout();
 const {
@@ -64,7 +64,7 @@ const queryTeachersRows = useQuery({
   variables: reactive({
     year: computed(() => activeYear.value ?? -1),
     where: computed(() =>
-      perm.toViewAllServices ? {} : { uid: { _eq: uid.value } },
+      perm.toViewAllServices ? {} : { uid: { _eq: profile.uid } },
     ),
   }),
   pause: () => activeYear.value === null,

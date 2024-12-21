@@ -12,10 +12,10 @@ import type { TeacherDetails } from "@/types/teacher.ts";
 import DetailsTeacher from "@/components/DetailsTeacher.vue";
 
 const route = useRoute();
-const { uid: myUid } = useAuthentication();
+const { profile } = useAuthentication();
 
 const uid: ComputedRef<string | null> = computed(
-  () => getValue(route.query, "uid") ?? myUid.value,
+  () => getValue(route.query, "uid") ?? profile.uid,
 );
 
 const { currentYear } = useYears();

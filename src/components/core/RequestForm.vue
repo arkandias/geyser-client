@@ -10,10 +10,11 @@ import {
 } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
+import { PHASES } from "@/config/types/phases.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 import { updateRequest } from "@/helpers/operations-requests.ts";
-import { useData } from "@/stores/data.ts";
+import { useAuthentication } from "@/stores/authentication.ts";
 import { usePhases } from "@/stores/phases.ts";
 
 import TeacherSelect from "@/components/core/TeacherSelect.vue";
@@ -24,8 +25,8 @@ const props = defineProps<{
 }>();
 
 const { currentPhase } = usePhases();
+const { profile } = useAuthentication();
 const perm = usePermissions();
-const { myRow } = useData();
 
 const heures: Ref<number | null> = ref(null);
 watch(
@@ -51,15 +52,15 @@ const groupes: WritableComputedRef<number | null> = computed({
   },
 });
 
+const requestType: Ref<string | null> = ref(null);
 const requestTypeInit: ComputedRef<string | null> = computed(() => {
   switch (currentPhase.value) {
-    case "voeux":
-      return "principale";
+    case PHASES.ASSIGNMENTS:
+      return REQUEST_TYPES.PRIMARY;
     default:
-      return "attribution";
+      return REQUEST_TYPES.ASSIGNMENT;
   }
 });
-const requestType: Ref<string | null> = ref(null);
 watch(
   requestTypeInit,
   (value) => {
@@ -68,12 +69,10 @@ watch(
   { immediate: true },
 );
 
-const uidInit: ComputedRef<string | null> = computed(() =>
-  perm.toSubmitRequestsForOthers || perm.toEditAssignments
-    ? null
-    : (myRow.value?.uid ?? null),
-);
 const uid: Ref<string | null> = ref(null);
+const uidInit: ComputedRef<string | null> = computed(() =>
+  perm.toSubmitRequestsForOthers || perm.toEditAssignments ? null : profile.uid,
+);
 watch(
   uidInit,
   (value) => {
@@ -82,6 +81,7 @@ watch(
   { immediate: true },
 );
 
+// TODO: refacto faire un composable
 const client = useClientHandle().client;
 const submitForm = async (): Promise<void> => {
   if (uid.value === null) {

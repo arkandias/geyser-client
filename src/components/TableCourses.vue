@@ -20,7 +20,7 @@ import {
   normalizeForSearch,
 } from "@/helpers/format.ts";
 import { compare, uniqueValue } from "@/helpers/utils.ts";
-import { selectedCourse as selected, useData } from "@/stores/data.ts";
+import { useData } from "@/stores/data.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
 import type { Option } from "@/types/common.ts";
 import type { CourseRow } from "@/types/course.ts";
@@ -338,7 +338,7 @@ const isVisible = (row: CourseRow): boolean =>
 
 <template>
   <QTable
-    v-model:selected="selected"
+    v-model:selected="selectedCourse"
     :title
     :columns
     :visible-columns

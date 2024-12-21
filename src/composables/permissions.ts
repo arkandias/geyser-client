@@ -12,7 +12,7 @@ import type { RequestDetails } from "@/types/request.ts";
 export const usePermissions = () => {
   const { isCurrentYearActive } = useYears();
   const { currentPhase } = usePhases();
-  const { activeRole, uid: moi } = useAuthentication();
+  const { activeRole, profile } = useAuthentication();
 
   const toAdmin: ComputedRef<boolean> = computed(
     () => activeRole.value === ROLES.ADMIN,
@@ -57,7 +57,7 @@ export const usePermissions = () => {
         case REQUEST_TYPES.ASSIGNMENT:
           return toEditAssignments.value;
         default:
-          return details.teacher.uid === moi.value
+          return details.teacher.uid === profile.uid
             ? toSubmitRequests.value
             : toSubmitRequestsForOthers.value;
       }
@@ -68,7 +68,7 @@ export const usePermissions = () => {
       () => (responsables) =>
         activeRole.value === ROLES.ADMIN ||
         (isCurrentYearActive.value &&
-          responsables.some((responsable) => responsable.uid === moi.value)),
+          responsables.some((responsable) => responsable.uid === profile.uid)),
     );
 
   const toViewAllServices: ComputedRef<boolean> = computed(
@@ -81,7 +81,7 @@ export const usePermissions = () => {
   const toViewAService: ComputedRef<(uid: string) => boolean> = computed(
     () => (uid) =>
       toViewAllServices.value ||
-      (activeRole.value === ROLES.USER && uid === moi.value),
+      (activeRole.value === ROLES.USER && uid === profile.uid),
   );
 
   const toEditAService: ComputedRef<(uid: string) => boolean> = computed(
@@ -90,7 +90,7 @@ export const usePermissions = () => {
       (activeRole.value === ROLES.USER &&
         currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value &&
-        uid === moi.value),
+        uid === profile.uid),
   );
 
   const toEditAMessage: ComputedRef<(uid: string) => boolean> = computed(
@@ -99,7 +99,7 @@ export const usePermissions = () => {
       (activeRole.value === ROLES.USER &&
         currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value &&
-        uid === moi.value),
+        uid === profile.uid),
   );
 
   const toViewAMessage: ComputedRef<(uid: string) => boolean> = computed(
@@ -107,7 +107,7 @@ export const usePermissions = () => {
       toEditAMessage.value(uid) ||
       (activeRole.value === ROLES.COMMISSIONER &&
         currentPhase.value === PHASES.ASSIGNMENTS) ||
-      (activeRole.value === ROLES.USER && uid === moi.value),
+      (activeRole.value === ROLES.USER && uid === profile.uid),
   );
 
   return reactive({

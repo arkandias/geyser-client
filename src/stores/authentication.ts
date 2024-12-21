@@ -1,4 +1,4 @@
-import { type Ref, reactive, readonly, ref, toRef } from "vue";
+import { type Ref, reactive, readonly, ref } from "vue";
 
 import type { Role } from "@/config/types/roles.ts";
 import type { Profile } from "@/types/profile.ts";
@@ -36,7 +36,6 @@ export function login(
 export const useAuthentication = () => ({
   logged: readonly(logged),
   profile: readonly(profile),
-  uid: readonly(toRef(profile, "uid")),
   allowedRoles: readonly(allowedRoles),
   activeRole: readonly(activeRole),
   logout: readonly(logout),

@@ -1,6 +1,5 @@
-import { type ComputedRef, type Ref, computed, readonly, ref } from "vue";
+import { type Ref, readonly, ref } from "vue";
 
-import { useAuthentication } from "@/stores/authentication.ts";
 import type { CourseRow } from "@/types/course.ts";
 import type { TeacherRow } from "@/types/teacher.ts";
 
@@ -22,8 +21,8 @@ const setFetchingTeachers = (value: boolean) => {
   fetchingTeachers.value = value;
 };
 
-export const selectedCourse: Ref<CourseRow[]> = ref([]);
-export const selectedTeacher: Ref<TeacherRow[]> = ref([]);
+const selectedCourse: Ref<CourseRow[]> = ref([]);
+const selectedTeacher: Ref<TeacherRow[]> = ref([]);
 const selectCourse = (courseId?: number | null) => {
   selectedCourse.value = courses.value.filter(
     (course) => course.id === courseId,
@@ -35,37 +34,17 @@ const selectTeacher = (uid?: string | null) => {
   );
 };
 
-export const useData = () => {
-  const { uid: myUid } = useAuthentication();
-  const myRow: ComputedRef<TeacherRow | null> = computed(
-    () => teachers.value.find((row) => row.uid === myUid.value) ?? null,
-  );
-  const isMyRowSelected: ComputedRef<boolean> = computed(
-    () => selectedTeacher.value[0]?.uid === myUid.value,
-  );
-  const toggleMyRow = () => {
-    if (isMyRowSelected.value) {
-      selectTeacher(null);
-    } else if (myRow.value) {
-      selectTeacher(myUid.value);
-      selectCourse(null);
-    }
-  };
-  return {
-    courses: readonly(courses),
-    teachers: readonly(teachers),
-    fetchingCourses: readonly(fetchingCourses),
-    fetchingTeachers: readonly(fetchingTeachers),
-    selectedCourse,
-    selectedTeacher,
-    myRow,
-    isMyRowSelected,
-    setCourses,
-    setTeachers,
-    setFetchingCourses,
-    setFetchingTeachers,
-    selectCourse,
-    selectTeacher,
-    toggleMyRow,
-  };
-};
+export const useData = () => ({
+  courses: readonly(courses),
+  teachers: readonly(teachers),
+  fetchingCourses: readonly(fetchingCourses),
+  fetchingTeachers: readonly(fetchingTeachers),
+  selectedCourse: readonly(selectedCourse),
+  selectedTeacher: readonly(selectedTeacher),
+  setCourses,
+  setTeachers,
+  setFetchingCourses,
+  setFetchingTeachers,
+  selectCourse,
+  selectTeacher,
+});

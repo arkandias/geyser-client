@@ -9,7 +9,7 @@ import MenuBase from "@/components/header/MenuBase.vue";
 
 const router = useRouter();
 
-const { years, currentYear } = useYears();
+const { years, activeYear } = useYears();
 
 const options: ComputedRef<Option<number>[]> = computed(() =>
   years.value
@@ -21,20 +21,20 @@ const options: ComputedRef<Option<number>[]> = computed(() =>
 );
 
 const selected: Ref<number | null> = ref(null);
-watch(
-  currentYear,
-  () => {
-    selected.value = currentYear.value;
-  },
-  { immediate: true },
-);
-// TODO: DEBUG
 
 const update = async () => {
   await router.replace({
     query: { year: selected.value ?? undefined },
   });
 };
+
+watch(
+  activeYear,
+  () => {
+    selected.value = activeYear.value;
+  },
+  { immediate: true },
+);
 </script>
 
 <template>

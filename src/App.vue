@@ -10,13 +10,13 @@ import { GET_YEARS } from "@/graphql/years.ts";
 import { getClaims, logout } from "@/services/keycloak.ts";
 import { login, useAuthentication } from "@/stores/authentication.ts";
 import { usePhases } from "@/stores/phases.ts";
-import { selectedYear, useYears } from "@/stores/years.ts";
+import { useYears } from "@/stores/years.ts";
 import { isProfile } from "@/types/profile.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
 import PageHome from "@/pages/PageHome.vue";
 
-const { currentYear, setYears, setCurrentYear } = useYears();
+const { setYears, setCurrentYear } = useYears();
 const { currentPhase, setCurrentPhase } = usePhases();
 const { logged } = useAuthentication();
 const perm = usePermissions();
@@ -37,7 +37,6 @@ watch(
   (value) => {
     setYears(value?.years.map((year) => year.value) ?? []);
     setCurrentYear(value?.years.find((year) => year.current)?.value ?? null);
-    selectedYear.value = currentYear.value;
   },
   { immediate: true },
 );
