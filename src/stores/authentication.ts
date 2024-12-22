@@ -11,6 +11,7 @@ const profile: Profile = reactive({
   firstname: "",
   lastname: "",
   alias: null,
+  active: false,
 });
 const allowedRoles: Ref<Role[]> = ref([]);
 const logout: Ref<() => Promise<void>> = ref(() => Promise.resolve());
@@ -27,7 +28,11 @@ export function login(
   profile.firstname = newProfile.firstname;
   profile.lastname = newProfile.lastname;
   profile.alias = newProfile.alias;
-  logout.value = newLogout;
+  profile.active = newProfile.active;
+  logout.value = async () => {
+    logged.value = false;
+    await newLogout();
+  };
   logged.value = true;
   console.debug("Logged in");
   return true;

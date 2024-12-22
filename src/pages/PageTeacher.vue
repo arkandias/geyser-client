@@ -11,14 +11,15 @@ import type { TeacherDetails } from "@/types/teacher.ts";
 
 import DetailsTeacher from "@/components/DetailsTeacher.vue";
 
+// TODO: Si pas de service --> changer la page (donner la possibilité de créer un service si l'utilisateur est actif)
+
 const route = useRoute();
+const { currentYear } = useYears();
 const { profile } = useAuthentication();
 
 const uid: ComputedRef<string | null> = computed(
   () => getValue(route.query, "uid") ?? profile.uid,
 );
-
-const { currentYear } = useYears();
 
 const queryTeacherDetails = useQuery({
   query: GET_TEACHER_DETAILS,

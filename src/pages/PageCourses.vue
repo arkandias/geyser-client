@@ -50,6 +50,7 @@ watch(
   { immediate: true },
 );
 
+// Fetch and store courses rows
 const queryCoursesRows = useQuery({
   query: GET_COURSES_ROWS,
   variables: reactive({
@@ -58,7 +59,21 @@ const queryCoursesRows = useQuery({
   pause: () => activeYear.value === null,
   context: { additionalTypenames: ["demande"] },
 });
+watch(queryCoursesRows.fetching, setFetchingCourses, {
+  immediate: true,
+});
+watch(
+  () => queryCoursesRows.data.value?.courses ?? [],
+  (courses) => {
+    setCourses(courses);
+    selectCourse(getNumber(route.query, "courseId"));
+  },
+  {
+    immediate: true,
+  },
+);
 
+// Fetch and store teachers rows
 const queryTeachersRows = useQuery({
   query: GET_TEACHERS_ROWS,
   variables: reactive({
@@ -72,20 +87,19 @@ const queryTeachersRows = useQuery({
     additionalTypenames: ["demande", "message", "modification_service"],
   },
 });
-
-// Store the fetching status and query result and update on change
-watch(queryCoursesRows.fetching, setFetchingCourses, {
-  immediate: true,
-});
 watch(() => queryTeachersRows.fetching.value, setFetchingTeachers, {
   immediate: true,
 });
-watch(() => queryCoursesRows.data.value?.courses ?? [], setCourses, {
-  immediate: true,
-});
-watch(() => queryTeachersRows.data.value?.teachers ?? [], setTeachers, {
-  immediate: true,
-});
+watch(
+  () => queryTeachersRows.data.value?.teachers ?? [],
+  (teachers) => {
+    setTeachers(teachers);
+    selectTeacher(getValue(route.query, "uid"));
+  },
+  {
+    immediate: true,
+  },
+);
 
 const queryCourseDetails = useQuery({
   query: GET_COURSE_DETAILS,

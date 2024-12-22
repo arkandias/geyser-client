@@ -1,4 +1,4 @@
-import { type ComputedRef, computed, reactive } from "vue";
+import { type ComputedRef, computed } from "vue";
 
 import { PHASES } from "@/config/types/phases.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
@@ -31,7 +31,8 @@ export const usePermissions = () => {
   const toSubmitRequests: ComputedRef<boolean> = computed(
     () =>
       toSubmitRequestsForOthers.value ||
-      (activeRole.value === ROLES.USER &&
+      (profile.active &&
+        activeRole.value === ROLES.USER &&
         currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value),
   );
@@ -110,7 +111,7 @@ export const usePermissions = () => {
       (activeRole.value === ROLES.USER && uid === profile.uid),
   );
 
-  return reactive({
+  return {
     toAdmin,
     toAccess,
     toSubmitRequestsForOthers,
@@ -124,5 +125,5 @@ export const usePermissions = () => {
     toEditAService,
     toViewAMessage,
     toEditAMessage,
-  });
+  };
 };

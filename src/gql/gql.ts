@@ -41,7 +41,7 @@ const documents = {
     types.SetCurrentPhaseDocument,
   "\n  fragment Priority on priorite {\n    id\n    teacher: intervenant {\n      ...Profile\n    }\n    courseId: ens_id\n    seniority: anciennete\n    isPriority: prioritaire\n  }\n":
     types.PriorityFragmentDoc,
-  "\n  fragment Profile on intervenant {\n    uid\n    firstname: prenom\n    lastname: nom\n    alias\n  }\n":
+  "\n  fragment Profile on intervenant {\n    uid\n    firstname: prenom\n    lastname: nom\n    alias\n    active: actif\n  }\n":
     types.ProfileFragmentDoc,
   "\n  query GetProfile($uid: String!) {\n    profile: intervenant_by_pk(uid: $uid) {\n      ...Profile\n    }\n  }\n":
     types.GetProfileDocument,
@@ -65,7 +65,7 @@ const documents = {
     types.DeleteServiceModificationDocument,
   "\n  fragment Service on service {\n    id\n    year: annee\n    uid\n    base: heures_eqtd\n    totalModifications: modifications_aggregate {\n      ...ServiceModificationsTotalWeightedHours\n    }\n  }\n\n  fragment ServiceDetails on service {\n    ...Service\n    modifications(order_by: [{ type: asc }, { heures_eqtd: asc }]) {\n      ...ServiceModification\n    }\n  }\n":
     types.ServiceFragmentDoc,
-  "\n  query GetTeachers($year: Int!, $where: intervenant_bool_exp = {}) {\n    teachers: intervenant(\n      where: { _and: [{ services: { annee: { _eq: $year } } }, $where] }\n      order_by: [{ nom: asc }, { prenom: asc }]\n    ) {\n      ...Profile\n    }\n  }\n":
+  "\n  query GetTeachers {\n    teachers: intervenant(\n      where: { actif: { _eq: true } }\n      order_by: [{ nom: asc }, { prenom: asc }]\n    ) {\n      ...Profile\n    }\n  }\n":
     types.GetTeachersDocument,
   '\n  query GetTeachersRows($year: Int!, $where: intervenant_bool_exp = {}) {\n    teachers: intervenant(\n      where: { _and: [{ services: { annee: { _eq: $year } } }, $where] }\n      order_by: [{ nom: asc }, { prenom: asc }]\n    ) {\n      ...Profile\n      visible\n      # limit: 1 car unique\n      services(where: { annee: { _eq: $year } }, limit: 1) {\n        ...Service\n      }\n      totalAssigned: demandes_aggregate(\n        where: { _and: [{ type: { _eq: "attribution" } }] }\n      ) {\n        ...RequestsTotalHours\n        ...RequestsTotalWeightedHours\n      }\n      totalPrimary: demandes_aggregate(\n        where: { _and: [{ type: { _eq: "principale" } }] }\n      ) {\n        ...RequestsTotalHours\n        ...RequestsTotalWeightedHours\n      }\n      totalSecondary: demandes_aggregate(\n        where: { _and: [{ type: { _eq: "secondaire" } }] }\n      ) {\n        ...RequestsTotalHours\n        ...RequestsTotalWeightedHours\n      }\n      messageCount: messages_aggregate(\n        where: { annee: { _eq: $year } }\n        limit: 1\n      ) {\n        aggregate {\n          count\n        }\n      }\n    }\n  }\n':
     types.GetTeachersRowsDocument,
@@ -173,8 +173,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  fragment Profile on intervenant {\n    uid\n    firstname: prenom\n    lastname: nom\n    alias\n  }\n",
-): (typeof documents)["\n  fragment Profile on intervenant {\n    uid\n    firstname: prenom\n    lastname: nom\n    alias\n  }\n"];
+  source: "\n  fragment Profile on intervenant {\n    uid\n    firstname: prenom\n    lastname: nom\n    alias\n    active: actif\n  }\n",
+): (typeof documents)["\n  fragment Profile on intervenant {\n    uid\n    firstname: prenom\n    lastname: nom\n    alias\n    active: actif\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -245,8 +245,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  query GetTeachers($year: Int!, $where: intervenant_bool_exp = {}) {\n    teachers: intervenant(\n      where: { _and: [{ services: { annee: { _eq: $year } } }, $where] }\n      order_by: [{ nom: asc }, { prenom: asc }]\n    ) {\n      ...Profile\n    }\n  }\n",
-): (typeof documents)["\n  query GetTeachers($year: Int!, $where: intervenant_bool_exp = {}) {\n    teachers: intervenant(\n      where: { _and: [{ services: { annee: { _eq: $year } } }, $where] }\n      order_by: [{ nom: asc }, { prenom: asc }]\n    ) {\n      ...Profile\n    }\n  }\n"];
+  source: "\n  query GetTeachers {\n    teachers: intervenant(\n      where: { actif: { _eq: true } }\n      order_by: [{ nom: asc }, { prenom: asc }]\n    ) {\n      ...Profile\n    }\n  }\n",
+): (typeof documents)["\n  query GetTeachers {\n    teachers: intervenant(\n      where: { actif: { _eq: true } }\n      order_by: [{ nom: asc }, { prenom: asc }]\n    ) {\n      ...Profile\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

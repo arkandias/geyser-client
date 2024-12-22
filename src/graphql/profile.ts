@@ -6,6 +6,7 @@ graphql(/* GraphQL */ `
     firstname: prenom
     lastname: nom
     alias
+    active: actif
   }
 `);
 

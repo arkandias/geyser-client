@@ -7,7 +7,7 @@ import {
   toValue,
   watchEffect,
 } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
@@ -19,7 +19,7 @@ import {
   nf,
   normalizeForSearch,
 } from "@/helpers/format.ts";
-import { compare, uniqueValue } from "@/helpers/utils.ts";
+import { compare, toggleQueryParam, uniqueValue } from "@/helpers/utils.ts";
 import { useData } from "@/stores/data.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
 import type { Option } from "@/types/common.ts";
@@ -31,27 +31,15 @@ const { teacher } = defineProps<{
 }>();
 
 const router = useRouter();
-const route = useRoute();
 
 const perm = usePermissions();
-const {
-  courses,
-  fetchingCourses,
-  selectedCourse,
-  selectCourse,
-  selectTeacher,
-} = useData();
+const { courses, fetchingCourses, selectedCourse } = useData();
 
-const select = async (_: Event, row: CourseRow) => {
-  if (selectedCourse.value[0]?.id === row.id) {
-    await router.replace({
-      query: { ...route.query, courseId: undefined },
-    });
-  } else {
-    await router.replace({
-      query: { ...route.query, courseId: row.id },
-    });
-  }
+const selectCourse = async (_: Event, row: CourseRow) => {
+  await toggleQueryParam(router, "courseId", row.id, true);
+};
+const deselectTeacher = async () => {
+  await toggleQueryParam(router, "uid", undefined);
 };
 
 const title: ComputedRef<string> = computed(() =>
@@ -354,7 +342,7 @@ const isVisible = (row: CourseRow): boolean =>
     dense
     virtual-scroll
     :class="{ 'sticky-header-table': stickyHeader }"
-    @row-click="select"
+    @row-click="selectCourse"
   >
     <template #top>
       <div class="q-table__title">
@@ -367,7 +355,6 @@ const isVisible = (row: CourseRow): boolean =>
           flat
           square
           dense
-          @click="selectCourse(null)"
         />
         <QBtn
           v-if="teacher"
@@ -377,7 +364,7 @@ const isVisible = (row: CourseRow): boolean =>
           flat
           square
           dense
-          @click="selectTeacher(null)"
+          @click="deselectTeacher(null)"
         />
       </div>
       <QSpace />

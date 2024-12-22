@@ -1,4 +1,4 @@
-import type { LocationQuery } from "vue-router";
+import type { LocationQuery, LocationQueryValueRaw, Router } from "vue-router";
 
 export const uniqueValue = <T extends { value: unknown }>(
   element: T,
@@ -28,4 +28,21 @@ export const getNumber = (
 ): number | null => {
   const value = getValue(query, param);
   return value !== null ? Number(value) : null;
+};
+
+export const toggleQueryParam = async (
+  router: Router,
+  param: string,
+  newValue: LocationQueryValueRaw,
+  isNumber = false,
+): Promise<void> => {
+  const currentValue = isNumber
+    ? getNumber(router.currentRoute.value.query, param)
+    : getValue(router.currentRoute.value.query, param);
+  await router.replace({
+    query: {
+      ...router.currentRoute.value.query,
+      param: currentValue === newValue ? undefined : newValue,
+    },
+  });
 };

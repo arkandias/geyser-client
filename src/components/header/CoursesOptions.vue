@@ -1,27 +1,33 @@
 <script setup lang="ts">
 import { type ComputedRef, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 import { buttonColor } from "@/helpers/format.ts";
+import { getValue } from "@/helpers/utils.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
-import { useData } from "@/stores/data.ts";
 import { useLayout } from "@/stores/layout.ts";
 
 import MenuYear from "@/components/header/MenuYear.vue";
 
+const router = useRouter();
+const route = useRoute();
+
 const { filtreIntervenants, toggleLeftPanel } = useLayout();
-const { selectedTeacher, selectCourse, selectTeacher } = useData();
 const { profile } = useAuthentication();
 
 const isMyRowSelected: ComputedRef<boolean> = computed(
-  () => selectedTeacher.value[0]?.uid === profile.uid,
+  () => profile.active && getValue(route.query, "uid") === profile.uid,
 );
 
-const toggleMyRow = () => {
+const toggleMyRow = async () => {
   if (isMyRowSelected.value) {
-    selectTeacher(null);
+    await router.replace({
+      query: { ...route.query, uid: undefined },
+    });
   } else {
-    selectTeacher(profile.uid);
-    selectCourse(null);
+    await router.replace({
+      query: { ...route.query, uid: profile.uid },
+    });
   }
 };
 </script>
@@ -41,6 +47,7 @@ const toggleMyRow = () => {
   <QBtn
     icon="sym_s_assignment"
     :color="buttonColor(isMyRowSelected)"
+    :disable="!profile.active"
     flat
     square
     @click="toggleMyRow"

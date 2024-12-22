@@ -9345,6 +9345,7 @@ export type CoordinatorFragment = {
     alias: string | null;
     firstname: string;
     lastname: string;
+    active: boolean;
   };
 };
 
@@ -9365,6 +9366,7 @@ export type ArchiveFragment = {
       alias: string | null;
       firstname: string;
       lastname: string;
+      active: boolean;
     };
     course: {
       __typename?: "enseignement";
@@ -9399,6 +9401,7 @@ export type NestedArchivesFragment = {
           alias: string | null;
           firstname: string;
           lastname: string;
+          active: boolean;
         };
         course: {
           __typename?: "enseignement";
@@ -9420,6 +9423,7 @@ export type NestedArchivesFragment = {
         alias: string | null;
         firstname: string;
         lastname: string;
+        active: boolean;
       };
       course: {
         __typename?: "enseignement";
@@ -9441,6 +9445,7 @@ export type NestedArchivesFragment = {
       alias: string | null;
       firstname: string;
       lastname: string;
+      active: boolean;
     };
     course: {
       __typename?: "enseignement";
@@ -9550,6 +9555,7 @@ export type GetCourseDetailsQuery = {
         alias: string | null;
         firstname: string;
         lastname: string;
+        active: boolean;
       };
     }>;
     program: {
@@ -9566,6 +9572,7 @@ export type GetCourseDetailsQuery = {
           alias: string | null;
           firstname: string;
           lastname: string;
+          active: boolean;
         };
       }>;
     };
@@ -9582,6 +9589,7 @@ export type GetCourseDetailsQuery = {
           alias: string | null;
           firstname: string;
           lastname: string;
+          active: boolean;
         };
       }>;
     } | null;
@@ -9598,6 +9606,7 @@ export type GetCourseDetailsQuery = {
         alias: string | null;
         firstname: string;
         lastname: string;
+        active: boolean;
       };
       course: {
         __typename?: "enseignement";
@@ -9617,6 +9626,7 @@ export type GetCourseDetailsQuery = {
         alias: string | null;
         firstname: string;
         lastname: string;
+        active: boolean;
       };
     }>;
     parent: {
@@ -9644,6 +9654,7 @@ export type GetCourseDetailsQuery = {
               alias: string | null;
               firstname: string;
               lastname: string;
+              active: boolean;
             };
             course: {
               __typename?: "enseignement";
@@ -9665,6 +9676,7 @@ export type GetCourseDetailsQuery = {
             alias: string | null;
             firstname: string;
             lastname: string;
+            active: boolean;
           };
           course: {
             __typename?: "enseignement";
@@ -9686,6 +9698,7 @@ export type GetCourseDetailsQuery = {
           alias: string | null;
           firstname: string;
           lastname: string;
+          active: boolean;
         };
         course: {
           __typename?: "enseignement";
@@ -9790,6 +9803,7 @@ export type PriorityFragment = {
     alias: string | null;
     firstname: string;
     lastname: string;
+    active: boolean;
   };
 };
 
@@ -9799,6 +9813,7 @@ export type ProfileFragment = {
   alias: string | null;
   firstname: string;
   lastname: string;
+  active: boolean;
 };
 
 export type GetProfileQueryVariables = Exact<{
@@ -9813,6 +9828,7 @@ export type GetProfileQuery = {
     alias: string | null;
     firstname: string;
     lastname: string;
+    active: boolean;
   } | null;
 };
 
@@ -9829,6 +9845,7 @@ export type RequestDetailsFragment = {
     alias: string | null;
     firstname: string;
     lastname: string;
+    active: boolean;
   };
   course: {
     __typename?: "enseignement";
@@ -9877,6 +9894,7 @@ export type GetRequestQuery = {
       alias: string | null;
       firstname: string;
       lastname: string;
+      active: boolean;
     };
     course: {
       __typename?: "enseignement";
@@ -10027,10 +10045,7 @@ export type ServiceDetailsFragment = {
   };
 };
 
-export type GetTeachersQueryVariables = Exact<{
-  year: Scalars["Int"]["input"];
-  where?: InputMaybe<Intervenant_Bool_Exp>;
-}>;
+export type GetTeachersQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetTeachersQuery = {
   __typename?: "query_root";
@@ -10040,6 +10055,7 @@ export type GetTeachersQuery = {
     alias: string | null;
     firstname: string;
     lastname: string;
+    active: boolean;
   }>;
 };
 
@@ -10057,6 +10073,7 @@ export type GetTeachersRowsQuery = {
     alias: string | null;
     firstname: string;
     lastname: string;
+    active: boolean;
     services: Array<{
       __typename?: "service";
       id: number;
@@ -10130,6 +10147,7 @@ export type GetTeacherDetailsQuery = {
     alias: string | null;
     firstname: string;
     lastname: string;
+    active: boolean;
     position: { __typename?: "fonction"; value: string; label: string } | null;
     services: Array<{
       __typename?: "service";
@@ -10171,6 +10189,7 @@ export type GetTeacherDetailsQuery = {
         alias: string | null;
         firstname: string;
         lastname: string;
+        active: boolean;
       };
     }>;
     requests: Array<{
@@ -10186,6 +10205,7 @@ export type GetTeacherDetailsQuery = {
         alias: string | null;
         firstname: string;
         lastname: string;
+        active: boolean;
       };
       course: {
         __typename?: "enseignement";
@@ -10280,6 +10300,11 @@ export const ProfileFragmentDoc = {
             name: { kind: "Name", value: "nom" },
           },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "active" },
+            name: { kind: "Name", value: "actif" },
+          },
         ],
       },
     },
@@ -10343,6 +10368,11 @@ export const CoordinatorFragmentDoc = {
             name: { kind: "Name", value: "nom" },
           },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "active" },
+            name: { kind: "Name", value: "actif" },
+          },
         ],
       },
     },
@@ -10433,6 +10463,11 @@ export const RequestDetailsFragmentDoc = {
             name: { kind: "Name", value: "nom" },
           },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "active" },
+            name: { kind: "Name", value: "actif" },
+          },
         ],
       },
     },
@@ -10576,6 +10611,11 @@ export const ArchiveFragmentDoc = {
             name: { kind: "Name", value: "nom" },
           },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "active" },
+            name: { kind: "Name", value: "actif" },
+          },
         ],
       },
     },
@@ -10706,6 +10746,11 @@ export const NestedArchivesFragmentDoc = {
             name: { kind: "Name", value: "nom" },
           },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "active" },
+            name: { kind: "Name", value: "actif" },
+          },
         ],
       },
     },
@@ -10976,6 +11021,11 @@ export const PriorityFragmentDoc = {
             name: { kind: "Name", value: "nom" },
           },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "active" },
+            name: { kind: "Name", value: "actif" },
+          },
         ],
       },
     },
@@ -12582,6 +12632,11 @@ export const GetCourseDetailsDocument = {
             name: { kind: "Name", value: "nom" },
           },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "active" },
+            name: { kind: "Name", value: "actif" },
+          },
         ],
       },
     },
@@ -13544,6 +13599,11 @@ export const GetProfileDocument = {
             name: { kind: "Name", value: "nom" },
           },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "active" },
+            name: { kind: "Name", value: "actif" },
+          },
         ],
       },
     },
@@ -13733,6 +13793,11 @@ export const GetRequestDocument = {
             name: { kind: "Name", value: "nom" },
           },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "active" },
+            name: { kind: "Name", value: "actif" },
+          },
         ],
       },
     },
@@ -14364,28 +14429,6 @@ export const GetTeachersDocument = {
       kind: "OperationDefinition",
       operation: "query",
       name: { kind: "Name", value: "GetTeachers" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "year" } },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "where" },
-          },
-          type: {
-            kind: "NamedType",
-            name: { kind: "Name", value: "intervenant_bool_exp" },
-          },
-          defaultValue: { kind: "ObjectValue", fields: [] },
-        },
-      ],
       selectionSet: {
         kind: "SelectionSet",
         selections: [
@@ -14402,50 +14445,14 @@ export const GetTeachersDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "_and" },
+                      name: { kind: "Name", value: "actif" },
                       value: {
-                        kind: "ListValue",
-                        values: [
+                        kind: "ObjectValue",
+                        fields: [
                           {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "services" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "annee" },
-                                      value: {
-                                        kind: "ObjectValue",
-                                        fields: [
-                                          {
-                                            kind: "ObjectField",
-                                            name: {
-                                              kind: "Name",
-                                              value: "_eq",
-                                            },
-                                            value: {
-                                              kind: "Variable",
-                                              name: {
-                                                kind: "Name",
-                                                value: "year",
-                                              },
-                                            },
-                                          },
-                                        ],
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                          {
-                            kind: "Variable",
-                            name: { kind: "Name", value: "where" },
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_eq" },
+                            value: { kind: "BooleanValue", value: true },
                           },
                         ],
                       },
@@ -14518,6 +14525,11 @@ export const GetTeachersDocument = {
             name: { kind: "Name", value: "nom" },
           },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "active" },
+            name: { kind: "Name", value: "actif" },
+          },
         ],
       },
     },
@@ -15024,6 +15036,11 @@ export const GetTeachersRowsDocument = {
             name: { kind: "Name", value: "nom" },
           },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "active" },
+            name: { kind: "Name", value: "actif" },
+          },
         ],
       },
     },
@@ -15803,6 +15820,11 @@ export const GetTeacherDetailsDocument = {
             name: { kind: "Name", value: "nom" },
           },
           { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "active" },
+            name: { kind: "Name", value: "actif" },
+          },
         ],
       },
     },

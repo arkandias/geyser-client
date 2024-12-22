@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { type ComputedRef, computed } from "vue";
+import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
 
 import { formatCourseCaption } from "@/helpers/format.ts";
 import type { CourseDetails } from "@/types/course.ts";
 
-import DetailsExpansion from "@/components/details/DetailsExpansion.vue";
 import DetailsCourseExtraInformation from "@/components/details/course/DetailsCourseExtraInformation.vue";
 import DetailsCourseExtras from "@/components/details/course/DetailsCourseExtras.vue";
 import DetailsCourseInformation from "@/components/details/course/DetailsCourseInformation.vue";
@@ -14,24 +13,47 @@ const { details } = defineProps<{
   details: CourseDetails | null;
 }>();
 
+// Expansion item props
+const isExpanded: Ref<boolean> = ref(false);
 const label: ComputedRef<string> = computed(() =>
   details
     ? details.name
     : "Sélectionnez un enseignement dans la liste ci-dessus",
 );
-
 const caption: ComputedRef<string> = computed(() =>
   details
     ? formatCourseCaption(details)
     : "Cliquez sur ce volet pour afficher des informations supplémentaires",
 );
+
+// On course details change: close and scroll to top (sync)
+watch(
+  () => details,
+  () => {
+    isExpanded.value = false;
+    document.getElementById("volet")?.scrollIntoView();
+  },
+  {
+    flush: "sync",
+  },
+);
 </script>
 
 <template>
-  <DetailsExpansion :label :caption>
-    <DetailsCourseExtras v-if="details" :details />
-    <DetailsCourseExtraInformation v-else />
-  </DetailsExpansion>
+  <QExpansionItem
+    id="volet"
+    v-model="isExpanded"
+    expand-separator
+    :label
+    :caption
+    dense
+    dense-toggle
+  >
+    <QCard flat square class="text-body2">
+      <DetailsCourseExtras v-if="details" :details />
+      <DetailsCourseExtraInformation v-else />
+    </QCard>
+  </QExpansionItem>
   <QCard flat square>
     <DetailsCourseRequests v-if="details" :details="details" />
     <DetailsCourseInformation v-else />

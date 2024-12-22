@@ -1,30 +1,22 @@
 <script setup lang="ts">
 import { type Ref, computed, ref, toValue, watchEffect } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { nf, normalizeForSearch } from "@/helpers/format.ts";
+import { toggleQueryParam } from "@/helpers/utils.ts";
 import { useData } from "@/stores/data.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import type { TeacherRow } from "@/types/teacher.ts";
 
 const router = useRouter();
-const route = useRoute();
 
 const perm = usePermissions();
 const { teachers, fetchingTeachers, selectedTeacher } = useData();
 
-const select = async (_: Event, row: TeacherRow) => {
-  if (selectedTeacher.value[0]?.uid === row.uid) {
-    await router.replace({
-      query: { ...route.query, uid: undefined },
-    });
-  } else {
-    await router.replace({
-      query: { ...route.query, courseId: undefined, uid: row.uid },
-    });
-  }
+const selectTeacher = async (_: Event, row: TeacherRow) => {
+  await toggleQueryParam(router, "uid", row.uid);
 };
 
 // Columns definition
@@ -205,7 +197,7 @@ const stickyHeader: Ref<boolean> = ref(false);
     dense
     virtual-scroll
     :class="{ 'sticky-header-table': stickyHeader }"
-    @row-click="select"
+    @row-click="selectTeacher"
   >
     <template #top>
       <div class="q-table__title">Intervenants</div>

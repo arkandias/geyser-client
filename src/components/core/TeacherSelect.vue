@@ -2,22 +2,18 @@
 import { useQuery } from "@urql/vue";
 import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
 
-import { GET_TEACHERS } from "@/graphql/teachers.ts";
+import { GET_ACTIVE_TEACHERS } from "@/graphql/teachers.ts";
 import { formatUser, normalizeForSearch } from "@/helpers/format.ts";
-import { useYears } from "@/stores/years.ts";
 import type { OptionSearch } from "@/types/common.ts";
 
 const uid = defineModel<string | null>({ required: true });
 
-const { currentYear } = useYears();
-
 const queryTeachers = useQuery({
-  query: GET_TEACHERS,
-  variables: {
-    year: computed(() => currentYear.value ?? -1),
-  },
+  query: GET_ACTIVE_TEACHERS,
+  variables: {},
 });
 
+const options: Ref<OptionSearch<string>[]> = ref([]);
 const optionsInit: ComputedRef<OptionSearch<string>[]> = computed(() =>
   (queryTeachers.data.value?.teachers ?? []).map((teacher) => ({
     value: teacher.uid,
@@ -25,7 +21,6 @@ const optionsInit: ComputedRef<OptionSearch<string>[]> = computed(() =>
     search: normalizeForSearch(formatUser(teacher)),
   })),
 );
-const options: Ref<OptionSearch<string>[]> = ref([]);
 watch(
   optionsInit,
   (value) => {

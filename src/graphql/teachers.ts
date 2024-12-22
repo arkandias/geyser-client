@@ -1,9 +1,9 @@
 import { graphql } from "@/gql";
 
-export const GET_TEACHERS = graphql(/* GraphQL */ `
-  query GetTeachers($year: Int!, $where: intervenant_bool_exp = {}) {
+export const GET_ACTIVE_TEACHERS = graphql(/* GraphQL */ `
+  query GetTeachers {
     teachers: intervenant(
-      where: { _and: [{ services: { annee: { _eq: $year } } }, $where] }
+      where: { actif: { _eq: true } }
       order_by: [{ nom: asc }, { prenom: asc }]
     ) {
       ...Profile
