@@ -6,7 +6,7 @@ import { useRoute } from "vue-router";
 import { usePermissions } from "@/composables/permissions.ts";
 import { GET_COURSES_ROWS, GET_COURSE_DETAILS } from "@/graphql/courses.ts";
 import { GET_TEACHERS_ROWS, GET_TEACHER_DETAILS } from "@/graphql/teachers.ts";
-import { getNumber, getValue } from "@/helpers/utils.ts";
+import { getNumber, getValue } from "@/helpers/query-params.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
@@ -23,7 +23,7 @@ const route = useRoute();
 const { activeYear, isCurrentYearActive, selectYear } = useYears();
 const { profile } = useAuthentication();
 const perm = usePermissions();
-const { closeLeftPanel, filtreIntervenants, openLeftPanel } = useLayout();
+const { closeLeftPanel, isLeftPanelOpen, openLeftPanel } = useLayout();
 const {
   selectedCourse,
   selectedTeacher,
@@ -159,7 +159,7 @@ watch(
       id="first-splitter"
       v-model="vSplitterRatio"
       :limits="[0, 100]"
-      :disable="!filtreIntervenants"
+      :disable="!isLeftPanelOpen"
     >
       <template #before>
         <TableTeachers />
@@ -180,7 +180,7 @@ watch(
 
 <style scoped lang="scss">
 #warning-archive {
-  height: $warning-archive-height;
+  height: $archive-warning-height;
   text-align: center;
   background-color: $accent;
   color: black;
@@ -199,13 +199,13 @@ watch(
 }
 #warning-archive + #first-splitter,
 #warning-archive + #first-splitter :deep(.sticky-header-table) {
-  height: calc(100vh - $header-height - $warning-archive-height);
+  height: calc(100vh - $header-height - $archive-warning-height);
 }
 #first-splitter #second-splitter :deep(.sticky-header-table) {
   height: calc((100vh - $header-height) * v-bind("hSplitterRatio") / 100);
 }
 /* prettier-ignore */
 #warning-archive + #first-splitter #second-splitter :deep(.sticky-header-table) {
-  height: calc((100vh - $header-height - $warning-archive-height) * v-bind('hSplitterRatio') / 100);
+  height: calc((100vh - $header-height - $archive-warning-height) * v-bind('hSplitterRatio') / 100);
 }
 </style>

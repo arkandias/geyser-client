@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { nf, normalizeForSearch } from "@/helpers/format.ts";
-import { toggleQueryParam } from "@/helpers/utils.ts";
+import { toggleQueryParam } from "@/helpers/query-params.ts";
 import { useData } from "@/stores/data.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import type { TeacherRow } from "@/types/teacher.ts";
@@ -282,7 +282,7 @@ const stickyHeader: Ref<boolean> = ref(false);
 
 <style scoped lang="scss">
 .q-input {
-  width: $search-input-width;
+  width: $table-filter-search-input-width;
 }
 .non-visible {
   background-color: rgba($negative, 0.1);

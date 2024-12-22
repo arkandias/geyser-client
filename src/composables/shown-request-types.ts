@@ -3,12 +3,12 @@ import { type ComputedRef, computed } from "vue";
 import { usePermissions } from "@/composables/permissions.ts";
 import {
   REQUEST_TYPES,
+  REQUEST_TYPE_METADATA,
   type RequestType,
-  orderRequestType,
 } from "@/config/types/request-types.ts";
 
 const requestTypes = Object.values(REQUEST_TYPES).sort(
-  (a, b) => orderRequestType(a) - orderRequestType(b),
+  (a, b) => REQUEST_TYPE_METADATA[a].order - REQUEST_TYPE_METADATA[b].order,
 );
 
 export const useShownRequestTypes = () => {

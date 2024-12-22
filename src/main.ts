@@ -7,6 +7,7 @@ import { initKeycloak } from "@/services/keycloak.ts";
 import { quasarOptions } from "@/services/quasar.ts";
 import { clientOptions } from "@/services/urql.ts";
 import { router } from "@/services/router.ts";
+import { i18n } from "@/i18n";
 
 import "@quasar/extras/material-symbols-sharp/material-symbols-sharp.css";
 import "@quasar/extras/roboto-font/roboto-font.css";
@@ -27,4 +28,5 @@ createApp(App)
   .use(Quasar, quasarOptions)
   .use(urql, clientOptions)
   .use(router)
+  .use(i18n)
   .mount("#app");

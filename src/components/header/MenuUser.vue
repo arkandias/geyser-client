@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type ComputedRef, computed } from "vue";
 
-import { type Role, labelRole, orderRole } from "@/config/types/roles.ts";
+import { ROLE_METADATA, type Role } from "@/config/types/roles.ts";
 import { formatUser } from "@/helpers/format.ts";
 import { activeRole, useAuthentication } from "@/stores/authentication.ts";
 import { useRefresh } from "@/stores/refresh.ts";
@@ -16,9 +16,11 @@ const optionsRole: ComputedRef<Option<Role>[]> = computed(() =>
   allowedRoles.value
     .map((role) => ({
       value: role,
-      label: labelRole(role),
+      label: ROLE_METADATA[role].label,
     }))
-    .sort((a, b) => orderRole(a.value) - orderRole(b.value)),
+    .sort(
+      (a, b) => ROLE_METADATA[a.value].order - ROLE_METADATA[b.value].order,
+    ),
 );
 </script>
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useShownRequestTypes } from "@/composables/shown-request-types.ts";
 import {
+  REQUEST_TYPE_METADATA,
   type RequestType,
-  labelRequestType,
 } from "@/config/types/request-types.ts";
 import { nf } from "@/helpers/format.ts";
 import type { TotalWeightedHours } from "@/types/row.ts";
@@ -21,7 +21,7 @@ const formatRequest = (total: TotalWeightedHours): string =>
 <template>
   <ServiceTable>
     <tr v-for="requestType in shownRequestTypes" :key="requestType">
-      <td>{{ labelRequestType(requestType) }}</td>
+      <td>{{ REQUEST_TYPE_METADATA[requestType].label }}</td>
       <td>{{ formatRequest(totals[requestType]) }}</td>
     </tr>
   </ServiceTable>

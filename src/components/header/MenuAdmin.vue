@@ -2,7 +2,7 @@
 import { useMutation } from "@urql/vue";
 import { type ComputedRef, computed } from "vue";
 
-import { type Phase, labelPhase, orderPhase } from "@/config/types/phases.ts";
+import { PHASE_METADATA, type Phase } from "@/config/types/phases.ts";
 import { PHASES } from "@/config/types/phases.ts";
 import { SET_CURRENT_PHASE } from "@/graphql/phases.ts";
 import { UPDATE_CURRENT_YEAR } from "@/graphql/years.ts";
@@ -48,9 +48,11 @@ const optionsPhase: ComputedRef<Option<Phase>[]> = computed(() =>
   Object.values(PHASES)
     .map((phase) => ({
       value: phase,
-      label: labelPhase(phase),
+      label: PHASE_METADATA[phase].label,
     }))
-    .sort((a, b) => orderPhase(a.value) - orderPhase(b.value)),
+    .sort(
+      (a, b) => PHASE_METADATA[a.value].order - PHASE_METADATA[b.value].order,
+    ),
 );
 </script>
 

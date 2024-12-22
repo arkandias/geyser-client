@@ -1,5 +1,6 @@
 import type { NamedColor } from "quasar";
 
+import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import type { Coordinator } from "@/types/coordinator.ts";
 import type { CourseDetails } from "@/types/course.ts";
 import type { Profile } from "@/types/profile.ts";
@@ -17,7 +18,9 @@ export const normalizeForSearch = (str: string) =>
     .toLowerCase();
 
 export const formatRequestType = (requestType: string) =>
-  requestType === "attribution" ? "Attribution" : `Demande ${requestType}`;
+  requestType === REQUEST_TYPES.ASSIGNMENT
+    ? "Attribution"
+    : `Demande ${requestType}`;
 
 export const formatProgram = (nomCursus: string, nomMention: string) =>
   nomCursus + " " + nomMention;

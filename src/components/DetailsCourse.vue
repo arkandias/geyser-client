@@ -4,8 +4,8 @@ import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
 import { formatCourseCaption } from "@/helpers/format.ts";
 import type { CourseDetails } from "@/types/course.ts";
 
-import DetailsCourseExtraInformation from "@/components/details/course/DetailsCourseExtraInformation.vue";
 import DetailsCourseExtras from "@/components/details/course/DetailsCourseExtras.vue";
+import DetailsCourseExtrasInformation from "@/components/details/course/DetailsCourseExtrasInformation.vue";
 import DetailsCourseInformation from "@/components/details/course/DetailsCourseInformation.vue";
 import DetailsCourseRequests from "@/components/details/course/DetailsCourseRequests.vue";
 
@@ -51,7 +51,7 @@ watch(
   >
     <QCard flat square class="text-body2">
       <DetailsCourseExtras v-if="details" :details />
-      <DetailsCourseExtraInformation v-else />
+      <DetailsCourseExtrasInformation v-else />
     </QCard>
   </QExpansionItem>
   <QCard flat square>

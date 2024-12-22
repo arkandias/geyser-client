@@ -30,7 +30,7 @@ const toggleLeftPanel = (): void => {
 };
 
 export const useLayout = () => ({
-  filtreIntervenants: readonly(isLeftPanelOpen),
+  isLeftPanelOpen: readonly(isLeftPanelOpen),
   openLeftPanel,
   closeLeftPanel,
   toggleLeftPanel,

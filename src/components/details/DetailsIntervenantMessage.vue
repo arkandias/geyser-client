@@ -2,8 +2,8 @@
 import { useClientHandle } from "@urql/vue";
 import { type ComputedRef, computed } from "vue";
 
+import { updateMessage } from "@/composables/message-operations.ts";
 import { usePermissions } from "@/composables/permissions.ts";
-import { updateMessage } from "@/helpers/operations-messages.ts";
 
 import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
 

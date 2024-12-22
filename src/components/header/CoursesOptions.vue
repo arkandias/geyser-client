@@ -1,34 +1,25 @@
 <script setup lang="ts">
 import { type ComputedRef, computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 import { buttonColor } from "@/helpers/format.ts";
-import { getValue } from "@/helpers/utils.ts";
+import { isQueryParam, toggleQueryParam } from "@/helpers/query-params.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useLayout } from "@/stores/layout.ts";
 
 import MenuYear from "@/components/header/MenuYear.vue";
 
 const router = useRouter();
-const route = useRoute();
 
-const { filtreIntervenants, toggleLeftPanel } = useLayout();
+const { isLeftPanelOpen, toggleLeftPanel } = useLayout();
 const { profile } = useAuthentication();
 
-const isMyRowSelected: ComputedRef<boolean> = computed(
-  () => profile.active && getValue(route.query, "uid") === profile.uid,
+const isMyUidSelected: ComputedRef<boolean> = computed(() =>
+  isQueryParam(router, "uid", profile.uid),
 );
 
-const toggleMyRow = async () => {
-  if (isMyRowSelected.value) {
-    await router.replace({
-      query: { ...route.query, uid: undefined },
-    });
-  } else {
-    await router.replace({
-      query: { ...route.query, uid: profile.uid },
-    });
-  }
+const toggleMyUid = async () => {
+  await toggleQueryParam(router, "uid", profile.uid);
 };
 </script>
 
@@ -37,7 +28,7 @@ const toggleMyRow = async () => {
   <MenuYear />
   <QBtn
     icon="sym_s_vertical_split"
-    :color="buttonColor(filtreIntervenants)"
+    :color="buttonColor(isLeftPanelOpen)"
     flat
     square
     @click="toggleLeftPanel"
@@ -46,11 +37,11 @@ const toggleMyRow = async () => {
   </QBtn>
   <QBtn
     icon="sym_s_assignment"
-    :color="buttonColor(isMyRowSelected)"
+    :color="buttonColor(isMyUidSelected)"
     :disable="!profile.active"
     flat
     square
-    @click="toggleMyRow"
+    @click="toggleMyUid"
   >
     <QTooltip>Mes demandes</QTooltip>
   </QBtn>

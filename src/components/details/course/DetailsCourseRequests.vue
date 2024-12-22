@@ -4,8 +4,8 @@ import { type ComputedRef, computed } from "vue";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useShownRequestTypes } from "@/composables/shown-request-types.ts";
 import {
+  REQUEST_TYPE_METADATA,
   type RequestType,
-  labelRequestType,
 } from "@/config/types/request-types.ts";
 import { processArchives } from "@/helpers/courses.ts";
 import type { Archive, CourseDetails } from "@/types/course.ts";
@@ -41,7 +41,7 @@ const archives: ComputedRef<Archive[]> = computed(() =>
     <DetailsSubsection
       v-for="requestType in shownRequestTypes"
       :key="requestType"
-      :title="labelRequestType(requestType)"
+      :title="REQUEST_TYPE_METADATA[requestType].label"
     >
       <QCardSection>
         <div class="row q-gutter-xs">

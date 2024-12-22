@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import { useClientHandle } from "@urql/vue";
 import { type ComputedRef, computed } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
+import { useRequestOperations } from "@/composables/request-operations.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { formatUser, nf, priorityColor } from "@/helpers/format.ts";
-import {
-  deleteDemandeById,
-  updateRequest,
-} from "@/helpers/operations-requests.ts";
 import type { RequestDetails } from "@/types/request.ts";
 
 const { request, archive } = defineProps<{
@@ -18,10 +14,10 @@ const { request, archive } = defineProps<{
 }>();
 
 const perm = usePermissions();
-const client = useClientHandle().client;
 
+const { updateRequest, deleteRequest } = useRequestOperations();
 const assign = async (): Promise<void> => {
-  await updateRequest(client, {
+  await updateRequest({
     uid: request.teacher.uid,
     courseId: request.course.id,
     requestType: REQUEST_TYPES.ASSIGNMENT,
@@ -29,7 +25,7 @@ const assign = async (): Promise<void> => {
   });
 };
 const remove = async (): Promise<void> => {
-  await deleteDemandeById(client, request.id, request.type);
+  await deleteRequest(request.id, request.type);
 };
 
 const groups: ComputedRef<number> = computed(() =>
@@ -122,7 +118,7 @@ const displayAssignButton: ComputedRef<(requestType: string) => boolean> =
 
 <style scoped lang="scss">
 .carte-demande {
-  width: $wish-card-width;
+  width: $request-cards-width;
   text-align: center;
 }
 

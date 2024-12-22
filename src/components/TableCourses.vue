@@ -19,7 +19,8 @@ import {
   nf,
   normalizeForSearch,
 } from "@/helpers/format.ts";
-import { compare, toggleQueryParam, uniqueValue } from "@/helpers/utils.ts";
+import { compare, uniqueValue } from "@/helpers/misc.ts";
+import { toggleQueryParam } from "@/helpers/query-params.ts";
 import { useData } from "@/stores/data.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
 import type { Option } from "@/types/common.ts";
@@ -314,7 +315,8 @@ const filterMethod = (
 const stickyHeader: Ref<boolean> = ref(false);
 const isAssigned = (row: CourseRow) =>
   teacher?.requests.some(
-    (request) => request.course.id === row.id && request.type === "attribution",
+    (request) =>
+      request.course.id === row.id && request.type === REQUEST_TYPES.ASSIGNMENT,
   ) ?? false;
 const isVisible = (row: CourseRow): boolean =>
   !teacher &&
@@ -364,7 +366,7 @@ const isVisible = (row: CourseRow): boolean =>
           flat
           square
           dense
-          @click="deselectTeacher(null)"
+          @click="deselectTeacher"
         />
       </div>
       <QSpace />
@@ -542,10 +544,10 @@ const isVisible = (row: CourseRow): boolean =>
 
 <style scoped lang="scss">
 .q-select {
-  min-width: $select-filter-min-width;
+  min-width: $table-filter-select-min-width;
 }
 .q-input {
-  width: $search-input-width;
+  width: $table-filter-search-input-width;
 }
 .non-visible {
   background-color: rgba($negative, 0.1);

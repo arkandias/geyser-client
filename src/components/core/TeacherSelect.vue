@@ -31,8 +31,8 @@ watch(
 
 const filter = (val: string, update: (x: () => void) => void) => {
   update(() => {
-    options.value = optionsInit.value.filter((intervenant) =>
-      intervenant.search.includes(normalizeForSearch(val)),
+    options.value = optionsInit.value.filter((teacher) =>
+      teacher.search.includes(normalizeForSearch(val)),
     );
   });
 };

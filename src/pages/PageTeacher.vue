@@ -4,7 +4,7 @@ import { type ComputedRef, computed, reactive } from "vue";
 import { useRoute } from "vue-router";
 
 import { GET_TEACHER_DETAILS } from "@/graphql/teachers.ts";
-import { getValue } from "@/helpers/utils.ts";
+import { getValue } from "@/helpers/query-params.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useYears } from "@/stores/years.ts";
 import type { TeacherDetails } from "@/types/teacher.ts";
@@ -14,6 +14,7 @@ import DetailsTeacher from "@/components/DetailsTeacher.vue";
 // TODO: Si pas de service --> changer la page (donner la possibilité de créer un service si l'utilisateur est actif)
 
 const route = useRoute();
+
 const { currentYear } = useYears();
 const { profile } = useAuthentication();
 

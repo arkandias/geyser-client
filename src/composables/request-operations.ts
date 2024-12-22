@@ -1,0 +1,106 @@
+import { type Client, useClientHandle } from "@urql/vue";
+
+import {
+  REQUEST_TYPE_METADATA,
+  isRequestType,
+} from "@/config/types/request-types.ts";
+import {
+  DELETE_REQUEST,
+  DELETE_REQUEST_BY_ID,
+  GET_REQUEST,
+  UPSERT_REQUEST,
+} from "@/graphql/requests.ts";
+import { NotifyType, notify } from "@/helpers/notify.ts";
+
+const getCurrentRequest = async (
+  client: Client,
+  variables: { uid: string; courseId: number; requestType: string },
+): Promise<number | null> => {
+  const result = await client.query(GET_REQUEST, variables, {
+    requestPolicy: "network-only",
+  });
+  if (!result.data?.requests) {
+    console.error(
+      "Cannot get current demande. Please report this error to an administrator",
+    );
+    notify(NotifyType.Error, {
+      message: "Impossible de récupérer la demande actuelle",
+      caption: "Merci de rapporter cette erreur à un administrateur",
+    });
+    return null;
+  }
+  return result.data.requests[0]?.hours ?? 0;
+};
+
+const updateRequest =
+  (client: Client) =>
+  async (variables: {
+    uid: string;
+    courseId: number;
+    requestType: string;
+    hours: number;
+  }): Promise<void> => {
+    if (!isRequestType(variables.requestType)) {
+      throw new Error(`Invalid request type '${variables.requestType}'`);
+    }
+    const { hours, ...rest } = variables;
+    const current = await getCurrentRequest(client, rest);
+    if (current === null) {
+      return;
+    }
+    if (hours === current) {
+      notify(NotifyType.Default, {
+        message:
+          REQUEST_TYPE_METADATA[variables.requestType].label + " identique",
+      });
+      return;
+    }
+    if (hours === 0) {
+      const result = await client.mutation(DELETE_REQUEST, variables);
+      if (result.data?.requests?.returning && !result.error) {
+        notify(NotifyType.Success, {
+          message:
+            REQUEST_TYPE_METADATA[variables.requestType].label + " supprimée",
+        });
+      } else {
+        notify(NotifyType.Error, { message: "Échec de la suppression" });
+      }
+    } else {
+      const result = await client.mutation(UPSERT_REQUEST, variables);
+      if (result.data?.request && !result.error) {
+        notify(NotifyType.Success, {
+          message:
+            REQUEST_TYPE_METADATA[variables.requestType].label +
+            (current === 0 ? " créée" : " mise à jour"),
+        });
+      } else {
+        notify(NotifyType.Error, {
+          message: `Échec de la ${current === 0 ? "création" : "mise à jour"}`,
+        });
+      }
+    }
+  };
+
+const deleteRequest =
+  (client: Client) =>
+  async (id: number, requestType: string): Promise<void> => {
+    if (!isRequestType(requestType)) {
+      throw new Error(`Invalid request type '${requestType}'`);
+    }
+    const result = await client.mutation(DELETE_REQUEST_BY_ID, { id });
+    if (result.data?.request && !result.error) {
+      notify(NotifyType.Success, {
+        message: REQUEST_TYPE_METADATA[requestType].label + " supprimée",
+      });
+    } else {
+      notify(NotifyType.Error, { message: "Échec de la suppression" });
+    }
+  };
+
+export const useRequestOperations = () => {
+  const client = useClientHandle().client;
+  return {
+    updateRequest: updateRequest(client),
+    deleteRequest: deleteRequest(client),
+  };
+};

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useClientHandle } from "@urql/vue";
 import {
   type ComputedRef,
   type Ref,
@@ -10,10 +9,10 @@ import {
 } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
+import { useRequestOperations } from "@/composables/request-operations.ts";
 import { PHASES } from "@/config/types/phases.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
-import { updateRequest } from "@/helpers/operations-requests.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { usePhases } from "@/stores/phases.ts";
 
@@ -81,8 +80,8 @@ watch(
   { immediate: true },
 );
 
-// TODO: refacto faire un composable
-const client = useClientHandle().client;
+// TODO: refacto faire un composable ?
+const { updateRequest } = useRequestOperations();
 const submitForm = async (): Promise<void> => {
   if (uid.value === null) {
     notify(NotifyType.Error, {
@@ -105,7 +104,7 @@ const submitForm = async (): Promise<void> => {
     });
     return;
   }
-  await updateRequest(client, {
+  await updateRequest({
     uid: uid.value,
     courseId: props.courseId,
     requestType: requestType.value,
@@ -185,9 +184,9 @@ const resetForm = (): void => {
 
 <style scoped lang="scss">
 .q-select {
-  width: $form-select-width;
+  width: $request-form-teacher-select-width;
 }
 .q-input {
-  width: $form-input-width;
+  width: $request-form-numeric-inputs-width;
 }
 </style>

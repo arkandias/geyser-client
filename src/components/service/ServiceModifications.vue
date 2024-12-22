@@ -194,11 +194,11 @@ const modifiedService: ComputedRef<number> = computed(
 
 <style scoped lang="scss">
 .q-select {
-  width: $modification-form-select-width;
+  width: $modification-form-type-select-width;
   margin: 0 8px;
 }
 .q-input {
-  width: $modification-form-input-width;
+  width: $modification-form-hours-input-width;
   margin: 0 8px;
 }
 </style>

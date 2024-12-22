@@ -1,4 +1,4 @@
-import { type ComputedRef, computed } from "vue";
+import { type ComputedRef, computed, readonly } from "vue";
 
 import { PHASES } from "@/config/types/phases.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
@@ -111,7 +111,7 @@ export const usePermissions = () => {
       (activeRole.value === ROLES.USER && uid === profile.uid),
   );
 
-  return {
+  return readonly({
     toAdmin,
     toAccess,
     toSubmitRequestsForOthers,
@@ -125,5 +125,5 @@ export const usePermissions = () => {
     toEditAService,
     toViewAMessage,
     toEditAMessage,
-  };
+  });
 };

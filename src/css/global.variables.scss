@@ -1,11 +1,11 @@
-$header-height: 50px; // hauteur en-tête
-$warning-archive-height: 25px; // hauteur bandeau alerte archive
-$homepage-max-width: 720px; // largeur max page d'accueil
-$service-table-min-width: 360px; // largeur min tables service intervenant
-$select-filter-min-width: 120px; // largeur min filtres enseignements
-$search-input-width: 120px; // largeur champs de recherche
-$wish-card-width: 120px; // largeur cartes de demande
-$form-select-width: 180px; // largeur sélection intervenant formulaire demandes
-$form-input-width: 50px; // largeur champs numériques formulaire demandes
-$modification-form-select-width: 180px; // largeur sélection type modification
-$modification-form-input-width: 90px; // largeur champs heures modification
+$homepage-max-width: 720px;
+$header-height: 50px;
+$archive-warning-height: 25px;
+$table-filter-select-min-width: 120px;
+$table-filter-search-input-width: 120px;
+$request-cards-width: 120px;
+$request-form-teacher-select-width: 180px;
+$request-form-numeric-inputs-width: 50px;
+$service-table-min-width: 360px;
+$modification-form-type-select-width: 180px;
+$modification-form-hours-input-width: 90px;

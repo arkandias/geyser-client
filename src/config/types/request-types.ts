@@ -16,21 +16,3 @@ export const isRequestType = (
   requestType: unknown,
 ): requestType is RequestType =>
   Object.values(REQUEST_TYPES).includes(requestType as RequestType);
-
-export const getRequestType = (
-  requestType: RequestType,
-): keyof typeof REQUEST_TYPES => {
-  const entry = Object.entries(REQUEST_TYPES).find(
-    ([_, value]) => value === requestType,
-  );
-  if (!entry) {
-    throw new Error(`Invalid request type '${requestType}'`);
-  }
-  return entry[0] as keyof typeof REQUEST_TYPES;
-};
-
-export const labelRequestType = (requestType: RequestType): string =>
-  REQUEST_TYPE_METADATA[requestType].label;
-
-export const orderRequestType = (requestType: RequestType): number =>
-  REQUEST_TYPE_METADATA[requestType].order;
