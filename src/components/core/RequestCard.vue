@@ -53,8 +53,8 @@ const displayAssignButton: ComputedRef<(requestType: string) => boolean> =
 </script>
 
 <template>
-  <QCard bordered square class="carte-demande">
-    <QCardSection class="carte-demande__titre q-pa-xs text-body2">
+  <QCard bordered square class="request-card">
+    <QCardSection class="request-card__titre q-pa-xs text-body2">
       <QBadge
         v-if="request.isPriority !== null"
         :color="priorityColor(request.isPriority)"
@@ -117,19 +117,19 @@ const displayAssignButton: ComputedRef<(requestType: string) => boolean> =
 </template>
 
 <style scoped lang="scss">
-.carte-demande {
+.request-card {
   width: $request-cards-width;
   text-align: center;
 }
 
-.carte-demande__titre {
+.request-card__titre {
   background-color: $grey-3;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.body--dark .carte-demande__titre {
+.body--dark .request-card__titre {
   background-color: $grey-9;
 }
 </style>

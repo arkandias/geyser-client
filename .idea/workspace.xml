@@ -24,33 +24,15 @@
       <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/DetailsCourse.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsCourse.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/TableCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableCourses.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TableTeachers.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableTeachers.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/core/RequestCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestCard.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/RequestForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestForm.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsIntervenantMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/DetailsIntervenantMessage.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/details/course/DetailsCourseExtraInformation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/course/DetailsCourseExtrasInformation.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/details/course/DetailsCourseRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/details/course/DetailsCourseRequests.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/CoursesOptions.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/CoursesOptions.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuUser.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/service/ServiceModifications.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/service/ServiceModifications.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/service/ServiceRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/service/ServiceRequests.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/composables/permissions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/permissions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/composables/shown-request-types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/shown-request-types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/types/generic.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/types/phases.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/types/phases.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/types/request-types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/types/request-types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/types/roles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/types/roles.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/global.variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/global.variables.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/details/DetailsIntervenantMessage.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/HomeExpansion.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomeExpansion.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/composables/request-operations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/request-operations.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/helpers/format.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/format.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helpers/operations-messages.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/message-operations.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helpers/operations-requests.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/request-operations.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helpers/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/query-params.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PageCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageCourses.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PageTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageTeacher.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/layout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/layout.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/i18n/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/i18n/locales/fr/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/i18n/locales/fr/notifications.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PageHome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageHome.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,7 +145,7 @@
     "javascript.nodejs.core.library.configured.version": "20.12.2",
     "javascript.nodejs.core.library.typings.version": "20.12.14",
     "js.linters.configure.manually.selectedeslint": "true",
-    "last_opened_file_path": "/Users/julienhauseux/Projets/geyser-frontend/src/components",
+    "last_opened_file_path": "/Users/julienhauseux/Projets/geyser-frontend/src/i18n/locales/fr",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.stylelint": "true",
@@ -196,11 +178,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/i18n/locales/fr" />
       <recent name="$PROJECT_DIR$/src/components" />
       <recent name="$PROJECT_DIR$/src/components/service" />
       <recent name="$PROJECT_DIR$/src/config/types" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/composables" />
@@ -361,15 +343,7 @@
       <workItem from="1733958145291" duration="106853000" />
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
-      <workItem from="1734622570180" duration="94614000" />
-    </task>
-    <task id="LOCAL-00263" summary="test">
-      <option name="closed" value="true" />
-      <created>1733963160254</created>
-      <option name="number" value="00263" />
-      <option name="presentableId" value="LOCAL-00263" />
-      <option name="project" value="LOCAL" />
-      <updated>1733963160254</updated>
+      <workItem from="1734622570180" duration="101443000" />
     </task>
     <task id="LOCAL-00264" summary="test">
       <option name="closed" value="true" />
@@ -755,7 +729,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734886818908</updated>
     </task>
-    <option name="localTasksCounter" value="312" />
+    <task id="LOCAL-00312" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1734903700152</created>
+      <option name="number" value="00312" />
+      <option name="presentableId" value="LOCAL-00312" />
+      <option name="project" value="LOCAL" />
+      <updated>1734903700153</updated>
+    </task>
+    <option name="localTasksCounter" value="313" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

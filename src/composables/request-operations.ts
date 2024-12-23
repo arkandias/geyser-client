@@ -14,18 +14,21 @@ import { NotifyType, notify } from "@/helpers/notify.ts";
 
 const getCurrentRequest = async (
   client: Client,
-  variables: { uid: string; courseId: number; requestType: string },
+  variables: {
+    uid: string;
+    courseId: number;
+    requestType: string;
+  },
 ): Promise<number | null> => {
   const result = await client.query(GET_REQUEST, variables, {
     requestPolicy: "network-only",
   });
   if (!result.data?.requests) {
     console.error(
-      "Cannot get current demande. Please report this error to an administrator",
+      "Cannot get the current request. Please report this error to an administrator",
     );
     notify(NotifyType.Error, {
       message: "Impossible de récupérer la demande actuelle",
-      caption: "Merci de rapporter cette erreur à un administrateur",
     });
     return null;
   }
@@ -51,7 +54,8 @@ const updateRequest =
     if (hours === current) {
       notify(NotifyType.Default, {
         message:
-          REQUEST_TYPE_METADATA[variables.requestType].label + " identique",
+          REQUEST_TYPE_METADATA[variables.requestType].label +
+          " déjà enregistrée",
       });
       return;
     }

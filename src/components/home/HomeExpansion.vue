@@ -19,4 +19,11 @@ defineSlots<{ default(): unknown }>();
   </QExpansionItem>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.q-expansion-item {
+  background-color: $grey-3;
+}
+.body--dark .q-expansion-item {
+  background-color: $grey-9;
+}
+</style>

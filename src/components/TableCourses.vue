@@ -296,7 +296,7 @@ const filterMethod = (
           terms.programs.some((program) => program === row.program.id)) &&
         (terms.courseTypes.length === 0 ||
           terms.courseTypes.some(
-            (typeEns) => typeEns === row.courseType.label,
+            (courseType) => courseType === row.courseType.label,
           )) &&
         (terms.semesters.length === 0 ||
           terms.semesters.includes(row.semester)) &&
