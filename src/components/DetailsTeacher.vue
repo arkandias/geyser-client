@@ -2,7 +2,6 @@
 import { type ComputedRef, computed } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
-import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { getProfile } from "@/types/profile.ts";
 import type { ServiceDetails } from "@/types/service.ts";
 import type { TeacherDetails } from "@/types/teacher.ts";
@@ -10,7 +9,7 @@ import type { TeacherDetails } from "@/types/teacher.ts";
 import ServiceModifications from "@/components/service/ServiceModifications.vue";
 import ServiceRequests from "@/components/service/ServiceRequests.vue";
 import TeacherMessage from "@/components/teacher/TeacherMessage.vue";
-import TeacherSubsection from "@/components/teacher/TeacherSubsection.vue";
+import TeacherSection from "@/components/teacher/TeacherSection.vue";
 import TeacherTitle from "@/components/teacher/TeacherTitle.vue";
 
 const { details } = defineProps<{ details: TeacherDetails }>();
@@ -20,12 +19,6 @@ const perm = usePermissions();
 const service: ComputedRef<ServiceDetails | null> = computed(
   () => details.services[0] ?? null,
 );
-
-const totals = computed(() => ({
-  [REQUEST_TYPES.ASSIGNMENT]: details.totalAssigned,
-  [REQUEST_TYPES.PRIMARY]: details.totalPrimary,
-  [REQUEST_TYPES.SECONDARY]: details.totalSecondary,
-}));
 </script>
 
 <template>
@@ -34,18 +27,22 @@ const totals = computed(() => ({
       :profile="getProfile(details)"
       :position="details.position?.label"
     />
-    <TeacherSubsection title="Service">
+    <TeacherSection title="Service">
       <ServiceModifications
         v-if="service"
         :service
         :editable="perm.toEditAService(details.uid)"
       />
-    </TeacherSubsection>
+    </TeacherSection>
     <!-- TODO: Responsabilités -->
     <!-- TODO: Priorités -->
-    <TeacherSubsection title="Demandes">
-      <ServiceRequests :totals />
-    </TeacherSubsection>
+    <TeacherSection title="Demandes">
+      <ServiceRequests
+        :total-assigned="details.totalAssigned"
+        :total-primary="details.totalPrimary"
+        :total-secondary="details.totalSecondary"
+      />
+    </TeacherSection>
     <TeacherMessage
       v-if="service"
       :year="service?.year"

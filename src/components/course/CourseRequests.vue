@@ -86,15 +86,13 @@ const archives: ComputedRef<Archive[]> = computed(() =>
       :key="archive.year"
       :title="archive.year.toString()"
     >
-      <QCardSection>
-        <div class="row q-gutter-xs">
-          <RequestCard
-            v-for="request in archive.requests"
-            :key="request.id"
-            :request
-            archive
-          />
-        </div>
+      <QCardSection class="row q-gutter-xs">
+        <RequestCard
+          v-for="request in archive.requests"
+          :key="request.id"
+          :request
+          archive
+        />
       </QCardSection>
     </CourseSubsection>
   </CourseSection>

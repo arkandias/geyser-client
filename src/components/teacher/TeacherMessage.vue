@@ -6,7 +6,7 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { DELETE_MESSAGE, UPSERT_MESSAGE } from "@/graphql/messages.ts";
 
 import EditableText from "@/components/core/EditableText.vue";
-import HomeSubsection from "@/components/teacher/TeacherSubsection.vue";
+import HomeSubsection from "@/components/teacher/TeacherSection.vue";
 
 const { year, uid, body } = defineProps<{
   year: number;
@@ -37,7 +37,7 @@ const setMessage: ComputedRef<(body: string) => Promise<boolean>> = computed(
 </script>
 
 <template>
-  <!-- TODO: TeacherSubsection -->
+  <!-- TODO: TeacherSection -->
   <HomeSubsection
     v-model="edition"
     title="Message pour la commission"
