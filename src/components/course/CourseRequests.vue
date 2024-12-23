@@ -14,8 +14,8 @@ import type { RequestDetails } from "@/types/request.ts";
 import PriorityChip from "@/components/core/PriorityChip.vue";
 import RequestCard from "@/components/core/RequestCard.vue";
 import RequestForm from "@/components/core/RequestForm.vue";
-import DetailsSection from "@/components/details/DetailsSection.vue";
-import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
+import CourseSection from "@/components/course/CourseSection.vue";
+import CourseSubsection from "@/components/course/CourseSubsection.vue";
 
 const { details } = defineProps<{ details: CourseDetails }>();
 
@@ -51,29 +51,27 @@ const archives: ComputedRef<Archive[]> = computed(() =>
 </script>
 
 <template>
-  <DetailsSection title="Demandes">
+  <CourseSection title="Demandes">
     <RequestForm
       v-if="perm.toSubmitRequests || perm.toEditAssignments"
       :course-id="details.courseId"
       :hours-per-group="details.hoursPerGroup"
     />
-    <DetailsSubsection
+    <CourseSubsection
       v-for="requestOption in requestsByTypeOptions"
       :key="requestOption.value"
       :title="requestOption.label + 's'"
     >
-      <QCardSection>
-        <div class="row q-gutter-xs">
-          <RequestCard
-            v-for="request in requestOption.requests"
-            :key="request.id"
-            :request
-          />
-        </div>
+      <QCardSection class="row q-gutter-xs">
+        <RequestCard
+          v-for="request in requestOption.requests"
+          :key="request.id"
+          :request
+        />
       </QCardSection>
-    </DetailsSubsection>
-  </DetailsSection>
-  <DetailsSection title="Priorités">
+    </CourseSubsection>
+  </CourseSection>
+  <CourseSection title="Priorités">
     <QCardSection>
       <PriorityChip
         v-for="priorite in details.priorities"
@@ -81,9 +79,9 @@ const archives: ComputedRef<Archive[]> = computed(() =>
         :priorite
       />
     </QCardSection>
-  </DetailsSection>
-  <DetailsSection title="Archives">
-    <DetailsSubsection
+  </CourseSection>
+  <CourseSection title="Archives">
+    <CourseSubsection
       v-for="archive in archives"
       :key="archive.year"
       :title="archive.year.toString()"
@@ -98,8 +96,8 @@ const archives: ComputedRef<Archive[]> = computed(() =>
           />
         </div>
       </QCardSection>
-    </DetailsSubsection>
-  </DetailsSection>
+    </CourseSubsection>
+  </CourseSection>
 </template>
 
 <style scoped lang="scss"></style>

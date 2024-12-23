@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
+import { type ComputedRef, type Ref, computed, ref } from "vue";
 
 import { formatCourseCaption } from "@/helpers/format.ts";
 import type { CourseDetails } from "@/types/course.ts";
 
-import DetailsCourseExtras from "@/components/details/course/DetailsCourseExtras.vue";
-import DetailsCourseExtrasInformation from "@/components/details/course/DetailsCourseExtrasInformation.vue";
-import DetailsCourseInformation from "@/components/details/course/DetailsCourseInformation.vue";
-import DetailsCourseRequests from "@/components/details/course/DetailsCourseRequests.vue";
+import CourseExtras from "@/components/course/CourseExtras.vue";
+import CourseExtrasInformation from "@/components/course/CourseExtrasInformation.vue";
+import CourseInformation from "@/components/course/CourseInformation.vue";
+import CourseRequests from "@/components/course/CourseRequests.vue";
 
 const { details } = defineProps<{
   details: CourseDetails | null;
@@ -27,16 +27,16 @@ const caption: ComputedRef<string> = computed(() =>
 );
 
 // On course details change: close and scroll to top (sync)
-watch(
-  () => details,
-  () => {
-    isExpanded.value = false;
-    document.getElementById("volet")?.scrollIntoView();
-  },
-  {
-    flush: "sync",
-  },
-);
+// watch(
+//   () => details,
+//   () => {
+//     isExpanded.value = false;
+//     document.getElementById("volet")?.scrollIntoView();
+//   },
+//   {
+//     flush: "sync",
+//   },
+// );
 </script>
 
 <template>
@@ -50,13 +50,13 @@ watch(
     dense-toggle
   >
     <QCard flat square class="text-body2">
-      <DetailsCourseExtras v-if="details" :details />
-      <DetailsCourseExtrasInformation v-else />
+      <CourseExtras v-if="details" :details />
+      <CourseExtrasInformation v-else />
     </QCard>
   </QExpansionItem>
   <QCard flat square>
-    <DetailsCourseRequests v-if="details" :details="details" />
-    <DetailsCourseInformation v-else />
+    <CourseRequests v-if="details" :details="details" />
+    <CourseInformation v-else />
   </QCard>
 </template>
 

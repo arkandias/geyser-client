@@ -2,7 +2,7 @@
 import { type Ref, ref } from "vue";
 
 import EditableText from "@/components/core/EditableText.vue";
-import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
+import CourseSubsection from "@/components/course/CourseSubsection.vue";
 
 defineProps<{
   title: string;
@@ -16,9 +16,9 @@ const edition: Ref<boolean> = ref(false);
 </script>
 
 <template>
-  <DetailsSubsection v-model="edition" :title :editable>
+  <CourseSubsection v-model="edition" :title :editable>
     <EditableText v-model="edition" :text :set-text :default-text />
-  </DetailsSubsection>
+  </CourseSubsection>
 </template>
 
 <style scoped lang="scss"></style>

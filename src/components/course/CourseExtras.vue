@@ -8,9 +8,9 @@ import type { Coordinator } from "@/types/coordinator.ts";
 import type { CourseDetails } from "@/types/course.ts";
 import type { Profile } from "@/types/profile.ts";
 
-import DetailsSubsection from "@/components/details/DetailsSubsection.vue";
-import DetailsSubsectionEditableText from "@/components/details/DetailsSubsectionEditableText.vue";
-import DetailsCourseCoordinators from "@/components/details/course/DetailsCourseCoordinators.vue";
+import CourseCoordinators from "@/components/course/CourseCoordinators.vue";
+import CourseSubsection from "@/components/course/CourseSubsection.vue";
+import CourseSubsectionEditableText from "@/components/course/CourseSubsectionEditableText.vue";
 
 const props = defineProps<{ details: CourseDetails }>();
 
@@ -44,14 +44,14 @@ const setDescription = (text: string): Promise<boolean> =>
 </script>
 
 <template>
-  <DetailsSubsection title="Responsables">
-    <DetailsCourseCoordinators
+  <CourseSubsection title="Responsables">
+    <CourseCoordinators
       :program-coordinators
       :track-coordinators
       :course-coordinators
     />
-  </DetailsSubsection>
-  <DetailsSubsectionEditableText
+  </CourseSubsection>
+  <CourseSubsectionEditableText
     title="Description"
     :text="details.description"
     default-text="Pas de description (contactez un responsable)"

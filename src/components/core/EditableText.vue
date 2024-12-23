@@ -62,11 +62,11 @@ const definitions = {
 };
 
 const toolbar = [
+  ["save", "delete"],
   ["left", "center", "right", "justify"],
   ["bold", "italic", "underline", "strike", "subscript", "superscript"],
   ["hr", "link", "viewsource"],
   ["unordered", "ordered", "outdent", "indent"],
-  ["save", "delete"],
 ];
 </script>
 
