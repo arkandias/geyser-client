@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type ComputedRef, computed } from "vue";
 
-import { ROLE_METADATA, type Role } from "@/config/types/roles.ts";
+import { ROLE_OPTIONS, type Role } from "@/config/types/roles.ts";
 import { formatUser } from "@/helpers/format.ts";
 import { activeRole, useAuthentication } from "@/stores/authentication.ts";
 import { useRefresh } from "@/stores/refresh.ts";
@@ -12,15 +12,8 @@ import MenuBase from "@/components/header/MenuBase.vue";
 const { profile, allowedRoles, logout } = useAuthentication();
 const { refresh: refreshData } = useRefresh();
 
-const optionsRole: ComputedRef<Option<Role>[]> = computed(() =>
-  allowedRoles.value
-    .map((role) => ({
-      value: role,
-      label: ROLE_METADATA[role].label,
-    }))
-    .sort(
-      (a, b) => ROLE_METADATA[a.value].order - ROLE_METADATA[b.value].order,
-    ),
+const roleOptions: ComputedRef<Option<Role>[]> = computed(() =>
+  ROLE_OPTIONS.filter((role) => allowedRoles.value.includes(role.value)),
 );
 </script>
 
@@ -36,7 +29,7 @@ const optionsRole: ComputedRef<Option<Role>[]> = computed(() =>
       <QItem>
         <QOptionGroup
           v-model="activeRole"
-          :options="optionsRole"
+          :options="roleOptions"
           color="primary"
           type="radio"
           @update:model-value="refreshData"

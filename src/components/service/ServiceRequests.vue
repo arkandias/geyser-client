@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { useShownRequestTypes } from "@/composables/shown-request-types.ts";
+import { usePermissions } from "@/composables/permissions.ts";
 import {
-  REQUEST_TYPE_METADATA,
+  REQUEST_TYPES,
+  REQUEST_TYPE_OPTIONS,
   type RequestType,
 } from "@/config/types/request-types.ts";
-import { nf } from "@/helpers/format.ts";
+import { formatWH } from "@/helpers/format.ts";
+import { totalWH } from "@/helpers/hours.ts";
 import type { TotalWeightedHours } from "@/types/row.ts";
 
 import ServiceTable from "@/components/service/ServiceTable.vue";
@@ -13,16 +15,19 @@ defineProps<{
   totals: Record<RequestType, TotalWeightedHours>;
 }>();
 
-const { shown: shownRequestTypes } = useShownRequestTypes();
-const formatRequest = (total: TotalWeightedHours): string =>
-  nf.format(total.aggregate?.sum?.weightedHours ?? 0) + " htd";
+const perm = usePermissions();
+
+const requestTypeOptions = REQUEST_TYPE_OPTIONS.filter(
+  (requestType) =>
+    requestType.value !== REQUEST_TYPES.ASSIGNMENT || perm.toViewAssignments,
+);
 </script>
 
 <template>
   <ServiceTable>
-    <tr v-for="requestType in shownRequestTypes" :key="requestType">
-      <td>{{ REQUEST_TYPE_METADATA[requestType].label }}</td>
-      <td>{{ formatRequest(totals[requestType]) }}</td>
+    <tr v-for="requestType in requestTypeOptions" :key="requestType.value">
+      <td>{{ requestType.label + "s" }}</td>
+      <td>{{ formatWH(totalWH(totals[requestType.value])) }}</td>
     </tr>
   </ServiceTable>
 </template>

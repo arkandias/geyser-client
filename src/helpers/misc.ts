@@ -1,3 +1,9 @@
+export const normalizeForSearch = (str: string): string =>
+  str
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase();
+
 export const uniqueValue = <T extends { value: unknown }>(
   element: T,
   index: number,

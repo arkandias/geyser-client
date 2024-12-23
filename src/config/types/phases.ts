@@ -1,3 +1,5 @@
+import type { Option } from "@/types/common.ts";
+
 export const PHASES = {
   REQUESTS: "voeux",
   ASSIGNMENTS: "commission",
@@ -5,12 +7,12 @@ export const PHASES = {
   SHUTDOWN: "fermeture",
 } as const;
 
-export const PHASE_METADATA = {
-  [PHASES.REQUESTS]: { order: 1, label: "Vœux" },
-  [PHASES.ASSIGNMENTS]: { order: 2, label: "Commission" },
-  [PHASES.RESULTS]: { order: 3, label: "Consultation" },
-  [PHASES.SHUTDOWN]: { order: 4, label: "Fermeture" },
-} as const;
+export const PHASE_OPTIONS: Option<Phase>[] = [
+  { value: PHASES.REQUESTS, label: "Vœux" },
+  { value: PHASES.ASSIGNMENTS, label: "Commission" },
+  { value: PHASES.RESULTS, label: "Consultation" },
+  { value: PHASES.SHUTDOWN, label: "Fermeture" },
+] as const;
 
 export type Phase = (typeof PHASES)[keyof typeof PHASES];
 

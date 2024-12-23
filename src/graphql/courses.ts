@@ -74,6 +74,7 @@ export const GET_COURSES_ROWS = graphql(/* GraphQL */ `
       semester: semestre
       hoursPerGroup: heures_corrigees
       numberOfGroups: groupes_corriges
+      totalHours: total_heures_corrigees
       totalAssigned: demandes_aggregate(
         where: { type: { _eq: "attribution" } }
       ) {

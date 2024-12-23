@@ -1242,6 +1242,8 @@ export type Enseignement = {
   responsables_aggregate: Responsable_Aggregate;
   /** Le semestre durant lequel l'enseignement a lieu. */
   semestre: Scalars["Int"]["output"];
+  /** Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts. */
+  total_heures_corrigees: Maybe<Scalars["Float"]["output"]>;
   /** Le type d'enseignement. */
   type: Scalars["String"]["output"];
   /** An object relationship */
@@ -1431,6 +1433,8 @@ export type Enseignement_Avg_Fields = {
   regle_priorite: Maybe<Scalars["Float"]["output"]>;
   /** Le semestre durant lequel l'enseignement a lieu. */
   semestre: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts. */
+  total_heures_corrigees: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by avg() on columns of table "enseignement" */
@@ -1498,6 +1502,7 @@ export type Enseignement_Bool_Exp = {
   responsables: InputMaybe<Responsable_Bool_Exp>;
   responsables_aggregate: InputMaybe<Responsable_Aggregate_Bool_Exp>;
   semestre: InputMaybe<Int_Comparison_Exp>;
+  total_heures_corrigees: InputMaybe<Float_Comparison_Exp>;
   type: InputMaybe<String_Comparison_Exp>;
   typeByType: InputMaybe<Type_Enseignement_Bool_Exp>;
   visible: InputMaybe<Boolean_Comparison_Exp>;
@@ -1627,6 +1632,8 @@ export type Enseignement_Max_Fields = {
   regle_priorite: Maybe<Scalars["Int"]["output"]>;
   /** Le semestre durant lequel l'enseignement a lieu. */
   semestre: Maybe<Scalars["Int"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts. */
+  total_heures_corrigees: Maybe<Scalars["Float"]["output"]>;
   /** Le type d'enseignement. */
   type: Maybe<Scalars["String"]["output"]>;
 };
@@ -1710,6 +1717,8 @@ export type Enseignement_Min_Fields = {
   regle_priorite: Maybe<Scalars["Int"]["output"]>;
   /** Le semestre durant lequel l'enseignement a lieu. */
   semestre: Maybe<Scalars["Int"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts. */
+  total_heures_corrigees: Maybe<Scalars["Float"]["output"]>;
   /** Le type d'enseignement. */
   type: Maybe<Scalars["String"]["output"]>;
 };
@@ -1806,6 +1815,7 @@ export type Enseignement_Order_By = {
   regle_priorite: InputMaybe<Order_By>;
   responsables_aggregate: InputMaybe<Responsable_Aggregate_Order_By>;
   semestre: InputMaybe<Order_By>;
+  total_heures_corrigees: InputMaybe<Order_By>;
   type: InputMaybe<Order_By>;
   typeByType: InputMaybe<Type_Enseignement_Order_By>;
   visible: InputMaybe<Order_By>;
@@ -1943,6 +1953,8 @@ export type Enseignement_Stddev_Fields = {
   regle_priorite: Maybe<Scalars["Float"]["output"]>;
   /** Le semestre durant lequel l'enseignement a lieu. */
   semestre: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts. */
+  total_heures_corrigees: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by stddev() on columns of table "enseignement" */
@@ -2004,6 +2016,8 @@ export type Enseignement_Stddev_Pop_Fields = {
   regle_priorite: Maybe<Scalars["Float"]["output"]>;
   /** Le semestre durant lequel l'enseignement a lieu. */
   semestre: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts. */
+  total_heures_corrigees: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by stddev_pop() on columns of table "enseignement" */
@@ -2065,6 +2079,8 @@ export type Enseignement_Stddev_Samp_Fields = {
   regle_priorite: Maybe<Scalars["Float"]["output"]>;
   /** Le semestre durant lequel l'enseignement a lieu. */
   semestre: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts. */
+  total_heures_corrigees: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by stddev_samp() on columns of table "enseignement" */
@@ -2175,6 +2191,8 @@ export type Enseignement_Sum_Fields = {
   regle_priorite: Maybe<Scalars["Int"]["output"]>;
   /** Le semestre durant lequel l'enseignement a lieu. */
   semestre: Maybe<Scalars["Int"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts. */
+  total_heures_corrigees: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by sum() on columns of table "enseignement" */
@@ -2287,6 +2305,8 @@ export type Enseignement_Var_Pop_Fields = {
   regle_priorite: Maybe<Scalars["Float"]["output"]>;
   /** Le semestre durant lequel l'enseignement a lieu. */
   semestre: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts. */
+  total_heures_corrigees: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by var_pop() on columns of table "enseignement" */
@@ -2348,6 +2368,8 @@ export type Enseignement_Var_Samp_Fields = {
   regle_priorite: Maybe<Scalars["Float"]["output"]>;
   /** Le semestre durant lequel l'enseignement a lieu. */
   semestre: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts. */
+  total_heures_corrigees: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by var_samp() on columns of table "enseignement" */
@@ -2409,6 +2431,8 @@ export type Enseignement_Variance_Fields = {
   regle_priorite: Maybe<Scalars["Float"]["output"]>;
   /** Le semestre durant lequel l'enseignement a lieu. */
   semestre: Maybe<Scalars["Float"]["output"]>;
+  /** Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts. */
+  total_heures_corrigees: Maybe<Scalars["Float"]["output"]>;
 };
 
 /** order by variance() on columns of table "enseignement" */
@@ -9470,6 +9494,7 @@ export type GetCoursesRowsQuery = {
     semester: number;
     hoursPerGroup: number | null;
     numberOfGroups: number | null;
+    totalHours: number | null;
     program: {
       __typename?: "mention";
       id: number;
@@ -11842,6 +11867,11 @@ export const GetCoursesRowsDocument = {
                   kind: "Field",
                   alias: { kind: "Name", value: "numberOfGroups" },
                   name: { kind: "Name", value: "groupes_corriges" },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "totalHours" },
+                  name: { kind: "Name", value: "total_heures_corrigees" },
                 },
                 {
                   kind: "Field",

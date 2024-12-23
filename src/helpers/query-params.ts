@@ -40,10 +40,6 @@ export const setQueryParam = async (
   });
 };
 
-export const unsetQueryParam = async (router: Router, param: string) => {
-  await setQueryParam(router, param, undefined);
-};
-
 export const toggleQueryParam = async (
   router: Router,
   param: string,

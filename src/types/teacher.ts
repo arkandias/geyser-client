@@ -6,6 +6,15 @@ import type { RequestDetails } from "@/types/request.ts";
 import type { TotalHours, TotalWeightedHours } from "@/types/row.ts";
 import type { Service, ServiceDetails } from "@/types/service.ts";
 
+export type TeacherRow = Profile & {
+  visible: boolean;
+  services: Service[];
+  totalAssigned: TotalHours & TotalWeightedHours;
+  totalPrimary: TotalHours & TotalWeightedHours;
+  totalSecondary: TotalHours & TotalWeightedHours;
+  messageCount: MessageCount;
+};
+
 export type TeacherDetails = Profile & {
   position: Option<string> | null;
   services: ServiceDetails[];
@@ -15,13 +24,4 @@ export type TeacherDetails = Profile & {
   totalPrimary: TotalHours & TotalWeightedHours;
   totalSecondary: TotalHours & TotalWeightedHours;
   messages: Message[];
-};
-
-export type TeacherRow = Profile & {
-  visible: boolean;
-  services: Service[];
-  totalAssigned: TotalHours & TotalWeightedHours;
-  totalPrimary: TotalHours & TotalWeightedHours;
-  totalSecondary: TotalHours & TotalWeightedHours;
-  messageCount: MessageCount;
 };

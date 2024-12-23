@@ -1,5 +1,6 @@
 import type { NamedColor } from "quasar";
 
+import { modifiedService, totalWH } from "@/helpers/hours.ts";
 import type { Coordinator } from "@/types/coordinator.ts";
 import type { CourseDetails } from "@/types/course.ts";
 import type { Profile } from "@/types/profile.ts";
@@ -10,19 +11,13 @@ export const nf = new Intl.NumberFormat("fr-FR", {
   maximumFractionDigits: 2,
 });
 
-export const normalizeForSearch = (str: string) =>
-  str
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase();
-
-export const formatProgram = (nomCursus: string, nomMention: string) =>
+export const formatProgram = (nomCursus: string, nomMention: string): string =>
   nomCursus + " " + nomMention;
 
-export const formatUser = (user: Profile) =>
+export const formatUser = (user: Profile): string =>
   user.alias ?? user.firstname + " " + user.lastname;
 
-export const formatCoordinators = (coordinators: Coordinator[]) =>
+export const formatCoordinators = (coordinators: Coordinator[]): string =>
   coordinators
     .map(
       ({ profile, comment }) =>
@@ -30,29 +25,19 @@ export const formatCoordinators = (coordinators: Coordinator[]) =>
     )
     .join(", ");
 
-export const formatCourseCaption = (details: CourseDetails) =>
+export const formatCourseCaption = (details: CourseDetails): string =>
   `${details.program.degree.name} — ${details.program.name} — ` +
   (details.track?.name ? `${details.track.name} — ` : "") +
   `S${String(details.semester)} — ` +
   details.courseType.label;
 
-export const formatTeacherCaption = (row: TeacherRow) => {
-  const service = String(
-    (row.services[0]?.base ?? 0) -
-      (row.services[0]?.totalModifications.aggregate?.sum?.weightedHours ?? 0),
-  );
-  const assigned = String(row.totalAssigned.aggregate?.sum?.weightedHours ?? 0);
-  const primary = String(row.totalPrimary.aggregate?.sum?.weightedHours ?? 0);
-  const secondary = String(
-    row.totalSecondary.aggregate?.sum?.weightedHours ?? 0,
-  );
-  return (
-    `Service : ${service} htd — ` +
-    `Attributions : ${assigned} htd — ` +
-    `Vœux principaux : ${primary} htd — ` +
-    `Vœux secondaires : ${secondary} htd`
-  );
-};
+export const formatWH = (hours: number): string => nf.format(hours) + " htd";
+
+export const formatTeacherCaption = (row: TeacherRow) =>
+  `Service corrigé : ${formatWH(modifiedService(row.services[0]))} — ` +
+  `Attributions : ${formatWH(totalWH(row.totalAssigned))} — ` +
+  `Vœux principaux : ${formatWH(totalWH(row.totalPrimary))} — ` +
+  `Vœux secondaires : ${formatWH(totalWH(row.totalSecondary))}`;
 
 export const buttonColor = (active: boolean): NamedColor =>
   active ? "accent" : "white";

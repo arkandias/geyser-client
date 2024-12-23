@@ -1,7 +1,8 @@
 import { type Client, useClientHandle } from "@urql/vue";
 
 import {
-  REQUEST_TYPE_METADATA,
+  REQUEST_TYPE_OPTIONS,
+  type RequestType,
   isRequestType,
 } from "@/config/types/request-types.ts";
 import {
@@ -11,6 +12,16 @@ import {
   UPSERT_REQUEST,
 } from "@/graphql/requests.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
+
+const getLabel = (requestType: RequestType): string => {
+  const option = REQUEST_TYPE_OPTIONS.find(
+    (option) => option.value === requestType,
+  );
+  if (!option) {
+    throw new Error(`No label found for request type: ${requestType}`);
+  }
+  return option.label;
+};
 
 const getCurrentRequest = async (
   client: Client,
@@ -53,9 +64,7 @@ const updateRequest =
     }
     if (hours === current) {
       notify(NotifyType.Default, {
-        message:
-          REQUEST_TYPE_METADATA[variables.requestType].label +
-          " déjà enregistrée",
+        message: getLabel(variables.requestType) + " déjà enregistrée",
       });
       return;
     }
@@ -63,8 +72,7 @@ const updateRequest =
       const result = await client.mutation(DELETE_REQUEST, variables);
       if (result.data?.requests?.returning && !result.error) {
         notify(NotifyType.Success, {
-          message:
-            REQUEST_TYPE_METADATA[variables.requestType].label + " supprimée",
+          message: getLabel(variables.requestType) + " supprimée",
         });
       } else {
         notify(NotifyType.Error, { message: "Échec de la suppression" });
@@ -74,7 +82,7 @@ const updateRequest =
       if (result.data?.request && !result.error) {
         notify(NotifyType.Success, {
           message:
-            REQUEST_TYPE_METADATA[variables.requestType].label +
+            getLabel(variables.requestType) +
             (current === 0 ? " créée" : " mise à jour"),
         });
       } else {
@@ -94,7 +102,7 @@ const deleteRequest =
     const result = await client.mutation(DELETE_REQUEST_BY_ID, { id });
     if (result.data?.request && !result.error) {
       notify(NotifyType.Success, {
-        message: REQUEST_TYPE_METADATA[requestType].label + " supprimée",
+        message: getLabel(requestType) + " supprimée",
       });
     } else {
       notify(NotifyType.Error, { message: "Échec de la suppression" });

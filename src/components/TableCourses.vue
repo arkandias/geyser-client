@@ -11,15 +11,13 @@ import { useRouter } from "vue-router";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
-import { REQUEST_TYPES } from "@/config/types/request-types.ts";
-import { getRequestTotal } from "@/helpers/courses.ts";
 import {
-  formatProgram,
-  formatUser,
-  nf,
-  normalizeForSearch,
-} from "@/helpers/format.ts";
-import { compare, uniqueValue } from "@/helpers/misc.ts";
+  REQUEST_TYPES,
+  type RequestType,
+} from "@/config/types/request-types.ts";
+import { formatProgram, formatUser, nf } from "@/helpers/format.ts";
+import { totalH } from "@/helpers/hours.ts";
+import { compare, normalizeForSearch, uniqueValue } from "@/helpers/misc.ts";
 import { toggleQueryParam } from "@/helpers/query-params.ts";
 import { useData } from "@/stores/data.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
@@ -39,8 +37,32 @@ const { courses, fetchingCourses, selectedCourse } = useData();
 const selectCourse = async (_: Event, row: CourseRow) => {
   await toggleQueryParam(router, "courseId", row.id, true);
 };
+
 const deselectTeacher = async () => {
   await toggleQueryParam(router, "uid", undefined);
+};
+
+const getRequestTotal = (
+  row: CourseRow,
+  requestType: RequestType,
+  teacher: TeacherDetails | null,
+) => {
+  if (teacher) {
+    return (
+      teacher.requests.find(
+        (request) =>
+          request.course.id === row.id && request.type === requestType,
+      )?.hours ?? 0
+    );
+  }
+  switch (requestType) {
+    case REQUEST_TYPES.ASSIGNMENT:
+      return totalH(row.totalAssigned);
+    case REQUEST_TYPES.PRIMARY:
+      return totalH(row.totalPrimary);
+    case REQUEST_TYPES.SECONDARY:
+      return totalH(row.totalSecondary);
+  }
 };
 
 const title: ComputedRef<string> = computed(() =>
@@ -159,9 +181,7 @@ const columns: Column<CourseRow>[] = [
     label: "ΔA",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
-    field: (row) =>
-      (row.hoursPerGroup ?? 0) * (row.numberOfGroups ?? 0) -
-      (row.totalAssigned.aggregate?.sum?.hours ?? 0),
+    field: (row) => (row.totalHours ?? 0) - totalH(row.totalAssigned),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -186,9 +206,7 @@ const columns: Column<CourseRow>[] = [
     label: "ΔV1",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
-    field: (row) =>
-      (row.hoursPerGroup ?? 0) * (row.numberOfGroups ?? 0) -
-      (row.totalPrimary.aggregate?.sum?.hours ?? 0),
+    field: (row) => (row.totalHours ?? 0) - totalH(row.totalPrimary),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -201,9 +219,7 @@ const columns: Column<CourseRow>[] = [
     label: "ΔV1 Prio",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",
-    field: (row) =>
-      (row.hoursPerGroup ?? 0) * (row.numberOfGroups ?? 0) -
-      (row.totalPriority.aggregate?.sum?.hours ?? 0),
+    field: (row) => (row.totalHours ?? 0) - totalH(row.totalPriority),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,

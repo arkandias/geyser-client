@@ -7,7 +7,8 @@ import {
   DELETE_SERVICE_MODIFICATION,
   INSERT_SERVICE_MODIFICATION,
 } from "@/graphql/service-modifications.ts";
-import { nf } from "@/helpers/format.ts";
+import { formatWH } from "@/helpers/format.ts";
+import { modifiedService } from "@/helpers/hours.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 import type { ModificationType } from "@/types/modification-type.ts";
 import type { ServiceDetails } from "@/types/service.ts";
@@ -76,12 +77,6 @@ const handleDeletion = async (id: number): Promise<void> => {
     notify(NotifyType.Error, { message: "Échec de la suppresssion" });
   }
 };
-
-const modifiedService: ComputedRef<number> = computed(
-  () =>
-    service.base -
-    (service.totalModifications.aggregate?.sum?.weightedHours ?? 0),
-);
 </script>
 
 <template>
@@ -89,7 +84,7 @@ const modifiedService: ComputedRef<number> = computed(
   <ServiceTable>
     <tr>
       <td>Base</td>
-      <td>{{ nf.format(service.base) + " htd" }}</td>
+      <td>{{ formatWH(service.base) }}</td>
     </tr>
     <tr>
       <td>
@@ -180,14 +175,14 @@ const modifiedService: ComputedRef<number> = computed(
         />
         {{ modification.modificationType.label }}
       </td>
-      <td>{{ nf.format(modification.weightedHours) + " htd" }}</td>
+      <td>{{ formatWH(modification.weightedHours) }}</td>
     </tr>
     <tr>
       <td colspan="100%" style="border-bottom: 1px solid black" />
     </tr>
     <tr>
       <td>Total</td>
-      <td>{{ nf.format(modifiedService) + " htd" }}</td>
+      <td>{{ formatWH(modifiedService(service)) }}</td>
     </tr>
   </ServiceTable>
 </template>

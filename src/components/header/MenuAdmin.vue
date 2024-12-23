@@ -2,8 +2,7 @@
 import { useMutation } from "@urql/vue";
 import { type ComputedRef, computed } from "vue";
 
-import { PHASE_METADATA, type Phase } from "@/config/types/phases.ts";
-import { PHASES } from "@/config/types/phases.ts";
+import { PHASE_OPTIONS } from "@/config/types/phases.ts";
 import { SET_CURRENT_PHASE } from "@/graphql/phases.ts";
 import { UPDATE_CURRENT_YEAR } from "@/graphql/years.ts";
 import { usePhases } from "@/stores/phases.ts";
@@ -36,23 +35,11 @@ const setCurrentPhase = async (phase: string | null): Promise<void> => {
   });
 };
 
-const optionsYears: ComputedRef<Option<number>[]> = computed(() =>
-  years.value
-    .map((year) => ({
-      value: year,
-      label: year.toString(),
-    }))
-    .sort((a, b) => b.value - a.value),
-);
-const optionsPhase: ComputedRef<Option<Phase>[]> = computed(() =>
-  Object.values(PHASES)
-    .map((phase) => ({
-      value: phase,
-      label: PHASE_METADATA[phase].label,
-    }))
-    .sort(
-      (a, b) => PHASE_METADATA[a.value].order - PHASE_METADATA[b.value].order,
-    ),
+const yearOptions: ComputedRef<Option<number>[]> = computed(() =>
+  years.value.map((year) => ({
+    value: year,
+    label: year.toString(),
+  })),
 );
 </script>
 
@@ -66,14 +53,14 @@ const optionsPhase: ComputedRef<Option<Phase>[]> = computed(() =>
       <MenuAdminOptions
         :get-value="currentYear"
         :set-value="setCurrentYear"
-        :options="optionsYears"
+        :options="yearOptions"
         label="Année en cours"
         icon="sym_s_calendar_month"
       />
       <MenuAdminOptions
         :get-value="currentPhase"
         :set-value="setCurrentPhase"
-        :options="optionsPhase"
+        :options="PHASE_OPTIONS"
         label="Phase en cours"
         icon="sym_s_schedule"
       />

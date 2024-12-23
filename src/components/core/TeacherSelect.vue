@@ -3,7 +3,8 @@ import { useQuery } from "@urql/vue";
 import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
 
 import { GET_ACTIVE_TEACHERS } from "@/graphql/teachers.ts";
-import { formatUser, normalizeForSearch } from "@/helpers/format.ts";
+import { formatUser } from "@/helpers/format.ts";
+import { normalizeForSearch } from "@/helpers/misc.ts";
 import type { OptionSearch } from "@/types/common.ts";
 
 const uid = defineModel<string | null>({ required: true });

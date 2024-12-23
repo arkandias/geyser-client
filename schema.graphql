@@ -2339,6 +2339,11 @@ type enseignement {
   semestre: Int!
 
   """
+  Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts.
+  """
+  total_heures_corrigees: Float
+
+  """
   Le type d'enseignement.
   """
   type: String!
@@ -2508,6 +2513,11 @@ type enseignement_avg_fields {
   Le semestre durant lequel l'enseignement a lieu.
   """
   semestre: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts.
+  """
+  total_heures_corrigees: Float
 }
 
 """
@@ -2614,6 +2624,7 @@ input enseignement_bool_exp {
   responsables: responsable_bool_exp
   responsables_aggregate: responsable_aggregate_bool_exp
   semestre: Int_comparison_exp
+  total_heures_corrigees: Float_comparison_exp
   type: String_comparison_exp
   typeByType: type_enseignement_bool_exp
   visible: Boolean_comparison_exp
@@ -2889,6 +2900,11 @@ type enseignement_max_fields {
   semestre: Int
 
   """
+  Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts.
+  """
+  total_heures_corrigees: Float
+
+  """
   Le type d'enseignement.
   """
   type: String
@@ -3075,6 +3091,11 @@ type enseignement_min_fields {
   semestre: Int
 
   """
+  Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts.
+  """
+  total_heures_corrigees: Float
+
+  """
   Le type d'enseignement.
   """
   type: String
@@ -3236,6 +3257,7 @@ input enseignement_order_by {
   regle_priorite: order_by
   responsables_aggregate: responsable_aggregate_order_by
   semestre: order_by
+  total_heures_corrigees: order_by
   type: order_by
   typeByType: type_enseignement_order_by
   visible: order_by
@@ -3537,6 +3559,11 @@ type enseignement_stddev_fields {
   Le semestre durant lequel l'enseignement a lieu.
   """
   semestre: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts.
+  """
+  total_heures_corrigees: Float
 }
 
 """
@@ -3677,6 +3704,11 @@ type enseignement_stddev_pop_fields {
   Le semestre durant lequel l'enseignement a lieu.
   """
   semestre: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts.
+  """
+  total_heures_corrigees: Float
 }
 
 """
@@ -3817,6 +3849,11 @@ type enseignement_stddev_samp_fields {
   Le semestre durant lequel l'enseignement a lieu.
   """
   semestre: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts.
+  """
+  total_heures_corrigees: Float
 }
 
 """
@@ -4065,6 +4102,11 @@ type enseignement_sum_fields {
   Le semestre durant lequel l'enseignement a lieu.
   """
   semestre: Int
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts.
+  """
+  total_heures_corrigees: Float
 }
 
 """
@@ -4322,6 +4364,11 @@ type enseignement_var_pop_fields {
   Le semestre durant lequel l'enseignement a lieu.
   """
   semestre: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts.
+  """
+  total_heures_corrigees: Float
 }
 
 """
@@ -4462,6 +4509,11 @@ type enseignement_var_samp_fields {
   Le semestre durant lequel l'enseignement a lieu.
   """
   semestre: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts.
+  """
+  total_heures_corrigees: Float
 }
 
 """
@@ -4602,6 +4654,11 @@ type enseignement_variance_fields {
   Le semestre durant lequel l'enseignement a lieu.
   """
   semestre: Float
+
+  """
+  Le nombre d'heures d'enseignement ouvertes par groupe multiplié par le nombre de groupes ouverts.
+  """
+  total_heures_corrigees: Float
 }
 
 """

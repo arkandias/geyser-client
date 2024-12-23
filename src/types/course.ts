@@ -21,6 +21,22 @@ export type NestedArchives = Archive & {
   parent?: NestedArchives | null;
 };
 
+export type CourseRow = Identifier & {
+  program: Identifier & {
+    degree: Identifier;
+  };
+  track: Identifier | null;
+  courseType: Option<string>;
+  semester: number;
+  hoursPerGroup: number | null;
+  numberOfGroups: number | null;
+  totalHours: number | null;
+  totalAssigned: TotalHours;
+  totalPrimary: TotalHours;
+  totalSecondary: TotalHours;
+  totalPriority: TotalHours;
+};
+
 export type CourseDetails = {
   courseId: number;
   name: string;
@@ -43,19 +59,4 @@ export type CourseDetails = {
   requests: RequestDetails[];
   priorities: Priority[];
   parent: NestedArchives | null;
-};
-
-export type CourseRow = Identifier & {
-  program: Identifier & {
-    degree: Identifier;
-  };
-  track: Identifier | null;
-  courseType: Option<string>;
-  semester: number;
-  hoursPerGroup: number | null;
-  numberOfGroups: number | null;
-  totalAssigned: TotalHours;
-  totalPrimary: TotalHours;
-  totalSecondary: TotalHours;
-  totalPriority: TotalHours;
 };

@@ -4,7 +4,9 @@ import { useRouter } from "vue-router";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
-import { nf, normalizeForSearch } from "@/helpers/format.ts";
+import { nf } from "@/helpers/format.ts";
+import { modifiedService, totalWH } from "@/helpers/hours.ts";
+import { normalizeForSearch } from "@/helpers/misc.ts";
 import { toggleQueryParam } from "@/helpers/query-params.ts";
 import { useData } from "@/stores/data.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
@@ -66,9 +68,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     name: "service",
     label: "S.",
     tooltip: "Service à réaliser (en heures EQTD)",
-    field: (row) =>
-      (row.services[0]?.base ?? 0) -
-      (row.services[0]?.totalModifications.aggregate?.sum?.weightedHours ?? 0),
+    field: (row) => modifiedService(row.services[0]),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -80,7 +80,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     name: "attributions",
     label: "A.",
     tooltip: "Nombre d'heures EQTD attribuées",
-    field: (row) => row.totalAssigned.aggregate?.sum?.weightedHours ?? 0,
+    field: (row) => totalWH(row.totalAssigned),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -94,9 +94,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD attribuées",
     field: (row) =>
-      (row.services[0]?.base ?? 0) -
-      (row.services[0]?.totalModifications.aggregate?.sum?.weightedHours ?? 0) -
-      (row.totalAssigned.aggregate?.sum?.weightedHours ?? 0),
+      modifiedService(row.services[0]) - totalWH(row.totalAssigned),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -108,7 +106,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     name: "principales",
     label: "V1",
     tooltip: "Nombre d'heures EQTD demandées en vœux principaux",
-    field: (row) => row.totalPrimary.aggregate?.sum?.weightedHours ?? 0,
+    field: (row) => totalWH(row.totalPrimary),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -122,9 +120,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",
     field: (row) =>
-      (row.services[0]?.base ?? 0) -
-      (row.services[0]?.totalModifications.aggregate?.sum?.weightedHours ?? 0) -
-      (row.totalPrimary.aggregate?.sum?.weightedHours ?? 0),
+      modifiedService(row.services[0]) - totalWH(row.totalPrimary),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -136,7 +132,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     name: "secondaires",
     label: "V2",
     tooltip: "Nombre d'heures EQTD demandées en vœux secondaires",
-    field: (row) => row.totalSecondary.aggregate?.sum?.weightedHours ?? 0,
+    field: (row) => totalWH(row.totalSecondary),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,

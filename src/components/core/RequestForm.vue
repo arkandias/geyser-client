@@ -11,10 +11,14 @@ import {
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRequestOperations } from "@/composables/request-operations.ts";
 import { PHASES } from "@/config/types/phases.ts";
-import { REQUEST_TYPES } from "@/config/types/request-types.ts";
+import {
+  REQUEST_TYPES,
+  type RequestType,
+} from "@/config/types/request-types.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { usePhases } from "@/stores/phases.ts";
+import type { Option } from "@/types/common.ts";
 
 import TeacherSelect from "@/components/core/TeacherSelect.vue";
 
@@ -60,6 +64,17 @@ const requestTypeInit: ComputedRef<string | null> = computed(() => {
       return REQUEST_TYPES.ASSIGNMENT;
   }
 });
+const requestTypeOptions: ComputedRef<Option<RequestType>[]> = computed(() => [
+  ...(perm.toEditAssignments
+    ? [{ value: REQUEST_TYPES.ASSIGNMENT, label: "Attribution" }]
+    : []),
+  ...(perm.toSubmitRequests
+    ? [
+        { value: REQUEST_TYPES.PRIMARY, label: "Principale" },
+        { value: REQUEST_TYPES.SECONDARY, label: "Secondaire" },
+      ]
+    : []),
+]);
 watch(
   requestTypeInit,
   (value) => {
@@ -80,7 +95,6 @@ watch(
   { immediate: true },
 );
 
-// TODO: refacto faire un composable ?
 const { updateRequest } = useRequestOperations();
 const submitForm = async (): Promise<void> => {
   if (uid.value === null) {
@@ -150,28 +164,12 @@ const resetForm = (): void => {
         square
         dense
       />
-      <!-- TODO: v-for -->
       <QRadio
-        v-if="perm.toEditAssignments"
+        v-for="requestTypeOption in requestTypeOptions"
+        :key="requestTypeOption.value"
         v-model="requestType"
-        :val="REQUEST_TYPES.ASSIGNMENT"
-        label="Attribution"
-        color="primary"
-        dense
-      />
-      <QRadio
-        v-if="perm.toSubmitRequests"
-        v-model="requestType"
-        :val="REQUEST_TYPES.PRIMARY"
-        label="Principale"
-        color="primary"
-        dense
-      />
-      <QRadio
-        v-if="perm.toSubmitRequests"
-        v-model="requestType"
-        :val="REQUEST_TYPES.SECONDARY"
-        label="Secondaire"
+        :val="requestTypeOption.value"
+        :label="requestTypeOption.label"
         color="primary"
         dense
       />

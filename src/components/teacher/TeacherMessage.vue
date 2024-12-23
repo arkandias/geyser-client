@@ -37,6 +37,7 @@ const setMessage: ComputedRef<(body: string) => Promise<boolean>> = computed(
 </script>
 
 <template>
+  <!-- TODO: TeacherSubsection -->
   <HomeSubsection
     v-model="edition"
     title="Message pour la commission"
