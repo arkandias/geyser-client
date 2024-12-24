@@ -20,7 +20,10 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DetailsCourse.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsCourse.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseExpansionContent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseExpansionContent.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseSubsection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/DetailsSubsection.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseSubsectionEditableText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/DetailsSubsectionEditableText.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,11 +176,11 @@
       <recent name="$PROJECT_DIR$/src/config/types" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/core" />
       <recent name="$PROJECT_DIR$/src/components/details" />
       <recent name="$PROJECT_DIR$/src/composables" />
       <recent name="$PROJECT_DIR$/src/components" />
       <recent name="$PROJECT_DIR$/src/components/teacher" />
-      <recent name="$PROJECT_DIR$/src/components/details/course" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -331,15 +334,7 @@
       <workItem from="1733958145291" duration="106853000" />
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
-      <workItem from="1734622570180" duration="142503000" />
-    </task>
-    <task id="LOCAL-00272" summary="docs(schema): standardize multiline descriptions">
-      <option name="closed" value="true" />
-      <created>1733972035431</created>
-      <option name="number" value="00272" />
-      <option name="presentableId" value="LOCAL-00272" />
-      <option name="project" value="LOCAL" />
-      <updated>1733972035431</updated>
+      <workItem from="1734622570180" duration="143035000" />
     </task>
     <task id="LOCAL-00273" summary="refactor(gql): remove unused graphql generated files">
       <option name="closed" value="true" />
@@ -725,7 +720,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735047344604</updated>
     </task>
-    <option name="localTasksCounter" value="321" />
+    <task id="LOCAL-00321" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735047538791</created>
+      <option name="number" value="00321" />
+      <option name="presentableId" value="LOCAL-00321" />
+      <option name="project" value="LOCAL" />
+      <updated>1735047538791</updated>
+    </task>
+    <option name="localTasksCounter" value="322" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

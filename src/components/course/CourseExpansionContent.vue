@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { type ComputedRef, computed } from "vue";
+import { type ComputedRef, type Ref, computed, ref } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { UPDATE_DESCRIPTION } from "@/graphql/courses.ts";
@@ -8,9 +8,10 @@ import type { Coordinator } from "@/types/coordinator.ts";
 import type { CourseDetails } from "@/types/course.ts";
 import type { Profile } from "@/types/profile.ts";
 
+import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
+import DetailsSubsectionEditableText from "@/components/core/DetailsSubsectionEditableText.vue";
+import EditableText from "@/components/core/EditableText.vue";
 import CourseCoordinators from "@/components/course/CourseCoordinators.vue";
-import CourseSubsection from "@/components/course/CourseSubsection.vue";
-import CourseSubsectionEditableText from "@/components/course/CourseSubsectionEditableText.vue";
 
 const props = defineProps<{ details: CourseDetails }>();
 
@@ -33,6 +34,7 @@ const coordinators: ComputedRef<Profile[]> = computed(() => [
 ]);
 
 // Description
+const editDescription: Ref<boolean> = ref(false);
 const updateDescription = useMutation(UPDATE_DESCRIPTION);
 const setDescription = (text: string): Promise<boolean> =>
   updateDescription
@@ -44,20 +46,25 @@ const setDescription = (text: string): Promise<boolean> =>
 </script>
 
 <template>
-  <CourseSubsection title="Responsables">
+  <DetailsSubsection title="Responsables">
     <CourseCoordinators
       :program-coordinators
       :track-coordinators
       :course-coordinators
     />
-  </CourseSubsection>
-  <CourseSubsectionEditableText
+  </DetailsSubsection>
+  <DetailsSubsection
+    v-model="editDescription"
     title="Description"
-    :text="details.description"
-    default-text="Pas de description (contactez un responsable)"
-    :set-text="setDescription"
     :editable="perm.toEditADescription(coordinators)"
-  />
+  >
+    <EditableText
+      v-model="editDescription"
+      :text="details.description"
+      :set-text="setDescription"
+      default-text="Pas de description (contactez un responsable)"
+    />
+  </DetailsSubsection>
 </template>
 
 <style scoped lang="scss"></style>

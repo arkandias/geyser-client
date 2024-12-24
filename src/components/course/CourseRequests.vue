@@ -12,10 +12,10 @@ import type { Archive, CourseDetails, NestedArchives } from "@/types/course.ts";
 import type { RequestDetails } from "@/types/request.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
+import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 import PriorityChip from "@/components/core/PriorityChip.vue";
 import RequestCard from "@/components/core/RequestCard.vue";
 import RequestForm from "@/components/core/RequestForm.vue";
-import CourseSubsection from "@/components/course/CourseSubsection.vue";
 
 const { details } = defineProps<{ details: CourseDetails }>();
 
@@ -52,14 +52,14 @@ const archives: ComputedRef<Archive[]> = computed(() =>
 
 <template>
   <DetailsSection title="Demandes">
-    <CourseSubsection>
+    <DetailsSubsection>
       <RequestForm
         v-if="perm.toSubmitRequests || perm.toEditAssignments"
         :course-id="details.courseId"
         :hours-per-group="details.hoursPerGroup"
       />
-    </CourseSubsection>
-    <CourseSubsection
+    </DetailsSubsection>
+    <DetailsSubsection
       v-for="requestOption in requestsByTypeOptions"
       :key="requestOption.value"
       :title="requestOption.label + 's'"
@@ -71,7 +71,7 @@ const archives: ComputedRef<Archive[]> = computed(() =>
           :request
         />
       </QCardSection>
-    </CourseSubsection>
+    </DetailsSubsection>
   </DetailsSection>
   <QSeparator />
   <DetailsSection title="Priorités">
@@ -85,7 +85,7 @@ const archives: ComputedRef<Archive[]> = computed(() =>
   </DetailsSection>
   <QSeparator />
   <DetailsSection title="Archives">
-    <CourseSubsection
+    <DetailsSubsection
       v-for="archive in archives"
       :key="archive.year"
       :title="archive.year.toString()"
@@ -98,7 +98,7 @@ const archives: ComputedRef<Archive[]> = computed(() =>
           archive
         />
       </QCardSection>
-    </CourseSubsection>
+    </DetailsSubsection>
   </DetailsSection>
 </template>
 
