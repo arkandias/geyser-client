@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { type Ref, ref } from "vue";
+
+const demo: Ref<boolean> = ref(false);
+</script>
 
 <template>
   <QCardSection class="text-justify">
@@ -14,7 +18,7 @@
       La description peut être éditée par les responsables sus-mentionnés en
       cliquant sur le bouton
       <QBtn icon="sym_s_edit" color="primary" size="xs" flat square dense />
-      (visible par eux seuls) qui apparaît à côté du titre.
+      (visible par eux seuls) qui apparaît à côté de «&nbsp;Description&nbsp;».
     </p>
   </QCardSection>
 </template>

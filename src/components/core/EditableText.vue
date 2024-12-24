@@ -2,6 +2,7 @@
 import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
 import xss from "xss";
 
+import { isOnlyWhitespace } from "@/helpers/misc.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 
 const edition = defineModel<boolean>();
@@ -22,20 +23,23 @@ const sanitizedText: ComputedRef<string> = computed(() =>
 const editorText: Ref<string> = ref("");
 
 const onSave = async (): Promise<void> => {
+  if (isOnlyWhitespace(editorText.value)) {
+    editorText.value = "";
+  }
   if (editorText.value === text) {
     notify(NotifyType.Default, { message: "Pas de changement à enregistrer" });
-    return;
-  }
-  const success = await setText(editorText.value);
-  if (success) {
-    notify(NotifyType.Success, {
-      message: "Texte " + (editorText.value ? "mis à jour" : " supprimé"),
-    });
   } else {
-    notify(NotifyType.Error, {
-      message:
-        "Échec de la " + (editorText.value ? "mise à jour" : "suppression"),
-    });
+    const success = await setText(editorText.value);
+    if (success) {
+      notify(NotifyType.Success, {
+        message: "Texte " + (editorText.value ? "mis à jour" : " supprimé"),
+      });
+    } else {
+      notify(NotifyType.Error, {
+        message:
+          "Échec de la " + (editorText.value ? "mise à jour" : "suppression"),
+      });
+    }
   }
   edition.value = false;
 };
@@ -44,39 +48,38 @@ const onAbort = (): void => {
   editorText.value = text ?? "";
   edition.value = false;
 };
+
 watch(() => text, onAbort, { immediate: true });
 
-const definitions = {
-  save: {
-    icon: "sym_s_save",
-    // label: "Enregistrer",
-    tip: "Enregistrer les modifications",
-    handler: onSave,
-  },
-  delete: {
-    icon: "sym_s_delete",
-    // label: "Abandonner",
-    tip: "Abandonner les modifications",
-    handler: onAbort,
-  },
-};
-
 const toolbar = [
-  ["save", "delete"],
   ["left", "center", "right", "justify"],
   ["bold", "italic", "underline", "strike", "subscript", "superscript"],
-  ["link", "viewsource"],
+  ["hr", "link", "viewsource"],
   ["unordered", "ordered", "outdent", "indent"],
 ];
 </script>
 
 <template>
-  <QEditor v-if="edition" v-model="editorText" :definitions :toolbar square />
+  <QDialog v-model="edition" persistent square>
+    <QCard>
+      <QCardSection class="q-pa-none">
+        <QEditor v-model="editorText" :toolbar square />
+      </QCardSection>
+      <QSeparator />
+      <QCardActions align="right">
+        <QBtn label="Annuler" flat square dense @click="onAbort" />
+        <QBtn label="Enregistrer" flat square dense @click="onSave" />
+      </QCardActions>
+    </QCard>
+  </QDialog>
   <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-  <div v-else-if="sanitizedText" v-html="sanitizedText" />
+  <div class="message" v-html="sanitizedText" />
 </template>
 
 <style scoped lang="scss">
+.message {
+  width: 720px;
+}
 :deep(.q-editor__toolbar) {
   background-color: $grey-3;
 }

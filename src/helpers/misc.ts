@@ -4,6 +4,20 @@ export const normalizeForSearch = (str: string): string =>
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase();
 
+export const isOnlyWhitespace = (htmlString: string): boolean => {
+  // First remove common whitespace HTML entities
+  const withoutEntities = htmlString.replace(
+    /&nbsp;|&ensp;|&emsp;|&thinsp;/g,
+    "",
+  );
+
+  // Then remove all HTML tags
+  const textOnly = withoutEntities.replace(/<[^>]*>/g, "");
+
+  // Check if remaining content is only whitespace
+  return /^\s*$/.test(textOnly);
+};
+
 export const uniqueValue = <T extends { value: unknown }>(
   element: T,
   index: number,

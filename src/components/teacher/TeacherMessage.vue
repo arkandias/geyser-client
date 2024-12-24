@@ -3,6 +3,7 @@ import { useMutation } from "@urql/vue";
 import { type ComputedRef, computed } from "vue";
 
 import { DELETE_MESSAGE, UPSERT_MESSAGE } from "@/graphql/messages.ts";
+import { isOnlyWhitespace } from "@/helpers/misc.ts";
 
 import EditableText from "@/components/core/EditableText.vue";
 
@@ -37,12 +38,7 @@ const setMessage: ComputedRef<(body: string) => Promise<boolean>> = computed(
     :text="body"
     :set-text="setMessage"
     default-text=""
-    class="message"
   />
 </template>
 
-<style scoped lang="scss">
-.message {
-  width: 360px;
-}
-</style>
+<style scoped lang="scss"></style>

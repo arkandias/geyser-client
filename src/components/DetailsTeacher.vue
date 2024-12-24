@@ -49,6 +49,7 @@ const messageEdition: Ref<boolean> = ref(false);
     v-model="messageEdition"
     title="Message pour la commission"
     :editable="perm.toEditAMessage(service?.uid)"
+    edition-tooltip="Éditer le message"
   >
     <TeacherMessage
       v-if="service"

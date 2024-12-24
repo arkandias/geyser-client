@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { TOOLTIP_DELAY } from "@/config/constants.ts";
+
 const edition = defineModel<boolean>();
 defineProps<{
   title: string;
   editable?: boolean;
+  editionTooltip?: string;
 }>();
 defineSlots<{ default(): unknown }>();
 </script>
@@ -19,8 +22,10 @@ defineSlots<{ default(): unknown }>();
         flat
         square
         dense
-        @click="edition = !edition"
-      />
+        @click="edition = true"
+      >
+        <QTooltip :delay="TOOLTIP_DELAY">{{ editionTooltip }}</QTooltip>
+      </QBtn>
     </div>
     <slot />
   </QCardSection>
