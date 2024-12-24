@@ -17,8 +17,33 @@ const {
 }>();
 
 // sanitize HTML to prevent XSS attacks
+const options = {
+  whiteList: {
+    font: ["face"],
+    div: ["style"],
+    span: ["style"],
+    br: [],
+    b: [],
+    i: [],
+    u: [],
+    strike: [],
+    sub: [],
+    sup: [],
+    hr: [],
+    a: ["href"],
+    ol: [],
+    ul: [],
+    li: ["style"],
+  },
+  css: {
+    whiteList: {
+      "font-family": true,
+      "text-align": true,
+    },
+  },
+};
 const sanitizedText: ComputedRef<string> = computed(() =>
-  xss(text ?? defaultText),
+  xss(text ?? defaultText, options),
 );
 const editorText: Ref<string> = ref("");
 

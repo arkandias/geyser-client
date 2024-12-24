@@ -20,7 +20,18 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseExpansionDefault.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseExpansionDefault.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DetailsCourse.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsCourse.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/EditableText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/EditableText.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/RequestForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestForm.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseCoordinators.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseCoordinators.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequestsDefault.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequestsDefault.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseSection.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseSubsection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseSubsection.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/service/ServiceModifications.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/service/ServiceModifications.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherMessage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherSection.vue" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,7 +144,7 @@
     "javascript.nodejs.core.library.configured.version": "20.12.2",
     "javascript.nodejs.core.library.typings.version": "20.12.14",
     "js.linters.configure.manually.selectedeslint": "true",
-    "last_opened_file_path": "/Users/julienhauseux/Projets/geyser-frontend/src/i18n/locales/fr",
+    "last_opened_file_path": "/Users/julienhauseux/Projets/geyser-frontend/src/components/core",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.stylelint": "true",
@@ -166,11 +177,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/core" />
       <recent name="$PROJECT_DIR$/src/i18n/locales/fr" />
       <recent name="$PROJECT_DIR$/src/components" />
       <recent name="$PROJECT_DIR$/src/components/service" />
       <recent name="$PROJECT_DIR$/src/config/types" />
-      <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/components/details" />
@@ -331,15 +342,7 @@
       <workItem from="1733958145291" duration="106853000" />
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
-      <workItem from="1734622570180" duration="136978000" />
-    </task>
-    <task id="LOCAL-00270" summary="fix(codegen): handle environment variable access issue">
-      <option name="closed" value="true" />
-      <created>1733971407277</created>
-      <option name="number" value="00270" />
-      <option name="presentableId" value="LOCAL-00270" />
-      <option name="project" value="LOCAL" />
-      <updated>1733971407277</updated>
+      <workItem from="1734622570180" duration="142320000" />
     </task>
     <task id="LOCAL-00271" summary="chore(project): remove schema.graphql from .prettierignore">
       <option name="closed" value="true" />
@@ -725,7 +728,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735033000382</updated>
     </task>
-    <option name="localTasksCounter" value="319" />
+    <task id="LOCAL-00319" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735033114271</created>
+      <option name="number" value="00319" />
+      <option name="presentableId" value="LOCAL-00319" />
+      <option name="project" value="LOCAL" />
+      <updated>1735033114271</updated>
+    </task>
+    <option name="localTasksCounter" value="320" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

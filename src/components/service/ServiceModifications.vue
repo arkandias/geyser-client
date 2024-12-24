@@ -2,6 +2,7 @@
 import { useMutation, useQuery } from "@urql/vue";
 import { type ComputedRef, type Ref, computed, ref } from "vue";
 
+import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { GET_MODIFICATION_TYPES } from "@/graphql/modification-types.ts";
 import {
   DELETE_SERVICE_MODIFICATION,
@@ -99,7 +100,9 @@ const handleDeletion = async (id: number): Promise<void> => {
           flat
           square
           dense
-        />
+        >
+          <QTooltip :delay="TOOLTIP_DELAY">Valider la modification</QTooltip>
+        </QBtn>
         <QBtn
           v-else-if="editable"
           icon="sym_s_add_circle"
@@ -109,7 +112,9 @@ const handleDeletion = async (id: number): Promise<void> => {
           square
           dense
           @click="isFormOpen = true"
-        />
+        >
+          <QTooltip :delay="TOOLTIP_DELAY">Ajouter une modification</QTooltip>
+        </QBtn>
       </td>
     </tr>
     <tr v-if="isFormOpen">
@@ -123,7 +128,9 @@ const handleDeletion = async (id: number): Promise<void> => {
           flat
           square
           dense
-        />
+        >
+          <QTooltip :delay="TOOLTIP_DELAY">Supprimer la modification</QTooltip>
+        </QBtn>
         <QSelect
           v-model="modificationType"
           :options="modificationTypesOptions"
@@ -172,7 +179,9 @@ const handleDeletion = async (id: number): Promise<void> => {
           square
           dense
           @click="handleDeletion(modification.id)"
-        />
+        >
+          <QTooltip :delay="TOOLTIP_DELAY">Supprimer la modification</QTooltip>
+        </QBtn>
         {{ modification.modificationType.label }}
       </td>
       <td>{{ formatWH(modification.weightedHours) }}</td>

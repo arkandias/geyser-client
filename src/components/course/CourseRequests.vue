@@ -11,10 +11,10 @@ import type { Option } from "@/types/common.ts";
 import type { Archive, CourseDetails, NestedArchives } from "@/types/course.ts";
 import type { RequestDetails } from "@/types/request.ts";
 
+import DetailsSection from "@/components/core/DetailsSection.vue";
 import PriorityChip from "@/components/core/PriorityChip.vue";
 import RequestCard from "@/components/core/RequestCard.vue";
 import RequestForm from "@/components/core/RequestForm.vue";
-import CourseSection from "@/components/course/CourseSection.vue";
 import CourseSubsection from "@/components/course/CourseSubsection.vue";
 
 const { details } = defineProps<{ details: CourseDetails }>();
@@ -51,12 +51,14 @@ const archives: ComputedRef<Archive[]> = computed(() =>
 </script>
 
 <template>
-  <CourseSection title="Demandes">
-    <RequestForm
-      v-if="perm.toSubmitRequests || perm.toEditAssignments"
-      :course-id="details.courseId"
-      :hours-per-group="details.hoursPerGroup"
-    />
+  <DetailsSection title="Demandes">
+    <CourseSubsection>
+      <RequestForm
+        v-if="perm.toSubmitRequests || perm.toEditAssignments"
+        :course-id="details.courseId"
+        :hours-per-group="details.hoursPerGroup"
+      />
+    </CourseSubsection>
     <CourseSubsection
       v-for="requestOption in requestsByTypeOptions"
       :key="requestOption.value"
@@ -70,8 +72,9 @@ const archives: ComputedRef<Archive[]> = computed(() =>
         />
       </QCardSection>
     </CourseSubsection>
-  </CourseSection>
-  <CourseSection title="Priorités">
+  </DetailsSection>
+  <QSeparator />
+  <DetailsSection title="Priorités">
     <QCardSection>
       <PriorityChip
         v-for="priorite in details.priorities"
@@ -79,8 +82,9 @@ const archives: ComputedRef<Archive[]> = computed(() =>
         :priorite
       />
     </QCardSection>
-  </CourseSection>
-  <CourseSection title="Archives">
+  </DetailsSection>
+  <QSeparator />
+  <DetailsSection title="Archives">
     <CourseSubsection
       v-for="archive in archives"
       :key="archive.year"
@@ -95,7 +99,7 @@ const archives: ComputedRef<Archive[]> = computed(() =>
         />
       </QCardSection>
     </CourseSubsection>
-  </CourseSection>
+  </DetailsSection>
 </template>
 
 <style scoped lang="scss"></style>

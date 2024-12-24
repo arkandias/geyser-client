@@ -133,51 +133,49 @@ const resetForm = (): void => {
 </script>
 
 <template>
-  <QCardSection>
-    <QForm
+  <QForm
+    dense
+    class="row q-gutter-md text-body2"
+    @submit="submitForm"
+    @reset="resetForm"
+  >
+    <TeacherSelect
+      v-if="perm.toSubmitRequestsForOthers || perm.toEditAssignments"
+      v-model="uid"
       dense
-      class="row q-gutter-md text-body2"
-      @submit="submitForm"
-      @reset="resetForm"
-    >
-      <TeacherSelect
-        v-if="perm.toSubmitRequestsForOthers || perm.toEditAssignments"
-        v-model="uid"
-        dense
-        options-dense
-      />
-      <QInput
-        v-model.number="groupes"
-        color="primary"
-        type="number"
-        step="any"
-        label="Groupes"
-        square
-        dense
-      />
-      <QInput
-        v-model.number="heures"
-        color="primary"
-        type="number"
-        step="any"
-        label="Heures"
-        square
-        dense
-      />
-      <QRadio
-        v-for="requestTypeOption in requestTypeOptions"
-        :key="requestTypeOption.value"
-        v-model="requestType"
-        :val="requestTypeOption.value"
-        :label="requestTypeOption.label"
-        color="primary"
-        dense
-      />
-      <QBtn type="submit" icon="sym_s_check" color="primary" flat square dense>
-        <QTooltip>Valider la demande</QTooltip>
-      </QBtn>
-    </QForm>
-  </QCardSection>
+      options-dense
+    />
+    <QInput
+      v-model.number="groupes"
+      color="primary"
+      type="number"
+      step="any"
+      label="Groupes"
+      square
+      dense
+    />
+    <QInput
+      v-model.number="heures"
+      color="primary"
+      type="number"
+      step="any"
+      label="Heures"
+      square
+      dense
+    />
+    <QRadio
+      v-for="requestTypeOption in requestTypeOptions"
+      :key="requestTypeOption.value"
+      v-model="requestType"
+      :val="requestTypeOption.value"
+      :label="requestTypeOption.label"
+      color="primary"
+      dense
+    />
+    <QBtn type="submit" icon="sym_s_check" color="primary" flat square dense>
+      <QTooltip>Valider la demande</QTooltip>
+    </QBtn>
+  </QForm>
 </template>
 
 <style scoped lang="scss">

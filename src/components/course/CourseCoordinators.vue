@@ -10,20 +10,18 @@ defineProps<{
 </script>
 
 <template>
-  <QCardSection>
-    <div v-if="programCoordinators.length">
-      Responsable{{ programCoordinators.length > 1 ? "s" : "" }} de la mention :
-      {{ formatCoordinators(programCoordinators) }}
-    </div>
-    <div v-if="trackCoordinators.length">
-      Responsable{{ programCoordinators.length > 1 ? "s" : "" }} du parcours :
-      {{ formatCoordinators(trackCoordinators) }}
-    </div>
-    <div v-if="courseCoordinators.length">
-      Responsable{{ programCoordinators.length > 1 ? "s" : "" }} de l'UE :
-      {{ formatCoordinators(courseCoordinators) }}
-    </div>
-  </QCardSection>
+  <div v-if="programCoordinators.length">
+    Responsable{{ programCoordinators.length > 1 ? "s" : "" }} de la mention :
+    {{ formatCoordinators(programCoordinators) }}
+  </div>
+  <div v-if="trackCoordinators.length">
+    Responsable{{ programCoordinators.length > 1 ? "s" : "" }} du parcours :
+    {{ formatCoordinators(trackCoordinators) }}
+  </div>
+  <div v-if="courseCoordinators.length">
+    Responsable{{ programCoordinators.length > 1 ? "s" : "" }} de l'UE :
+    {{ formatCoordinators(courseCoordinators) }}
+  </div>
 </template>
 
 <style scoped lang="scss"></style>

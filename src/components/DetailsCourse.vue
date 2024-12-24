@@ -4,7 +4,7 @@ import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
 import { formatCourseCaption } from "@/helpers/format.ts";
 import type { CourseDetails } from "@/types/course.ts";
 
-import CourseExtras from "@/components/course/CourseExpansionContent.vue";
+import CourseExpansionContent from "@/components/course/CourseExpansionContent.vue";
 import CourseExpansionDefault from "@/components/course/CourseExpansionDefault.vue";
 import CourseRequests from "@/components/course/CourseRequests.vue";
 import CourseRequestsDefault from "@/components/course/CourseRequestsDefault.vue";
@@ -26,11 +26,11 @@ const caption: ComputedRef<string> = computed(() =>
     : "Cliquez sur ce volet pour afficher des informations supplémentaires",
 );
 
-// On course details change: close expansion item and scroll to top (sync)
+// On course details change: scroll to top (sync)
 watch(
   () => details,
   () => {
-    isExpanded.value = false;
+    // isExpanded.value = false;
     document.getElementById("volet")?.scrollIntoView();
   },
   {
@@ -50,14 +50,12 @@ watch(
     dense-toggle
   >
     <QCard flat square class="text-body2">
-      <CourseExtras v-if="details" :details />
+      <CourseExpansionContent v-if="details" :details />
       <CourseExpansionDefault v-else />
     </QCard>
   </QExpansionItem>
-  <QCard flat square>
-    <CourseRequests v-if="details" :details="details" />
-    <CourseRequestsDefault v-else />
-  </QCard>
+  <CourseRequests v-if="details" :details="details" />
+  <CourseRequestsDefault v-else />
 </template>
 
 <style scoped lang="scss">

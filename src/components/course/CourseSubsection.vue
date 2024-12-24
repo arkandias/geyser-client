@@ -3,7 +3,7 @@ import { TOOLTIP_DELAY } from "@/config/constants.ts";
 
 const edition = defineModel<boolean>();
 defineProps<{
-  title: string;
+  title?: string;
   editable?: boolean;
   editionTooltip?: string;
 }>();
@@ -12,7 +12,7 @@ defineSlots<{ default(): unknown }>();
 
 <template>
   <QCardSection>
-    <div class="text-subtitle1">
+    <div v-if="title" class="text-subtitle2">
       {{ title }}
       <QBtn
         v-if="editable"

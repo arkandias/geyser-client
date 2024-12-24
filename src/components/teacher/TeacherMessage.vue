@@ -3,7 +3,6 @@ import { useMutation } from "@urql/vue";
 import { type ComputedRef, computed } from "vue";
 
 import { DELETE_MESSAGE, UPSERT_MESSAGE } from "@/graphql/messages.ts";
-import { isOnlyWhitespace } from "@/helpers/misc.ts";
 
 import EditableText from "@/components/core/EditableText.vue";
 

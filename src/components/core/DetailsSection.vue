@@ -12,7 +12,7 @@ defineSlots<{ default(): unknown }>();
 
 <template>
   <QCard flat square>
-    <QCardSection class="text-subtitle1 text-uppercase text-center">
+    <QCardSection class="text-subtitle1 text-uppercase">
       {{ title }}
       <QBtn
         v-if="editable"
