@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type ComputedRef, computed } from "vue";
+import { type ComputedRef, type Ref, computed, ref } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { getProfile } from "@/types/profile.ts";
@@ -19,37 +19,45 @@ const perm = usePermissions();
 const service: ComputedRef<ServiceDetails | null> = computed(
   () => details.services[0] ?? null,
 );
+
+const messageEdition: Ref<boolean> = ref(false);
 </script>
 
 <template>
-  <QCard flat square class="text-center">
-    <TeacherTitle
-      :profile="getProfile(details)"
-      :position="details.position?.label"
+  <TeacherTitle
+    :profile="getProfile(details)"
+    :position="details.position?.label"
+  />
+  <TeacherSection title="Service">
+    <ServiceModifications
+      v-if="service"
+      :service
+      :editable="perm.toEditAService(details.uid)"
     />
-    <TeacherSection title="Service">
-      <ServiceModifications
-        v-if="service"
-        :service
-        :editable="perm.toEditAService(details.uid)"
-      />
-    </TeacherSection>
-    <!-- TODO: Responsabilités -->
-    <!-- TODO: Priorités -->
-    <TeacherSection title="Demandes">
-      <ServiceRequests
-        :total-assigned="details.totalAssigned"
-        :total-primary="details.totalPrimary"
-        :total-secondary="details.totalSecondary"
-      />
-    </TeacherSection>
+  </TeacherSection>
+  <!-- TODO: Responsabilités -->
+  <!-- TODO: Priorités -->
+  <TeacherSection title="Demandes">
+    <ServiceRequests
+      :total-assigned="details.totalAssigned"
+      :total-primary="details.totalPrimary"
+      :total-secondary="details.totalSecondary"
+    />
+  </TeacherSection>
+  <TeacherSection
+    v-if="service"
+    v-model="messageEdition"
+    title="Message pour la commission"
+    :editable="perm.toEditAMessage(service?.uid)"
+  >
     <TeacherMessage
       v-if="service"
+      v-model="messageEdition"
       :year="service?.year"
       :uid="service?.uid"
       :body="details.messages[0]?.body ?? null"
     />
-  </QCard>
+  </TeacherSection>
 </template>
 
 <style scoped lang="scss"></style>

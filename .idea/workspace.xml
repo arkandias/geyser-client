@@ -22,13 +22,14 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/DetailsCourse.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsCourse.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseExtras.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseExpansionContent.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseExtrasInformation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseExpansionDefault.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseInformation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequestsDefault.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/service/ServiceRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/service/ServiceRequests.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/EditableText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/EditableText.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseCoordinators.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseCoordinators.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseExpansionDefault.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseExpansionDefault.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseSubsection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseSubsection.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherMessage.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherSubsection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherSection.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherSection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherSection.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherTitle.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherTitle.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PageTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageTeacher.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -339,15 +340,7 @@
       <workItem from="1733958145291" duration="106853000" />
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
-      <workItem from="1734622570180" duration="121940000" />
-    </task>
-    <task id="LOCAL-00267" summary="feat(build): update build target to es2022">
-      <option name="closed" value="true" />
-      <created>1733968840734</created>
-      <option name="number" value="00267" />
-      <option name="presentableId" value="LOCAL-00267" />
-      <option name="project" value="LOCAL" />
-      <updated>1733968840735</updated>
+      <workItem from="1734622570180" duration="130804000" />
     </task>
     <task id="LOCAL-00268" summary="chore(tsconfig): remove unused compilerOptions">
       <option name="closed" value="true" />
@@ -733,7 +726,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734965023265</updated>
     </task>
-    <option name="localTasksCounter" value="316" />
+    <task id="LOCAL-00316" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1734971592202</created>
+      <option name="number" value="00316" />
+      <option name="presentableId" value="LOCAL-00316" />
+      <option name="project" value="LOCAL" />
+      <updated>1734971592203</updated>
+    </task>
+    <option name="localTasksCounter" value="317" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

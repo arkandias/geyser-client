@@ -49,13 +49,13 @@ watch(() => text, onAbort, { immediate: true });
 const definitions = {
   save: {
     icon: "sym_s_save",
-    label: "Enregistrer",
+    // label: "Enregistrer",
     tip: "Enregistrer les modifications",
     handler: onSave,
   },
   delete: {
     icon: "sym_s_delete",
-    label: "Abandonner",
+    // label: "Abandonner",
     tip: "Abandonner les modifications",
     handler: onAbort,
   },
@@ -65,17 +65,22 @@ const toolbar = [
   ["save", "delete"],
   ["left", "center", "right", "justify"],
   ["bold", "italic", "underline", "strike", "subscript", "superscript"],
-  ["hr", "link", "viewsource"],
+  ["link", "viewsource"],
   ["unordered", "ordered", "outdent", "indent"],
 ];
 </script>
 
 <template>
-  <QCardSection v-if="edition">
-    <QEditor v-model="editorText" :definitions :toolbar square dense />
-  </QCardSection>
+  <QEditor v-if="edition" v-model="editorText" :definitions :toolbar square />
   <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-  <QCardSection v-else-if="sanitizedText" v-html="sanitizedText" />
+  <div v-else-if="sanitizedText" v-html="sanitizedText" />
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:deep(.q-editor__toolbar) {
+  background-color: $grey-3;
+}
+.q-dark :deep(.q-editor__toolbar) {
+  background-color: $grey-9;
+}
+</style>

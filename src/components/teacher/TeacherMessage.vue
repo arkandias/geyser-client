@@ -1,25 +1,20 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { type ComputedRef, type Ref, computed, ref } from "vue";
+import { type ComputedRef, computed } from "vue";
 
-import { usePermissions } from "@/composables/permissions.ts";
 import { DELETE_MESSAGE, UPSERT_MESSAGE } from "@/graphql/messages.ts";
 
 import EditableText from "@/components/core/EditableText.vue";
-import HomeSubsection from "@/components/teacher/TeacherSection.vue";
 
+const edition = defineModel<boolean>();
 const { year, uid, body } = defineProps<{
   year: number;
   uid: string;
   body: string | null;
 }>();
 
-const perm = usePermissions();
-
 const upsertMessage = useMutation(UPSERT_MESSAGE);
 const deleteMessage = useMutation(DELETE_MESSAGE);
-
-const edition: Ref<boolean> = ref(false);
 
 const setMessage: ComputedRef<(body: string) => Promise<boolean>> = computed(
   () =>
@@ -37,19 +32,17 @@ const setMessage: ComputedRef<(body: string) => Promise<boolean>> = computed(
 </script>
 
 <template>
-  <!-- TODO: TeacherSection -->
-  <HomeSubsection
+  <EditableText
     v-model="edition"
-    title="Message pour la commission"
-    :editable="perm.toEditAMessage(uid)"
-  >
-    <EditableText
-      v-model="edition"
-      :text="body"
-      :set-text="setMessage"
-      default-text=""
-    />
-  </HomeSubsection>
+    :text="body"
+    :set-text="setMessage"
+    default-text=""
+    class="message"
+  />
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.message {
+  width: 360px;
+}
+</style>

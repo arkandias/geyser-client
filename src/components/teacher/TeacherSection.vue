@@ -8,8 +8,8 @@ defineSlots<{ default(): unknown }>();
 </script>
 
 <template>
-  <QCardSection>
-    <div class="text-subtitle1 text-uppercase">
+  <QCard flat square>
+    <QCardSection class="text-subtitle1 text-uppercase text-center">
       {{ title }}
       <QBtn
         v-if="editable"
@@ -21,16 +21,11 @@ defineSlots<{ default(): unknown }>();
         dense
         @click="edition = !edition"
       />
-    </div>
-    <div style="display: flex; justify-content: center">
+    </QCardSection>
+    <QCardSection>
       <slot />
-    </div>
-  </QCardSection>
+    </QCardSection>
+  </QCard>
 </template>
 
-<style scoped lang="scss">
-.wrapper {
-  display: flex;
-  justify-content: center;
-}
-</style>
+<style scoped lang="scss"></style>

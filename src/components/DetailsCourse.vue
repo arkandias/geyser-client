@@ -5,6 +5,7 @@ import { formatCourseCaption } from "@/helpers/format.ts";
 import type { CourseDetails } from "@/types/course.ts";
 
 import CourseExtras from "@/components/course/CourseExpansionContent.vue";
+import CourseExpansionDefault from "@/components/course/CourseExpansionDefault.vue";
 import CourseRequests from "@/components/course/CourseRequests.vue";
 import CourseRequestsDefault from "@/components/course/CourseRequestsDefault.vue";
 
@@ -50,7 +51,7 @@ watch(
   >
     <QCard flat square class="text-body2">
       <CourseExtras v-if="details" :details />
-      <!-- TODO: <CourseExpansionDefault v-else />-->
+      <CourseExpansionDefault v-else />
     </QCard>
   </QExpansionItem>
   <QCard flat square>

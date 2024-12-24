@@ -6,10 +6,12 @@ defineProps<{ profile: Profile; position?: string }>();
 </script>
 
 <template>
-  <QCardSection class="text-h5">
-    <div class="text-h5">{{ formatUser(profile) }}</div>
-    <div v-if="position" class="text-body1 text-italic">{{ position }}</div>
-  </QCardSection>
+  <QCard flat square class="text-center">
+    <QCardSection>
+      <div class="text-h5">{{ formatUser(profile) }}</div>
+      <div v-if="position" class="text-body1 text-italic">{{ position }}</div>
+    </QCardSection>
+  </QCard>
 </template>
 
 <style scoped lang="scss"></style>

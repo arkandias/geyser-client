@@ -12,15 +12,15 @@ defineProps<{
 <template>
   <QCardSection>
     <div v-if="programCoordinators.length">
-      Responsable(s) de la mention :
+      Responsable{{ programCoordinators.length > 1 ? "s" : "" }} de la mention :
       {{ formatCoordinators(programCoordinators) }}
     </div>
     <div v-if="trackCoordinators.length">
-      Responsable(s) du parcours :
+      Responsable{{ programCoordinators.length > 1 ? "s" : "" }} du parcours :
       {{ formatCoordinators(trackCoordinators) }}
     </div>
     <div v-if="courseCoordinators.length">
-      Responsable(s) de l'enseignement :
+      Responsable{{ programCoordinators.length > 1 ? "s" : "" }} de l'UE :
       {{ formatCoordinators(courseCoordinators) }}
     </div>
   </QCardSection>

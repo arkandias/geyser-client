@@ -45,9 +45,4 @@ const details: ComputedRef<TeacherDetails | null> = computed(
   </QPage>
 </template>
 
-<style scoped lang="scss">
-.q-page > * {
-  max-width: $homepage-max-width;
-  margin-bottom: 16px;
-}
-</style>
+<style scoped lang="scss"></style>

@@ -11,13 +11,15 @@ defineSlots<{ default(): unknown }>();
   <QCardSection>
     <div class="text-subtitle1">
       {{ title }}
-      <QToggle
+      <QBtn
         v-if="editable"
-        v-model="edition"
         icon="sym_s_edit"
         color="primary"
         size="sm"
+        flat
+        square
         dense
+        @click="edition = !edition"
       />
     </div>
     <slot />
