@@ -1,8 +1,4 @@
-<script setup lang="ts">
-import { type Ref, ref } from "vue";
-
-const demo: Ref<boolean> = ref(false);
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <QCardSection class="text-justify">

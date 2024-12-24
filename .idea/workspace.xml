@@ -20,14 +20,7 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/EditableText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/EditableText.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/course/CourseExpansionDefault.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseExpansionDefault.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequestsDefault.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequestsDefault.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseSubsection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseSubsection.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherMessage.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherSection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherSection.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helpers/misc.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/misc.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -338,15 +331,7 @@
       <workItem from="1733958145291" duration="106853000" />
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
-      <workItem from="1734622570180" duration="136808000" />
-    </task>
-    <task id="LOCAL-00269" summary="chore(prettier): update ignore list for gql directory">
-      <option name="closed" value="true" />
-      <created>1733971384211</created>
-      <option name="number" value="00269" />
-      <option name="presentableId" value="LOCAL-00269" />
-      <option name="project" value="LOCAL" />
-      <updated>1733971384211</updated>
+      <workItem from="1734622570180" duration="136978000" />
     </task>
     <task id="LOCAL-00270" summary="fix(codegen): handle environment variable access issue">
       <option name="closed" value="true" />
@@ -732,7 +717,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734998554191</updated>
     </task>
-    <option name="localTasksCounter" value="318" />
+    <task id="LOCAL-00318" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735033000382</created>
+      <option name="number" value="00318" />
+      <option name="presentableId" value="LOCAL-00318" />
+      <option name="project" value="LOCAL" />
+      <updated>1735033000382</updated>
+    </task>
+    <option name="localTasksCounter" value="319" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
