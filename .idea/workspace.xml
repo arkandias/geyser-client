@@ -21,17 +21,6 @@
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/DetailsCourse.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsCourse.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/EditableText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/EditableText.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/RequestForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestForm.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseCoordinators.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseCoordinators.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequestsDefault.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequestsDefault.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseSection.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseSubsection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseSubsection.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/service/ServiceModifications.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/service/ServiceModifications.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherMessage.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherSection.vue" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -342,15 +331,7 @@
       <workItem from="1733958145291" duration="106853000" />
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
-      <workItem from="1734622570180" duration="142320000" />
-    </task>
-    <task id="LOCAL-00271" summary="chore(project): remove schema.graphql from .prettierignore">
-      <option name="closed" value="true" />
-      <created>1733972026640</created>
-      <option name="number" value="00271" />
-      <option name="presentableId" value="LOCAL-00271" />
-      <option name="project" value="LOCAL" />
-      <updated>1733972026640</updated>
+      <workItem from="1734622570180" duration="142503000" />
     </task>
     <task id="LOCAL-00272" summary="docs(schema): standardize multiline descriptions">
       <option name="closed" value="true" />
@@ -736,7 +717,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735033114271</updated>
     </task>
-    <option name="localTasksCounter" value="320" />
+    <task id="LOCAL-00320" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735047344603</created>
+      <option name="number" value="00320" />
+      <option name="presentableId" value="LOCAL-00320" />
+      <option name="project" value="LOCAL" />
+      <updated>1735047344604</updated>
+    </task>
+    <option name="localTasksCounter" value="321" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

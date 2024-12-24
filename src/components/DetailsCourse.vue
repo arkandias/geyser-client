@@ -26,9 +26,9 @@ const caption: ComputedRef<string> = computed(() =>
     : "Cliquez sur ce volet pour afficher des informations supplémentaires",
 );
 
-// On course details change: scroll to top (sync)
+// When the selected course changes: scroll to top (sync)
 watch(
-  () => details,
+  () => details?.courseId,
   () => {
     // isExpanded.value = false;
     document.getElementById("volet")?.scrollIntoView();
