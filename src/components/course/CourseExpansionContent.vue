@@ -9,7 +9,6 @@ import type { CourseDetails } from "@/types/course.ts";
 import type { Profile } from "@/types/profile.ts";
 
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
-import DetailsSubsectionEditableText from "@/components/core/DetailsSubsectionEditableText.vue";
 import EditableText from "@/components/core/EditableText.vue";
 import CourseCoordinators from "@/components/course/CourseCoordinators.vue";
 
