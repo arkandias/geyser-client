@@ -62,7 +62,7 @@ const messageEdition: Ref<boolean> = ref(false);
 </template>
 
 <style scoped lang="scss">
-.q-card {
+.q-card__section {
   text-align: center;
 }
 </style>

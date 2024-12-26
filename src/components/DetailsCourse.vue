@@ -54,8 +54,10 @@ watch(
       <CourseExpansionDefault v-else />
     </QCard>
   </QExpansionItem>
-  <CourseRequests v-if="details" :details="details" />
-  <CourseRequestsDefault v-else />
+  <QCard>
+    <CourseRequests v-if="details" :details="details" />
+    <CourseRequestsDefault v-else />
+  </QCard>
 </template>
 
 <style scoped lang="scss">

@@ -11,8 +11,8 @@ defineSlots<{ default(): unknown }>();
 </script>
 
 <template>
-  <QCard flat square>
-    <QCardSection class="text-subtitle1 text-uppercase">
+  <QCardSection flat square>
+    <div class="text-subtitle1 text-uppercase">
       {{ title }}
       <QBtn
         v-if="editable"
@@ -26,11 +26,9 @@ defineSlots<{ default(): unknown }>();
       >
         <QTooltip :delay="TOOLTIP_DELAY">{{ editionTooltip }}</QTooltip>
       </QBtn>
-    </QCardSection>
-    <QCardSection>
-      <slot />
-    </QCardSection>
-  </QCard>
+    </div>
+    <slot />
+  </QCardSection>
 </template>
 
 <style scoped lang="scss"></style>

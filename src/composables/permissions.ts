@@ -21,7 +21,7 @@ export const usePermissions = () => {
   const toAccess: ComputedRef<boolean> = computed(
     () =>
       activeRole.value === ROLES.ADMIN ||
-      currentPhase.value !== PHASES.SHUTDOWN,
+      (currentPhase.value !== PHASES.SHUTDOWN && profile.active),
   );
 
   const toSubmitRequestsForOthers: ComputedRef<boolean> = computed(

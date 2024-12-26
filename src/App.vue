@@ -11,7 +11,6 @@ import { getClaims, logout } from "@/services/keycloak.ts";
 import { login, useAuthentication } from "@/stores/authentication.ts";
 import { usePhases } from "@/stores/phases.ts";
 import { useYears } from "@/stores/years.ts";
-import { isProfile } from "@/types/profile.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
 import PageHome from "@/pages/PageHome.vue";
@@ -69,14 +68,14 @@ watch(
   [claimsRef, queryProfile.data],
   ([claims, result]) => {
     if (claims === null) {
-      console.warn("No claims found during logging");
+      console.error("Login failed: No claims");
       return;
     }
     if (result?.profile === undefined) {
       return;
     }
-    if (!isProfile(result.profile)) {
-      console.warn("Invalid profile during logging", result.profile);
+    if (result.profile === null) {
+      console.error("Login failed: Profile not found", result.profile);
       return;
     }
     login(result.profile, claims.allowedRoles, claims.defaultRole, logout);

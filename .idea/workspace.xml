@@ -20,8 +20,12 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DetailsCourse.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsCourse.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/DetailsSection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/DetailsSection.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/composables/permissions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/permissions.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -332,15 +336,7 @@
       <workItem from="1733958145291" duration="106853000" />
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
-      <workItem from="1734622570180" duration="145870000" />
-    </task>
-    <task id="LOCAL-00276" summary="feat(deps): update @types/node to 22.10.2 and add ts-node">
-      <option name="closed" value="true" />
-      <created>1733972746410</created>
-      <option name="number" value="00276" />
-      <option name="presentableId" value="LOCAL-00276" />
-      <option name="project" value="LOCAL" />
-      <updated>1733972746410</updated>
+      <workItem from="1734622570180" duration="150069000" />
     </task>
     <task id="LOCAL-00277" summary="feat(tsconfig): enable esm support for ts-node&#10;&#10;For JetBrains GraphQL plugin">
       <option name="closed" value="true" />
@@ -726,7 +722,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735175514950</updated>
     </task>
-    <option name="localTasksCounter" value="325" />
+    <task id="LOCAL-00325" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735177445436</created>
+      <option name="number" value="00325" />
+      <option name="presentableId" value="LOCAL-00325" />
+      <option name="project" value="LOCAL" />
+      <updated>1735177445437</updated>
+    </task>
+    <option name="localTasksCounter" value="326" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
