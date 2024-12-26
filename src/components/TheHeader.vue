@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useQuasar } from "quasar";
 import { type ComputedRef, computed } from "vue";
 import { useRouter } from "vue-router";
 
+import { useDarkMode } from "@/composables/dark-mode.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { buttonColor } from "@/helpers/format.ts";
 import { useRefresh } from "@/stores/refresh.ts";
@@ -13,10 +13,10 @@ import MenuUser from "@/components/header/MenuUser.vue";
 
 defineProps<{ disable?: boolean }>();
 
-const $q = useQuasar();
 const router = useRouter();
 const perm = usePermissions();
 const { refresh: refreshData } = useRefresh();
+const { isDarkModeActive, toggleDarkMode } = useDarkMode();
 
 const version: ComputedRef<string | null> = computed(() =>
   import.meta.env.DEV ? "dev" : (import.meta.env.VITE_BUILD_VERSION ?? null),
@@ -75,10 +75,10 @@ const version: ComputedRef<string | null> = computed(() =>
       </QBtn>
       <QBtn
         icon="sym_s_dark_mode"
-        :color="buttonColor($q.dark.isActive)"
+        :color="buttonColor(isDarkModeActive)"
         flat
         square
-        @click="$q.dark.toggle"
+        @click="toggleDarkMode"
       >
         <QTooltip>Mode sombre</QTooltip>
       </QBtn>

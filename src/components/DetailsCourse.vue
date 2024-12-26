@@ -54,7 +54,7 @@ watch(
       <CourseExpansionDefault v-else />
     </QCard>
   </QExpansionItem>
-  <QCard>
+  <QCard flat square>
     <CourseRequests v-if="details" :details="details" />
     <CourseRequestsDefault v-else />
   </QCard>

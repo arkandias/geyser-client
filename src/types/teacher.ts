@@ -16,7 +16,7 @@ export type TeacherRow = Profile & {
 };
 
 export type TeacherDetails = Profile & {
-  position: Option<string> | null;
+  position: (Option<string> & { baseServiceHours: number | null }) | null;
   services: ServiceDetails[];
   priorities: Priority[];
   requests: RequestDetails[];

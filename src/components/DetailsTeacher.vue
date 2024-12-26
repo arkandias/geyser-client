@@ -2,15 +2,13 @@
 import { type ComputedRef, type Ref, computed, ref } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
-import { getProfile } from "@/types/profile.ts";
 import type { ServiceDetails } from "@/types/service.ts";
 import type { TeacherDetails } from "@/types/teacher.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
-import ServiceModifications from "@/components/service/ServiceModifications.vue";
+import DetailsService from "@/components/service/DetailsService.vue";
 import ServiceRequests from "@/components/service/ServiceRequests.vue";
 import TeacherMessage from "@/components/teacher/TeacherMessage.vue";
-import TeacherTitle from "@/components/teacher/TeacherTitle.vue";
 
 const { details } = defineProps<{ details: TeacherDetails }>();
 
@@ -24,18 +22,14 @@ const messageEdition: Ref<boolean> = ref(false);
 </script>
 
 <template>
-  <TeacherTitle
-    :profile="getProfile(details)"
-    :position="details.position?.label"
-  />
   <DetailsSection title="Service">
-    <ServiceModifications
+    <DetailsService
       v-if="service"
       :service
+      :position-base-service-hours="details.position?.baseServiceHours"
       :editable="perm.toEditAService(details.uid)"
     />
   </DetailsSection>
-  <!-- TODO: Responsabilités -->
   <!-- TODO: Priorités -->
   <DetailsSection title="Demandes">
     <ServiceRequests
@@ -48,14 +42,13 @@ const messageEdition: Ref<boolean> = ref(false);
     v-if="service"
     v-model="messageEdition"
     title="Message pour la commission"
-    :editable="perm.toEditAMessage(service?.uid)"
+    :editable="perm.toEditAMessage(service.uid)"
     edition-tooltip="Éditer le message"
   >
     <TeacherMessage
-      v-if="service"
       v-model="messageEdition"
-      :year="service?.year"
-      :uid="service?.uid"
+      :year="service.year"
+      :uid="service.uid"
       :body="details.messages[0]?.body ?? null"
     />
   </DetailsSection>

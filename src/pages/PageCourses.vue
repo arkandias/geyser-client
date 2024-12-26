@@ -84,7 +84,12 @@ const queryTeachersRows = useQuery({
   }),
   pause: () => activeYear.value === null,
   context: {
-    additionalTypenames: ["demande", "message", "modification_service"],
+    additionalTypenames: [
+      "demande",
+      "message",
+      "modification_service",
+      "service",
+    ],
   },
 });
 watch(() => queryTeachersRows.fetching.value, setFetchingTeachers, {
@@ -120,7 +125,12 @@ const queryTeacherDetails = useQuery({
   }),
   pause: () => !activeYear.value || !selectedTeacher.value[0],
   context: {
-    additionalTypenames: ["demande", "message", "modification_service"],
+    additionalTypenames: [
+      "demande",
+      "message",
+      "modification_service",
+      "service",
+    ],
   },
 });
 

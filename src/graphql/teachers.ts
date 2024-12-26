@@ -60,6 +60,7 @@ export const GET_TEACHER_DETAILS = graphql(/* GraphQL */ `
       position: fonctionByFonction {
         value
         label
+        baseServiceHours: heures_eqtd_service_base
       }
       # limit: 1 car unique
       services(where: { annee: { _eq: $year } }, limit: 1) {

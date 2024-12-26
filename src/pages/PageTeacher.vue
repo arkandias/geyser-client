@@ -7,11 +7,12 @@ import { GET_TEACHER_DETAILS } from "@/graphql/teachers.ts";
 import { getValue } from "@/helpers/query-params.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useYears } from "@/stores/years.ts";
+import { getProfile } from "@/types/profile.ts";
 import type { TeacherDetails } from "@/types/teacher.ts";
 
 import DetailsTeacher from "@/components/DetailsTeacher.vue";
-
-// TODO: Si pas de service --> changer la page (donner la possibilité de créer un service si l'utilisateur est actif)
+import NoServices from "@/components/service/NoServices.vue";
+import TeacherTitle from "@/components/teacher/TeacherTitle.vue";
 
 const route = useRoute();
 
@@ -30,7 +31,12 @@ const queryTeacherDetails = useQuery({
   }),
   pause: () => currentYear.value === null || !uid.value,
   context: {
-    additionalTypenames: ["demande", "message", "modification_service"],
+    additionalTypenames: [
+      "demande",
+      "message",
+      "modification_service",
+      "service",
+    ],
   },
 });
 
@@ -40,8 +46,26 @@ const details: ComputedRef<TeacherDetails | null> = computed(
 </script>
 
 <template>
-  <QPage class="column items-center">
-    <DetailsTeacher v-if="details?.services" :details />
+  <QPage>
+    <QCard v-if="details" flat square class="column items-center">
+      <TeacherTitle
+        :profile="getProfile(details)"
+        :position="details.position?.label"
+      />
+      <!-- TODO: Responsabilités -->
+      <DetailsTeacher v-if="details?.services[0]" :details />
+      <NoServices
+        v-else-if="currentYear !== null"
+        :uid="details.uid"
+        :year="currentYear"
+        :position-base-service-hours="details.position?.baseServiceHours"
+      />
+    </QCard>
+    <QCard v-else flat square>
+      <QCardSection class="text-center">
+        <div class="text-subtitle1">Pas d'information sur l'intervenant.</div>
+      </QCardSection>
+    </QCard>
   </QPage>
 </template>
 

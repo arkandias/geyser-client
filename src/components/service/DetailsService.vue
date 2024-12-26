@@ -8,6 +8,7 @@ import {
   DELETE_SERVICE_MODIFICATION,
   INSERT_SERVICE_MODIFICATION,
 } from "@/graphql/service-modifications.ts";
+import { UPSERT_SERVICE } from "@/graphql/services.ts";
 import { formatWH } from "@/helpers/format.ts";
 import { modifiedService } from "@/helpers/hours.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
@@ -16,11 +17,13 @@ import type { ServiceDetails } from "@/types/service.ts";
 
 import ServiceTable from "@/components/service/ServiceTable.vue";
 
-const { service, editable } = defineProps<{
+const { service, positionBaseServiceHours, editable } = defineProps<{
   service: ServiceDetails;
-  editable: boolean;
+  positionBaseServiceHours?: number | null;
+  editable?: boolean;
 }>();
 
+const upsertService = useMutation(UPSERT_SERVICE);
 const queryModificationTypes = useQuery({
   query: GET_MODIFICATION_TYPES,
   variables: {},
@@ -28,21 +31,49 @@ const queryModificationTypes = useQuery({
 const insertModification = useMutation(INSERT_SERVICE_MODIFICATION);
 const deleteModification = useMutation(DELETE_SERVICE_MODIFICATION);
 
+const isBaseServiceFormOpen: Ref<boolean> = ref(false);
+const baseServiceHours: Ref<number> = ref(positionBaseServiceHours ?? 0);
+
+const resetBaseServiceForm = (): void => {
+  isBaseServiceFormOpen.value = false;
+  baseServiceHours.value = positionBaseServiceHours ?? 0;
+};
+const submitBaseServiceForm = async (): Promise<void> => {
+  if (baseServiceHours.value < 0) {
+    notify(NotifyType.Error, {
+      message: "Formulaire non valide",
+      caption: "Sélectionnez un nombre d'heures strictement positif",
+    });
+    return;
+  }
+  const result = await upsertService.executeMutation({
+    uid: service.uid,
+    year: service.year,
+    hours: baseServiceHours.value,
+  });
+  if (result.data?.service && !result.error) {
+    notify(NotifyType.Success, { message: "Service de base modifié" });
+  } else {
+    notify(NotifyType.Error, { message: "Échec de la modification" });
+  }
+  resetBaseServiceForm();
+};
+
 const modificationTypesOptions: ComputedRef<ModificationType[]> = computed(
   () => queryModificationTypes.data.value?.modificationTypes ?? [],
 );
 
-const isFormOpen: Ref<boolean> = ref(false);
+const isModificationFormOpen: Ref<boolean> = ref(false);
 const modificationType: Ref<string | null> = ref(null);
-const hours: Ref<number> = ref(0);
+const modificationHours: Ref<number> = ref(0);
 
-const resetForm = (): void => {
-  isFormOpen.value = false;
+const resetModificationForm = (): void => {
+  isModificationFormOpen.value = false;
   modificationType.value = null;
-  hours.value = 0;
+  modificationHours.value = 0;
 };
 
-const submitForm = async (): Promise<void> => {
+const submitModificationForm = async (): Promise<void> => {
   if (!modificationType.value) {
     notify(NotifyType.Error, {
       message: "Formulaire non valide",
@@ -50,7 +81,7 @@ const submitForm = async (): Promise<void> => {
     });
     return;
   }
-  if (hours.value <= 0) {
+  if (modificationHours.value <= 0) {
     notify(NotifyType.Error, {
       message: "Formulaire non valide",
       caption: "Sélectionnez un nombre d'heures strictement positif",
@@ -60,17 +91,17 @@ const submitForm = async (): Promise<void> => {
   const result = await insertModification.executeMutation({
     serviceId: service.id,
     modificationType: modificationType.value,
-    weightedHours: hours.value,
+    weightedHours: modificationHours.value,
   });
   if (result.data?.serviceModification && !result.error) {
     notify(NotifyType.Success, { message: "Modification ajoutée" });
   } else {
     notify(NotifyType.Error, { message: "Échec de l'ajout" });
   }
-  resetForm();
+  resetModificationForm();
 };
 
-const handleDeletion = async (id: number): Promise<void> => {
+const handleModificationDeletion = async (id: number): Promise<void> => {
   const result = await deleteModification.executeMutation({ id: id });
   if (result.data?.serviceModification && !result.error) {
     notify(NotifyType.Success, { message: "Modification supprimée" });
@@ -81,17 +112,66 @@ const handleDeletion = async (id: number): Promise<void> => {
 </script>
 
 <template>
-  <form id="addModification" @submit.prevent="submitForm" @reset="resetForm" />
+  <form
+    id="editBaseService"
+    @submit.prevent="submitBaseServiceForm"
+    @reset="resetBaseServiceForm"
+  />
+  <form
+    id="addModification"
+    @submit.prevent="submitModificationForm"
+    @reset="resetModificationForm"
+  />
   <ServiceTable>
     <tr>
-      <td>Base</td>
-      <td>{{ formatWH(service.base) }}</td>
+      <td>
+        Base
+        <QBtn
+          v-if="isBaseServiceFormOpen"
+          form="editBaseService"
+          type="submit"
+          icon="sym_s_check_circle"
+          color="primary"
+          size="sm"
+          flat
+          square
+          dense
+        >
+          <QTooltip :delay="TOOLTIP_DELAY">Valider le service de base</QTooltip>
+        </QBtn>
+        <QBtn
+          v-else-if="editable"
+          form="editBaseService"
+          icon="sym_s_edit"
+          color="primary"
+          size="sm"
+          flat
+          square
+          dense
+          @click="isBaseServiceFormOpen = true"
+        >
+          <QTooltip :delay="TOOLTIP_DELAY">Éditer le service de base</QTooltip>
+        </QBtn>
+      </td>
+      <td v-if="isBaseServiceFormOpen">
+        <QInput
+          v-model.number="baseServiceHours"
+          type="number"
+          step="any"
+          suffix="htd"
+          square
+          dense
+          form="editBaseService"
+          class="inline-block"
+        />
+      </td>
+      <td v-else>{{ formatWH(service.base) }}</td>
     </tr>
     <tr>
       <td>
         Modifications
         <QBtn
-          v-if="isFormOpen"
+          v-if="isModificationFormOpen"
           form="addModification"
           type="submit"
           icon="sym_s_check_circle"
@@ -111,13 +191,13 @@ const handleDeletion = async (id: number): Promise<void> => {
           flat
           square
           dense
-          @click="isFormOpen = true"
+          @click="isModificationFormOpen = true"
         >
           <QTooltip :delay="TOOLTIP_DELAY">Ajouter une modification</QTooltip>
         </QBtn>
       </td>
     </tr>
-    <tr v-if="isFormOpen">
+    <tr v-if="isModificationFormOpen">
       <td>
         <QBtn
           form="addModification"
@@ -157,7 +237,7 @@ const handleDeletion = async (id: number): Promise<void> => {
       </td>
       <td>
         <QInput
-          v-model.number="hours"
+          v-model.number="modificationHours"
           type="number"
           step="any"
           suffix="htd"
@@ -178,7 +258,7 @@ const handleDeletion = async (id: number): Promise<void> => {
           flat
           square
           dense
-          @click="handleDeletion(modification.id)"
+          @click="handleModificationDeletion(modification.id)"
         >
           <QTooltip :delay="TOOLTIP_DELAY">Supprimer la modification</QTooltip>
         </QBtn>

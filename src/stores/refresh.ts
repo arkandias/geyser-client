@@ -15,6 +15,7 @@ export const useRefresh = () => {
           "message",
           "modification_service",
           "priorite",
+          "service",
         ],
       },
     );

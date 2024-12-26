@@ -10070,6 +10070,17 @@ export type ServiceDetailsFragment = {
   };
 };
 
+export type UpsertServiceMutationVariables = Exact<{
+  uid: Scalars["String"]["input"];
+  year: Scalars["Int"]["input"];
+  hours: Scalars["Float"]["input"];
+}>;
+
+export type UpsertServiceMutation = {
+  __typename?: "mutation_root";
+  service: { __typename?: "service"; id: number } | null;
+};
+
 export type GetTeachersQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetTeachersQuery = {
@@ -10173,7 +10184,12 @@ export type GetTeacherDetailsQuery = {
     firstname: string;
     lastname: string;
     active: boolean;
-    position: { __typename?: "fonction"; value: string; label: string } | null;
+    position: {
+      __typename?: "fonction";
+      value: string;
+      label: string;
+      baseServiceHours: number | null;
+    } | null;
     services: Array<{
       __typename?: "service";
       id: number;
@@ -14452,6 +14468,127 @@ export const DeleteServiceModificationDocument = {
   DeleteServiceModificationMutation,
   DeleteServiceModificationMutationVariables
 >;
+export const UpsertServiceDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpsertService" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "year" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "hours" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "service" },
+            name: { kind: "Name", value: "insert_service_one" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "object" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "uid" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "uid" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "annee" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "year" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "heures_eqtd" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "hours" },
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "on_conflict" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "constraint" },
+                      value: {
+                        kind: "EnumValue",
+                        value: "service_annee_uid_key",
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "update_columns" },
+                      value: {
+                        kind: "ListValue",
+                        values: [{ kind: "EnumValue", value: "heures_eqtd" }],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpsertServiceMutation,
+  UpsertServiceMutationVariables
+>;
 export const GetTeachersDocument = {
   kind: "Document",
   definitions: [
@@ -15254,6 +15391,14 @@ export const GetTeacherDetailsDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "value" } },
                       { kind: "Field", name: { kind: "Name", value: "label" } },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "baseServiceHours" },
+                        name: {
+                          kind: "Name",
+                          value: "heures_eqtd_service_base",
+                        },
+                      },
                     ],
                   },
                 },

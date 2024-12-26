@@ -11,7 +11,7 @@ defineSlots<{ default(): unknown }>();
 </script>
 
 <template>
-  <QCardSection flat square>
+  <QCardSection>
     <div class="text-subtitle1 text-uppercase">
       {{ title }}
       <QBtn

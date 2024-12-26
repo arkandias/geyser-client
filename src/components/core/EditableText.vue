@@ -86,7 +86,7 @@ const toolbar = [
 
 <template>
   <QDialog v-model="edition" persistent square>
-    <QCard>
+    <QCard flat square>
       <QCardSection class="q-pa-none">
         <QEditor v-model="editorText" :toolbar square />
       </QCardSection>
