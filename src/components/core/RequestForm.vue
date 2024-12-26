@@ -22,7 +22,7 @@ import type { Option } from "@/types/common.ts";
 
 import TeacherSelect from "@/components/core/TeacherSelect.vue";
 
-const props = defineProps<{
+const { courseId, hoursPerGroup } = defineProps<{
   courseId: number;
   hoursPerGroup: number | null;
 }>();
@@ -31,27 +31,23 @@ const { currentPhase } = usePhases();
 const { profile } = useAuthentication();
 const perm = usePermissions();
 
-const heures: Ref<number | null> = ref(null);
+const hours: Ref<number | null> = ref(null);
 watch(
-  () => props.hoursPerGroup,
+  () => hoursPerGroup,
   (value) => {
-    heures.value = value;
+    hours.value = value;
   },
   { immediate: true },
 );
 
-const groupes: WritableComputedRef<number | null> = computed({
+const groups: WritableComputedRef<number | null> = computed({
   get: () =>
-    heures.value === null || props.hoursPerGroup === null
+    hours.value === null || hoursPerGroup === null
       ? null
-      : Math.round(
-          (heures.value / props.hoursPerGroup + Number.EPSILON) * 100,
-        ) / 100,
+      : Math.round((hours.value / hoursPerGroup + Number.EPSILON) * 100) / 100,
   set: (val) => {
-    heures.value =
-      val === null || props.hoursPerGroup === null
-        ? null
-        : val * props.hoursPerGroup;
+    hours.value =
+      val === null || hoursPerGroup === null ? null : val * hoursPerGroup;
   },
 });
 
@@ -104,7 +100,7 @@ const submitForm = async (): Promise<void> => {
     });
     return;
   }
-  if (heures.value === null || heures.value < 0) {
+  if (hours.value === null || hours.value < 0) {
     notify(NotifyType.Error, {
       message: "Formulaire non valide",
       caption: "Sélectionnez un nombre d'heures positif ou nul",
@@ -120,14 +116,14 @@ const submitForm = async (): Promise<void> => {
   }
   await updateRequest({
     uid: uid.value,
-    courseId: props.courseId,
+    courseId: courseId,
     requestType: requestType.value,
-    hours: heures.value,
+    hours: hours.value,
   });
 };
 const resetForm = (): void => {
   uid.value = uidInit.value;
-  heures.value = props.hoursPerGroup;
+  hours.value = hoursPerGroup;
   requestType.value = requestTypeInit.value;
 };
 </script>
@@ -146,7 +142,7 @@ const resetForm = (): void => {
       options-dense
     />
     <QInput
-      v-model.number="groupes"
+      v-model.number="groups"
       color="primary"
       type="number"
       step="any"
@@ -155,7 +151,7 @@ const resetForm = (): void => {
       dense
     />
     <QInput
-      v-model.number="heures"
+      v-model.number="hours"
       color="primary"
       type="number"
       step="any"

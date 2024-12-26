@@ -3,7 +3,7 @@ import { type ShallowRef, shallowRef, watch } from "vue";
 
 import type { Nullable, Option } from "@/types/common.ts";
 
-const props = defineProps<{
+const { getValue } = defineProps<{
   label: string;
   icon: string;
   options: Option<T>[];
@@ -14,9 +14,9 @@ const props = defineProps<{
 const model: ShallowRef<Nullable<T>> = shallowRef(null);
 
 watch(
-  () => props.getValue,
+  () => getValue,
   () => {
-    model.value = props.getValue;
+    model.value = getValue;
   },
   { immediate: true },
 );

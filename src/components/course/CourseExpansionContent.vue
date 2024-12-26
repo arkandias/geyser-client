@@ -12,19 +12,19 @@ import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 import EditableText from "@/components/core/EditableText.vue";
 import CourseCoordinators from "@/components/course/CourseCoordinators.vue";
 
-const props = defineProps<{ details: CourseDetails }>();
+const { details } = defineProps<{ details: CourseDetails }>();
 
 const perm = usePermissions();
 
 // Coordinators
 const courseCoordinators: ComputedRef<Coordinator[]> = computed(
-  () => props.details.coordinators,
+  () => details.coordinators,
 );
 const trackCoordinators: ComputedRef<Coordinator[]> = computed(
-  () => props.details.track?.coordinators ?? [],
+  () => details.track?.coordinators ?? [],
 );
 const programCoordinators: ComputedRef<Coordinator[]> = computed(
-  () => props.details.program.coordinators,
+  () => details.program.coordinators,
 );
 const coordinators: ComputedRef<Profile[]> = computed(() => [
   ...courseCoordinators.value.map(({ profile }) => profile),
@@ -38,7 +38,7 @@ const updateDescription = useMutation(UPDATE_DESCRIPTION);
 const setDescription = (text: string): Promise<boolean> =>
   updateDescription
     .executeMutation({
-      courseId: props.details.courseId,
+      courseId: details.courseId,
       description: text || null,
     })
     .then((result) => !!result.data?.course?.id && !result.error);

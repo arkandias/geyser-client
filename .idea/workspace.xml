@@ -20,8 +20,9 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/DetailsSubsectionEditableText.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/RequestForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestForm.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/course/CourseExpansionContent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseExpansionContent.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdminOptions.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdminOptions.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -332,15 +333,7 @@
       <workItem from="1733958145291" duration="106853000" />
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
-      <workItem from="1734622570180" duration="143797000" />
-    </task>
-    <task id="LOCAL-00274" summary="refactor(graphql): update dotenv import and env var access">
-      <option name="closed" value="true" />
-      <created>1733972625810</created>
-      <option name="number" value="00274" />
-      <option name="presentableId" value="LOCAL-00274" />
-      <option name="project" value="LOCAL" />
-      <updated>1733972625810</updated>
+      <workItem from="1734622570180" duration="144995000" />
     </task>
     <task id="LOCAL-00275" summary="feat(graphql): add typed document nodes for queries">
       <option name="closed" value="true" />
@@ -726,7 +719,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735048900408</updated>
     </task>
-    <option name="localTasksCounter" value="323" />
+    <task id="LOCAL-00323" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735168582244</created>
+      <option name="number" value="00323" />
+      <option name="presentableId" value="LOCAL-00323" />
+      <option name="project" value="LOCAL" />
+      <updated>1735168582246</updated>
+    </task>
+    <option name="localTasksCounter" value="324" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
