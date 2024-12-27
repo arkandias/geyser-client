@@ -39,8 +39,8 @@ export const useData = () => ({
   teachers: readonly(teachers),
   fetchingCourses: readonly(fetchingCourses),
   fetchingTeachers: readonly(fetchingTeachers),
-  selectedCourse: readonly(selectedCourse),
-  selectedTeacher: readonly(selectedTeacher),
+  selectedCourse, // TODO: readonly?
+  selectedTeacher, // TODO: readonly?
   setCourses,
   setTeachers,
   setFetchingCourses,
