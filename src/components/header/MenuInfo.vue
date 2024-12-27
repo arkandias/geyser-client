@@ -3,11 +3,11 @@ import { type Ref, ref } from "vue";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const isUserManualOpen: Ref<boolean> = ref(false);
+const isInformationOpen: Ref<boolean> = ref(false);
 const isLegalNoticeOpen: Ref<boolean> = ref(false);
 const isLicenceOpen: Ref<boolean> = ref(false);
 
-const userManualLabel = "Guide d'utilisation";
+const informationLabel = "À propos";
 const legalNoticeLabel = "Mentions légales";
 const licenceLabel = "Licence";
 </script>
@@ -15,9 +15,9 @@ const licenceLabel = "Licence";
 <template>
   <MenuBase label="Infos" icon="sym_s_info">
     <QList>
-      <QItem v-close-popup clickable @click="isUserManualOpen = true">
+      <QItem v-close-popup clickable @click="isInformationOpen = true">
         <QItemSection>
-          <QItemLabel>{{ userManualLabel }}</QItemLabel>
+          <QItemLabel>{{ informationLabel }}</QItemLabel>
         </QItemSection>
       </QItem>
       <QItem v-close-popup clickable @click="isLegalNoticeOpen = true">
@@ -32,9 +32,10 @@ const licenceLabel = "Licence";
       </QItem>
     </QList>
   </MenuBase>
-  <QDialog v-model="isUserManualOpen">
+
+  <QDialog v-model="isInformationOpen">
     <QCard square>
-      <QCardSection class="text-h6">{{ userManualLabel }}</QCardSection>
+      <QCardSection class="text-h6">{{ informationLabel }}</QCardSection>
       <QCardSection>
         <p>
           Pour toute question, remarque, suggestion d'améliorations, signalement
@@ -48,6 +49,7 @@ const licenceLabel = "Licence";
       </QCardSection>
     </QCard>
   </QDialog>
+
   <QDialog v-model="isLegalNoticeOpen">
     <QCard square>
       <QCardSection class="text-h6">{{ legalNoticeLabel }}</QCardSection>
@@ -111,6 +113,7 @@ const licenceLabel = "Licence";
       </QCardSection>
     </QCard>
   </QDialog>
+
   <QDialog v-model="isLicenceOpen">
     <QCard square>
       <QCardSection class="text-h6">{{ licenceLabel }}</QCardSection>
@@ -172,4 +175,8 @@ const licenceLabel = "Licence";
   </QDialog>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.q-item {
+  white-space: nowrap;
+}
+</style>

@@ -46,6 +46,7 @@ const demo: Ref<boolean> = ref(false);
       </p>
     </div>
   </QCardSection>
+
   <QCardSection v-if="currentPhase === PHASES.ASSIGNMENTS">
     <p class="text-subtitle1">Geyser est actuellement en phase de commission</p>
     <p class="text-justify">
@@ -55,6 +56,7 @@ const demo: Ref<boolean> = ref(false);
       modifier.
     </p>
   </QCardSection>
+
   <QCardSection v-if="currentPhase === PHASES.RESULTS">
     <p class="text-subtitle1">
       Geyser est actuellement en phase de consultation
@@ -65,6 +67,7 @@ const demo: Ref<boolean> = ref(false);
       attributions des années précédentes. À l'année prochaine !
     </p>
   </QCardSection>
+
   <QCardSection v-if="currentPhase === PHASES.SHUTDOWN">
     <p class="text-subtitle2">Geyser est actuellement fermé</p>
   </QCardSection>

@@ -83,9 +83,9 @@ const version: ComputedRef<string | null> = computed(() =>
       >
         <QTooltip>Mode sombre</QTooltip>
       </QBtn>
-      <MenuAdmin v-if="perm.toAdmin" />
-      <MenuUser />
       <MenuInfo />
+      <MenuUser />
+      <MenuAdmin v-if="perm.toAdmin" />
     </QToolbar>
   </QHeader>
 </template>

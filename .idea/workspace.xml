@@ -21,10 +21,12 @@
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/TheHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TheHeader.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuBase.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuBase.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/HomeExpansion.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomeExpansion.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/HomeMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomeMessage.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PageHome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageHome.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/HomeMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/HomeMessage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdminOptions.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdminOptions.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuInfo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuInfo.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuUser.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuYear.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuYear.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,8 +179,8 @@
       <recent name="$PROJECT_DIR$/src/components/service" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/components/teacher" />
       <recent name="$PROJECT_DIR$/src/components/core" />
+      <recent name="$PROJECT_DIR$/src/components/teacher" />
       <recent name="$PROJECT_DIR$/src/composables" />
       <recent name="$PROJECT_DIR$/src/helpers" />
       <recent name="$PROJECT_DIR$/src/components" />
@@ -336,15 +338,7 @@
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
-      <workItem from="1735307742226" duration="4684000" />
-    </task>
-    <task id="LOCAL-00283" summary="style(eslint): update vue rules">
-      <option name="closed" value="true" />
-      <created>1734107061867</created>
-      <option name="number" value="00283" />
-      <option name="presentableId" value="LOCAL-00283" />
-      <option name="project" value="LOCAL" />
-      <updated>1734107061867</updated>
+      <workItem from="1735307742226" duration="7063000" />
     </task>
     <task id="LOCAL-00284" summary="refactor(core): streamline function names and event handlers">
       <option name="closed" value="true" />
@@ -730,7 +724,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735307834999</updated>
     </task>
-    <option name="localTasksCounter" value="332" />
+    <task id="LOCAL-00332" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735315934480</created>
+      <option name="number" value="00332" />
+      <option name="presentableId" value="LOCAL-00332" />
+      <option name="project" value="LOCAL" />
+      <updated>1735315934480</updated>
+    </task>
+    <option name="localTasksCounter" value="333" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -44,10 +44,10 @@ const yearOptions: ComputedRef<Option<number>[]> = computed(() =>
 </script>
 
 <template>
-  <MenuBase label="Paramètres" icon="sym_s_settings">
+  <MenuBase label="Administration" icon="sym_s_settings">
     <QList dense>
       <QItem class="flex-center">
-        <QItemLabel header>Paramètres</QItemLabel>
+        <QItemLabel header>Administration</QItemLabel>
       </QItem>
       <QSeparator />
       <MenuAdminOptions

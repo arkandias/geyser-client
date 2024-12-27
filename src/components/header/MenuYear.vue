@@ -44,7 +44,7 @@ watch(
         <QItemLabel header>Année</QItemLabel>
       </QItem>
       <QSeparator />
-      <QItem>
+      <QItem class="item-options">
         <QOptionGroup
           v-model="selected"
           :options
@@ -58,7 +58,7 @@ watch(
 </template>
 
 <style scoped lang="scss">
-.q-item {
+.item-options {
   padding-left: 8px;
 }
 .q-radio__label {

@@ -26,7 +26,7 @@ const roleOptions: ComputedRef<Option<Role>[]> = computed(() =>
         </QItemLabel>
       </QItem>
       <QSeparator />
-      <QItem>
+      <QItem class="item-options">
         <QOptionGroup
           v-model="activeRole"
           :options="roleOptions"
@@ -49,7 +49,7 @@ const roleOptions: ComputedRef<Option<Role>[]> = computed(() =>
 </template>
 
 <style scoped lang="scss">
-.q-item {
+.item-options {
   padding-left: 8px;
 }
 .q-radio__label {

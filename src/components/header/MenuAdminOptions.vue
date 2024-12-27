@@ -33,7 +33,7 @@ watch(
       </QItemSection>
     </template>
     <QList dense>
-      <QItem>
+      <QItem class="item-options">
         <QOptionGroup
           v-model="model"
           :options
@@ -47,7 +47,7 @@ watch(
 </template>
 
 <style scoped lang="scss">
-.q-item {
+.item-options {
   padding-left: 8px;
 }
 .q-radio__label {
