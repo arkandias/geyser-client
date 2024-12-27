@@ -18,9 +18,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
-      <change beforePath="$PROJECT_DIR$/src/stores/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/data.ts" afterDir="false" />
-    </list>
+    <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -330,15 +328,7 @@
       <workItem from="1733958145291" duration="106853000" />
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
-      <workItem from="1734622570180" duration="166686000" />
-    </task>
-    <task id="LOCAL-00281" summary="refactor(format): enforce typescript-eslint stylistic rules">
-      <option name="closed" value="true" />
-      <created>1734030032260</created>
-      <option name="number" value="00281" />
-      <option name="presentableId" value="LOCAL-00281" />
-      <option name="project" value="LOCAL" />
-      <updated>1734030032260</updated>
+      <workItem from="1734622570180" duration="166813000" />
     </task>
     <task id="LOCAL-00282" summary="refactor(format): enforce typescript-eslint stylistic rules">
       <option name="closed" value="true" />
@@ -724,7 +714,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735260533872</updated>
     </task>
-    <option name="localTasksCounter" value="330" />
+    <task id="LOCAL-00330" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735260717964</created>
+      <option name="number" value="00330" />
+      <option name="presentableId" value="LOCAL-00330" />
+      <option name="project" value="LOCAL" />
+      <updated>1735260717964</updated>
+    </task>
+    <option name="localTasksCounter" value="331" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
