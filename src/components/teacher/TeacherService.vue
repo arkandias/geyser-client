@@ -15,7 +15,7 @@ import { NotifyType, notify } from "@/helpers/notify.ts";
 import type { ModificationType } from "@/types/modification-type.ts";
 import type { ServiceDetails } from "@/types/service.ts";
 
-import ServiceTable from "@/components/service/ServiceTable.vue";
+import ServiceTable from "@/components/core/ServiceTable.vue";
 
 const { service, positionBaseServiceHours, editable } = defineProps<{
   service: ServiceDetails;

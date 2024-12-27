@@ -2,15 +2,16 @@
 import { useMutation } from "@urql/vue";
 import { type Ref, ref } from "vue";
 
-import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { UPSERT_SERVICE } from "@/graphql/services.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
+import { useYears } from "@/stores/years.ts";
 
-const { uid, year, positionBaseServiceHours } = defineProps<{
+const { uid, positionBaseServiceHours } = defineProps<{
   uid: string;
-  year: number;
   positionBaseServiceHours?: number | null;
 }>();
+
+const { currentYear } = useYears();
 
 const upsertService = useMutation(UPSERT_SERVICE);
 
@@ -31,7 +32,7 @@ const submitServiceCreation = async (): Promise<void> => {
   }
   const result = await upsertService.executeMutation({
     uid,
-    year,
+    year: currentYear.value ?? -1,
     hours: baseServiceHours.value,
   });
   if (result.data?.service && !result.error) {
@@ -53,10 +54,10 @@ const submitServiceCreation = async (): Promise<void> => {
     <QDialog v-model="serviceCreation" persistent square>
       <QCard flat square>
         <QCardSection>
-          <div>
+          <div class="text-subtitle1">
             Service de base
             <QIcon name="sym_s_help" color="primary">
-              <QTooltip :delay="TOOLTIP_DELAY">
+              <QTooltip>
                 Votre service de base est le nombre d'heures équivalent TD que
                 vous devez effectuer cette année avant déduction des éventuelles
                 modifications de service (délégation, décharge, etc.).

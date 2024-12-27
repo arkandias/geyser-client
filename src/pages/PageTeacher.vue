@@ -7,12 +7,9 @@ import { GET_TEACHER_DETAILS } from "@/graphql/teachers.ts";
 import { getValue } from "@/helpers/query-params.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useYears } from "@/stores/years.ts";
-import { getProfile } from "@/types/profile.ts";
 import type { TeacherDetails } from "@/types/teacher.ts";
 
 import DetailsTeacher from "@/components/DetailsTeacher.vue";
-import NoServices from "@/components/service/NoServices.vue";
-import TeacherTitle from "@/components/teacher/TeacherTitle.vue";
 
 const route = useRoute();
 
@@ -48,22 +45,11 @@ const details: ComputedRef<TeacherDetails | null> = computed(
 <template>
   <QPage>
     <QCard v-if="details" flat square class="column items-center">
-      <TeacherTitle
-        :profile="getProfile(details)"
-        :position="details.position?.label"
-      />
-      <!-- TODO: Responsabilités -->
-      <DetailsTeacher v-if="details?.services[0]" :details />
-      <NoServices
-        v-else-if="currentYear !== null"
-        :uid="details.uid"
-        :year="currentYear"
-        :position-base-service-hours="details.position?.baseServiceHours"
-      />
+      <DetailsTeacher :details />
     </QCard>
     <QCard v-else flat square>
-      <QCardSection class="text-center">
-        <div class="text-subtitle1">Pas d'information sur l'intervenant.</div>
+      <QCardSection class="text-subtitle1 text-center">
+        Pas d'information sur l'intervenant.
       </QCardSection>
     </QCard>
   </QPage>

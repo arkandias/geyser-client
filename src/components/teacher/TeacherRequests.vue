@@ -4,7 +4,7 @@ import { formatWH } from "@/helpers/format.ts";
 import { totalWH } from "@/helpers/hours.ts";
 import type { TotalWeightedHours } from "@/types/row.ts";
 
-import ServiceTable from "@/components/service/ServiceTable.vue";
+import ServiceTable from "@/components/core/ServiceTable.vue";
 
 defineProps<{
   totalAssigned: TotalWeightedHours;
