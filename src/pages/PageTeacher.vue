@@ -55,4 +55,8 @@ const details: ComputedRef<TeacherDetails | null> = computed(
   </QPage>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:deep(.displayed-text) {
+  width: $teacher-message-width;
+}
+</style>

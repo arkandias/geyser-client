@@ -31,8 +31,4 @@ defineSlots<{ default(): unknown }>();
   </QCardSection>
 </template>
 
-<style scoped lang="scss">
-.q-toggle {
-  margin-left: 8px;
-}
-</style>
+<style scoped lang="scss"></style>

@@ -19,6 +19,5 @@ defineProps<{ message?: string }>();
 <style scoped lang="scss">
 .q-card {
   max-width: $homepage-max-width;
-  margin-bottom: 16px;
 }
 </style>

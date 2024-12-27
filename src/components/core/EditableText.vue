@@ -22,6 +22,7 @@ const options = {
     font: ["face"],
     div: ["style"],
     span: ["style"],
+    p: [],
     br: [],
     b: [],
     i: [],
@@ -98,13 +99,10 @@ const toolbar = [
     </QCard>
   </QDialog>
   <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-  <div class="message" v-html="sanitizedText" />
+  <div class="displayed-text" v-html="sanitizedText" />
 </template>
 
 <style scoped lang="scss">
-.message {
-  width: $teacher-page-width;
-}
 :deep(.q-editor__toolbar) {
   background-color: $grey-3;
 }
