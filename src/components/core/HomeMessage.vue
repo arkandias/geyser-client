@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type Ref, ref } from "vue";
 
+import { PHASES } from "@/config/types/phases.ts";
 import { usePhases } from "@/stores/phases.ts";
 
 const { currentPhase } = usePhases();
@@ -9,8 +10,8 @@ const demo: Ref<boolean> = ref(false);
 </script>
 
 <template>
-  <QCardSection v-if="currentPhase === 'voeux'">
-    <p class="text-subtitle2">Geyser est actuellement en phase de vœux</p>
+  <QCardSection v-if="currentPhase === PHASES.REQUESTS">
+    <p class="text-subtitle1">Geyser est actuellement en phase de vœux</p>
     <div class="text-justify">
       <p>
         Vérifiez que votre service de base (ci-dessous) est correct. Dans le cas
@@ -45,8 +46,8 @@ const demo: Ref<boolean> = ref(false);
       </p>
     </div>
   </QCardSection>
-  <QCardSection v-if="currentPhase === 'commission'">
-    <p class="text-subtitle2">Geyser est actuellement en phase de commission</p>
+  <QCardSection v-if="currentPhase === PHASES.ASSIGNMENTS">
+    <p class="text-subtitle1">Geyser est actuellement en phase de commission</p>
     <p class="text-justify">
       Les travaux de la commission sont en cours. Vous serez informé lorsqu'ils
       seront terminés pour consulter les attributions. En attendant, vous pouvez
@@ -54,8 +55,8 @@ const demo: Ref<boolean> = ref(false);
       modifier.
     </p>
   </QCardSection>
-  <QCardSection v-if="currentPhase === 'consultation'">
-    <p class="text-subtitle2">
+  <QCardSection v-if="currentPhase === PHASES.RESULTS">
+    <p class="text-subtitle1">
       Geyser est actuellement en phase de consultation
     </p>
     <p class="text-justify">
@@ -64,7 +65,7 @@ const demo: Ref<boolean> = ref(false);
       attributions des années précédentes. À l'année prochaine !
     </p>
   </QCardSection>
-  <QCardSection v-if="currentPhase === 'fermeture'">
+  <QCardSection v-if="currentPhase === PHASES.SHUTDOWN">
     <p class="text-subtitle2">Geyser est actuellement fermé</p>
   </QCardSection>
 </template>

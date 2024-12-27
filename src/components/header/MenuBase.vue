@@ -9,14 +9,14 @@ defineProps<{
 }>();
 defineSlots<{ default(): unknown }>();
 
-const open: Ref<boolean> = ref(false);
+const isOpen: Ref<boolean> = ref(false);
 const tooltip: Ref<boolean> = ref(false);
 </script>
 
 <template>
-  <QBtn :icon :color="buttonColor(open)" flat square>
+  <QBtn :icon :color="buttonColor(isOpen)" flat square>
     <QTooltip v-model="tooltip">{{ label }}</QTooltip>
-    <QMenu v-model="open" square @show="tooltip = false">
+    <QMenu v-model="isOpen" square @show="tooltip = false">
       <slot />
     </QMenu>
   </QBtn>

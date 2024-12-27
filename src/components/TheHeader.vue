@@ -9,6 +9,7 @@ import { useRefresh } from "@/stores/refresh.ts";
 
 import CoursesOptions from "@/components/header/CoursesOptions.vue";
 import MenuAdmin from "@/components/header/MenuAdmin.vue";
+import MenuInfo from "@/components/header/MenuInfo.vue";
 import MenuUser from "@/components/header/MenuUser.vue";
 
 defineProps<{ disable?: boolean }>();
@@ -84,6 +85,7 @@ const version: ComputedRef<string | null> = computed(() =>
       </QBtn>
       <MenuAdmin v-if="perm.toAdmin" />
       <MenuUser />
+      <MenuInfo />
     </QToolbar>
   </QHeader>
 </template>

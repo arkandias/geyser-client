@@ -18,7 +18,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP" />
+    <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TheHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TheHeader.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuBase.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuBase.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/HomeExpansion.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomeExpansion.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/HomeMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/HomeMessage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PageHome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageHome.vue" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -130,7 +137,7 @@
     "javascript.nodejs.core.library.configured.version": "20.12.2",
     "javascript.nodejs.core.library.typings.version": "20.12.14",
     "js.linters.configure.manually.selectedeslint": "true",
-    "last_opened_file_path": "/Users/julienhauseux/Projets/geyser-frontend/src/components/core",
+    "last_opened_file_path": "/Users/julienhauseux/Projets/geyser-frontend/src/components/header",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.stylelint": "true",
@@ -163,11 +170,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/header" />
       <recent name="$PROJECT_DIR$/src/components/core" />
       <recent name="$PROJECT_DIR$/src/i18n/locales/fr" />
       <recent name="$PROJECT_DIR$/src/components" />
       <recent name="$PROJECT_DIR$/src/components/service" />
-      <recent name="$PROJECT_DIR$/src/config/types" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/components/teacher" />
@@ -329,14 +336,7 @@
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
-    </task>
-    <task id="LOCAL-00282" summary="refactor(format): enforce typescript-eslint stylistic rules">
-      <option name="closed" value="true" />
-      <created>1734048619886</created>
-      <option name="number" value="00282" />
-      <option name="presentableId" value="LOCAL-00282" />
-      <option name="project" value="LOCAL" />
-      <updated>1734048619903</updated>
+      <workItem from="1735307742226" duration="4684000" />
     </task>
     <task id="LOCAL-00283" summary="style(eslint): update vue rules">
       <option name="closed" value="true" />
@@ -722,7 +722,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735260717964</updated>
     </task>
-    <option name="localTasksCounter" value="331" />
+    <task id="LOCAL-00331" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735307834998</created>
+      <option name="number" value="00331" />
+      <option name="presentableId" value="LOCAL-00331" />
+      <option name="project" value="LOCAL" />
+      <updated>1735307834999</updated>
+    </task>
+    <option name="localTasksCounter" value="332" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

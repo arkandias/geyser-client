@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HomeMessage from "@/components/home/HomeMessage.vue";
+import HomeMessage from "@/components/core/HomeMessage.vue";
 
 defineProps<{ message?: string }>();
 </script>
@@ -13,12 +13,11 @@ defineProps<{ message?: string }>();
       </QCardSection>
       <HomeMessage v-else />
     </QCard>
-    <!-- TODO: <HomeInfo />-->
   </QPage>
 </template>
 
 <style scoped lang="scss">
-.q-page > * {
+.q-card {
   max-width: $homepage-max-width;
   margin-bottom: 16px;
 }
