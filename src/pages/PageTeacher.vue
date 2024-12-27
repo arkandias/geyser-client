@@ -57,6 +57,6 @@ const details: ComputedRef<TeacherDetails | null> = computed(
 
 <style scoped lang="scss">
 :deep(.displayed-text) {
-  width: $teacher-message-width;
+  max-width: $teacher-message-max-width;
 }
 </style>

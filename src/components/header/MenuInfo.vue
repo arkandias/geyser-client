@@ -37,7 +37,7 @@ const licenceLabel = "Licence";
     <QCard square>
       <QCardSection class="text-h6">{{ informationLabel }}</QCardSection>
       <QCardSection>
-        <p>
+        <p class="text-justify">
           Pour toute question, remarque, suggestion d'améliorations, signalement
           d'erreurs ou de bugs éventuels, merci d'utiliser l'adresse
           électronique de contact ci-dessous.
@@ -53,7 +53,7 @@ const licenceLabel = "Licence";
   <QDialog v-model="isLegalNoticeOpen">
     <QCard square>
       <QCardSection class="text-h6">{{ legalNoticeLabel }}</QCardSection>
-      <QCardSection>
+      <QCardSection class="text-justify">
         <p>
           Les informations recueillies dans cette application sont enregistrées
           dans un fichier informatisé par le département de mathématiques pour
@@ -117,13 +117,13 @@ const licenceLabel = "Licence";
   <QDialog v-model="isLicenceOpen">
     <QCard square>
       <QCardSection class="text-h6">{{ licenceLabel }}</QCardSection>
-      <QCardSection>
+      <QCardSection class="text-justify">
         <p>
           Geyser &mdash; Gestion des enseignements prévisionnels<br />
           Copyright &copy; 2021-2024 Amaël Broustet, Julien Hauseux
         </p>
         <p>
-          Geyser est un logiciel libre distribué sous les termes de la license
+          Geyser est un logiciel libre distribué sous les termes de la licence
           <a
             href="https://www.gnu.org/licenses/agpl-3.0.html#license-text"
             target="_blank"
@@ -139,7 +139,7 @@ const licenceLabel = "Licence";
           serveur doit aussi leur permettre de télécharger le code source
           correspondant à la version modifiée en fonctionnement.
         </p>
-        <p style="text-align: right">
+        <p class="text-right">
           Extrait de
           <a
             href="https://www.gnu.org/licenses/why-affero-gpl.fr.html"
@@ -149,7 +149,6 @@ const licenceLabel = "Licence";
           >
           le 03/03/2024.
         </p>
-        <p style="text-align: right"></p>
         Le code source de Geyser est disponible sur l'instance GitLab de
         l'Université de Lille :
         <ol>
@@ -176,6 +175,9 @@ const licenceLabel = "Licence";
 </template>
 
 <style scoped lang="scss">
+.q-dialog .q-card {
+  max-width: $info-dialog-max-width;
+}
 .q-item {
   white-space: nowrap;
 }

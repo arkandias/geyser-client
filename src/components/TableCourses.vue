@@ -572,9 +572,8 @@ const showTeacherDetails: Ref<boolean> = ref(false);
 
 <style scoped lang="scss">
 .teacher-details-layout {
-  width: $teacher-message-width * 1.05;
-  max-width: 80vw;
-  height: 80vh;
+  max-width: min($teacher-message-max-width * 1.05, 80vw);
+  max-height: 80vh;
   background-color: white;
 }
 .body--dark .teacher-details-layout {
