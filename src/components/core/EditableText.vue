@@ -103,7 +103,7 @@ const toolbar = [
 
 <style scoped lang="scss">
 .message {
-  width: 720px;
+  width: $teacher-page-width;
 }
 :deep(.q-editor__toolbar) {
   background-color: $grey-3;

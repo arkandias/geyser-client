@@ -20,12 +20,9 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/service/DetailsService.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherService.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/service/NoServices.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherNoServices.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/service/ServiceRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherRequests.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/service/ServiceTable.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/ServiceTable.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PageTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageTeacher.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TableCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableCourses.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/EditableText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/EditableText.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/global.variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/global.variables.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -336,15 +333,7 @@
       <workItem from="1733958145291" duration="106853000" />
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
-      <workItem from="1734622570180" duration="164026000" />
-    </task>
-    <task id="LOCAL-00279" summary="chore(scripts): rename prettier/eslint scripts for clarity">
-      <option name="closed" value="true" />
-      <created>1734020144193</created>
-      <option name="number" value="00279" />
-      <option name="presentableId" value="LOCAL-00279" />
-      <option name="project" value="LOCAL" />
-      <updated>1734020144197</updated>
+      <workItem from="1734622570180" duration="166476000" />
     </task>
     <task id="LOCAL-00280" summary="refactor(eslint): update config">
       <option name="closed" value="true" />
@@ -730,7 +719,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735256771513</updated>
     </task>
-    <option name="localTasksCounter" value="328" />
+    <task id="LOCAL-00328" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735257694683</created>
+      <option name="number" value="00328" />
+      <option name="presentableId" value="LOCAL-00328" />
+      <option name="project" value="LOCAL" />
+      <updated>1735257694684</updated>
+    </task>
+    <option name="localTasksCounter" value="329" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

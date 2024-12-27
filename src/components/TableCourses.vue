@@ -25,6 +25,8 @@ import type { Option } from "@/types/common.ts";
 import type { CourseRow } from "@/types/course.ts";
 import type { TeacherDetails } from "@/types/teacher.ts";
 
+import PageTeacher from "@/pages/PageTeacher.vue";
+
 const { teacher } = defineProps<{
   teacher: TeacherDetails | null;
 }>();
@@ -340,9 +342,18 @@ const isVisible = (row: CourseRow): boolean =>
   row.program.degree.visible &&
   row.program.visible &&
   (row.track?.visible ?? true);
+
+const showTeacherDetails: Ref<boolean> = ref(false);
 </script>
 
 <template>
+  <QDialog v-model="showTeacherDetails">
+    <QLayout view="hHh lpR fFf" container class="teacher-details-layout">
+      <QPageContainer>
+        <PageTeacher />
+      </QPageContainer>
+    </QLayout>
+  </QDialog>
   <QTable
     v-model:selected="selectedCourse"
     :title
@@ -373,6 +384,7 @@ const isVisible = (row: CourseRow): boolean =>
           flat
           square
           dense
+          @click="showTeacherDetails = true"
         />
         <QBtn
           v-if="teacher"
@@ -559,6 +571,15 @@ const isVisible = (row: CourseRow): boolean =>
 </template>
 
 <style scoped lang="scss">
+.teacher-details-layout {
+  width: $teacher-page-width * 1.05;
+  max-width: 80vw;
+  height: 80vh;
+  background-color: white;
+}
+.body--dark .teacher-details-layout {
+  background-color: $dark;
+}
 .q-select {
   min-width: $table-filter-select-min-width;
 }
