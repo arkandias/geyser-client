@@ -20,10 +20,7 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TableCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableCourses.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuInfo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuInfo.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/global.variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/global.variables.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PageTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageTeacher.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/HomeMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/HomeMessage.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -335,15 +332,7 @@
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
-      <workItem from="1735307742226" duration="11702000" />
-    </task>
-    <task id="LOCAL-00286" summary="chore(gitignore): remove .idea from ignored files">
-      <option name="closed" value="true" />
-      <created>1734340723532</created>
-      <option name="number" value="00286" />
-      <option name="presentableId" value="LOCAL-00286" />
-      <option name="project" value="LOCAL" />
-      <updated>1734340723532</updated>
+      <workItem from="1735307742226" duration="11904000" />
     </task>
     <task id="LOCAL-00287" summary="refactor(annees): simplify selected logic and export as readonly">
       <option name="closed" value="true" />
@@ -729,7 +718,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735341746954</updated>
     </task>
-    <option name="localTasksCounter" value="335" />
+    <task id="LOCAL-00335" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735343702568</created>
+      <option name="number" value="00335" />
+      <option name="presentableId" value="LOCAL-00335" />
+      <option name="project" value="LOCAL" />
+      <updated>1735343702568</updated>
+    </task>
+    <option name="localTasksCounter" value="336" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

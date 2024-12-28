@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { type Ref, ref } from "vue";
-
 import { PHASES } from "@/config/types/phases.ts";
 import { usePhases } from "@/stores/phases.ts";
 
 const { currentPhase } = usePhases();
-
-const demo: Ref<boolean> = ref(false);
 </script>
 
 <template>
@@ -21,7 +17,7 @@ const demo: Ref<boolean> = ref(false);
         <b>
           Le total indiqué doit correspondre au nombre d'heures équivalent TD
           que la commission doit vous attribuer avec des enseignements
-          disponibles sur Geyser.
+          disponibles dans Geyser.
         </b>
       </p>
       <p>
@@ -34,15 +30,9 @@ const demo: Ref<boolean> = ref(false);
         Enfin, vous avez la possibilité de laisser un message à la commission
         afin de porter à sa connaissance toute information que vous jugez utile
         pour son travail. Ce message ne sera visible que par la commission et
-        vous-même. Pour modifier votre message, cliquez sur le bouton à bascule
-        <QToggle
-          v-model="demo"
-          icon="sym_s_edit"
-          color="primary"
-          size="xs"
-          dense
-        />
-        qui apparaît à côté du titre de la section correspondante ci-dessous.
+        vous-même. Pour modifier votre message, cliquez sur le bouton
+        <QBtn icon="sym_s_edit" color="primary" size="xs" flat square dense />
+        qui apparaît à côté du titre de la section correspondante.
       </p>
     </div>
   </QCardSection>
