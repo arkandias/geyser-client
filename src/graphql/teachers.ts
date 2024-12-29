@@ -19,8 +19,10 @@ export const GET_TEACHERS_ROWS = graphql(/* GraphQL */ `
     ) {
       ...Profile
       visible
-      # limit: 1 car unique
-      services(where: { annee: { _eq: $year } }, limit: 1) {
+      services(
+        where: { annee: { _eq: $year } }
+        limit: 1 # unique
+      ) {
         ...Service
       }
       totalAssigned: demandes_aggregate(
@@ -62,8 +64,10 @@ export const GET_TEACHER_DETAILS = graphql(/* GraphQL */ `
         label
         baseServiceHours: heures_eqtd_service_base
       }
-      # limit: 1 car unique
-      services(where: { annee: { _eq: $year } }, limit: 1) {
+      services(
+        where: { annee: { _eq: $year } }
+        limit: 1 # unique
+      ) {
         ...ServiceDetails
       }
       priorities: priorites(
@@ -96,8 +100,10 @@ export const GET_TEACHER_DETAILS = graphql(/* GraphQL */ `
         ...RequestsTotalHours
         ...RequestsTotalWeightedHours
       }
-      # limit: 1 car unique
-      messages(where: { annee: { _eq: $year } }, limit: 1) {
+      messages(
+        where: { annee: { _eq: $year } }
+        limit: 1 # unique
+      ) {
         ...Message
       }
     }

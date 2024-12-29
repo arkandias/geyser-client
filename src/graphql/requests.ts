@@ -35,7 +35,6 @@ graphql(/* GraphQL */ `
 
 export const GET_REQUEST = graphql(/* GraphQL */ `
   query GetRequest($uid: String!, $courseId: Int!, $requestType: String!) {
-    # limit: 1 car unique
     requests: demande(
       where: {
         _and: [
@@ -44,9 +43,20 @@ export const GET_REQUEST = graphql(/* GraphQL */ `
           { type: { _eq: $requestType } }
         ]
       }
-      limit: 1
+      limit: 1 # unique
     ) {
       ...RequestDetails
+    }
+    course: enseignement_by_pk(id: $courseId) {
+      year: annee
+      yearByYear: anneeByAnnee {
+        services(
+          where: { uid: { _eq: $uid } }
+          limit: 1 # unique
+        ) {
+          id
+        }
+      }
     }
   }
 `);

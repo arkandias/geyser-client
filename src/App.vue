@@ -6,21 +6,16 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { PHASES, isPhase } from "@/config/types/phases.ts";
 import { GET_CURRENT_PHASE } from "@/graphql/phases.ts";
 import { GET_PROFILE } from "@/graphql/profile.ts";
-import { GET_SERVICE } from "@/graphql/services.ts";
 import { GET_YEARS } from "@/graphql/years.ts";
 import { getClaims, logout } from "@/services/keycloak.ts";
-import {
-  login,
-  setService,
-  useAuthentication,
-} from "@/stores/authentication.ts";
+import { login, useAuthentication } from "@/stores/authentication.ts";
 import { usePhases } from "@/stores/phases.ts";
 import { useYears } from "@/stores/years.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
 import PageHome from "@/pages/PageHome.vue";
 
-const { currentYear, setYears, setCurrentYear } = useYears();
+const { setYears, setCurrentYear } = useYears();
 const { currentPhase, setCurrentPhase } = usePhases();
 const { logged } = useAuthentication();
 const perm = usePermissions();
@@ -84,24 +79,6 @@ watch(
       return;
     }
     login(result.profile, claims.allowedRoles, claims.defaultRole, logout);
-  },
-  { immediate: true },
-);
-
-// Current Year's Service
-const queryService = useQuery({
-  query: GET_SERVICE,
-  variables: {
-    uid: computed(() => claimsRef.value?.userId ?? ""),
-    year: computed(() => currentYear.value ?? -1),
-  },
-  pause: () => !claimsRef.value?.userId || !currentYear.value,
-  context: { additionalTypenames: ["service"] },
-});
-watch(
-  queryService.data,
-  (value) => {
-    setService(!!value?.service.length);
   },
   { immediate: true },
 );

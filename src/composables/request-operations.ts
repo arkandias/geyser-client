@@ -34,12 +34,31 @@ const getRequest = async (
   const result = await client.query(GET_REQUEST, variables, {
     requestPolicy: "network-only",
   });
-  if (!result.data?.requests) {
+  if (!result.data) {
     console.error(
-      "Cannot get the current request. Please report this error to an administrator",
+      "Error while fetching the current request. Please report this error to an administrator",
     );
     notify(NotifyType.Error, {
-      message: "Impossible de récupérer la demande actuelle",
+      message: "Erreur lors de la récupération de la demande actuelle",
+    });
+    return null;
+  }
+  if (!result.data.course) {
+    console.error(
+      `Could not find course with id ${variables.courseId.toString()}`,
+    );
+    notify(NotifyType.Error, {
+      message: "Erreur lors de la récupération de la demande actuelle",
+    });
+    return null;
+  }
+  if (!result.data.course.yearByYear.services[0]) {
+    console.error(
+      `No service associated to this request. You must create a service for user ${variables.uid} and year ${result.data.course.year.toString()} first`,
+    );
+    notify(NotifyType.Error, {
+      message: `Pas de service trouvé pour ${variables.uid} pour l'année ${result.data.course.year.toString()}`,
+      caption: `Veuillez d'abord créer un service sur la page enseignant`,
     });
     return null;
   }

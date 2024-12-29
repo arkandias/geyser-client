@@ -21,14 +21,15 @@
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/RequestCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestCard.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/RequestForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestForm.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/composables/permissions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/permissions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherNoServices.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherNoService.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/composables/request-operations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/request-operations.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gql/gql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/gql.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gql/graphql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/graphql.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/phases.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/phases.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/requests.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/requests.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/graphql/services.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/services.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/teachers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/teachers.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/stores/authentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/authentication.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -342,15 +343,7 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="8217000" />
-    </task>
-    <task id="LOCAL-00292" summary="```  &#10;refactor(phases): remove unused &quot;visible&quot; field from phase entity&#10;&#10;BREAKING CHANGE: &quot;visible&quot; field is removed from phase queries and schema  &#10;```">
-      <option name="closed" value="true" />
-      <created>1734343037034</created>
-      <option name="number" value="00292" />
-      <option name="presentableId" value="LOCAL-00292" />
-      <option name="project" value="LOCAL" />
-      <updated>1734343037034</updated>
+      <workItem from="1735468210242" duration="11793000" />
     </task>
     <task id="LOCAL-00293" summary="refactor(graphql): adapt graphql operations to the new series of migrations of the backend&#10;&#10;BREAKING CHANGES">
       <option name="closed" value="true" />
@@ -736,7 +729,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735485361438</updated>
     </task>
-    <option name="localTasksCounter" value="341" />
+    <task id="LOCAL-00341" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735497611236</created>
+      <option name="number" value="00341" />
+      <option name="presentableId" value="LOCAL-00341" />
+      <option name="project" value="LOCAL" />
+      <updated>1735497611236</updated>
+    </task>
+    <option name="localTasksCounter" value="342" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

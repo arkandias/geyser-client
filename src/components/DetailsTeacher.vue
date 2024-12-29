@@ -8,7 +8,7 @@ import type { TeacherDetails } from "@/types/teacher.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import TeacherMessage from "@/components/teacher/TeacherMessage.vue";
-import TeacherNoServices from "@/components/teacher/TeacherNoServices.vue";
+import TeacherNoService from "@/components/teacher/TeacherNoService.vue";
 import TeacherRequests from "@/components/teacher/TeacherRequests.vue";
 import TeacherService from "@/components/teacher/TeacherService.vue";
 import TeacherTitle from "@/components/teacher/TeacherTitle.vue";
@@ -62,7 +62,7 @@ const messageEdition: Ref<boolean> = ref(false);
       />
     </DetailsSection>
   </template>
-  <TeacherNoServices
+  <TeacherNoService
     v-else
     :uid="details.uid"
     :position-base-service-hours="details.position?.baseServiceHours"
