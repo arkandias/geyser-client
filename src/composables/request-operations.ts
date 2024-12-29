@@ -23,7 +23,7 @@ const getLabel = (requestType: RequestType): string => {
   return option.label;
 };
 
-const getCurrentRequest = async (
+const getRequest = async (
   client: Client,
   variables: {
     uid: string;
@@ -58,7 +58,7 @@ const updateRequest =
       throw new Error(`Invalid request type '${variables.requestType}'`);
     }
     const { hours, ...rest } = variables;
-    const current = await getCurrentRequest(client, rest);
+    const current = await getRequest(client, rest);
     if (current === null) {
       return;
     }
