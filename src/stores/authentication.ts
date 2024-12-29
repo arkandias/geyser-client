@@ -13,15 +13,16 @@ const profile: Profile = reactive({
   alias: null,
   active: false,
 });
+const service: Ref<boolean> = ref(false);
 const allowedRoles: Ref<Role[]> = ref([]);
 const logout: Ref<() => Promise<void>> = ref(() => Promise.resolve());
 
-export function login(
+export const login = (
   newProfile: Profile,
   newAllowedRoles: Role[],
   newDefaultRole: Role,
   newLogout: () => Promise<void>,
-): boolean {
+): void => {
   allowedRoles.value = newAllowedRoles;
   activeRole.value = newDefaultRole;
   profile.uid = newProfile.uid;
@@ -35,12 +36,16 @@ export function login(
   };
   logged.value = true;
   console.debug("Logged in");
-  return true;
-}
+};
+
+export const setService = (newService: boolean): void => {
+  service.value = newService;
+};
 
 export const useAuthentication = () => ({
   logged: readonly(logged),
   profile: readonly(profile),
+  service: readonly(service),
   allowedRoles: readonly(allowedRoles),
   activeRole: readonly(activeRole),
   logout: readonly(logout),

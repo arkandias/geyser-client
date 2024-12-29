@@ -52,7 +52,7 @@ const archives: ComputedRef<Archive[]> = computed(() =>
 
 <template>
   <DetailsSection title="Demandes">
-    <DetailsSubsection v-if="perm.toSubmitRequests || perm.toEditAssignments">
+    <DetailsSubsection v-if="perm.toSubmitRequests || perm.toAssignCourses">
       <RequestForm
         :course-id="details.courseId"
         :hours-per-group="details.hoursPerGroup"

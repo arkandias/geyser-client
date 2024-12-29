@@ -61,7 +61,7 @@ const requestTypeInit: ComputedRef<string | null> = computed(() => {
   }
 });
 const requestTypeOptions: ComputedRef<Option<RequestType>[]> = computed(() => [
-  ...(perm.toEditAssignments
+  ...(perm.toAssignCourses
     ? [{ value: REQUEST_TYPES.ASSIGNMENT, label: "Attribution" }]
     : []),
   ...(perm.toSubmitRequests
@@ -81,7 +81,7 @@ watch(
 
 const uid: Ref<string | null> = ref(null);
 const uidInit: ComputedRef<string | null> = computed(() =>
-  perm.toSubmitRequestsForOthers || perm.toEditAssignments ? null : profile.uid,
+  perm.toSubmitRequestsForOthers || perm.toAssignCourses ? null : profile.uid,
 );
 watch(
   uidInit,
@@ -136,7 +136,7 @@ const resetForm = (): void => {
     @reset="resetForm"
   >
     <TeacherSelect
-      v-if="perm.toSubmitRequestsForOthers || perm.toEditAssignments"
+      v-if="perm.toSubmitRequestsForOthers || perm.toAssignCourses"
       v-model="uid"
       dense
       options-dense

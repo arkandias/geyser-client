@@ -20,7 +20,16 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/HomeMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/HomeMessage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/RequestCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestCard.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/RequestForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestForm.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/composables/permissions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/permissions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/composables/request-operations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/request-operations.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gql/gql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/gql.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gql/graphql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/graphql.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/services.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/services.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/authentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/authentication.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,47 +132,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "refacto",
-    "javascript.nodejs.core.library.configured.version": "20.12.2",
-    "javascript.nodejs.core.library.typings.version": "20.12.14",
-    "js.linters.configure.manually.selectedeslint": "true",
-    "last_opened_file_path": "/Users/julienhauseux/Projets/geyser-frontend/src/components/header",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.stylelint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.stylelint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "node",
-    "nodejs_package_manager_path": "pnpm",
-    "npm.generate.executor": "Run",
-    "prettierjs.PrettierConfiguration.Package": "/Users/julienhauseux/Projets/geyser-frontend/node_modules/prettier",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/Users/julienhauseux/Projets/geyser-frontend/node_modules/typescript/lib",
-    "update.copyright.on.save": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;refacto&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.12.2&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.12.14&quot;,
+    &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/julienhauseux/Projets/geyser-frontend/src/components/header&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
+    &quot;npm.generate.executor&quot;: &quot;Run&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/julienhauseux/Projets/geyser-frontend/node_modules/prettier&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/julienhauseux/Projets/geyser-frontend/node_modules/typescript/lib&quot;,
+    &quot;update.copyright.on.save&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ],
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "Shell Script"
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;Shell Script&quot;
     ],
-    "vue.recent.templates": [
-      "Vue Composition API Component"
+    &quot;vue.recent.templates&quot;: [
+      &quot;Vue Composition API Component&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/components/header" />
@@ -173,10 +182,10 @@
       <recent name="$PROJECT_DIR$/src/components/service" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/helpers" />
       <recent name="$PROJECT_DIR$/src/components/core" />
       <recent name="$PROJECT_DIR$/src/components/teacher" />
       <recent name="$PROJECT_DIR$/src/composables" />
-      <recent name="$PROJECT_DIR$/src/helpers" />
       <recent name="$PROJECT_DIR$/src/components" />
     </key>
   </component>
@@ -332,47 +341,8 @@
       <workItem from="1734433311069" duration="61364000" />
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
-      <workItem from="1735307742226" duration="11904000" />
-    </task>
-    <task id="LOCAL-00287" summary="refactor(annees): simplify selected logic and export as readonly">
-      <option name="closed" value="true" />
-      <created>1734340822748</created>
-      <option name="number" value="00287" />
-      <option name="presentableId" value="LOCAL-00287" />
-      <option name="project" value="LOCAL" />
-      <updated>1734340822748</updated>
-    </task>
-    <task id="LOCAL-00288" summary="refactor(annees): simplify selected logic and export as readonly">
-      <option name="closed" value="true" />
-      <created>1734340861579</created>
-      <option name="number" value="00288" />
-      <option name="presentableId" value="LOCAL-00288" />
-      <option name="project" value="LOCAL" />
-      <updated>1734340861579</updated>
-    </task>
-    <task id="LOCAL-00289" summary="feat(phases): add phase validation with isPhase helper">
-      <option name="closed" value="true" />
-      <created>1734340910840</created>
-      <option name="number" value="00289" />
-      <option name="presentableId" value="LOCAL-00289" />
-      <option name="project" value="LOCAL" />
-      <updated>1734340910840</updated>
-    </task>
-    <task id="LOCAL-00290" summary="refactor(data): centralize data syncing with useDataSync">
-      <option name="closed" value="true" />
-      <created>1734341013646</created>
-      <option name="number" value="00290" />
-      <option name="presentableId" value="LOCAL-00290" />
-      <option name="project" value="LOCAL" />
-      <updated>1734341013646</updated>
-    </task>
-    <task id="LOCAL-00291" summary="refactor(FormulaireDemande): remove reset button from form">
-      <option name="closed" value="true" />
-      <created>1734341372539</created>
-      <option name="number" value="00291" />
-      <option name="presentableId" value="LOCAL-00291" />
-      <option name="project" value="LOCAL" />
-      <updated>1734341372540</updated>
+      <workItem from="1735307742226" duration="12052000" />
+      <workItem from="1735468210242" duration="8217000" />
     </task>
     <task id="LOCAL-00292" summary="```  &#10;refactor(phases): remove unused &quot;visible&quot; field from phase entity&#10;&#10;BREAKING CHANGE: &quot;visible&quot; field is removed from phase queries and schema  &#10;```">
       <option name="closed" value="true" />
@@ -726,7 +696,47 @@
       <option name="project" value="LOCAL" />
       <updated>1735343702568</updated>
     </task>
-    <option name="localTasksCounter" value="336" />
+    <task id="LOCAL-00336" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735344026875</created>
+      <option name="number" value="00336" />
+      <option name="presentableId" value="LOCAL-00336" />
+      <option name="project" value="LOCAL" />
+      <updated>1735344026875</updated>
+    </task>
+    <task id="LOCAL-00337" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735484808016</created>
+      <option name="number" value="00337" />
+      <option name="presentableId" value="LOCAL-00337" />
+      <option name="project" value="LOCAL" />
+      <updated>1735484808017</updated>
+    </task>
+    <task id="LOCAL-00338" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735484992132</created>
+      <option name="number" value="00338" />
+      <option name="presentableId" value="LOCAL-00338" />
+      <option name="project" value="LOCAL" />
+      <updated>1735484992132</updated>
+    </task>
+    <task id="LOCAL-00339" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735485109592</created>
+      <option name="number" value="00339" />
+      <option name="presentableId" value="LOCAL-00339" />
+      <option name="project" value="LOCAL" />
+      <updated>1735485109592</updated>
+    </task>
+    <task id="LOCAL-00340" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735485361438</created>
+      <option name="number" value="00340" />
+      <option name="presentableId" value="LOCAL-00340" />
+      <option name="project" value="LOCAL" />
+      <updated>1735485361438</updated>
+    </task>
+    <option name="localTasksCounter" value="341" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

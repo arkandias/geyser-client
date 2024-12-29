@@ -37,7 +37,7 @@ export const usePermissions = () => {
         isCurrentYearActive.value),
   );
 
-  const toEditAssignments: ComputedRef<boolean> = computed(
+  const toAssignCourses: ComputedRef<boolean> = computed(
     () =>
       activeRole.value === ROLES.ADMIN ||
       (activeRole.value === ROLES.COMMISSIONER &&
@@ -47,7 +47,7 @@ export const usePermissions = () => {
 
   const toViewAssignments: ComputedRef<boolean> = computed(
     () =>
-      toEditAssignments.value ||
+      toAssignCourses.value ||
       currentPhase.value === PHASES.RESULTS ||
       !isCurrentYearActive.value,
   );
@@ -56,7 +56,7 @@ export const usePermissions = () => {
     computed(() => (details) => {
       switch (details.type) {
         case REQUEST_TYPES.ASSIGNMENT:
-          return toEditAssignments.value;
+          return toAssignCourses.value;
         default:
           return details.teacher.uid === profile.uid
             ? toSubmitRequests.value
@@ -117,7 +117,7 @@ export const usePermissions = () => {
     toSubmitRequestsForOthers,
     toSubmitRequests,
     toViewAssignments,
-    toEditAssignments,
+    toAssignCourses,
     toDeleteARequest,
     toEditADescription,
     toViewAllServices,

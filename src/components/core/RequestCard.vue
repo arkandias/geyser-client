@@ -38,9 +38,9 @@ const displayActions: ComputedRef<(requestType: string) => boolean> = computed(
   () => (requestType) => {
     switch (requestType) {
       case REQUEST_TYPES.ASSIGNMENT:
-        return perm.toEditAssignments;
+        return perm.toAssignCourses;
       default:
-        return perm.toSubmitRequests;
+        return perm.toSubmitRequests || perm.toAssignCourses;
     }
   },
 );
@@ -48,7 +48,7 @@ const displayActions: ComputedRef<(requestType: string) => boolean> = computed(
 const displayAssignButton: ComputedRef<(requestType: string) => boolean> =
   computed(
     () => (requestType) =>
-      requestType !== REQUEST_TYPES.ASSIGNMENT && perm.toEditAssignments,
+      requestType !== REQUEST_TYPES.ASSIGNMENT && perm.toAssignCourses,
   );
 </script>
 

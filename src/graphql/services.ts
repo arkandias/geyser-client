@@ -19,6 +19,17 @@ graphql(/* GraphQL */ `
   }
 `);
 
+export const GET_SERVICE = graphql(/* GraphQL */ `
+  query GetService($uid: String!, $year: Int!) {
+    service(
+      where: { _and: [{ uid: { _eq: $uid } }, { annee: { _eq: $year } }] }
+      limit: 1
+    ) {
+      id
+    }
+  }
+`);
+
 export const UPSERT_SERVICE = graphql(/* GraphQL */ `
   mutation UpsertService($uid: String!, $year: Int!, $hours: Float!) {
     service: insert_service_one(

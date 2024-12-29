@@ -69,7 +69,7 @@ const updateRequest =
       return;
     }
     if (hours === 0) {
-      const result = await client.mutation(DELETE_REQUEST, variables);
+      const result = await client.mutation(DELETE_REQUEST, rest);
       if (result.data?.requests?.returning && !result.error) {
         notify(NotifyType.Success, {
           message: getLabel(variables.requestType) + " supprimée",

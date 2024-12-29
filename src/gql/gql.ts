@@ -65,6 +65,8 @@ const documents = {
     types.DeleteServiceModificationDocument,
   "\n  fragment Service on service {\n    id\n    year: annee\n    uid\n    base: heures_eqtd\n    totalModifications: modifications_aggregate {\n      ...ServiceModificationsTotalWeightedHours\n    }\n  }\n\n  fragment ServiceDetails on service {\n    ...Service\n    modifications(order_by: [{ type: asc }, { heures_eqtd: asc }]) {\n      ...ServiceModification\n    }\n  }\n":
     types.ServiceFragmentDoc,
+  "\n  query GetService($uid: String!, $year: Int!) {\n    service(\n      where: { _and: [{ uid: { _eq: $uid } }, { annee: { _eq: $year } }] }\n      limit: 1\n    ) {\n      id\n    }\n  }\n":
+    types.GetServiceDocument,
   "\n  mutation UpsertService($uid: String!, $year: Int!, $hours: Float!) {\n    service: insert_service_one(\n      object: { uid: $uid, annee: $year, heures_eqtd: $hours }\n      on_conflict: {\n        constraint: service_annee_uid_key\n        update_columns: [heures_eqtd]\n      }\n    ) {\n      id\n    }\n  }\n":
     types.UpsertServiceDocument,
   "\n  query GetTeachers {\n    teachers: intervenant(\n      where: { actif: { _eq: true } }\n      order_by: [{ nom: asc }, { prenom: asc }]\n    ) {\n      ...Profile\n    }\n  }\n":
@@ -243,6 +245,12 @@ export function graphql(
 export function graphql(
   source: "\n  fragment Service on service {\n    id\n    year: annee\n    uid\n    base: heures_eqtd\n    totalModifications: modifications_aggregate {\n      ...ServiceModificationsTotalWeightedHours\n    }\n  }\n\n  fragment ServiceDetails on service {\n    ...Service\n    modifications(order_by: [{ type: asc }, { heures_eqtd: asc }]) {\n      ...ServiceModification\n    }\n  }\n",
 ): (typeof documents)["\n  fragment Service on service {\n    id\n    year: annee\n    uid\n    base: heures_eqtd\n    totalModifications: modifications_aggregate {\n      ...ServiceModificationsTotalWeightedHours\n    }\n  }\n\n  fragment ServiceDetails on service {\n    ...Service\n    modifications(order_by: [{ type: asc }, { heures_eqtd: asc }]) {\n      ...ServiceModification\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "\n  query GetService($uid: String!, $year: Int!) {\n    service(\n      where: { _and: [{ uid: { _eq: $uid } }, { annee: { _eq: $year } }] }\n      limit: 1\n    ) {\n      id\n    }\n  }\n",
+): (typeof documents)["\n  query GetService($uid: String!, $year: Int!) {\n    service(\n      where: { _and: [{ uid: { _eq: $uid } }, { annee: { _eq: $year } }] }\n      limit: 1\n    ) {\n      id\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
