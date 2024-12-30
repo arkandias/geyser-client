@@ -20,12 +20,6 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TableTeachers.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableTeachers.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gql/gql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/gql.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gql/graphql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/graphql.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/teachers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/teachers.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/message.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/message.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/teacher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/teacher.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -338,15 +332,7 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="12953000" />
-    </task>
-    <task id="LOCAL-00294" summary="refactor(graphql): adapt graphql operations to the new series of migrations of the backend&#10;&#10;BREAKING CHANGES">
-      <option name="closed" value="true" />
-      <created>1734390654441</created>
-      <option name="number" value="00294" />
-      <option name="presentableId" value="LOCAL-00294" />
-      <option name="project" value="LOCAL" />
-      <updated>1734390654442</updated>
+      <workItem from="1735468210242" duration="13793000" />
     </task>
     <task id="LOCAL-00295" summary="refactor(graphql): adapt graphql operations to the new series of migrations of the backend&#10;&#10;BREAKING CHANGES">
       <option name="closed" value="true" />
@@ -732,7 +718,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735508651635</updated>
     </task>
-    <option name="localTasksCounter" value="343" />
+    <task id="LOCAL-00343" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735554429952</created>
+      <option name="number" value="00343" />
+      <option name="presentableId" value="LOCAL-00343" />
+      <option name="project" value="LOCAL" />
+      <updated>1735554429952</updated>
+    </task>
+    <option name="localTasksCounter" value="344" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
