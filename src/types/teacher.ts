@@ -1,5 +1,5 @@
 import type { Option } from "@/types/common.ts";
-import type { Message, MessageCount } from "@/types/message.ts";
+import type { Message } from "@/types/message.ts";
 import type { Priority } from "@/types/priority.ts";
 import type { Profile } from "@/types/profile.ts";
 import type { RequestDetails } from "@/types/request.ts";
@@ -12,7 +12,7 @@ export type TeacherRow = Profile & {
   totalAssigned: TotalHours & TotalWeightedHours;
   totalPrimary: TotalHours & TotalWeightedHours;
   totalSecondary: TotalHours & TotalWeightedHours;
-  messageCount: MessageCount;
+  messages: { id: number }[];
 };
 
 export type TeacherDetails = Profile & {

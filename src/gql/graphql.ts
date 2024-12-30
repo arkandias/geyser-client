@@ -10168,13 +10168,7 @@ export type GetTeachersRowsQuery = {
         } | null;
       } | null;
     };
-    messageCount: {
-      __typename?: "message_aggregate";
-      aggregate: {
-        __typename?: "message_aggregate_fields";
-        count: number;
-      } | null;
-    };
+    messages: Array<{ __typename?: "message"; id: number }>;
   }>;
 };
 
@@ -15174,8 +15168,7 @@ export const GetTeachersRowsDocument = {
                 },
                 {
                   kind: "Field",
-                  alias: { kind: "Name", value: "messageCount" },
-                  name: { kind: "Name", value: "messages_aggregate" },
+                  name: { kind: "Name", value: "messages" },
                   arguments: [
                     {
                       kind: "Argument",
@@ -15212,19 +15205,7 @@ export const GetTeachersRowsDocument = {
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "aggregate" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "count" },
-                            },
-                          ],
-                        },
-                      },
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
                     ],
                   },
                 },

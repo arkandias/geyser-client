@@ -43,13 +43,11 @@ export const GET_TEACHERS_ROWS = graphql(/* GraphQL */ `
         ...RequestsTotalHours
         ...RequestsTotalWeightedHours
       }
-      messageCount: messages_aggregate(
+      messages(
         where: { annee: { _eq: $year } }
-        limit: 1
+        limit: 1 # unique
       ) {
-        aggregate {
-          count
-        }
+        id
       }
     }
   }

@@ -58,7 +58,7 @@ const columns: ColumnNonAbbreviable<TeacherRow>[] = [
     label: "M.",
     tooltip: "Messages",
     align: "left",
-    field: (row) => (row.messageCount.aggregate?.count ? "✓" : "✗"),
+    field: (row) => (row.messages[0] ? "✓" : "✗"),
     sortable: true,
     visible: false,
     searchable: false,
