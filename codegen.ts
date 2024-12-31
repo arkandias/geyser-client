@@ -13,13 +13,18 @@ export default {
       },
     },
   },
-  documents: ["src/graphql/*.ts"],
+  documents: [
+    "src/graphql/*.ts",
+    "src/**/*.vue",
+    "src/**/*.ts",
+    "!src/gql/**/*",
+  ],
   ignoreNoDocuments: true,
   generates: {
     "src/gql/": {
       preset: "client",
       presetConfig: {
-        fragmentMasking: false,
+        fragmentMasking: true,
       },
       config: {
         useTypeImports: true,

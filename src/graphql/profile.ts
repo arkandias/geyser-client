@@ -9,11 +9,3 @@ graphql(/* GraphQL */ `
     active: actif
   }
 `);
-
-export const GET_PROFILE = graphql(/* GraphQL */ `
-  query GetProfile($uid: String!) {
-    profile: intervenant_by_pk(uid: $uid) {
-      ...Profile
-    }
-  }
-`);

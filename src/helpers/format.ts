@@ -1,43 +1,28 @@
 import type { NamedColor } from "quasar";
 
-import { modifiedService, totalWH } from "@/helpers/hours.ts";
-import type { Coordinator } from "@/types/coordinator.ts";
-import type { CourseDetails } from "@/types/course.ts";
-import type { Profile } from "@/types/profile.ts";
-import type { TeacherRow } from "@/types/teacher.ts";
+import type { UserName } from "@/types/profile.ts";
 
 export const nf = new Intl.NumberFormat("fr-FR", {
   style: "decimal",
   maximumFractionDigits: 2,
 });
 
-export const formatProgram = (nomCursus: string, nomMention: string): string =>
-  nomCursus + " " + nomMention;
+export const formatProgram = (program: {
+  name: string;
+  shortName?: string | null;
+  degree: {
+    name: string;
+    shortName?: string | null;
+  };
+}): string =>
+  (program.degree.shortName ?? program.degree.name) +
+  " " +
+  (program.shortName ?? program.name);
 
-export const formatUser = (user: Profile): string =>
+export const formatUser = (user: UserName): string =>
   user.alias ?? user.firstname + " " + user.lastname;
 
-export const formatCoordinators = (coordinators: Coordinator[]): string =>
-  coordinators
-    .map(
-      ({ profile, comment }) =>
-        formatUser(profile) + (comment ? ` (${comment})` : ""),
-    )
-    .join(", ");
-
-export const formatCourseCaption = (details: CourseDetails): string =>
-  `${details.program.degree.name} — ${details.program.name} — ` +
-  (details.track?.name ? `${details.track.name} — ` : "") +
-  `S${String(details.semester)} — ` +
-  details.courseType.label;
-
 export const formatWH = (hours: number): string => nf.format(hours) + " htd";
-
-export const formatTeacherCaption = (row: TeacherRow) =>
-  `Service corrigé : ${formatWH(modifiedService(row.services[0]))} — ` +
-  `Attributions : ${formatWH(totalWH(row.totalAssigned))} — ` +
-  `Vœux principaux : ${formatWH(totalWH(row.totalPrimary))} — ` +
-  `Vœux secondaires : ${formatWH(totalWH(row.totalSecondary))}`;
 
 export const buttonColor = (active: boolean): NamedColor =>
   active ? "accent" : "white";

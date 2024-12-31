@@ -13,7 +13,7 @@ const { profile, allowedRoles, logout } = useAuthentication();
 const { refresh: refreshData } = useRefresh();
 
 const roleOptions: ComputedRef<Option<Role>[]> = computed(() =>
-  ROLE_OPTIONS.filter((role) => allowedRoles.value.includes(role.value)),
+  ROLE_OPTIONS.filter((role) => allowedRoles.includes(role.value)),
 );
 </script>
 

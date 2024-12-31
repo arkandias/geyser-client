@@ -24,13 +24,14 @@ const selectYear = (year: number | null): void => {
   selectedYear.value = year ?? currentYear.value;
 };
 
-export const useYears = () => ({
-  years: readonly(years),
-  currentYear: readonly(currentYear),
-  selectedYear: readonly(selectedYear),
-  activeYear,
-  isCurrentYearActive,
-  setYears,
-  selectYear,
-  setCurrentYear,
-});
+export const useYears = () =>
+  readonly({
+    years,
+    currentYear,
+    selectedYear,
+    activeYear,
+    isCurrentYearActive,
+    setYears,
+    selectYear,
+    setCurrentYear,
+  });

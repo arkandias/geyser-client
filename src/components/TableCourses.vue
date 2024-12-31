@@ -15,6 +15,8 @@ import {
   REQUEST_TYPES,
   type RequestType,
 } from "@/config/types/request-types.ts";
+import { type FragmentType, graphql, useFragment } from "@/gql";
+import { type CourseRowFragment, CourseRowFragmentDoc } from "@/gql/graphql.ts";
 import { formatProgram, formatUser, nf } from "@/helpers/format.ts";
 import { totalH } from "@/helpers/hours.ts";
 import { compare, normalizeForSearch, uniqueValue } from "@/helpers/misc.ts";
@@ -22,21 +24,95 @@ import { toggleQueryParam } from "@/helpers/query-params.ts";
 import { useData } from "@/stores/data.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
 import type { Option } from "@/types/common.ts";
-import type { CourseRow } from "@/types/course.ts";
 import type { TeacherDetails } from "@/types/teacher.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
 
-const { teacher } = defineProps<{
+const { courseRowsFragment, teacher } = defineProps<{
+  courseRowsFragment: FragmentType<typeof CourseRowFragmentDoc>[];
+  fetching?: boolean;
   teacher: TeacherDetails | null;
 }>();
+
+graphql(`
+  fragment CourseRow on enseignement {
+    id
+    name: nom
+    shortName: nom_court
+    visible
+    program: mention {
+      degree: cursus {
+        id
+        name: nom
+        shortName: nom_court
+        visible
+      }
+      id
+      name: nom
+      shortName: nom_court
+      visible
+    }
+    track: parcours {
+      id
+      name: nom
+      shortName: nom_court
+      visible
+    }
+    courseType: typeByType {
+      value
+      label
+    }
+    semester: semestre
+    hoursPerGroup: heures_corrigees
+    numberOfGroups: groupes_corriges
+    totalHours: total_heures_corrigees
+    totalAssigned: demandes_aggregate(where: { type: { _eq: "attribution" } }) {
+      aggregate {
+        sum {
+          hours: heures
+        }
+      }
+    }
+    totalPrimary: demandes_aggregate(where: { type: { _eq: "principale" } }) {
+      aggregate {
+        sum {
+          hours: heures
+        }
+      }
+    }
+    totalSecondary: demandes_aggregate(where: { type: { _eq: "secondaire" } }) {
+      aggregate {
+        sum {
+          hours: heures
+        }
+      }
+    }
+    totalPriority: demandes_aggregate(
+      where: {
+        _and: [{ type: { _eq: "principale" } }, { prioritaire: { _eq: true } }]
+      }
+    ) {
+      aggregate {
+        sum {
+          hours: heures
+        }
+      }
+    }
+  }
+`);
+
+const courses = computed(() =>
+  courseRowsFragment.map((fragment) =>
+    useFragment(CourseRowFragmentDoc, fragment),
+  ),
+);
 
 const router = useRouter();
 
 const perm = usePermissions();
-const { courses, fetchingCourses, selectedCourse } = useData();
+const { selectedCourse } = useData();
 
-const selectCourse = async (_: Event, row: CourseRow) => {
+const selectCourse = async (_: Event, row: CourseRowFragment) => {
   await toggleQueryParam(router, "courseId", row.id, true);
 };
 
@@ -45,7 +121,7 @@ const deselectTeacher = async () => {
 };
 
 const getRequestTotal = (
-  row: CourseRow,
+  row: CourseRowFragment,
   requestType: RequestType,
   teacher: TeacherDetails | null,
 ) => {
@@ -72,18 +148,15 @@ const title: ComputedRef<string> = computed(() =>
 );
 
 // Columns definition
-const columns: Column<CourseRow>[] = [
+const columns: Column<CourseRowFragment>[] = [
   {
     name: "program",
     label: "Formation",
     field: (row) => ({
-      long: formatProgram(row.program.degree.name, row.program.name),
+      long: formatProgram(row.program),
       short:
         row.program.degree.shortName !== null || row.program.shortName !== null
-          ? formatProgram(
-              row.program.degree.shortName ?? row.program.degree.name,
-              row.program.shortName ?? row.program.name,
-            )
+          ? formatProgram(row.program)
           : null,
     }),
     align: "left",
@@ -262,10 +335,7 @@ const programsOptions: ComputedRef<Option<number>[]> = computed(() =>
   courses.value
     .map((course) => ({
       value: course.program.id,
-      label: formatProgram(
-        course.program.degree.shortName ?? course.program.degree.name,
-        course.program.shortName ?? course.program.name,
-      ),
+      label: formatProgram(course.program),
     }))
     .filter(uniqueValue)
     .sort(compare("label")),
@@ -304,9 +374,9 @@ const filterObj = computed(() => ({
   searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
 }));
 const filterMethod = (
-  rows: readonly CourseRow[],
+  rows: readonly CourseRowFragment[],
   terms: typeof filterObj.value,
-): readonly CourseRow[] =>
+): readonly CourseRowFragment[] =>
   rows.filter((row) =>
     terms.teacherRequests
       ? terms.teacherRequests.some((request) => request.course.id === row.id)
@@ -331,12 +401,12 @@ const filterMethod = (
 
 // Styling options controllers
 const stickyHeader: Ref<boolean> = ref(false);
-const isAssigned = (row: CourseRow) =>
+const isAssigned = (row: CourseRowFragment) =>
   teacher?.requests.some(
     (request) =>
       request.course.id === row.id && request.type === REQUEST_TYPES.ASSIGNMENT,
   ) ?? false;
-const isVisible = (row: CourseRow): boolean =>
+const isVisible = (row: CourseRowFragment): boolean =>
   !teacher &&
   row.visible &&
   row.program.degree.visible &&
@@ -360,7 +430,7 @@ const showTeacherDetails: Ref<boolean> = ref(false);
     :columns
     :visible-columns
     :rows="courses"
-    :loading="fetchingCourses"
+    :loading="fetching"
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"

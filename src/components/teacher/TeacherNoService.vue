@@ -1,44 +1,67 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { type Ref, ref } from "vue";
+import { type Ref, computed, ref } from "vue";
 
-import { UPSERT_SERVICE } from "@/graphql/services.ts";
+import { type FragmentType, graphql, useFragment } from "@/gql";
+import {
+  InsertServiceDocument,
+  TeacherNoServiceFragmentDoc,
+} from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
-import { useYears } from "@/stores/years.ts";
 
-const { uid, positionBaseServiceHours } = defineProps<{
-  uid: string;
-  positionBaseServiceHours?: number | null;
+const { year, teacherNoServiceFragment } = defineProps<{
+  year: number;
+  teacherNoServiceFragment: FragmentType<typeof TeacherNoServiceFragmentDoc>;
 }>();
 
-const { currentYear } = useYears();
+graphql(`
+  fragment TeacherNoService on intervenant {
+    uid
+    position: fonctionByFonction {
+      baseServiceHours: heures_eqtd_service_base
+    }
+  }
 
-const upsertService = useMutation(UPSERT_SERVICE);
+  mutation InsertService($uid: String!, $year: Int!, $hours: Float!) {
+    service: insert_service_one(
+      object: { uid: $uid, annee: $year, heures_eqtd: $hours }
+    ) {
+      id
+    }
+  }
+`);
 
+const teacher = computed(() =>
+  useFragment(TeacherNoServiceFragmentDoc, teacherNoServiceFragment),
+);
+const insertService = useMutation(InsertServiceDocument);
+
+// Service form
 const serviceCreation: Ref<boolean> = ref(false);
-const baseServiceHours: Ref<number> = ref(positionBaseServiceHours ?? 0);
-
+const baseServiceHours: Ref<number> = ref(
+  teacher.value.position?.baseServiceHours ?? 0,
+);
 const resetServiceCreation = (): void => {
   serviceCreation.value = false;
-  baseServiceHours.value = positionBaseServiceHours ?? 0;
+  baseServiceHours.value = teacher.value.position?.baseServiceHours ?? 0;
 };
 const submitServiceCreation = async (): Promise<void> => {
   if (baseServiceHours.value < 0) {
-    notify(NotifyType.Error, {
+    notify(NotifyType.ERROR, {
       message: "Formulaire non valide",
       caption: "Sélectionnez un nombre d'heures strictement positif",
     });
     return;
   }
-  const result = await upsertService.executeMutation({
-    uid,
-    year: currentYear.value ?? -1,
+  const result = await insertService.executeMutation({
+    uid: teacher.value.uid,
+    year,
     hours: baseServiceHours.value,
   });
   if (result.data?.service && !result.error) {
-    notify(NotifyType.Success, { message: "Service créé" });
+    notify(NotifyType.SUCCESS, { message: "Service créé" });
   } else {
-    notify(NotifyType.Error, { message: "Échec de la création" });
+    notify(NotifyType.ERROR, { message: "Échec de la création" });
   }
   resetServiceCreation();
 };

@@ -37,10 +37,11 @@ export const login = (
   console.debug("Logged in");
 };
 
-export const useAuthentication = () => ({
-  logged: readonly(logged),
-  profile: readonly(profile),
-  allowedRoles: readonly(allowedRoles),
-  activeRole: readonly(activeRole),
-  logout: readonly(logout),
-});
+export const useAuthentication = () =>
+  readonly({
+    logged,
+    profile,
+    allowedRoles,
+    activeRole,
+    logout,
+  });

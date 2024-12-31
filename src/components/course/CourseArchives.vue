@@ -1,0 +1,94 @@
+<script setup lang="ts">
+import { type ComputedRef, computed } from "vue";
+
+import { type FragmentType, graphql, useFragment } from "@/gql";
+import {
+  type CourseArchivesFragment,
+  CourseArchivesFragmentDoc,
+} from "@/gql/graphql.ts";
+
+import DetailsSection from "@/components/core/DetailsSection.vue";
+import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
+import RequestCard from "@/components/core/RequestCard.vue";
+
+const { courseArchivesFragment } = defineProps<{
+  courseArchivesFragment: FragmentType<typeof CourseArchivesFragmentDoc>;
+}>();
+
+graphql(`
+  fragment CourseArchives on enseignement {
+    parent {
+      year: annee
+      requests: demandes(
+        where: { type: { _eq: "attribution" } }
+        order_by: [
+          { intervenant: { nom: asc } }
+          { intervenant: { prenom: asc } }
+        ]
+      ) {
+        id
+        ...RequestCardInfo
+      }
+      parent {
+        year: annee
+        requests: demandes(
+          where: { type: { _eq: "attribution" } }
+          order_by: [
+            { intervenant: { nom: asc } }
+            { intervenant: { prenom: asc } }
+          ]
+        ) {
+          id
+          ...RequestCardInfo
+        }
+        parent {
+          year: annee
+          requests: demandes(
+            where: { type: { _eq: "attribution" } }
+            order_by: [
+              { intervenant: { nom: asc } }
+              { intervenant: { prenom: asc } }
+            ]
+          ) {
+            id
+            ...RequestCardInfo
+          }
+        }
+      }
+    }
+  }
+`);
+
+const courseArchives = computed(() =>
+  useFragment(CourseArchivesFragmentDoc, courseArchivesFragment),
+);
+
+const archives = computed(() =>
+  [
+    courseArchives.value.parent,
+    courseArchives.value.parent?.parent,
+    courseArchives.value.parent?.parent?.parent,
+  ].filter((archive) => !!archive),
+);
+</script>
+
+<template>
+  <DetailsSection title="Archives">
+    <DetailsSubsection
+      v-for="archive in archives"
+      :key="archive.year"
+      :title="archive.year.toString()"
+    >
+      <QCardSection class="row q-gutter-xs">
+        <RequestCard
+          v-for="request in archive.requests"
+          :key="request.id"
+          :request-card-info-fragment="request"
+          archive
+        />
+      </QCardSection>
+    </DetailsSubsection>
+  </DetailsSection>
+</template>
+
+<style scoped lang="scss"></style>

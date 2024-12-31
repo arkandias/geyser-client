@@ -4,14 +4,18 @@ import { type ComputedRef, computed, reactive, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import { usePermissions } from "@/composables/permissions.ts";
-import { GET_COURSES_ROWS, GET_COURSE_DETAILS } from "@/graphql/courses.ts";
-import { GET_TEACHERS_ROWS, GET_TEACHER_DETAILS } from "@/graphql/teachers.ts";
+import { graphql } from "@/gql";
+import {
+  GetCourseDetailsDocument,
+  GetCourseRowsDocument,
+  GetTeacherRowsDocument,
+} from "@/gql/graphql.ts";
+import { GET_TEACHER_DETAILS } from "@/graphql/teachers.ts";
 import { getNumber, getValue } from "@/helpers/query-params.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { useYears } from "@/stores/years.ts";
-import type { CourseDetails } from "@/types/course.ts";
 import type { TeacherDetails } from "@/types/teacher.ts";
 
 import DetailsCourse from "@/components/DetailsCourse.vue";
@@ -24,16 +28,8 @@ const { activeYear, isCurrentYearActive, selectYear } = useYears();
 const { profile } = useAuthentication();
 const perm = usePermissions();
 const { closeLeftPanel, isLeftPanelOpen, openLeftPanel } = useLayout();
-const {
-  selectedCourse,
-  selectedTeacher,
-  selectCourse,
-  selectTeacher,
-  setCourses,
-  setTeachers,
-  setFetchingCourses,
-  setFetchingTeachers,
-} = useData();
+const { selectedCourse, selectedTeacher, selectCourse, selectTeacher } =
+  useData();
 
 // Get selections from query parameters
 watch(
@@ -50,39 +46,67 @@ watch(
   { immediate: true },
 );
 
-// Fetch and store courses rows
-const queryCoursesRows = useQuery({
-  query: GET_COURSES_ROWS,
+graphql(`
+  query GetCourseRows($year: Int!) {
+    courses: enseignement(
+      where: {
+        _and: [
+          { annee: { _eq: $year } }
+          { heures_corrigees: { _gt: 0 } }
+          { groupes_corriges: { _gt: 0 } }
+        ]
+      }
+      order_by: [
+        { mention: { cursus: { nom: asc } } }
+        { mention: { nom: asc } }
+        { parcours: { nom: asc } }
+        { semestre: asc }
+        { nom: asc }
+        { type: asc }
+      ]
+    ) {
+      ...CourseRow
+    }
+  }
+
+  query GetTeacherRows($year: Int!, $where: intervenant_bool_exp = {}) {
+    teachers: intervenant(
+      where: { _and: [{ services: { annee: { _eq: $year } } }, $where] }
+      order_by: [{ nom: asc }, { prenom: asc }]
+    ) {
+      ...TeacherRow
+    }
+  }
+
+  query GetCourseDetails($courseId: Int!) {
+    course: enseignement_by_pk(id: $courseId) {
+      ...CourseDetails
+    }
+  }
+`);
+
+const courseRowsQueryResult = useQuery({
+  query: GetCourseRowsDocument,
   variables: reactive({
-    year: computed(() => activeYear.value ?? -1),
+    year: computed(() => activeYear ?? -1),
   }),
-  pause: () => activeYear.value === null,
+  pause: () => activeYear === null,
   context: { additionalTypenames: ["demande"] },
 });
-watch(queryCoursesRows.fetching, setFetchingCourses, {
-  immediate: true,
-});
-watch(
-  () => queryCoursesRows.data.value?.courses ?? [],
-  (courses) => {
-    setCourses(courses);
-    selectCourse(getNumber(route.query, "courseId"));
-  },
-  {
-    immediate: true,
-  },
+const fetchingCourseRows = computed(() => courseRowsQueryResult.fetching.value);
+const courseRows = computed(
+  () => courseRowsQueryResult.data.value?.courses ?? [],
 );
 
-// Fetch and store teachers rows
-const queryTeachersRows = useQuery({
-  query: GET_TEACHERS_ROWS,
+const teacherRowsQueryResult = useQuery({
+  query: GetTeacherRowsDocument,
   variables: reactive({
-    year: computed(() => activeYear.value ?? -1),
+    year: computed(() => activeYear ?? -1),
     where: computed(() =>
       perm.toViewAllServices ? {} : { uid: { _eq: profile.uid } },
     ),
   }),
-  pause: () => activeYear.value === null,
+  pause: () => activeYear === null,
   context: {
     additionalTypenames: [
       "demande",
@@ -92,38 +116,35 @@ const queryTeachersRows = useQuery({
     ],
   },
 });
-watch(() => queryTeachersRows.fetching.value, setFetchingTeachers, {
-  immediate: true,
-});
-watch(
-  () => queryTeachersRows.data.value?.teachers ?? [],
-  (teachers) => {
-    setTeachers(teachers);
-    selectTeacher(getValue(route.query, "uid"));
-  },
-  {
-    immediate: true,
-  },
+const fetchingTeacherRows = computed(
+  () => teacherRowsQueryResult.fetching.value,
+);
+const teacherRows = computed(
+  () => teacherRowsQueryResult.data.value?.teachers ?? [],
 );
 
 const queryCourseDetails = useQuery({
-  query: GET_COURSE_DETAILS,
+  query: GetCourseDetailsDocument,
   variables: reactive({
-    courseId: computed(() => selectedCourse.value[0]?.id ?? -1),
+    courseId: computed(() => selectedCourse[0]?.id ?? -1),
   }),
-  pause: () => !selectedCourse.value[0],
+  pause: () => !selectedCourse[0],
   context: {
     additionalTypenames: ["demande", "priorite"],
   },
 });
+const fetchingCourseDetails = computed(() => queryCourseDetails.fetching.value);
+const courseDetails = computed(() =>
+  selectedCourse[0] ? (queryCourseDetails.data.value?.course ?? null) : null,
+);
 
 const queryTeacherDetails = useQuery({
   query: GET_TEACHER_DETAILS,
   variables: reactive({
-    year: computed(() => activeYear.value ?? -1),
-    uid: computed(() => selectedTeacher.value[0]?.uid ?? ""),
+    year: computed(() => activeYear ?? -1),
+    uid: computed(() => selectedTeacher[0]?.uid ?? ""),
   }),
-  pause: () => !activeYear.value || !selectedTeacher.value[0],
+  pause: () => !activeYear || !selectedTeacher[0],
   context: {
     additionalTypenames: [
       "demande",
@@ -134,16 +155,8 @@ const queryTeacherDetails = useQuery({
   },
 });
 
-const courseDetails: ComputedRef<CourseDetails | null> = computed(() =>
-  selectedCourse.value[0]
-    ? (queryCourseDetails.data.value?.course ?? null)
-    : null,
-);
-
 const teacherDetails: ComputedRef<TeacherDetails | null> = computed(() =>
-  selectedTeacher.value[0]
-    ? (queryTeacherDetails.data.value?.teacher ?? null)
-    : null,
+  selectedTeacher[0] ? (queryTeacherDetails.data.value?.teacher ?? null) : null,
 );
 
 // Toggle the left panel based on user's permissions
@@ -172,15 +185,25 @@ watch(
       :disable="!isLeftPanelOpen"
     >
       <template #before>
-        <TableTeachers />
+        <TableTeachers
+          :teacher-rows-fragment="teacherRows"
+          :fetching="fetchingTeacherRows"
+        />
       </template>
       <template #after>
         <QSplitter id="second-splitter" v-model="hSplitterRatio" horizontal>
           <template #before>
-            <TableCourses :teacher="teacherDetails" />
+            <TableCourses
+              :course-rows-fragment="courseRows"
+              :fetching="fetchingCourseRows"
+              :teacher="teacherDetails"
+            />
           </template>
           <template #after>
-            <DetailsCourse :details="courseDetails" />
+            <DetailsCourse
+              :course-details-fragment="courseDetails"
+              :fetching="fetchingCourseDetails"
+            />
           </template>
         </QSplitter>
       </template>

@@ -8,7 +8,8 @@ const setCurrentPhase = (phase: Phase | null) => {
   currentPhase.value = phase;
 };
 
-export const usePhases = () => ({
-  currentPhase: readonly(currentPhase),
-  setCurrentPhase,
-});
+export const usePhase = () =>
+  readonly({
+    currentPhase,
+    setCurrentPhase,
+  });

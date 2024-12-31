@@ -4,25 +4,99 @@ import { useRouter } from "vue-router";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
+import { type FragmentType, graphql, useFragment } from "@/gql";
+import {
+  type TeacherRowFragment,
+  TeacherRowFragmentDoc,
+} from "@/gql/graphql.ts";
 import { nf } from "@/helpers/format.ts";
 import { modifiedService, totalWH } from "@/helpers/hours.ts";
 import { normalizeForSearch } from "@/helpers/misc.ts";
 import { toggleQueryParam } from "@/helpers/query-params.ts";
 import { useData } from "@/stores/data.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
-import type { TeacherRow } from "@/types/teacher.ts";
+
+const { teacherRowsFragment } = defineProps<{
+  teacherRowsFragment: FragmentType<typeof TeacherRowFragmentDoc>[];
+  fetching?: boolean;
+}>();
+
+graphql(`
+  fragment TeacherRow on intervenant {
+    uid
+    firstname: prenom
+    lastname: nom
+    alias
+    visible
+    services(
+      where: { annee: { _eq: $year } }
+      limit: 1 # unique
+    ) {
+      base: heures_eqtd
+      totalModifications: modifications_aggregate {
+        aggregate {
+          sum {
+            hours: heures_eqtd
+          }
+        }
+      }
+    }
+    totalAssigned: demandes_aggregate(
+      where: { _and: [{ type: { _eq: "attribution" } }] }
+    ) {
+      aggregate {
+        sum {
+          hours: heures
+          weightedHours: heures_eqtd
+        }
+      }
+    }
+    totalPrimary: demandes_aggregate(
+      where: { _and: [{ type: { _eq: "principale" } }] }
+    ) {
+      aggregate {
+        sum {
+          hours: heures
+          weightedHours: heures_eqtd
+        }
+      }
+    }
+    totalSecondary: demandes_aggregate(
+      where: { _and: [{ type: { _eq: "secondaire" } }] }
+    ) {
+      aggregate {
+        sum {
+          hours: heures
+          weightedHours: heures_eqtd
+        }
+      }
+    }
+    messages(
+      where: { annee: { _eq: $year } }
+      limit: 1 # unique
+    ) {
+      id
+    }
+  }
+`);
+
+const teachers = computed(() =>
+  teacherRowsFragment.map((fragment) =>
+    useFragment(TeacherRowFragmentDoc, fragment),
+  ),
+);
 
 const router = useRouter();
 
 const perm = usePermissions();
-const { teachers, fetchingTeachers, selectedTeacher } = useData();
+const { selectedTeacher } = useData();
 
-const selectTeacher = async (_: Event, row: TeacherRow) => {
+const selectTeacher = async (_: Event, row: TeacherRowFragment) => {
   await toggleQueryParam(router, "uid", row.uid);
 };
 
 // Columns definition
-const columns: ColumnNonAbbreviable<TeacherRow>[] = [
+const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
   {
     name: "firstname",
     label: "Prénom",
@@ -164,9 +238,9 @@ const filterObj = computed(() => ({
   searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
 }));
 const filterMethod = (
-  rows: readonly TeacherRow[],
+  rows: readonly TeacherRowFragment[],
   terms: typeof filterObj.value,
-): readonly TeacherRow[] =>
+): readonly TeacherRowFragment[] =>
   rows.filter((row) =>
     terms.searchColumns.some((col) =>
       normalizeForSearch(String(col.field(row))).includes(terms.search),
@@ -182,7 +256,7 @@ const stickyHeader: Ref<boolean> = ref(false);
     :columns
     :visible-columns
     :rows="teachers"
-    :loading="fetchingTeachers"
+    :loading="fetching"
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"

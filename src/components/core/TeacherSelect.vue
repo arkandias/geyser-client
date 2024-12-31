@@ -2,21 +2,36 @@
 import { useQuery } from "@urql/vue";
 import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
 
-import { GET_ACTIVE_TEACHERS } from "@/graphql/teachers.ts";
+import { graphql } from "@/gql";
+import { GetActiveTeachersDocument } from "@/gql/graphql.ts";
 import { formatUser } from "@/helpers/format.ts";
 import { normalizeForSearch } from "@/helpers/misc.ts";
 import type { OptionSearch } from "@/types/common.ts";
 
 const uid = defineModel<string | null>({ required: true });
 
-const queryTeachers = useQuery({
-  query: GET_ACTIVE_TEACHERS,
+graphql(`
+  query GetActiveTeachers {
+    teachers: intervenant(
+      where: { actif: { _eq: true } }
+      order_by: [{ nom: asc }, { prenom: asc }]
+    ) {
+      uid
+      firstname: prenom
+      lastname: nom
+      alias
+    }
+  }
+`);
+
+const activeTeachersQueryResult = useQuery({
+  query: GetActiveTeachersDocument,
   variables: {},
 });
 
 const options: Ref<OptionSearch<string>[]> = ref([]);
 const optionsInit: ComputedRef<OptionSearch<string>[]> = computed(() =>
-  (queryTeachers.data.value?.teachers ?? []).map((teacher) => ({
+  (activeTeachersQueryResult.data.value?.teachers ?? []).map((teacher) => ({
     value: teacher.uid,
     label: formatUser(teacher),
     search: normalizeForSearch(formatUser(teacher)),

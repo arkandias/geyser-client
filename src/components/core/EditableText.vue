@@ -53,15 +53,15 @@ const onSave = async (): Promise<void> => {
     editorText.value = "";
   }
   if (editorText.value === text) {
-    notify(NotifyType.Default, { message: "Pas de changement à enregistrer" });
+    notify(NotifyType.DEFAULT, { message: "Pas de changement à enregistrer" });
   } else {
     const success = await setText(editorText.value);
     if (success) {
-      notify(NotifyType.Success, {
+      notify(NotifyType.SUCCESS, {
         message: "Texte " + (editorText.value ? "mis à jour" : " supprimé"),
       });
     } else {
-      notify(NotifyType.Error, {
+      notify(NotifyType.ERROR, {
         message:
           "Échec de la " + (editorText.value ? "mise à jour" : "suppression"),
       });

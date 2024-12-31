@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { PHASES } from "@/config/types/phases.ts";
-import { usePhases } from "@/stores/phases.ts";
+import { usePhase } from "@/stores/phase.ts";
 
-const { currentPhase } = usePhases();
+const { currentPhase } = usePhase();
 </script>
 
 <template>

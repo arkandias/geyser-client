@@ -24,7 +24,7 @@ export const clientOptions: ClientOptions = {
       },
       onError(error) {
         console.error(error);
-        notify(NotifyType.Error, { message: error.toString() });
+        notify(NotifyType.ERROR, { message: error.toString() });
       },
     }),
     fetchExchange,

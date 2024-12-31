@@ -1,58 +1,5 @@
 import { graphql } from "@/gql";
 
-export const GET_ACTIVE_TEACHERS = graphql(/* GraphQL */ `
-  query GetTeachers {
-    teachers: intervenant(
-      where: { actif: { _eq: true } }
-      order_by: [{ nom: asc }, { prenom: asc }]
-    ) {
-      ...Profile
-    }
-  }
-`);
-
-export const GET_TEACHERS_ROWS = graphql(/* GraphQL */ `
-  query GetTeachersRows($year: Int!, $where: intervenant_bool_exp = {}) {
-    teachers: intervenant(
-      where: { _and: [{ services: { annee: { _eq: $year } } }, $where] }
-      order_by: [{ nom: asc }, { prenom: asc }]
-    ) {
-      ...Profile
-      visible
-      services(
-        where: { annee: { _eq: $year } }
-        limit: 1 # unique
-      ) {
-        ...Service
-      }
-      totalAssigned: demandes_aggregate(
-        where: { _and: [{ type: { _eq: "attribution" } }] }
-      ) {
-        ...RequestsTotalHours
-        ...RequestsTotalWeightedHours
-      }
-      totalPrimary: demandes_aggregate(
-        where: { _and: [{ type: { _eq: "principale" } }] }
-      ) {
-        ...RequestsTotalHours
-        ...RequestsTotalWeightedHours
-      }
-      totalSecondary: demandes_aggregate(
-        where: { _and: [{ type: { _eq: "secondaire" } }] }
-      ) {
-        ...RequestsTotalHours
-        ...RequestsTotalWeightedHours
-      }
-      messages(
-        where: { annee: { _eq: $year } }
-        limit: 1 # unique
-      ) {
-        id
-      }
-    }
-  }
-`);
-
 export const GET_TEACHER_DETAILS = graphql(/* GraphQL */ `
   query GetTeacherDetails($year: Int!, $uid: String!) {
     teacher: intervenant_by_pk(uid: $uid) {
@@ -102,7 +49,9 @@ export const GET_TEACHER_DETAILS = graphql(/* GraphQL */ `
         where: { annee: { _eq: $year } }
         limit: 1 # unique
       ) {
-        ...Message
+        id
+        uid
+        body: contenu
       }
     }
   }

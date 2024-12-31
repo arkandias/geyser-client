@@ -5,32 +5,56 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { useRequestOperations } from "@/composables/request-operations.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
+import { type FragmentType, graphql, useFragment } from "@/gql";
+import { RequestCardInfoFragmentDoc } from "@/gql/graphql.ts";
 import { formatUser, nf, priorityColor } from "@/helpers/format.ts";
-import type { RequestDetails } from "@/types/request.ts";
 
-const { request, archive } = defineProps<{
-  request: RequestDetails;
+const { requestCardInfoFragment } = defineProps<{
+  requestCardInfoFragment: FragmentType<typeof RequestCardInfoFragmentDoc>;
   archive?: boolean;
 }>();
+
+graphql(`
+  fragment RequestCardInfo on demande {
+    id
+    teacher: intervenant {
+      uid
+      firstname: prenom
+      lastname: nom
+      alias
+    }
+    course: enseignement {
+      id
+      hoursPerGroup: heures_corrigees
+    }
+    type
+    hours: heures
+    isPriority: prioritaire
+  }
+`);
+
+const request = computed(() =>
+  useFragment(RequestCardInfoFragmentDoc, requestCardInfoFragment),
+);
 
 const perm = usePermissions();
 
 const { updateRequest, deleteRequest } = useRequestOperations();
 const assign = async (): Promise<void> => {
   await updateRequest({
-    uid: request.teacher.uid,
-    courseId: request.course.id,
+    uid: request.value.teacher.uid,
+    courseId: request.value.course.id,
     requestType: REQUEST_TYPES.ASSIGNMENT,
-    hours: request.hours,
+    hours: request.value.hours,
   });
 };
 const remove = async (): Promise<void> => {
-  await deleteRequest(request.id, request.type);
+  await deleteRequest(request.value.id, request.value.type);
 };
 
 const groups: ComputedRef<number> = computed(() =>
-  request.course.hoursPerGroup
-    ? request.hours / request.course.hoursPerGroup
+  request.value.course.hoursPerGroup
+    ? request.value.hours / request.value.course.hoursPerGroup
     : 0,
 );
 

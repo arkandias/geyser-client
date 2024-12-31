@@ -1,15 +1,10 @@
-export type Profile = {
-  uid: string;
+export type UserName = {
   firstname: string;
   lastname: string;
   alias: string | null;
-  active: boolean;
 };
 
-export const getProfile = (p: Profile) => ({
-  uid: p.uid,
-  firstname: p.firstname,
-  lastname: p.lastname,
-  alias: p.alias,
-  active: p.active,
-});
+export type Profile = UserName & {
+  uid: string;
+  active: boolean;
+};

@@ -1,36 +1,43 @@
 <script setup lang="ts">
-import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
+import { computed, watch } from "vue";
 
-import { formatCourseCaption } from "@/helpers/format.ts";
-import type { CourseDetails } from "@/types/course.ts";
+import { type FragmentType, graphql, useFragment } from "@/gql";
+import { CourseDetailsFragmentDoc } from "@/gql/graphql.ts";
 
-import CourseExpansionContent from "@/components/course/CourseExpansionContent.vue";
+import CourseArchives from "@/components/course/CourseArchives.vue";
+import CourseCoordinators from "@/components/course/CourseCoordinators.vue";
+import CourseDescription from "@/components/course/CourseDescription.vue";
+import CourseExpansion from "@/components/course/CourseExpansion.vue";
 import CourseExpansionDefault from "@/components/course/CourseExpansionDefault.vue";
+import CoursePriorities from "@/components/course/CoursePriorities.vue";
 import CourseRequests from "@/components/course/CourseRequests.vue";
-import CourseRequestsDefault from "@/components/course/CourseRequestsDefault.vue";
+import DetailsCourseDefault from "@/components/course/DetailsCourseDefault.vue";
 
-const { details } = defineProps<{
-  details: CourseDetails | null;
+const { courseDetailsFragment, fetching } = defineProps<{
+  courseDetailsFragment: FragmentType<typeof CourseDetailsFragmentDoc> | null;
+  fetching?: boolean;
 }>();
 
-// Expansion item props
-const isExpanded: Ref<boolean> = ref(false);
-const label: ComputedRef<string> = computed(() =>
-  details
-    ? details.name
-    : "Sélectionnez un enseignement dans la liste ci-dessus",
-);
-const caption: ComputedRef<string> = computed(() =>
-  details
-    ? formatCourseCaption(details)
-    : "Cliquez sur ce volet pour afficher des informations supplémentaires",
+graphql(`
+  fragment CourseDetails on enseignement {
+    courseId: id
+    ...CourseExpansion
+    ...CourseCoordinators
+    ...CourseDescription
+    ...CourseRequests
+    ...CoursePriorities
+    ...CourseArchives
+  }
+`);
+
+const details = computed(() =>
+  useFragment(CourseDetailsFragmentDoc, courseDetailsFragment),
 );
 
 // When the selected course changes: scroll to top (sync)
 watch(
-  () => details?.courseId,
+  () => details.value?.courseId,
   () => {
-    // isExpanded.value = false;
     document.getElementById("volet")?.scrollIntoView();
   },
   {
@@ -40,23 +47,24 @@ watch(
 </script>
 
 <template>
-  <QExpansionItem
-    id="volet"
-    v-model="isExpanded"
-    expand-separator
-    :label
-    :caption
-    dense
-    dense-toggle
-  >
+  <CourseExpansion :course-expansion-fragment="details">
     <QCard flat square class="text-body2">
-      <CourseExpansionContent v-if="details" :details />
+      <template v-if="details && !fetching">
+        <CourseCoordinators :course-coordinators-fragment="details" />
+        <CourseDescription :course-description-fragment="details" />
+      </template>
       <CourseExpansionDefault v-else />
     </QCard>
-  </QExpansionItem>
+  </CourseExpansion>
   <QCard flat square>
-    <CourseRequests v-if="details" :details="details" />
-    <CourseRequestsDefault v-else />
+    <template v-if="details && !fetching">
+      <CourseRequests :course-requests-fragment="details" />
+      <QSeparator />
+      <CoursePriorities :course-priorities-fragment="details" />
+      <QSeparator />
+      <CourseArchives :course-archives-fragment="details" />
+    </template>
+    <DetailsCourseDefault v-else />
   </QCard>
 </template>
 

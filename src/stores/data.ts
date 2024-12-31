@@ -34,17 +34,18 @@ const selectTeacher = (uid?: string | null) => {
   );
 };
 
-export const useData = () => ({
-  courses: readonly(courses),
-  teachers: readonly(teachers),
-  fetchingCourses: readonly(fetchingCourses),
-  fetchingTeachers: readonly(fetchingTeachers),
-  selectedCourse, // TODO: readonly?
-  selectedTeacher, // TODO: readonly?
-  setCourses,
-  setTeachers,
-  setFetchingCourses,
-  setFetchingTeachers,
-  selectCourse,
-  selectTeacher,
-});
+export const useData = () =>
+  readonly({
+    courses,
+    teachers,
+    fetchingCourses,
+    fetchingTeachers,
+    selectedCourse,
+    selectedTeacher,
+    setCourses,
+    setTeachers,
+    setFetchingCourses,
+    setFetchingTeachers,
+    selectCourse,
+    selectTeacher,
+  });

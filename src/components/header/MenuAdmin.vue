@@ -3,9 +3,12 @@ import { useMutation } from "@urql/vue";
 import { type ComputedRef, computed } from "vue";
 
 import { PHASE_OPTIONS } from "@/config/types/phases.ts";
-import { SET_CURRENT_PHASE } from "@/graphql/phases.ts";
-import { UPDATE_CURRENT_YEAR } from "@/graphql/years.ts";
-import { usePhases } from "@/stores/phases.ts";
+import { graphql } from "@/gql";
+import {
+  SetCurrentPhaseDocument,
+  SetCurrentYearDocument,
+} from "@/gql/graphql.ts";
+import { usePhase } from "@/stores/phase.ts";
 import { useYears } from "@/stores/years.ts";
 import type { Option } from "@/types/common.ts";
 
@@ -13,10 +16,46 @@ import MenuAdminOptions from "@/components/header/MenuAdminOptions.vue";
 import MenuBase from "@/components/header/MenuBase.vue";
 
 const { years, currentYear } = useYears();
-const { currentPhase } = usePhases();
+const { currentPhase } = usePhase();
 
-const updateYear = useMutation(UPDATE_CURRENT_YEAR);
-const updatePhase = useMutation(SET_CURRENT_PHASE);
+graphql(`
+  mutation SetCurrentYear($value: Int!) {
+    years: update_annee(
+      where: { value: { _neq: $value } }
+      _set: { en_cours: null }
+    ) {
+      returning {
+        value
+      }
+    }
+    current: update_annee_by_pk(
+      pk_columns: { value: $value }
+      _set: { en_cours: true }
+    ) {
+      value
+    }
+  }
+
+  mutation SetCurrentPhase($value: String!) {
+    phases: update_phase(
+      where: { value: { _neq: $value } }
+      _set: { en_cours: null }
+    ) {
+      returning {
+        value
+      }
+    }
+    enCours: update_phase_by_pk(
+      pk_columns: { value: $value }
+      _set: { en_cours: true }
+    ) {
+      value
+    }
+  }
+`);
+
+const updateYear = useMutation(SetCurrentYearDocument);
+const updatePhase = useMutation(SetCurrentPhaseDocument);
 
 const setCurrentYear = async (year: number | null): Promise<void> => {
   if (year === null) {
@@ -36,7 +75,7 @@ const setCurrentPhase = async (phase: string | null): Promise<void> => {
 };
 
 const yearOptions: ComputedRef<Option<number>[]> = computed(() =>
-  years.value.map((year) => ({
+  years.map((year) => ({
     value: year,
     label: year.toString(),
   })),

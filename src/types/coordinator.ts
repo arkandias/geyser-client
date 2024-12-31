@@ -1,7 +1,6 @@
-import type { Profile } from "@/types/profile.ts";
+import type { UserName } from "@/types/profile.ts";
 
 export type Coordinator = {
-  id: number;
-  profile: Profile;
+  username: UserName;
   comment: string | null;
 };

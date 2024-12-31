@@ -2,7 +2,8 @@
 import { useMutation } from "@urql/vue";
 import { type ComputedRef, computed } from "vue";
 
-import { DELETE_MESSAGE, UPSERT_MESSAGE } from "@/graphql/messages.ts";
+import { graphql } from "@/gql";
+import { DeleteMessageDocument, UpsertMessageDocument } from "@/gql/graphql.ts";
 
 import EditableText from "@/components/core/EditableText.vue";
 
@@ -13,8 +14,36 @@ const { year, uid, body } = defineProps<{
   body: string | null;
 }>();
 
-const upsertMessage = useMutation(UPSERT_MESSAGE);
-const deleteMessage = useMutation(DELETE_MESSAGE);
+graphql(`
+  fragment TeacherMessage on message {
+    body: contenu
+  }
+
+  mutation UpsertMessage($year: Int!, $uid: String!, $body: String!) {
+    message: insert_message_one(
+      object: { annee: $year, uid: $uid, contenu: $body }
+      on_conflict: {
+        constraint: message_annee_uid_key
+        update_columns: [contenu]
+      }
+    ) {
+      id
+    }
+  }
+
+  mutation DeleteMessage($year: Int!, $uid: String!) {
+    messages: delete_message(
+      where: { _and: [{ annee: { _eq: $year } }, { uid: { _eq: $uid } }] }
+    ) {
+      returning {
+        id
+      }
+    }
+  }
+`);
+
+const upsertMessage = useMutation(UpsertMessageDocument);
+const deleteMessage = useMutation(DeleteMessageDocument);
 
 const setMessage: ComputedRef<(body: string) => Promise<boolean>> = computed(
   () =>

@@ -15,25 +15,37 @@ import {
   REQUEST_TYPES,
   type RequestType,
 } from "@/config/types/request-types.ts";
+import { type FragmentType, graphql, useFragment } from "@/gql";
+import { RequestFormInfoFragmentDoc } from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
-import { usePhases } from "@/stores/phases.ts";
+import { usePhase } from "@/stores/phase.ts";
 import type { Option } from "@/types/common.ts";
 
 import TeacherSelect from "@/components/core/TeacherSelect.vue";
 
-const { courseId, hoursPerGroup } = defineProps<{
-  courseId: number;
-  hoursPerGroup: number | null;
+const { requestFormInfoFragment } = defineProps<{
+  requestFormInfoFragment: FragmentType<typeof RequestFormInfoFragmentDoc>;
 }>();
 
-const { currentPhase } = usePhases();
+graphql(`
+  fragment RequestFormInfo on enseignement {
+    courseId: id
+    hoursPerGroup: heures_corrigees
+  }
+`);
+
+const info = computed(() =>
+  useFragment(RequestFormInfoFragmentDoc, requestFormInfoFragment),
+);
+
+const { currentPhase } = usePhase();
 const { profile } = useAuthentication();
 const perm = usePermissions();
 
 const hours: Ref<number | null> = ref(null);
 watch(
-  () => hoursPerGroup,
+  () => info.value.hoursPerGroup,
   (value) => {
     hours.value = value;
   },
@@ -42,18 +54,22 @@ watch(
 
 const groups: WritableComputedRef<number | null> = computed({
   get: () =>
-    hours.value === null || hoursPerGroup === null
+    hours.value === null || info.value.hoursPerGroup === null
       ? null
-      : Math.round((hours.value / hoursPerGroup + Number.EPSILON) * 100) / 100,
+      : Math.round(
+          (hours.value / info.value.hoursPerGroup + Number.EPSILON) * 100,
+        ) / 100,
   set: (val) => {
     hours.value =
-      val === null || hoursPerGroup === null ? null : val * hoursPerGroup;
+      val === null || info.value.hoursPerGroup === null
+        ? null
+        : val * info.value.hoursPerGroup;
   },
 });
 
 const requestType: Ref<string | null> = ref(null);
 const requestTypeInit: ComputedRef<string | null> = computed(() => {
-  switch (currentPhase.value) {
+  switch (currentPhase) {
     case PHASES.ASSIGNMENTS:
       return REQUEST_TYPES.PRIMARY;
     default:
@@ -94,21 +110,21 @@ watch(
 const { updateRequest } = useRequestOperations();
 const submitForm = async (): Promise<void> => {
   if (uid.value === null) {
-    notify(NotifyType.Error, {
+    notify(NotifyType.ERROR, {
       message: "Formulaire non valide",
       caption: "Sélectionnez un intervenant",
     });
     return;
   }
   if (hours.value === null || hours.value < 0) {
-    notify(NotifyType.Error, {
+    notify(NotifyType.ERROR, {
       message: "Formulaire non valide",
       caption: "Sélectionnez un nombre d'heures positif ou nul",
     });
     return;
   }
   if (!requestType.value) {
-    notify(NotifyType.Error, {
+    notify(NotifyType.ERROR, {
       message: "Formulaire non valide",
       caption: "Sélectionnez un type de demande",
     });
@@ -116,14 +132,14 @@ const submitForm = async (): Promise<void> => {
   }
   await updateRequest({
     uid: uid.value,
-    courseId: courseId,
+    courseId: info.value.courseId,
     requestType: requestType.value,
     hours: hours.value,
   });
 };
 const resetForm = (): void => {
   uid.value = uidInit.value;
-  hours.value = hoursPerGroup;
+  hours.value = info.value.hoursPerGroup;
   requestType.value = requestTypeInit.value;
 };
 </script>

@@ -1,102 +1,175 @@
 <script setup lang="ts">
 import { useMutation, useQuery } from "@urql/vue";
-import { type ComputedRef, type Ref, computed, ref } from "vue";
+import { type Ref, computed, ref } from "vue";
 
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
-import { GET_MODIFICATION_TYPES } from "@/graphql/modification-types.ts";
+import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  DELETE_SERVICE_MODIFICATION,
-  INSERT_SERVICE_MODIFICATION,
-} from "@/graphql/service-modifications.ts";
-import { UPSERT_SERVICE } from "@/graphql/services.ts";
+  DeleteModificationDocument,
+  GetModificationTypesDocument,
+  InsertModificationDocument,
+  TeacherServiceFragmentDoc,
+  UpsertServiceDocument,
+} from "@/gql/graphql.ts";
 import { formatWH } from "@/helpers/format.ts";
 import { modifiedService } from "@/helpers/hours.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
-import type { ModificationType } from "@/types/modification-type.ts";
-import type { ServiceDetails } from "@/types/service.ts";
 
 import ServiceTable from "@/components/core/ServiceTable.vue";
 
-const { service, positionBaseServiceHours, editable } = defineProps<{
-  service: ServiceDetails;
-  positionBaseServiceHours?: number | null;
+const { serviceFragment, editable } = defineProps<{
+  serviceFragment: FragmentType<typeof TeacherServiceFragmentDoc>;
   editable?: boolean;
 }>();
 
-const upsertService = useMutation(UPSERT_SERVICE);
-const queryModificationTypes = useQuery({
-  query: GET_MODIFICATION_TYPES,
+graphql(`
+  fragment TeacherService on service {
+    id
+    uid
+    teacher: intervenant {
+      position: fonctionByFonction {
+        baseServiceHours: heures_eqtd_service_base
+      }
+    }
+    year: annee
+    base: heures_eqtd
+    totalModifications: modifications_aggregate {
+      aggregate {
+        sum {
+          hours: heures_eqtd
+        }
+      }
+    }
+    modifications {
+      id
+      modificationType: typeByType {
+        label
+      }
+      hours: heures_eqtd
+    }
+  }
+
+  query GetModificationTypes {
+    modificationTypes: type_modification_service(order_by: { value: asc }) {
+      value
+      label
+      description
+    }
+  }
+
+  mutation UpsertService($uid: String!, $year: Int!, $hours: Float!) {
+    service: insert_service_one(
+      object: { uid: $uid, annee: $year, heures_eqtd: $hours }
+      on_conflict: {
+        constraint: service_annee_uid_key
+        update_columns: [heures_eqtd]
+      }
+    ) {
+      id
+    }
+  }
+
+  mutation InsertModification(
+    $serviceId: Int!
+    $modificationType: String!
+    $weightedHours: Float!
+  ) {
+    serviceModification: insert_modification_service_one(
+      object: {
+        service_id: $serviceId
+        type: $modificationType
+        heures_eqtd: $weightedHours
+      }
+    ) {
+      id
+    }
+  }
+
+  mutation DeleteModification($id: Int!) {
+    serviceModification: delete_modification_service_by_pk(id: $id) {
+      id
+    }
+  }
+`);
+
+const service = computed(() =>
+  useFragment(TeacherServiceFragmentDoc, serviceFragment),
+);
+const modificationTypesQueryResponse = useQuery({
+  query: GetModificationTypesDocument,
   variables: {},
 });
-const insertModification = useMutation(INSERT_SERVICE_MODIFICATION);
-const deleteModification = useMutation(DELETE_SERVICE_MODIFICATION);
+const upsertService = useMutation(UpsertServiceDocument);
+const insertModification = useMutation(InsertModificationDocument);
+const deleteModification = useMutation(DeleteModificationDocument);
 
+// Base service hours form
 const isBaseServiceFormOpen: Ref<boolean> = ref(false);
-const baseServiceHours: Ref<number> = ref(positionBaseServiceHours ?? 0);
-
+const baseServiceHours: Ref<number> = ref(
+  service.value.teacher.position?.baseServiceHours ?? 0,
+);
 const resetBaseServiceForm = (): void => {
   isBaseServiceFormOpen.value = false;
-  baseServiceHours.value = positionBaseServiceHours ?? 0;
+  baseServiceHours.value =
+    service.value.teacher.position?.baseServiceHours ?? 0;
 };
 const submitBaseServiceForm = async (): Promise<void> => {
   if (baseServiceHours.value < 0) {
-    notify(NotifyType.Error, {
+    notify(NotifyType.ERROR, {
       message: "Formulaire non valide",
       caption: "Sélectionnez un nombre d'heures strictement positif",
     });
     return;
   }
   const result = await upsertService.executeMutation({
-    uid: service.uid,
-    year: service.year,
+    uid: service.value.uid,
+    year: service.value.year,
     hours: baseServiceHours.value,
   });
   if (result.data?.service && !result.error) {
-    notify(NotifyType.Success, { message: "Service de base modifié" });
+    notify(NotifyType.SUCCESS, { message: "Service de base modifié" });
   } else {
-    notify(NotifyType.Error, { message: "Échec de la modification" });
+    notify(NotifyType.ERROR, { message: "Échec de la modification" });
   }
   resetBaseServiceForm();
 };
 
-const modificationTypesOptions: ComputedRef<ModificationType[]> = computed(
-  () => queryModificationTypes.data.value?.modificationTypes ?? [],
+// Modifications form
+const modificationTypesOptions = computed(
+  () => modificationTypesQueryResponse.data.value?.modificationTypes ?? [],
 );
-
 const isModificationFormOpen: Ref<boolean> = ref(false);
 const modificationType: Ref<string | null> = ref(null);
 const modificationHours: Ref<number> = ref(0);
-
 const resetModificationForm = (): void => {
   isModificationFormOpen.value = false;
   modificationType.value = null;
   modificationHours.value = 0;
 };
-
 const submitModificationForm = async (): Promise<void> => {
   if (!modificationType.value) {
-    notify(NotifyType.Error, {
+    notify(NotifyType.ERROR, {
       message: "Formulaire non valide",
       caption: "Sélectionnez un type de modification de service",
     });
     return;
   }
   if (modificationHours.value <= 0) {
-    notify(NotifyType.Error, {
+    notify(NotifyType.ERROR, {
       message: "Formulaire non valide",
       caption: "Sélectionnez un nombre d'heures strictement positif",
     });
     return;
   }
   const result = await insertModification.executeMutation({
-    serviceId: service.id,
+    serviceId: service.value.id,
     modificationType: modificationType.value,
     weightedHours: modificationHours.value,
   });
   if (result.data?.serviceModification && !result.error) {
-    notify(NotifyType.Success, { message: "Modification ajoutée" });
+    notify(NotifyType.SUCCESS, { message: "Modification ajoutée" });
   } else {
-    notify(NotifyType.Error, { message: "Échec de l'ajout" });
+    notify(NotifyType.ERROR, { message: "Échec de l'ajout" });
   }
   resetModificationForm();
 };
@@ -104,9 +177,9 @@ const submitModificationForm = async (): Promise<void> => {
 const handleModificationDeletion = async (id: number): Promise<void> => {
   const result = await deleteModification.executeMutation({ id: id });
   if (result.data?.serviceModification && !result.error) {
-    notify(NotifyType.Success, { message: "Modification supprimée" });
+    notify(NotifyType.SUCCESS, { message: "Modification supprimée" });
   } else {
-    notify(NotifyType.Error, { message: "Échec de la suppresssion" });
+    notify(NotifyType.ERROR, { message: "Échec de la suppresssion" });
   }
 };
 </script>
@@ -264,7 +337,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
         </QBtn>
         {{ modification.modificationType.label }}
       </td>
-      <td>{{ formatWH(modification.weightedHours) }}</td>
+      <td>{{ formatWH(modification.hours) }}</td>
     </tr>
     <tr>
       <td colspan="100%" style="border-bottom: 1px solid black" />
