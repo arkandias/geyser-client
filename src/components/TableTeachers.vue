@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { type Ref, computed, ref, toValue, watchEffect } from "vue";
-import { useRouter } from "vue-router";
 
 import { usePermissions } from "@/composables/permissions.ts";
+import "@/composables/query-param.ts";
+import { useQueryParam } from "@/composables/query-param.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
@@ -12,14 +13,14 @@ import {
 import { nf } from "@/helpers/format.ts";
 import { modifiedService, totalWH } from "@/helpers/hours.ts";
 import { normalizeForSearch } from "@/helpers/misc.ts";
-import { toggleQueryParam } from "@/helpers/query-params.ts";
-import { useData } from "@/stores/data.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 
 const { teacherRowsFragment } = defineProps<{
   teacherRowsFragment: FragmentType<typeof TeacherRowFragmentDoc>[];
   fetching?: boolean;
 }>();
+
+const perm = usePermissions();
 
 graphql(`
   fragment TeacherRow on intervenant {
@@ -86,13 +87,11 @@ const teachers = computed(() =>
   ),
 );
 
-const router = useRouter();
-
-const perm = usePermissions();
-const { selectedTeacher } = useData();
-
+const { getValue: selectedTeadcher, toggleValue: toggleTeacher } =
+  useQueryParam("uid");
+const selectedRow = computed(() => [{ uid: selectedTeadcher }]);
 const selectTeacher = async (_: Event, row: TeacherRowFragment) => {
-  await toggleQueryParam(router, "uid", row.uid);
+  await toggleTeacher(row.uid);
 };
 
 // Columns definition
@@ -252,7 +251,7 @@ const stickyHeader: Ref<boolean> = ref(false);
 
 <template>
   <QTable
-    v-model:selected="selectedTeacher"
+    v-model:selected="selectedRow"
     :columns
     :visible-columns
     :rows="teachers"

@@ -15,7 +15,7 @@ const edition = defineModel<boolean>();
 const { year, uid, teacherMessageFragment } = defineProps<{
   year: number;
   uid: string;
-  teacherMessageFragment: FragmentType<typeof TeacherMessageFragmentDoc>;
+  teacherMessageFragment: FragmentType<typeof TeacherMessageFragmentDoc> | null;
 }>();
 
 graphql(`
@@ -46,8 +46,10 @@ graphql(`
   }
 `);
 
-const teacherMessage = computed(() =>
-  useFragment(TeacherMessageFragmentDoc, teacherMessageFragment),
+const body = computed(
+  () =>
+    useFragment(TeacherMessageFragmentDoc, teacherMessageFragment)?.body ??
+    null,
 );
 const upsertMessage = useMutation(UpsertMessageDocument);
 const deleteMessage = useMutation(DeleteMessageDocument);
@@ -70,7 +72,7 @@ const setMessage: ComputedRef<(body: string) => Promise<boolean>> = computed(
 <template>
   <EditableText
     v-model="edition"
-    :text="teacherMessage.body"
+    :text="body"
     :set-text="setMessage"
     default-text=""
   />

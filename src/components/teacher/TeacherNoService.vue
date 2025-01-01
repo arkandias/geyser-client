@@ -39,6 +39,7 @@ const insertService = useMutation(InsertServiceDocument);
 // Service form
 const serviceCreation: Ref<boolean> = ref(false);
 const baseServiceHours: Ref<number> = ref(
+  // eslint-disable-next-line vue/no-ref-object-reactivity-loss
   teacher.value.position?.baseServiceHours ?? 0,
 );
 const resetServiceCreation = (): void => {

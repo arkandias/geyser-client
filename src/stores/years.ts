@@ -1,13 +1,17 @@
 import { type ComputedRef, type Ref, computed, readonly, ref } from "vue";
 
-export const selectedYear: Ref<number | null> = ref(null);
+import { useQueryParam } from "@/composables/query-param.ts";
+
+const { getValue: selectedYear, setValue: selectYear } = useQueryParam(
+  "year",
+  true,
+);
 
 const years: Ref<number[]> = ref([]);
 const currentYear: Ref<number | null> = ref(null);
-
 const activeYear: ComputedRef<number | null> = computed(() =>
-  selectedYear.value !== null && years.value.includes(selectedYear.value)
-    ? selectedYear.value
+  selectedYear !== null && years.value.includes(selectedYear)
+    ? selectedYear
     : currentYear.value,
 );
 const isCurrentYearActive: ComputedRef<boolean> = computed(
@@ -20,9 +24,6 @@ const setYears = (values: number[]) => {
 const setCurrentYear = (year: number | null) => {
   currentYear.value = year;
 };
-const selectYear = (year: number | null): void => {
-  selectedYear.value = year ?? currentYear.value;
-};
 
 export const useYears = () =>
   readonly({
@@ -32,6 +33,6 @@ export const useYears = () =>
     activeYear,
     isCurrentYearActive,
     setYears,
-    selectYear,
     setCurrentYear,
+    selectYear,
   });

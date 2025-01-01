@@ -7,9 +7,9 @@ import {
   toValue,
   watchEffect,
 } from "vue";
-import { useRouter } from "vue-router";
 
 import { usePermissions } from "@/composables/permissions.ts";
+import { useQueryParam } from "@/composables/query-param.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import {
   REQUEST_TYPES,
@@ -25,8 +25,6 @@ import {
 import { formatProgram, formatUser, nf } from "@/helpers/format.ts";
 import { totalH } from "@/helpers/hours.ts";
 import { compare, normalizeForSearch, uniqueValue } from "@/helpers/misc.ts";
-import { toggleQueryParam } from "@/helpers/query-params.ts";
-import { useData } from "@/stores/data.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
 import type { Option } from "@/types/common.ts";
 
@@ -40,8 +38,9 @@ const { courseRowsFragment, teacherNameFragment, teacherRequestsFragment } =
       | FragmentType<typeof TeacherRequestFragmentDoc>[]
       | null;
     fetchingCourses?: boolean;
-    fetchingTeacher?: boolean;
   }>();
+
+const perm = usePermissions();
 
 graphql(`
   fragment CourseRow on enseignement {
@@ -138,37 +137,21 @@ const requests = computed(
     ) ?? null,
 );
 
-const router = useRouter();
-
-const perm = usePermissions();
-const { selectedCourse } = useData();
-
+const { getValue: selectedCourse, toggleValue: toggleCourse } = useQueryParam(
+  "courseId",
+  true,
+);
+const selectedRow = computed(() => [{ id: selectedCourse }]);
 const selectCourse = async (_: Event, row: CourseRowFragment) => {
-  await toggleQueryParam(router, "courseId", row.id, true);
+  await toggleCourse(row.id);
 };
 
+const { toggleValue: toggleTeacher } = useQueryParam("uid");
 const deselectTeacher = async () => {
-  await toggleQueryParam(router, "uid", undefined);
+  await toggleTeacher();
 };
 
-const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
-  if (requests.value) {
-    return (
-      requests.value.find(
-        (request) =>
-          request.courseId === row.id && request.type === requestType,
-      )?.hours ?? 0
-    );
-  }
-  switch (requestType) {
-    case REQUEST_TYPES.ASSIGNMENT:
-      return totalH(row.totalAssigned);
-    case REQUEST_TYPES.PRIMARY:
-      return totalH(row.totalPrimary);
-    case REQUEST_TYPES.SECONDARY:
-      return totalH(row.totalSecondary);
-  }
-};
+const showTeacherDetails: Ref<boolean> = ref(false);
 
 const title: ComputedRef<string> = computed(() =>
   teacher.value ? formatUser(teacher.value) : "Enseignements",
@@ -440,7 +423,25 @@ const isVisible = (row: CourseRowFragment): boolean =>
   row.program.visible &&
   (row.track?.visible ?? true);
 
-const showTeacherDetails: Ref<boolean> = ref(false);
+// Helpers
+const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
+  if (requests.value) {
+    return (
+      requests.value.find(
+        (request) =>
+          request.courseId === row.id && request.type === requestType,
+      )?.hours ?? 0
+    );
+  }
+  switch (requestType) {
+    case REQUEST_TYPES.ASSIGNMENT:
+      return totalH(row.totalAssigned);
+    case REQUEST_TYPES.PRIMARY:
+      return totalH(row.totalPrimary);
+    case REQUEST_TYPES.SECONDARY:
+      return totalH(row.totalSecondary);
+  }
+};
 </script>
 
 <template>
@@ -452,7 +453,7 @@ const showTeacherDetails: Ref<boolean> = ref(false);
     </QLayout>
   </QDialog>
   <QTable
-    v-model:selected="selectedCourse"
+    v-model:selected="selectedRow"
     :title
     :columns
     :visible-columns
@@ -476,7 +477,7 @@ const showTeacherDetails: Ref<boolean> = ref(false);
         <QBtn
           v-if="teacher"
           icon="sym_s_visibility"
-          :color="!selectedCourse[0] ? 'primary' : 'grey'"
+          :color="selectedCourse === null ? 'primary' : 'grey'"
           size="sm"
           flat
           square
@@ -510,7 +511,7 @@ const showTeacherDetails: Ref<boolean> = ref(false);
           dense
           options-dense
         >
-          <!--slot pour utiliser QChip avec l'attribut dense-->
+          <!-- this slot to use dense QChip -->
           <template #selected-item="scope">
             <QChip
               :tabindex="scope.tabindex"
@@ -537,7 +538,7 @@ const showTeacherDetails: Ref<boolean> = ref(false);
           dense
           options-dense
         >
-          <!--slot pour utiliser QChip avec l'attribut dense-->
+          <!-- this slot to use dense QChip -->
           <template #selected-item="scope">
             <QChip
               :tabindex="scope.tabindex"
@@ -564,7 +565,7 @@ const showTeacherDetails: Ref<boolean> = ref(false);
           dense
           options-dense
         >
-          <!--slot pour utiliser QChip avec l'attribut dense-->
+          <!-- this slot to use dense QChip -->
           <template #selected-item="scope">
             <QChip
               :tabindex="scope.tabindex"

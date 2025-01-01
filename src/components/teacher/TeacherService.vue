@@ -106,6 +106,7 @@ const deleteModification = useMutation(DeleteModificationDocument);
 // Base service hours form
 const isBaseServiceFormOpen: Ref<boolean> = ref(false);
 const baseServiceHours: Ref<number> = ref(
+  // eslint-disable-next-line vue/no-ref-object-reactivity-loss
   service.value.teacher.position?.baseServiceHours ?? 0,
 );
 const resetBaseServiceForm = (): void => {

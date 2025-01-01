@@ -2,10 +2,7 @@
 import { computed } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import {
-  CoursePrioritiesFragmentDoc,
-  CourseRequestsFragmentDoc,
-} from "@/gql/graphql.ts";
+import { CoursePrioritiesFragmentDoc } from "@/gql/graphql.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import PriorityChip from "@/components/core/PriorityChip.vue";

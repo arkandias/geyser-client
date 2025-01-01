@@ -1,25 +1,23 @@
 <script setup lang="ts">
 import { type ComputedRef, computed } from "vue";
-import { useRouter } from "vue-router";
 
+import { useQueryParam } from "@/composables/query-param.ts";
 import { buttonColor } from "@/helpers/format.ts";
-import { isQueryParam, toggleQueryParam } from "@/helpers/query-params.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useLayout } from "@/stores/layout.ts";
 
 import MenuYear from "@/components/header/MenuYear.vue";
 
-const router = useRouter();
-
 const { isLeftPanelOpen, toggleLeftPanel } = useLayout();
 const { profile } = useAuthentication();
+const { getValue: uid, toggleValue: toggleUid } = useQueryParam("uid");
 
-const isMyUidSelected: ComputedRef<boolean> = computed(() =>
-  isQueryParam(router, "uid", profile.uid),
+const isMyUidSelected: ComputedRef<boolean> = computed(
+  () => uid === profile.uid,
 );
 
 const toggleMyUid = async () => {
-  await toggleQueryParam(router, "uid", profile.uid);
+  await toggleUid(profile.uid);
 };
 </script>
 

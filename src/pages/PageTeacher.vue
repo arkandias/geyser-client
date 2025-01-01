@@ -1,25 +1,23 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useRoute } from "vue-router";
-
-import { getNumber, getValue } from "@/helpers/query-params.ts";
+import { useQueryParam } from "@/composables/query-param.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
 import { useYears } from "@/stores/years.ts";
 
 import DetailsTeacher from "@/components/DetailsTeacher.vue";
 
-const route = useRoute();
-const { currentYear } = useYears();
+const { activeYear } = useYears();
 const { profile } = useAuthentication();
-
-const year = computed(() => getNumber(route.query, "year") ?? currentYear);
-const uid = computed(() => getValue(route.query, "uid") ?? profile.uid);
+const { getValue: uid } = useQueryParam("uid");
 </script>
 
 <template>
   <QPage>
     <QCard flat square class="column items-center">
-      <DetailsTeacher v-if="year !== null" :year :uid />
+      <DetailsTeacher
+        v-if="activeYear !== null"
+        :year="activeYear"
+        :uid="uid ?? profile.uid"
+      />
     </QCard>
   </QPage>
 </template>

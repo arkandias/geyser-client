@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { type ComputedRef, computed } from "vue";
+import { computed } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import {
-  type CourseArchivesFragment,
-  CourseArchivesFragmentDoc,
-} from "@/gql/graphql.ts";
+import { CourseArchivesFragmentDoc } from "@/gql/graphql.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";

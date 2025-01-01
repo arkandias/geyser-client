@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
 import { computed, reactive, watch } from "vue";
-import { useRoute } from "vue-router";
 
 import { usePermissions } from "@/composables/permissions.ts";
+import { useQueryParam } from "@/composables/query-param.ts";
 import { graphql } from "@/gql";
 import {
   GetCourseDetailsDocument,
@@ -11,9 +11,7 @@ import {
   GetTeacherDetailsDocument,
   GetTeacherRowsDocument,
 } from "@/gql/graphql.ts";
-import { getNumber, getValue } from "@/helpers/query-params.ts";
 import { useAuthentication } from "@/stores/authentication.ts";
-import { useData } from "@/stores/data.ts";
 import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
 import { useYears } from "@/stores/years.ts";
 
@@ -21,29 +19,12 @@ import DetailsCourse from "@/components/DetailsCourse.vue";
 import TableCourses from "@/components/TableCourses.vue";
 import TableTeachers from "@/components/TableTeachers.vue";
 
-const route = useRoute();
-
-const { activeYear, isCurrentYearActive, selectYear } = useYears();
+const { activeYear, isCurrentYearActive } = useYears();
 const { profile } = useAuthentication();
+const { getValue: selectedCourse } = useQueryParam("courseId", true);
+const { getValue: selectedTeacher } = useQueryParam("uid");
 const perm = usePermissions();
 const { closeLeftPanel, isLeftPanelOpen, openLeftPanel } = useLayout();
-const { selectedCourse, selectedTeacher, selectCourse, selectTeacher } =
-  useData();
-
-// Get selections from query parameters
-watch(
-  [
-    () => getNumber(route.query, "year"),
-    () => getNumber(route.query, "courseId"),
-    () => getValue(route.query, "uid"),
-  ],
-  () => {
-    selectYear(getNumber(route.query, "year"));
-    selectCourse(getNumber(route.query, "courseId"));
-    selectTeacher(getValue(route.query, "uid"));
-  },
-  { immediate: true },
-);
 
 graphql(`
   query GetCourseRows($year: Int!) {
@@ -137,9 +118,9 @@ const teacherRows = computed(
 const courseDetailsQueryResponse = useQuery({
   query: GetCourseDetailsDocument,
   variables: reactive({
-    courseId: computed(() => selectedCourse[0]?.id ?? -1),
+    courseId: computed(() => selectedCourse ?? -1),
   }),
-  pause: () => !selectedCourse[0],
+  pause: () => selectedCourse === null,
   context: {
     additionalTypenames: ["demande", "priorite"],
   },
@@ -148,7 +129,7 @@ const fetchingCourseDetails = computed(
   () => courseDetailsQueryResponse.fetching.value,
 );
 const courseDetails = computed(() =>
-  selectedCourse[0]
+  courseDetailsQueryResponse.isPaused.value
     ? (courseDetailsQueryResponse.data.value?.course ?? null)
     : null,
 );
@@ -157,9 +138,9 @@ const teacherDetailsQueryResponse = useQuery({
   query: GetTeacherDetailsDocument,
   variables: reactive({
     year: computed(() => activeYear ?? -1),
-    uid: computed(() => selectedTeacher[0]?.uid ?? ""),
+    uid: computed(() => selectedTeacher ?? ""),
   }),
-  pause: () => !activeYear || !selectedTeacher[0],
+  pause: () => !activeYear || !selectedTeacher,
   context: {
     additionalTypenames: [
       "demande",
@@ -169,11 +150,8 @@ const teacherDetailsQueryResponse = useQuery({
     ],
   },
 });
-const fetchingTeacherDetails = computed(
-  () => teacherDetailsQueryResponse.fetching.value,
-);
 const teacherDetails = computed(() =>
-  selectedTeacher[0]
+  teacherDetailsQueryResponse.isPaused.value
     ? (teacherDetailsQueryResponse.data.value?.teacher ?? null)
     : null,
 );
@@ -217,7 +195,6 @@ watch(
               :teacher-name-fragment="teacherDetails"
               :teacher-requests-fragment="teacherDetails?.requests ?? null"
               :fetching-courses="fetchingCourseRows"
-              :fetching-teacher="fetchingTeacherDetails"
             />
           </template>
           <template #after>

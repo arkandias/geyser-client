@@ -90,7 +90,7 @@ const messageEdition: Ref<boolean> = ref(false);
           v-model="messageEdition"
           :year
           :uid
-          :body="details.messages[0]?.body ?? null"
+          :teacher-message-fragment="details.messages[0] ?? null"
         />
       </DetailsSection>
     </template>

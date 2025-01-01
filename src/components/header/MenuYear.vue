@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
-import { useRouter } from "vue-router";
 
-import { setQueryParam } from "@/helpers/query-params.ts";
 import { useYears } from "@/stores/years.ts";
 import type { Option } from "@/types/common.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const router = useRouter();
-
-const { years, activeYear } = useYears();
+const { years, activeYear, selectYear } = useYears();
 
 const options: ComputedRef<Option<number>[]> = computed(() =>
   years
@@ -24,7 +20,7 @@ const options: ComputedRef<Option<number>[]> = computed(() =>
 const selected: Ref<number | null> = ref(null);
 
 const update = async () => {
-  await setQueryParam(router, "year", selected.value ?? undefined);
+  await selectYear(selected.value ?? undefined);
 };
 
 watch(

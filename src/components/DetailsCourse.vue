@@ -54,7 +54,7 @@ watch(
         <CourseCoordinators :course-coordinators-fragment="details" />
         <CourseDescription :course-description-fragment="details" />
       </template>
-      <CourseExpansionDefault v-else />
+      <CourseExpansionDefault v-else :fetching />
     </QCard>
   </CourseExpansion>
   <QCard flat square>
@@ -65,7 +65,7 @@ watch(
       <QSeparator />
       <CourseArchives :course-archives-fragment="details" />
     </template>
-    <DetailsCourseDefault v-else />
+    <DetailsCourseDefault v-else :fetching />
   </QCard>
 </template>
 
