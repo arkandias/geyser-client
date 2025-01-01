@@ -1,8 +1,5 @@
 import { type Ref, readonly, ref } from "vue";
 
-import type { CourseRow } from "@/types/course.ts";
-import type { TeacherRow } from "@/types/teacher.ts";
-
 const courses: Ref<CourseRow[]> = ref([]);
 const teachers: Ref<TeacherRow[]> = ref([]);
 const setCourses = (rows: CourseRow[]) => {

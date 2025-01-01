@@ -19,61 +19,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
-      <change afterPath="$PROJECT_DIR$/src/components/course/CourseDescription.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codegen.ts" beforeDir="false" afterPath="$PROJECT_DIR$/codegen.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/DetailsCourse.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsCourse.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/TableCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableCourses.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TableTeachers.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableTeachers.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/EditableText.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/EditableText.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/HomeMessageDefault.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/HomeMessageDefault.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/PriorityChip.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/PriorityChip.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/RequestCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestCard.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/RequestForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestForm.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/course/CourseCoordinators.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseCoordinators.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseExpansionContent.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequestsDefault.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/DetailsCourseDefault.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuUser.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuYear.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuYear.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherMessage.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherNoService.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherNoService.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherRequests.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherService.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherService.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherTitle.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherTitle.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/composables/permissions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/permissions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/composables/request-operations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/request-operations.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gql/gql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/gql.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gql/graphql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/graphql.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gql/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/courses.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/courses.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/messages.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/modification-types.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/phases.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/profile.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/requests.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/requests.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/service-modifications.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/service-modifications.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/services.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/services.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/teachers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphql/teachers.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphql/years.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/coordinators.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/courses.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/priorities.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/profile.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/requests.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/graphql/teachers.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/helpers/format.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/format.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/helpers/hours.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/hours.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helpers/notify.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/notify.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/PageCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageCourses.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PageTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageTeacher.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/urql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/urql.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/stores/authentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/authentication.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/data.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/layout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/layout.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/phases.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/phase.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/refresh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/refresh.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/years.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/years.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/coordinator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/coordinator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/profile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/coordinator.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/course.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/message.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/modification-type.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/priority.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/user.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/request.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/row.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/hours.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/service-modification.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/teacher.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -386,15 +359,7 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="59831000" />
-    </task>
-    <task id="LOCAL-00297" summary="refactor(services): replace intervenant references with service&#10;&#10;update codebase to use service structure instead of intervenant,&#10;including queries, types, and component props">
-      <option name="closed" value="true" />
-      <created>1734403758595</created>
-      <option name="number" value="00297" />
-      <option name="presentableId" value="LOCAL-00297" />
-      <option name="project" value="LOCAL" />
-      <updated>1734403758595</updated>
+      <workItem from="1735468210242" duration="65087000" />
     </task>
     <task id="LOCAL-00298" summary="chore(deps): update dependencies in pnpm-lock.yaml">
       <option name="closed" value="true" />
@@ -780,7 +745,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735555827807</updated>
     </task>
-    <option name="localTasksCounter" value="346" />
+    <task id="LOCAL-00346" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735667641572</created>
+      <option name="number" value="00346" />
+      <option name="presentableId" value="LOCAL-00346" />
+      <option name="project" value="LOCAL" />
+      <updated>1735667641572</updated>
+    </task>
+    <option name="localTasksCounter" value="347" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

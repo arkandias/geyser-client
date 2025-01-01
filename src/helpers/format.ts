@@ -1,6 +1,6 @@
 import type { NamedColor } from "quasar";
 
-import type { UserName } from "@/types/profile.ts";
+import type { UserName } from "@/types/user.ts";
 
 export const nf = new Intl.NumberFormat("fr-FR", {
   style: "decimal",

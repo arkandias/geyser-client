@@ -1,4 +1,4 @@
-import type { TotalHours, TotalWeightedHours } from "@/types/row.ts";
+import type { TotalHours, TotalWeightedHours } from "@/types/hours.ts";
 
 export const totalH = (total?: TotalHours): number =>
   total?.aggregate?.sum?.hours ?? 0;

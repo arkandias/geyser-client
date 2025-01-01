@@ -4,7 +4,7 @@ import { computed } from "vue";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CourseCoordinatorsFragmentDoc } from "@/gql/graphql.ts";
 import { formatUser } from "@/helpers/format.ts";
-import type { UserName } from "@/types/profile.ts";
+import type { UserName } from "@/types/user.ts";
 
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 

@@ -16,7 +16,12 @@ import {
   type RequestType,
 } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { type CourseRowFragment, CourseRowFragmentDoc } from "@/gql/graphql.ts";
+import {
+  type CourseRowFragment,
+  CourseRowFragmentDoc,
+  TeacherNameFragmentDoc,
+  TeacherRequestFragmentDoc,
+} from "@/gql/graphql.ts";
 import { formatProgram, formatUser, nf } from "@/helpers/format.ts";
 import { totalH } from "@/helpers/hours.ts";
 import { compare, normalizeForSearch, uniqueValue } from "@/helpers/misc.ts";
@@ -24,15 +29,19 @@ import { toggleQueryParam } from "@/helpers/query-params.ts";
 import { useData } from "@/stores/data.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
 import type { Option } from "@/types/common.ts";
-import type { TeacherDetails } from "@/types/teacher.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
 
-const { courseRowsFragment, teacher } = defineProps<{
-  courseRowsFragment: FragmentType<typeof CourseRowFragmentDoc>[];
-  fetching?: boolean;
-  teacher: TeacherDetails | null;
-}>();
+const { courseRowsFragment, teacherNameFragment, teacherRequestsFragment } =
+  defineProps<{
+    courseRowsFragment: FragmentType<typeof CourseRowFragmentDoc>[];
+    teacherNameFragment: FragmentType<typeof TeacherNameFragmentDoc> | null;
+    teacherRequestsFragment:
+      | FragmentType<typeof TeacherRequestFragmentDoc>[]
+      | null;
+    fetchingCourses?: boolean;
+    fetchingTeacher?: boolean;
+  }>();
 
 graphql(`
   fragment CourseRow on enseignement {
@@ -99,12 +108,34 @@ graphql(`
       }
     }
   }
+
+  fragment TeacherName on intervenant {
+    uid
+    firstname: prenom
+    lastname: nom
+    alias
+  }
+
+  fragment TeacherRequest on demande {
+    courseId: ens_id
+    type
+    hours: heures
+  }
 `);
 
 const courses = computed(() =>
   courseRowsFragment.map((fragment) =>
     useFragment(CourseRowFragmentDoc, fragment),
   ),
+);
+const teacher = computed(() =>
+  useFragment(TeacherNameFragmentDoc, teacherNameFragment),
+);
+const requests = computed(
+  () =>
+    teacherRequestsFragment?.map((fragment) =>
+      useFragment(TeacherRequestFragmentDoc, fragment),
+    ) ?? null,
 );
 
 const router = useRouter();
@@ -120,16 +151,12 @@ const deselectTeacher = async () => {
   await toggleQueryParam(router, "uid", undefined);
 };
 
-const getRequestTotal = (
-  row: CourseRowFragment,
-  requestType: RequestType,
-  teacher: TeacherDetails | null,
-) => {
-  if (teacher) {
+const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
+  if (requests.value) {
     return (
-      teacher.requests.find(
+      requests.value.find(
         (request) =>
-          request.course.id === row.id && request.type === requestType,
+          request.courseId === row.id && request.type === requestType,
       )?.hours ?? 0
     );
   }
@@ -144,7 +171,7 @@ const getRequestTotal = (
 };
 
 const title: ComputedRef<string> = computed(() =>
-  teacher ? formatUser(teacher) : "Enseignements",
+  teacher.value ? formatUser(teacher.value) : "Enseignements",
 );
 
 // Columns definition
@@ -243,7 +270,7 @@ const columns: Column<CourseRowFragment>[] = [
     name: "assigned",
     label: "A.",
     tooltip: "Nombre d'heures attribuées",
-    field: (row) => getRequestTotal(row, REQUEST_TYPES.ASSIGNMENT, teacher),
+    field: (row) => getRequestTotal(row, REQUEST_TYPES.ASSIGNMENT),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -268,7 +295,7 @@ const columns: Column<CourseRowFragment>[] = [
     name: "primary",
     label: "V1",
     tooltip: "Nombre d'heures demandées en vœux principaux",
-    field: (row) => getRequestTotal(row, REQUEST_TYPES.PRIMARY, teacher),
+    field: (row) => getRequestTotal(row, REQUEST_TYPES.PRIMARY),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -306,7 +333,7 @@ const columns: Column<CourseRowFragment>[] = [
     name: "secondary",
     label: "V2",
     tooltip: "Nombre d'heures demandées en vœux secondaires",
-    field: (row) => getRequestTotal(row, REQUEST_TYPES.SECONDARY, teacher),
+    field: (row) => getRequestTotal(row, REQUEST_TYPES.SECONDARY),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -366,7 +393,7 @@ const clearSearch = () => {
 };
 // Filter attributes
 const filterObj = computed(() => ({
-  teacherRequests: teacher ? teacher.requests : null,
+  teacherRequests: requests.value,
   programs: programs.value,
   courseTypes: courseTypes.value,
   semesters: semesters.value,
@@ -379,7 +406,7 @@ const filterMethod = (
 ): readonly CourseRowFragment[] =>
   rows.filter((row) =>
     terms.teacherRequests
-      ? terms.teacherRequests.some((request) => request.course.id === row.id)
+      ? terms.teacherRequests.some((request) => request.courseId === row.id)
       : (terms.programs.length === 0 ||
           terms.programs.some((program) => program === row.program.id)) &&
         (terms.courseTypes.length === 0 ||
@@ -402,12 +429,12 @@ const filterMethod = (
 // Styling options controllers
 const stickyHeader: Ref<boolean> = ref(false);
 const isAssigned = (row: CourseRowFragment) =>
-  teacher?.requests.some(
+  requests.value?.some(
     (request) =>
-      request.course.id === row.id && request.type === REQUEST_TYPES.ASSIGNMENT,
+      request.courseId === row.id && request.type === REQUEST_TYPES.ASSIGNMENT,
   ) ?? false;
 const isVisible = (row: CourseRowFragment): boolean =>
-  !teacher &&
+  !teacher.value &&
   row.visible &&
   row.program.degree.visible &&
   row.program.visible &&
@@ -430,7 +457,7 @@ const showTeacherDetails: Ref<boolean> = ref(false);
     :columns
     :visible-columns
     :rows="courses"
-    :loading="fetching"
+    :loading="fetchingCourses"
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"

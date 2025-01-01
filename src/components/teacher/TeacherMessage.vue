@@ -2,16 +2,20 @@
 import { useMutation } from "@urql/vue";
 import { type ComputedRef, computed } from "vue";
 
-import { graphql } from "@/gql";
-import { DeleteMessageDocument, UpsertMessageDocument } from "@/gql/graphql.ts";
+import { type FragmentType, graphql, useFragment } from "@/gql";
+import {
+  DeleteMessageDocument,
+  TeacherMessageFragmentDoc,
+  UpsertMessageDocument,
+} from "@/gql/graphql.ts";
 
 import EditableText from "@/components/core/EditableText.vue";
 
 const edition = defineModel<boolean>();
-const { year, uid, body } = defineProps<{
+const { year, uid, teacherMessageFragment } = defineProps<{
   year: number;
   uid: string;
-  body: string | null;
+  teacherMessageFragment: FragmentType<typeof TeacherMessageFragmentDoc>;
 }>();
 
 graphql(`
@@ -42,6 +46,9 @@ graphql(`
   }
 `);
 
+const teacherMessage = computed(() =>
+  useFragment(TeacherMessageFragmentDoc, teacherMessageFragment),
+);
 const upsertMessage = useMutation(UpsertMessageDocument);
 const deleteMessage = useMutation(DeleteMessageDocument);
 
@@ -63,7 +70,7 @@ const setMessage: ComputedRef<(body: string) => Promise<boolean>> = computed(
 <template>
   <EditableText
     v-model="edition"
-    :text="body"
+    :text="teacherMessage.body"
     :set-text="setMessage"
     default-text=""
   />

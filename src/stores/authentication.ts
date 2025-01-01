@@ -1,7 +1,7 @@
 import { type Ref, reactive, readonly, ref } from "vue";
 
 import type { Role } from "@/config/types/roles.ts";
-import type { Profile } from "@/types/profile.ts";
+import type { Profile } from "@/types/user.ts";
 
 export const activeRole: Ref<Role | null> = ref(null);
 
