@@ -98,7 +98,7 @@ const yearOptions = computed(() =>
       <MenuAdminOptions
         :get-value="currentPhase"
         :set-value="setCurrentPhase"
-        :options="PHASE_OPTIONS"
+        :options="[...PHASE_OPTIONS]"
         label="Phase en cours"
         icon="sym_s_schedule"
       />
