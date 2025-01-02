@@ -87,9 +87,9 @@ const teachers = computed(() =>
   ),
 );
 
-const { getValue: selectedTeadcher, toggleValue: toggleTeacher } =
+const { getValue: selectedTeacher, toggleValue: toggleTeacher } =
   useQueryParam("uid");
-const selectedRow = computed(() => [{ uid: selectedTeadcher }]);
+const selectedRow = computed(() => [{ uid: selectedTeacher }]);
 const selectTeacher = async (_: Event, row: TeacherRowFragment) => {
   await toggleTeacher(row.uid);
 };
@@ -224,8 +224,8 @@ watchEffect(() => {
     .filter((col) => toValue(col.visible))
     .map((col) => col.name);
 });
-const menuColonnesOpen: Ref<boolean> = ref(false);
-const tooltipMenuColonnes: Ref<boolean> = ref(false);
+const isMenuColumnsOpen: Ref<boolean> = ref(false);
+const isMenuColumnsTooltipVisible: Ref<boolean> = ref(false);
 
 // Search filter
 const search: Ref<string> = ref("");
@@ -246,6 +246,7 @@ const filterMethod = (
     ),
   );
 
+// Styling options controllers
 const stickyHeader: Ref<boolean> = ref(false);
 </script>
 
@@ -293,18 +294,20 @@ const stickyHeader: Ref<boolean> = ref(false);
         </QToggle>
         <QBtn
           icon="sym_s_view_column"
-          :color="menuColonnesOpen ? 'primary' : 'grey'"
+          :color="isMenuColumnsOpen ? 'primary' : 'grey'"
           flat
           square
           dense
         >
-          <QTooltip v-model="tooltipMenuColonnes">Colonnes visibles</QTooltip>
+          <QTooltip v-model="isMenuColumnsTooltipVisible"
+            >Colonnes visibles</QTooltip
+          >
           <QMenu
-            v-model="menuColonnesOpen"
+            v-model="isMenuColumnsOpen"
             auto-close
             square
             dense
-            @show="tooltipMenuColonnes = false"
+            @show="isMenuColumnsTooltipVisible = false"
           >
             <QList dense>
               <QItem v-for="col in columns" :key="col.name" dense>
