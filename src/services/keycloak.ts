@@ -6,7 +6,7 @@ import {
 } from "@/config/constants.ts";
 import { bypassClaims, bypassKeycloak } from "@/config/env.ts";
 import { type Role, isRole } from "@/config/types/roles.ts";
-import { type HasuraClaims, isXHasuraClaims } from "@/types/claim.ts";
+import { type HasuraClaims, isXHasuraClaims } from "@/types/claims.ts";
 
 const keycloak = new Keycloak({
   url: import.meta.env.VITE_KEYCLOAK_URL ?? "",
@@ -107,5 +107,7 @@ export const getClaims = (): HasuraClaims | null => {
 };
 
 export const logout = async (): Promise<void> => {
-  await keycloak.logout();
+  if (!bypassKeycloak) {
+    await keycloak.logout();
+  }
 };

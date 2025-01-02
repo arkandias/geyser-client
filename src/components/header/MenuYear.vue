@@ -2,7 +2,7 @@
 import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
 
 import { useYearsStore } from "@/stores/years.ts";
-import type { Option } from "@/types/common.ts";
+import type { Option } from "@/types/option.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 

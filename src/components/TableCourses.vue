@@ -26,7 +26,7 @@ import { formatProgram, formatUser, nf } from "@/helpers/format.ts";
 import { totalH } from "@/helpers/hours.ts";
 import { compare, normalizeForSearch, uniqueValue } from "@/helpers/misc.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
-import type { Option } from "@/types/common.ts";
+import type { Option } from "@/types/option.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
 

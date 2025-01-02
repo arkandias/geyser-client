@@ -1,4 +1,4 @@
-import type { Option } from "@/types/common.ts";
+import type { Option } from "@/types/option.ts";
 
 export const ROLES = {
   USER: "intervenant",

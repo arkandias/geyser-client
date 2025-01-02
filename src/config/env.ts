@@ -1,5 +1,5 @@
 import { ROLES } from "@/config/types/roles.ts";
-import type { HasuraClaims } from "@/types/claim.ts";
+import type { HasuraClaims } from "@/types/claims.ts";
 
 export const bypassKeycloak =
   import.meta.env.DEV &&

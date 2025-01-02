@@ -1,22 +1,21 @@
-<script setup lang="ts" generic="T">
-import { type ShallowRef, shallowRef, watch } from "vue";
+<script setup lang="ts" generic="T extends string | number">
+import { ref, watch } from "vue";
 
-import type { Nullable, Option } from "@/types/common.ts";
+import type { Option } from "@/types/option.ts";
 
 const { getValue } = defineProps<{
   label: string;
   icon: string;
   options: Option<T>[];
-  getValue: Nullable<T>;
-  setValue: (value: Nullable<T>) => void;
+  getValue: T | null;
+  setValue: (value: T | null) => void;
 }>();
 
-const model: ShallowRef<Nullable<T>> = shallowRef(null);
-
+const model = ref<T | null>(null);
 watch(
   () => getValue,
-  () => {
-    model.value = getValue;
+  (value) => {
+    model.value = value;
   },
   { immediate: true },
 );

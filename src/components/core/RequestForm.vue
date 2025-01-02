@@ -20,7 +20,7 @@ import { RequestFormInfoFragmentDoc } from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 import { useAuthenticationStore } from "@/stores/authentication.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
-import type { Option } from "@/types/common.ts";
+import type { Option } from "@/types/option.ts";
 
 import TeacherSelect from "@/components/core/TeacherSelect.vue";
 

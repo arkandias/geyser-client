@@ -10,7 +10,7 @@ import {
 } from "@/gql/graphql.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 import { useYearsStore } from "@/stores/years.ts";
-import type { Option } from "@/types/common.ts";
+import type { Option } from "@/types/option.ts";
 
 import MenuAdminOptions from "@/components/header/MenuAdminOptions.vue";
 import MenuBase from "@/components/header/MenuBase.vue";

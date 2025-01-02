@@ -1,20 +1,34 @@
 <script setup lang="ts">
-import { type ComputedRef, computed } from "vue";
+import { computed, ref, watch } from "vue";
 
 import { useRefresh } from "@/composables/refresh.ts";
 import { ROLE_OPTIONS, type Role } from "@/config/types/roles.ts";
 import { formatUser } from "@/helpers/format.ts";
-import { activeRole, useAuthenticationStore } from "@/stores/authentication.ts";
-import type { Option } from "@/types/common.ts";
+import { useAuthenticationStore } from "@/stores/authentication.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { profile, allowedRoles, logout } = useAuthenticationStore();
+const { profile, activeRole, allowedRoles, logout, setActiveRole } =
+  useAuthenticationStore();
 const { refresh } = useRefresh();
 
-const roleOptions: ComputedRef<Option<Role>[]> = computed(() =>
+const model = ref<Role | null>(null);
+watch(
+  activeRole,
+  (value) => {
+    model.value = value;
+  },
+  { immediate: true },
+);
+
+const roleOptions = computed(() =>
   ROLE_OPTIONS.filter((role) => allowedRoles.value.includes(role.value)),
 );
+
+const onUpdate = async (value: Role) => {
+  setActiveRole(value);
+  await refresh();
+};
 </script>
 
 <template>
@@ -28,11 +42,11 @@ const roleOptions: ComputedRef<Option<Role>[]> = computed(() =>
       <QSeparator />
       <QItem class="item-options">
         <QOptionGroup
-          v-model="activeRole"
+          v-model="model"
           :options="roleOptions"
           color="primary"
           type="radio"
-          @update:model-value="refresh"
+          @update:model-value="onUpdate"
         />
       </QItem>
       <QSeparator />

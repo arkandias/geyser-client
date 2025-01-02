@@ -20,23 +20,25 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/TableCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableCourses.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TableTeachers.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableTeachers.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TheHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TheHeader.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/core/RequestForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestForm.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/CoursesOptions.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/CoursesOptions.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdminOptions.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdminOptions.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/header/MenuUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuUser.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/header/MenuYear.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuYear.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/composables/permissions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/permissions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/composables/query-param.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/query-param.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/composables/refresh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/refresh.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PageCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageCourses.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/env.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/env.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/types/phases.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/types/phases.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/types/request-types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/types/request-types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/types/roles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/types/roles.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/hours.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/hours.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/keycloak.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/keycloak.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/stores/authentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/authentication.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/left-panel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/left-panel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/phase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/phase.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/years.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/years.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/claim.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/claims.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/column.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/column.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/common.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/option.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/hours.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/user.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -349,15 +351,7 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="87024000" />
-    </task>
-    <task id="LOCAL-00303" summary="WIP">
-      <option name="closed" value="true" />
-      <created>1734603097643</created>
-      <option name="number" value="00303" />
-      <option name="presentableId" value="LOCAL-00303" />
-      <option name="project" value="LOCAL" />
-      <updated>1734603097643</updated>
+      <workItem from="1735468210242" duration="91570000" />
     </task>
     <task id="LOCAL-00304" summary="WIP">
       <option name="closed" value="true" />
@@ -743,7 +737,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735812345769</updated>
     </task>
-    <option name="localTasksCounter" value="352" />
+    <task id="LOCAL-00352" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735815595131</created>
+      <option name="number" value="00352" />
+      <option name="presentableId" value="LOCAL-00352" />
+      <option name="project" value="LOCAL" />
+      <updated>1735815595131</updated>
+    </task>
+    <option name="localTasksCounter" value="353" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

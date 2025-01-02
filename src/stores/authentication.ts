@@ -1,11 +1,13 @@
-import { type Ref, reactive, readonly, ref } from "vue";
+import { reactive, readonly, ref } from "vue";
 
 import type { Role } from "@/config/types/roles.ts";
-import type { Profile } from "@/types/user.ts";
+import type { UserName } from "@/types/user.ts";
 
-export const activeRole: Ref<Role | null> = ref(null);
+type Profile = UserName & {
+  uid: string;
+  active: boolean;
+};
 
-const logged: Ref<boolean> = ref(false);
 const profile: Profile = reactive({
   uid: "",
   firstname: "",
@@ -13,22 +15,24 @@ const profile: Profile = reactive({
   alias: null,
   active: false,
 });
-const allowedRoles: Ref<Role[]> = ref([]);
-const logout: Ref<() => Promise<void>> = ref(() => Promise.resolve());
+const activeRole = ref<Role | null>(null);
+const allowedRoles = ref<Role[]>([]);
+const logout = ref(() => Promise.resolve());
+const logged = ref(false);
+
+const setActiveRole = (role: Role | null): void => {
+  activeRole.value = role;
+};
 
 const login = (
   newProfile: Profile,
   newDefaultRole: Role,
   newAllowedRoles: Role[],
   newLogout: () => Promise<void>,
-): void => {
+) => {
+  Object.assign(profile, newProfile);
   activeRole.value = newDefaultRole;
   allowedRoles.value = newAllowedRoles;
-  profile.uid = newProfile.uid;
-  profile.firstname = newProfile.firstname;
-  profile.lastname = newProfile.lastname;
-  profile.alias = newProfile.alias;
-  profile.active = newProfile.active;
   logout.value = async () => {
     logged.value = false;
     await newLogout();
@@ -41,7 +45,8 @@ export const useAuthenticationStore = () => ({
   profile: readonly(profile),
   activeRole: readonly(activeRole),
   allowedRoles: readonly(allowedRoles),
-  logged: readonly(logged),
-  login,
   logout: readonly(logout),
+  logged: readonly(logged),
+  setActiveRole,
+  login,
 });

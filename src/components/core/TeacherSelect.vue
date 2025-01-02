@@ -6,7 +6,7 @@ import { graphql } from "@/gql";
 import { GetActiveTeachersDocument } from "@/gql/graphql.ts";
 import { formatUser } from "@/helpers/format.ts";
 import { normalizeForSearch } from "@/helpers/misc.ts";
-import type { OptionSearch } from "@/types/common.ts";
+import type { OptionSearch } from "@/types/option.ts";
 
 const uid = defineModel<string | null>({ required: true });
 

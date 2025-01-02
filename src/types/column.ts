@@ -4,7 +4,7 @@ import type { MaybeRefOrGetter } from "vue";
 type ArrayElement<ArrayType extends readonly unknown[]> =
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 
-export type ColumnBase = ArrayElement<NonNullable<QTableProps["columns"]>> & {
+type ColumnBase = ArrayElement<NonNullable<QTableProps["columns"]>> & {
   tooltip?: string;
   visible: MaybeRefOrGetter<boolean>;
   searchable: boolean;
