@@ -15,6 +15,7 @@ import { formatWH } from "@/helpers/format.ts";
 import { modifiedService } from "@/helpers/hours.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 
+import DetailsSection from "@/components/core/DetailsSection.vue";
 import ServiceTable from "@/components/core/ServiceTable.vue";
 
 const { serviceFragment, editable } = defineProps<{
@@ -186,168 +187,178 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
 </script>
 
 <template>
-  <form
-    id="editBaseService"
-    @submit.prevent="submitBaseServiceForm"
-    @reset="resetBaseServiceForm"
-  />
-  <form
-    id="addModification"
-    @submit.prevent="submitModificationForm"
-    @reset="resetModificationForm"
-  />
-  <ServiceTable>
-    <tr>
-      <td>
-        Base
-        <QBtn
-          v-if="isBaseServiceFormOpen"
-          form="editBaseService"
-          type="submit"
-          icon="sym_s_check_circle"
-          color="primary"
-          size="sm"
-          flat
-          square
-          dense
-        >
-          <QTooltip :delay="TOOLTIP_DELAY">Valider le service de base</QTooltip>
-        </QBtn>
-        <QBtn
-          v-else-if="editable"
-          form="editBaseService"
-          icon="sym_s_edit"
-          color="primary"
-          size="sm"
-          flat
-          square
-          dense
-          @click="isBaseServiceFormOpen = true"
-        >
-          <QTooltip :delay="TOOLTIP_DELAY">Éditer le service de base</QTooltip>
-        </QBtn>
-      </td>
-      <td v-if="isBaseServiceFormOpen">
-        <QInput
-          v-model.number="baseServiceHours"
-          type="number"
-          step="any"
-          suffix="htd"
-          square
-          dense
-          form="editBaseService"
-          class="inline-block"
-        />
-      </td>
-      <td v-else>{{ formatWH(service.base) }}</td>
-    </tr>
-    <tr>
-      <td>
-        Modifications
-        <QBtn
-          v-if="isModificationFormOpen"
-          form="addModification"
-          type="submit"
-          icon="sym_s_check_circle"
-          color="primary"
-          size="sm"
-          flat
-          square
-          dense
-        >
-          <QTooltip :delay="TOOLTIP_DELAY">Valider la modification</QTooltip>
-        </QBtn>
-        <QBtn
-          v-else-if="editable"
-          icon="sym_s_add_circle"
-          color="primary"
-          size="sm"
-          flat
-          square
-          dense
-          @click="isModificationFormOpen = true"
-        >
-          <QTooltip :delay="TOOLTIP_DELAY">Ajouter une modification</QTooltip>
-        </QBtn>
-      </td>
-    </tr>
-    <tr v-if="isModificationFormOpen">
-      <td>
-        <QBtn
-          form="addModification"
-          type="reset"
-          icon="sym_s_cancel"
-          color="primary"
-          size="sm"
-          flat
-          square
-          dense
-        >
-          <QTooltip :delay="TOOLTIP_DELAY">Supprimer la modification</QTooltip>
-        </QBtn>
-        <QSelect
-          v-model="modificationType"
-          :options="modificationTypesOptions"
-          label="Type"
-          emit-value
-          map-options
-          square
-          dense
-          options-dense
-          form="addModification"
-          class="inline-block"
-        >
-          <template #option="scope">
-            <QItem v-bind="scope.itemProps">
-              <QItemSection>
-                <QItemLabel>{{ scope.opt.label }}</QItemLabel>
-                <QItemLabel v-if="scope.opt.description" caption>
-                  {{ scope.opt.description }}
-                </QItemLabel>
-              </QItemSection>
-            </QItem>
-          </template>
-        </QSelect>
-      </td>
-      <td>
-        <QInput
-          v-model.number="modificationHours"
-          type="number"
-          step="any"
-          suffix="htd"
-          square
-          dense
-          form="addModification"
-          class="inline-block"
-        />
-      </td>
-    </tr>
-    <tr v-for="modification in service.modifications" :key="modification.id">
-      <td>
-        <QBtn
-          v-if="editable"
-          icon="sym_s_cancel"
-          color="primary"
-          size="sm"
-          flat
-          square
-          dense
-          @click="handleModificationDeletion(modification.id)"
-        >
-          <QTooltip :delay="TOOLTIP_DELAY">Supprimer la modification</QTooltip>
-        </QBtn>
-        {{ modification.modificationType.label }}
-      </td>
-      <td>{{ formatWH(modification.hours) }}</td>
-    </tr>
-    <tr>
-      <td colspan="100%" style="border-bottom: 1px solid black" />
-    </tr>
-    <tr>
-      <td>Total</td>
-      <td>{{ formatWH(modifiedService(service)) }}</td>
-    </tr>
-  </ServiceTable>
+  <DetailsSection title="Service">
+    <form
+      id="editBaseService"
+      @submit.prevent="submitBaseServiceForm"
+      @reset="resetBaseServiceForm"
+    />
+    <form
+      id="addModification"
+      @submit.prevent="submitModificationForm"
+      @reset="resetModificationForm"
+    />
+    <ServiceTable>
+      <tr>
+        <td>
+          Base
+          <QBtn
+            v-if="isBaseServiceFormOpen"
+            form="editBaseService"
+            type="submit"
+            icon="sym_s_check_circle"
+            color="primary"
+            size="sm"
+            flat
+            square
+            dense
+          >
+            <QTooltip :delay="TOOLTIP_DELAY"
+              >Valider le service de base</QTooltip
+            >
+          </QBtn>
+          <QBtn
+            v-else-if="editable"
+            form="editBaseService"
+            icon="sym_s_edit"
+            color="primary"
+            size="sm"
+            flat
+            square
+            dense
+            @click="isBaseServiceFormOpen = true"
+          >
+            <QTooltip :delay="TOOLTIP_DELAY"
+              >Éditer le service de base</QTooltip
+            >
+          </QBtn>
+        </td>
+        <td v-if="isBaseServiceFormOpen">
+          <QInput
+            v-model.number="baseServiceHours"
+            type="number"
+            step="any"
+            suffix="htd"
+            square
+            dense
+            form="editBaseService"
+            class="inline-block"
+          />
+        </td>
+        <td v-else>{{ formatWH(service.base) }}</td>
+      </tr>
+      <tr>
+        <td>
+          Modifications
+          <QBtn
+            v-if="isModificationFormOpen"
+            form="addModification"
+            type="submit"
+            icon="sym_s_check_circle"
+            color="primary"
+            size="sm"
+            flat
+            square
+            dense
+          >
+            <QTooltip :delay="TOOLTIP_DELAY">Valider la modification</QTooltip>
+          </QBtn>
+          <QBtn
+            v-else-if="editable"
+            icon="sym_s_add_circle"
+            color="primary"
+            size="sm"
+            flat
+            square
+            dense
+            @click="isModificationFormOpen = true"
+          >
+            <QTooltip :delay="TOOLTIP_DELAY">Ajouter une modification</QTooltip>
+          </QBtn>
+        </td>
+      </tr>
+      <tr v-if="isModificationFormOpen">
+        <td>
+          <QBtn
+            form="addModification"
+            type="reset"
+            icon="sym_s_cancel"
+            color="primary"
+            size="sm"
+            flat
+            square
+            dense
+          >
+            <QTooltip :delay="TOOLTIP_DELAY"
+              >Supprimer la modification</QTooltip
+            >
+          </QBtn>
+          <QSelect
+            v-model="modificationType"
+            :options="modificationTypesOptions"
+            label="Type"
+            emit-value
+            map-options
+            square
+            dense
+            options-dense
+            form="addModification"
+            class="inline-block"
+          >
+            <template #option="scope">
+              <QItem v-bind="scope.itemProps">
+                <QItemSection>
+                  <QItemLabel>{{ scope.opt.label }}</QItemLabel>
+                  <QItemLabel v-if="scope.opt.description" caption>
+                    {{ scope.opt.description }}
+                  </QItemLabel>
+                </QItemSection>
+              </QItem>
+            </template>
+          </QSelect>
+        </td>
+        <td>
+          <QInput
+            v-model.number="modificationHours"
+            type="number"
+            step="any"
+            suffix="htd"
+            square
+            dense
+            form="addModification"
+            class="inline-block"
+          />
+        </td>
+      </tr>
+      <tr v-for="modification in service.modifications" :key="modification.id">
+        <td>
+          <QBtn
+            v-if="editable"
+            icon="sym_s_cancel"
+            color="primary"
+            size="sm"
+            flat
+            square
+            dense
+            @click="handleModificationDeletion(modification.id)"
+          >
+            <QTooltip :delay="TOOLTIP_DELAY"
+              >Supprimer la modification</QTooltip
+            >
+          </QBtn>
+          {{ modification.modificationType.label }}
+        </td>
+        <td>{{ formatWH(modification.hours) }}</td>
+      </tr>
+      <tr>
+        <td colspan="100%" style="border-bottom: 1px solid black" />
+      </tr>
+      <tr>
+        <td>Total</td>
+        <td>{{ formatWH(modifiedService(service)) }}</td>
+      </tr>
+    </ServiceTable>
+  </DetailsSection>
 </template>
 
 <style scoped lang="scss">

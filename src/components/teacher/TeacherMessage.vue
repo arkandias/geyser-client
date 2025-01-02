@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { type ComputedRef, computed } from "vue";
+import { type ComputedRef, type Ref, computed, ref } from "vue";
 
+import { usePermissions } from "@/composables/permissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   DeleteMessageDocument,
@@ -9,14 +10,16 @@ import {
   UpsertMessageDocument,
 } from "@/gql/graphql.ts";
 
+import DetailsSection from "@/components/core/DetailsSection.vue";
 import EditableText from "@/components/core/EditableText.vue";
 
-const edition = defineModel<boolean>();
 const { year, uid, teacherMessageFragment } = defineProps<{
   year: number;
   uid: string;
   teacherMessageFragment: FragmentType<typeof TeacherMessageFragmentDoc> | null;
 }>();
+
+const perm = usePermissions();
 
 graphql(`
   fragment TeacherMessage on message {
@@ -67,15 +70,24 @@ const setMessage: ComputedRef<(body: string) => Promise<boolean>> = computed(
               (result) => !!result.data?.messages?.returning && !result.error,
             ),
 );
+
+const edition: Ref<boolean> = ref(false);
 </script>
 
 <template>
-  <EditableText
+  <DetailsSection
     v-model="edition"
-    :text="body"
-    :set-text="setMessage"
-    default-text=""
-  />
+    title="Message pour la commission"
+    :editable="perm.toEditAMessage(uid)"
+    edition-tooltip="Éditer le message"
+  >
+    <EditableText
+      v-model="edition"
+      :text="body"
+      :set-text="setMessage"
+      default-text=""
+    />
+  </DetailsSection>
 </template>
 
 <style scoped lang="scss"></style>

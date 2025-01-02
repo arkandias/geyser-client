@@ -7,6 +7,7 @@ import { TotalRequestsFragmentDoc } from "@/gql/graphql.ts";
 import { formatWH } from "@/helpers/format.ts";
 import { totalWH } from "@/helpers/hours.ts";
 
+import DetailsSection from "@/components/core/DetailsSection.vue";
 import ServiceTable from "@/components/core/ServiceTable.vue";
 
 const { totalRequestsFragment } = defineProps<{
@@ -56,20 +57,22 @@ const perm = usePermissions();
 </script>
 
 <template>
-  <ServiceTable>
-    <tr v-if="perm.toViewAssignments">
-      <td>Attributions</td>
-      <td>{{ formatWH(totalWH(totalRequests.assigned)) }}</td>
-    </tr>
-    <tr>
-      <td>Demandes principales</td>
-      <td>{{ formatWH(totalWH(totalRequests.primary)) }}</td>
-    </tr>
-    <tr>
-      <td>Demandes secondaires</td>
-      <td>{{ formatWH(totalWH(totalRequests.secondary)) }}</td>
-    </tr>
-  </ServiceTable>
+  <DetailsSection title="Demandes">
+    <ServiceTable>
+      <tr v-if="perm.toViewAssignments">
+        <td>Attributions</td>
+        <td>{{ formatWH(totalWH(totalRequests.assigned)) }}</td>
+      </tr>
+      <tr>
+        <td>Demandes principales</td>
+        <td>{{ formatWH(totalWH(totalRequests.primary)) }}</td>
+      </tr>
+      <tr>
+        <td>Demandes secondaires</td>
+        <td>{{ formatWH(totalWH(totalRequests.secondary)) }}</td>
+      </tr>
+    </ServiceTable>
+  </DetailsSection>
 </template>
 
 <style scoped lang="scss"></style>

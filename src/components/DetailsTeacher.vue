@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { type Ref, computed, ref } from "vue";
+import { computed } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { graphql } from "@/gql";
 import { GetTeacherInformationDocument } from "@/gql/graphql.ts";
 
-import DetailsSection from "@/components/core/DetailsSection.vue";
 import TeacherMessage from "@/components/teacher/TeacherMessage.vue";
 import TeacherNoService from "@/components/teacher/TeacherNoService.vue";
 import TeacherRequests from "@/components/teacher/TeacherRequests.vue";
@@ -59,8 +58,6 @@ const details = computed(
   () => teacherInformationQueryResponse.data.value?.teacher ?? null,
 );
 const service = computed(() => details.value?.services[0] ?? null);
-
-const messageEdition: Ref<boolean> = ref(false);
 </script>
 
 <template>
@@ -69,30 +66,17 @@ const messageEdition: Ref<boolean> = ref(false);
     <!-- TODO: Responsabilités -->
     <!-- TODO: Priorités -->
     <template v-if="service">
-      <DetailsSection title="Service">
-        <TeacherService
-          v-if="service"
-          :service-fragment="service"
-          :editable="perm.toEditAService(uid)"
-        />
-      </DetailsSection>
-      <DetailsSection title="Demandes">
-        <TeacherRequests :total-requests-fragment="details" />
-      </DetailsSection>
-      <DetailsSection
+      <TeacherService
         v-if="service"
-        v-model="messageEdition"
-        title="Message pour la commission"
-        :editable="perm.toEditAMessage(uid)"
-        edition-tooltip="Éditer le message"
-      >
-        <TeacherMessage
-          v-model="messageEdition"
-          :year
-          :uid
-          :teacher-message-fragment="details.messages[0] ?? null"
-        />
-      </DetailsSection>
+        :service-fragment="service"
+        :editable="perm.toEditAService(uid)"
+      />
+      <TeacherRequests :total-requests-fragment="details" />
+      <TeacherMessage
+        :year
+        :uid
+        :teacher-message-fragment="details.messages[0] ?? null"
+      />
     </template>
     <TeacherNoService v-else :year :teacher-no-service-fragment="details" />
   </template>
