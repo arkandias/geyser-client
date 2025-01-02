@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 
-import { useRefresh } from "@/composables/refresh.ts";
+import { useRefreshData } from "@/composables/refresh-data.ts";
 import { ROLE_OPTIONS, type Role } from "@/config/types/roles.ts";
 import { formatUser } from "@/helpers/format.ts";
 import { useAuthenticationStore } from "@/stores/authentication.ts";
@@ -10,7 +10,7 @@ import MenuBase from "@/components/header/MenuBase.vue";
 
 const { profile, activeRole, allowedRoles, logout, setActiveRole } =
   useAuthenticationStore();
-const { refresh } = useRefresh();
+const { refreshData } = useRefreshData();
 
 const model = ref<Role | null>(null);
 watch(
@@ -27,7 +27,7 @@ const roleOptions = computed(() =>
 
 const onUpdate = async (value: Role) => {
   setActiveRole(value);
-  await refresh();
+  await refreshData();
 };
 </script>
 

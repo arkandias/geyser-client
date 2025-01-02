@@ -14,7 +14,7 @@ const keycloak = new Keycloak({
   clientId: "hasura",
 });
 
-// callback listeners
+// Callback listeners
 keycloak.onAuthLogout = () => {
   console.debug("Logged out");
 };
@@ -57,7 +57,7 @@ export const refreshToken = async (): Promise<void> => {
   }
 };
 
-export const getAuthorizationHeaders = (): Record<string, string> =>
+export const getAuthorizationHeader = (): Record<string, string> =>
   bypassKeycloak
     ? {
         "X-Hasura-Admin-Secret": import.meta.env.VITE_HASURA_ADMIN_SECRET ?? "",

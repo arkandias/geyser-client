@@ -1,19 +1,19 @@
-import { type Ref, readonly, ref } from "vue";
+import { readonly, ref } from "vue";
 
-export const hSplitterRatio: Ref<number> = ref(50);
-export const vSplitterRatio: Ref<number> = ref(0);
+export const hSplitterRatio = ref(50);
+export const vSplitterRatio = ref(0);
 
-const vSplitterRatioSaved: Ref<number> = ref(30);
-const isLeftPanelOpen: Ref<boolean> = ref(false);
+const vSplitterRatioSaved = ref(30);
+const isLeftPanelOpen = ref(false);
 
-const openLeftPanel = (): void => {
+const openLeftPanel = () => {
   if (!isLeftPanelOpen.value) {
     isLeftPanelOpen.value = true;
     vSplitterRatio.value = vSplitterRatioSaved.value;
   }
 };
 
-const closeLeftPanel = (): void => {
+const closeLeftPanel = () => {
   if (isLeftPanelOpen.value) {
     isLeftPanelOpen.value = false;
     vSplitterRatioSaved.value = vSplitterRatio.value;
@@ -21,7 +21,7 @@ const closeLeftPanel = (): void => {
   }
 };
 
-const toggleLeftPanel = (): void => {
+const toggleLeftPanel = () => {
   if (isLeftPanelOpen.value) {
     closeLeftPanel();
   } else {

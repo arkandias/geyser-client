@@ -13,11 +13,11 @@ graphql(`
   }
 `);
 
-export const useRefresh = () => {
+export const useRefreshData = () => {
   // this is an ugly hack to invalidate cache (using urql's Document Caching):
   // we use a dummy mutation and add all the typenames we want to invalidate
   const dummyMutation = useMutation(DummyMutationDocument);
-  const refresh = async (): Promise<void> => {
+  const refreshData = async (): Promise<void> => {
     await dummyMutation.executeMutation(
       {},
       {
@@ -31,5 +31,5 @@ export const useRefresh = () => {
       },
     );
   };
-  return { refresh };
+  return { refreshData };
 };

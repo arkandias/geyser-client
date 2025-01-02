@@ -1,8 +1,8 @@
-import { type Ref, readonly, ref } from "vue";
+import { readonly, ref } from "vue";
 
 import type { Phase } from "@/config/types/phases.ts";
 
-const currentPhase: Ref<Phase | null> = ref(null);
+const currentPhase = ref<Phase | null>(null);
 
 const setCurrentPhase = (phase: Phase | null) => {
   currentPhase.value = phase;

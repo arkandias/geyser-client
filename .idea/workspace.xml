@@ -20,25 +20,16 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TableCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableCourses.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/RequestForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestForm.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdminOptions.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdminOptions.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TheHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TheHeader.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/header/MenuUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuUser.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuYear.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuYear.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/env.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/env.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/types/phases.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/types/phases.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/types/request-types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/types/request-types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/types/roles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/types/roles.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helpers/hours.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/hours.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/composables/refresh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/refresh-data.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/keycloak.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/keycloak.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/authentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/authentication.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/claim.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/claims.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/column.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/column.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/common.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/option.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/hours.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/user.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/urql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/urql.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/left-panel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/left-panel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/phase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/phase.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/years.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/years.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/claims.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/claims.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -351,15 +342,7 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="91570000" />
-    </task>
-    <task id="LOCAL-00304" summary="WIP">
-      <option name="closed" value="true" />
-      <created>1734622691547</created>
-      <option name="number" value="00304" />
-      <option name="presentableId" value="LOCAL-00304" />
-      <option name="project" value="LOCAL" />
-      <updated>1734622691547</updated>
+      <workItem from="1735468210242" duration="94464000" />
     </task>
     <task id="LOCAL-00305" summary="WIP">
       <option name="closed" value="true" />
@@ -745,7 +728,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735815595131</updated>
     </task>
-    <option name="localTasksCounter" value="353" />
+    <task id="LOCAL-00353" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735828482153</created>
+      <option name="number" value="00353" />
+      <option name="presentableId" value="LOCAL-00353" />
+      <option name="project" value="LOCAL" />
+      <updated>1735828482154</updated>
+    </task>
+    <option name="localTasksCounter" value="354" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

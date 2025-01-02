@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 
 import { useDarkMode } from "@/composables/dark-mode.ts";
 import { usePermissions } from "@/composables/permissions.ts";
-import { useRefresh } from "@/composables/refresh.ts";
+import { useRefreshData } from "@/composables/refresh-data.ts";
 import { buttonColor } from "@/helpers/format.ts";
 
 import CoursesOptions from "@/components/header/CoursesOptions.vue";
@@ -16,7 +16,7 @@ defineProps<{ disable?: boolean }>();
 
 const router = useRouter();
 const perm = usePermissions();
-const { refresh } = useRefresh();
+const { refreshData } = useRefreshData();
 const { isDarkModeActive, toggleDarkMode } = useDarkMode();
 
 const version: ComputedRef<string | null> = computed(() =>
@@ -71,7 +71,7 @@ const version: ComputedRef<string | null> = computed(() =>
         </div>
       </Transition>
       <QSeparator vertical inset color="white" />
-      <QBtn icon="sym_s_refresh" :disable flat square @click="refresh">
+      <QBtn icon="sym_s_refresh" :disable flat square @click="refreshData">
         <QTooltip>Rafraîchir les données</QTooltip>
       </QBtn>
       <QBtn

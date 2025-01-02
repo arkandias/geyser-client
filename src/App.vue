@@ -11,6 +11,7 @@ import {
   GetYearsDocument,
 } from "@/gql/graphql.ts";
 import { getClaims, logout } from "@/services/keycloak.ts";
+import { roleHeader } from "@/services/urql.ts";
 import { useAuthenticationStore } from "@/stores/authentication.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 import { useYearsStore } from "@/stores/years.ts";
@@ -20,7 +21,7 @@ import PageHome from "@/pages/PageHome.vue";
 
 const { setYears, setCurrentYear } = useYearsStore();
 const { currentPhase, setCurrentPhase } = usePhaseStore();
-const { login, logged } = useAuthenticationStore();
+const { login, logged, activeRole } = useAuthenticationStore();
 const perm = usePermissions();
 
 graphql(`
@@ -52,7 +53,7 @@ graphql(`
   }
 `);
 
-// User Profile
+// User profile
 const claimsRef = computed(() => getClaims());
 const userProfileQueryResult = useQuery({
   query: GetUserProfileDocument,
@@ -79,8 +80,15 @@ watch(
   },
   { immediate: true },
 );
+watch(activeRole, (value) => {
+  if (value === null) {
+    delete roleHeader["X-Hasura-Role"];
+  } else {
+    roleHeader["X-Hasura-Role"] = value;
+  }
+});
 
-// App Parameters
+// App parameters
 const yearsQueryResult = useQuery({
   query: GetYearsDocument,
   variables: {},

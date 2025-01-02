@@ -6,7 +6,7 @@ export type HasuraClaims = {
   userId: string;
 };
 
-export type XHasuraClaims<T extends string> = Record<
+type XHasuraClaims<T extends string> = Record<
   T,
   {
     "x-hasura-allowed-roles": string[];

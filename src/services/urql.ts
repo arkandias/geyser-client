@@ -7,9 +7,11 @@ import {
   mapExchange,
 } from "@urql/vue";
 
+import type { Role } from "@/config/types/roles.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
-import { getAuthorizationHeaders, refreshToken } from "@/services/keycloak.ts";
-import { activeRole } from "@/stores/authentication.ts";
+import { getAuthorizationHeader, refreshToken } from "@/services/keycloak.ts";
+
+export const roleHeader: { "X-Hasura-Role"?: Role } = {};
 
 export const clientOptions: ClientOptions = {
   url: import.meta.env.VITE_GRAPHQL_URL,
@@ -31,8 +33,8 @@ export const clientOptions: ClientOptions = {
   ],
   fetchOptions: () => ({
     headers: {
-      ...getAuthorizationHeaders(),
-      ...(activeRole.value ? { "X-Hasura-Role": activeRole.value } : {}),
+      ...getAuthorizationHeader(),
+      ...roleHeader,
     },
   }),
 };
