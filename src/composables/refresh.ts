@@ -1,5 +1,4 @@
 import { useMutation } from "@urql/vue";
-import { readonly } from "vue";
 
 import { graphql } from "@/gql";
 import { DummyMutationDocument } from "@/gql/graphql.ts";
@@ -32,5 +31,5 @@ export const useRefresh = () => {
       },
     );
   };
-  return readonly({ refresh });
+  return { refresh };
 };

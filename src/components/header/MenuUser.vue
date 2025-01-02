@@ -10,10 +10,10 @@ import type { Option } from "@/types/common.ts";
 import MenuBase from "@/components/header/MenuBase.vue";
 
 const { profile, allowedRoles, logout } = useAuthenticationStore();
-const { refresh: refreshData } = useRefresh();
+const { refresh } = useRefresh();
 
 const roleOptions: ComputedRef<Option<Role>[]> = computed(() =>
-  ROLE_OPTIONS.filter((role) => allowedRoles.includes(role.value)),
+  ROLE_OPTIONS.filter((role) => allowedRoles.value.includes(role.value)),
 );
 </script>
 
@@ -32,7 +32,7 @@ const roleOptions: ComputedRef<Option<Role>[]> = computed(() =>
           :options="roleOptions"
           color="primary"
           type="radio"
-          @update:model-value="refreshData"
+          @update:model-value="refresh"
         />
       </QItem>
       <QSeparator />

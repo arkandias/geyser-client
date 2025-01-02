@@ -29,10 +29,9 @@ const toggleLeftPanel = (): void => {
   }
 };
 
-export const useLeftPanelStore = () =>
-  readonly({
-    isLeftPanelOpen,
-    openLeftPanel,
-    closeLeftPanel,
-    toggleLeftPanel,
-  });
+export const useLeftPanelStore = () => ({
+  isLeftPanelOpen: readonly(isLeftPanelOpen),
+  openLeftPanel,
+  closeLeftPanel,
+  toggleLeftPanel,
+});

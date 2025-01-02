@@ -75,7 +75,7 @@ watch(
       console.error("Login failed: Profile not found", result.profile);
       return;
     }
-    login(result.profile, claims.allowedRoles, claims.defaultRole, logout);
+    login(result.profile, claims.defaultRole, claims.allowedRoles, logout);
   },
   { immediate: true },
 );
@@ -84,12 +84,12 @@ watch(
 const yearsQueryResult = useQuery({
   query: GetYearsDocument,
   variables: {},
-  pause: () => !logged,
+  pause: () => !logged.value,
 });
 const currentPhaseQueryResult = useQuery({
   query: GetCurrentPhaseDocument,
   variables: {},
-  pause: () => !logged,
+  pause: () => !logged.value,
 });
 watch(
   yearsQueryResult.data,
@@ -115,12 +115,12 @@ watch(
   { immediate: true },
 );
 
-const accessGranted = computed(() => logged && perm.toAccess);
+const accessGranted = computed(() => logged.value && perm.toAccess);
 const accessDeniedMessage: ComputedRef<string> = computed(() => {
-  if (!logged) {
+  if (!logged.value) {
     return "Vous n'êtes pas connecté";
   }
-  if (currentPhase === PHASES.SHUTDOWN) {
+  if (currentPhase.value === PHASES.SHUTDOWN) {
     return "Geyser est actuellement fermé";
   }
   return "Vous n'avez pas la permission d'accéder à Geyser";

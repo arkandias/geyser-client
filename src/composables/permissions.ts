@@ -13,41 +13,41 @@ export const usePermissions = () => {
   const { activeRole, profile } = useAuthenticationStore();
 
   const toAdmin: ComputedRef<boolean> = computed(
-    () => activeRole === ROLES.ADMIN,
+    () => activeRole.value === ROLES.ADMIN,
   );
 
   const toAccess: ComputedRef<boolean> = computed(
     () =>
-      activeRole === ROLES.ADMIN ||
-      (currentPhase !== PHASES.SHUTDOWN && profile.active),
+      activeRole.value === ROLES.ADMIN ||
+      (currentPhase.value !== PHASES.SHUTDOWN && profile.active),
   );
 
   const toSubmitRequestsForOthers: ComputedRef<boolean> = computed(
-    () => activeRole === ROLES.ADMIN,
+    () => activeRole.value === ROLES.ADMIN,
   );
 
   const toSubmitRequests: ComputedRef<boolean> = computed(
     () =>
       toSubmitRequestsForOthers.value ||
       (profile.active &&
-        activeRole === ROLES.USER &&
-        currentPhase === PHASES.REQUESTS &&
-        isCurrentYearActive),
+        activeRole.value === ROLES.USER &&
+        currentPhase.value === PHASES.REQUESTS &&
+        isCurrentYearActive.value),
   );
 
   const toAssignCourses: ComputedRef<boolean> = computed(
     () =>
-      activeRole === ROLES.ADMIN ||
-      (activeRole === ROLES.COMMISSIONER &&
-        currentPhase === PHASES.ASSIGNMENTS &&
-        isCurrentYearActive),
+      activeRole.value === ROLES.ADMIN ||
+      (activeRole.value === ROLES.COMMISSIONER &&
+        currentPhase.value === PHASES.ASSIGNMENTS &&
+        isCurrentYearActive.value),
   );
 
   const toViewAssignments: ComputedRef<boolean> = computed(
     () =>
       toAssignCourses.value ||
-      currentPhase === PHASES.RESULTS ||
-      !isCurrentYearActive,
+      currentPhase.value === PHASES.RESULTS ||
+      !isCurrentYearActive.value,
   );
 
   const toDeleteARequest: ComputedRef<
@@ -67,47 +67,47 @@ export const usePermissions = () => {
     (coordinatorsIds: string[]) => boolean
   > = computed(
     () => (coordinatorsIds) =>
-      activeRole === ROLES.ADMIN ||
-      (isCurrentYearActive && coordinatorsIds.includes(profile.uid)),
+      activeRole.value === ROLES.ADMIN ||
+      (isCurrentYearActive.value && coordinatorsIds.includes(profile.uid)),
   );
 
   const toViewAllServices: ComputedRef<boolean> = computed(
     () =>
-      activeRole === ROLES.ADMIN ||
-      (activeRole === ROLES.COMMISSIONER &&
-        currentPhase === PHASES.ASSIGNMENTS),
+      activeRole.value === ROLES.ADMIN ||
+      (activeRole.value === ROLES.COMMISSIONER &&
+        currentPhase.value === PHASES.ASSIGNMENTS),
   );
 
   const toViewAService: ComputedRef<(uid: string) => boolean> = computed(
     () => (uid) =>
       toViewAllServices.value ||
-      (activeRole === ROLES.USER && uid === profile.uid),
+      (activeRole.value === ROLES.USER && uid === profile.uid),
   );
 
   const toEditAService: ComputedRef<(uid: string) => boolean> = computed(
     () => (uid) =>
-      activeRole === ROLES.ADMIN ||
-      (activeRole === ROLES.USER &&
-        currentPhase === PHASES.REQUESTS &&
-        isCurrentYearActive &&
+      activeRole.value === ROLES.ADMIN ||
+      (activeRole.value === ROLES.USER &&
+        currentPhase.value === PHASES.REQUESTS &&
+        isCurrentYearActive.value &&
         uid === profile.uid),
   );
 
   const toEditAMessage: ComputedRef<(uid: string) => boolean> = computed(
     () => (uid) =>
-      activeRole === ROLES.ADMIN ||
-      (activeRole === ROLES.USER &&
-        currentPhase === PHASES.REQUESTS &&
-        isCurrentYearActive &&
+      activeRole.value === ROLES.ADMIN ||
+      (activeRole.value === ROLES.USER &&
+        currentPhase.value === PHASES.REQUESTS &&
+        isCurrentYearActive.value &&
         uid === profile.uid),
   );
 
   const toViewAMessage: ComputedRef<(uid: string) => boolean> = computed(
     () => (uid) =>
       toEditAMessage.value(uid) ||
-      (activeRole === ROLES.COMMISSIONER &&
-        currentPhase === PHASES.ASSIGNMENTS) ||
-      (activeRole === ROLES.USER && uid === profile.uid),
+      (activeRole.value === ROLES.COMMISSIONER &&
+        currentPhase.value === PHASES.ASSIGNMENTS) ||
+      (activeRole.value === ROLES.USER && uid === profile.uid),
   );
 
   return readonly({

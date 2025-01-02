@@ -16,7 +16,7 @@ defineProps<{ disable?: boolean }>();
 
 const router = useRouter();
 const perm = usePermissions();
-const { refresh: refreshData } = useRefresh();
+const { refresh } = useRefresh();
 const { isDarkModeActive, toggleDarkMode } = useDarkMode();
 
 const version: ComputedRef<string | null> = computed(() =>
@@ -71,7 +71,7 @@ const version: ComputedRef<string | null> = computed(() =>
         </div>
       </Transition>
       <QSeparator vertical inset color="white" />
-      <QBtn icon="sym_s_refresh" :disable flat square @click="refreshData">
+      <QBtn icon="sym_s_refresh" :disable flat square @click="refresh">
         <QTooltip>Rafraîchir les données</QTooltip>
       </QBtn>
       <QBtn

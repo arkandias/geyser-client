@@ -13,7 +13,7 @@ const { profile } = useAuthenticationStore();
 const { getValue: uid, toggleValue: toggleUid } = useQueryParam("uid");
 
 const isMyUidSelected: ComputedRef<boolean> = computed(
-  () => uid === profile.uid,
+  () => uid.value === profile.uid,
 );
 
 const toggleMyUid = async () => {

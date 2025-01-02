@@ -141,7 +141,7 @@ const { getValue: selectedCourse, toggleValue: toggleCourse } = useQueryParam(
   "courseId",
   true,
 );
-const selectedRow = computed(() => [{ id: selectedCourse }]);
+const selectedRow = computed(() => [{ id: selectedCourse.value }]);
 const selectCourse = async (_: Event, row: CourseRowFragment) => {
   await toggleCourse(row.id);
 };

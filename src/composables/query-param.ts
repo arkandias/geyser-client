@@ -1,4 +1,4 @@
-import { type ComputedRef, computed, readonly } from "vue";
+import { type ComputedRef, computed } from "vue";
 import {
   type LocationQueryValue,
   type LocationQueryValueRaw,
@@ -68,5 +68,5 @@ export const useQueryParam = <B extends boolean = false>(
     await toggleQueryParam(router, param, newValue);
   };
 
-  return readonly({ getValue, setValue, toggleValue });
+  return { getValue, setValue, toggleValue };
 };

@@ -18,12 +18,12 @@ const logout: Ref<() => Promise<void>> = ref(() => Promise.resolve());
 
 const login = (
   newProfile: Profile,
-  newAllowedRoles: Role[],
   newDefaultRole: Role,
+  newAllowedRoles: Role[],
   newLogout: () => Promise<void>,
 ): void => {
-  allowedRoles.value = newAllowedRoles;
   activeRole.value = newDefaultRole;
+  allowedRoles.value = newAllowedRoles;
   profile.uid = newProfile.uid;
   profile.firstname = newProfile.firstname;
   profile.lastname = newProfile.lastname;
@@ -37,12 +37,11 @@ const login = (
   console.debug("Logged in");
 };
 
-export const useAuthenticationStore = () =>
-  readonly({
-    logged,
-    profile,
-    allowedRoles,
-    activeRole,
-    logout,
-    login,
-  });
+export const useAuthenticationStore = () => ({
+  profile: readonly(profile),
+  activeRole: readonly(activeRole),
+  allowedRoles: readonly(allowedRoles),
+  logged: readonly(logged),
+  login,
+  logout: readonly(logout),
+});

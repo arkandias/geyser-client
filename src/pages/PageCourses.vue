@@ -84,9 +84,9 @@ graphql(`
 const courseRowsQueryResult = useQuery({
   query: GetCourseRowsDocument,
   variables: reactive({
-    year: computed(() => activeYear ?? -1),
+    year: computed(() => activeYear.value ?? -1),
   }),
-  pause: () => activeYear === null,
+  pause: () => activeYear.value === null,
   context: { additionalTypenames: ["demande"] },
 });
 const fetchingCourseRows = computed(() => courseRowsQueryResult.fetching.value);
@@ -97,12 +97,12 @@ const courseRows = computed(
 const teacherRowsQueryResult = useQuery({
   query: GetTeacherRowsDocument,
   variables: reactive({
-    year: computed(() => activeYear ?? -1),
+    year: computed(() => activeYear.value ?? -1),
     where: computed(() =>
       perm.toViewAllServices ? {} : { uid: { _eq: profile.uid } },
     ),
   }),
-  pause: () => activeYear === null,
+  pause: () => activeYear.value === null,
   context: {
     additionalTypenames: [
       "demande",
@@ -122,9 +122,9 @@ const teacherRows = computed(
 const courseDetailsQueryResponse = useQuery({
   query: GetCourseDetailsDocument,
   variables: reactive({
-    courseId: computed(() => selectedCourse ?? -1),
+    courseId: computed(() => selectedCourse.value ?? -1),
   }),
-  pause: () => selectedCourse === null,
+  pause: () => selectedCourse.value === null,
   context: {
     additionalTypenames: ["demande", "priorite"],
   },
@@ -141,10 +141,10 @@ const courseDetails = computed(() =>
 const teacherDetailsQueryResponse = useQuery({
   query: GetTeacherDetailsDocument,
   variables: reactive({
-    year: computed(() => activeYear ?? -1),
-    uid: computed(() => selectedTeacher ?? ""),
+    year: computed(() => activeYear.value ?? -1),
+    uid: computed(() => selectedTeacher.value ?? ""),
   }),
-  pause: () => !activeYear || !selectedTeacher,
+  pause: () => !activeYear.value || !selectedTeacher.value,
   context: {
     additionalTypenames: [
       "demande",

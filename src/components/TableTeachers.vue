@@ -89,7 +89,7 @@ const teachers = computed(() =>
 
 const { getValue: selectedTeacher, toggleValue: toggleTeacher } =
   useQueryParam("uid");
-const selectedRow = computed(() => [{ uid: selectedTeacher }]);
+const selectedRow = computed(() => [{ uid: selectedTeacher.value }]);
 const selectTeacher = async (_: Event, row: TeacherRowFragment) => {
   await toggleTeacher(row.uid);
 };

@@ -9,7 +9,7 @@ import MenuBase from "@/components/header/MenuBase.vue";
 const { years, activeYear, selectYear } = useYearsStore();
 
 const options: ComputedRef<Option<number>[]> = computed(() =>
-  years
+  years.value
     .map((year) => ({
       value: year,
       label: year.toString(),
@@ -24,9 +24,9 @@ const update = async () => {
 };
 
 watch(
-  () => activeYear,
-  () => {
-    selected.value = activeYear;
+  activeYear,
+  (value) => {
+    selected.value = value;
   },
   { immediate: true },
 );

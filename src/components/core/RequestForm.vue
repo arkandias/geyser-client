@@ -69,7 +69,7 @@ const groups: WritableComputedRef<number | null> = computed({
 
 const requestType: Ref<string | null> = ref(null);
 const requestTypeInit: ComputedRef<string | null> = computed(() => {
-  switch (currentPhase) {
+  switch (currentPhase.value) {
     case PHASES.ASSIGNMENTS:
       return REQUEST_TYPES.PRIMARY;
     default:

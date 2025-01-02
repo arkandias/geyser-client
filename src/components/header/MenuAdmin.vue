@@ -75,7 +75,7 @@ const setCurrentPhase = async (phase: string | null): Promise<void> => {
 };
 
 const yearOptions: ComputedRef<Option<number>[]> = computed(() =>
-  years.map((year) => ({
+  years.value.map((year) => ({
     value: year,
     label: year.toString(),
   })),

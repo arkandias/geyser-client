@@ -18,22 +18,22 @@ export const useYearsStore = () => {
     true,
   );
   const activeYear: ComputedRef<number | null> = computed(() =>
-    selectedYear !== null && years.value.includes(selectedYear)
-      ? selectedYear
+    selectedYear.value !== null && years.value.includes(selectedYear.value)
+      ? selectedYear.value
       : currentYear.value,
   );
   const isCurrentYearActive: ComputedRef<boolean> = computed(
     () => activeYear.value === currentYear.value,
   );
 
-  return readonly({
-    years,
-    currentYear,
+  return {
+    years: readonly(years),
+    currentYear: readonly(currentYear),
     selectedYear,
     activeYear,
     isCurrentYearActive,
     setYears,
     setCurrentYear,
     selectYear,
-  });
+  };
 };
