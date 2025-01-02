@@ -3,13 +3,13 @@ import { type ComputedRef, computed } from "vue";
 
 import { useQueryParam } from "@/composables/query-param.ts";
 import { buttonColor } from "@/helpers/format.ts";
-import { useAuthentication } from "@/stores/authentication.ts";
-import { useLayout } from "@/stores/layout.ts";
+import { useAuthenticationStore } from "@/stores/authentication.ts";
+import { useLeftPanelStore } from "@/stores/left-panel.ts";
 
 import MenuYear from "@/components/header/MenuYear.vue";
 
-const { isLeftPanelOpen, toggleLeftPanel } = useLayout();
-const { profile } = useAuthentication();
+const { isLeftPanelOpen, toggleLeftPanel } = useLeftPanelStore();
+const { profile } = useAuthenticationStore();
 const { getValue: uid, toggleValue: toggleUid } = useQueryParam("uid");
 
 const isMyUidSelected: ComputedRef<boolean> = computed(

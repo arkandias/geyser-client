@@ -3,14 +3,14 @@ import { type ComputedRef, computed, readonly } from "vue";
 import { PHASES } from "@/config/types/phases.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { ROLES } from "@/config/types/roles.ts";
-import { useAuthentication } from "@/stores/authentication.ts";
-import { usePhase } from "@/stores/phase.ts";
-import { useYears } from "@/stores/years.ts";
+import { useAuthenticationStore } from "@/stores/authentication.ts";
+import { usePhaseStore } from "@/stores/phase.ts";
+import { useYearsStore } from "@/stores/years.ts";
 
 export const usePermissions = () => {
-  const { isCurrentYearActive } = useYears();
-  const { currentPhase } = usePhase();
-  const { activeRole, profile } = useAuthentication();
+  const { isCurrentYearActive } = useYearsStore();
+  const { currentPhase } = usePhaseStore();
+  const { activeRole, profile } = useAuthenticationStore();
 
   const toAdmin: ComputedRef<boolean> = computed(
     () => activeRole === ROLES.ADMIN,

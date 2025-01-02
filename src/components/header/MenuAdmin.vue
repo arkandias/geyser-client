@@ -8,15 +8,15 @@ import {
   SetCurrentPhaseDocument,
   SetCurrentYearDocument,
 } from "@/gql/graphql.ts";
-import { usePhase } from "@/stores/phase.ts";
-import { useYears } from "@/stores/years.ts";
+import { usePhaseStore } from "@/stores/phase.ts";
+import { useYearsStore } from "@/stores/years.ts";
 import type { Option } from "@/types/common.ts";
 
 import MenuAdminOptions from "@/components/header/MenuAdminOptions.vue";
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { years, currentYear } = useYears();
-const { currentPhase } = usePhase();
+const { years, currentYear } = useYearsStore();
+const { currentPhase } = usePhaseStore();
 
 graphql(`
   mutation SetCurrentYear($value: Int!) {

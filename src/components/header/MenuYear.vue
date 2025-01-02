@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
 
-import { useYears } from "@/stores/years.ts";
+import { useYearsStore } from "@/stores/years.ts";
 import type { Option } from "@/types/common.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { years, activeYear, selectYear } = useYears();
+const { years, activeYear, selectYear } = useYearsStore();
 
 const options: ComputedRef<Option<number>[]> = computed(() =>
   years

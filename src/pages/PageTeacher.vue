@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useQueryParam } from "@/composables/query-param.ts";
-import { useAuthentication } from "@/stores/authentication.ts";
-import { useYears } from "@/stores/years.ts";
+import { useAuthenticationStore } from "@/stores/authentication.ts";
+import { useYearsStore } from "@/stores/years.ts";
 
 import DetailsTeacher from "@/components/DetailsTeacher.vue";
 
-const { activeYear } = useYears();
-const { profile } = useAuthentication();
+const { activeYear } = useYearsStore();
+const { profile } = useAuthenticationStore();
 const { getValue: uid } = useQueryParam("uid");
 </script>
 

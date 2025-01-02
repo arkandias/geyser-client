@@ -20,7 +20,22 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TableTeachers.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableTeachers.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TheHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TheHeader.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/HomeMessageDefault.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/HomeMessageDefault.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/RequestForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestForm.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/CoursesOptions.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/CoursesOptions.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuUser.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuYear.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuYear.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/composables/permissions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/permissions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PageCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageCourses.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PageTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageTeacher.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/authentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/authentication.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/layout.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/left-panel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/phase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/phase.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/refresh.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/refresh.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/years.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/years.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -333,15 +348,7 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="82922000" />
-    </task>
-    <task id="LOCAL-00301" summary="feat(imports): add sorting with trivago plugin">
-      <option name="closed" value="true" />
-      <created>1734443595797</created>
-      <option name="number" value="00301" />
-      <option name="presentableId" value="LOCAL-00301" />
-      <option name="project" value="LOCAL" />
-      <updated>1734443595797</updated>
+      <workItem from="1735468210242" duration="83880000" />
     </task>
     <task id="LOCAL-00302" summary="WIP">
       <option name="closed" value="true" />
@@ -727,7 +734,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735811074528</updated>
     </task>
-    <option name="localTasksCounter" value="350" />
+    <task id="LOCAL-00350" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735811390276</created>
+      <option name="number" value="00350" />
+      <option name="presentableId" value="LOCAL-00350" />
+      <option name="project" value="LOCAL" />
+      <updated>1735811390276</updated>
+    </task>
+    <option name="localTasksCounter" value="351" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

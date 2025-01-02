@@ -4,8 +4,8 @@ import { useRouter } from "vue-router";
 
 import { useDarkMode } from "@/composables/dark-mode.ts";
 import { usePermissions } from "@/composables/permissions.ts";
+import { useRefresh } from "@/composables/refresh.ts";
 import { buttonColor } from "@/helpers/format.ts";
-import { useRefresh } from "@/stores/refresh.ts";
 
 import CoursesOptions from "@/components/header/CoursesOptions.vue";
 import MenuAdmin from "@/components/header/MenuAdmin.vue";

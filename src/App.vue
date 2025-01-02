@@ -11,16 +11,16 @@ import {
   GetYearsDocument,
 } from "@/gql/graphql.ts";
 import { getClaims, logout } from "@/services/keycloak.ts";
-import { login, useAuthentication } from "@/stores/authentication.ts";
-import { usePhase } from "@/stores/phase.ts";
-import { useYears } from "@/stores/years.ts";
+import { useAuthenticationStore } from "@/stores/authentication.ts";
+import { usePhaseStore } from "@/stores/phase.ts";
+import { useYearsStore } from "@/stores/years.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
 import PageHome from "@/pages/PageHome.vue";
 
-const { setYears, setCurrentYear } = useYears();
-const { currentPhase, setCurrentPhase } = usePhase();
-const { logged } = useAuthentication();
+const { setYears, setCurrentYear } = useYearsStore();
+const { currentPhase, setCurrentPhase } = usePhaseStore();
+const { login, logged } = useAuthenticationStore();
 const perm = usePermissions();
 
 graphql(`

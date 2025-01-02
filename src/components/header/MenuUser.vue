@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { type ComputedRef, computed } from "vue";
 
+import { useRefresh } from "@/composables/refresh.ts";
 import { ROLE_OPTIONS, type Role } from "@/config/types/roles.ts";
 import { formatUser } from "@/helpers/format.ts";
-import { activeRole, useAuthentication } from "@/stores/authentication.ts";
-import { useRefresh } from "@/stores/refresh.ts";
+import { activeRole, useAuthenticationStore } from "@/stores/authentication.ts";
 import type { Option } from "@/types/common.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { profile, allowedRoles, logout } = useAuthentication();
+const { profile, allowedRoles, logout } = useAuthenticationStore();
 const { refresh: refreshData } = useRefresh();
 
 const roleOptions: ComputedRef<Option<Role>[]> = computed(() =>

@@ -18,8 +18,8 @@ import {
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestFormInfoFragmentDoc } from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
-import { useAuthentication } from "@/stores/authentication.ts";
-import { usePhase } from "@/stores/phase.ts";
+import { useAuthenticationStore } from "@/stores/authentication.ts";
+import { usePhaseStore } from "@/stores/phase.ts";
 import type { Option } from "@/types/common.ts";
 
 import TeacherSelect from "@/components/core/TeacherSelect.vue";
@@ -39,8 +39,8 @@ const info = computed(() =>
   useFragment(RequestFormInfoFragmentDoc, requestFormInfoFragment),
 );
 
-const { currentPhase } = usePhase();
-const { profile } = useAuthentication();
+const { currentPhase } = usePhaseStore();
+const { profile } = useAuthenticationStore();
 const perm = usePermissions();
 
 const hours: Ref<number | null> = ref(null);

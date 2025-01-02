@@ -11,20 +11,24 @@ import {
   GetTeacherDetailsDocument,
   GetTeacherRowsDocument,
 } from "@/gql/graphql.ts";
-import { useAuthentication } from "@/stores/authentication.ts";
-import { hSplitterRatio, useLayout, vSplitterRatio } from "@/stores/layout.ts";
-import { useYears } from "@/stores/years.ts";
+import { useAuthenticationStore } from "@/stores/authentication.ts";
+import {
+  hSplitterRatio,
+  useLeftPanelStore,
+  vSplitterRatio,
+} from "@/stores/left-panel.ts";
+import { useYearsStore } from "@/stores/years.ts";
 
 import DetailsCourse from "@/components/DetailsCourse.vue";
 import TableCourses from "@/components/TableCourses.vue";
 import TableTeachers from "@/components/TableTeachers.vue";
 
-const { activeYear, isCurrentYearActive } = useYears();
-const { profile } = useAuthentication();
+const { activeYear, isCurrentYearActive } = useYearsStore();
+const { profile } = useAuthenticationStore();
 const { getValue: selectedCourse } = useQueryParam("courseId", true);
 const { getValue: selectedTeacher } = useQueryParam("uid");
 const perm = usePermissions();
-const { closeLeftPanel, isLeftPanelOpen, openLeftPanel } = useLayout();
+const { closeLeftPanel, isLeftPanelOpen, openLeftPanel } = useLeftPanelStore();
 
 graphql(`
   query GetCourseRows($year: Int!) {

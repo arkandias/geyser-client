@@ -16,7 +16,7 @@ const profile: Profile = reactive({
 const allowedRoles: Ref<Role[]> = ref([]);
 const logout: Ref<() => Promise<void>> = ref(() => Promise.resolve());
 
-export const login = (
+const login = (
   newProfile: Profile,
   newAllowedRoles: Role[],
   newDefaultRole: Role,
@@ -37,11 +37,12 @@ export const login = (
   console.debug("Logged in");
 };
 
-export const useAuthentication = () =>
+export const useAuthenticationStore = () =>
   readonly({
     logged,
     profile,
     allowedRoles,
     activeRole,
     logout,
+    login,
   });
