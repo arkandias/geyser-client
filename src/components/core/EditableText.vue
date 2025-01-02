@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import xss from "xss";
 
 import { isOnlyWhitespace } from "@/helpers/misc.ts";
@@ -43,10 +43,8 @@ const options = {
     },
   },
 };
-const sanitizedText: ComputedRef<string> = computed(() =>
-  xss(text ?? defaultText, options),
-);
-const editorText: Ref<string> = ref("");
+const sanitizedText = computed(() => xss(text ?? defaultText, options));
+const editorText = ref("");
 
 const onSave = async (): Promise<void> => {
   if (isOnlyWhitespace(editorText.value)) {

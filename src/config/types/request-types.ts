@@ -1,12 +1,10 @@
-import type { Option } from "@/types/option.ts";
-
 export const REQUEST_TYPES = {
   ASSIGNMENT: "attribution",
   PRIMARY: "principale",
   SECONDARY: "secondaire",
 } as const;
 
-export const REQUEST_TYPE_OPTIONS: Option<RequestType>[] = [
+export const REQUEST_TYPE_OPTIONS = [
   { value: REQUEST_TYPES.ASSIGNMENT, label: "Attribution" },
   { value: REQUEST_TYPES.PRIMARY, label: "Demande principale" },
   { value: REQUEST_TYPES.SECONDARY, label: "Demande secondaire" },

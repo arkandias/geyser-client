@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { type Ref, ref } from "vue";
+import { ref } from "vue";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const isInformationOpen: Ref<boolean> = ref(false);
-const isLegalNoticeOpen: Ref<boolean> = ref(false);
-const isLicenceOpen: Ref<boolean> = ref(false);
+const isInformationOpen = ref(false);
+const isLegalNoticeOpen = ref(false);
+const isLicenceOpen = ref(false);
 
 const informationLabel = "À propos";
 const legalNoticeLabel = "Mentions légales";

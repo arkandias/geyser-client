@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Ref, computed, ref, toValue, watchEffect } from "vue";
+import { computed, ref, toValue, watchEffect } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import "@/composables/query-param.ts";
@@ -217,18 +217,18 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
 const searchableColumns: string[] = columns
   .filter((col) => col.searchable)
   .map((col) => col.name);
-const visibleColumns: Ref<string[]> = ref([]);
+const visibleColumns = ref<string[]>([]);
 // reset visible columns if permissions change
 watchEffect(() => {
   visibleColumns.value = columns
     .filter((col) => toValue(col.visible))
     .map((col) => col.name);
 });
-const isMenuColumnsOpen: Ref<boolean> = ref(false);
-const isMenuColumnsTooltipVisible: Ref<boolean> = ref(false);
+const isMenuColumnsOpen = ref(false);
+const isMenuColumnsTooltipVisible = ref(false);
 
 // Search filter
-const search: Ref<string> = ref("");
+const search = ref("");
 const clearSearch = () => {
   search.value = "";
 };
@@ -247,7 +247,7 @@ const filterMethod = (
   );
 
 // Styling options controllers
-const stickyHeader: Ref<boolean> = ref(false);
+const stickyHeader = ref(false);
 </script>
 
 <template>

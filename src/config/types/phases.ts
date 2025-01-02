@@ -1,5 +1,3 @@
-import type { Option } from "@/types/option.ts";
-
 export const PHASES = {
   REQUESTS: "voeux",
   ASSIGNMENTS: "commission",
@@ -7,7 +5,7 @@ export const PHASES = {
   SHUTDOWN: "fermeture",
 } as const;
 
-export const PHASE_OPTIONS: Option<Phase>[] = [
+export const PHASE_OPTIONS = [
   { value: PHASES.REQUESTS, label: "Vœux" },
   { value: PHASES.ASSIGNMENTS, label: "Commission" },
   { value: PHASES.RESULTS, label: "Consultation" },

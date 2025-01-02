@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { type ComputedRef, computed } from "vue";
+import { computed } from "vue";
 
 import { PHASE_OPTIONS } from "@/config/types/phases.ts";
 import { graphql } from "@/gql";
@@ -10,7 +10,6 @@ import {
 } from "@/gql/graphql.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 import { useYearsStore } from "@/stores/years.ts";
-import type { Option } from "@/types/option.ts";
 
 import MenuAdminOptions from "@/components/header/MenuAdminOptions.vue";
 import MenuBase from "@/components/header/MenuBase.vue";
@@ -74,7 +73,7 @@ const setCurrentPhase = async (phase: string | null): Promise<void> => {
   });
 };
 
-const yearOptions: ComputedRef<Option<number>[]> = computed(() =>
+const yearOptions = computed(() =>
   years.value.map((year) => ({
     value: year,
     label: year.toString(),

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { type Ref, computed, ref } from "vue";
+import { computed, ref } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -77,7 +77,7 @@ const coordinatorsIds = computed(() => [
 const perm = usePermissions();
 
 // Description
-const editDescription: Ref<boolean> = ref(false);
+const editDescription = ref(false);
 const updateDescription = useMutation(UpdateDescriptionDocument);
 const setDescription = (text: string): Promise<boolean> =>
   updateDescription

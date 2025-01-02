@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type ComputedRef, computed } from "vue";
+import { computed } from "vue";
 
 import { useQueryParam } from "@/composables/query-param.ts";
 import { buttonColor } from "@/helpers/format.ts";
@@ -12,9 +12,7 @@ const { isLeftPanelOpen, toggleLeftPanel } = useLeftPanelStore();
 const { profile } = useAuthenticationStore();
 const { getValue: uid, toggleValue: toggleUid } = useQueryParam("uid");
 
-const isMyUidSelected: ComputedRef<boolean> = computed(
-  () => uid.value === profile.uid,
-);
+const isMyUidSelected = computed(() => uid.value === profile.uid);
 
 const toggleMyUid = async () => {
   await toggleUid(profile.uid);

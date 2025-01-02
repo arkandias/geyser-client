@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 
 import { useYearsStore } from "@/stores/years.ts";
-import type { Option } from "@/types/option.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
 const { years, activeYear, selectYear } = useYearsStore();
 
-const options: ComputedRef<Option<number>[]> = computed(() =>
+const options = computed(() =>
   years.value
     .map((year) => ({
       value: year,
@@ -17,7 +16,7 @@ const options: ComputedRef<Option<number>[]> = computed(() =>
     .sort((a, b) => b.value - a.value),
 );
 
-const selected: Ref<number | null> = ref(null);
+const selected = ref<number | null>(null);
 
 const update = async () => {
   await selectYear(selected.value ?? undefined);

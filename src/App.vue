@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { type ComputedRef, computed, reactive, watch } from "vue";
+import { computed, reactive, watch } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { PHASES, isPhase } from "@/config/types/phases.ts";
@@ -124,7 +124,7 @@ watch(
 );
 
 const accessGranted = computed(() => logged.value && perm.toAccess);
-const accessDeniedMessage: ComputedRef<string> = computed(() => {
+const accessDeniedMessage = computed(() => {
   if (!logged.value) {
     return "Vous n'êtes pas connecté";
   }

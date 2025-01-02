@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { type ComputedRef, type Ref, computed, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 
 import { graphql } from "@/gql";
 import { GetActiveTeachersDocument } from "@/gql/graphql.ts";
@@ -29,8 +29,8 @@ const activeTeachersQueryResult = useQuery({
   variables: {},
 });
 
-const options: Ref<OptionSearch<string>[]> = ref([]);
-const optionsInit: ComputedRef<OptionSearch<string>[]> = computed(() =>
+const options = ref<OptionSearch<string>[]>([]);
+const optionsInit = computed(() =>
   (activeTeachersQueryResult.data.value?.teachers ?? []).map((teacher) => ({
     value: teacher.uid,
     label: formatUser(teacher),

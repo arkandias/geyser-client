@@ -1,4 +1,4 @@
-import { type ComputedRef, computed, readonly } from "vue";
+import { computed, readonly } from "vue";
 
 import { PHASES } from "@/config/types/phases.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
@@ -12,21 +12,19 @@ export const usePermissions = () => {
   const { currentPhase } = usePhaseStore();
   const { activeRole, profile } = useAuthenticationStore();
 
-  const toAdmin: ComputedRef<boolean> = computed(
-    () => activeRole.value === ROLES.ADMIN,
-  );
+  const toAdmin = computed(() => activeRole.value === ROLES.ADMIN);
 
-  const toAccess: ComputedRef<boolean> = computed(
+  const toAccess = computed(
     () =>
       activeRole.value === ROLES.ADMIN ||
       (currentPhase.value !== PHASES.SHUTDOWN && profile.active),
   );
 
-  const toSubmitRequestsForOthers: ComputedRef<boolean> = computed(
+  const toSubmitRequestsForOthers = computed(
     () => activeRole.value === ROLES.ADMIN,
   );
 
-  const toSubmitRequests: ComputedRef<boolean> = computed(
+  const toSubmitRequests = computed(
     () =>
       toSubmitRequestsForOthers.value ||
       (profile.active &&
@@ -35,7 +33,7 @@ export const usePermissions = () => {
         isCurrentYearActive.value),
   );
 
-  const toAssignCourses: ComputedRef<boolean> = computed(
+  const toAssignCourses = computed(
     () =>
       activeRole.value === ROLES.ADMIN ||
       (activeRole.value === ROLES.COMMISSIONER &&
@@ -43,49 +41,47 @@ export const usePermissions = () => {
         isCurrentYearActive.value),
   );
 
-  const toViewAssignments: ComputedRef<boolean> = computed(
+  const toViewAssignments = computed(
     () =>
       toAssignCourses.value ||
       currentPhase.value === PHASES.RESULTS ||
       !isCurrentYearActive.value,
   );
 
-  const toDeleteARequest: ComputedRef<
-    (request: { type: string; teacher: { uid: string } }) => boolean
-  > = computed(() => (request) => {
-    switch (request.type) {
-      case REQUEST_TYPES.ASSIGNMENT:
-        return toAssignCourses.value;
-      default:
-        return request.teacher.uid === profile.uid
-          ? toSubmitRequests.value
-          : toSubmitRequestsForOthers.value;
-    }
-  });
+  const toDeleteARequest = computed(
+    () => (request: { type: string; teacher: { uid: string } }) => {
+      switch (request.type) {
+        case REQUEST_TYPES.ASSIGNMENT:
+          return toAssignCourses.value;
+        default:
+          return request.teacher.uid === profile.uid
+            ? toSubmitRequests.value
+            : toSubmitRequestsForOthers.value;
+      }
+    },
+  );
 
-  const toEditADescription: ComputedRef<
-    (coordinatorsIds: string[]) => boolean
-  > = computed(
-    () => (coordinatorsIds) =>
+  const toEditADescription = computed(
+    () => (coordinatorsIds: string[]) =>
       activeRole.value === ROLES.ADMIN ||
       (isCurrentYearActive.value && coordinatorsIds.includes(profile.uid)),
   );
 
-  const toViewAllServices: ComputedRef<boolean> = computed(
+  const toViewAllServices = computed(
     () =>
       activeRole.value === ROLES.ADMIN ||
       (activeRole.value === ROLES.COMMISSIONER &&
         currentPhase.value === PHASES.ASSIGNMENTS),
   );
 
-  const toViewAService: ComputedRef<(uid: string) => boolean> = computed(
-    () => (uid) =>
+  const toViewAService = computed(
+    () => (uid: string) =>
       toViewAllServices.value ||
       (activeRole.value === ROLES.USER && uid === profile.uid),
   );
 
-  const toEditAService: ComputedRef<(uid: string) => boolean> = computed(
-    () => (uid) =>
+  const toEditAService = computed(
+    () => (uid: string) =>
       activeRole.value === ROLES.ADMIN ||
       (activeRole.value === ROLES.USER &&
         currentPhase.value === PHASES.REQUESTS &&
@@ -93,8 +89,8 @@ export const usePermissions = () => {
         uid === profile.uid),
   );
 
-  const toEditAMessage: ComputedRef<(uid: string) => boolean> = computed(
-    () => (uid) =>
+  const toEditAMessage = computed(
+    () => (uid: string) =>
       activeRole.value === ROLES.ADMIN ||
       (activeRole.value === ROLES.USER &&
         currentPhase.value === PHASES.REQUESTS &&
@@ -102,8 +98,8 @@ export const usePermissions = () => {
         uid === profile.uid),
   );
 
-  const toViewAMessage: ComputedRef<(uid: string) => boolean> = computed(
-    () => (uid) =>
+  const toViewAMessage = computed(
+    () => (uid: string) =>
       toEditAMessage.value(uid) ||
       (activeRole.value === ROLES.COMMISSIONER &&
         currentPhase.value === PHASES.ASSIGNMENTS) ||

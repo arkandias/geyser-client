@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { type Ref, computed, ref } from "vue";
+import { computed, ref } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
@@ -37,8 +37,8 @@ const teacher = computed(() =>
 const insertService = useMutation(InsertServiceDocument);
 
 // Service form
-const serviceCreation: Ref<boolean> = ref(false);
-const baseServiceHours: Ref<number> = ref(
+const serviceCreation = ref(false);
+const baseServiceHours = ref(
   // eslint-disable-next-line vue/no-ref-object-reactivity-loss
   teacher.value.position?.baseServiceHours ?? 0,
 );

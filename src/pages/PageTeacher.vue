@@ -5,6 +5,8 @@ import { useYearsStore } from "@/stores/years.ts";
 
 import DetailsTeacher from "@/components/DetailsTeacher.vue";
 
+defineProps<Record<never, never>>();
+
 const { activeYear } = useYearsStore();
 const { profile } = useAuthenticationStore();
 const { getValue: uid } = useQueryParam("uid");

@@ -1,4 +1,4 @@
-import { type ComputedRef, computed } from "vue";
+import { computed } from "vue";
 import {
   type LocationQueryValue,
   type LocationQueryValueRaw,
@@ -46,15 +46,14 @@ export const useQueryParam = <B extends boolean = false>(
 ) => {
   const router = useRouter();
 
-  const getValue: ComputedRef<B extends true ? number | null : string | null> =
-    computed(
-      () =>
-        (isNumber
-          ? toNumber(getQueryParam(router, param))
-          : getQueryParam(router, param)) as B extends true
-          ? number | null
-          : string | null,
-    );
+  const getValue = computed<B extends true ? number | null : string | null>(
+    () =>
+      (isNumber
+        ? toNumber(getQueryParam(router, param))
+        : getQueryParam(router, param)) as B extends true
+        ? number | null
+        : string | null,
+  );
 
   const setValue = async (
     value?: B extends true ? number | null : string | null,

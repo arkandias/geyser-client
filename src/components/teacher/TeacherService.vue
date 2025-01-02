@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation, useQuery } from "@urql/vue";
-import { type Ref, computed, ref } from "vue";
+import { computed, ref } from "vue";
 
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -105,8 +105,8 @@ const insertModification = useMutation(InsertModificationDocument);
 const deleteModification = useMutation(DeleteModificationDocument);
 
 // Base service hours form
-const isBaseServiceFormOpen: Ref<boolean> = ref(false);
-const baseServiceHours: Ref<number> = ref(
+const isBaseServiceFormOpen = ref(false);
+const baseServiceHours = ref(
   // eslint-disable-next-line vue/no-ref-object-reactivity-loss
   service.value.teacher.position?.baseServiceHours ?? 0,
 );
@@ -140,9 +140,9 @@ const submitBaseServiceForm = async (): Promise<void> => {
 const modificationTypesOptions = computed(
   () => modificationTypesQueryResponse.data.value?.modificationTypes ?? [],
 );
-const isModificationFormOpen: Ref<boolean> = ref(false);
-const modificationType: Ref<string | null> = ref(null);
-const modificationHours: Ref<number> = ref(0);
+const isModificationFormOpen = ref(false);
+const modificationType = ref<string | null>(null);
+const modificationHours = ref(0);
 const resetModificationForm = (): void => {
   isModificationFormOpen.value = false;
   modificationType.value = null;

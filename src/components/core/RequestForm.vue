@@ -1,26 +1,15 @@
 <script setup lang="ts">
-import {
-  type ComputedRef,
-  type Ref,
-  type WritableComputedRef,
-  computed,
-  ref,
-  watch,
-} from "vue";
+import { computed, ref, watch } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRequestOperations } from "@/composables/request-operations.ts";
 import { PHASES } from "@/config/types/phases.ts";
-import {
-  REQUEST_TYPES,
-  type RequestType,
-} from "@/config/types/request-types.ts";
+import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestFormInfoFragmentDoc } from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 import { useAuthenticationStore } from "@/stores/authentication.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
-import type { Option } from "@/types/option.ts";
 
 import TeacherSelect from "@/components/core/TeacherSelect.vue";
 
@@ -43,7 +32,7 @@ const { currentPhase } = usePhaseStore();
 const { profile } = useAuthenticationStore();
 const perm = usePermissions();
 
-const hours: Ref<number | null> = ref(null);
+const hours = ref<number | null>(null);
 watch(
   () => info.value.hoursPerGroup,
   (value) => {
@@ -52,7 +41,7 @@ watch(
   { immediate: true },
 );
 
-const groups: WritableComputedRef<number | null> = computed({
+const groups = computed<number | null>({
   get: () =>
     hours.value === null || info.value.hoursPerGroup === null
       ? null
@@ -67,8 +56,8 @@ const groups: WritableComputedRef<number | null> = computed({
   },
 });
 
-const requestType: Ref<string | null> = ref(null);
-const requestTypeInit: ComputedRef<string | null> = computed(() => {
+const requestType = ref<string | null>(null);
+const requestTypeInit = computed(() => {
   switch (currentPhase.value) {
     case PHASES.ASSIGNMENTS:
       return REQUEST_TYPES.PRIMARY;
@@ -76,7 +65,7 @@ const requestTypeInit: ComputedRef<string | null> = computed(() => {
       return REQUEST_TYPES.ASSIGNMENT;
   }
 });
-const requestTypeOptions: ComputedRef<Option<RequestType>[]> = computed(() => [
+const requestTypeOptions = computed(() => [
   ...(perm.toAssignCourses
     ? [{ value: REQUEST_TYPES.ASSIGNMENT, label: "Attribution" }]
     : []),
@@ -95,8 +84,8 @@ watch(
   { immediate: true },
 );
 
-const uid: Ref<string | null> = ref(null);
-const uidInit: ComputedRef<string | null> = computed(() =>
+const uid = ref<string | null>(null);
+const uidInit = computed(() =>
   perm.toSubmitRequestsForOthers || perm.toAssignCourses ? null : profile.uid,
 );
 watch(

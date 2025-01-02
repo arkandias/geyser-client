@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  type ComputedRef,
-  type Ref,
-  computed,
-  ref,
-  toValue,
-  watchEffect,
-} from "vue";
+import { computed, ref, toValue, watchEffect } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
@@ -26,7 +19,6 @@ import { formatProgram, formatUser, nf } from "@/helpers/format.ts";
 import { totalH } from "@/helpers/hours.ts";
 import { compare, normalizeForSearch, uniqueValue } from "@/helpers/misc.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
-import type { Option } from "@/types/option.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
 
@@ -151,9 +143,9 @@ const deselectTeacher = async () => {
   await toggleTeacher();
 };
 
-const showTeacherDetails: Ref<boolean> = ref(false);
+const showTeacherDetails = ref(false);
 
-const title: ComputedRef<string> = computed(() =>
+const title = computed(() =>
   teacher.value ? formatUser(teacher.value) : "Enseignements",
 );
 
@@ -328,20 +320,20 @@ const columns: Column<CourseRowFragment>[] = [
 const searchableColumns: string[] = columns
   .filter((col) => col.searchable)
   .map((col) => col.name);
-const visibleColumns: Ref<string[]> = ref([]);
+const visibleColumns = ref<string[]>([]);
 // reset visible columns if permissions change
 watchEffect(() => {
   visibleColumns.value = columns
     .filter((col) => toValue(col.visible))
     .map((col) => col.name);
 });
-const isMenuColumnsOpen: Ref<boolean> = ref(false);
-const isMenuColumnsTooltipVisible: Ref<boolean> = ref(false);
+const isMenuColumnsOpen = ref(false);
+const isMenuColumnsTooltipVisible = ref(false);
 
 // Filters
 // Programs
-const programs: Ref<number[]> = ref([]);
-const programsOptions: ComputedRef<Option<number>[]> = computed(() =>
+const programs = ref<number[]>([]);
+const programsOptions = computed(() =>
   courses.value
     .map((course) => ({
       value: course.program.id,
@@ -351,16 +343,16 @@ const programsOptions: ComputedRef<Option<number>[]> = computed(() =>
     .sort(compare("label")),
 );
 // Course types
-const courseTypes: Ref<string[]> = ref([]);
-const courseTypesOptions: ComputedRef<Option<string>[]> = computed(() =>
+const courseTypes = ref<string[]>([]);
+const courseTypesOptions = computed(() =>
   courses.value
     .map((course) => course.courseType)
     .filter(uniqueValue)
     .sort(compare("label")),
 );
 // Semesters
-const semesters: Ref<number[]> = ref([]);
-const semestersOptions: ComputedRef<Option<number>[]> = computed(() =>
+const semesters = ref<number[]>([]);
+const semestersOptions = computed(() =>
   courses.value
     .map((course) => ({
       value: course.semester,
@@ -370,7 +362,7 @@ const semestersOptions: ComputedRef<Option<number>[]> = computed(() =>
     .sort(compare("label")),
 );
 // Search
-const search: Ref<string> = ref("");
+const search = ref("");
 const clearSearch = () => {
   search.value = "";
 };
@@ -410,7 +402,7 @@ const filterMethod = (
   );
 
 // Styling options controllers
-const stickyHeader: Ref<boolean> = ref(false);
+const stickyHeader = ref(false);
 const isAssigned = (row: CourseRowFragment) =>
   requests.value?.some(
     (request) =>

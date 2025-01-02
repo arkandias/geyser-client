@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { type ComputedRef, type Ref, computed, ref } from "vue";
+import { computed, ref } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -57,21 +57,20 @@ const body = computed(
 const upsertMessage = useMutation(UpsertMessageDocument);
 const deleteMessage = useMutation(DeleteMessageDocument);
 
-const setMessage: ComputedRef<(body: string) => Promise<boolean>> = computed(
-  () =>
-    (body: string): Promise<boolean> =>
-      body
-        ? upsertMessage
-            .executeMutation({ year, uid, body })
-            .then((result) => !!result.data?.message?.id && !result.error)
-        : deleteMessage
-            .executeMutation({ year, uid })
-            .then(
-              (result) => !!result.data?.messages?.returning && !result.error,
-            ),
+const setMessage = computed(
+  () => (body: string) =>
+    body
+      ? upsertMessage
+          .executeMutation({ year, uid, body })
+          .then((result) => !!result.data?.message?.id && !result.error)
+      : deleteMessage
+          .executeMutation({ year, uid })
+          .then(
+            (result) => !!result.data?.messages?.returning && !result.error,
+          ),
 );
 
-const edition: Ref<boolean> = ref(false);
+const edition = ref(false);
 </script>
 
 <template>

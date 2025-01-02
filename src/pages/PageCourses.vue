@@ -23,6 +23,8 @@ import DetailsCourse from "@/components/DetailsCourse.vue";
 import TableCourses from "@/components/TableCourses.vue";
 import TableTeachers from "@/components/TableTeachers.vue";
 
+defineProps<Record<never, never>>();
+
 const { activeYear, isCurrentYearActive } = useYearsStore();
 const { profile } = useAuthenticationStore();
 const { getValue: selectedCourse } = useQueryParam("courseId", true);

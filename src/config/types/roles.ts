@@ -1,12 +1,10 @@
-import type { Option } from "@/types/option.ts";
-
 export const ROLES = {
   USER: "intervenant",
   COMMISSIONER: "commissaire",
   ADMIN: "admin",
 } as const;
 
-export const ROLE_OPTIONS: Option<Role>[] = [
+export const ROLE_OPTIONS = [
   { value: ROLES.USER, label: "Intervenant" },
   { value: ROLES.COMMISSIONER, label: "Commissaire" },
   { value: ROLES.ADMIN, label: "Administrateur" },

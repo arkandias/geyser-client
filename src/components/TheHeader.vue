@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type ComputedRef, computed } from "vue";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 import { useDarkMode } from "@/composables/dark-mode.ts";
@@ -19,7 +19,7 @@ const perm = usePermissions();
 const { refreshData } = useRefreshData();
 const { isDarkModeActive, toggleDarkMode } = useDarkMode();
 
-const version: ComputedRef<string | null> = computed(() =>
+const version = computed(() =>
   import.meta.env.DEV ? "dev" : (import.meta.env.VITE_BUILD_VERSION ?? null),
 );
 </script>

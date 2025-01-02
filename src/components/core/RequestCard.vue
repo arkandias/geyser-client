@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type ComputedRef, computed } from "vue";
+import { computed } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRequestOperations } from "@/composables/request-operations.ts";
@@ -52,28 +52,25 @@ const remove = async (): Promise<void> => {
   await deleteRequest(request.value.id, request.value.type);
 };
 
-const groups: ComputedRef<number> = computed(() =>
+const groups = computed(() =>
   request.value.course.hoursPerGroup
     ? request.value.hours / request.value.course.hoursPerGroup
     : 0,
 );
 
-const displayActions: ComputedRef<(requestType: string) => boolean> = computed(
-  () => (requestType) => {
-    switch (requestType) {
-      case REQUEST_TYPES.ASSIGNMENT:
-        return perm.toAssignCourses;
-      default:
-        return perm.toSubmitRequests || perm.toAssignCourses;
-    }
-  },
-);
+const displayActions = computed(() => (requestType: string) => {
+  switch (requestType) {
+    case REQUEST_TYPES.ASSIGNMENT:
+      return perm.toAssignCourses;
+    default:
+      return perm.toSubmitRequests || perm.toAssignCourses;
+  }
+});
 
-const displayAssignButton: ComputedRef<(requestType: string) => boolean> =
-  computed(
-    () => (requestType) =>
-      requestType !== REQUEST_TYPES.ASSIGNMENT && perm.toAssignCourses,
-  );
+const displayAssignButton = computed(
+  () => (requestType: string) =>
+    requestType !== REQUEST_TYPES.ASSIGNMENT && perm.toAssignCourses,
+);
 </script>
 
 <template>

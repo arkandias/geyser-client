@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Ref, ref } from "vue";
+import { ref } from "vue";
 
 import { buttonColor } from "@/helpers/format.ts";
 
@@ -9,8 +9,8 @@ defineProps<{
 }>();
 defineSlots<{ default(): unknown }>();
 
-const isOpen: Ref<boolean> = ref(false);
-const tooltip: Ref<boolean> = ref(false);
+const isOpen = ref(false);
+const tooltip = ref(false);
 </script>
 
 <template>

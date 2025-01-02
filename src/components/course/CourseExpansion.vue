@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type ComputedRef, computed } from "vue";
+import { computed } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CourseExpansionFragmentDoc } from "@/gql/graphql.ts";
@@ -34,12 +34,12 @@ graphql(`
 const info = computed(() =>
   useFragment(CourseExpansionFragmentDoc, courseExpansionFragment),
 );
-const label: ComputedRef<string> = computed(() =>
+const label = computed(() =>
   info.value
     ? info.value.name
     : "Sélectionnez un enseignement dans la liste ci-dessus",
 );
-const caption: ComputedRef<string> = computed(() =>
+const caption = computed(() =>
   info.value
     ? `${info.value.program.degree.name} — ${info.value.program.name} — ` +
       (info.value.track?.name ? `${info.value.track.name} — ` : "") +
