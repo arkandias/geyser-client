@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { computed, reactive, watch } from "vue";
+import { computed, watch } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { PHASES, isPhase } from "@/config/types/phases.ts";
@@ -57,9 +57,9 @@ graphql(`
 const claimsRef = computed(() => getClaims());
 const userProfileQueryResult = useQuery({
   query: GetUserProfileDocument,
-  variables: reactive({
-    uid: computed(() => claimsRef.value?.userId ?? ""),
-  }),
+  variables: {
+    uid: () => claimsRef.value?.userId ?? "",
+  },
   pause: () => !claimsRef.value,
 });
 watch(
@@ -70,6 +70,7 @@ watch(
       return;
     }
     if (result?.profile === undefined) {
+      // not fetched yet
       return;
     }
     if (result.profile === null) {
@@ -111,6 +112,7 @@ watch(
   currentPhaseQueryResult.data,
   (value) => {
     if (value?.phases[0]?.value === undefined) {
+      // not fetched yet
       return;
     }
     if (isPhase(value.phases[0].value)) {

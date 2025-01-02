@@ -19,7 +19,7 @@ const options = computed(() =>
 const selected = ref<number | null>(null);
 
 const update = async () => {
-  await selectYear(selected.value ?? undefined);
+  await selectYear(selected.value);
 };
 
 watch(

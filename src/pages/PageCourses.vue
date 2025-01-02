@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { computed, reactive, watch } from "vue";
+import { computed, watch } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
@@ -83,9 +83,9 @@ graphql(`
 
 const courseRowsQueryResult = useQuery({
   query: GetCourseRowsDocument,
-  variables: reactive({
-    year: computed(() => activeYear.value ?? -1),
-  }),
+  variables: {
+    year: () => activeYear.value ?? -1,
+  },
   pause: () => activeYear.value === null,
   context: { additionalTypenames: ["demande"] },
 });
@@ -96,12 +96,10 @@ const courseRows = computed(
 
 const teacherRowsQueryResult = useQuery({
   query: GetTeacherRowsDocument,
-  variables: reactive({
-    year: computed(() => activeYear.value ?? -1),
-    where: computed(() =>
-      perm.toViewAllServices ? {} : { uid: { _eq: profile.uid } },
-    ),
-  }),
+  variables: {
+    year: () => activeYear.value ?? -1,
+    where: () => (perm.toViewAllServices ? {} : { uid: { _eq: profile.uid } }),
+  },
   pause: () => activeYear.value === null,
   context: {
     additionalTypenames: [
@@ -121,9 +119,9 @@ const teacherRows = computed(
 
 const courseDetailsQueryResponse = useQuery({
   query: GetCourseDetailsDocument,
-  variables: reactive({
-    courseId: computed(() => selectedCourse.value ?? -1),
-  }),
+  variables: {
+    courseId: () => selectedCourse.value ?? -1,
+  },
   pause: () => selectedCourse.value === null,
   context: {
     additionalTypenames: ["demande", "priorite"],
@@ -140,10 +138,10 @@ const courseDetails = computed(() =>
 
 const teacherDetailsQueryResponse = useQuery({
   query: GetTeacherDetailsDocument,
-  variables: reactive({
-    year: computed(() => activeYear.value ?? -1),
-    uid: computed(() => selectedTeacher.value ?? ""),
-  }),
+  variables: {
+    year: () => activeYear.value ?? -1,
+    uid: () => selectedTeacher.value ?? "",
+  },
   pause: () => !activeYear.value || !selectedTeacher.value,
   context: {
     additionalTypenames: [
