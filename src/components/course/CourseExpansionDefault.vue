@@ -1,12 +1,7 @@
-<script setup lang="ts">
-defineProps<{ fetching?: boolean }>();
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <QCardSection v-if="fetching">
-    <p>Chargement des informations sur l'enseignement sélectionné...</p>
-  </QCardSection>
-  <QCardSection v-else class="text-justify">
+  <QCardSection class="text-justify">
     <p>
       Lorsqu'un enseignement est sélectionné, les informations suivantes sont
       affichées ici :

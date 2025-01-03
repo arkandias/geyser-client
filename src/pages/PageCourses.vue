@@ -131,9 +131,6 @@ const courseDetailsQueryResult = useQuery({
     additionalTypenames: ["demande", "priorite"],
   },
 });
-const fetchingCourseDetails = computed(
-  () => courseDetailsQueryResult.fetching.value,
-);
 const courseDetails = computed(() =>
   courseDetailsQueryResult.isPaused.value
     ? null
@@ -205,10 +202,7 @@ watch(
             />
           </template>
           <template #after>
-            <DetailsCourse
-              :course-details-fragment="courseDetails"
-              :fetching="fetchingCourseDetails"
-            />
+            <DetailsCourse :data-fragment="courseDetails" />
           </template>
         </QSplitter>
       </template>

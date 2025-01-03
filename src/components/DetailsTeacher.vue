@@ -6,6 +6,7 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { graphql } from "@/gql";
 import { GetTeacherDetailsDocument } from "@/gql/graphql.ts";
 
+import DetailsTeacherDefault from "@/components/teacher/DetailsTeacherDefault.vue";
 import TeacherMessage from "@/components/teacher/TeacherMessage.vue";
 import TeacherNoService from "@/components/teacher/TeacherNoService.vue";
 import TeacherRequests from "@/components/teacher/TeacherRequests.vue";
@@ -75,7 +76,6 @@ const service = computed(() => details.value?.services[0] ?? null);
     </template>
     <TeacherNoService v-else :year :data-fragment="details" />
   </template>
-  <template v-else></template>
 </template>
 
 <style scoped lang="scss">

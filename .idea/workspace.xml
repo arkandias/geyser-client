@@ -20,20 +20,11 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TableCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableCourses.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TableTeachers.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableTeachers.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/PriorityChip.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/PriorityChip.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/RequestCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestCard.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseCoordinators.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseCoordinators.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuUser.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherRequests.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherService.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherService.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherTitle.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherTitle.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helpers/hours.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/hours.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helpers/numbers.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helpers/user.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/authentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/authentication.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DetailsCourse.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsCourse.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseExpansionDefault.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseExpansionDefault.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/DetailsCourseDefault.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/DetailsCourseDefault.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PageCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageCourses.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +137,7 @@
     "javascript.nodejs.core.library.configured.version": "20.12.2",
     "javascript.nodejs.core.library.typings.version": "20.12.14",
     "js.linters.configure.manually.selectedeslint": "true",
-    "last_opened_file_path": "/Users/julienhauseux/Projets/geyser-frontend/src/components/course",
+    "last_opened_file_path": "/Users/julienhauseux/Projets/geyser-frontend/src/components/teacher",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.stylelint": "true",
@@ -179,11 +170,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/teacher" />
       <recent name="$PROJECT_DIR$/src/components/course" />
       <recent name="$PROJECT_DIR$/src/components/header" />
       <recent name="$PROJECT_DIR$/src/components/core" />
       <recent name="$PROJECT_DIR$/src/i18n/locales/fr" />
-      <recent name="$PROJECT_DIR$/src/components" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/composables" />
@@ -346,15 +337,7 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="124425000" />
-    </task>
-    <task id="LOCAL-00321" summary="WIP">
-      <option name="closed" value="true" />
-      <created>1735047538791</created>
-      <option name="number" value="00321" />
-      <option name="presentableId" value="LOCAL-00321" />
-      <option name="project" value="LOCAL" />
-      <updated>1735047538791</updated>
+      <workItem from="1735468210242" duration="125746000" />
     </task>
     <task id="LOCAL-00322" summary="WIP">
       <option name="closed" value="true" />
@@ -740,7 +723,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735924979264</updated>
     </task>
-    <option name="localTasksCounter" value="370" />
+    <task id="LOCAL-00370" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735927956747</created>
+      <option name="number" value="00370" />
+      <option name="presentableId" value="LOCAL-00370" />
+      <option name="project" value="LOCAL" />
+      <updated>1735927956747</updated>
+    </task>
+    <option name="localTasksCounter" value="371" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
