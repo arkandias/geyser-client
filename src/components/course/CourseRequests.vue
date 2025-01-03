@@ -20,7 +20,7 @@ const { courseRequestsFragment } = defineProps<{
 
 graphql(`
   fragment CourseRequests on enseignement {
-    ...RequestFormInfo
+    ...RequestFormData
     requests: demandes(
       order_by: [
         { intervenant: { nom: asc } }
@@ -29,7 +29,7 @@ graphql(`
     ) {
       id
       type
-      ...RequestCardInfo
+      ...RequestDetails
     }
   }
 `);

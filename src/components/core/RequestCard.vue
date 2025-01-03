@@ -6,16 +6,18 @@ import { useRequestOperations } from "@/composables/request-operations.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { RequestCardInfoFragmentDoc } from "@/gql/graphql.ts";
+import { RequestDetailsFragmentDoc } from "@/gql/graphql.ts";
 import { formatUser, nf, priorityColor } from "@/helpers/format.ts";
 
-const { requestCardInfoFragment } = defineProps<{
-  requestCardInfoFragment: FragmentType<typeof RequestCardInfoFragmentDoc>;
+const { requestDetailsFragment } = defineProps<{
+  requestDetailsFragment: FragmentType<typeof RequestDetailsFragmentDoc>;
   archive?: boolean;
 }>();
 
+const perm = usePermissions();
+
 graphql(`
-  fragment RequestCardInfo on demande {
+  fragment RequestDetails on demande {
     id
     teacher: intervenant {
       uid
@@ -34,10 +36,8 @@ graphql(`
 `);
 
 const request = computed(() =>
-  useFragment(RequestCardInfoFragmentDoc, requestCardInfoFragment),
+  useFragment(RequestDetailsFragmentDoc, requestDetailsFragment),
 );
-
-const perm = usePermissions();
 
 const { updateRequest, deleteRequest } = useRequestOperations();
 const assign = async (): Promise<void> => {

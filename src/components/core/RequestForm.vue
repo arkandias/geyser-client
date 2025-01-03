@@ -6,26 +6,26 @@ import { useRequestOperations } from "@/composables/request-operations.ts";
 import { PHASES } from "@/config/types/phases.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { RequestFormInfoFragmentDoc } from "@/gql/graphql.ts";
+import { RequestFormDataFragmentDoc } from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 import { useAuthenticationStore } from "@/stores/authentication.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 
 import TeacherSelect from "@/components/core/TeacherSelect.vue";
 
-const { requestFormInfoFragment } = defineProps<{
-  requestFormInfoFragment: FragmentType<typeof RequestFormInfoFragmentDoc>;
+const { requestFormDataFragment } = defineProps<{
+  requestFormDataFragment: FragmentType<typeof RequestFormDataFragmentDoc>;
 }>();
 
 graphql(`
-  fragment RequestFormInfo on enseignement {
+  fragment RequestFormData on enseignement {
     courseId: id
     hoursPerGroup: heures_corrigees
   }
 `);
 
-const info = computed(() =>
-  useFragment(RequestFormInfoFragmentDoc, requestFormInfoFragment),
+const data = computed(() =>
+  useFragment(RequestFormDataFragmentDoc, requestFormDataFragment),
 );
 
 const { currentPhase } = usePhaseStore();
@@ -34,7 +34,7 @@ const perm = usePermissions();
 
 const hours = ref<number | null>(null);
 watch(
-  () => info.value.hoursPerGroup,
+  () => data.value.hoursPerGroup,
   (value) => {
     hours.value = value;
   },
@@ -43,16 +43,16 @@ watch(
 
 const groups = computed<number | null>({
   get: () =>
-    hours.value === null || info.value.hoursPerGroup === null
+    hours.value === null || data.value.hoursPerGroup === null
       ? null
       : Math.round(
-          (hours.value / info.value.hoursPerGroup + Number.EPSILON) * 100,
+          (hours.value / data.value.hoursPerGroup + Number.EPSILON) * 100,
         ) / 100,
   set: (val) => {
     hours.value =
-      val === null || info.value.hoursPerGroup === null
+      val === null || data.value.hoursPerGroup === null
         ? null
-        : val * info.value.hoursPerGroup;
+        : val * data.value.hoursPerGroup;
   },
 });
 
@@ -121,14 +121,14 @@ const submitForm = async (): Promise<void> => {
   }
   await updateRequest({
     uid: uid.value,
-    courseId: info.value.courseId,
+    courseId: data.value.courseId,
     requestType: requestType.value,
     hours: hours.value,
   });
 };
 const resetForm = (): void => {
   uid.value = uidInit.value;
-  hours.value = info.value.hoursPerGroup;
+  hours.value = data.value.hoursPerGroup;
   requestType.value = requestTypeInit.value;
 };
 </script>

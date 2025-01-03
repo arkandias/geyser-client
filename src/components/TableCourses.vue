@@ -119,35 +119,33 @@ const courses = computed(() =>
     useFragment(CourseRowFragmentDoc, fragment),
   ),
 );
-const teacher = computed(() =>
+const teacherName = computed(() =>
   useFragment(TeacherNameFragmentDoc, teacherNameFragment),
 );
-const requests = computed(
+const teacherRequests = computed(
   () =>
     teacherRequestsFragment?.map((fragment) =>
       useFragment(TeacherRequestFragmentDoc, fragment),
     ) ?? null,
 );
 
+const title = computed(() =>
+  teacherName.value ? formatUser(teacherName.value) : "Enseignements",
+);
+
+// Row selection
 const { getValue: selectedCourse, toggleValue: toggleCourse } = useQueryParam(
   "courseId",
   true,
 );
 const selectedRow = computed(() => [{ id: selectedCourse.value }]);
-const selectCourse = async (_: Event, row: CourseRowFragment) => {
+const onRowClick = async (_: Event, row: CourseRowFragment) => {
   await toggleCourse(row.id);
 };
 
-const { toggleValue: toggleTeacher } = useQueryParam("uid");
-const deselectTeacher = async () => {
-  await toggleTeacher();
-};
-
+// Teacher buttons
 const showTeacherDetails = ref(false);
-
-const title = computed(() =>
-  teacher.value ? formatUser(teacher.value) : "Enseignements",
-);
+const { setValue: selectTeacher } = useQueryParam("uid");
 
 // Columns definition
 const columns: Column<CourseRowFragment>[] = [
@@ -368,7 +366,7 @@ const clearSearch = () => {
 };
 // Filter attributes
 const filterObj = computed(() => ({
-  teacherRequests: requests.value,
+  teacherRequests: teacherRequests.value,
   programs: programs.value,
   courseTypes: courseTypes.value,
   semesters: semesters.value,
@@ -404,12 +402,12 @@ const filterMethod = (
 // Styling options controllers
 const stickyHeader = ref(false);
 const isAssigned = (row: CourseRowFragment) =>
-  requests.value?.some(
+  teacherRequests.value?.some(
     (request) =>
       request.courseId === row.id && request.type === REQUEST_TYPES.ASSIGNMENT,
   ) ?? false;
 const isVisible = (row: CourseRowFragment): boolean =>
-  !teacher.value &&
+  !teacherName.value &&
   row.visible &&
   row.program.degree.visible &&
   row.program.visible &&
@@ -417,9 +415,9 @@ const isVisible = (row: CourseRowFragment): boolean =>
 
 // Helpers
 const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
-  if (requests.value) {
+  if (teacherRequests.value) {
     return (
-      requests.value.find(
+      teacherRequests.value.find(
         (request) =>
           request.courseId === row.id && request.type === requestType,
       )?.hours ?? 0
@@ -461,13 +459,13 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
     dense
     virtual-scroll
     :class="{ 'sticky-header-table': stickyHeader }"
-    @row-click="selectCourse"
+    @row-click="onRowClick"
   >
     <template #top>
       <div class="q-table__title">
         {{ title }}
         <QBtn
-          v-if="teacher"
+          v-if="teacherName"
           icon="sym_s_visibility"
           :color="selectedCourse === null ? 'primary' : 'grey'"
           size="sm"
@@ -477,14 +475,14 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
           @click="showTeacherDetails = true"
         />
         <QBtn
-          v-if="teacher"
+          v-if="teacherName"
           icon="sym_s_close"
           color="primary"
           size="sm"
           flat
           square
           dense
-          @click="deselectTeacher"
+          @click="selectTeacher()"
         />
       </div>
       <QSpace />
@@ -492,7 +490,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
         <QSelect
           v-model="programs"
           :options="programsOptions"
-          :disable="!!teacher"
+          :disable="!!teacherName"
           color="primary"
           label="Formation"
           emit-value
@@ -520,7 +518,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
         <QSelect
           v-model="courseTypes"
           :options="courseTypesOptions"
-          :disable="!!teacher"
+          :disable="!!teacherName"
           color="primary"
           label="Type"
           emit-value
@@ -547,7 +545,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
         <QSelect
           v-model="semesters"
           :options="semestersOptions"
-          :disable="!!teacher"
+          :disable="!!teacherName"
           color="primary"
           label="Semestre"
           emit-value
@@ -573,7 +571,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
         </QSelect>
         <QInput
           v-model="search"
-          :disable="!!teacher"
+          :disable="!!teacherName"
           color="primary"
           placeholder="Recherche"
           clear-icon="sym_s_close"

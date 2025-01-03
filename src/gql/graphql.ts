@@ -9577,7 +9577,7 @@ export type TeacherRowFragment = {
   messages: Array<{ __typename?: "message"; id: number }>;
 } & { " $fragmentName"?: "TeacherRowFragment" };
 
-export type PriorityChipInfoFragment = {
+export type PriorityDetailsFragment = {
   __typename?: "priorite";
   seniority: number | null;
   isPriority: boolean | null;
@@ -9587,9 +9587,9 @@ export type PriorityChipInfoFragment = {
     firstname: string;
     lastname: string;
   };
-} & { " $fragmentName"?: "PriorityChipInfoFragment" };
+} & { " $fragmentName"?: "PriorityDetailsFragment" };
 
-export type RequestCardInfoFragment = {
+export type RequestDetailsFragment = {
   __typename?: "demande";
   id: number;
   type: string;
@@ -9607,13 +9607,13 @@ export type RequestCardInfoFragment = {
     id: number;
     hoursPerGroup: number | null;
   };
-} & { " $fragmentName"?: "RequestCardInfoFragment" };
+} & { " $fragmentName"?: "RequestDetailsFragment" };
 
-export type RequestFormInfoFragment = {
+export type RequestFormDataFragment = {
   __typename?: "enseignement";
   courseId: number;
   hoursPerGroup: number | null;
-} & { " $fragmentName"?: "RequestFormInfoFragment" };
+} & { " $fragmentName"?: "RequestFormDataFragment" };
 
 export type GetActiveTeachersQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -9635,7 +9635,7 @@ export type CourseArchivesFragment = {
     year: number;
     requests: Array<
       { __typename?: "demande"; id: number } & {
-        " $fragmentRefs"?: { RequestCardInfoFragment: RequestCardInfoFragment };
+        " $fragmentRefs"?: { RequestDetailsFragment: RequestDetailsFragment };
       }
     >;
     parent: {
@@ -9643,9 +9643,7 @@ export type CourseArchivesFragment = {
       year: number;
       requests: Array<
         { __typename?: "demande"; id: number } & {
-          " $fragmentRefs"?: {
-            RequestCardInfoFragment: RequestCardInfoFragment;
-          };
+          " $fragmentRefs"?: { RequestDetailsFragment: RequestDetailsFragment };
         }
       >;
       parent: {
@@ -9654,7 +9652,7 @@ export type CourseArchivesFragment = {
         requests: Array<
           { __typename?: "demande"; id: number } & {
             " $fragmentRefs"?: {
-              RequestCardInfoFragment: RequestCardInfoFragment;
+              RequestDetailsFragment: RequestDetailsFragment;
             };
           }
         >;
@@ -9745,7 +9743,7 @@ export type CoursePrioritiesFragment = {
   __typename?: "enseignement";
   priorities: Array<
     { __typename?: "priorite"; id: number } & {
-      " $fragmentRefs"?: { PriorityChipInfoFragment: PriorityChipInfoFragment };
+      " $fragmentRefs"?: { PriorityDetailsFragment: PriorityDetailsFragment };
     }
   >;
 } & { " $fragmentName"?: "CoursePrioritiesFragment" };
@@ -9754,11 +9752,11 @@ export type CourseRequestsFragment = ({
   __typename?: "enseignement";
   requests: Array<
     { __typename?: "demande"; id: number; type: string } & {
-      " $fragmentRefs"?: { RequestCardInfoFragment: RequestCardInfoFragment };
+      " $fragmentRefs"?: { RequestDetailsFragment: RequestDetailsFragment };
     }
   >;
 } & {
-  " $fragmentRefs"?: { RequestFormInfoFragment: RequestFormInfoFragment };
+  " $fragmentRefs"?: { RequestFormDataFragment: RequestFormDataFragment };
 }) & { " $fragmentName"?: "CourseRequestsFragment" };
 
 export type SetCurrentYearMutationVariables = Exact<{
@@ -10719,12 +10717,12 @@ export const CourseDescriptionFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<CourseDescriptionFragment, unknown>;
-export const RequestFormInfoFragmentDoc = {
+export const RequestFormDataFragmentDoc = {
   kind: "Document",
   definitions: [
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "RequestFormInfo" },
+      name: { kind: "Name", value: "RequestFormData" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "enseignement" },
@@ -10746,13 +10744,13 @@ export const RequestFormInfoFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<RequestFormInfoFragment, unknown>;
-export const RequestCardInfoFragmentDoc = {
+} as unknown as DocumentNode<RequestFormDataFragment, unknown>;
+export const RequestDetailsFragmentDoc = {
   kind: "Document",
   definitions: [
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "RequestCardInfo" },
+      name: { kind: "Name", value: "RequestDetails" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande" },
@@ -10814,7 +10812,7 @@ export const RequestCardInfoFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<RequestCardInfoFragment, unknown>;
+} as unknown as DocumentNode<RequestDetailsFragment, unknown>;
 export const CourseRequestsFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -10830,7 +10828,7 @@ export const CourseRequestsFragmentDoc = {
         selections: [
           {
             kind: "FragmentSpread",
-            name: { kind: "Name", value: "RequestFormInfo" },
+            name: { kind: "Name", value: "RequestFormData" },
           },
           {
             kind: "Field",
@@ -10892,7 +10890,7 @@ export const CourseRequestsFragmentDoc = {
                 { kind: "Field", name: { kind: "Name", value: "type" } },
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "RequestCardInfo" },
+                  name: { kind: "Name", value: "RequestDetails" },
                 },
               ],
             },
@@ -10902,7 +10900,7 @@ export const CourseRequestsFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "RequestFormInfo" },
+      name: { kind: "Name", value: "RequestFormData" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "enseignement" },
@@ -10925,7 +10923,7 @@ export const CourseRequestsFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "RequestCardInfo" },
+      name: { kind: "Name", value: "RequestDetails" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande" },
@@ -10988,12 +10986,12 @@ export const CourseRequestsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<CourseRequestsFragment, unknown>;
-export const PriorityChipInfoFragmentDoc = {
+export const PriorityDetailsFragmentDoc = {
   kind: "Document",
   definitions: [
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "PriorityChipInfo" },
+      name: { kind: "Name", value: "PriorityDetails" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "priorite" },
@@ -11036,7 +11034,7 @@ export const PriorityChipInfoFragmentDoc = {
       },
     },
   ],
-} as unknown as DocumentNode<PriorityChipInfoFragment, unknown>;
+} as unknown as DocumentNode<PriorityDetailsFragment, unknown>;
 export const CoursePrioritiesFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -11109,7 +11107,7 @@ export const CoursePrioritiesFragmentDoc = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "PriorityChipInfo" },
+                  name: { kind: "Name", value: "PriorityDetails" },
                 },
               ],
             },
@@ -11119,7 +11117,7 @@ export const CoursePrioritiesFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "PriorityChipInfo" },
+      name: { kind: "Name", value: "PriorityDetails" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "priorite" },
@@ -11279,7 +11277,7 @@ export const CourseArchivesFragmentDoc = {
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       {
                         kind: "FragmentSpread",
-                        name: { kind: "Name", value: "RequestCardInfo" },
+                        name: { kind: "Name", value: "RequestDetails" },
                       },
                     ],
                   },
@@ -11402,7 +11400,7 @@ export const CourseArchivesFragmentDoc = {
                             },
                             {
                               kind: "FragmentSpread",
-                              name: { kind: "Name", value: "RequestCardInfo" },
+                              name: { kind: "Name", value: "RequestDetails" },
                             },
                           ],
                         },
@@ -11530,7 +11528,7 @@ export const CourseArchivesFragmentDoc = {
                                     kind: "FragmentSpread",
                                     name: {
                                       kind: "Name",
-                                      value: "RequestCardInfo",
+                                      value: "RequestDetails",
                                     },
                                   },
                                 ],
@@ -11550,7 +11548,7 @@ export const CourseArchivesFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "RequestCardInfo" },
+      name: { kind: "Name", value: "RequestDetails" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande" },
@@ -11660,7 +11658,7 @@ export const CourseDetailsFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "RequestFormInfo" },
+      name: { kind: "Name", value: "RequestFormData" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "enseignement" },
@@ -11683,7 +11681,7 @@ export const CourseDetailsFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "RequestCardInfo" },
+      name: { kind: "Name", value: "RequestDetails" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande" },
@@ -11746,7 +11744,7 @@ export const CourseDetailsFragmentDoc = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "PriorityChipInfo" },
+      name: { kind: "Name", value: "PriorityDetails" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "priorite" },
@@ -12416,7 +12414,7 @@ export const CourseDetailsFragmentDoc = {
         selections: [
           {
             kind: "FragmentSpread",
-            name: { kind: "Name", value: "RequestFormInfo" },
+            name: { kind: "Name", value: "RequestFormData" },
           },
           {
             kind: "Field",
@@ -12478,7 +12476,7 @@ export const CourseDetailsFragmentDoc = {
                 { kind: "Field", name: { kind: "Name", value: "type" } },
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "RequestCardInfo" },
+                  name: { kind: "Name", value: "RequestDetails" },
                 },
               ],
             },
@@ -12555,7 +12553,7 @@ export const CourseDetailsFragmentDoc = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "PriorityChipInfo" },
+                  name: { kind: "Name", value: "PriorityDetails" },
                 },
               ],
             },
@@ -12676,7 +12674,7 @@ export const CourseDetailsFragmentDoc = {
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       {
                         kind: "FragmentSpread",
-                        name: { kind: "Name", value: "RequestCardInfo" },
+                        name: { kind: "Name", value: "RequestDetails" },
                       },
                     ],
                   },
@@ -12799,7 +12797,7 @@ export const CourseDetailsFragmentDoc = {
                             },
                             {
                               kind: "FragmentSpread",
-                              name: { kind: "Name", value: "RequestCardInfo" },
+                              name: { kind: "Name", value: "RequestDetails" },
                             },
                           ],
                         },
@@ -12927,7 +12925,7 @@ export const CourseDetailsFragmentDoc = {
                                     kind: "FragmentSpread",
                                     name: {
                                       kind: "Name",
-                                      value: "RequestCardInfo",
+                                      value: "RequestDetails",
                                     },
                                   },
                                 ],
@@ -18668,7 +18666,7 @@ export const GetCourseDetailsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "RequestFormInfo" },
+      name: { kind: "Name", value: "RequestFormData" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "enseignement" },
@@ -18691,7 +18689,7 @@ export const GetCourseDetailsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "RequestCardInfo" },
+      name: { kind: "Name", value: "RequestDetails" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "demande" },
@@ -18764,7 +18762,7 @@ export const GetCourseDetailsDocument = {
         selections: [
           {
             kind: "FragmentSpread",
-            name: { kind: "Name", value: "RequestFormInfo" },
+            name: { kind: "Name", value: "RequestFormData" },
           },
           {
             kind: "Field",
@@ -18826,7 +18824,7 @@ export const GetCourseDetailsDocument = {
                 { kind: "Field", name: { kind: "Name", value: "type" } },
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "RequestCardInfo" },
+                  name: { kind: "Name", value: "RequestDetails" },
                 },
               ],
             },
@@ -18836,7 +18834,7 @@ export const GetCourseDetailsDocument = {
     },
     {
       kind: "FragmentDefinition",
-      name: { kind: "Name", value: "PriorityChipInfo" },
+      name: { kind: "Name", value: "PriorityDetails" },
       typeCondition: {
         kind: "NamedType",
         name: { kind: "Name", value: "priorite" },
@@ -18947,7 +18945,7 @@ export const GetCourseDetailsDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 {
                   kind: "FragmentSpread",
-                  name: { kind: "Name", value: "PriorityChipInfo" },
+                  name: { kind: "Name", value: "PriorityDetails" },
                 },
               ],
             },
@@ -19068,7 +19066,7 @@ export const GetCourseDetailsDocument = {
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       {
                         kind: "FragmentSpread",
-                        name: { kind: "Name", value: "RequestCardInfo" },
+                        name: { kind: "Name", value: "RequestDetails" },
                       },
                     ],
                   },
@@ -19191,7 +19189,7 @@ export const GetCourseDetailsDocument = {
                             },
                             {
                               kind: "FragmentSpread",
-                              name: { kind: "Name", value: "RequestCardInfo" },
+                              name: { kind: "Name", value: "RequestDetails" },
                             },
                           ],
                         },
@@ -19319,7 +19317,7 @@ export const GetCourseDetailsDocument = {
                                     kind: "FragmentSpread",
                                     name: {
                                       kind: "Name",
-                                      value: "RequestCardInfo",
+                                      value: "RequestDetails",
                                     },
                                   },
                                 ],

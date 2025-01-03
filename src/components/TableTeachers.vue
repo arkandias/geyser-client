@@ -84,10 +84,11 @@ const teachers = computed(() =>
   ),
 );
 
+// Row selection
 const { getValue: selectedTeacher, toggleValue: toggleTeacher } =
   useQueryParam("uid");
 const selectedRow = computed(() => [{ uid: selectedTeacher.value }]);
-const selectTeacher = async (_: Event, row: TeacherRowFragment) => {
+const onRowClick = async (_: Event, row: TeacherRowFragment) => {
   await toggleTeacher(row.uid);
 };
 
@@ -264,7 +265,7 @@ const stickyHeader = ref(false);
     dense
     virtual-scroll
     :class="{ 'sticky-header-table': stickyHeader }"
-    @row-click="selectTeacher"
+    @row-click="onRowClick"
   >
     <template #top>
       <div class="q-table__title">Intervenants</div>

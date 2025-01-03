@@ -20,7 +20,7 @@ graphql(`
       ]
     ) {
       id
-      ...PriorityChipInfo
+      ...PriorityDetails
     }
   }
 `);

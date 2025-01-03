@@ -20,7 +20,13 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TableCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableCourses.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TableTeachers.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableTeachers.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/PriorityChip.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/PriorityChip.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/RequestCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestCard.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseArchives.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseArchives.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CoursePriorities.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CoursePriorities.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gql/gql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/gql.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gql/graphql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/graphql.ts" afterDir="false" />
     </list>
@@ -335,15 +341,7 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="109382000" />
-    </task>
-    <task id="LOCAL-00314" summary="WIP">
-      <option name="closed" value="true" />
-      <created>1734961944566</created>
-      <option name="number" value="00314" />
-      <option name="presentableId" value="LOCAL-00314" />
-      <option name="project" value="LOCAL" />
-      <updated>1734961944568</updated>
+      <workItem from="1735468210242" duration="111459000" />
     </task>
     <task id="LOCAL-00315" summary="WIP">
       <option name="closed" value="true" />
@@ -729,7 +727,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735899973134</updated>
     </task>
-    <option name="localTasksCounter" value="363" />
+    <task id="LOCAL-00363" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735900212949</created>
+      <option name="number" value="00363" />
+      <option name="presentableId" value="LOCAL-00363" />
+      <option name="project" value="LOCAL" />
+      <updated>1735900212949</updated>
+    </task>
+    <option name="localTasksCounter" value="364" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

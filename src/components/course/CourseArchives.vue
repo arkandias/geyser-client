@@ -24,7 +24,7 @@ graphql(`
         ]
       ) {
         id
-        ...RequestCardInfo
+        ...RequestDetails
       }
       parent {
         year: annee
@@ -36,7 +36,7 @@ graphql(`
           ]
         ) {
           id
-          ...RequestCardInfo
+          ...RequestDetails
         }
         parent {
           year: annee
@@ -48,7 +48,7 @@ graphql(`
             ]
           ) {
             id
-            ...RequestCardInfo
+            ...RequestDetails
           }
         }
       }
