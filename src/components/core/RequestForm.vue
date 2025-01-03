@@ -60,9 +60,9 @@ const requestType = ref<string | null>(null);
 const requestTypeInit = computed(() => {
   switch (currentPhase.value) {
     case PHASES.ASSIGNMENTS:
-      return REQUEST_TYPES.PRIMARY;
-    default:
       return REQUEST_TYPES.ASSIGNMENT;
+    default:
+      return REQUEST_TYPES.PRIMARY;
   }
 });
 const requestTypeOptions = computed(() => [
