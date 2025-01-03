@@ -22,9 +22,9 @@ graphql(`
     }
   }
 
-  mutation InsertService($uid: String!, $year: Int!, $hours: Float!) {
+  mutation InsertService($year: Int!, $uid: String!, $hours: Float!) {
     service: insert_service_one(
-      object: { uid: $uid, annee: $year, heures_eqtd: $hours }
+      object: { annee: $year, uid: $uid, heures_eqtd: $hours }
     ) {
       id
     }
@@ -55,8 +55,8 @@ const submitServiceCreation = async (): Promise<void> => {
     return;
   }
   const result = await insertService.executeMutation({
-    uid: data.value.uid,
     year,
+    uid: data.value.uid,
     hours: baseServiceHours.value,
   });
   if (result.data?.service && !result.error) {

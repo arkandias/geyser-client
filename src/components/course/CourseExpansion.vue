@@ -32,11 +32,13 @@ graphql(`
 const data = computed(() =>
   useFragment(CourseExpansionFragmentDoc, dataFragment),
 );
+
 const label = computed(() =>
   data.value
     ? data.value.name
     : "Sélectionnez un enseignement dans la liste ci-dessus",
 );
+
 const caption = computed(() =>
   data.value
     ? `${data.value.program.degree.name} — ${data.value.program.name} — ` +

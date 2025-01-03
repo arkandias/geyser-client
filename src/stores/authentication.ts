@@ -1,7 +1,7 @@
 import { reactive, readonly, ref } from "vue";
 
 import type { Role } from "@/config/types/roles.ts";
-import type { UserName } from "@/types/user.ts";
+import type { UserName } from "@/helpers/user.ts";
 
 type Profile = UserName & {
   uid: string;

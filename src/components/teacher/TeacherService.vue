@@ -57,9 +57,9 @@ graphql(`
     }
   }
 
-  mutation UpsertService($uid: String!, $year: Int!, $hours: Float!) {
+  mutation UpsertService($year: Int!, $uid: String!, $hours: Float!) {
     service: insert_service_one(
-      object: { uid: $uid, annee: $year, heures_eqtd: $hours }
+      object: { annee: $year, uid: $uid, heures_eqtd: $hours }
       on_conflict: {
         constraint: service_annee_uid_key
         update_columns: [heures_eqtd]
@@ -122,8 +122,8 @@ const submitBaseServiceForm = async (): Promise<void> => {
     return;
   }
   const result = await upsertService.executeMutation({
-    uid: data.value.uid,
     year: data.value.year,
+    uid: data.value.uid,
     hours: baseServiceHours.value,
   });
   if (result.data?.service && !result.error) {

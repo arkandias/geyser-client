@@ -131,10 +131,10 @@ const getRequest = async (
   }
   if (!result.data.course.yearByYear.services[0]) {
     console.error(
-      `No service associated to this request. You must create a service for user ${variables.uid} and year ${result.data.course.year.toString()} first`,
+      `No service associated to this request. First, you must create a service for the year ${result.data.course.year.toString()} for the user ${variables.uid}`,
     );
     notify(NotifyType.ERROR, {
-      message: `Pas de service trouvé pour ${variables.uid} pour l'année ${result.data.course.year.toString()}`,
+      message: `Pas de service trouvé pour l'année ${result.data.course.year.toString()} pour l'intervenant ${variables.uid}`,
       caption: `Veuillez d'abord créer un service sur la page enseignant`,
     });
     return null;
