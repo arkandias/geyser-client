@@ -9408,39 +9408,12 @@ export type CourseDetailsFragment = ({
   };
 }) & { " $fragmentName"?: "CourseDetailsFragment" };
 
-export type GetTeacherDetailsQueryVariables = Exact<{
-  year: Scalars["Int"]["input"];
-  uid: Scalars["String"]["input"];
-}>;
-
-export type GetTeacherDetailsQuery = {
-  __typename?: "query_root";
-  teacher:
-    | ({
-        __typename?: "intervenant";
-        services: Array<
-          { __typename?: "service" } & {
-            " $fragmentRefs"?: {
-              TeacherServiceFragment: TeacherServiceFragment;
-            };
-          }
-        >;
-        messages: Array<
-          { __typename?: "message" } & {
-            " $fragmentRefs"?: {
-              TeacherMessageFragment: TeacherMessageFragment;
-            };
-          }
-        >;
-      } & {
-        " $fragmentRefs"?: {
-          TeacherTitleFragment: TeacherTitleFragment;
-          TeacherRequestsFragment: TeacherRequestsFragment;
-          TeacherNoServiceFragment: TeacherNoServiceFragment;
-        };
-      })
-    | null;
-};
+export type TeacherDetailsFragment = ({ __typename?: "intervenant" } & {
+  " $fragmentRefs"?: {
+    TeacherTitleFragment: TeacherTitleFragment;
+    TeacherNoServiceFragment: TeacherNoServiceFragment;
+  };
+}) & { " $fragmentName"?: "TeacherDetailsFragment" };
 
 export type CourseRowFragment = {
   __typename?: "enseignement";
@@ -9823,8 +9796,8 @@ export type TeacherNoServiceFragment = {
 } & { " $fragmentName"?: "TeacherNoServiceFragment" };
 
 export type InsertServiceMutationVariables = Exact<{
-  uid: Scalars["String"]["input"];
   year: Scalars["Int"]["input"];
+  uid: Scalars["String"]["input"];
   hours: Scalars["Float"]["input"];
 }>;
 
@@ -9834,40 +9807,15 @@ export type InsertServiceMutation = {
 };
 
 export type TeacherRequestsFragment = {
-  __typename?: "intervenant";
-  assigned: {
-    __typename?: "demande_aggregate";
-    aggregate: {
-      __typename?: "demande_aggregate_fields";
-      sum: {
-        __typename?: "demande_sum_fields";
-        hours: number | null;
-        weightedHours: number | null;
-      } | null;
+  __typename?: "demande_aggregate";
+  aggregate: {
+    __typename?: "demande_aggregate_fields";
+    sum: {
+      __typename?: "demande_sum_fields";
+      hours: number | null;
+      weightedHours: number | null;
     } | null;
-  };
-  primary: {
-    __typename?: "demande_aggregate";
-    aggregate: {
-      __typename?: "demande_aggregate_fields";
-      sum: {
-        __typename?: "demande_sum_fields";
-        hours: number | null;
-        weightedHours: number | null;
-      } | null;
-    } | null;
-  };
-  secondary: {
-    __typename?: "demande_aggregate";
-    aggregate: {
-      __typename?: "demande_aggregate_fields";
-      sum: {
-        __typename?: "demande_sum_fields";
-        hours: number | null;
-        weightedHours: number | null;
-      } | null;
-    } | null;
-  };
+  } | null;
 } & { " $fragmentName"?: "TeacherRequestsFragment" };
 
 export type GetModificationTypesQueryVariables = Exact<{
@@ -9919,8 +9867,8 @@ export type TeacherServiceFragment = {
 } & { " $fragmentName"?: "TeacherServiceFragment" };
 
 export type UpsertServiceMutationVariables = Exact<{
-  uid: Scalars["String"]["input"];
   year: Scalars["Int"]["input"];
+  uid: Scalars["String"]["input"];
   hours: Scalars["Float"]["input"];
 }>;
 
@@ -10085,6 +10033,51 @@ export type GetTeacherRequestsQuery = {
           }
         >;
       } & { " $fragmentRefs"?: { TeacherNameFragment: TeacherNameFragment } })
+    | null;
+};
+
+export type GetTeacherDetailsQueryVariables = Exact<{
+  year: Scalars["Int"]["input"];
+  uid: Scalars["String"]["input"];
+}>;
+
+export type GetTeacherDetailsQuery = {
+  __typename?: "query_root";
+  teacher:
+    | ({
+        __typename?: "intervenant";
+        services: Array<
+          { __typename?: "service" } & {
+            " $fragmentRefs"?: {
+              TeacherServiceFragment: TeacherServiceFragment;
+            };
+          }
+        >;
+        assigned: { __typename?: "demande_aggregate" } & {
+          " $fragmentRefs"?: {
+            TeacherRequestsFragment: TeacherRequestsFragment;
+          };
+        };
+        primary: { __typename?: "demande_aggregate" } & {
+          " $fragmentRefs"?: {
+            TeacherRequestsFragment: TeacherRequestsFragment;
+          };
+        };
+        secondary: { __typename?: "demande_aggregate" } & {
+          " $fragmentRefs"?: {
+            TeacherRequestsFragment: TeacherRequestsFragment;
+          };
+        };
+        messages: Array<
+          { __typename?: "message" } & {
+            " $fragmentRefs"?: {
+              TeacherMessageFragment: TeacherMessageFragment;
+            };
+          }
+        >;
+      } & {
+        " $fragmentRefs"?: { TeacherDetailsFragment: TeacherDetailsFragment };
+      })
     | null;
 };
 
@@ -12947,6 +12940,170 @@ export const CourseDetailsFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<CourseDetailsFragment, unknown>;
+export const TeacherTitleFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TeacherTitle" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "position" },
+            name: { kind: "Name", value: "fonctionByFonction" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TeacherTitleFragment, unknown>;
+export const TeacherNoServiceFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TeacherNoService" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "position" },
+            name: { kind: "Name", value: "fonctionByFonction" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "baseServiceHours" },
+                  name: { kind: "Name", value: "heures_eqtd_service_base" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TeacherNoServiceFragment, unknown>;
+export const TeacherDetailsFragmentDoc = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TeacherDetails" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "FragmentSpread",
+            name: { kind: "Name", value: "TeacherTitle" },
+          },
+          {
+            kind: "FragmentSpread",
+            name: { kind: "Name", value: "TeacherNoService" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TeacherTitle" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "position" },
+            name: { kind: "Name", value: "fonctionByFonction" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TeacherNoService" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "position" },
+            name: { kind: "Name", value: "fonctionByFonction" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "baseServiceHours" },
+                  name: { kind: "Name", value: "heures_eqtd_service_base" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TeacherDetailsFragment, unknown>;
 export const CourseRowFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -13829,40 +13986,6 @@ export const TeacherMessageFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<TeacherMessageFragment, unknown>;
-export const TeacherNoServiceFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TeacherNoService" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "position" },
-            name: { kind: "Name", value: "fonctionByFonction" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "baseServiceHours" },
-                  name: { kind: "Name", value: "heures_eqtd_service_base" },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<TeacherNoServiceFragment, unknown>;
 export const TeacherRequestsFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -13871,247 +13994,32 @@ export const TeacherRequestsFragmentDoc = {
       name: { kind: "Name", value: "TeacherRequests" },
       typeCondition: {
         kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
+        name: { kind: "Name", value: "demande_aggregate" },
       },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "assigned" },
-            name: { kind: "Name", value: "demandes_aggregate" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "_and" },
-                      value: {
-                        kind: "ListValue",
-                        values: [
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "type" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "_eq" },
-                                      value: {
-                                        kind: "StringValue",
-                                        value: "attribution",
-                                        block: false,
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
+            name: { kind: "Name", value: "aggregate" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "aggregate" },
+                  name: { kind: "Name", value: "sum" },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "sum" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures" },
-                            },
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "weightedHours" },
-                              name: { kind: "Name", value: "heures_eqtd" },
-                            },
-                          ],
-                        },
+                        alias: { kind: "Name", value: "hours" },
+                        name: { kind: "Name", value: "heures" },
                       },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "primary" },
-            name: { kind: "Name", value: "demandes_aggregate" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "_and" },
-                      value: {
-                        kind: "ListValue",
-                        values: [
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "type" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "_eq" },
-                                      value: {
-                                        kind: "StringValue",
-                                        value: "principale",
-                                        block: false,
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "sum" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures" },
-                            },
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "weightedHours" },
-                              name: { kind: "Name", value: "heures_eqtd" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "secondary" },
-            name: { kind: "Name", value: "demandes_aggregate" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "_and" },
-                      value: {
-                        kind: "ListValue",
-                        values: [
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "type" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "_eq" },
-                                      value: {
-                                        kind: "StringValue",
-                                        value: "secondaire",
-                                        block: false,
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "sum" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures" },
-                            },
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "weightedHours" },
-                              name: { kind: "Name", value: "heures_eqtd" },
-                            },
-                          ],
-                        },
+                        alias: { kind: "Name", value: "weightedHours" },
+                        name: { kind: "Name", value: "heures_eqtd" },
                       },
                     ],
                   },
@@ -14241,46 +14149,6 @@ export const TeacherServiceFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<TeacherServiceFragment, unknown>;
-export const TeacherTitleFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TeacherTitle" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "firstname" },
-            name: { kind: "Name", value: "prenom" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "lastname" },
-            name: { kind: "Name", value: "nom" },
-          },
-          { kind: "Field", name: { kind: "Name", value: "alias" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "position" },
-            name: { kind: "Name", value: "fonctionByFonction" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "label" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<TeacherTitleFragment, unknown>;
 export const GetYearsDocument = {
   kind: "Document",
   definitions: [
@@ -14453,619 +14321,6 @@ export const GetUserProfileDocument = {
     },
   ],
 } as unknown as DocumentNode<GetUserProfileQuery, GetUserProfileQueryVariables>;
-export const GetTeacherDetailsDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "GetTeacherDetails" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "year" } },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "teacher" },
-            name: { kind: "Name", value: "intervenant_by_pk" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "uid" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "uid" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TeacherTitle" },
-                },
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TeacherRequests" },
-                },
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "TeacherNoService" },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "services" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "where" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "annee" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "year" },
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "limit" },
-                      value: { kind: "IntValue", value: "1" },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "TeacherService" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "messages" },
-                  arguments: [
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "where" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "annee" },
-                            value: {
-                              kind: "ObjectValue",
-                              fields: [
-                                {
-                                  kind: "ObjectField",
-                                  name: { kind: "Name", value: "_eq" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "year" },
-                                  },
-                                },
-                              ],
-                            },
-                          },
-                        ],
-                      },
-                    },
-                    {
-                      kind: "Argument",
-                      name: { kind: "Name", value: "limit" },
-                      value: { kind: "IntValue", value: "1" },
-                    },
-                  ],
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "TeacherMessage" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TeacherTitle" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "firstname" },
-            name: { kind: "Name", value: "prenom" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "lastname" },
-            name: { kind: "Name", value: "nom" },
-          },
-          { kind: "Field", name: { kind: "Name", value: "alias" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "position" },
-            name: { kind: "Name", value: "fonctionByFonction" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "label" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TeacherRequests" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "assigned" },
-            name: { kind: "Name", value: "demandes_aggregate" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "_and" },
-                      value: {
-                        kind: "ListValue",
-                        values: [
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "type" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "_eq" },
-                                      value: {
-                                        kind: "StringValue",
-                                        value: "attribution",
-                                        block: false,
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "sum" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures" },
-                            },
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "weightedHours" },
-                              name: { kind: "Name", value: "heures_eqtd" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "primary" },
-            name: { kind: "Name", value: "demandes_aggregate" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "_and" },
-                      value: {
-                        kind: "ListValue",
-                        values: [
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "type" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "_eq" },
-                                      value: {
-                                        kind: "StringValue",
-                                        value: "principale",
-                                        block: false,
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "sum" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures" },
-                            },
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "weightedHours" },
-                              name: { kind: "Name", value: "heures_eqtd" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "secondary" },
-            name: { kind: "Name", value: "demandes_aggregate" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "_and" },
-                      value: {
-                        kind: "ListValue",
-                        values: [
-                          {
-                            kind: "ObjectValue",
-                            fields: [
-                              {
-                                kind: "ObjectField",
-                                name: { kind: "Name", value: "type" },
-                                value: {
-                                  kind: "ObjectValue",
-                                  fields: [
-                                    {
-                                      kind: "ObjectField",
-                                      name: { kind: "Name", value: "_eq" },
-                                      value: {
-                                        kind: "StringValue",
-                                        value: "secondaire",
-                                        block: false,
-                                      },
-                                    },
-                                  ],
-                                },
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "sum" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures" },
-                            },
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "weightedHours" },
-                              name: { kind: "Name", value: "heures_eqtd" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TeacherNoService" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "position" },
-            name: { kind: "Name", value: "fonctionByFonction" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "baseServiceHours" },
-                  name: { kind: "Name", value: "heures_eqtd_service_base" },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TeacherService" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "service" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "teacher" },
-            name: { kind: "Name", value: "intervenant" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "position" },
-                  name: { kind: "Name", value: "fonctionByFonction" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "baseServiceHours" },
-                        name: {
-                          kind: "Name",
-                          value: "heures_eqtd_service_base",
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "year" },
-            name: { kind: "Name", value: "annee" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "base" },
-            name: { kind: "Name", value: "heures_eqtd" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "totalModifications" },
-            name: { kind: "Name", value: "modifications_aggregate" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "sum" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures_eqtd" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "modifications" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "modificationType" },
-                  name: { kind: "Name", value: "typeByType" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "label" } },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "hours" },
-                  name: { kind: "Name", value: "heures_eqtd" },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "TeacherMessage" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "message" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "body" },
-            name: { kind: "Name", value: "contenu" },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetTeacherDetailsQuery,
-  GetTeacherDetailsQueryVariables
->;
 export const GetActiveTeachersDocument = {
   kind: "Document",
   definitions: [
@@ -15777,6 +15032,14 @@ export const InsertServiceDocument = {
       variableDefinitions: [
         {
           kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "year" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
           variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
           type: {
             kind: "NonNullType",
@@ -15784,14 +15047,6 @@ export const InsertServiceDocument = {
               kind: "NamedType",
               name: { kind: "Name", value: "String" },
             },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "year" } },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
         {
@@ -15822,18 +15077,18 @@ export const InsertServiceDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "uid" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "uid" },
-                      },
-                    },
-                    {
-                      kind: "ObjectField",
                       name: { kind: "Name", value: "annee" },
                       value: {
                         kind: "Variable",
                         name: { kind: "Name", value: "year" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "uid" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "uid" },
                       },
                     },
                     {
@@ -15920,6 +15175,14 @@ export const UpsertServiceDocument = {
       variableDefinitions: [
         {
           kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "year" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
           variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
           type: {
             kind: "NonNullType",
@@ -15927,14 +15190,6 @@ export const UpsertServiceDocument = {
               kind: "NamedType",
               name: { kind: "Name", value: "String" },
             },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "year" } },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
         {
@@ -15965,18 +15220,18 @@ export const UpsertServiceDocument = {
                   fields: [
                     {
                       kind: "ObjectField",
-                      name: { kind: "Name", value: "uid" },
-                      value: {
-                        kind: "Variable",
-                        name: { kind: "Name", value: "uid" },
-                      },
-                    },
-                    {
-                      kind: "ObjectField",
                       name: { kind: "Name", value: "annee" },
                       value: {
                         kind: "Variable",
                         name: { kind: "Name", value: "year" },
+                      },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "uid" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "uid" },
                       },
                     },
                     {
@@ -19575,4 +18830,724 @@ export const GetTeacherRequestsDocument = {
 } as unknown as DocumentNode<
   GetTeacherRequestsQuery,
   GetTeacherRequestsQueryVariables
+>;
+export const GetTeacherDetailsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetTeacherDetails" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "year" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "uid" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant_by_pk" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "uid" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "uid" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "FragmentSpread",
+                  name: { kind: "Name", value: "TeacherDetails" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "services" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "annee" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "year" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "TeacherService" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "assigned" },
+                  name: { kind: "Name", value: "demandes_aggregate" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_and" },
+                            value: {
+                              kind: "ListValue",
+                              values: [
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: {
+                                        kind: "Name",
+                                        value: "enseignement",
+                                      },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "annee",
+                                            },
+                                            value: {
+                                              kind: "ObjectValue",
+                                              fields: [
+                                                {
+                                                  kind: "ObjectField",
+                                                  name: {
+                                                    kind: "Name",
+                                                    value: "_eq",
+                                                  },
+                                                  value: {
+                                                    kind: "Variable",
+                                                    name: {
+                                                      kind: "Name",
+                                                      value: "year",
+                                                    },
+                                                  },
+                                                },
+                                              ],
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "type" },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "_eq",
+                                            },
+                                            value: {
+                                              kind: "StringValue",
+                                              value: "attribution",
+                                              block: false,
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "TeacherRequests" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "primary" },
+                  name: { kind: "Name", value: "demandes_aggregate" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_and" },
+                            value: {
+                              kind: "ListValue",
+                              values: [
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: {
+                                        kind: "Name",
+                                        value: "enseignement",
+                                      },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "annee",
+                                            },
+                                            value: {
+                                              kind: "ObjectValue",
+                                              fields: [
+                                                {
+                                                  kind: "ObjectField",
+                                                  name: {
+                                                    kind: "Name",
+                                                    value: "_eq",
+                                                  },
+                                                  value: {
+                                                    kind: "Variable",
+                                                    name: {
+                                                      kind: "Name",
+                                                      value: "year",
+                                                    },
+                                                  },
+                                                },
+                                              ],
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "type" },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "_eq",
+                                            },
+                                            value: {
+                                              kind: "StringValue",
+                                              value: "attribution",
+                                              block: false,
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "TeacherRequests" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "secondary" },
+                  name: { kind: "Name", value: "demandes_aggregate" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "_and" },
+                            value: {
+                              kind: "ListValue",
+                              values: [
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: {
+                                        kind: "Name",
+                                        value: "enseignement",
+                                      },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "annee",
+                                            },
+                                            value: {
+                                              kind: "ObjectValue",
+                                              fields: [
+                                                {
+                                                  kind: "ObjectField",
+                                                  name: {
+                                                    kind: "Name",
+                                                    value: "_eq",
+                                                  },
+                                                  value: {
+                                                    kind: "Variable",
+                                                    name: {
+                                                      kind: "Name",
+                                                      value: "year",
+                                                    },
+                                                  },
+                                                },
+                                              ],
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                                {
+                                  kind: "ObjectValue",
+                                  fields: [
+                                    {
+                                      kind: "ObjectField",
+                                      name: { kind: "Name", value: "type" },
+                                      value: {
+                                        kind: "ObjectValue",
+                                        fields: [
+                                          {
+                                            kind: "ObjectField",
+                                            name: {
+                                              kind: "Name",
+                                              value: "_eq",
+                                            },
+                                            value: {
+                                              kind: "StringValue",
+                                              value: "attribution",
+                                              block: false,
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "TeacherRequests" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "messages" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "where" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "annee" },
+                            value: {
+                              kind: "ObjectValue",
+                              fields: [
+                                {
+                                  kind: "ObjectField",
+                                  name: { kind: "Name", value: "_eq" },
+                                  value: {
+                                    kind: "Variable",
+                                    name: { kind: "Name", value: "year" },
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "limit" },
+                      value: { kind: "IntValue", value: "1" },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "TeacherMessage" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TeacherTitle" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "firstname" },
+            name: { kind: "Name", value: "prenom" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "lastname" },
+            name: { kind: "Name", value: "nom" },
+          },
+          { kind: "Field", name: { kind: "Name", value: "alias" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "position" },
+            name: { kind: "Name", value: "fonctionByFonction" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "label" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TeacherNoService" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "position" },
+            name: { kind: "Name", value: "fonctionByFonction" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "baseServiceHours" },
+                  name: { kind: "Name", value: "heures_eqtd_service_base" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TeacherDetails" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "intervenant" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "FragmentSpread",
+            name: { kind: "Name", value: "TeacherTitle" },
+          },
+          {
+            kind: "FragmentSpread",
+            name: { kind: "Name", value: "TeacherNoService" },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TeacherService" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "service" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          { kind: "Field", name: { kind: "Name", value: "id" } },
+          { kind: "Field", name: { kind: "Name", value: "uid" } },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "position" },
+                  name: { kind: "Name", value: "fonctionByFonction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "baseServiceHours" },
+                        name: {
+                          kind: "Name",
+                          value: "heures_eqtd_service_base",
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "year" },
+            name: { kind: "Name", value: "annee" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "base" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalModifications" },
+            name: { kind: "Name", value: "modifications_aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "aggregate" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "sum" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              alias: { kind: "Name", value: "hours" },
+                              name: { kind: "Name", value: "heures_eqtd" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "modifications" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "modificationType" },
+                  name: { kind: "Name", value: "typeByType" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "label" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "hours" },
+                  name: { kind: "Name", value: "heures_eqtd" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TeacherRequests" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "demande_aggregate" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "aggregate" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "sum" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "hours" },
+                        name: { kind: "Name", value: "heures" },
+                      },
+                      {
+                        kind: "Field",
+                        alias: { kind: "Name", value: "weightedHours" },
+                        name: { kind: "Name", value: "heures_eqtd" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TeacherMessage" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "message" },
+      },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "body" },
+            name: { kind: "Name", value: "contenu" },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetTeacherDetailsQuery,
+  GetTeacherDetailsQueryVariables
 >;

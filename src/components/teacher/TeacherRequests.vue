@@ -11,39 +11,19 @@ import DetailsSection from "@/components/core/DetailsSection.vue";
 import ServiceTable from "@/components/core/ServiceTable.vue";
 
 const { dataFragment } = defineProps<{
-  dataFragment: FragmentType<typeof TeacherRequestsFragmentDoc>;
+  dataFragment: {
+    assigned: FragmentType<typeof TeacherRequestsFragmentDoc>;
+    primary: FragmentType<typeof TeacherRequestsFragmentDoc>;
+    secondary: FragmentType<typeof TeacherRequestsFragmentDoc>;
+  };
 }>();
 
 graphql(`
-  fragment TeacherRequests on intervenant {
-    assigned: demandes_aggregate(
-      where: { _and: [{ type: { _eq: "attribution" } }] }
-    ) {
-      aggregate {
-        sum {
-          hours: heures
-          weightedHours: heures_eqtd
-        }
-      }
-    }
-    primary: demandes_aggregate(
-      where: { _and: [{ type: { _eq: "principale" } }] }
-    ) {
-      aggregate {
-        sum {
-          hours: heures
-          weightedHours: heures_eqtd
-        }
-      }
-    }
-    secondary: demandes_aggregate(
-      where: { _and: [{ type: { _eq: "secondaire" } }] }
-    ) {
-      aggregate {
-        sum {
-          hours: heures
-          weightedHours: heures_eqtd
-        }
+  fragment TeacherRequests on demande_aggregate {
+    aggregate {
+      sum {
+        hours: heures
+        weightedHours: heures_eqtd
       }
     }
   }
@@ -51,9 +31,11 @@ graphql(`
 
 const perm = usePermissions();
 
-const data = computed(() =>
-  useFragment(TeacherRequestsFragmentDoc, dataFragment),
-);
+const data = computed(() => ({
+  assigned: useFragment(TeacherRequestsFragmentDoc, dataFragment.assigned),
+  primary: useFragment(TeacherRequestsFragmentDoc, dataFragment.primary),
+  secondary: useFragment(TeacherRequestsFragmentDoc, dataFragment.secondary),
+}));
 </script>
 
 <template>
