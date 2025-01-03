@@ -3,7 +3,7 @@ import { computed, ref, watch } from "vue";
 
 import { useRefreshData } from "@/composables/refresh-data.ts";
 import { ROLE_OPTIONS, type Role } from "@/config/types/roles.ts";
-import { formatUser } from "@/helpers/user.ts";
+import { formatUser } from "@/helpers/format.ts";
 import { useAuthenticationStore } from "@/stores/authentication.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";

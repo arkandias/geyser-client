@@ -1,5 +1,3 @@
-import { nf } from "@/helpers/numbers.ts";
-
 type TotalHours = {
   aggregate: {
     sum: {
@@ -25,5 +23,3 @@ export const modifiedService = (service?: {
   base: number;
   totalModifications: TotalHours;
 }) => (service?.base ?? 0) - totalH(service?.totalModifications);
-
-export const formatWH = (hours: number) => nf.format(hours) + " htd";

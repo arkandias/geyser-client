@@ -20,7 +20,20 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TableCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableCourses.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TableTeachers.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableTeachers.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/PriorityChip.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/PriorityChip.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/RequestCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestCard.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseCoordinators.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseCoordinators.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/MenuUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuUser.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherRequests.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherService.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherService.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherTitle.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherTitle.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/hours.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/hours.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/numbers.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/user.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stores/authentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/authentication.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -333,15 +346,7 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="121942000" />
-    </task>
-    <task id="LOCAL-00320" summary="WIP">
-      <option name="closed" value="true" />
-      <created>1735047344603</created>
-      <option name="number" value="00320" />
-      <option name="presentableId" value="LOCAL-00320" />
-      <option name="project" value="LOCAL" />
-      <updated>1735047344604</updated>
+      <workItem from="1735468210242" duration="124425000" />
     </task>
     <task id="LOCAL-00321" summary="WIP">
       <option name="closed" value="true" />
@@ -727,7 +732,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735923337765</updated>
     </task>
-    <option name="localTasksCounter" value="369" />
+    <task id="LOCAL-00369" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735924979264</created>
+      <option name="number" value="00369" />
+      <option name="presentableId" value="LOCAL-00369" />
+      <option name="project" value="LOCAL" />
+      <updated>1735924979264</updated>
+    </task>
+    <option name="localTasksCounter" value="370" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -8,8 +8,7 @@ import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestCardDataFragmentDoc } from "@/gql/graphql.ts";
 import { priorityColor } from "@/helpers/colors.ts";
-import { nf } from "@/helpers/numbers.ts";
-import { formatUser } from "@/helpers/user.ts";
+import { formatUser, nf } from "@/helpers/format.ts";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof RequestCardDataFragmentDoc>;

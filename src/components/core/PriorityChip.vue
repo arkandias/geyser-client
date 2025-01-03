@@ -4,7 +4,7 @@ import { computed } from "vue";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { PriorityChipDataFragmentDoc } from "@/gql/graphql.ts";
 import { priorityColor } from "@/helpers/colors.ts";
-import { formatUser } from "@/helpers/user.ts";
+import { formatUser } from "@/helpers/format.ts";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof PriorityChipDataFragmentDoc>;

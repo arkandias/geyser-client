@@ -10,9 +10,9 @@ import {
   type TeacherRowFragment,
   TeacherRowFragmentDoc,
 } from "@/gql/graphql.ts";
+import { nf } from "@/helpers/format.ts";
 import { modifiedService, totalWH } from "@/helpers/hours.ts";
 import { normalizeForSearch } from "@/helpers/misc.ts";
-import { nf } from "@/helpers/numbers.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 
 const { teacherRowFragments } = defineProps<{

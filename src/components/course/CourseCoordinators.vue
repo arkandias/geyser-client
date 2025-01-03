@@ -3,7 +3,7 @@ import { computed } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CourseCoordinatorsFragmentDoc } from "@/gql/graphql.ts";
-import { type UserName, formatUser } from "@/helpers/user.ts";
+import { formatCoordinators } from "@/helpers/format.ts";
 
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 
@@ -62,16 +62,6 @@ graphql(`
 const data = computed(() =>
   useFragment(CourseCoordinatorsFragmentDoc, dataFragment),
 );
-
-const formatCoordinators = (
-  coordinators: { username: UserName; comment?: string | null }[],
-): string =>
-  coordinators
-    .map(
-      ({ username, comment }) =>
-        formatUser(username) + (comment ? ` (${comment})` : ""),
-    )
-    .join(", ");
 </script>
 
 <template>
