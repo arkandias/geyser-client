@@ -9884,6 +9884,40 @@ export type GetModificationTypesQuery = {
   }>;
 };
 
+export type TeacherServiceFragment = {
+  __typename?: "service";
+  id: number;
+  uid: string;
+  year: number;
+  base: number;
+  teacher: {
+    __typename?: "intervenant";
+    position: {
+      __typename?: "fonction";
+      baseServiceHours: number | null;
+    } | null;
+  };
+  totalModifications: {
+    __typename?: "modification_service_aggregate";
+    aggregate: {
+      __typename?: "modification_service_aggregate_fields";
+      sum: {
+        __typename?: "modification_service_sum_fields";
+        hours: number | null;
+      } | null;
+    } | null;
+  };
+  modifications: Array<{
+    __typename?: "modification_service";
+    id: number;
+    hours: number;
+    modificationType: {
+      __typename?: "type_modification_service";
+      label: string;
+    };
+  }>;
+} & { " $fragmentName"?: "TeacherServiceFragment" };
+
 export type UpsertServiceMutationVariables = Exact<{
   uid: Scalars["String"]["input"];
   year: Scalars["Int"]["input"];
@@ -9920,40 +9954,6 @@ export type DeleteModificationMutation = {
     id: number;
   } | null;
 };
-
-export type TeacherServiceFragment = {
-  __typename?: "service";
-  id: number;
-  uid: string;
-  year: number;
-  base: number;
-  teacher: {
-    __typename?: "intervenant";
-    position: {
-      __typename?: "fonction";
-      baseServiceHours: number | null;
-    } | null;
-  };
-  totalModifications: {
-    __typename?: "modification_service_aggregate";
-    aggregate: {
-      __typename?: "modification_service_aggregate_fields";
-      sum: {
-        __typename?: "modification_service_sum_fields";
-        hours: number | null;
-      } | null;
-    } | null;
-  };
-  modifications: Array<{
-    __typename?: "modification_service";
-    id: number;
-    hours: number;
-    modificationType: {
-      __typename?: "type_modification_service";
-      label: string;
-    };
-  }>;
-} & { " $fragmentName"?: "TeacherServiceFragment" };
 
 export type TeacherTitleFragment = {
   __typename?: "intervenant";

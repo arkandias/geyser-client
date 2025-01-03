@@ -53,22 +53,22 @@ graphql(`
   }
 `);
 
-const updateYear = useMutation(SetCurrentYearDocument);
-const updatePhase = useMutation(SetCurrentPhaseDocument);
+const setCurrentYear = useMutation(SetCurrentYearDocument);
+const setCurrentPhase = useMutation(SetCurrentPhaseDocument);
 
-const setCurrentYear = async (year: number | null): Promise<void> => {
+const setCurrentYearHandle = async (year: number | null): Promise<void> => {
   if (year === null) {
     return;
   }
-  await updateYear.executeMutation({
+  await setCurrentYear.executeMutation({
     value: year,
   });
 };
-const setCurrentPhase = async (phase: string | null): Promise<void> => {
+const setCurrentPhaseHandle = async (phase: string | null): Promise<void> => {
   if (phase === null) {
     return;
   }
-  await updatePhase.executeMutation({
+  await setCurrentPhase.executeMutation({
     value: phase,
   });
 };
@@ -90,14 +90,14 @@ const yearOptions = computed(() =>
       <QSeparator />
       <MenuAdminOptions
         :get-value="currentYear"
-        :set-value="setCurrentYear"
+        :set-value="setCurrentYearHandle"
         :options="yearOptions"
         label="Année en cours"
         icon="sym_s_calendar_month"
       />
       <MenuAdminOptions
         :get-value="currentPhase"
-        :set-value="setCurrentPhase"
+        :set-value="setCurrentPhaseHandle"
         :options="[...PHASE_OPTIONS]"
         label="Phase en cours"
         icon="sym_s_schedule"
