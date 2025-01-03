@@ -3,10 +3,10 @@ defineProps<{ fetching?: boolean }>();
 </script>
 
 <template>
-  <QCardSection v-if="fetching" class="text-center">
+  <QCardSection v-if="fetching">
     <p>Chargement des informations sur l'enseignement sélectionné...</p>
   </QCardSection>
-  <QCardSection class="text-body2 text-justify">
+  <QCardSection v-else class="text-body2 text-justify">
     <p>
       Cliquez sur la ligne d'un enseignement pour afficher ici des informations
       détaillées. Si un enseignement et un intervenant sont sélectionnés en même

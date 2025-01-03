@@ -20,9 +20,8 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuYear.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuYear.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/composables/query-param.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/query-param.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseExpansionDefault.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseExpansionDefault.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/DetailsCourseDefault.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/DetailsCourseDefault.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/PageCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageCourses.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -336,15 +335,7 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="103356000" />
-    </task>
-    <task id="LOCAL-00310" summary="WIP">
-      <option name="closed" value="true" />
-      <created>1734805641850</created>
-      <option name="number" value="00310" />
-      <option name="presentableId" value="LOCAL-00310" />
-      <option name="project" value="LOCAL" />
-      <updated>1734805641850</updated>
+      <workItem from="1735468210242" duration="104537000" />
     </task>
     <task id="LOCAL-00311" summary="WIP">
       <option name="closed" value="true" />
@@ -730,7 +721,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735842485728</updated>
     </task>
-    <option name="localTasksCounter" value="359" />
+    <task id="LOCAL-00359" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735861718210</created>
+      <option name="number" value="00359" />
+      <option name="presentableId" value="LOCAL-00359" />
+      <option name="project" value="LOCAL" />
+      <updated>1735861718211</updated>
+    </task>
+    <option name="localTasksCounter" value="360" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

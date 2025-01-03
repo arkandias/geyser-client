@@ -49,7 +49,6 @@ watch(
 <template>
   <CourseExpansion :course-expansion-fragment="details">
     <QCard flat square class="text-body2">
-      <!-- TODO: vérifier que !fetching ne pose pas de problème -->
       <template v-if="details && !fetching">
         <CourseCoordinators :course-coordinators-fragment="details" />
         <CourseDescription :course-description-fragment="details" />

@@ -132,8 +132,8 @@ const fetchingCourseDetails = computed(
 );
 const courseDetails = computed(() =>
   courseDetailsQueryResponse.isPaused.value
-    ? (courseDetailsQueryResponse.data.value?.course ?? null)
-    : null,
+    ? null
+    : (courseDetailsQueryResponse.data.value?.course ?? null),
 );
 
 const teacherDetailsQueryResponse = useQuery({
@@ -154,8 +154,8 @@ const teacherDetailsQueryResponse = useQuery({
 });
 const teacherDetails = computed(() =>
   teacherDetailsQueryResponse.isPaused.value
-    ? (teacherDetailsQueryResponse.data.value?.teacher ?? null)
-    : null,
+    ? null
+    : (teacherDetailsQueryResponse.data.value?.teacher ?? null),
 );
 
 // Toggle the left panel based on user's permissions

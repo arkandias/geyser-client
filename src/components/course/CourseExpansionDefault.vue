@@ -3,7 +3,7 @@ defineProps<{ fetching?: boolean }>();
 </script>
 
 <template>
-  <QCardSection v-if="fetching" class="text-center">
+  <QCardSection v-if="fetching">
     <p>Chargement des informations sur l'enseignement sélectionné...</p>
   </QCardSection>
   <QCardSection v-else class="text-justify">
