@@ -3,19 +3,19 @@ import { computed } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { TotalRequestsFragmentDoc } from "@/gql/graphql.ts";
+import { TeacherRequestsFragmentDoc } from "@/gql/graphql.ts";
 import { formatWH } from "@/helpers/format.ts";
 import { totalWH } from "@/helpers/hours.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import ServiceTable from "@/components/core/ServiceTable.vue";
 
-const { totalRequestsFragment } = defineProps<{
-  totalRequestsFragment: FragmentType<typeof TotalRequestsFragmentDoc>;
+const { dataFragment } = defineProps<{
+  dataFragment: FragmentType<typeof TeacherRequestsFragmentDoc>;
 }>();
 
 graphql(`
-  fragment TotalRequests on intervenant {
+  fragment TeacherRequests on intervenant {
     assigned: demandes_aggregate(
       where: { _and: [{ type: { _eq: "attribution" } }] }
     ) {
@@ -49,11 +49,11 @@ graphql(`
   }
 `);
 
-const totalRequests = computed(() =>
-  useFragment(TotalRequestsFragmentDoc, totalRequestsFragment),
-);
-
 const perm = usePermissions();
+
+const data = computed(() =>
+  useFragment(TeacherRequestsFragmentDoc, dataFragment),
+);
 </script>
 
 <template>
@@ -61,15 +61,15 @@ const perm = usePermissions();
     <ServiceTable>
       <tr v-if="perm.toViewAssignments">
         <td>Attributions</td>
-        <td>{{ formatWH(totalWH(totalRequests.assigned)) }}</td>
+        <td>{{ formatWH(totalWH(data.assigned)) }}</td>
       </tr>
       <tr>
         <td>Demandes principales</td>
-        <td>{{ formatWH(totalWH(totalRequests.primary)) }}</td>
+        <td>{{ formatWH(totalWH(data.primary)) }}</td>
       </tr>
       <tr>
         <td>Demandes secondaires</td>
-        <td>{{ formatWH(totalWH(totalRequests.secondary)) }}</td>
+        <td>{{ formatWH(totalWH(data.secondary)) }}</td>
       </tr>
     </ServiceTable>
   </DetailsSection>

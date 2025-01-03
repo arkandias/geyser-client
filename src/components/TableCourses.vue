@@ -22,17 +22,15 @@ import { type Column, isAbbreviable } from "@/types/column.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
 
-const { courseRowsFragment, teacherNameFragment, teacherRequestsFragment } =
+const { courseRowFragments, teacherNameFragment, teacherRequestFragments } =
   defineProps<{
-    courseRowsFragment: FragmentType<typeof CourseRowFragmentDoc>[];
+    courseRowFragments: FragmentType<typeof CourseRowFragmentDoc>[];
     teacherNameFragment: FragmentType<typeof TeacherNameFragmentDoc> | null;
-    teacherRequestsFragment:
+    teacherRequestFragments:
       | FragmentType<typeof TeacherRequestFragmentDoc>[]
       | null;
     fetchingCourses?: boolean;
   }>();
-
-const perm = usePermissions();
 
 graphql(`
   fragment CourseRow on enseignement {
@@ -114,8 +112,10 @@ graphql(`
   }
 `);
 
+const perm = usePermissions();
+
 const courses = computed(() =>
-  courseRowsFragment.map((fragment) =>
+  courseRowFragments.map((fragment) =>
     useFragment(CourseRowFragmentDoc, fragment),
   ),
 );
@@ -124,7 +124,7 @@ const teacherName = computed(() =>
 );
 const teacherRequests = computed(
   () =>
-    teacherRequestsFragment?.map((fragment) =>
+    teacherRequestFragments?.map((fragment) =>
       useFragment(TeacherRequestFragmentDoc, fragment),
     ) ?? null,
 );

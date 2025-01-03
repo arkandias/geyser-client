@@ -18,8 +18,8 @@ import { NotifyType, notify } from "@/helpers/notify.ts";
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import ServiceTable from "@/components/core/ServiceTable.vue";
 
-const { serviceFragment, editable } = defineProps<{
-  serviceFragment: FragmentType<typeof TeacherServiceFragmentDoc>;
+const { dataFragment, editable } = defineProps<{
+  dataFragment: FragmentType<typeof TeacherServiceFragmentDoc>;
   editable?: boolean;
 }>();
 
@@ -97,8 +97,8 @@ const modificationTypesQueryResult = useQuery({
   query: GetModificationTypesDocument,
   variables: {},
 });
-const service = computed(() =>
-  useFragment(TeacherServiceFragmentDoc, serviceFragment),
+const data = computed(() =>
+  useFragment(TeacherServiceFragmentDoc, dataFragment),
 );
 const upsertService = useMutation(UpsertServiceDocument);
 const insertModification = useMutation(InsertModificationDocument);
@@ -108,12 +108,11 @@ const deleteModification = useMutation(DeleteModificationDocument);
 const isBaseServiceFormOpen = ref(false);
 const baseServiceHours = ref(
   // eslint-disable-next-line vue/no-ref-object-reactivity-loss
-  service.value.teacher.position?.baseServiceHours ?? 0,
+  data.value.teacher.position?.baseServiceHours ?? 0,
 );
 const resetBaseServiceForm = (): void => {
   isBaseServiceFormOpen.value = false;
-  baseServiceHours.value =
-    service.value.teacher.position?.baseServiceHours ?? 0;
+  baseServiceHours.value = data.value.teacher.position?.baseServiceHours ?? 0;
 };
 const submitBaseServiceForm = async (): Promise<void> => {
   if (baseServiceHours.value < 0) {
@@ -124,8 +123,8 @@ const submitBaseServiceForm = async (): Promise<void> => {
     return;
   }
   const result = await upsertService.executeMutation({
-    uid: service.value.uid,
-    year: service.value.year,
+    uid: data.value.uid,
+    year: data.value.year,
     hours: baseServiceHours.value,
   });
   if (result.data?.service && !result.error) {
@@ -164,7 +163,7 @@ const submitModificationForm = async (): Promise<void> => {
     return;
   }
   const result = await insertModification.executeMutation({
-    serviceId: service.value.id,
+    serviceId: data.value.id,
     modificationType: modificationType.value,
     hours: modificationHours.value,
   });
@@ -245,7 +244,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             class="inline-block"
           />
         </td>
-        <td v-else>{{ formatWH(service.base) }}</td>
+        <td v-else>{{ formatWH(data.base) }}</td>
       </tr>
       <tr>
         <td>
@@ -330,7 +329,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
           />
         </td>
       </tr>
-      <tr v-for="modification in service.modifications" :key="modification.id">
+      <tr v-for="modification in data.modifications" :key="modification.id">
         <td>
           <QBtn
             v-if="editable"
@@ -355,7 +354,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
       </tr>
       <tr>
         <td>Total</td>
-        <td>{{ formatWH(modifiedService(service)) }}</td>
+        <td>{{ formatWH(modifiedService(data)) }}</td>
       </tr>
     </ServiceTable>
   </DetailsSection>

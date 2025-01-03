@@ -8,8 +8,8 @@ import DetailsSection from "@/components/core/DetailsSection.vue";
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 import RequestCard from "@/components/core/RequestCard.vue";
 
-const { courseArchivesFragment } = defineProps<{
-  courseArchivesFragment: FragmentType<typeof CourseArchivesFragmentDoc>;
+const { dataFragment } = defineProps<{
+  dataFragment: FragmentType<typeof CourseArchivesFragmentDoc>;
 }>();
 
 graphql(`
@@ -24,7 +24,7 @@ graphql(`
         ]
       ) {
         id
-        ...RequestDetails
+        ...RequestCardData
       }
       parent {
         year: annee
@@ -36,7 +36,7 @@ graphql(`
           ]
         ) {
           id
-          ...RequestDetails
+          ...RequestCardData
         }
         parent {
           year: annee
@@ -48,7 +48,7 @@ graphql(`
             ]
           ) {
             id
-            ...RequestDetails
+            ...RequestCardData
           }
         }
       }
@@ -56,17 +56,14 @@ graphql(`
   }
 `);
 
-const courseArchives = computed(() =>
-  useFragment(CourseArchivesFragmentDoc, courseArchivesFragment),
-);
-
-const archives = computed(() =>
-  [
-    courseArchives.value.parent,
-    courseArchives.value.parent?.parent,
-    courseArchives.value.parent?.parent?.parent,
-  ].filter((archive) => !!archive),
-);
+const archives = computed(() => {
+  const nestedArchives = useFragment(CourseArchivesFragmentDoc, dataFragment);
+  return [
+    nestedArchives.parent,
+    nestedArchives.parent?.parent,
+    nestedArchives.parent?.parent?.parent,
+  ].filter((archive) => !!archive);
+});
 </script>
 
 <template>
@@ -80,7 +77,7 @@ const archives = computed(() =>
         <RequestCard
           v-for="request in archive.requests"
           :key="request.id"
-          :request-card-info-fragment="request"
+          :data-fragment="request"
           archive
         />
       </QCardSection>

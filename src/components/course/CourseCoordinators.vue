@@ -8,10 +8,8 @@ import type { UserName } from "@/types/user.ts";
 
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 
-const { courseCoordinatorsFragment } = defineProps<{
-  courseCoordinatorsFragment: FragmentType<
-    typeof CourseCoordinatorsFragmentDoc
-  >;
+const { dataFragment } = defineProps<{
+  dataFragment: FragmentType<typeof CourseCoordinatorsFragmentDoc>;
 }>();
 
 graphql(`
@@ -62,8 +60,8 @@ graphql(`
   }
 `);
 
-const coordinators = computed(() =>
-  useFragment(CourseCoordinatorsFragmentDoc, courseCoordinatorsFragment),
+const data = computed(() =>
+  useFragment(CourseCoordinatorsFragmentDoc, dataFragment),
 );
 
 const formatCoordinators = (
@@ -79,19 +77,19 @@ const formatCoordinators = (
 
 <template>
   <DetailsSubsection title="Responsables">
-    <div v-if="coordinators.program.coordinators.length">
-      Responsable{{ coordinators.program.coordinators.length > 1 ? "s" : "" }}
+    <div v-if="data.program.coordinators.length">
+      Responsable{{ data.program.coordinators.length > 1 ? "s" : "" }}
       de la mention :
-      {{ formatCoordinators(coordinators.program.coordinators) }}
+      {{ formatCoordinators(data.program.coordinators) }}
     </div>
-    <div v-if="coordinators.track?.coordinators.length">
-      Responsable{{ coordinators.track?.coordinators.length > 1 ? "s" : "" }} du
+    <div v-if="data.track?.coordinators.length">
+      Responsable{{ data.track?.coordinators.length > 1 ? "s" : "" }} du
       parcours :
-      {{ formatCoordinators(coordinators.track?.coordinators) }}
+      {{ formatCoordinators(data.track?.coordinators) }}
     </div>
-    <div v-if="coordinators.coordinators.length">
-      Responsable{{ coordinators.coordinators.length > 1 ? "s" : "" }} de l'UE :
-      {{ formatCoordinators(coordinators.coordinators) }}
+    <div v-if="data.coordinators.length">
+      Responsable{{ data.coordinators.length > 1 ? "s" : "" }} de l'UE :
+      {{ formatCoordinators(data.coordinators) }}
     </div>
   </DetailsSubsection>
 </template>

@@ -5,19 +5,19 @@ import { computed, ref } from "vue";
 import { usePermissions } from "@/composables/permissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  CourseDescriptionFragmentDoc,
+  CourseDescriptionDataFragmentDoc,
   UpdateDescriptionDocument,
 } from "@/gql/graphql.ts";
 
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 import EditableText from "@/components/core/EditableText.vue";
 
-const { courseDescriptionFragment } = defineProps<{
-  courseDescriptionFragment: FragmentType<typeof CourseDescriptionFragmentDoc>;
+const { dataFragment } = defineProps<{
+  dataFragment: FragmentType<typeof CourseDescriptionDataFragmentDoc>;
 }>();
 
 graphql(`
-  fragment CourseDescription on enseignement {
+  fragment CourseDescriptionData on enseignement {
     courseId: id
     description
     coordinators: responsables(
@@ -60,21 +60,17 @@ graphql(`
   }
 `);
 
-const courseDescription = computed(() =>
-  useFragment(CourseDescriptionFragmentDoc, courseDescriptionFragment),
-);
-
-const coordinatorsIds = computed(() => [
-  ...courseDescription.value.coordinators.map((coordinator) => coordinator.uid),
-  ...courseDescription.value.program.coordinators.map(
-    (coordinator) => coordinator.uid,
-  ),
-  ...(courseDescription.value.track?.coordinators.map(
-    (coordinator) => coordinator.uid,
-  ) ?? []),
-]);
-
 const perm = usePermissions();
+
+const data = computed(() =>
+  useFragment(CourseDescriptionDataFragmentDoc, dataFragment),
+);
+const coordinators = computed(() => [
+  ...data.value.coordinators.map((coordinator) => coordinator.uid),
+  ...data.value.program.coordinators.map((coordinator) => coordinator.uid),
+  ...(data.value.track?.coordinators.map((coordinator) => coordinator.uid) ??
+    []),
+]);
 
 // Description
 const editDescription = ref(false);
@@ -82,7 +78,7 @@ const updateDescription = useMutation(UpdateDescriptionDocument);
 const setDescription = (text: string): Promise<boolean> =>
   updateDescription
     .executeMutation({
-      courseId: courseDescription.value.courseId,
+      courseId: data.value.courseId,
       description: text || null,
     })
     .then((result) => !!result.data?.course?.id && !result.error);
@@ -92,11 +88,11 @@ const setDescription = (text: string): Promise<boolean> =>
   <DetailsSubsection
     v-model="editDescription"
     title="Description"
-    :editable="perm.toEditADescription(coordinatorsIds)"
+    :editable="perm.toEditADescription(coordinators)"
   >
     <EditableText
       v-model="editDescription"
-      :text="courseDescription.description"
+      :text="data.description ?? ''"
       :set-text="setDescription"
       default-text="Pas de description (contactez un responsable)"
     />

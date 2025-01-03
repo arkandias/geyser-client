@@ -14,8 +14,8 @@ import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 import RequestCard from "@/components/core/RequestCard.vue";
 import RequestForm from "@/components/core/RequestForm.vue";
 
-const { courseRequestsFragment } = defineProps<{
-  courseRequestsFragment: FragmentType<typeof CourseRequestsFragmentDoc>;
+const { dataFragment } = defineProps<{
+  dataFragment: FragmentType<typeof CourseRequestsFragmentDoc>;
 }>();
 
 graphql(`
@@ -29,16 +29,16 @@ graphql(`
     ) {
       id
       type
-      ...RequestDetails
+      ...RequestCardData
     }
   }
 `);
 
-const courseRequests = computed(() =>
-  useFragment(CourseRequestsFragmentDoc, courseRequestsFragment),
-);
-
 const perm = usePermissions();
+
+const data = computed(() =>
+  useFragment(CourseRequestsFragmentDoc, dataFragment),
+);
 
 const requestsOptions = computed(() =>
   REQUEST_TYPE_OPTIONS.filter(
@@ -46,7 +46,7 @@ const requestsOptions = computed(() =>
       requestType.value !== REQUEST_TYPES.ASSIGNMENT || perm.toViewAssignments,
   ).map((option) => ({
     ...option,
-    requests: courseRequests.value.requests.filter(
+    requests: data.value.requests.filter(
       (request) => request.type === option.value,
     ),
   })),
@@ -56,7 +56,7 @@ const requestsOptions = computed(() =>
 <template>
   <DetailsSection title="Demandes">
     <DetailsSubsection v-if="perm.toSubmitRequests || perm.toAssignCourses">
-      <RequestForm :request-form-info-fragment="courseRequests" />
+      <RequestForm :data-fragment="data" />
     </DetailsSubsection>
     <DetailsSubsection
       v-for="option in requestsOptions"
@@ -67,7 +67,7 @@ const requestsOptions = computed(() =>
         <RequestCard
           v-for="request in option.requests"
           :key="request.id"
-          :request-card-info-fragment="request"
+          :data-fragment="request"
         />
       </QCardSection>
     </DetailsSubsection>

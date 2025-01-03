@@ -6,18 +6,16 @@ import { useRequestOperations } from "@/composables/request-operations.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { RequestDetailsFragmentDoc } from "@/gql/graphql.ts";
+import { RequestCardDataFragmentDoc } from "@/gql/graphql.ts";
 import { formatUser, nf, priorityColor } from "@/helpers/format.ts";
 
-const { requestDetailsFragment } = defineProps<{
-  requestDetailsFragment: FragmentType<typeof RequestDetailsFragmentDoc>;
+const { dataFragment } = defineProps<{
+  dataFragment: FragmentType<typeof RequestCardDataFragmentDoc>;
   archive?: boolean;
 }>();
 
-const perm = usePermissions();
-
 graphql(`
-  fragment RequestDetails on demande {
+  fragment RequestCardData on demande {
     id
     teacher: intervenant {
       uid
@@ -35,26 +33,28 @@ graphql(`
   }
 `);
 
-const request = computed(() =>
-  useFragment(RequestDetailsFragmentDoc, requestDetailsFragment),
+const perm = usePermissions();
+
+const data = computed(() =>
+  useFragment(RequestCardDataFragmentDoc, dataFragment),
 );
 
 const { updateRequest, deleteRequest } = useRequestOperations();
 const assign = async (): Promise<void> => {
   await updateRequest({
-    uid: request.value.teacher.uid,
-    courseId: request.value.course.id,
+    uid: data.value.teacher.uid,
+    courseId: data.value.course.id,
     requestType: REQUEST_TYPES.ASSIGNMENT,
-    hours: request.value.hours,
+    hours: data.value.hours,
   });
 };
 const remove = async (): Promise<void> => {
-  await deleteRequest(request.value.id, request.value.type);
+  await deleteRequest(data.value.id, data.value.type);
 };
 
 const groups = computed(() =>
-  request.value.course.hoursPerGroup
-    ? request.value.hours / request.value.course.hoursPerGroup
+  data.value.course.hoursPerGroup
+    ? data.value.hours / data.value.course.hoursPerGroup
     : 0,
 );
 
@@ -77,28 +77,28 @@ const displayAssignButton = computed(
   <QCard bordered square class="request-card">
     <QCardSection class="request-card__titre q-pa-xs text-body2">
       <QBadge
-        v-if="request.isPriority !== null"
-        :color="priorityColor(request.isPriority)"
+        v-if="data.isPriority !== null"
+        :color="priorityColor(data.isPriority)"
         rounded
       />
-      {{ formatUser(request.teacher) }}
+      {{ formatUser(data.teacher) }}
       <QTooltip :delay="TOOLTIP_DELAY" anchor="top middle" self="bottom middle">
-        {{ formatUser(request.teacher) }}
+        {{ formatUser(data.teacher) }}
       </QTooltip>
     </QCardSection>
     <QCardSection class="q-pa-xs text-caption">
       {{ nf.format(groups) + " groupe" + (groups > 1 ? "s" : "") }}
       <br />
-      {{ nf.format(request.hours) + " heure" + (request.hours > 1 ? "s" : "") }}
+      {{ nf.format(data.hours) + " heure" + (data.hours > 1 ? "s" : "") }}
     </QCardSection>
-    <QSeparator v-if="!archive && displayActions(request.type)" />
+    <QSeparator v-if="!archive && displayActions(data.type)" />
     <QCardActions
-      v-if="!archive && displayActions(request.type)"
+      v-if="!archive && displayActions(data.type)"
       align="evenly"
       class="q-pa-xs"
     >
       <QBtn
-        v-if="displayAssignButton(request.type)"
+        v-if="displayAssignButton(data.type)"
         icon="sym_s_check"
         color="positive"
         size="sm"
@@ -119,7 +119,7 @@ const displayAssignButton = computed(
         icon="sym_s_close"
         color="negative"
         size="sm"
-        :disable="!perm.toDeleteARequest(request)"
+        :disable="!perm.toDeleteARequest(data)"
         flat
         square
         dense

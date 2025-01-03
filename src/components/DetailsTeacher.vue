@@ -17,13 +17,11 @@ const { year, uid } = defineProps<{
   uid: string;
 }>();
 
-const perm = usePermissions();
-
 graphql(`
   query GetTeacherDetails($year: Int!, $uid: String!) {
     teacher: intervenant_by_pk(uid: $uid) {
       ...TeacherTitle
-      ...TotalRequests
+      ...TeacherRequests
       ...TeacherNoService
       services(
         where: { annee: { _eq: $year } }
@@ -40,6 +38,8 @@ graphql(`
     }
   }
 `);
+
+const perm = usePermissions();
 
 const teacherDetailsQueryResult = useQuery({
   query: GetTeacherDetailsDocument,
@@ -61,23 +61,19 @@ const service = computed(() => details.value?.services[0] ?? null);
 
 <template>
   <template v-if="details">
-    <TeacherTitle :teacher-title-fragment="details" />
+    <TeacherTitle :data-fragment="details" />
     <!-- TODO: Responsabilités -->
     <!-- TODO: Priorités -->
     <template v-if="service">
       <TeacherService
         v-if="service"
-        :service-fragment="service"
+        :data-fragment="service"
         :editable="perm.toEditAService(uid)"
       />
-      <TeacherRequests :total-requests-fragment="details" />
-      <TeacherMessage
-        :year
-        :uid
-        :teacher-message-fragment="details.messages[0] ?? null"
-      />
+      <TeacherRequests :data-fragment="details" />
+      <TeacherMessage :year :uid :data-fragment="details.messages[0] ?? null" />
     </template>
-    <TeacherNoService v-else :year :teacher-no-service-fragment="details" />
+    <TeacherNoService v-else :year :data-fragment="details" />
   </template>
   <template v-else></template>
 </template>

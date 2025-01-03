@@ -13,13 +13,11 @@ import {
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import EditableText from "@/components/core/EditableText.vue";
 
-const { year, uid, teacherMessageFragment } = defineProps<{
+const { year, uid, dataFragment } = defineProps<{
   year: number;
   uid: string;
-  teacherMessageFragment: FragmentType<typeof TeacherMessageFragmentDoc> | null;
+  dataFragment: FragmentType<typeof TeacherMessageFragmentDoc> | null;
 }>();
-
-const perm = usePermissions();
 
 graphql(`
   fragment TeacherMessage on message {
@@ -49,10 +47,10 @@ graphql(`
   }
 `);
 
-const body = computed(
-  () =>
-    useFragment(TeacherMessageFragmentDoc, teacherMessageFragment)?.body ??
-    null,
+const perm = usePermissions();
+
+const data = computed(() =>
+  useFragment(TeacherMessageFragmentDoc, dataFragment),
 );
 const upsertMessage = useMutation(UpsertMessageDocument);
 const deleteMessage = useMutation(DeleteMessageDocument);
@@ -82,7 +80,7 @@ const editMessage = ref(false);
   >
     <EditableText
       v-model="editMessage"
-      :text="body"
+      :text="data?.body ?? ''"
       :set-text="setMessage"
       default-text=""
     />

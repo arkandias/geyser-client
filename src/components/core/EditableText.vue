@@ -11,7 +11,7 @@ const {
   setText,
   defaultText = "",
 } = defineProps<{
-  text: string | null;
+  text: string;
   setText: (text: string) => Promise<boolean>;
   defaultText?: string;
 }>();
@@ -43,7 +43,7 @@ const options = {
     },
   },
 };
-const sanitizedText = computed(() => xss(text ?? defaultText, options));
+const sanitizedText = computed(() => xss(text || defaultText, options));
 const editorText = ref("");
 
 const onSave = async (): Promise<void> => {
@@ -69,7 +69,7 @@ const onSave = async (): Promise<void> => {
 };
 
 const onAbort = (): void => {
-  editorText.value = text ?? "";
+  editorText.value = text;
   showEditor.value = false;
 };
 

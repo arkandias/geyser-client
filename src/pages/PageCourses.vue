@@ -23,13 +23,6 @@ import DetailsCourse from "@/components/DetailsCourse.vue";
 import TableCourses from "@/components/TableCourses.vue";
 import TableTeachers from "@/components/TableTeachers.vue";
 
-const { activeYear, isCurrentYearActive } = useYearsStore();
-const { profile } = useAuthenticationStore();
-const { getValue: selectedCourse } = useQueryParam("courseId", true);
-const { getValue: selectedTeacher } = useQueryParam("uid");
-const perm = usePermissions();
-const { closeLeftPanel, isLeftPanelOpen, openLeftPanel } = useLeftPanelStore();
-
 graphql(`
   query GetCourseRows($year: Int!) {
     courses: enseignement(
@@ -80,6 +73,13 @@ graphql(`
     }
   }
 `);
+
+const { activeYear, isCurrentYearActive } = useYearsStore();
+const { profile } = useAuthenticationStore();
+const { closeLeftPanel, isLeftPanelOpen, openLeftPanel } = useLeftPanelStore();
+const { getValue: selectedCourse } = useQueryParam("courseId", true);
+const { getValue: selectedTeacher } = useQueryParam("uid");
+const perm = usePermissions();
 
 const courseRowsQueryResult = useQuery({
   query: GetCourseRowsDocument,
@@ -185,7 +185,7 @@ watch(
     >
       <template #before>
         <TableTeachers
-          :teacher-rows-fragment="teacherRows"
+          :teacher-row-fragments="teacherRows"
           :fetching="fetchingTeacherRows"
         />
       </template>
@@ -193,9 +193,9 @@ watch(
         <QSplitter id="second-splitter" v-model="hSplitterRatio" horizontal>
           <template #before>
             <TableCourses
-              :course-rows-fragment="courseRows"
+              :course-row-fragments="courseRows"
               :teacher-name-fragment="teacherRequests"
-              :teacher-requests-fragment="teacherRequests?.requests ?? null"
+              :teacher-request-fragments="teacherRequests?.requests ?? null"
               :fetching-courses="fetchingCourseRows"
             />
           </template>

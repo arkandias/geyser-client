@@ -19,11 +19,6 @@ import { useYearsStore } from "@/stores/years.ts";
 import TheHeader from "@/components/TheHeader.vue";
 import PageHome from "@/pages/PageHome.vue";
 
-const { setYears, setCurrentYear } = useYearsStore();
-const { currentPhase, setCurrentPhase } = usePhaseStore();
-const { login, logged, activeRole } = useAuthenticationStore();
-const perm = usePermissions();
-
 graphql(`
   query GetYears {
     years: annee(order_by: { value: desc }) {
@@ -52,6 +47,11 @@ graphql(`
     }
   }
 `);
+
+const { setYears, setCurrentYear } = useYearsStore();
+const { currentPhase, setCurrentPhase } = usePhaseStore();
+const { login, logged, activeRole } = useAuthenticationStore();
+const perm = usePermissions();
 
 // User profile
 const claimsRef = computed(() => getClaims());

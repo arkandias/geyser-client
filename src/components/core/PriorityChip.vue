@@ -2,15 +2,15 @@
 import { computed } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { PriorityDetailsFragmentDoc } from "@/gql/graphql.ts";
+import { PriorityChipDataFragmentDoc } from "@/gql/graphql.ts";
 import { formatUser, priorityColor } from "@/helpers/format.ts";
 
-const { priorityDetailsFragmentDoc } = defineProps<{
-  priorityDetailsFragmentDoc: FragmentType<typeof PriorityDetailsFragmentDoc>;
+const { dataFragment } = defineProps<{
+  dataFragment: FragmentType<typeof PriorityChipDataFragmentDoc>;
 }>();
 
 graphql(`
-  fragment PriorityDetails on priorite {
+  fragment PriorityChipData on priorite {
     teacher: intervenant {
       firstname: prenom
       lastname: nom
@@ -21,21 +21,17 @@ graphql(`
   }
 `);
 
-const priority = computed(() =>
-  useFragment(PriorityDetailsFragmentDoc, priorityDetailsFragmentDoc),
+const data = computed(() =>
+  useFragment(PriorityChipDataFragmentDoc, dataFragment),
 );
 </script>
 
 <template>
-  <QChip :color="priorityColor(priority.isPriority)" outline square dense>
-    <QAvatar
-      :color="priorityColor(priority.isPriority)"
-      text-color="white"
-      square
-    >
-      {{ priority.seniority }}
+  <QChip :color="priorityColor(data.isPriority)" outline square dense>
+    <QAvatar :color="priorityColor(data.isPriority)" text-color="white" square>
+      {{ data.seniority }}
     </QAvatar>
-    {{ formatUser(priority.teacher) }}
+    {{ formatUser(data.teacher) }}
   </QChip>
 </template>
 

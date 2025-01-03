@@ -9,9 +9,9 @@ import {
 } from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 
-const { year, teacherNoServiceFragment } = defineProps<{
+const { year, dataFragment } = defineProps<{
   year: number;
-  teacherNoServiceFragment: FragmentType<typeof TeacherNoServiceFragmentDoc>;
+  dataFragment: FragmentType<typeof TeacherNoServiceFragmentDoc>;
 }>();
 
 graphql(`
@@ -31,8 +31,8 @@ graphql(`
   }
 `);
 
-const teacher = computed(() =>
-  useFragment(TeacherNoServiceFragmentDoc, teacherNoServiceFragment),
+const data = computed(() =>
+  useFragment(TeacherNoServiceFragmentDoc, dataFragment),
 );
 const insertService = useMutation(InsertServiceDocument);
 
@@ -40,11 +40,11 @@ const insertService = useMutation(InsertServiceDocument);
 const isServiceFormOpen = ref(false);
 const baseServiceHours = ref(
   // eslint-disable-next-line vue/no-ref-object-reactivity-loss
-  teacher.value.position?.baseServiceHours ?? 0,
+  data.value.position?.baseServiceHours ?? 0,
 );
 const resetServiceCreation = (): void => {
   isServiceFormOpen.value = false;
-  baseServiceHours.value = teacher.value.position?.baseServiceHours ?? 0;
+  baseServiceHours.value = data.value.position?.baseServiceHours ?? 0;
 };
 const submitServiceCreation = async (): Promise<void> => {
   if (baseServiceHours.value < 0) {
@@ -55,7 +55,7 @@ const submitServiceCreation = async (): Promise<void> => {
     return;
   }
   const result = await insertService.executeMutation({
-    uid: teacher.value.uid,
+    uid: data.value.uid,
     year,
     hours: baseServiceHours.value,
   });

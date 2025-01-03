@@ -7,8 +7,8 @@ import { CoursePrioritiesFragmentDoc } from "@/gql/graphql.ts";
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import PriorityChip from "@/components/core/PriorityChip.vue";
 
-const { coursePrioritiesFragment } = defineProps<{
-  coursePrioritiesFragment: FragmentType<typeof CoursePrioritiesFragmentDoc>;
+const { dataFragment } = defineProps<{
+  dataFragment: FragmentType<typeof CoursePrioritiesFragmentDoc>;
 }>();
 
 graphql(`
@@ -20,13 +20,13 @@ graphql(`
       ]
     ) {
       id
-      ...PriorityDetails
+      ...PriorityChipData
     }
   }
 `);
 
-const coursePriorities = computed(() =>
-  useFragment(CoursePrioritiesFragmentDoc, coursePrioritiesFragment),
+const data = computed(() =>
+  useFragment(CoursePrioritiesFragmentDoc, dataFragment),
 );
 </script>
 
@@ -34,9 +34,9 @@ const coursePriorities = computed(() =>
   <DetailsSection title="Priorités">
     <QCardSection>
       <PriorityChip
-        v-for="priority in coursePriorities.priorities"
+        v-for="priority in data.priorities"
         :key="priority.id"
-        :priority-chip-info-fragment="priority"
+        :data-fragment="priority"
       />
     </QCardSection>
   </DetailsSection>

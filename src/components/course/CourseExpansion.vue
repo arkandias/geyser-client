@@ -5,10 +5,8 @@ import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CourseExpansionFragmentDoc } from "@/gql/graphql.ts";
 
 const isExpanded = defineModel<boolean>();
-const { courseExpansionFragment } = defineProps<{
-  courseExpansionFragment: FragmentType<
-    typeof CourseExpansionFragmentDoc
-  > | null;
+const { dataFragment } = defineProps<{
+  dataFragment: FragmentType<typeof CourseExpansionFragmentDoc> | null;
 }>();
 defineSlots<{ default(): unknown }>();
 
@@ -31,20 +29,20 @@ graphql(`
   }
 `);
 
-const info = computed(() =>
-  useFragment(CourseExpansionFragmentDoc, courseExpansionFragment),
+const data = computed(() =>
+  useFragment(CourseExpansionFragmentDoc, dataFragment),
 );
 const label = computed(() =>
-  info.value
-    ? info.value.name
+  data.value
+    ? data.value.name
     : "Sélectionnez un enseignement dans la liste ci-dessus",
 );
 const caption = computed(() =>
-  info.value
-    ? `${info.value.program.degree.name} — ${info.value.program.name} — ` +
-      (info.value.track?.name ? `${info.value.track.name} — ` : "") +
-      `S${String(info.value.semester)} — ` +
-      info.value.courseType.label
+  data.value
+    ? `${data.value.program.degree.name} — ${data.value.program.name} — ` +
+      (data.value.track?.name ? `${data.value.track.name} — ` : "") +
+      `S${String(data.value.semester)} — ` +
+      data.value.courseType.label
     : "Cliquez sur ce volet pour afficher des informations supplémentaires",
 );
 </script>

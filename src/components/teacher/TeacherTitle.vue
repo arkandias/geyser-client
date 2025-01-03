@@ -5,8 +5,8 @@ import { type FragmentType, graphql, useFragment } from "@/gql";
 import { TeacherTitleFragmentDoc } from "@/gql/graphql.ts";
 import { formatUser } from "@/helpers/format.ts";
 
-const { teacherTitleFragment } = defineProps<{
-  teacherTitleFragment: FragmentType<typeof TeacherTitleFragmentDoc>;
+const { dataFragment } = defineProps<{
+  dataFragment: FragmentType<typeof TeacherTitleFragmentDoc>;
 }>();
 
 graphql(`
@@ -20,17 +20,15 @@ graphql(`
   }
 `);
 
-const title = computed(() =>
-  useFragment(TeacherTitleFragmentDoc, teacherTitleFragment),
-);
+const data = computed(() => useFragment(TeacherTitleFragmentDoc, dataFragment));
 </script>
 
 <template>
   <QCard flat square class="text-center">
     <QCardSection>
-      <div class="text-h5">{{ formatUser(title) }}</div>
-      <div v-if="title.position" class="text-body1 text-italic">
-        {{ title.position.label }}
+      <div class="text-h5">{{ formatUser(data) }}</div>
+      <div v-if="data.position" class="text-body1 text-italic">
+        {{ data.position.label }}
       </div>
     </QCardSection>
   </QCard>

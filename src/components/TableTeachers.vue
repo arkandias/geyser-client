@@ -15,12 +15,10 @@ import { modifiedService, totalWH } from "@/helpers/hours.ts";
 import { normalizeForSearch } from "@/helpers/misc.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 
-const { teacherRowsFragment } = defineProps<{
-  teacherRowsFragment: FragmentType<typeof TeacherRowFragmentDoc>[];
+const { teacherRowFragments } = defineProps<{
+  teacherRowFragments: FragmentType<typeof TeacherRowFragmentDoc>[];
   fetching?: boolean;
 }>();
-
-const perm = usePermissions();
 
 graphql(`
   fragment TeacherRow on intervenant {
@@ -78,8 +76,10 @@ graphql(`
   }
 `);
 
+const perm = usePermissions();
+
 const teachers = computed(() =>
-  teacherRowsFragment.map((fragment) =>
+  teacherRowFragments.map((fragment) =>
     useFragment(TeacherRowFragmentDoc, fragment),
   ),
 );

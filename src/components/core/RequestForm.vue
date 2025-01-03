@@ -13,8 +13,8 @@ import { usePhaseStore } from "@/stores/phase.ts";
 
 import TeacherSelect from "@/components/core/TeacherSelect.vue";
 
-const { requestFormDataFragment } = defineProps<{
-  requestFormDataFragment: FragmentType<typeof RequestFormDataFragmentDoc>;
+const { dataFragment } = defineProps<{
+  dataFragment: FragmentType<typeof RequestFormDataFragmentDoc>;
 }>();
 
 graphql(`
@@ -24,13 +24,13 @@ graphql(`
   }
 `);
 
-const data = computed(() =>
-  useFragment(RequestFormDataFragmentDoc, requestFormDataFragment),
-);
-
 const { currentPhase } = usePhaseStore();
 const { profile } = useAuthenticationStore();
 const perm = usePermissions();
+
+const data = computed(() =>
+  useFragment(RequestFormDataFragmentDoc, dataFragment),
+);
 
 const hours = ref<number | null>(null);
 watch(

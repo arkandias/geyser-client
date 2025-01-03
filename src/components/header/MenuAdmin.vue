@@ -14,9 +14,6 @@ import { useYearsStore } from "@/stores/years.ts";
 import MenuAdminOptions from "@/components/header/MenuAdminOptions.vue";
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { years, currentYear } = useYearsStore();
-const { currentPhase } = usePhaseStore();
-
 graphql(`
   mutation SetCurrentYear($value: Int!) {
     years: update_annee(
@@ -52,6 +49,9 @@ graphql(`
     }
   }
 `);
+
+const { years, currentYear } = useYearsStore();
+const { currentPhase } = usePhaseStore();
 
 const setCurrentYear = useMutation(SetCurrentYearDocument);
 const setCurrentPhase = useMutation(SetCurrentPhaseDocument);
