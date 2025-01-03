@@ -47,7 +47,6 @@ graphql(`
     ) {
       aggregate {
         sum {
-          hours: heures
           weightedHours: heures_eqtd
         }
       }
@@ -57,7 +56,6 @@ graphql(`
     ) {
       aggregate {
         sum {
-          hours: heures
           weightedHours: heures_eqtd
         }
       }
@@ -67,7 +65,6 @@ graphql(`
     ) {
       aggregate {
         sum {
-          hours: heures
           weightedHours: heures_eqtd
         }
       }

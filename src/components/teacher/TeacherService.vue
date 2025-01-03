@@ -73,13 +73,13 @@ graphql(`
   mutation InsertModification(
     $serviceId: Int!
     $modificationType: String!
-    $weightedHours: Float!
+    $hours: Float!
   ) {
     serviceModification: insert_modification_service_one(
       object: {
         service_id: $serviceId
         type: $modificationType
-        heures_eqtd: $weightedHours
+        heures_eqtd: $hours
       }
     ) {
       id
@@ -166,7 +166,7 @@ const submitModificationForm = async (): Promise<void> => {
   const result = await insertModification.executeMutation({
     serviceId: service.value.id,
     modificationType: modificationType.value,
-    weightedHours: modificationHours.value,
+    hours: modificationHours.value,
   });
   if (result.data?.serviceModification && !result.error) {
     notify(NotifyType.SUCCESS, { message: "Modification ajoutée" });

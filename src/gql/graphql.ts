@@ -9550,7 +9550,6 @@ export type TeacherRowFragment = {
       __typename?: "demande_aggregate_fields";
       sum: {
         __typename?: "demande_sum_fields";
-        hours: number | null;
         weightedHours: number | null;
       } | null;
     } | null;
@@ -9561,7 +9560,6 @@ export type TeacherRowFragment = {
       __typename?: "demande_aggregate_fields";
       sum: {
         __typename?: "demande_sum_fields";
-        hours: number | null;
         weightedHours: number | null;
       } | null;
     } | null;
@@ -9572,7 +9570,6 @@ export type TeacherRowFragment = {
       __typename?: "demande_aggregate_fields";
       sum: {
         __typename?: "demande_sum_fields";
-        hours: number | null;
         weightedHours: number | null;
       } | null;
     } | null;
@@ -9935,7 +9932,7 @@ export type UpsertServiceMutation = {
 export type InsertModificationMutationVariables = Exact<{
   serviceId: Scalars["Int"]["input"];
   modificationType: Scalars["String"]["input"];
-  weightedHours: Scalars["Float"]["input"];
+  hours: Scalars["Float"]["input"];
 }>;
 
 export type InsertModificationMutation = {
@@ -9965,6 +9962,16 @@ export type TeacherTitleFragment = {
   lastname: string;
   position: { __typename?: "fonction"; label: string } | null;
 } & { " $fragmentName"?: "TeacherTitleFragment" };
+
+export type DummyMutationMutationVariables = Exact<{ [key: string]: never }>;
+
+export type DummyMutationMutation = {
+  __typename?: "mutation_root";
+  requests: {
+    __typename?: "demande_mutation_response";
+    returning: Array<{ __typename?: "demande"; id: number }>;
+  } | null;
+};
 
 export type GetRequestQueryVariables = Exact<{
   uid: Scalars["String"]["input"];
@@ -10018,60 +10025,6 @@ export type DeleteRequestByIdMutationVariables = Exact<{
 export type DeleteRequestByIdMutation = {
   __typename?: "mutation_root";
   request: { __typename?: "demande"; id: number } | null;
-};
-
-export type ServiceModificationFragment = {
-  __typename?: "modification_service";
-  id: number;
-  weightedHours: number;
-  modificationType: {
-    __typename?: "type_modification_service";
-    value: string;
-    label: string;
-    description: string | null;
-  };
-} & { " $fragmentName"?: "ServiceModificationFragment" };
-
-export type ServiceModificationsTotalWeightedHoursFragment = {
-  __typename?: "modification_service_aggregate";
-  aggregate: {
-    __typename?: "modification_service_aggregate_fields";
-    sum: {
-      __typename?: "modification_service_sum_fields";
-      weightedHours: number | null;
-    } | null;
-  } | null;
-} & { " $fragmentName"?: "ServiceModificationsTotalWeightedHoursFragment" };
-
-export type ServiceFragment = {
-  __typename?: "service";
-  id: number;
-  uid: string;
-  year: number;
-  base: number;
-  totalModifications: {
-    __typename?: "modification_service_aggregate";
-    aggregate: {
-      __typename?: "modification_service_aggregate_fields";
-      sum: {
-        __typename?: "modification_service_sum_fields";
-        hours: number | null;
-      } | null;
-    } | null;
-  };
-} & { " $fragmentName"?: "ServiceFragment" };
-
-export type ServiceDetailsFragment = ({
-  __typename?: "service";
-  modifications: Array<
-    { __typename?: "modification_service" } & {
-      " $fragmentRefs"?: {
-        ServiceModificationFragment: ServiceModificationFragment;
-      };
-    }
-  >;
-} & { " $fragmentRefs"?: { ServiceFragment: ServiceFragment } }) & {
-  " $fragmentName"?: "ServiceDetailsFragment";
 };
 
 export type GetCourseRowsQueryVariables = Exact<{
@@ -10133,16 +10086,6 @@ export type GetTeacherDetailsQuery = {
         >;
       } & { " $fragmentRefs"?: { TeacherNameFragment: TeacherNameFragment } })
     | null;
-};
-
-export type DummyMutationMutationVariables = Exact<{ [key: string]: never }>;
-
-export type DummyMutationMutation = {
-  __typename?: "mutation_root";
-  requests: {
-    __typename?: "demande_mutation_response";
-    returning: Array<{ __typename?: "demande"; id: number }>;
-  } | null;
 };
 
 export const CourseExpansionFragmentDoc = {
@@ -13651,11 +13594,6 @@ export const TeacherRowFragmentDoc = {
                           selections: [
                             {
                               kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures" },
-                            },
-                            {
-                              kind: "Field",
                               alias: { kind: "Name", value: "weightedHours" },
                               name: { kind: "Name", value: "heures_eqtd" },
                             },
@@ -13732,11 +13670,6 @@ export const TeacherRowFragmentDoc = {
                           selections: [
                             {
                               kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures" },
-                            },
-                            {
-                              kind: "Field",
                               alias: { kind: "Name", value: "weightedHours" },
                               name: { kind: "Name", value: "heures_eqtd" },
                             },
@@ -13811,11 +13744,6 @@ export const TeacherRowFragmentDoc = {
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures" },
-                            },
                             {
                               kind: "Field",
                               alias: { kind: "Name", value: "weightedHours" },
@@ -14353,303 +14281,6 @@ export const TeacherTitleFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<TeacherTitleFragment, unknown>;
-export const ServiceModificationsTotalWeightedHoursFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "ServiceModificationsTotalWeightedHours" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "modification_service_aggregate" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "aggregate" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "sum" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "weightedHours" },
-                        name: { kind: "Name", value: "heures_eqtd" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  ServiceModificationsTotalWeightedHoursFragment,
-  unknown
->;
-export const ServiceFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Service" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "service" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "year" },
-            name: { kind: "Name", value: "annee" },
-          },
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "base" },
-            name: { kind: "Name", value: "heures_eqtd" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "totalModifications" },
-            name: { kind: "Name", value: "modifications_aggregate" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "sum" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures_eqtd" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<ServiceFragment, unknown>;
-export const ServiceModificationFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "ServiceModification" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "modification_service" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "modificationType" },
-            name: { kind: "Name", value: "typeByType" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "value" } },
-                { kind: "Field", name: { kind: "Name", value: "label" } },
-                { kind: "Field", name: { kind: "Name", value: "description" } },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "weightedHours" },
-            name: { kind: "Name", value: "heures_eqtd" },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<ServiceModificationFragment, unknown>;
-export const ServiceDetailsFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "ServiceDetails" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "service" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "FragmentSpread", name: { kind: "Name", value: "Service" } },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "modifications" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "order_by" },
-                value: {
-                  kind: "ListValue",
-                  values: [
-                    {
-                      kind: "ObjectValue",
-                      fields: [
-                        {
-                          kind: "ObjectField",
-                          name: { kind: "Name", value: "type" },
-                          value: { kind: "EnumValue", value: "asc" },
-                        },
-                      ],
-                    },
-                    {
-                      kind: "ObjectValue",
-                      fields: [
-                        {
-                          kind: "ObjectField",
-                          name: { kind: "Name", value: "heures_eqtd" },
-                          value: { kind: "EnumValue", value: "asc" },
-                        },
-                      ],
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "ServiceModification" },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "Service" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "service" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "year" },
-            name: { kind: "Name", value: "annee" },
-          },
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "base" },
-            name: { kind: "Name", value: "heures_eqtd" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "totalModifications" },
-            name: { kind: "Name", value: "modifications_aggregate" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "aggregate" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "sum" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures_eqtd" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "ServiceModification" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "modification_service" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          { kind: "Field", name: { kind: "Name", value: "id" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "modificationType" },
-            name: { kind: "Name", value: "typeByType" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "value" } },
-                { kind: "Field", name: { kind: "Name", value: "label" } },
-                { kind: "Field", name: { kind: "Name", value: "description" } },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "weightedHours" },
-            name: { kind: "Name", value: "heures_eqtd" },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<ServiceDetailsFragment, unknown>;
 export const GetYearsDocument = {
   kind: "Document",
   definitions: [
@@ -16437,7 +16068,7 @@ export const InsertModificationDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "weightedHours" },
+            name: { kind: "Name", value: "hours" },
           },
           type: {
             kind: "NonNullType",
@@ -16480,7 +16111,7 @@ export const InsertModificationDocument = {
                       name: { kind: "Name", value: "heures_eqtd" },
                       value: {
                         kind: "Variable",
-                        name: { kind: "Name", value: "weightedHours" },
+                        name: { kind: "Name", value: "hours" },
                       },
                     },
                   ],
@@ -16550,6 +16181,51 @@ export const DeleteModificationDocument = {
 } as unknown as DocumentNode<
   DeleteModificationMutation,
   DeleteModificationMutationVariables
+>;
+export const DummyMutationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DummyMutation" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "requests" },
+            name: { kind: "Name", value: "insert_demande" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "objects" },
+                value: { kind: "ListValue", values: [] },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "returning" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DummyMutationMutation,
+  DummyMutationMutationVariables
 >;
 export const GetRequestDocument = {
   kind: "Document",
@@ -18112,11 +17788,6 @@ export const GetTeacherRowsDocument = {
                           selections: [
                             {
                               kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures" },
-                            },
-                            {
-                              kind: "Field",
                               alias: { kind: "Name", value: "weightedHours" },
                               name: { kind: "Name", value: "heures_eqtd" },
                             },
@@ -18193,11 +17864,6 @@ export const GetTeacherRowsDocument = {
                           selections: [
                             {
                               kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures" },
-                            },
-                            {
-                              kind: "Field",
                               alias: { kind: "Name", value: "weightedHours" },
                               name: { kind: "Name", value: "heures_eqtd" },
                             },
@@ -18272,11 +17938,6 @@ export const GetTeacherRowsDocument = {
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
-                            {
-                              kind: "Field",
-                              alias: { kind: "Name", value: "hours" },
-                              name: { kind: "Name", value: "heures" },
-                            },
                             {
                               kind: "Field",
                               alias: { kind: "Name", value: "weightedHours" },
@@ -19914,49 +19575,4 @@ export const GetTeacherDetailsDocument = {
 } as unknown as DocumentNode<
   GetTeacherDetailsQuery,
   GetTeacherDetailsQueryVariables
->;
-export const DummyMutationDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "DummyMutation" },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "requests" },
-            name: { kind: "Name", value: "insert_demande" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "objects" },
-                value: { kind: "ListValue", values: [] },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "returning" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  DummyMutationMutation,
-  DummyMutationMutationVariables
 >;
