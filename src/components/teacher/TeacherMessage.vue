@@ -70,18 +70,18 @@ const setMessage = computed(
           ),
 );
 
-const edition = ref(false);
+const editMessage = ref(false);
 </script>
 
 <template>
   <DetailsSection
-    v-model="edition"
+    v-model="editMessage"
     title="Message pour la commission"
     :editable="perm.toEditAMessage(uid)"
     edition-tooltip="Éditer le message"
   >
     <EditableText
-      v-model="edition"
+      v-model="editMessage"
       :text="body"
       :set-text="setMessage"
       default-text=""

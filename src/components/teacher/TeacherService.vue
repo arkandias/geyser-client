@@ -24,6 +24,14 @@ const { serviceFragment, editable } = defineProps<{
 }>();
 
 graphql(`
+  query GetModificationTypes {
+    modificationTypes: type_modification_service(order_by: { value: asc }) {
+      value
+      label
+      description
+    }
+  }
+
   fragment TeacherService on service {
     id
     uid
@@ -47,14 +55,6 @@ graphql(`
         label
       }
       hours: heures_eqtd
-    }
-  }
-
-  query GetModificationTypes {
-    modificationTypes: type_modification_service(order_by: { value: asc }) {
-      value
-      label
-      description
     }
   }
 
@@ -93,13 +93,13 @@ graphql(`
   }
 `);
 
-const service = computed(() =>
-  useFragment(TeacherServiceFragmentDoc, serviceFragment),
-);
-const modificationTypesQueryResponse = useQuery({
+const modificationTypesQueryResult = useQuery({
   query: GetModificationTypesDocument,
   variables: {},
 });
+const service = computed(() =>
+  useFragment(TeacherServiceFragmentDoc, serviceFragment),
+);
 const upsertService = useMutation(UpsertServiceDocument);
 const insertModification = useMutation(InsertModificationDocument);
 const deleteModification = useMutation(DeleteModificationDocument);
@@ -138,7 +138,7 @@ const submitBaseServiceForm = async (): Promise<void> => {
 
 // Modifications form
 const modificationTypesOptions = computed(
-  () => modificationTypesQueryResponse.data.value?.modificationTypes ?? [],
+  () => modificationTypesQueryResult.data.value?.modificationTypes ?? [],
 );
 const isModificationFormOpen = ref(false);
 const modificationType = ref<string | null>(null);

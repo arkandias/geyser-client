@@ -5,7 +5,7 @@ import xss from "xss";
 import { isOnlyWhitespace } from "@/helpers/misc.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 
-const edition = defineModel<boolean>();
+const showEditor = defineModel<boolean>();
 const {
   text,
   setText,
@@ -65,12 +65,12 @@ const onSave = async (): Promise<void> => {
       });
     }
   }
-  edition.value = false;
+  showEditor.value = false;
 };
 
 const onAbort = (): void => {
   editorText.value = text ?? "";
-  edition.value = false;
+  showEditor.value = false;
 };
 
 watch(() => text, onAbort, { immediate: true });
@@ -84,7 +84,7 @@ const toolbar = [
 </script>
 
 <template>
-  <QDialog v-model="edition" persistent square>
+  <QDialog v-model="showEditor" persistent square>
     <QCard flat square>
       <QCardSection class="q-pa-none">
         <QEditor v-model="editorText" :toolbar square />

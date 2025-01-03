@@ -37,13 +37,13 @@ const teacher = computed(() =>
 const insertService = useMutation(InsertServiceDocument);
 
 // Service form
-const serviceCreation = ref(false);
+const isServiceFormOpen = ref(false);
 const baseServiceHours = ref(
   // eslint-disable-next-line vue/no-ref-object-reactivity-loss
   teacher.value.position?.baseServiceHours ?? 0,
 );
 const resetServiceCreation = (): void => {
-  serviceCreation.value = false;
+  isServiceFormOpen.value = false;
   baseServiceHours.value = teacher.value.position?.baseServiceHours ?? 0;
 };
 const submitServiceCreation = async (): Promise<void> => {
@@ -72,10 +72,10 @@ const submitServiceCreation = async (): Promise<void> => {
   <QCardSection class="text-center">
     <div class="text-subtitle1">Pas de service pour l'année en cours.</div>
     <br />
-    <QBtn outline square color="primary" @click="serviceCreation = true">
+    <QBtn outline square color="primary" @click="isServiceFormOpen = true">
       Cliquez ici pour en créer un
     </QBtn>
-    <QDialog v-model="serviceCreation" persistent square>
+    <QDialog v-model="isServiceFormOpen" persistent square>
       <QCard flat square>
         <QCardSection>
           <div class="text-subtitle1">

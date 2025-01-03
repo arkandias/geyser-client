@@ -9408,12 +9408,12 @@ export type CourseDetailsFragment = ({
   };
 }) & { " $fragmentName"?: "CourseDetailsFragment" };
 
-export type GetTeacherInformationQueryVariables = Exact<{
+export type GetTeacherDetailsQueryVariables = Exact<{
   year: Scalars["Int"]["input"];
   uid: Scalars["String"]["input"];
 }>;
 
-export type GetTeacherInformationQuery = {
+export type GetTeacherDetailsQuery = {
   __typename?: "query_root";
   teacher:
     | ({
@@ -9870,40 +9870,6 @@ export type TotalRequestsFragment = {
   };
 } & { " $fragmentName"?: "TotalRequestsFragment" };
 
-export type TeacherServiceFragment = {
-  __typename?: "service";
-  id: number;
-  uid: string;
-  year: number;
-  base: number;
-  teacher: {
-    __typename?: "intervenant";
-    position: {
-      __typename?: "fonction";
-      baseServiceHours: number | null;
-    } | null;
-  };
-  totalModifications: {
-    __typename?: "modification_service_aggregate";
-    aggregate: {
-      __typename?: "modification_service_aggregate_fields";
-      sum: {
-        __typename?: "modification_service_sum_fields";
-        hours: number | null;
-      } | null;
-    } | null;
-  };
-  modifications: Array<{
-    __typename?: "modification_service";
-    id: number;
-    hours: number;
-    modificationType: {
-      __typename?: "type_modification_service";
-      label: string;
-    };
-  }>;
-} & { " $fragmentName"?: "TeacherServiceFragment" };
-
 export type GetModificationTypesQueryVariables = Exact<{
   [key: string]: never;
 }>;
@@ -9954,6 +9920,40 @@ export type DeleteModificationMutation = {
     id: number;
   } | null;
 };
+
+export type TeacherServiceFragment = {
+  __typename?: "service";
+  id: number;
+  uid: string;
+  year: number;
+  base: number;
+  teacher: {
+    __typename?: "intervenant";
+    position: {
+      __typename?: "fonction";
+      baseServiceHours: number | null;
+    } | null;
+  };
+  totalModifications: {
+    __typename?: "modification_service_aggregate";
+    aggregate: {
+      __typename?: "modification_service_aggregate_fields";
+      sum: {
+        __typename?: "modification_service_sum_fields";
+        hours: number | null;
+      } | null;
+    } | null;
+  };
+  modifications: Array<{
+    __typename?: "modification_service";
+    id: number;
+    hours: number;
+    modificationType: {
+      __typename?: "type_modification_service";
+      label: string;
+    };
+  }>;
+} & { " $fragmentName"?: "TeacherServiceFragment" };
 
 export type TeacherTitleFragment = {
   __typename?: "intervenant";
@@ -10067,12 +10067,12 @@ export type GetCourseDetailsQuery = {
     | null;
 };
 
-export type GetTeacherDetailsQueryVariables = Exact<{
+export type GetTeacherRequestsQueryVariables = Exact<{
   year: Scalars["Int"]["input"];
   uid: Scalars["String"]["input"];
 }>;
 
-export type GetTeacherDetailsQuery = {
+export type GetTeacherRequestsQuery = {
   __typename?: "query_root";
   teacher:
     | ({
@@ -14453,13 +14453,13 @@ export const GetUserProfileDocument = {
     },
   ],
 } as unknown as DocumentNode<GetUserProfileQuery, GetUserProfileQueryVariables>;
-export const GetTeacherInformationDocument = {
+export const GetTeacherDetailsDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "GetTeacherInformation" },
+      name: { kind: "Name", value: "GetTeacherDetails" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -15063,8 +15063,8 @@ export const GetTeacherInformationDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetTeacherInformationQuery,
-  GetTeacherInformationQueryVariables
+  GetTeacherDetailsQuery,
+  GetTeacherDetailsQueryVariables
 >;
 export const GetActiveTeachersDocument = {
   kind: "Document",
@@ -19384,13 +19384,13 @@ export const GetCourseDetailsDocument = {
   GetCourseDetailsQuery,
   GetCourseDetailsQueryVariables
 >;
-export const GetTeacherDetailsDocument = {
+export const GetTeacherRequestsDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "GetTeacherDetails" },
+      name: { kind: "Name", value: "GetTeacherRequests" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -19573,6 +19573,6 @@ export const GetTeacherDetailsDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetTeacherDetailsQuery,
-  GetTeacherDetailsQueryVariables
+  GetTeacherRequestsQuery,
+  GetTeacherRequestsQueryVariables
 >;

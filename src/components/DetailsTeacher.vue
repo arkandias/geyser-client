@@ -4,7 +4,7 @@ import { computed } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { graphql } from "@/gql";
-import { GetTeacherInformationDocument } from "@/gql/graphql.ts";
+import { GetTeacherDetailsDocument } from "@/gql/graphql.ts";
 
 import TeacherMessage from "@/components/teacher/TeacherMessage.vue";
 import TeacherNoService from "@/components/teacher/TeacherNoService.vue";
@@ -17,8 +17,10 @@ const { year, uid } = defineProps<{
   uid: string;
 }>();
 
+const perm = usePermissions();
+
 graphql(`
-  query GetTeacherInformation($year: Int!, $uid: String!) {
+  query GetTeacherDetails($year: Int!, $uid: String!) {
     teacher: intervenant_by_pk(uid: $uid) {
       ...TeacherTitle
       ...TotalRequests
@@ -39,8 +41,8 @@ graphql(`
   }
 `);
 
-const teacherInformationQueryResponse = useQuery({
-  query: GetTeacherInformationDocument,
+const teacherDetailsQueryResult = useQuery({
+  query: GetTeacherDetailsDocument,
   variables: { year, uid },
   context: {
     additionalTypenames: [
@@ -51,11 +53,8 @@ const teacherInformationQueryResponse = useQuery({
     ],
   },
 });
-
-const perm = usePermissions();
-
 const details = computed(
-  () => teacherInformationQueryResponse.data.value?.teacher ?? null,
+  () => teacherDetailsQueryResult.data.value?.teacher ?? null,
 );
 const service = computed(() => details.value?.services[0] ?? null);
 </script>

@@ -22,9 +22,11 @@ defineSlots<{ default(): unknown }>();
         flat
         square
         dense
-        @click="edition = true"
+        @click="edition = !edition"
       >
-        <QTooltip :delay="TOOLTIP_DELAY">{{ editionTooltip }}</QTooltip>
+        <QTooltip v-if="editionTooltip" :delay="TOOLTIP_DELAY">
+          {{ editionTooltip }}
+        </QTooltip>
       </QBtn>
     </div>
     <slot />

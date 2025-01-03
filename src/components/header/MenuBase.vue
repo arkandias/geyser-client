@@ -10,13 +10,13 @@ defineProps<{
 defineSlots<{ default(): unknown }>();
 
 const isOpen = ref(false);
-const tooltip = ref(false);
+const showTooltip = ref(false);
 </script>
 
 <template>
   <QBtn :icon :color="buttonColor(isOpen)" flat square>
-    <QTooltip v-model="tooltip">{{ label }}</QTooltip>
-    <QMenu v-model="isOpen" square @show="tooltip = false">
+    <QTooltip v-model="showTooltip">{{ label }}</QTooltip>
+    <QMenu v-model="isOpen" square @show="showTooltip = false">
       <slot />
     </QMenu>
   </QBtn>

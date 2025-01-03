@@ -8,7 +8,7 @@ import { graphql } from "@/gql";
 import {
   GetCourseDetailsDocument,
   GetCourseRowsDocument,
-  GetTeacherDetailsDocument,
+  GetTeacherRequestsDocument,
   GetTeacherRowsDocument,
 } from "@/gql/graphql.ts";
 import { useAuthenticationStore } from "@/stores/authentication.ts";
@@ -68,7 +68,7 @@ graphql(`
     }
   }
 
-  query GetTeacherDetails($year: Int!, $uid: String!) {
+  query GetTeacherRequests($year: Int!, $uid: String!) {
     teacher: intervenant_by_pk(uid: $uid) {
       ...TeacherName
       requests: demandes(
@@ -117,7 +117,7 @@ const teacherRows = computed(
   () => teacherRowsQueryResult.data.value?.teachers ?? [],
 );
 
-const courseDetailsQueryResponse = useQuery({
+const courseDetailsQueryResult = useQuery({
   query: GetCourseDetailsDocument,
   variables: {
     courseId: () => selectedCourse.value ?? -1,
@@ -128,16 +128,16 @@ const courseDetailsQueryResponse = useQuery({
   },
 });
 const fetchingCourseDetails = computed(
-  () => courseDetailsQueryResponse.fetching.value,
+  () => courseDetailsQueryResult.fetching.value,
 );
 const courseDetails = computed(() =>
-  courseDetailsQueryResponse.isPaused.value
+  courseDetailsQueryResult.isPaused.value
     ? null
-    : (courseDetailsQueryResponse.data.value?.course ?? null),
+    : (courseDetailsQueryResult.data.value?.course ?? null),
 );
 
-const teacherDetailsQueryResponse = useQuery({
-  query: GetTeacherDetailsDocument,
+const teacherRequestsQueryResult = useQuery({
+  query: GetTeacherRequestsDocument,
   variables: {
     year: () => activeYear.value ?? -1,
     uid: () => selectedTeacher.value ?? "",
@@ -152,10 +152,10 @@ const teacherDetailsQueryResponse = useQuery({
     ],
   },
 });
-const teacherDetails = computed(() =>
-  teacherDetailsQueryResponse.isPaused.value
+const teacherRequests = computed(() =>
+  teacherRequestsQueryResult.isPaused.value
     ? null
-    : (teacherDetailsQueryResponse.data.value?.teacher ?? null),
+    : (teacherRequestsQueryResult.data.value?.teacher ?? null),
 );
 
 // Toggle the left panel based on user's permissions
@@ -194,8 +194,8 @@ watch(
           <template #before>
             <TableCourses
               :course-rows-fragment="courseRows"
-              :teacher-name-fragment="teacherDetails"
-              :teacher-requests-fragment="teacherDetails?.requests ?? null"
+              :teacher-name-fragment="teacherRequests"
+              :teacher-requests-fragment="teacherRequests?.requests ?? null"
               :fetching-courses="fetchingCourseRows"
             />
           </template>

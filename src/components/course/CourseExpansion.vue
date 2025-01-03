@@ -4,7 +4,7 @@ import { computed } from "vue";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CourseExpansionFragmentDoc } from "@/gql/graphql.ts";
 
-const isExpanded = defineModel<boolean>({ default: false });
+const isExpanded = defineModel<boolean>();
 const { courseExpansionFragment } = defineProps<{
   courseExpansionFragment: FragmentType<
     typeof CourseExpansionFragmentDoc
