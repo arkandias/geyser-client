@@ -7,7 +7,9 @@ import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestCardDataFragmentDoc } from "@/gql/graphql.ts";
-import { formatUser, nf, priorityColor } from "@/helpers/format.ts";
+import { priorityColor } from "@/helpers/colors.ts";
+import { nf } from "@/helpers/numbers.ts";
+import { formatUser } from "@/helpers/user.ts";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof RequestCardDataFragmentDoc>;

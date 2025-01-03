@@ -2,7 +2,7 @@
 import { computed } from "vue";
 
 import { useQueryParam } from "@/composables/query-param.ts";
-import { buttonColor } from "@/helpers/format.ts";
+import { buttonColor } from "@/helpers/colors.ts";
 import { useAuthenticationStore } from "@/stores/authentication.ts";
 import { useLeftPanelStore } from "@/stores/left-panel.ts";
 

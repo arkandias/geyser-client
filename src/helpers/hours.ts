@@ -1,3 +1,5 @@
+import { nf } from "@/helpers/numbers.ts";
+
 type TotalHours = {
   aggregate: {
     sum: {
@@ -14,13 +16,14 @@ type TotalWeightedHours = {
   } | null;
 };
 
-export const totalH = (total?: TotalHours): number =>
-  total?.aggregate?.sum?.hours ?? 0;
+export const totalH = (total?: TotalHours) => total?.aggregate?.sum?.hours ?? 0;
 
-export const totalWH = (total?: TotalWeightedHours): number =>
+export const totalWH = (total?: TotalWeightedHours) =>
   total?.aggregate?.sum?.weightedHours ?? 0;
 
 export const modifiedService = (service?: {
   base: number;
   totalModifications: TotalHours;
-}): number => (service?.base ?? 0) - totalH(service?.totalModifications);
+}) => (service?.base ?? 0) - totalH(service?.totalModifications);
+
+export const formatWH = (hours: number) => nf.format(hours) + " htd";

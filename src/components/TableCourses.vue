@@ -15,9 +15,10 @@ import {
   TeacherNameFragmentDoc,
   TeacherRequestFragmentDoc,
 } from "@/gql/graphql.ts";
-import { formatProgram, formatUser, nf } from "@/helpers/format.ts";
 import { totalH } from "@/helpers/hours.ts";
 import { compare, normalizeForSearch, uniqueValue } from "@/helpers/misc.ts";
+import { nf } from "@/helpers/numbers.ts";
+import { formatUser } from "@/helpers/user.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
@@ -414,6 +415,19 @@ const isVisible = (row: CourseRowFragment): boolean =>
   (row.track?.visible ?? true);
 
 // Helpers
+
+const formatProgram = (program: {
+  name: string;
+  shortName?: string | null;
+  degree: {
+    name: string;
+    shortName?: string | null;
+  };
+}): string =>
+  (program.degree.shortName ?? program.degree.name) +
+  " " +
+  (program.shortName ?? program.name);
+
 const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
   if (teacherRequests.value) {
     return (

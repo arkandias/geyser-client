@@ -77,10 +77,12 @@ graphql(`
 const { activeYear, isCurrentYearActive } = useYearsStore();
 const { profile } = useAuthenticationStore();
 const { closeLeftPanel, isLeftPanelOpen, openLeftPanel } = useLeftPanelStore();
+
 const { getValue: selectedCourse } = useQueryParam("courseId", true);
 const { getValue: selectedTeacher } = useQueryParam("uid");
 const perm = usePermissions();
 
+// Course rows
 const courseRowsQueryResult = useQuery({
   query: GetCourseRowsDocument,
   variables: {
@@ -94,6 +96,7 @@ const courseRows = computed(
   () => courseRowsQueryResult.data.value?.courses ?? [],
 );
 
+// Teacher rows
 const teacherRowsQueryResult = useQuery({
   query: GetTeacherRowsDocument,
   variables: {
@@ -117,6 +120,7 @@ const teacherRows = computed(
   () => teacherRowsQueryResult.data.value?.teachers ?? [],
 );
 
+// Selected course details
 const courseDetailsQueryResult = useQuery({
   query: GetCourseDetailsDocument,
   variables: {
@@ -136,6 +140,7 @@ const courseDetails = computed(() =>
     : (courseDetailsQueryResult.data.value?.course ?? null),
 );
 
+// Selected teacher requests
 const teacherRequestsQueryResult = useQuery({
   query: GetTeacherRequestsDocument,
   variables: {
@@ -158,7 +163,7 @@ const teacherRequests = computed(() =>
     : (teacherRequestsQueryResult.data.value?.teacher ?? null),
 );
 
-// Toggle the left panel based on user's permissions
+// Toggle left panel based on user's permissions
 watch(
   () => perm.toViewAllServices,
   (value) => {

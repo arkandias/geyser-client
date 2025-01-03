@@ -2,7 +2,6 @@
 import { computed, ref, watch } from "vue";
 import xss from "xss";
 
-import { isOnlyWhitespace } from "@/helpers/misc.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 
 const showEditor = defineModel<boolean>();
@@ -81,6 +80,20 @@ const toolbar = [
   ["hr", "link", "viewsource"],
   ["unordered", "ordered", "outdent", "indent"],
 ];
+
+const isOnlyWhitespace = (htmlString: string) => {
+  // First remove common whitespace HTML entities
+  const withoutEntities = htmlString.replace(
+    /&nbsp;|&ensp;|&emsp;|&thinsp;/g,
+    "",
+  );
+
+  // Then remove all HTML tags
+  const textOnly = withoutEntities.replace(/<[^>]*>/g, "");
+
+  // Check if remaining content is only whitespace
+  return /^\s*$/.test(textOnly);
+};
 </script>
 
 <template>

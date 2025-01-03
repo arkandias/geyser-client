@@ -11,8 +11,7 @@ import {
   TeacherServiceFragmentDoc,
   UpsertServiceDocument,
 } from "@/gql/graphql.ts";
-import { formatWH } from "@/helpers/format.ts";
-import { modifiedService } from "@/helpers/hours.ts";
+import { formatWH, modifiedService } from "@/helpers/hours.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";

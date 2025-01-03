@@ -47,22 +47,22 @@ watch(
 </script>
 
 <template>
-  <CourseExpansion :course-expansion-fragment="details">
+  <CourseExpansion :data-fragment="details">
     <QCard flat square class="text-body2">
       <template v-if="details && !fetching">
-        <CourseCoordinators :course-coordinators-fragment="details" />
-        <CourseDescription :course-description-fragment="details" />
+        <CourseCoordinators :data-fragment="details" />
+        <CourseDescription :data-fragment="details" />
       </template>
       <CourseExpansionDefault v-else :fetching />
     </QCard>
   </CourseExpansion>
   <QCard flat square>
     <template v-if="details && !fetching">
-      <CourseRequests :course-requests-fragment="details" />
+      <CourseRequests :data-fragment="details" />
       <QSeparator />
-      <CoursePriorities :course-priorities-fragment="details" />
+      <CoursePriorities :data-fragment="details" />
       <QSeparator />
-      <CourseArchives :course-archives-fragment="details" />
+      <CourseArchives :data-fragment="details" />
     </template>
     <DetailsCourseDefault v-else :fetching />
   </QCard>

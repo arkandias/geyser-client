@@ -7,6 +7,7 @@ import DetailsTeacher from "@/components/DetailsTeacher.vue";
 
 const { activeYear } = useYearsStore();
 const { profile } = useAuthenticationStore();
+
 const { getValue: uid } = useQueryParam("uid");
 </script>
 

@@ -3,7 +3,7 @@ import { computed } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { TeacherTitleFragmentDoc } from "@/gql/graphql.ts";
-import { formatUser } from "@/helpers/format.ts";
+import { formatUser } from "@/helpers/user.ts";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof TeacherTitleFragmentDoc>;
