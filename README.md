@@ -27,39 +27,49 @@ pnpm i
 
 The project contains several pnpm scripts for automation of different tasks:
 
-- Start the Vite dev server with live reloading:
+- Development server with live reload:
 
 ```shell
 pnpm run dev
 ```
 
-- Run the TypeScript compiler via `vue-tsc` to check types and then build the application for production
-  using `vite build`:
+- Type check and build for production:
 
 ```shell
 pnpm run build
 ```
 
-- Run the build output of the application in a local server:
+- Preview production build in a local server:
 
 ```shell
 pnpm run preview
 ```
 
-- Use Prettier to check if the files are correctly formatted:
+- Check code formatting with Prettier:
 
 ```shell
 pnpm run format
 ```
 
-- Run ESLint for finding and fixing problems in your code, and `vue-tsc --noEmit` for type checking
-  without emitting output files:
+- Run ESLint:
 
 ```shell
 pnpm run lint
 ```
 
-- Generate code from your GraphQL schema and GraphQL operations:
+- Type check:
+
+```shell
+pnpm run typecheck
+```
+
+- Run format, lint and type checks (used in CI):
+
+```shell
+pnpm run validate
+```
+
+- Generate GraphQL code:
 
 ```shell
 pnpm run codegen
@@ -70,38 +80,24 @@ pnpm run codegen
 Environment variables can be stored in either of the following .env files:
 
 - `.env.local`
-- `.env.development` (for development only)
-- `.env.development.local` (for development only)
-- `.env.production` (for production only)
-- `.env.production.local` (for production only)
+- `.env.development` and `.env.development.local` (development)
+- `.env.production` and `.env.production.local` (production)
 
 The following environment variables are used by the client.
 
-| Environment variable       | Explanation                                                                    |
-| -------------------------- | ------------------------------------------------------------------------------ |
-| `VITE_KEYCLOAK_URL`        | The URL of the Keycloak server used for authentification                       |
-| `VITE_GRAPHQL_URL`         | The URL of the GraphQL engine                                                  |
-| `VITE_LOGIN_FLOW`          | The login flow (see below). Valid values are `DIRECT`, `LOOKUP`, and `IMPORT`. |
-| `VITE_HASURA_ADMIN_SECRET` | Admin secret for Hasura GraphQL Engine (in development mode only)              |
-
-### Login flows
-
-Users are initially authenticated by Keycloak in order to gain access to Geyser. Additionally, Keycloak may transmit
-some user attributes to Geyser (first name, last name, and optionally an alias). Since Geyser also holds these user
-attributes, we propose three login flows in order to manage these dual sources of information.
-
-- `DIRECT`: This flow involves using solely the information provided by Keycloak, foregoing any data stored in Geyser.
-  If the user does not exist in Geyser, some functionalities will not work properly.
-- `LOOKUP`: This flow relies on the user ID provided by Keycloak to retrieve the user information stored in Geyser. This
-  will cause an error if the user does not exist in Geyser.
-- `IMPORT`: This flow will create or update the user in Geyser based on the information transmitted by Keycloak.
+| Environment variable       | Description                                         |
+| -------------------------- | --------------------------------------------------- |
+| `VITE_GRAPHQL_URL`         | GraphQL engine URL                                  |
+| `VITE_KEYCLOAK_URL`        | Keycloak authentication server URL                  |
+| `VITE_BYPASS_KEYCLOAK`     | Bypass Keycloak auth in development (set to `true`) |
+| `VITE_HASURA_ADMIN_SECRET` | Hasura admin secret (when bypassing Keycloak)       |
+| `VITE_HASURA_USER_ID`      | Hasura user ID (when bypassing Keycloak)            |
+| `VITE_BUILD_VERSION`       | Build version (shown in top-left corner)            |
 
 ## Contact
 
-For any questions, comments, suggestions for improvements, or to report any errors or possible bugs, please contact
-Julien Hauseux <[julien.hauseux@univ-lille.fr](mailto:julien.hauseux@univ-lille.fr)>.
+For questions, suggestions, or bug reports, contact Julien Hauseux <[julien.hauseux@univ-lille.fr](mailto:julien.hauseux@univ-lille.fr)>.
 
 ## License
 
-This project is licensed under the GNU Affero General Public License v3.0 &ndash; see the [LICENSE](LICENSE) file for
-details.
+Licensed under GNU AGPL v3.0 &ndash; see [LICENSE](LICENSE).

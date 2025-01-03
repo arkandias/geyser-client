@@ -20,11 +20,7 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/course/CourseExpansion.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseExpansion.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherNoService.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherNoService.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherService.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherService.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/composables/request-operations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/request-operations.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/authentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/stores/authentication.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -337,15 +333,7 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="120354000" />
-    </task>
-    <task id="LOCAL-00319" summary="WIP">
-      <option name="closed" value="true" />
-      <created>1735033114271</created>
-      <option name="number" value="00319" />
-      <option name="presentableId" value="LOCAL-00319" />
-      <option name="project" value="LOCAL" />
-      <updated>1735033114271</updated>
+      <workItem from="1735468210242" duration="121942000" />
     </task>
     <task id="LOCAL-00320" summary="WIP">
       <option name="closed" value="true" />
@@ -731,7 +719,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735922444547</updated>
     </task>
-    <option name="localTasksCounter" value="368" />
+    <task id="LOCAL-00368" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1735923337765</created>
+      <option name="number" value="00368" />
+      <option name="presentableId" value="LOCAL-00368" />
+      <option name="project" value="LOCAL" />
+      <updated>1735923337765</updated>
+    </task>
+    <option name="localTasksCounter" value="369" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
