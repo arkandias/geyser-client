@@ -5314,7 +5314,7 @@ type intervenant {
   """
   An array relationship
   """
-  responsables(
+  responsabilites(
     """
     distinct select on columns
     """
@@ -5344,7 +5344,7 @@ type intervenant {
   """
   An aggregate relationship
   """
-  responsables_aggregate(
+  responsabilites_aggregate(
     """
     distinct select on columns
     """
@@ -5563,8 +5563,8 @@ input intervenant_bool_exp {
   prenom: String_comparison_exp
   priorites: priorite_bool_exp
   priorites_aggregate: priorite_aggregate_bool_exp
-  responsables: responsable_bool_exp
-  responsables_aggregate: responsable_aggregate_bool_exp
+  responsabilites: responsable_bool_exp
+  responsabilites_aggregate: responsable_aggregate_bool_exp
   services: service_bool_exp
   services_aggregate: service_aggregate_bool_exp
   uid: String_comparison_exp
@@ -5624,7 +5624,7 @@ input intervenant_insert_input {
   """
   prenom: String
   priorites: priorite_arr_rel_insert_input
-  responsables: responsable_arr_rel_insert_input
+  responsabilites: responsable_arr_rel_insert_input
   services: service_arr_rel_insert_input
 
   """
@@ -5812,7 +5812,7 @@ input intervenant_order_by {
   nom: order_by
   prenom: order_by
   priorites_aggregate: priorite_aggregate_order_by
-  responsables_aggregate: responsable_aggregate_order_by
+  responsabilites_aggregate: responsable_aggregate_order_by
   services_aggregate: service_aggregate_order_by
   uid: order_by
   visible: order_by

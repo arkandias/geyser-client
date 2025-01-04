@@ -9,12 +9,8 @@ defineSlots<{ default(): unknown }>();
 </template>
 
 <style scoped lang="scss">
-.wrapper {
-  display: flex;
-  justify-content: center;
-}
 table {
-  min-width: $service-table-min-width;
+  width: $teacher-section-width;
   border-spacing: 8px;
 }
 :slotted(td:last-child) {

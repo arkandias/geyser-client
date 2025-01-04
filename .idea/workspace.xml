@@ -20,7 +20,13 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherService.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherService.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/schema.graphql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/ServiceTable.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/ServiceTable.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/css/global.variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/global.variables.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gql/gql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/gql.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gql/graphql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/graphql.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/helpers/format.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/format.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,8 +40,8 @@
         <option value="GraphQL File" />
         <option value="Dockerfile" />
         <option value="JavaScript File" />
-        <option value="Vue Composition API Component" />
         <option value="TypeScript File" />
+        <option value="Vue Composition API Component" />
       </list>
     </option>
   </component>
@@ -333,15 +339,7 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="137292000" />
-    </task>
-    <task id="LOCAL-00326" summary="WIP">
-      <option name="closed" value="true" />
-      <created>1735233881439</created>
-      <option name="number" value="00326" />
-      <option name="presentableId" value="LOCAL-00326" />
-      <option name="project" value="LOCAL" />
-      <updated>1735233881439</updated>
+      <workItem from="1735468210242" duration="145705000" />
     </task>
     <task id="LOCAL-00327" summary="WIP">
       <option name="closed" value="true" />
@@ -727,7 +725,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736007151142</updated>
     </task>
-    <option name="localTasksCounter" value="375" />
+    <task id="LOCAL-00375" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1736014109347</created>
+      <option name="number" value="00375" />
+      <option name="presentableId" value="LOCAL-00375" />
+      <option name="project" value="LOCAL" />
+      <updated>1736014109348</updated>
+    </task>
+    <option name="localTasksCounter" value="376" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

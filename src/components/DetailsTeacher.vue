@@ -13,6 +13,7 @@ import {
 import TeacherMessage from "@/components/teacher/TeacherMessage.vue";
 import TeacherNoService from "@/components/teacher/TeacherNoService.vue";
 import TeacherRequests from "@/components/teacher/TeacherRequests.vue";
+import TeacherResponsibilities from "@/components/teacher/TeacherResponsibilities.vue";
 import TeacherService from "@/components/teacher/TeacherService.vue";
 import TeacherTitle from "@/components/teacher/TeacherTitle.vue";
 
@@ -33,6 +34,12 @@ graphql(`
   fragment TeacherDetails on intervenant {
     ...TeacherTitle
     ...TeacherNoService
+    ...TeacherResponsibilities
+    responsibilities_aggregate: responsabilites_aggregate {
+      aggregate {
+        count
+      }
+    }
   }
 `);
 
@@ -41,11 +48,17 @@ const perm = usePermissions();
 const details = computed(() =>
   useFragment(TeacherDetailsFragmentDoc, detailsFragment),
 );
+const hasResponsibilities = computed(
+  () => !!details.value.responsibilities_aggregate.aggregate?.count,
+);
 </script>
 
 <template>
   <TeacherTitle :data-fragment="details" />
-  <!-- TODO: Responsabilités -->
+  <TeacherResponsibilities
+    v-if="hasResponsibilities"
+    :data-fragment="details"
+  />
   <template v-if="serviceFragment">
     <TeacherService
       :data-fragment="serviceFragment"
