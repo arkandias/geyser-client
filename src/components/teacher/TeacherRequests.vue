@@ -22,7 +22,6 @@ graphql(`
   fragment TeacherRequests on demande_aggregate {
     aggregate {
       sum {
-        hours: heures
         weightedHours: heures_eqtd
       }
     }

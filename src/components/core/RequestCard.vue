@@ -64,7 +64,7 @@ const displayActions = computed(() => (requestType: string) => {
     case REQUEST_TYPES.ASSIGNMENT:
       return perm.toAssignCourses;
     default:
-      return perm.toSubmitRequests || perm.toAssignCourses;
+      return perm.toSubmitRequestsForOthers || perm.toAssignCourses;
   }
 });
 

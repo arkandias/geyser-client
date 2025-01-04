@@ -34,7 +34,7 @@ graphql(`
         where: {
           _and: [
             { enseignement: { annee: { _eq: $year } } }
-            { type: { _eq: "attribution" } }
+            { type: { _eq: "principale" } }
           ]
         }
       ) {
@@ -44,7 +44,7 @@ graphql(`
         where: {
           _and: [
             { enseignement: { annee: { _eq: $year } } }
-            { type: { _eq: "attribution" } }
+            { type: { _eq: "secondaire" } }
           ]
         }
       ) {

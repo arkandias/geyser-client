@@ -3,13 +3,14 @@ import { computed, ref, watch } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRequestOperations } from "@/composables/request-operations.ts";
-import { PHASES } from "@/config/types/phases.ts";
-import { REQUEST_TYPES } from "@/config/types/request-types.ts";
+import {
+  REQUEST_TYPES,
+  REQUEST_TYPE_OPTIONS,
+} from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestFormDataFragmentDoc } from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 import { useAuthenticationStore } from "@/stores/authentication.ts";
-import { usePhaseStore } from "@/stores/phase.ts";
 
 import TeacherSelect from "@/components/core/TeacherSelect.vue";
 
@@ -24,7 +25,6 @@ graphql(`
   }
 `);
 
-const { currentPhase } = usePhaseStore();
 const { profile } = useAuthenticationStore();
 const perm = usePermissions();
 
@@ -57,23 +57,23 @@ const groups = computed<number | null>({
 });
 
 const requestType = ref<string | null>(null);
-const requestTypeInit = computed(() => {
-  switch (currentPhase.value) {
-    case PHASES.ASSIGNMENTS:
-      return REQUEST_TYPES.ASSIGNMENT;
-    default:
-      return REQUEST_TYPES.PRIMARY;
-  }
-});
+const requestTypeInit = computed(() =>
+  perm.toAssignCourses
+    ? REQUEST_TYPES.ASSIGNMENT
+    : perm.toSubmitRequests
+      ? REQUEST_TYPES.PRIMARY
+      : null,
+);
 const requestTypeOptions = computed(() => [
   ...(perm.toAssignCourses
-    ? [{ value: REQUEST_TYPES.ASSIGNMENT, label: "Attribution" }]
+    ? REQUEST_TYPE_OPTIONS.filter(
+        (type) => type.value === REQUEST_TYPES.ASSIGNMENT,
+      )
     : []),
   ...(perm.toSubmitRequests
-    ? [
-        { value: REQUEST_TYPES.PRIMARY, label: "Principale" },
-        { value: REQUEST_TYPES.SECONDARY, label: "Secondaire" },
-      ]
+    ? REQUEST_TYPE_OPTIONS.filter(
+        (type) => type.value !== REQUEST_TYPES.ASSIGNMENT,
+      )
     : []),
 ]);
 watch(

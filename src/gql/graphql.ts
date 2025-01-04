@@ -9812,7 +9812,6 @@ export type TeacherRequestsFragment = {
     __typename?: "demande_aggregate_fields";
     sum: {
       __typename?: "demande_sum_fields";
-      hours: number | null;
       weightedHours: number | null;
     } | null;
   } | null;
@@ -14011,11 +14010,6 @@ export const TeacherRequestsFragmentDoc = {
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "hours" },
-                        name: { kind: "Name", value: "heures" },
-                      },
                       {
                         kind: "Field",
                         alias: { kind: "Name", value: "weightedHours" },
@@ -19109,7 +19103,7 @@ export const GetTeacherDetailsDocument = {
                                             },
                                             value: {
                                               kind: "StringValue",
-                                              value: "attribution",
+                                              value: "principale",
                                               block: false,
                                             },
                                           },
@@ -19212,7 +19206,7 @@ export const GetTeacherDetailsDocument = {
                                             },
                                             value: {
                                               kind: "StringValue",
-                                              value: "attribution",
+                                              value: "secondaire",
                                               block: false,
                                             },
                                           },
@@ -19509,11 +19503,6 @@ export const GetTeacherDetailsDocument = {
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "hours" },
-                        name: { kind: "Name", value: "heures" },
-                      },
                       {
                         kind: "Field",
                         alias: { kind: "Name", value: "weightedHours" },
