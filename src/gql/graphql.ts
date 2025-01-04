@@ -9837,13 +9837,6 @@ export type TeacherServiceFragment = {
   uid: string;
   year: number;
   base: number;
-  teacher: {
-    __typename?: "intervenant";
-    position: {
-      __typename?: "fonction";
-      baseServiceHours: number | null;
-    } | null;
-  };
   totalModifications: {
     __typename?: "modification_service_aggregate";
     aggregate: {
@@ -14041,34 +14034,6 @@ export const TeacherServiceFragmentDoc = {
         selections: [
           { kind: "Field", name: { kind: "Name", value: "id" } },
           { kind: "Field", name: { kind: "Name", value: "uid" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "teacher" },
-            name: { kind: "Name", value: "intervenant" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "position" },
-                  name: { kind: "Name", value: "fonctionByFonction" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "baseServiceHours" },
-                        name: {
-                          kind: "Name",
-                          value: "heures_eqtd_service_base",
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
           {
             kind: "Field",
             alias: { kind: "Name", value: "year" },
@@ -19381,34 +19346,6 @@ export const GetTeacherDetailsDocument = {
         selections: [
           { kind: "Field", name: { kind: "Name", value: "id" } },
           { kind: "Field", name: { kind: "Name", value: "uid" } },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "teacher" },
-            name: { kind: "Name", value: "intervenant" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "position" },
-                  name: { kind: "Name", value: "fonctionByFonction" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        alias: { kind: "Name", value: "baseServiceHours" },
-                        name: {
-                          kind: "Name",
-                          value: "heures_eqtd_service_base",
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
           {
             kind: "Field",
             alias: { kind: "Name", value: "year" },

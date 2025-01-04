@@ -35,11 +35,6 @@ graphql(`
   fragment TeacherService on service {
     id
     uid
-    teacher: intervenant {
-      position: fonctionByFonction {
-        baseServiceHours: heures_eqtd_service_base
-      }
-    }
     year: annee
     base: heures_eqtd
     totalModifications: modifications_aggregate {
@@ -108,11 +103,11 @@ const deleteModification = useMutation(DeleteModificationDocument);
 const isBaseServiceFormOpen = ref(false);
 const baseServiceHours = ref(
   // eslint-disable-next-line vue/no-ref-object-reactivity-loss
-  data.value.teacher.position?.baseServiceHours ?? 0,
+  data.value.base,
 );
 const resetBaseServiceForm = (): void => {
   isBaseServiceFormOpen.value = false;
-  baseServiceHours.value = data.value.teacher.position?.baseServiceHours ?? 0;
+  baseServiceHours.value = data.value.base;
 };
 const submitBaseServiceForm = async (): Promise<void> => {
   if (baseServiceHours.value < 0) {
@@ -122,15 +117,19 @@ const submitBaseServiceForm = async (): Promise<void> => {
     });
     return;
   }
-  const result = await upsertService.executeMutation({
-    year: data.value.year,
-    uid: data.value.uid,
-    hours: baseServiceHours.value,
-  });
-  if (result.data?.service && !result.error) {
-    notify(NotifyType.SUCCESS, { message: "Service de base modifié" });
+  if (baseServiceHours.value === data.value.base) {
+    notify(NotifyType.DEFAULT, { message: "Pas de changement à enregistrer" });
   } else {
-    notify(NotifyType.ERROR, { message: "Échec de la modification" });
+    const result = await upsertService.executeMutation({
+      year: data.value.year,
+      uid: data.value.uid,
+      hours: baseServiceHours.value,
+    });
+    if (result.data?.service && !result.error) {
+      notify(NotifyType.SUCCESS, { message: "Service de base modifié" });
+    } else {
+      notify(NotifyType.ERROR, { message: "Échec de la modification" });
+    }
   }
   resetBaseServiceForm();
 };
