@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import {
-  formatCourseExtra,
-  formatProgram,
-  formatResponsibility,
-  formatResponsibilityExtra,
-  formatResponsibilityType,
-} from "../../helpers/format.ts";
 import { computed } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { TeacherResponsibilitiesFragmentDoc } from "@/gql/graphql.ts";
+import {
+  formatResponsibility,
+  formatResponsibilityExtra,
+  formatResponsibilityType,
+} from "@/helpers/format.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 

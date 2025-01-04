@@ -20,13 +20,7 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/schema.graphql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/ServiceTable.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/ServiceTable.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/global.variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/global.variables.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gql/gql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/gql.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gql/graphql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/graphql.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helpers/format.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/format.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherResponsibilities.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherResponsibilities.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -339,15 +333,7 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="145705000" />
-    </task>
-    <task id="LOCAL-00327" summary="WIP">
-      <option name="closed" value="true" />
-      <created>1735256771511</created>
-      <option name="number" value="00327" />
-      <option name="presentableId" value="LOCAL-00327" />
-      <option name="project" value="LOCAL" />
-      <updated>1735256771513</updated>
+      <workItem from="1735468210242" duration="145852000" />
     </task>
     <task id="LOCAL-00328" summary="WIP">
       <option name="closed" value="true" />
@@ -733,7 +719,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736014109348</updated>
     </task>
-    <option name="localTasksCounter" value="376" />
+    <task id="LOCAL-00376" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1736031501784</created>
+      <option name="number" value="00376" />
+      <option name="presentableId" value="LOCAL-00376" />
+      <option name="project" value="LOCAL" />
+      <updated>1736031501785</updated>
+    </task>
+    <option name="localTasksCounter" value="377" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
