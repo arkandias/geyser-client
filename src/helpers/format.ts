@@ -75,4 +75,24 @@ export const formatResponsibilityExtra = (r: Responsibility) =>
       ? formatCourseExtra(r.course)
       : "";
 
+type Priority = {
+  course: Course & {
+    typeByType: {
+      label: string;
+    };
+    semester: number;
+  };
+  seniority: number | null;
+  isPriority: boolean | null;
+};
+
+export const formatPriorityTS = (priority: Priority) =>
+  priority.course.typeByType.label + " au S" + String(priority.course.semester);
+
+export const formatPriority = (priority: Priority) =>
+  displayName(priority.course);
+
+export const formatPriorityExtra = (priority: Priority) =>
+  formatCourseExtra(priority.course);
+
 export const formatWH = (hours: number) => nf.format(hours) + " htd";

@@ -14,12 +14,36 @@ graphql(`
   query GetTeacherDetails($year: Int!, $uid: String!) {
     teacher: intervenant_by_pk(uid: $uid) {
       ...TeacherDetails
+
+      responsibilities_aggregate: responsabilites_aggregate(
+        where: {
+          _or: [
+            { ens_id: { _is_null: true } }
+            { enseignement: { annee: { _eq: $year } } }
+          ]
+        }
+      ) {
+        ...CountResponsibilities
+      }
+      responsibilities: responsabilites(
+        where: {
+          _or: [
+            { ens_id: { _is_null: true } }
+            { enseignement: { annee: { _eq: $year } } }
+          ]
+        }
+        order_by: [{ mention_id: asc }, { parcours_id: asc }, { ens_id: asc }]
+      ) {
+        ...TeacherResponsibilities
+      }
+
       services(
         where: { annee: { _eq: $year } }
         limit: 1 # unique
       ) {
         ...TeacherService
       }
+
       assigned: demandes_aggregate(
         where: {
           _and: [
@@ -50,6 +74,18 @@ graphql(`
       ) {
         ...TeacherRequests
       }
+
+      priorities: priorites(
+        where: { enseignement: { annee: { _eq: $year } } }
+        order_by: [
+          { enseignement: { semestre: asc } }
+          { enseignement: { typeByType: { label: asc } } }
+          { enseignement: { id: asc } }
+        ]
+      ) {
+        ...TeacherPriorities
+      }
+
       messages(
         where: { annee: { _eq: $year } }
         limit: 1 # unique
@@ -93,9 +129,12 @@ const details = computed(
         :year="activeYear"
         :uid="uid ?? profile.uid"
         :details-fragment="details"
+        :count-fragment="details.responsibilities_aggregate"
+        :responsibility-fragments="details.responsibilities"
         :service-fragment="details.services[0] ?? null"
         :requests-fragment="details"
-        :messages-fragment="details.messages[0] ?? null"
+        :priority-fragments="details.priorities"
+        :message-fragment="details.messages[0] ?? null"
       />
     </QCard>
   </QPage>

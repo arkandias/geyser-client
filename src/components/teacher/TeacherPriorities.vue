@@ -2,45 +2,30 @@
 import { computed } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { TeacherResponsibilitiesFragmentDoc } from "@/gql/graphql.ts";
+import { TeacherPrioritiesFragmentDoc } from "@/gql/graphql.ts";
+import { priorityColor } from "@/helpers/colors.ts";
 import {
-  formatResponsibility,
-  formatResponsibilityExtra,
-  formatResponsibilityType,
+  formatPriority,
+  formatPriorityExtra,
+  formatPriorityTS,
 } from "@/helpers/format.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 
 const { dataFragments } = defineProps<{
-  dataFragments: FragmentType<typeof TeacherResponsibilitiesFragmentDoc>[];
+  dataFragments: FragmentType<typeof TeacherPrioritiesFragmentDoc>[];
 }>();
 
 graphql(`
-  fragment TeacherResponsibilities on responsable {
+  fragment TeacherPriorities on priorite {
     id
-    program: mention {
-      name: nom
-      shortName: nom_court
-      degree: cursus {
-        name: nom
-        shortName: nom_court
-      }
-    }
-    track: parcours {
-      name: nom
-      shortName: nom_court
-      program: mention {
-        name: nom
-        shortName: nom_court
-        degree: cursus {
-          name: nom
-          shortName: nom_court
-        }
-      }
-    }
     course: enseignement {
       name: nom
       shortName: nom_court
+      semester: semestre
+      typeByType {
+        label
+      }
       program: mention {
         name: nom
         shortName: nom_court
@@ -62,33 +47,44 @@ graphql(`
         }
       }
     }
-    comment: commentaire
+    seniority: anciennete
+    isPriority: prioritaire
   }
 `);
 
-const responsabilities = computed(() =>
+const priorities = computed(() =>
   dataFragments.map((fragment) =>
-    useFragment(TeacherResponsibilitiesFragmentDoc, fragment),
+    useFragment(TeacherPrioritiesFragmentDoc, fragment),
   ),
 );
 </script>
 
 <template>
-  <DetailsSection title="Responsabilités">
+  <DetailsSection title="Priorités">
     <QList dense class="text-left">
       <QItem
-        v-for="responsibility in responsabilities"
-        :key="responsibility.id"
+        v-for="priority in priorities"
+        :key="priority.id"
         class="q-pa-none"
       >
         <QItemSection>
           <QItemLabel overline>
-            {{ formatResponsibilityType(responsibility) }}
+            {{ formatPriorityTS(priority) }}
           </QItemLabel>
-          <QItemLabel>{{ formatResponsibility(responsibility) }}</QItemLabel>
+          <QItemLabel>{{ formatPriority(priority) }}</QItemLabel>
           <QItemLabel caption>
-            {{ formatResponsibilityExtra(responsibility) }}
+            {{ formatPriorityExtra(priority) }}
           </QItemLabel>
+        </QItemSection>
+        <QItemSection avatar>
+          <QAvatar
+            :color="priorityColor(priority.isPriority)"
+            text-color="white"
+            square
+            size="md"
+          >
+            {{ priority.seniority }}
+          </QAvatar>
         </QItemSection>
       </QItem>
     </QList>
