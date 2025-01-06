@@ -10,6 +10,7 @@ import {
 } from "@/helpers/format.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
+import TeacherList from "@/components/core/TeacherList.vue";
 
 const { dataFragments } = defineProps<{
   dataFragments: FragmentType<typeof TeacherResponsibilitiesFragmentDoc>[];
@@ -75,7 +76,7 @@ const responsabilities = computed(() =>
 
 <template>
   <DetailsSection title="Responsabilités">
-    <QList dense class="text-left">
+    <TeacherList>
       <QItem
         v-for="responsibility in responsabilities"
         :key="responsibility.id"
@@ -91,15 +92,8 @@ const responsabilities = computed(() =>
           </QItemLabel>
         </QItemSection>
       </QItem>
-    </QList>
+    </TeacherList>
   </DetailsSection>
 </template>
 
-<style scoped lang="scss">
-.q-list {
-  width: $teacher-section-width;
-}
-.q-list .q-item {
-  padding: 8px;
-}
-</style>
+<style scoped lang="scss"></style>

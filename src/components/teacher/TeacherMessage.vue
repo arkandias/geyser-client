@@ -87,4 +87,9 @@ const editMessage = ref(false);
   </DetailsSection>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:deep(.displayed-text) {
+  max-width: $teacher-page-content-width;
+  padding: 8px;
+}
+</style>

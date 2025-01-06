@@ -7,7 +7,7 @@ defineProps<{ message?: string }>();
 <template>
   <QPage class="column items-center">
     <QCard flat square class="text-center">
-      <QCardSection class="text-h4"> Bienvenue </QCardSection>
+      <QCardSection class="text-h4">Bienvenue</QCardSection>
       <QCardSection v-if="message" class="text-h6 text-center">
         {{ message }}
       </QCardSection>
@@ -18,6 +18,6 @@ defineProps<{ message?: string }>();
 
 <style scoped lang="scss">
 .q-card {
-  max-width: $homepage-max-width;
+  width: $homepage-width;
 }
 </style>

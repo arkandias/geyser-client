@@ -140,8 +140,4 @@ const details = computed(
   </QPage>
 </template>
 
-<style scoped lang="scss">
-:deep(.displayed-text) {
-  max-width: $teacher-message-max-width;
-}
-</style>
+<style scoped lang="scss"></style>

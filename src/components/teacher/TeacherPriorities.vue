@@ -11,6 +11,7 @@ import {
 } from "@/helpers/format.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
+import TeacherList from "@/components/core/TeacherList.vue";
 
 const { dataFragments } = defineProps<{
   dataFragments: FragmentType<typeof TeacherPrioritiesFragmentDoc>[];
@@ -61,7 +62,7 @@ const priorities = computed(() =>
 
 <template>
   <DetailsSection title="Priorités">
-    <QList dense class="text-left">
+    <TeacherList>
       <QItem
         v-for="priority in priorities"
         :key="priority.id"
@@ -87,15 +88,8 @@ const priorities = computed(() =>
           </QAvatar>
         </QItemSection>
       </QItem>
-    </QList>
+    </TeacherList>
   </DetailsSection>
 </template>
 
-<style scoped lang="scss">
-.q-list {
-  width: $teacher-section-width;
-}
-.q-list .q-item {
-  padding: 8px;
-}
-</style>
+<style scoped lang="scss"></style>

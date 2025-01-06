@@ -3,20 +3,16 @@ defineSlots<{ default(): unknown }>();
 </script>
 
 <template>
-  <table>
+  <QList dense class="text-left">
     <slot />
-  </table>
+  </QList>
 </template>
 
 <style scoped lang="scss">
-table {
+.q-list {
   width: $teacher-page-content-width;
-  border-spacing: 8px;
 }
-:slotted(td:last-child) {
-  text-align: end;
-}
-:slotted(td:first-child) {
-  text-align: start;
+:slotted(.q-item) {
+  padding: 8px !important;
 }
 </style>

@@ -467,13 +467,17 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
         <QBtn
           v-if="teacherName"
           icon="sym_s_visibility"
-          :color="selectedCourse === null ? 'primary' : 'grey'"
+          color="primary"
           size="sm"
           flat
           square
           dense
           @click="showTeacherDetails = true"
-        />
+        >
+          <QTooltip :delay="TOOLTIP_DELAY">
+            Afficher les informations sur l'intervenant
+          </QTooltip>
+        </QBtn>
         <QBtn
           v-if="teacherName"
           icon="sym_s_close"
@@ -483,7 +487,11 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
           square
           dense
           @click="selectTeacher()"
-        />
+        >
+          <QTooltip :delay="TOOLTIP_DELAY">
+            Désélectionner l'intervenant
+          </QTooltip>
+        </QBtn>
       </div>
       <QSpace />
       <div class="row q-gutter-md">
@@ -660,7 +668,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
 
 <style scoped lang="scss">
 .teacher-details-layout {
-  max-width: min($teacher-message-max-width * 1.05, 80vw);
+  max-width: min($teacher-page-content-width * 1.5, 80vw);
   max-height: 80vh;
   background-color: white;
 }
