@@ -8,21 +8,33 @@ import { formatWH } from "@/helpers/format.ts";
 import { totalWH } from "@/helpers/hours.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
-import ServiceTable from "@/components/core/ServiceTable.vue";
+import TeacherTable from "@/components/teacher/TeacherTable.vue";
 
 const { dataFragment } = defineProps<{
-  dataFragment: {
-    assigned: FragmentType<typeof TeacherRequestsFragmentDoc>;
-    primary: FragmentType<typeof TeacherRequestsFragmentDoc>;
-    secondary: FragmentType<typeof TeacherRequestsFragmentDoc>;
-  };
+  dataFragment: FragmentType<typeof TeacherRequestsFragmentDoc>;
 }>();
 
 graphql(`
-  fragment TeacherRequests on demande_aggregate {
-    aggregate {
-      sum {
-        weightedHours: heures_eqtd
+  fragment TeacherRequests on service {
+    assigned: demandes_aggregate(where: { type: { _eq: "attribution" } }) {
+      aggregate {
+        sum {
+          weightedHours: heures_eqtd
+        }
+      }
+    }
+    primary: demandes_aggregate(where: { type: { _eq: "principale" } }) {
+      aggregate {
+        sum {
+          weightedHours: heures_eqtd
+        }
+      }
+    }
+    secondary: demandes_aggregate(where: { type: { _eq: "secondaire" } }) {
+      aggregate {
+        sum {
+          weightedHours: heures_eqtd
+        }
       }
     }
   }
@@ -30,29 +42,27 @@ graphql(`
 
 const perm = usePermissions();
 
-const data = computed(() => ({
-  assigned: useFragment(TeacherRequestsFragmentDoc, dataFragment.assigned),
-  primary: useFragment(TeacherRequestsFragmentDoc, dataFragment.primary),
-  secondary: useFragment(TeacherRequestsFragmentDoc, dataFragment.secondary),
-}));
+const requests = computed(() =>
+  useFragment(TeacherRequestsFragmentDoc, dataFragment),
+);
 </script>
 
 <template>
   <DetailsSection title="Demandes">
-    <ServiceTable>
+    <TeacherTable>
       <tr v-if="perm.toViewAssignments">
         <td>Attributions</td>
-        <td>{{ formatWH(totalWH(data.assigned)) }}</td>
+        <td>{{ formatWH(totalWH(requests.assigned)) }}</td>
       </tr>
       <tr>
         <td>Demandes principales</td>
-        <td>{{ formatWH(totalWH(data.primary)) }}</td>
+        <td>{{ formatWH(totalWH(requests.primary)) }}</td>
       </tr>
       <tr>
         <td>Demandes secondaires</td>
-        <td>{{ formatWH(totalWH(data.secondary)) }}</td>
+        <td>{{ formatWH(totalWH(requests.secondary)) }}</td>
       </tr>
-    </ServiceTable>
+    </TeacherTable>
   </DetailsSection>
 </template>
 

@@ -12,7 +12,7 @@ import { RequestFormDataFragmentDoc } from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 import { useAuthenticationStore } from "@/stores/authentication.ts";
 
-import TeacherSelect from "@/components/core/TeacherSelect.vue";
+import TeacherSelect from "@/components/teacher/TeacherSelect.vue";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof RequestFormDataFragmentDoc>;

@@ -11,33 +11,31 @@ import {
 } from "@/helpers/format.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
-import TeacherList from "@/components/core/TeacherList.vue";
+import TeacherList from "@/components/teacher/TeacherList.vue";
 
-const { dataFragments } = defineProps<{
-  dataFragments: FragmentType<typeof TeacherPrioritiesFragmentDoc>[];
+const { dataFragment } = defineProps<{
+  dataFragment: FragmentType<typeof TeacherPrioritiesFragmentDoc>;
 }>();
 
 graphql(`
-  fragment TeacherPriorities on priorite {
-    id
-    course: enseignement {
-      name: nom
-      shortName: nom_court
-      semester: semestre
-      typeByType {
-        label
-      }
-      program: mention {
+  fragment TeacherPriorities on service {
+    priorities: priorites(
+      order_by: [
+        { enseignement: { semestre: asc } }
+        { enseignement: { typeByType: { label: asc } } }
+        { enseignement: { mention_id: asc } }
+        { enseignement: { parcours_id: asc } }
+        { enseignement: { nom: asc } }
+      ]
+    ) {
+      id
+      course: enseignement {
         name: nom
         shortName: nom_court
-        degree: cursus {
-          name: nom
-          shortName: nom_court
+        semester: semestre
+        typeByType {
+          label
         }
-      }
-      track: parcours {
-        name: nom
-        shortName: nom_court
         program: mention {
           name: nom
           shortName: nom_court
@@ -46,17 +44,27 @@ graphql(`
             shortName: nom_court
           }
         }
+        track: parcours {
+          name: nom
+          shortName: nom_court
+          program: mention {
+            name: nom
+            shortName: nom_court
+            degree: cursus {
+              name: nom
+              shortName: nom_court
+            }
+          }
+        }
       }
+      seniority: anciennete
+      isPriority: prioritaire
     }
-    seniority: anciennete
-    isPriority: prioritaire
   }
 `);
 
-const priorities = computed(() =>
-  dataFragments.map((fragment) =>
-    useFragment(TeacherPrioritiesFragmentDoc, fragment),
-  ),
+const priorities = computed(
+  () => useFragment(TeacherPrioritiesFragmentDoc, dataFragment).priorities,
 );
 </script>
 

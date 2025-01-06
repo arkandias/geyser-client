@@ -1226,6 +1226,12 @@ type demande {
   prioritaire: Boolean
 
   """
+  An object relationship
+  """
+  service: service!
+  service_id: Int!
+
+  """
   Le type de demande.
   """
   type: String!
@@ -1325,6 +1331,7 @@ type demande_avg_fields {
   """
   heures_eqtd: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -1341,6 +1348,7 @@ input demande_avg_order_by {
   """
   heures: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -1357,6 +1365,8 @@ input demande_bool_exp {
   id: Int_comparison_exp
   intervenant: intervenant_bool_exp
   prioritaire: Boolean_comparison_exp
+  service: service_bool_exp
+  service_id: Int_comparison_exp
   type: String_comparison_exp
   typeByType: type_demande_bool_exp
   uid: String_comparison_exp
@@ -1391,6 +1401,7 @@ input demande_inc_input {
   """
   heures: Float
   id: Int
+  service_id: Int
 }
 
 """
@@ -1409,6 +1420,8 @@ input demande_insert_input {
   heures: Float
   id: Int
   intervenant: intervenant_obj_rel_insert_input
+  service: service_obj_rel_insert_input
+  service_id: Int
 
   """
   Le type de demande.
@@ -1441,6 +1454,7 @@ type demande_max_fields {
   """
   heures_eqtd: Float
   id: Int
+  service_id: Int
 
   """
   Le type de demande.
@@ -1467,6 +1481,7 @@ input demande_max_order_by {
   """
   heures: order_by
   id: order_by
+  service_id: order_by
 
   """
   Le type de demande.
@@ -1498,6 +1513,7 @@ type demande_min_fields {
   """
   heures_eqtd: Float
   id: Int
+  service_id: Int
 
   """
   Le type de demande.
@@ -1524,6 +1540,7 @@ input demande_min_order_by {
   """
   heures: order_by
   id: order_by
+  service_id: order_by
 
   """
   Le type de demande.
@@ -1571,6 +1588,8 @@ input demande_order_by {
   id: order_by
   intervenant: intervenant_order_by
   prioritaire: order_by
+  service: service_order_by
+  service_id: order_by
   type: order_by
   typeByType: type_demande_order_by
   uid: order_by
@@ -1605,6 +1624,11 @@ enum demande_select_column {
   """
   column name
   """
+  service_id
+
+  """
+  column name
+  """
   type
 
   """
@@ -1627,6 +1651,7 @@ input demande_set_input {
   """
   heures: Float
   id: Int
+  service_id: Int
 
   """
   Le type de demande.
@@ -1658,6 +1683,7 @@ type demande_stddev_fields {
   """
   heures_eqtd: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -1674,6 +1700,7 @@ input demande_stddev_order_by {
   """
   heures: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -1695,6 +1722,7 @@ type demande_stddev_pop_fields {
   """
   heures_eqtd: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -1711,6 +1739,7 @@ input demande_stddev_pop_order_by {
   """
   heures: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -1732,6 +1761,7 @@ type demande_stddev_samp_fields {
   """
   heures_eqtd: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -1748,6 +1778,7 @@ input demande_stddev_samp_order_by {
   """
   heures: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -1779,6 +1810,7 @@ input demande_stream_cursor_value_input {
   """
   heures: Float
   id: Int
+  service_id: Int
 
   """
   Le type de demande.
@@ -1810,6 +1842,7 @@ type demande_sum_fields {
   """
   heures_eqtd: Float
   id: Int
+  service_id: Int
 }
 
 """
@@ -1826,6 +1859,7 @@ input demande_sum_order_by {
   """
   heures: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -1846,6 +1880,11 @@ enum demande_update_column {
   column name
   """
   id
+
+  """
+  column name
+  """
+  service_id
 
   """
   column name
@@ -1894,6 +1933,7 @@ type demande_var_pop_fields {
   """
   heures_eqtd: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -1910,6 +1950,7 @@ input demande_var_pop_order_by {
   """
   heures: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -1931,6 +1972,7 @@ type demande_var_samp_fields {
   """
   heures_eqtd: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -1947,6 +1989,7 @@ input demande_var_samp_order_by {
   """
   heures: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -1968,6 +2011,7 @@ type demande_variance_fields {
   """
   heures_eqtd: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -1984,6 +2028,7 @@ input demande_variance_order_by {
   """
   heures: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -7125,6 +7170,12 @@ type message {
   An object relationship
   """
   intervenant: intervenant!
+
+  """
+  An object relationship
+  """
+  service: service!
+  service_id: Int!
   uid: String!
 }
 
@@ -7203,6 +7254,7 @@ type message_avg_fields {
   L'identifiant unique du message.
   """
   id: Float
+  service_id: Float
 }
 
 """
@@ -7215,6 +7267,7 @@ input message_avg_order_by {
   L'identifiant unique du message.
   """
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -7229,6 +7282,8 @@ input message_bool_exp {
   contenu: String_comparison_exp
   id: Int_comparison_exp
   intervenant: intervenant_bool_exp
+  service: service_bool_exp
+  service_id: Int_comparison_exp
   uid: String_comparison_exp
 }
 
@@ -7257,6 +7312,7 @@ input message_inc_input {
   L'identifiant unique du message.
   """
   id: Int
+  service_id: Int
 }
 
 """
@@ -7276,6 +7332,8 @@ input message_insert_input {
   """
   id: Int
   intervenant: intervenant_obj_rel_insert_input
+  service: service_obj_rel_insert_input
+  service_id: Int
   uid: String
 }
 
@@ -7294,6 +7352,7 @@ type message_max_fields {
   L'identifiant unique du message.
   """
   id: Int
+  service_id: Int
   uid: String
 }
 
@@ -7312,6 +7371,7 @@ input message_max_order_by {
   L'identifiant unique du message.
   """
   id: order_by
+  service_id: order_by
   uid: order_by
 }
 
@@ -7330,6 +7390,7 @@ type message_min_fields {
   L'identifiant unique du message.
   """
   id: Int
+  service_id: Int
   uid: String
 }
 
@@ -7348,6 +7409,7 @@ input message_min_order_by {
   L'identifiant unique du message.
   """
   id: order_by
+  service_id: order_by
   uid: order_by
 }
 
@@ -7384,6 +7446,8 @@ input message_order_by {
   contenu: order_by
   id: order_by
   intervenant: intervenant_order_by
+  service: service_order_by
+  service_id: order_by
   uid: order_by
 }
 
@@ -7419,6 +7483,11 @@ enum message_select_column {
   """
   column name
   """
+  service_id
+
+  """
+  column name
+  """
   uid
 }
 
@@ -7437,6 +7506,7 @@ input message_set_input {
   L'identifiant unique du message.
   """
   id: Int
+  service_id: Int
   uid: String
 }
 
@@ -7450,6 +7520,7 @@ type message_stddev_fields {
   L'identifiant unique du message.
   """
   id: Float
+  service_id: Float
 }
 
 """
@@ -7462,6 +7533,7 @@ input message_stddev_order_by {
   L'identifiant unique du message.
   """
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -7474,6 +7546,7 @@ type message_stddev_pop_fields {
   L'identifiant unique du message.
   """
   id: Float
+  service_id: Float
 }
 
 """
@@ -7486,6 +7559,7 @@ input message_stddev_pop_order_by {
   L'identifiant unique du message.
   """
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -7498,6 +7572,7 @@ type message_stddev_samp_fields {
   L'identifiant unique du message.
   """
   id: Float
+  service_id: Float
 }
 
 """
@@ -7510,6 +7585,7 @@ input message_stddev_samp_order_by {
   L'identifiant unique du message.
   """
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -7542,6 +7618,7 @@ input message_stream_cursor_value_input {
   L'identifiant unique du message.
   """
   id: Int
+  service_id: Int
   uid: String
 }
 
@@ -7555,6 +7632,7 @@ type message_sum_fields {
   L'identifiant unique du message.
   """
   id: Int
+  service_id: Int
 }
 
 """
@@ -7567,6 +7645,7 @@ input message_sum_order_by {
   L'identifiant unique du message.
   """
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -7587,6 +7666,11 @@ enum message_update_column {
   column name
   """
   id
+
+  """
+  column name
+  """
+  service_id
 
   """
   column name
@@ -7621,6 +7705,7 @@ type message_var_pop_fields {
   L'identifiant unique du message.
   """
   id: Float
+  service_id: Float
 }
 
 """
@@ -7633,6 +7718,7 @@ input message_var_pop_order_by {
   L'identifiant unique du message.
   """
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -7645,6 +7731,7 @@ type message_var_samp_fields {
   L'identifiant unique du message.
   """
   id: Float
+  service_id: Float
 }
 
 """
@@ -7657,6 +7744,7 @@ input message_var_samp_order_by {
   L'identifiant unique du message.
   """
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -7669,6 +7757,7 @@ type message_variance_fields {
   L'identifiant unique du message.
   """
   id: Float
+  service_id: Float
 }
 
 """
@@ -7681,6 +7770,7 @@ input message_variance_order_by {
   L'identifiant unique du message.
   """
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -11181,6 +11271,12 @@ type priorite {
   prioritaire: Boolean
 
   """
+  An object relationship
+  """
+  service: service!
+  service_id: Int!
+
+  """
   L'identifiant d'un intervenant.
   """
   uid: String!
@@ -11281,6 +11377,7 @@ type priorite_avg_fields {
   """
   ens_id: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -11297,6 +11394,7 @@ input priorite_avg_order_by {
   """
   ens_id: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -11312,6 +11410,8 @@ input priorite_bool_exp {
   id: Int_comparison_exp
   intervenant: intervenant_bool_exp
   prioritaire: Boolean_comparison_exp
+  service: service_bool_exp
+  service_id: Int_comparison_exp
   uid: String_comparison_exp
 }
 
@@ -11344,6 +11444,7 @@ input priorite_inc_input {
   """
   ens_id: Int
   id: Int
+  service_id: Int
 }
 
 """
@@ -11367,6 +11468,8 @@ input priorite_insert_input {
   Indique si l'intervenant est prioritaire sur l'enseignement.
   """
   prioritaire: Boolean
+  service: service_obj_rel_insert_input
+  service_id: Int
 
   """
   L'identifiant d'un intervenant.
@@ -11388,6 +11491,7 @@ type priorite_max_fields {
   """
   ens_id: Int
   id: Int
+  service_id: Int
 
   """
   L'identifiant d'un intervenant.
@@ -11409,6 +11513,7 @@ input priorite_max_order_by {
   """
   ens_id: order_by
   id: order_by
+  service_id: order_by
 
   """
   L'identifiant d'un intervenant.
@@ -11430,6 +11535,7 @@ type priorite_min_fields {
   """
   ens_id: Int
   id: Int
+  service_id: Int
 
   """
   L'identifiant d'un intervenant.
@@ -11451,6 +11557,7 @@ input priorite_min_order_by {
   """
   ens_id: order_by
   id: order_by
+  service_id: order_by
 
   """
   L'identifiant d'un intervenant.
@@ -11492,6 +11599,8 @@ input priorite_order_by {
   id: order_by
   intervenant: intervenant_order_by
   prioritaire: order_by
+  service: service_order_by
+  service_id: order_by
   uid: order_by
 }
 
@@ -11525,6 +11634,11 @@ enum priorite_select_column {
   column name
   """
   prioritaire
+
+  """
+  column name
+  """
+  service_id
 
   """
   column name
@@ -11571,6 +11685,7 @@ input priorite_set_input {
   Indique si l'intervenant est prioritaire sur l'enseignement.
   """
   prioritaire: Boolean
+  service_id: Int
 
   """
   L'identifiant d'un intervenant.
@@ -11592,6 +11707,7 @@ type priorite_stddev_fields {
   """
   ens_id: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -11608,6 +11724,7 @@ input priorite_stddev_order_by {
   """
   ens_id: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -11624,6 +11741,7 @@ type priorite_stddev_pop_fields {
   """
   ens_id: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -11640,6 +11758,7 @@ input priorite_stddev_pop_order_by {
   """
   ens_id: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -11656,6 +11775,7 @@ type priorite_stddev_samp_fields {
   """
   ens_id: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -11672,6 +11792,7 @@ input priorite_stddev_samp_order_by {
   """
   ens_id: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -11708,6 +11829,7 @@ input priorite_stream_cursor_value_input {
   Indique si l'intervenant est prioritaire sur l'enseignement.
   """
   prioritaire: Boolean
+  service_id: Int
 
   """
   L'identifiant d'un intervenant.
@@ -11729,6 +11851,7 @@ type priorite_sum_fields {
   """
   ens_id: Int
   id: Int
+  service_id: Int
 }
 
 """
@@ -11745,6 +11868,7 @@ input priorite_sum_order_by {
   """
   ens_id: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -11770,6 +11894,11 @@ enum priorite_update_column {
   column name
   """
   prioritaire
+
+  """
+  column name
+  """
+  service_id
 
   """
   column name
@@ -11808,6 +11937,7 @@ type priorite_var_pop_fields {
   """
   ens_id: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -11824,6 +11954,7 @@ input priorite_var_pop_order_by {
   """
   ens_id: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -11840,6 +11971,7 @@ type priorite_var_samp_fields {
   """
   ens_id: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -11856,6 +11988,7 @@ input priorite_var_samp_order_by {
   """
   ens_id: order_by
   id: order_by
+  service_id: order_by
 }
 
 """
@@ -11872,6 +12005,7 @@ type priorite_variance_fields {
   """
   ens_id: Float
   id: Float
+  service_id: Float
 }
 
 """
@@ -11888,6 +12022,7 @@ input priorite_variance_order_by {
   """
   ens_id: order_by
   id: order_by
+  service_id: order_by
 }
 
 type query_root {
@@ -13954,6 +14089,66 @@ type service {
   anneeByAnnee: annee!
 
   """
+  An array relationship
+  """
+  demandes(
+    """
+    distinct select on columns
+    """
+    distinct_on: [demande_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [demande_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: demande_bool_exp
+  ): [demande!]!
+
+  """
+  An aggregate relationship
+  """
+  demandes_aggregate(
+    """
+    distinct select on columns
+    """
+    distinct_on: [demande_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [demande_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: demande_bool_exp
+  ): demande_aggregate!
+
+  """
   Le nombre d'heures EQTD du service.
   """
   heures_eqtd: Float!
@@ -13967,6 +14162,66 @@ type service {
   An object relationship
   """
   intervenant: intervenant!
+
+  """
+  An array relationship
+  """
+  messages(
+    """
+    distinct select on columns
+    """
+    distinct_on: [message_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [message_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: message_bool_exp
+  ): [message!]!
+
+  """
+  An aggregate relationship
+  """
+  messages_aggregate(
+    """
+    distinct select on columns
+    """
+    distinct_on: [message_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [message_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: message_bool_exp
+  ): message_aggregate!
 
   """
   An array relationship
@@ -14027,6 +14282,66 @@ type service {
     """
     where: modification_service_bool_exp
   ): modification_service_aggregate!
+
+  """
+  An array relationship
+  """
+  priorites(
+    """
+    distinct select on columns
+    """
+    distinct_on: [priorite_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [priorite_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: priorite_bool_exp
+  ): [priorite!]!
+
+  """
+  An aggregate relationship
+  """
+  priorites_aggregate(
+    """
+    distinct select on columns
+    """
+    distinct_on: [priorite_select_column!]
+
+    """
+    limit the number of rows returned
+    """
+    limit: Int
+
+    """
+    skip the first n rows. Use only with order_by
+    """
+    offset: Int
+
+    """
+    sort the rows by one or more columns
+    """
+    order_by: [priorite_order_by!]
+
+    """
+    filter the rows returned
+    """
+    where: priorite_bool_exp
+  ): priorite_aggregate!
 
   """
   L'identifiant de l'intervenant correspond au service.
@@ -14148,11 +14463,17 @@ input service_bool_exp {
   _or: [service_bool_exp!]
   annee: Int_comparison_exp
   anneeByAnnee: annee_bool_exp
+  demandes: demande_bool_exp
+  demandes_aggregate: demande_aggregate_bool_exp
   heures_eqtd: Float_comparison_exp
   id: Int_comparison_exp
   intervenant: intervenant_bool_exp
+  messages: message_bool_exp
+  messages_aggregate: message_aggregate_bool_exp
   modifications: modification_service_bool_exp
   modifications_aggregate: modification_service_aggregate_bool_exp
+  priorites: priorite_bool_exp
+  priorites_aggregate: priorite_aggregate_bool_exp
   uid: String_comparison_exp
 }
 
@@ -14200,6 +14521,7 @@ input service_insert_input {
   """
   annee: Int
   anneeByAnnee: annee_obj_rel_insert_input
+  demandes: demande_arr_rel_insert_input
 
   """
   Le nombre d'heures EQTD du service.
@@ -14211,7 +14533,9 @@ input service_insert_input {
   """
   id: Int
   intervenant: intervenant_obj_rel_insert_input
+  messages: message_arr_rel_insert_input
   modifications: modification_service_arr_rel_insert_input
+  priorites: priorite_arr_rel_insert_input
 
   """
   L'identifiant de l'intervenant correspond au service.
@@ -14361,10 +14685,13 @@ Ordering options when selecting data from "service".
 input service_order_by {
   annee: order_by
   anneeByAnnee: annee_order_by
+  demandes_aggregate: demande_aggregate_order_by
   heures_eqtd: order_by
   id: order_by
   intervenant: intervenant_order_by
+  messages_aggregate: message_aggregate_order_by
   modifications_aggregate: modification_service_aggregate_order_by
+  priorites_aggregate: priorite_aggregate_order_by
   uid: order_by
 }
 

@@ -9,14 +9,14 @@ import {
 } from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 
-const { year, dataFragment } = defineProps<{
+const { year, uid, dataFragment } = defineProps<{
   year: number;
+  uid: string;
   dataFragment: FragmentType<typeof TeacherNoServiceFragmentDoc>;
 }>();
 
 graphql(`
   fragment TeacherNoService on intervenant {
-    uid
     position: fonctionByFonction {
       baseServiceHours: heures_eqtd_service_base
     }
@@ -56,7 +56,7 @@ const submitServiceCreation = async (): Promise<void> => {
   }
   const result = await insertService.executeMutation({
     year,
-    uid: data.value.uid,
+    uid,
     hours: baseServiceHours.value,
   });
   if (result.data?.service && !result.error) {

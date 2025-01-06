@@ -16,12 +16,16 @@ import EditableText from "@/components/core/EditableText.vue";
 const { year, uid, dataFragment } = defineProps<{
   year: number;
   uid: string;
-  dataFragment: FragmentType<typeof TeacherMessageFragmentDoc> | null;
+  dataFragment: FragmentType<typeof TeacherMessageFragmentDoc>;
 }>();
 
 graphql(`
-  fragment TeacherMessage on message {
-    body: contenu
+  fragment TeacherMessage on service {
+    messages(
+      limit: 1 # unique
+    ) {
+      body: contenu
+    }
   }
 
   mutation UpsertMessage($year: Int!, $uid: String!, $body: String!) {
@@ -49,8 +53,9 @@ graphql(`
 
 const perm = usePermissions();
 
-const data = computed(() =>
-  useFragment(TeacherMessageFragmentDoc, dataFragment),
+const message = computed(
+  () =>
+    useFragment(TeacherMessageFragmentDoc, dataFragment).messages[0] ?? null,
 );
 const upsertMessage = useMutation(UpsertMessageDocument);
 const deleteMessage = useMutation(DeleteMessageDocument);
@@ -80,7 +85,7 @@ const editMessage = ref(false);
   >
     <EditableText
       v-model="editMessage"
-      :text="data?.body ?? ''"
+      :text="message?.body ?? ''"
       :set-text="setMessage"
       default-text=""
     />

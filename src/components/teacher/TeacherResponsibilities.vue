@@ -10,38 +10,18 @@ import {
 } from "@/helpers/format.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
-import TeacherList from "@/components/core/TeacherList.vue";
+import TeacherList from "@/components/teacher/TeacherList.vue";
 
-const { dataFragments } = defineProps<{
-  dataFragments: FragmentType<typeof TeacherResponsibilitiesFragmentDoc>[];
+const { dataFragment } = defineProps<{
+  dataFragment: FragmentType<typeof TeacherResponsibilitiesFragmentDoc>;
 }>();
 
 graphql(`
-  fragment TeacherResponsibilities on responsable {
-    id
-    program: mention {
-      name: nom
-      shortName: nom_court
-      degree: cursus {
-        name: nom
-        shortName: nom_court
-      }
-    }
-    track: parcours {
-      name: nom
-      shortName: nom_court
-      program: mention {
-        name: nom
-        shortName: nom_court
-        degree: cursus {
-          name: nom
-          shortName: nom_court
-        }
-      }
-    }
-    course: enseignement {
-      name: nom
-      shortName: nom_court
+  fragment TeacherResponsibilities on intervenant {
+    responsibilities: responsabilites(
+      order_by: [{ mention_id: asc }, { parcours_id: asc }, { ens_id: asc }]
+    ) {
+      id
       program: mention {
         name: nom
         shortName: nom_court
@@ -62,15 +42,39 @@ graphql(`
           }
         }
       }
+      course: enseignement {
+        name: nom
+        shortName: nom_court
+        program: mention {
+          name: nom
+          shortName: nom_court
+          degree: cursus {
+            name: nom
+            shortName: nom_court
+          }
+        }
+        track: parcours {
+          name: nom
+          shortName: nom_court
+          program: mention {
+            name: nom
+            shortName: nom_court
+            degree: cursus {
+              name: nom
+              shortName: nom_court
+            }
+          }
+        }
+      }
+      comment: commentaire
     }
-    comment: commentaire
   }
 `);
 
-const responsabilities = computed(() =>
-  dataFragments.map((fragment) =>
-    useFragment(TeacherResponsibilitiesFragmentDoc, fragment),
-  ),
+const responsabilities = computed(
+  () =>
+    useFragment(TeacherResponsibilitiesFragmentDoc, dataFragment)
+      .responsibilities,
 );
 </script>
 

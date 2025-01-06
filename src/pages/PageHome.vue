@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HomeMessageDefault from "@/components/core/HomeMessageDefault.vue";
+import HomeMessageDefault from "@/components/home/HomeMessageDefault.vue";
 
 defineProps<{ message?: string }>();
 </script>
