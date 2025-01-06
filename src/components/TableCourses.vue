@@ -407,11 +407,11 @@ const isAssigned = (row: CourseRowFragment) =>
       request.courseId === row.id && request.type === REQUEST_TYPES.ASSIGNMENT,
   ) ?? false;
 const isVisible = (row: CourseRowFragment): boolean =>
-  !teacherName.value &&
-  row.visible &&
-  row.program.degree.visible &&
-  row.program.visible &&
-  (row.track?.visible ?? true);
+  !!teacherName.value ||
+  (row.visible &&
+    row.program.degree.visible &&
+    row.program.visible &&
+    (row.track?.visible ?? true));
 
 // Helper
 const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
@@ -654,7 +654,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
         :props="scope"
         :class="{
           'non-visible': !isVisible(scope.row),
-          attribue: isAssigned(scope.row),
+          assigned: isAssigned(scope.row),
         }"
       >
         {{ scope.value?.short ?? scope.value?.long ?? scope.value }}
@@ -684,7 +684,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
 .non-visible {
   background-color: rgba($negative, 0.1);
 }
-.attribue {
+.assigned {
   background-color: rgba($positive, 0.1);
 }
 </style>
