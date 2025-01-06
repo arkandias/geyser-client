@@ -47,9 +47,12 @@ graphql(`
   }
 
   query GetTeacherRows($year: Int!, $where: intervenant_bool_exp = {}) {
-    teachers: intervenant(
-      where: { _and: [{ services: { annee: { _eq: $year } } }, $where] }
-      order_by: [{ nom: asc }, { prenom: asc }]
+    teachers: service(
+      where: { _and: [{ annee: { _eq: $year } }, { intervenant: $where }] }
+      order_by: [
+        { intervenant: { nom: asc } }
+        { intervenant: { prenom: asc } }
+      ]
     ) {
       ...TeacherRow
     }

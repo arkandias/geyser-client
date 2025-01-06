@@ -21,22 +21,19 @@ const { teacherRowFragments } = defineProps<{
 }>();
 
 graphql(`
-  fragment TeacherRow on intervenant {
-    uid
-    firstname: prenom
-    lastname: nom
-    alias
-    visible
-    services(
-      where: { annee: { _eq: $year } }
-      limit: 1 # unique
-    ) {
-      base: heures_eqtd
-      totalModifications: modifications_aggregate {
-        aggregate {
-          sum {
-            hours: heures_eqtd
-          }
+  fragment TeacherRow on service {
+    teacher: intervenant {
+      uid
+      firstname: prenom
+      lastname: nom
+      alias
+      visible
+    }
+    base: heures_eqtd
+    totalModifications: modifications_aggregate {
+      aggregate {
+        sum {
+          hours: heures_eqtd
         }
       }
     }
@@ -68,7 +65,6 @@ graphql(`
       }
     }
     messages(
-      where: { annee: { _eq: $year } }
       limit: 1 # unique
     ) {
       id
@@ -89,7 +85,7 @@ const { getValue: selectedTeacher, toggleValue: toggleTeacher } =
   useQueryParam("uid");
 const selectedRow = computed(() => [{ uid: selectedTeacher.value }]);
 const onRowClick = async (_: Event, row: TeacherRowFragment) => {
-  await toggleTeacher(row.uid);
+  await toggleTeacher(row.teacher.uid);
 };
 
 // Columns definition
@@ -98,7 +94,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     name: "firstname",
     label: "Prénom",
     align: "left",
-    field: (row) => row.firstname,
+    field: (row) => row.teacher.firstname,
     sortable: true,
     visible: true,
     searchable: true,
@@ -108,7 +104,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     name: "lastname",
     label: "Nom",
     align: "left",
-    field: (row) => row.lastname,
+    field: (row) => row.teacher.lastname,
     sortable: true,
     visible: true,
     searchable: true,
@@ -118,7 +114,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     name: "alias",
     label: "Alias",
     align: "left",
-    field: (row) => row.alias,
+    field: (row) => row.teacher.alias,
     sortable: true,
     visible: false,
     searchable: true,
@@ -139,7 +135,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     name: "service",
     label: "S.",
     tooltip: "Service à réaliser (en heures EQTD)",
-    field: (row) => modifiedService(row.services[0]),
+    field: (row) => modifiedService(row),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -164,8 +160,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     label: "\u0394A",
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD attribuées",
-    field: (row) =>
-      modifiedService(row.services[0]) - totalWH(row.totalAssigned),
+    field: (row) => modifiedService(row) - totalWH(row.totalAssigned),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -190,8 +185,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     label: "\u0394V1",
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",
-    field: (row) =>
-      modifiedService(row.services[0]) - totalWH(row.totalPrimary),
+    field: (row) => modifiedService(row) - totalWH(row.totalPrimary),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -343,7 +337,10 @@ const stickyHeader = ref(false);
       </QTh>
     </template>
     <template #body-cell="scope">
-      <QTd :props="scope" :class="{ 'non-visible': !scope.row.visible }">
+      <QTd
+        :props="scope"
+        :class="{ 'non-visible': !scope.row.teacher.visible }"
+      >
         {{ scope.value }}
       </QTd>
     </template>

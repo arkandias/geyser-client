@@ -9693,26 +9693,26 @@ export type TeacherRequestFragment = {
 } & { " $fragmentName"?: "TeacherRequestFragment" };
 
 export type TeacherRowFragment = {
-  __typename?: "intervenant";
-  uid: string;
-  alias: string | null;
-  visible: boolean;
-  firstname: string;
-  lastname: string;
-  services: Array<{
-    __typename?: "service";
-    base: number;
-    totalModifications: {
-      __typename?: "modification_service_aggregate";
-      aggregate: {
-        __typename?: "modification_service_aggregate_fields";
-        sum: {
-          __typename?: "modification_service_sum_fields";
-          hours: number | null;
-        } | null;
+  __typename?: "service";
+  base: number;
+  teacher: {
+    __typename?: "intervenant";
+    uid: string;
+    alias: string | null;
+    visible: boolean;
+    firstname: string;
+    lastname: string;
+  };
+  totalModifications: {
+    __typename?: "modification_service_aggregate";
+    aggregate: {
+      __typename?: "modification_service_aggregate_fields";
+      sum: {
+        __typename?: "modification_service_sum_fields";
+        hours: number | null;
       } | null;
-    };
-  }>;
+    } | null;
+  };
   totalAssigned: {
     __typename?: "demande_aggregate";
     aggregate: {
@@ -10317,7 +10317,7 @@ export type GetTeacherRowsQueryVariables = Exact<{
 export type GetTeacherRowsQuery = {
   __typename?: "query_root";
   teachers: Array<
-    { __typename?: "intervenant" } & {
+    { __typename?: "service" } & {
       " $fragmentRefs"?: { TeacherRowFragment: TeacherRowFragment };
     }
   >;
@@ -14510,97 +14510,62 @@ export const TeacherRowFragmentDoc = {
       name: { kind: "Name", value: "TeacherRow" },
       typeCondition: {
         kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
+        name: { kind: "Name", value: "service" },
       },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "firstname" },
-            name: { kind: "Name", value: "prenom" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "lastname" },
-            name: { kind: "Name", value: "nom" },
-          },
-          { kind: "Field", name: { kind: "Name", value: "alias" } },
-          { kind: "Field", name: { kind: "Name", value: "visible" } },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "services" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "annee" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "year" },
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "uid" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "firstname" },
+                  name: { kind: "Name", value: "prenom" },
                 },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "limit" },
-                value: { kind: "IntValue", value: "1" },
-              },
-            ],
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "lastname" },
+                  name: { kind: "Name", value: "nom" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "alias" } },
+                { kind: "Field", name: { kind: "Name", value: "visible" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "base" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalModifications" },
+            name: { kind: "Name", value: "modifications_aggregate" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
                   kind: "Field",
-                  alias: { kind: "Name", value: "base" },
-                  name: { kind: "Name", value: "heures_eqtd" },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "totalModifications" },
-                  name: { kind: "Name", value: "modifications_aggregate" },
+                  name: { kind: "Name", value: "aggregate" },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "aggregate" },
+                        name: { kind: "Name", value: "sum" },
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "sum" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    alias: { kind: "Name", value: "hours" },
-                                    name: {
-                                      kind: "Name",
-                                      value: "heures_eqtd",
-                                    },
-                                  },
-                                ],
-                              },
+                              alias: { kind: "Name", value: "hours" },
+                              name: { kind: "Name", value: "heures_eqtd" },
                             },
                           ],
                         },
@@ -14843,32 +14808,6 @@ export const TeacherRowFragmentDoc = {
             kind: "Field",
             name: { kind: "Name", value: "messages" },
             arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "annee" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "year" },
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "limit" },
@@ -18793,7 +18732,7 @@ export const GetTeacherRowsDocument = {
           {
             kind: "Field",
             alias: { kind: "Name", value: "teachers" },
-            name: { kind: "Name", value: "intervenant" },
+            name: { kind: "Name", value: "service" },
             arguments: [
               {
                 kind: "Argument",
@@ -18812,31 +18751,16 @@ export const GetTeacherRowsDocument = {
                             fields: [
                               {
                                 kind: "ObjectField",
-                                name: { kind: "Name", value: "services" },
+                                name: { kind: "Name", value: "annee" },
                                 value: {
                                   kind: "ObjectValue",
                                   fields: [
                                     {
                                       kind: "ObjectField",
-                                      name: { kind: "Name", value: "annee" },
+                                      name: { kind: "Name", value: "_eq" },
                                       value: {
-                                        kind: "ObjectValue",
-                                        fields: [
-                                          {
-                                            kind: "ObjectField",
-                                            name: {
-                                              kind: "Name",
-                                              value: "_eq",
-                                            },
-                                            value: {
-                                              kind: "Variable",
-                                              name: {
-                                                kind: "Name",
-                                                value: "year",
-                                              },
-                                            },
-                                          },
-                                        ],
+                                        kind: "Variable",
+                                        name: { kind: "Name", value: "year" },
                                       },
                                     },
                                   ],
@@ -18845,8 +18769,17 @@ export const GetTeacherRowsDocument = {
                             ],
                           },
                           {
-                            kind: "Variable",
-                            name: { kind: "Name", value: "where" },
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "intervenant" },
+                                value: {
+                                  kind: "Variable",
+                                  name: { kind: "Name", value: "where" },
+                                },
+                              },
+                            ],
                           },
                         ],
                       },
@@ -18865,8 +18798,17 @@ export const GetTeacherRowsDocument = {
                       fields: [
                         {
                           kind: "ObjectField",
-                          name: { kind: "Name", value: "nom" },
-                          value: { kind: "EnumValue", value: "asc" },
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "nom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
                         },
                       ],
                     },
@@ -18875,8 +18817,17 @@ export const GetTeacherRowsDocument = {
                       fields: [
                         {
                           kind: "ObjectField",
-                          name: { kind: "Name", value: "prenom" },
-                          value: { kind: "EnumValue", value: "asc" },
+                          name: { kind: "Name", value: "intervenant" },
+                          value: {
+                            kind: "ObjectValue",
+                            fields: [
+                              {
+                                kind: "ObjectField",
+                                name: { kind: "Name", value: "prenom" },
+                                value: { kind: "EnumValue", value: "asc" },
+                              },
+                            ],
+                          },
                         },
                       ],
                     },
@@ -18902,97 +18853,62 @@ export const GetTeacherRowsDocument = {
       name: { kind: "Name", value: "TeacherRow" },
       typeCondition: {
         kind: "NamedType",
-        name: { kind: "Name", value: "intervenant" },
+        name: { kind: "Name", value: "service" },
       },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          { kind: "Field", name: { kind: "Name", value: "uid" } },
           {
             kind: "Field",
-            alias: { kind: "Name", value: "firstname" },
-            name: { kind: "Name", value: "prenom" },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "lastname" },
-            name: { kind: "Name", value: "nom" },
-          },
-          { kind: "Field", name: { kind: "Name", value: "alias" } },
-          { kind: "Field", name: { kind: "Name", value: "visible" } },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "services" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "annee" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "year" },
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
+            alias: { kind: "Name", value: "teacher" },
+            name: { kind: "Name", value: "intervenant" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "uid" } },
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "firstname" },
+                  name: { kind: "Name", value: "prenom" },
                 },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "limit" },
-                value: { kind: "IntValue", value: "1" },
-              },
-            ],
+                {
+                  kind: "Field",
+                  alias: { kind: "Name", value: "lastname" },
+                  name: { kind: "Name", value: "nom" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "alias" } },
+                { kind: "Field", name: { kind: "Name", value: "visible" } },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "base" },
+            name: { kind: "Name", value: "heures_eqtd" },
+          },
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "totalModifications" },
+            name: { kind: "Name", value: "modifications_aggregate" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
                   kind: "Field",
-                  alias: { kind: "Name", value: "base" },
-                  name: { kind: "Name", value: "heures_eqtd" },
-                },
-                {
-                  kind: "Field",
-                  alias: { kind: "Name", value: "totalModifications" },
-                  name: { kind: "Name", value: "modifications_aggregate" },
+                  name: { kind: "Name", value: "aggregate" },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "aggregate" },
+                        name: { kind: "Name", value: "sum" },
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "sum" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    alias: { kind: "Name", value: "hours" },
-                                    name: {
-                                      kind: "Name",
-                                      value: "heures_eqtd",
-                                    },
-                                  },
-                                ],
-                              },
+                              alias: { kind: "Name", value: "hours" },
+                              name: { kind: "Name", value: "heures_eqtd" },
                             },
                           ],
                         },
@@ -19235,32 +19151,6 @@ export const GetTeacherRowsDocument = {
             kind: "Field",
             name: { kind: "Name", value: "messages" },
             arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "where" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "annee" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "_eq" },
-                            value: {
-                              kind: "Variable",
-                              name: { kind: "Name", value: "year" },
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "limit" },
