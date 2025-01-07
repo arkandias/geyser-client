@@ -2,7 +2,6 @@ import { type Client, useClientHandle } from "@urql/vue";
 
 import {
   REQUEST_TYPE_OPTIONS,
-  type RequestType,
   isRequestType,
 } from "@/config/types/request-types.ts";
 import { graphql } from "@/gql";
@@ -10,29 +9,18 @@ import {
   DeleteRequestByIdDocument,
   DeleteRequestDocument,
   GetRequestDocument,
+  GetServiceDocument,
   UpsertRequestDocument,
 } from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 
 graphql(`
-  query GetRequest($uid: String!, $courseId: Int!, $requestType: String!) {
-    requests: demande(
-      where: {
-        _and: [
-          { uid: { _eq: $uid } }
-          { ens_id: { _eq: $courseId } }
-          { type: { _eq: $requestType } }
-        ]
-      }
-      limit: 1 # unique
-    ) {
-      hours: heures
-    }
+  query GetService($uid: String!, $courseId: Int!) {
     course: enseignement_by_pk(id: $courseId) {
       year: annee
       yearByYear: anneeByAnnee {
         services(
-          where: { uid: { _eq: $uid } }
+          where: { intervenant: { uid: { _eq: $uid } } }
           limit: 1 # unique
         ) {
           id
@@ -41,21 +29,36 @@ graphql(`
     }
   }
 
+  query GetRequest($serviceId: Int!, $courseId: Int!, $requestType: String!) {
+    requests: demande(
+      where: {
+        _and: [
+          { service_id: { _eq: $serviceId } }
+          { ens_id: { _eq: $courseId } }
+          { type: { _eq: $requestType } }
+        ]
+      }
+      limit: 1 # unique
+    ) {
+      hours: heures
+    }
+  }
+
   mutation UpsertRequest(
-    $uid: String!
+    $serviceId: Int!
     $courseId: Int!
     $requestType: String!
     $hours: Float!
   ) {
     request: insert_demande_one(
       object: {
-        uid: $uid
+        service_id: $serviceId
         ens_id: $courseId
         type: $requestType
         heures: $hours
       }
       on_conflict: {
-        constraint: demande_uid_ens_id_type_key
+        constraint: demande_service_id_ens_id_type_key
         update_columns: [heures]
       }
     ) {
@@ -64,14 +67,14 @@ graphql(`
   }
 
   mutation DeleteRequest(
-    $uid: String!
+    $serviceId: Int!
     $courseId: Int!
     $requestType: String!
   ) {
     requests: delete_demande(
       where: {
         _and: [
-          { uid: { _eq: $uid } }
+          { service_id: { _eq: $serviceId } }
           { ens_id: { _eq: $courseId } }
           { type: { _eq: $requestType } }
         ]
@@ -86,24 +89,59 @@ graphql(`
   mutation DeleteRequestById($id: Int!) {
     request: delete_demande_by_pk(id: $id) {
       id
+      type
     }
   }
 `);
 
-const getLabel = (requestType: RequestType): string => {
+const getLabel = (requestType: string) => {
   const option = REQUEST_TYPE_OPTIONS.find(
     (option) => option.value === requestType,
   );
-  if (!option) {
-    throw new Error(`No label found for request type: ${requestType}`);
+  return option?.label ?? "";
+};
+
+const getService = async (
+  client: Client,
+  variables: {
+    uid: string;
+    courseId: number;
+  },
+): Promise<number | null> => {
+  const result = await client.query(GetServiceDocument, variables, {
+    requestPolicy: "network-only",
+  });
+  if (!result.data) {
+    console.error("Error while fetching teacher service");
+    notify(NotifyType.ERROR, {
+      message: "Erreur lors de la récupération du service de l'intervenant",
+    });
+    return null;
   }
-  return option.label;
+  if (!result.data.course) {
+    console.warn(`No course found with id ${String(variables.courseId)}`);
+    notify(NotifyType.ERROR, {
+      message: "Erreur lors de la récupération du cours",
+    });
+    return null;
+  }
+  if (!result.data.course.yearByYear.services[0]) {
+    console.warn(
+      `No service found with year ${String(result.data.course.year)} and user ${variables.uid}`,
+    );
+    notify(NotifyType.ERROR, {
+      message: `Pas de service trouvé`,
+      caption: `Veuillez d'abord créer un service sur la page enseignant`,
+    });
+    return null;
+  }
+  return result.data.course.yearByYear.services[0].id;
 };
 
 const getRequest = async (
   client: Client,
   variables: {
-    uid: string;
+    serviceId: number;
     courseId: number;
     requestType: string;
   },
@@ -112,30 +150,9 @@ const getRequest = async (
     requestPolicy: "network-only",
   });
   if (!result.data) {
-    console.error(
-      "Error while fetching the current request. Please report this error to an administrator",
-    );
+    console.error("Error while fetching current request");
     notify(NotifyType.ERROR, {
       message: "Erreur lors de la récupération de la demande actuelle",
-    });
-    return null;
-  }
-  if (!result.data.course) {
-    console.error(
-      `Could not find course with id ${variables.courseId.toString()}`,
-    );
-    notify(NotifyType.ERROR, {
-      message: "Erreur lors de la récupération de la demande actuelle",
-    });
-    return null;
-  }
-  if (!result.data.course.yearByYear.services[0]) {
-    console.error(
-      `No service associated to this request. First, you must create a service for the year ${result.data.course.year.toString()} for the user ${variables.uid}`,
-    );
-    notify(NotifyType.ERROR, {
-      message: `Pas de service trouvé pour l'année ${result.data.course.year.toString()} pour l'intervenant ${variables.uid}`,
-      caption: `Veuillez d'abord créer un service sur la page enseignant`,
     });
     return null;
   }
@@ -150,8 +167,28 @@ const updateRequest =
     requestType: string;
     hours: number;
   }): Promise<void> => {
+    const { uid, courseId, ...rest } = variables;
+    const serviceId = await getService(client, { uid, courseId });
+    if (serviceId === null) {
+      return;
+    }
+    return updateRequestWithServiceId(client)({ serviceId, courseId, ...rest });
+  };
+
+const updateRequestWithServiceId =
+  (client: Client) =>
+  async (variables: {
+    serviceId: number;
+    courseId: number;
+    requestType: string;
+    hours: number;
+  }): Promise<void> => {
     if (!isRequestType(variables.requestType)) {
-      throw new Error(`Invalid request type '${variables.requestType}'`);
+      console.error(`Invalid request type '${variables.requestType}'`);
+      notify(NotifyType.ERROR, {
+        message: "Type de requête invalide",
+      });
+      return;
     }
     const { hours, ...rest } = variables;
     const current = await getRequest(client, rest);
@@ -189,16 +226,13 @@ const updateRequest =
     }
   };
 
-const deleteRequest =
+const deleteRequestById =
   (client: Client) =>
-  async (id: number, requestType: string): Promise<void> => {
-    if (!isRequestType(requestType)) {
-      throw new Error(`Invalid request type '${requestType}'`);
-    }
+  async (id: number): Promise<void> => {
     const result = await client.mutation(DeleteRequestByIdDocument, { id });
     if (result.data?.request && !result.error) {
       notify(NotifyType.SUCCESS, {
-        message: getLabel(requestType) + " supprimée",
+        message: getLabel(result.data.request.type) + " supprimée",
       });
     } else {
       notify(NotifyType.ERROR, { message: "Échec de la suppression" });
@@ -209,6 +243,7 @@ export const useRequestOperations = () => {
   const client = useClientHandle().client;
   return {
     updateRequest: updateRequest(client),
-    deleteRequest: deleteRequest(client),
+    updateRequestWithServiceId: updateRequestWithServiceId(client),
+    deleteRequestById: deleteRequestById(client),
   };
 };

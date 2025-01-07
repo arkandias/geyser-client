@@ -49,12 +49,12 @@ export const usePermissions = () => {
   );
 
   const toDeleteARequest = computed(
-    () => (request: { type: string; teacher: { uid: string } }) => {
-      switch (request.type) {
+    () => (uid: string, requestType: string) => {
+      switch (requestType) {
         case REQUEST_TYPES.ASSIGNMENT:
           return toAssignCourses.value;
         default:
-          return request.teacher.uid === profile.uid
+          return uid === profile.uid
             ? toSubmitRequests.value
             : toSubmitRequestsForOthers.value;
       }

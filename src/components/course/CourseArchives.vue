@@ -19,8 +19,8 @@ graphql(`
       requests: demandes(
         where: { type: { _eq: "attribution" } }
         order_by: [
-          { intervenant: { nom: asc } }
-          { intervenant: { prenom: asc } }
+          { service: { intervenant: { nom: asc } } }
+          { service: { intervenant: { prenom: asc } } }
         ]
       ) {
         id
@@ -31,8 +31,8 @@ graphql(`
         requests: demandes(
           where: { type: { _eq: "attribution" } }
           order_by: [
-            { intervenant: { nom: asc } }
-            { intervenant: { prenom: asc } }
+            { service: { intervenant: { nom: asc } } }
+            { service: { intervenant: { prenom: asc } } }
           ]
         ) {
           id
@@ -43,8 +43,8 @@ graphql(`
           requests: demandes(
             where: { type: { _eq: "attribution" } }
             order_by: [
-              { intervenant: { nom: asc } }
-              { intervenant: { prenom: asc } }
+              { service: { intervenant: { nom: asc } } }
+              { service: { intervenant: { prenom: asc } } }
             ]
           ) {
             id

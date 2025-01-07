@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { usePermissions } from "@/composables/permissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { TeacherServiceFragmentDoc } from "@/gql/graphql.ts";
 
@@ -11,8 +10,6 @@ import TeacherRequests from "@/components/teacher/TeacherRequests.vue";
 import TeacherServiceDetails from "@/components/teacher/TeacherServiceDetails.vue";
 
 const { dataFragment } = defineProps<{
-  year: number;
-  uid: string;
   dataFragment: FragmentType<typeof TeacherServiceFragmentDoc>;
 }>();
 
@@ -25,21 +22,16 @@ graphql(`
   }
 `);
 
-const perm = usePermissions();
-
 const service = computed(() =>
   useFragment(TeacherServiceFragmentDoc, dataFragment),
 );
 </script>
 
 <template>
-  <TeacherServiceDetails
-    :data-fragment="service"
-    :editable="perm.toEditAService(uid)"
-  />
+  <TeacherServiceDetails :data-fragment="service" />
   <TeacherRequests :data-fragment="service" />
   <TeacherPriorities :data-fragment="service" />
-  <TeacherMessage :year :uid :data-fragment="service" />
+  <TeacherMessage :data-fragment="service" />
 </template>
 
 <style scoped lang="scss">

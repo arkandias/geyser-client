@@ -201,66 +201,6 @@ type annee {
   """
   An array relationship
   """
-  messages(
-    """
-    distinct select on columns
-    """
-    distinct_on: [message_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [message_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: message_bool_exp
-  ): [message!]!
-
-  """
-  An aggregate relationship
-  """
-  messages_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [message_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [message_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: message_bool_exp
-  ): message_aggregate!
-
-  """
-  An array relationship
-  """
   services(
     """
     distinct select on columns
@@ -374,8 +314,6 @@ input annee_bool_exp {
   en_cours: Boolean_comparison_exp
   enseignements: enseignement_bool_exp
   enseignements_aggregate: enseignement_aggregate_bool_exp
-  messages: message_bool_exp
-  messages_aggregate: message_aggregate_bool_exp
   services: service_bool_exp
   services_aggregate: service_aggregate_bool_exp
   value: Int_comparison_exp
@@ -416,7 +354,6 @@ input annee_insert_input {
   """
   en_cours: Boolean
   enseignements: enseignement_arr_rel_insert_input
-  messages: message_arr_rel_insert_input
   services: service_arr_rel_insert_input
 
   """
@@ -492,7 +429,6 @@ Ordering options when selecting data from "annee".
 input annee_order_by {
   en_cours: order_by
   enseignements_aggregate: enseignement_aggregate_order_by
-  messages_aggregate: message_aggregate_order_by
   services_aggregate: service_aggregate_order_by
   value: order_by
   visible: order_by
@@ -1216,11 +1152,6 @@ type demande {
   id: Int!
 
   """
-  An object relationship
-  """
-  intervenant: intervenant!
-
-  """
   Fonction qui indique, pour une demande donnée, si celle-ci est prioritaire.
   """
   prioritaire: Boolean
@@ -1240,11 +1171,6 @@ type demande {
   An object relationship
   """
   typeByType: type_demande!
-
-  """
-  L'identifiant de l'intervenant correspondant à la demande.
-  """
-  uid: String!
 }
 
 """
@@ -1363,13 +1289,11 @@ input demande_bool_exp {
   heures: Float_comparison_exp
   heures_eqtd: Float_comparison_exp
   id: Int_comparison_exp
-  intervenant: intervenant_bool_exp
   prioritaire: Boolean_comparison_exp
   service: service_bool_exp
   service_id: Int_comparison_exp
   type: String_comparison_exp
   typeByType: type_demande_bool_exp
-  uid: String_comparison_exp
 }
 
 """
@@ -1382,9 +1306,9 @@ enum demande_constraint {
   demande_pkey
 
   """
-  unique or primary key constraint on columns "uid", "type", "ens_id"
+  unique or primary key constraint on columns "type", "ens_id", "service_id"
   """
-  demande_uid_ens_id_type_key
+  demande_service_id_ens_id_type_key
 }
 
 """
@@ -1419,7 +1343,6 @@ input demande_insert_input {
   """
   heures: Float
   id: Int
-  intervenant: intervenant_obj_rel_insert_input
   service: service_obj_rel_insert_input
   service_id: Int
 
@@ -1428,11 +1351,6 @@ input demande_insert_input {
   """
   type: String
   typeByType: type_demande_obj_rel_insert_input
-
-  """
-  L'identifiant de l'intervenant correspondant à la demande.
-  """
-  uid: String
 }
 
 """
@@ -1460,11 +1378,6 @@ type demande_max_fields {
   Le type de demande.
   """
   type: String
-
-  """
-  L'identifiant de l'intervenant correspondant à la demande.
-  """
-  uid: String
 }
 
 """
@@ -1487,11 +1400,6 @@ input demande_max_order_by {
   Le type de demande.
   """
   type: order_by
-
-  """
-  L'identifiant de l'intervenant correspondant à la demande.
-  """
-  uid: order_by
 }
 
 """
@@ -1519,11 +1427,6 @@ type demande_min_fields {
   Le type de demande.
   """
   type: String
-
-  """
-  L'identifiant de l'intervenant correspondant à la demande.
-  """
-  uid: String
 }
 
 """
@@ -1546,11 +1449,6 @@ input demande_min_order_by {
   Le type de demande.
   """
   type: order_by
-
-  """
-  L'identifiant de l'intervenant correspondant à la demande.
-  """
-  uid: order_by
 }
 
 """
@@ -1586,13 +1484,11 @@ input demande_order_by {
   heures: order_by
   heures_eqtd: order_by
   id: order_by
-  intervenant: intervenant_order_by
   prioritaire: order_by
   service: service_order_by
   service_id: order_by
   type: order_by
   typeByType: type_demande_order_by
-  uid: order_by
 }
 
 """
@@ -1630,11 +1526,6 @@ enum demande_select_column {
   column name
   """
   type
-
-  """
-  column name
-  """
-  uid
 }
 
 """
@@ -1657,11 +1548,6 @@ input demande_set_input {
   Le type de demande.
   """
   type: String
-
-  """
-  L'identifiant de l'intervenant correspondant à la demande.
-  """
-  uid: String
 }
 
 """
@@ -1816,11 +1702,6 @@ input demande_stream_cursor_value_input {
   Le type de demande.
   """
   type: String
-
-  """
-  L'identifiant de l'intervenant correspondant à la demande.
-  """
-  uid: String
 }
 
 """
@@ -1890,11 +1771,6 @@ enum demande_update_column {
   column name
   """
   type
-
-  """
-  column name
-  """
-  uid
 }
 
 input demande_updates {
@@ -5154,66 +5030,6 @@ type intervenant {
   Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel).
   """
   alias: String
-
-  """
-  An array relationship
-  """
-  demandes(
-    """
-    distinct select on columns
-    """
-    distinct_on: [demande_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [demande_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: demande_bool_exp
-  ): [demande!]!
-
-  """
-  An aggregate relationship
-  """
-  demandes_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [demande_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [demande_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: demande_bool_exp
-  ): demande_aggregate!
   fonction: String
 
   """
@@ -5227,66 +5043,6 @@ type intervenant {
   heures_eqtd_service_base: Float
 
   """
-  An array relationship
-  """
-  messages(
-    """
-    distinct select on columns
-    """
-    distinct_on: [message_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [message_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: message_bool_exp
-  ): [message!]!
-
-  """
-  An aggregate relationship
-  """
-  messages_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [message_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [message_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: message_bool_exp
-  ): message_aggregate!
-
-  """
   Le nom de l'intervenant.
   """
   nom: String!
@@ -5295,66 +5051,6 @@ type intervenant {
   Le prénom de l'intervenant.
   """
   prenom: String!
-
-  """
-  An array relationship
-  """
-  priorites(
-    """
-    distinct select on columns
-    """
-    distinct_on: [priorite_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [priorite_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: priorite_bool_exp
-  ): [priorite!]!
-
-  """
-  An aggregate relationship
-  """
-  priorites_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [priorite_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [priorite_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: priorite_bool_exp
-  ): priorite_aggregate!
 
   """
   An array relationship
@@ -5597,17 +5293,11 @@ input intervenant_bool_exp {
   _or: [intervenant_bool_exp!]
   actif: Boolean_comparison_exp
   alias: String_comparison_exp
-  demandes: demande_bool_exp
-  demandes_aggregate: demande_aggregate_bool_exp
   fonction: String_comparison_exp
   fonctionByFonction: fonction_bool_exp
   heures_eqtd_service_base: Float_comparison_exp
-  messages: message_bool_exp
-  messages_aggregate: message_aggregate_bool_exp
   nom: String_comparison_exp
   prenom: String_comparison_exp
-  priorites: priorite_bool_exp
-  priorites_aggregate: priorite_aggregate_bool_exp
   responsabilites: responsable_bool_exp
   responsabilites_aggregate: responsable_aggregate_bool_exp
   services: service_bool_exp
@@ -5649,7 +5339,6 @@ input intervenant_insert_input {
   Un alias pour l'intervenant à afficher à la place du nom et prénom (optionnel).
   """
   alias: String
-  demandes: demande_arr_rel_insert_input
   fonction: String
   fonctionByFonction: fonction_obj_rel_insert_input
 
@@ -5657,7 +5346,6 @@ input intervenant_insert_input {
   Le service de base en heures EQTD de l'intervenant (optionnel).
   """
   heures_eqtd_service_base: Float
-  messages: message_arr_rel_insert_input
 
   """
   Le nom de l'intervenant.
@@ -5668,7 +5356,6 @@ input intervenant_insert_input {
   Le prénom de l'intervenant.
   """
   prenom: String
-  priorites: priorite_arr_rel_insert_input
   responsabilites: responsable_arr_rel_insert_input
   services: service_arr_rel_insert_input
 
@@ -5849,14 +5536,11 @@ Ordering options when selecting data from "intervenant".
 input intervenant_order_by {
   actif: order_by
   alias: order_by
-  demandes_aggregate: demande_aggregate_order_by
   fonction: order_by
   fonctionByFonction: fonction_order_by
   heures_eqtd_service_base: order_by
-  messages_aggregate: message_aggregate_order_by
   nom: order_by
   prenom: order_by
-  priorites_aggregate: priorite_aggregate_order_by
   responsabilites_aggregate: responsable_aggregate_order_by
   services_aggregate: service_aggregate_order_by
   uid: order_by
@@ -7146,634 +6830,6 @@ input mention_variance_order_by {
 }
 
 """
-Table contenant les messages enregistrés sur Geyser.
-"""
-type message {
-  annee: Int!
-
-  """
-  An object relationship
-  """
-  anneeByAnnee: annee!
-
-  """
-  Le contenu du message.
-  """
-  contenu: String!
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Int!
-
-  """
-  An object relationship
-  """
-  intervenant: intervenant!
-
-  """
-  An object relationship
-  """
-  service: service!
-  service_id: Int!
-  uid: String!
-}
-
-"""
-aggregated selection of "message"
-"""
-type message_aggregate {
-  aggregate: message_aggregate_fields
-  nodes: [message!]!
-}
-
-input message_aggregate_bool_exp {
-  count: message_aggregate_bool_exp_count
-}
-
-input message_aggregate_bool_exp_count {
-  arguments: [message_select_column!]
-  distinct: Boolean
-  filter: message_bool_exp
-  predicate: Int_comparison_exp!
-}
-
-"""
-aggregate fields of "message"
-"""
-type message_aggregate_fields {
-  avg: message_avg_fields
-  count(columns: [message_select_column!], distinct: Boolean): Int!
-  max: message_max_fields
-  min: message_min_fields
-  stddev: message_stddev_fields
-  stddev_pop: message_stddev_pop_fields
-  stddev_samp: message_stddev_samp_fields
-  sum: message_sum_fields
-  var_pop: message_var_pop_fields
-  var_samp: message_var_samp_fields
-  variance: message_variance_fields
-}
-
-"""
-order by aggregate values of table "message"
-"""
-input message_aggregate_order_by {
-  avg: message_avg_order_by
-  count: order_by
-  max: message_max_order_by
-  min: message_min_order_by
-  stddev: message_stddev_order_by
-  stddev_pop: message_stddev_pop_order_by
-  stddev_samp: message_stddev_samp_order_by
-  sum: message_sum_order_by
-  var_pop: message_var_pop_order_by
-  var_samp: message_var_samp_order_by
-  variance: message_variance_order_by
-}
-
-"""
-input type for inserting array relation for remote table "message"
-"""
-input message_arr_rel_insert_input {
-  data: [message_insert_input!]!
-
-  """
-  upsert condition
-  """
-  on_conflict: message_on_conflict
-}
-
-"""
-aggregate avg on columns
-"""
-type message_avg_fields {
-  annee: Float
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Float
-  service_id: Float
-}
-
-"""
-order by avg() on columns of table "message"
-"""
-input message_avg_order_by {
-  annee: order_by
-
-  """
-  L'identifiant unique du message.
-  """
-  id: order_by
-  service_id: order_by
-}
-
-"""
-Boolean expression to filter rows from the table "message". All fields are combined with a logical 'AND'.
-"""
-input message_bool_exp {
-  _and: [message_bool_exp!]
-  _not: message_bool_exp
-  _or: [message_bool_exp!]
-  annee: Int_comparison_exp
-  anneeByAnnee: annee_bool_exp
-  contenu: String_comparison_exp
-  id: Int_comparison_exp
-  intervenant: intervenant_bool_exp
-  service: service_bool_exp
-  service_id: Int_comparison_exp
-  uid: String_comparison_exp
-}
-
-"""
-unique or primary key constraints on table "message"
-"""
-enum message_constraint {
-  """
-  unique or primary key constraint on columns "uid", "annee"
-  """
-  message_annee_uid_key
-
-  """
-  unique or primary key constraint on columns "id"
-  """
-  message_pkey
-}
-
-"""
-input type for incrementing numeric columns in table "message"
-"""
-input message_inc_input {
-  annee: Int
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Int
-  service_id: Int
-}
-
-"""
-input type for inserting data into table "message"
-"""
-input message_insert_input {
-  annee: Int
-  anneeByAnnee: annee_obj_rel_insert_input
-
-  """
-  Le contenu du message.
-  """
-  contenu: String
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Int
-  intervenant: intervenant_obj_rel_insert_input
-  service: service_obj_rel_insert_input
-  service_id: Int
-  uid: String
-}
-
-"""
-aggregate max on columns
-"""
-type message_max_fields {
-  annee: Int
-
-  """
-  Le contenu du message.
-  """
-  contenu: String
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Int
-  service_id: Int
-  uid: String
-}
-
-"""
-order by max() on columns of table "message"
-"""
-input message_max_order_by {
-  annee: order_by
-
-  """
-  Le contenu du message.
-  """
-  contenu: order_by
-
-  """
-  L'identifiant unique du message.
-  """
-  id: order_by
-  service_id: order_by
-  uid: order_by
-}
-
-"""
-aggregate min on columns
-"""
-type message_min_fields {
-  annee: Int
-
-  """
-  Le contenu du message.
-  """
-  contenu: String
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Int
-  service_id: Int
-  uid: String
-}
-
-"""
-order by min() on columns of table "message"
-"""
-input message_min_order_by {
-  annee: order_by
-
-  """
-  Le contenu du message.
-  """
-  contenu: order_by
-
-  """
-  L'identifiant unique du message.
-  """
-  id: order_by
-  service_id: order_by
-  uid: order_by
-}
-
-"""
-response of any mutation on the table "message"
-"""
-type message_mutation_response {
-  """
-  number of rows affected by the mutation
-  """
-  affected_rows: Int!
-
-  """
-  data from the rows affected by the mutation
-  """
-  returning: [message!]!
-}
-
-"""
-on_conflict condition type for table "message"
-"""
-input message_on_conflict {
-  constraint: message_constraint!
-  update_columns: [message_update_column!]! = []
-  where: message_bool_exp
-}
-
-"""
-Ordering options when selecting data from "message".
-"""
-input message_order_by {
-  annee: order_by
-  anneeByAnnee: annee_order_by
-  contenu: order_by
-  id: order_by
-  intervenant: intervenant_order_by
-  service: service_order_by
-  service_id: order_by
-  uid: order_by
-}
-
-"""
-primary key columns input for table: message
-"""
-input message_pk_columns_input {
-  """
-  L'identifiant unique du message.
-  """
-  id: Int!
-}
-
-"""
-select columns of table "message"
-"""
-enum message_select_column {
-  """
-  column name
-  """
-  annee
-
-  """
-  column name
-  """
-  contenu
-
-  """
-  column name
-  """
-  id
-
-  """
-  column name
-  """
-  service_id
-
-  """
-  column name
-  """
-  uid
-}
-
-"""
-input type for updating data in table "message"
-"""
-input message_set_input {
-  annee: Int
-
-  """
-  Le contenu du message.
-  """
-  contenu: String
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Int
-  service_id: Int
-  uid: String
-}
-
-"""
-aggregate stddev on columns
-"""
-type message_stddev_fields {
-  annee: Float
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Float
-  service_id: Float
-}
-
-"""
-order by stddev() on columns of table "message"
-"""
-input message_stddev_order_by {
-  annee: order_by
-
-  """
-  L'identifiant unique du message.
-  """
-  id: order_by
-  service_id: order_by
-}
-
-"""
-aggregate stddev_pop on columns
-"""
-type message_stddev_pop_fields {
-  annee: Float
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Float
-  service_id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "message"
-"""
-input message_stddev_pop_order_by {
-  annee: order_by
-
-  """
-  L'identifiant unique du message.
-  """
-  id: order_by
-  service_id: order_by
-}
-
-"""
-aggregate stddev_samp on columns
-"""
-type message_stddev_samp_fields {
-  annee: Float
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Float
-  service_id: Float
-}
-
-"""
-order by stddev_samp() on columns of table "message"
-"""
-input message_stddev_samp_order_by {
-  annee: order_by
-
-  """
-  L'identifiant unique du message.
-  """
-  id: order_by
-  service_id: order_by
-}
-
-"""
-Streaming cursor of the table "message"
-"""
-input message_stream_cursor_input {
-  """
-  Stream column input with initial value
-  """
-  initial_value: message_stream_cursor_value_input!
-
-  """
-  cursor ordering
-  """
-  ordering: cursor_ordering
-}
-
-"""
-Initial value of the column from where the streaming should start
-"""
-input message_stream_cursor_value_input {
-  annee: Int
-
-  """
-  Le contenu du message.
-  """
-  contenu: String
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Int
-  service_id: Int
-  uid: String
-}
-
-"""
-aggregate sum on columns
-"""
-type message_sum_fields {
-  annee: Int
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Int
-  service_id: Int
-}
-
-"""
-order by sum() on columns of table "message"
-"""
-input message_sum_order_by {
-  annee: order_by
-
-  """
-  L'identifiant unique du message.
-  """
-  id: order_by
-  service_id: order_by
-}
-
-"""
-update columns of table "message"
-"""
-enum message_update_column {
-  """
-  column name
-  """
-  annee
-
-  """
-  column name
-  """
-  contenu
-
-  """
-  column name
-  """
-  id
-
-  """
-  column name
-  """
-  service_id
-
-  """
-  column name
-  """
-  uid
-}
-
-input message_updates {
-  """
-  increments the numeric columns with given value of the filtered values
-  """
-  _inc: message_inc_input
-
-  """
-  sets the columns of the filtered rows to the given values
-  """
-  _set: message_set_input
-
-  """
-  filter the rows which have to be updated
-  """
-  where: message_bool_exp!
-}
-
-"""
-aggregate var_pop on columns
-"""
-type message_var_pop_fields {
-  annee: Float
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Float
-  service_id: Float
-}
-
-"""
-order by var_pop() on columns of table "message"
-"""
-input message_var_pop_order_by {
-  annee: order_by
-
-  """
-  L'identifiant unique du message.
-  """
-  id: order_by
-  service_id: order_by
-}
-
-"""
-aggregate var_samp on columns
-"""
-type message_var_samp_fields {
-  annee: Float
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Float
-  service_id: Float
-}
-
-"""
-order by var_samp() on columns of table "message"
-"""
-input message_var_samp_order_by {
-  annee: order_by
-
-  """
-  L'identifiant unique du message.
-  """
-  id: order_by
-  service_id: order_by
-}
-
-"""
-aggregate variance on columns
-"""
-type message_variance_fields {
-  annee: Float
-
-  """
-  L'identifiant unique du message.
-  """
-  id: Float
-  service_id: Float
-}
-
-"""
-order by variance() on columns of table "message"
-"""
-input message_variance_order_by {
-  annee: order_by
-
-  """
-  L'identifiant unique du message.
-  """
-  id: order_by
-  service_id: order_by
-}
-
-"""
 Table contenant les modifications du service de base d'un intervenant donné pour une année donnée.
 """
 type modification_service {
@@ -8678,26 +7734,6 @@ type mutation_root {
   ): mention
 
   """
-  delete data from the table: "message"
-  """
-  delete_message(
-    """
-    filter the rows which have to be deleted
-    """
-    where: message_bool_exp!
-  ): message_mutation_response
-
-  """
-  delete single row from the table: "message"
-  """
-  delete_message_by_pk(
-    """
-    L'identifiant unique du message.
-    """
-    id: Int!
-  ): message
-
-  """
   delete data from the table: "modification_service"
   """
   delete_modification_service(
@@ -9076,36 +8112,6 @@ type mutation_root {
     """
     on_conflict: mention_on_conflict
   ): mention
-
-  """
-  insert data into the table: "message"
-  """
-  insert_message(
-    """
-    the rows to be inserted
-    """
-    objects: [message_insert_input!]!
-
-    """
-    upsert condition
-    """
-    on_conflict: message_on_conflict
-  ): message_mutation_response
-
-  """
-  insert a single row into the table: "message"
-  """
-  insert_message_one(
-    """
-    the row to be inserted
-    """
-    object: message_insert_input!
-
-    """
-    upsert condition
-    """
-    on_conflict: message_on_conflict
-  ): message
 
   """
   insert data into the table: "modification_service"
@@ -9698,52 +8704,6 @@ type mutation_root {
     """
     updates: [mention_updates!]!
   ): [mention_mutation_response]
-
-  """
-  update data of the table: "message"
-  """
-  update_message(
-    """
-    increments the numeric columns with given value of the filtered values
-    """
-    _inc: message_inc_input
-
-    """
-    sets the columns of the filtered rows to the given values
-    """
-    _set: message_set_input
-
-    """
-    filter the rows which have to be updated
-    """
-    where: message_bool_exp!
-  ): message_mutation_response
-
-  """
-  update single row of the table: "message"
-  """
-  update_message_by_pk(
-    """
-    increments the numeric columns with given value of the filtered values
-    """
-    _inc: message_inc_input
-
-    """
-    sets the columns of the filtered rows to the given values
-    """
-    _set: message_set_input
-    pk_columns: message_pk_columns_input!
-  ): message
-
-  """
-  update multiples rows of table: "message"
-  """
-  update_message_many(
-    """
-    updates to execute, in order
-    """
-    updates: [message_updates!]!
-  ): [message_mutation_response]
 
   """
   update data of the table: "modification_service"
@@ -11261,11 +10221,6 @@ type priorite {
   id: Int!
 
   """
-  An object relationship
-  """
-  intervenant: intervenant!
-
-  """
   Indique si l'intervenant est prioritaire sur l'enseignement.
   """
   prioritaire: Boolean
@@ -11275,11 +10230,6 @@ type priorite {
   """
   service: service!
   service_id: Int!
-
-  """
-  L'identifiant d'un intervenant.
-  """
-  uid: String!
 }
 
 """
@@ -11408,11 +10358,9 @@ input priorite_bool_exp {
   ens_id: Int_comparison_exp
   enseignement: enseignement_bool_exp
   id: Int_comparison_exp
-  intervenant: intervenant_bool_exp
   prioritaire: Boolean_comparison_exp
   service: service_bool_exp
   service_id: Int_comparison_exp
-  uid: String_comparison_exp
 }
 
 """
@@ -11425,9 +10373,9 @@ enum priorite_constraint {
   priorite_pkey
 
   """
-  unique or primary key constraint on columns "uid", "ens_id"
+  unique or primary key constraint on columns "ens_id", "service_id"
   """
-  priorite_uid_ens_id_key
+  priorite_service_id_ens_id_key
 }
 
 """
@@ -11462,7 +10410,6 @@ input priorite_insert_input {
   ens_id: Int
   enseignement: enseignement_obj_rel_insert_input
   id: Int
-  intervenant: intervenant_obj_rel_insert_input
 
   """
   Indique si l'intervenant est prioritaire sur l'enseignement.
@@ -11470,11 +10417,6 @@ input priorite_insert_input {
   prioritaire: Boolean
   service: service_obj_rel_insert_input
   service_id: Int
-
-  """
-  L'identifiant d'un intervenant.
-  """
-  uid: String
 }
 
 """
@@ -11492,11 +10434,6 @@ type priorite_max_fields {
   ens_id: Int
   id: Int
   service_id: Int
-
-  """
-  L'identifiant d'un intervenant.
-  """
-  uid: String
 }
 
 """
@@ -11514,11 +10451,6 @@ input priorite_max_order_by {
   ens_id: order_by
   id: order_by
   service_id: order_by
-
-  """
-  L'identifiant d'un intervenant.
-  """
-  uid: order_by
 }
 
 """
@@ -11536,11 +10468,6 @@ type priorite_min_fields {
   ens_id: Int
   id: Int
   service_id: Int
-
-  """
-  L'identifiant d'un intervenant.
-  """
-  uid: String
 }
 
 """
@@ -11558,11 +10485,6 @@ input priorite_min_order_by {
   ens_id: order_by
   id: order_by
   service_id: order_by
-
-  """
-  L'identifiant d'un intervenant.
-  """
-  uid: order_by
 }
 
 """
@@ -11597,11 +10519,9 @@ input priorite_order_by {
   ens_id: order_by
   enseignement: enseignement_order_by
   id: order_by
-  intervenant: intervenant_order_by
   prioritaire: order_by
   service: service_order_by
   service_id: order_by
-  uid: order_by
 }
 
 """
@@ -11639,11 +10559,6 @@ enum priorite_select_column {
   column name
   """
   service_id
-
-  """
-  column name
-  """
-  uid
 }
 
 """
@@ -11686,11 +10601,6 @@ input priorite_set_input {
   """
   prioritaire: Boolean
   service_id: Int
-
-  """
-  L'identifiant d'un intervenant.
-  """
-  uid: String
 }
 
 """
@@ -11830,11 +10740,6 @@ input priorite_stream_cursor_value_input {
   """
   prioritaire: Boolean
   service_id: Int
-
-  """
-  L'identifiant d'un intervenant.
-  """
-  uid: String
 }
 
 """
@@ -11899,11 +10804,6 @@ enum priorite_update_column {
   column name
   """
   service_id
-
-  """
-  column name
-  """
-  uid
 }
 
 input priorite_updates {
@@ -12505,76 +11405,6 @@ type query_root {
     """
     id: Int!
   ): mention
-
-  """
-  fetch data from the table: "message"
-  """
-  message(
-    """
-    distinct select on columns
-    """
-    distinct_on: [message_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [message_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: message_bool_exp
-  ): [message!]!
-
-  """
-  fetch aggregated fields from the table: "message"
-  """
-  message_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [message_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [message_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: message_bool_exp
-  ): message_aggregate!
-
-  """
-  fetch data from the table: "message" using primary key columns
-  """
-  message_by_pk(
-    """
-    L'identifiant unique du message.
-    """
-    id: Int!
-  ): message
 
   """
   fetch data from the table: "modification_service"
@@ -14162,66 +12992,7 @@ type service {
   An object relationship
   """
   intervenant: intervenant!
-
-  """
-  An array relationship
-  """
-  messages(
-    """
-    distinct select on columns
-    """
-    distinct_on: [message_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [message_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: message_bool_exp
-  ): [message!]!
-
-  """
-  An aggregate relationship
-  """
-  messages_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [message_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [message_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: message_bool_exp
-  ): message_aggregate!
+  message: String
 
   """
   An array relationship
@@ -14468,8 +13239,7 @@ input service_bool_exp {
   heures_eqtd: Float_comparison_exp
   id: Int_comparison_exp
   intervenant: intervenant_bool_exp
-  messages: message_bool_exp
-  messages_aggregate: message_aggregate_bool_exp
+  message: String_comparison_exp
   modifications: modification_service_bool_exp
   modifications_aggregate: modification_service_aggregate_bool_exp
   priorites: priorite_bool_exp
@@ -14533,7 +13303,7 @@ input service_insert_input {
   """
   id: Int
   intervenant: intervenant_obj_rel_insert_input
-  messages: message_arr_rel_insert_input
+  message: String
   modifications: modification_service_arr_rel_insert_input
   priorites: priorite_arr_rel_insert_input
 
@@ -14561,6 +13331,7 @@ type service_max_fields {
   L'identifiant unique du service.
   """
   id: Int
+  message: String
 
   """
   L'identifiant de l'intervenant correspond au service.
@@ -14586,6 +13357,7 @@ input service_max_order_by {
   L'identifiant unique du service.
   """
   id: order_by
+  message: order_by
 
   """
   L'identifiant de l'intervenant correspond au service.
@@ -14611,6 +13383,7 @@ type service_min_fields {
   L'identifiant unique du service.
   """
   id: Int
+  message: String
 
   """
   L'identifiant de l'intervenant correspond au service.
@@ -14636,6 +13409,7 @@ input service_min_order_by {
   L'identifiant unique du service.
   """
   id: order_by
+  message: order_by
 
   """
   L'identifiant de l'intervenant correspond au service.
@@ -14689,7 +13463,7 @@ input service_order_by {
   heures_eqtd: order_by
   id: order_by
   intervenant: intervenant_order_by
-  messages_aggregate: message_aggregate_order_by
+  message: order_by
   modifications_aggregate: modification_service_aggregate_order_by
   priorites_aggregate: priorite_aggregate_order_by
   uid: order_by
@@ -14727,6 +13501,11 @@ enum service_select_column {
   """
   column name
   """
+  message
+
+  """
+  column name
+  """
   uid
 }
 
@@ -14748,6 +13527,7 @@ input service_set_input {
   L'identifiant unique du service.
   """
   id: Int
+  message: String
 
   """
   L'identifiant de l'intervenant correspond au service.
@@ -14908,6 +13688,7 @@ input service_stream_cursor_value_input {
   L'identifiant unique du service.
   """
   id: Int
+  message: String
 
   """
   L'identifiant de l'intervenant correspond au service.
@@ -14973,6 +13754,11 @@ enum service_update_column {
   column name
   """
   id
+
+  """
+  column name
+  """
+  message
 
   """
   column name
@@ -15737,96 +14523,6 @@ type subscription_root {
     """
     where: mention_bool_exp
   ): [mention!]!
-
-  """
-  fetch data from the table: "message"
-  """
-  message(
-    """
-    distinct select on columns
-    """
-    distinct_on: [message_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [message_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: message_bool_exp
-  ): [message!]!
-
-  """
-  fetch aggregated fields from the table: "message"
-  """
-  message_aggregate(
-    """
-    distinct select on columns
-    """
-    distinct_on: [message_select_column!]
-
-    """
-    limit the number of rows returned
-    """
-    limit: Int
-
-    """
-    skip the first n rows. Use only with order_by
-    """
-    offset: Int
-
-    """
-    sort the rows by one or more columns
-    """
-    order_by: [message_order_by!]
-
-    """
-    filter the rows returned
-    """
-    where: message_bool_exp
-  ): message_aggregate!
-
-  """
-  fetch data from the table: "message" using primary key columns
-  """
-  message_by_pk(
-    """
-    L'identifiant unique du message.
-    """
-    id: Int!
-  ): message
-
-  """
-  fetch data from the table in a streaming manner: "message"
-  """
-  message_stream(
-    """
-    maximum number of rows returned in a single batch
-    """
-    batch_size: Int!
-
-    """
-    cursor to stream the results returned by the query
-    """
-    cursor: [message_stream_cursor_input]!
-
-    """
-    filter the rows returned
-    """
-    where: message_bool_exp
-  ): [message!]!
 
   """
   fetch data from the table: "modification_service"

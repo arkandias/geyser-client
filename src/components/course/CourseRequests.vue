@@ -23,8 +23,8 @@ graphql(`
     ...RequestFormData
     requests: demandes(
       order_by: [
-        { intervenant: { nom: asc } }
-        { intervenant: { prenom: asc } }
+        { service: { intervenant: { nom: asc } } }
+        { service: { intervenant: { prenom: asc } } }
       ]
     ) {
       id

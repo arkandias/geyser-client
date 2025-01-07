@@ -20,12 +20,31 @@
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codegen.ts" beforeDir="false" afterPath="$PROJECT_DIR$/codegen.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schema.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/schema.graphql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DetailsCourse.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/DetailsCourse.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/DetailsTeacher.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TableCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableCourses.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/TableTeachers.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TableTeachers.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TheHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TheHeader.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/PriorityChip.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/PriorityChip.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/RequestCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestCard.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/core/RequestForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestForm.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseArchives.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseArchives.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CoursePriorities.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CoursePriorities.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/course/CourseRequests.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/header/CoursesOptions.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenusCourses.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherMessage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherMessage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherService.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherService.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/teacher/TeacherServiceDetails.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/teacher/TeacherServiceDetails.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/composables/permissions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/permissions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/composables/request-operations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/request-operations.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gql/gql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/gql.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gql/graphql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/gql/graphql.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/PageCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageCourses.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/PageTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageTeacher.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/vite-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/vite-env.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,47 +147,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "refacto",
-    "javascript.nodejs.core.library.configured.version": "20.12.2",
-    "javascript.nodejs.core.library.typings.version": "20.12.14",
-    "js.linters.configure.manually.selectedeslint": "true",
-    "last_opened_file_path": "/Users/julienhauseux/Projets/geyser-frontend/src/components/teacher",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.stylelint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.stylelint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "node",
-    "nodejs_package_manager_path": "pnpm",
-    "npm.generate.executor": "Run",
-    "prettierjs.PrettierConfiguration.Package": "/Users/julienhauseux/Projets/geyser-frontend/node_modules/prettier",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/Users/julienhauseux/Projets/geyser-frontend/node_modules/typescript/lib",
-    "update.copyright.on.save": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;refacto&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.12.2&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.12.14&quot;,
+    &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/julienhauseux/Projets/geyser-frontend/src/components/teacher&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;pnpm&quot;,
+    &quot;npm.generate.executor&quot;: &quot;Run&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/julienhauseux/Projets/geyser-frontend/node_modules/prettier&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/julienhauseux/Projets/geyser-frontend/node_modules/typescript/lib&quot;,
+    &quot;update.copyright.on.save&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ],
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "Shell Script"
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;Shell Script&quot;
     ],
-    "vue.recent.templates": [
-      "Vue Composition API Component"
+    &quot;vue.recent.templates&quot;: [
+      &quot;Vue Composition API Component&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/components/teacher" />
@@ -178,11 +197,11 @@
       <recent name="$PROJECT_DIR$/src/i18n/locales/fr" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/components/home" />
-      <recent name="$PROJECT_DIR$/src/components/teacher" />
-      <recent name="$PROJECT_DIR$/src/composables" />
-      <recent name="$PROJECT_DIR$/src/components/core" />
+      <recent name="$PROJECT_DIR$/src/components" />
+      <recent name="$PROJECT_DIR$/src/components/header" />
       <recent name="$PROJECT_DIR$/src/components/course" />
+      <recent name="$PROJECT_DIR$/src/components/teacher" />
+      <recent name="$PROJECT_DIR$/src/components/home" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -338,15 +357,10 @@
       <workItem from="1734556868404" duration="26241000" />
       <workItem from="1734622570180" duration="166813000" />
       <workItem from="1735307742226" duration="12052000" />
-      <workItem from="1735468210242" duration="170142000" />
-    </task>
-    <task id="LOCAL-00334" summary="WIP">
-      <option name="closed" value="true" />
-      <created>1735341746954</created>
-      <option name="number" value="00334" />
-      <option name="presentableId" value="LOCAL-00334" />
-      <option name="project" value="LOCAL" />
-      <updated>1735341746954</updated>
+      <workItem from="1735468210242" duration="189451000" />
+      <workItem from="1736206536097" duration="77000" />
+      <workItem from="1736206622553" duration="1245000" />
+      <workItem from="1736207972150" duration="2258000" />
     </task>
     <task id="LOCAL-00335" summary="WIP">
       <option name="closed" value="true" />
@@ -732,7 +746,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736168556710</updated>
     </task>
-    <option name="localTasksCounter" value="383" />
+    <task id="LOCAL-00383" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1736176193983</created>
+      <option name="number" value="00383" />
+      <option name="presentableId" value="LOCAL-00383" />
+      <option name="project" value="LOCAL" />
+      <updated>1736176193983</updated>
+    </task>
+    <option name="localTasksCounter" value="384" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

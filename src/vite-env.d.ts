@@ -2,11 +2,8 @@
 
 declare module "*.vue" {
   import type { DefineComponent } from "vue";
-  const component: DefineComponent<
-    NonNullable<unknown>,
-    NonNullable<unknown>,
-    never
-  >;
+  // eslint-disable-next-line
+  const component: DefineComponent<{}, {}, any>;
   export default component;
 }
 

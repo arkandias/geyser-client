@@ -18,11 +18,14 @@ const { dataFragment } = defineProps<{
 graphql(`
   fragment RequestCardData on demande {
     id
-    teacher: intervenant {
-      uid
-      firstname: prenom
-      lastname: nom
-      alias
+    service {
+      id
+      teacher: intervenant {
+        uid
+        firstname: prenom
+        lastname: nom
+        alias
+      }
     }
     course: enseignement {
       id
@@ -35,22 +38,23 @@ graphql(`
 `);
 
 const perm = usePermissions();
+const { updateRequestWithServiceId, deleteRequestById } =
+  useRequestOperations();
 
 const data = computed(() =>
   useFragment(RequestCardDataFragmentDoc, dataFragment),
 );
 
-const { updateRequest, deleteRequest } = useRequestOperations();
 const assign = async (): Promise<void> => {
-  await updateRequest({
-    uid: data.value.teacher.uid,
+  await updateRequestWithServiceId({
+    serviceId: data.value.service.id,
     courseId: data.value.course.id,
     requestType: REQUEST_TYPES.ASSIGNMENT,
     hours: data.value.hours,
   });
 };
 const remove = async (): Promise<void> => {
-  await deleteRequest(data.value.id, data.value.type);
+  await deleteRequestById(data.value.id);
 };
 
 const groups = computed(() =>
@@ -82,9 +86,9 @@ const displayAssignButton = computed(
         :color="priorityColor(data.isPriority)"
         rounded
       />
-      {{ formatUser(data.teacher) }}
+      {{ formatUser(data.service.teacher) }}
       <QTooltip :delay="TOOLTIP_DELAY" anchor="top middle" self="bottom middle">
-        {{ formatUser(data.teacher) }}
+        {{ formatUser(data.service.teacher) }}
       </QTooltip>
     </QCardSection>
     <QCardSection class="q-pa-xs text-caption">
@@ -120,7 +124,7 @@ const displayAssignButton = computed(
         icon="sym_s_close"
         color="negative"
         size="sm"
-        :disable="!perm.toDeleteARequest(data)"
+        :disable="!perm.toDeleteARequest(data.service.teacher.uid, data.type)"
         flat
         square
         dense

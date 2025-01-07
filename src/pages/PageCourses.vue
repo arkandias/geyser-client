@@ -8,7 +8,7 @@ import { graphql } from "@/gql";
 import {
   GetCourseDetailsDocument,
   GetCourseRowsDocument,
-  GetTeacherRequestsDocument,
+  GetTeacherCoursesDocument,
   GetTeacherRowsDocument,
 } from "@/gql/graphql.ts";
 import { useAuthenticationStore } from "@/stores/authentication.ts";
@@ -19,9 +19,9 @@ import {
 } from "@/stores/left-panel.ts";
 import { useYearsStore } from "@/stores/years.ts";
 
-import DetailsCourse from "@/components/DetailsCourse.vue";
 import TableCourses from "@/components/TableCourses.vue";
 import TableTeachers from "@/components/TableTeachers.vue";
+import DetailsCourse from "@/components/courses/DetailsCourse.vue";
 
 graphql(`
   query GetCourseRows($year: Int!) {
@@ -64,15 +64,12 @@ graphql(`
     }
   }
 
-  query GetTeacherRequests($year: Int!, $uid: String!) {
-    teacher: intervenant_by_pk(uid: $uid) {
-      ...TeacherName
-      requests: demandes(
-        where: { enseignement: { annee: { _eq: $year } } }
-        order_by: [{ type: asc }, { ens_id: asc }]
-      ) {
-        ...TeacherRequest
-      }
+  query GetTeacherCourses($year: Int!, $uid: String!) {
+    services: service(
+      where: { _and: [{ annee: { _eq: $year } }, { uid: { _eq: $uid } }] }
+      limit: 1 # unique
+    ) {
+      ...TeacherCourses
     }
   }
 `);
@@ -140,11 +137,11 @@ const courseDetails = computed(() =>
     : (courseDetailsQueryResult.data.value?.course ?? null),
 );
 
-// Selected teacher requests
-const teacherRequestsQueryResult = useQuery({
-  query: GetTeacherRequestsDocument,
+// Selected teacher courses
+const teacherCoursesQueryResult = useQuery({
+  query: GetTeacherCoursesDocument,
   variables: {
-    year: () => activeYear.value ?? -1,
+    year: () => activeYear.value ?? null,
     uid: () => selectedTeacher.value ?? "",
   },
   pause: () => !activeYear.value || !selectedTeacher.value,
@@ -157,10 +154,10 @@ const teacherRequestsQueryResult = useQuery({
     ],
   },
 });
-const teacherRequests = computed(() =>
-  teacherRequestsQueryResult.isPaused.value
+const teacher = computed(() =>
+  teacherCoursesQueryResult.isPaused.value
     ? null
-    : (teacherRequestsQueryResult.data.value?.teacher ?? null),
+    : (teacherCoursesQueryResult.data.value?.services[0] ?? null),
 );
 
 // Toggle left panel based on user's permissions
@@ -199,9 +196,8 @@ watch(
           <template #before>
             <TableCourses
               :course-row-fragments="courseRows"
-              :teacher-name-fragment="teacherRequests"
-              :teacher-request-fragments="teacherRequests?.requests ?? null"
               :fetching-courses="fetchingCourseRows"
+              :teacher-courses-fragment="teacher"
             />
           </template>
           <template #after>

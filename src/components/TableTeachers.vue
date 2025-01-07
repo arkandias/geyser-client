@@ -64,11 +64,7 @@ graphql(`
         }
       }
     }
-    messages(
-      limit: 1 # unique
-    ) {
-      id
-    }
+    message
   }
 `);
 
@@ -125,7 +121,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     label: "M.",
     tooltip: "Messages",
     align: "left",
-    field: (row) => (row.messages[0] ? "✓" : "✗"),
+    field: (row) => (row.message ? "✓" : "✗"),
     sortable: true,
     visible: false,
     searchable: false,

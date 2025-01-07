@@ -27,6 +27,7 @@ graphql(`
 
 const { profile } = useAuthenticationStore();
 const perm = usePermissions();
+const { updateRequest } = useRequestOperations();
 
 const data = computed(() =>
   useFragment(RequestFormDataFragmentDoc, dataFragment),
@@ -96,7 +97,6 @@ watch(
   { immediate: true },
 );
 
-const { updateRequest } = useRequestOperations();
 const submitForm = async (): Promise<void> => {
   if (uid.value === null) {
     notify(NotifyType.ERROR, {

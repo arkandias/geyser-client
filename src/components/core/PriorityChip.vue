@@ -12,10 +12,12 @@ const { dataFragment } = defineProps<{
 
 graphql(`
   fragment PriorityChipData on priorite {
-    teacher: intervenant {
-      firstname: prenom
-      lastname: nom
-      alias
+    service {
+      teacher: intervenant {
+        firstname: prenom
+        lastname: nom
+        alias
+      }
     }
     seniority: anciennete
     isPriority: prioritaire
@@ -32,7 +34,7 @@ const data = computed(() =>
     <QAvatar :color="priorityColor(data.isPriority)" text-color="white" square>
       {{ data.seniority }}
     </QAvatar>
-    {{ formatUser(data.teacher) }}
+    {{ formatUser(data.service.teacher) }}
   </QChip>
 </template>
 

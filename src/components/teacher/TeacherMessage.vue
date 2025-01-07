@@ -5,72 +5,49 @@ import { computed, ref } from "vue";
 import { usePermissions } from "@/composables/permissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  DeleteMessageDocument,
   TeacherMessageFragmentDoc,
-  UpsertMessageDocument,
+  UpdateMessageDocument,
 } from "@/gql/graphql.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import EditableText from "@/components/core/EditableText.vue";
 
-const { year, uid, dataFragment } = defineProps<{
-  year: number;
-  uid: string;
+const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof TeacherMessageFragmentDoc>;
 }>();
 
 graphql(`
   fragment TeacherMessage on service {
-    messages(
-      limit: 1 # unique
-    ) {
-      body: contenu
-    }
+    id
+    uid
+    message
   }
 
-  mutation UpsertMessage($year: Int!, $uid: String!, $body: String!) {
-    message: insert_message_one(
-      object: { annee: $year, uid: $uid, contenu: $body }
-      on_conflict: {
-        constraint: message_annee_uid_key
-        update_columns: [contenu]
-      }
+  mutation UpdateMessage($serviceId: Int!, $message: String) {
+    service: update_service_by_pk(
+      pk_columns: { id: $serviceId }
+      _set: { message: $message }
     ) {
       id
-    }
-  }
-
-  mutation DeleteMessage($year: Int!, $uid: String!) {
-    messages: delete_message(
-      where: { _and: [{ annee: { _eq: $year } }, { uid: { _eq: $uid } }] }
-    ) {
-      returning {
-        id
-      }
     }
   }
 `);
 
 const perm = usePermissions();
 
-const message = computed(
-  () =>
-    useFragment(TeacherMessageFragmentDoc, dataFragment).messages[0] ?? null,
+const data = computed(() =>
+  useFragment(TeacherMessageFragmentDoc, dataFragment),
 );
-const upsertMessage = useMutation(UpsertMessageDocument);
-const deleteMessage = useMutation(DeleteMessageDocument);
+const updateMessage = useMutation(UpdateMessageDocument);
 
 const setMessage = computed(
-  () => (body: string) =>
-    body
-      ? upsertMessage
-          .executeMutation({ year, uid, body })
-          .then((result) => !!result.data?.message?.id && !result.error)
-      : deleteMessage
-          .executeMutation({ year, uid })
-          .then(
-            (result) => !!result.data?.messages?.returning && !result.error,
-          ),
+  () => (message: string) =>
+    updateMessage
+      .executeMutation({
+        serviceId: data.value.id,
+        message: message || null,
+      })
+      .then((result) => !!result.data?.service?.id && !result.error),
 );
 
 const editMessage = ref(false);
@@ -80,12 +57,12 @@ const editMessage = ref(false);
   <DetailsSection
     v-model="editMessage"
     title="Message pour la commission"
-    :editable="perm.toEditAMessage(uid)"
+    :editable="perm.toEditAMessage(data.uid)"
     edition-tooltip="Éditer le message"
   >
     <EditableText
       v-model="editMessage"
-      :text="message?.body ?? ''"
+      :text="data.message ?? ''"
       :set-text="setMessage"
       default-text=""
     />

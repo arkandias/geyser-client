@@ -7,10 +7,10 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { useRefreshData } from "@/composables/refresh-data.ts";
 import { buttonColor } from "@/helpers/colors.ts";
 
-import CoursesOptions from "@/components/header/CoursesOptions.vue";
 import MenuAdmin from "@/components/header/MenuAdmin.vue";
 import MenuInfo from "@/components/header/MenuInfo.vue";
 import MenuUser from "@/components/header/MenuUser.vue";
+import MenusCourses from "@/components/header/MenusCourses.vue";
 
 defineProps<{ disable?: boolean }>();
 
@@ -67,7 +67,7 @@ const version = computed(() =>
           v-if="!disable && router.currentRoute.value.name === 'courses'"
           id="transition-wrapper"
         >
-          <CoursesOptions />
+          <MenusCourses />
         </div>
       </Transition>
       <QSeparator vertical inset color="white" />

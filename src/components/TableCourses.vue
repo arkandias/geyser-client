@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, toValue, watchEffect } from "vue";
+import { computed, reactive, ref, toValue, watchEffect } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
@@ -12,8 +12,7 @@ import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type CourseRowFragment,
   CourseRowFragmentDoc,
-  TeacherNameFragmentDoc,
-  TeacherRequestFragmentDoc,
+  TeacherCoursesFragmentDoc,
 } from "@/gql/graphql.ts";
 import { formatProgram, formatUser, nf } from "@/helpers/format.ts";
 import { totalH } from "@/helpers/hours.ts";
@@ -22,15 +21,11 @@ import { type Column, isAbbreviable } from "@/types/column.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
 
-const { courseRowFragments, teacherNameFragment, teacherRequestFragments } =
-  defineProps<{
-    courseRowFragments: FragmentType<typeof CourseRowFragmentDoc>[];
-    teacherNameFragment: FragmentType<typeof TeacherNameFragmentDoc> | null;
-    teacherRequestFragments:
-      | FragmentType<typeof TeacherRequestFragmentDoc>[]
-      | null;
-    fetchingCourses?: boolean;
-  }>();
+const { courseRowFragments, teacherCoursesFragment } = defineProps<{
+  courseRowFragments: FragmentType<typeof CourseRowFragmentDoc>[];
+  fetchingCourses?: boolean;
+  teacherCoursesFragment: FragmentType<typeof TeacherCoursesFragmentDoc> | null;
+}>();
 
 graphql(`
   fragment CourseRow on enseignement {
@@ -98,17 +93,18 @@ graphql(`
     }
   }
 
-  fragment TeacherName on intervenant {
-    uid
-    firstname: prenom
-    lastname: nom
-    alias
-  }
-
-  fragment TeacherRequest on demande {
-    courseId: ens_id
-    type
-    hours: heures
+  fragment TeacherCourses on service {
+    teacher: intervenant {
+      uid
+      firstname: prenom
+      lastname: nom
+      alias
+    }
+    requests: demandes(order_by: [{ type: asc }, { ens_id: asc }]) {
+      courseId: ens_id
+      type
+      hours: heures
+    }
   }
 `);
 
@@ -119,15 +115,11 @@ const courses = computed(() =>
     useFragment(CourseRowFragmentDoc, fragment),
   ),
 );
-const teacherName = computed(() =>
-  useFragment(TeacherNameFragmentDoc, teacherNameFragment),
+const teacher = computed(() =>
+  useFragment(TeacherCoursesFragmentDoc, teacherCoursesFragment),
 );
-const teacherRequests = computed(
-  () =>
-    teacherRequestFragments?.map((fragment) =>
-      useFragment(TeacherRequestFragmentDoc, fragment),
-    ) ?? null,
-);
+const teacherName = computed(() => teacher.value?.teacher ?? null);
+const teacherRequests = computed(() => teacher.value?.requests ?? null);
 
 const title = computed(() =>
   teacherName.value ? formatUser(teacherName.value) : "Enseignements",
@@ -365,17 +357,19 @@ const clearSearch = () => {
   search.value = "";
 };
 // Filter attributes
-const filterObj = computed(() => ({
-  teacherRequests: teacherRequests.value,
-  programs: programs.value,
-  courseTypes: courseTypes.value,
-  semesters: semesters.value,
-  search: normalizeForSearch(search.value),
-  searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
-}));
+const filterObj = reactive({
+  teacherRequests,
+  programs,
+  courseTypes,
+  semesters,
+  search: computed(() => normalizeForSearch(search.value)),
+  searchColumns: computed(() =>
+    columns.filter((col) => searchableColumns.includes(col.name)),
+  ),
+});
 const filterMethod = (
   rows: readonly CourseRowFragment[],
-  terms: typeof filterObj.value,
+  terms: typeof filterObj,
 ): readonly CourseRowFragment[] =>
   rows.filter((row) =>
     terms.teacherRequests
@@ -402,12 +396,12 @@ const filterMethod = (
 // Styling options controllers
 const stickyHeader = ref(false);
 const isAssigned = (row: CourseRowFragment) =>
-  teacherRequests.value?.some(
+  !!teacherRequests.value?.some(
     (request) =>
       request.courseId === row.id && request.type === REQUEST_TYPES.ASSIGNMENT,
-  ) ?? false;
+  );
 const isVisible = (row: CourseRowFragment): boolean =>
-  !!teacherName.value ||
+  !!teacher.value ||
   (row.visible &&
     row.program.degree.visible &&
     row.program.visible &&
@@ -465,7 +459,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
       <div class="q-table__title">
         {{ title }}
         <QBtn
-          v-if="teacherName"
+          v-if="teacher"
           icon="sym_s_visibility"
           color="primary"
           size="sm"
@@ -479,7 +473,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
           </QTooltip>
         </QBtn>
         <QBtn
-          v-if="teacherName"
+          v-if="teacher"
           icon="sym_s_close"
           color="primary"
           size="sm"
@@ -498,7 +492,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
         <QSelect
           v-model="programs"
           :options="programsOptions"
-          :disable="!!teacherName"
+          :disable="!!teacher"
           color="primary"
           label="Formation"
           emit-value
@@ -526,7 +520,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
         <QSelect
           v-model="courseTypes"
           :options="courseTypesOptions"
-          :disable="!!teacherName"
+          :disable="!!teacher"
           color="primary"
           label="Type"
           emit-value
@@ -553,7 +547,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
         <QSelect
           v-model="semesters"
           :options="semestersOptions"
-          :disable="!!teacherName"
+          :disable="!!teacher"
           color="primary"
           label="Semestre"
           emit-value
@@ -579,7 +573,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
         </QSelect>
         <QInput
           v-model="search"
-          :disable="!!teacherName"
+          :disable="!!teacher"
           color="primary"
           placeholder="Recherche"
           clear-icon="sym_s_close"

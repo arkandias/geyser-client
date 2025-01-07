@@ -13,12 +13,7 @@ export default {
       },
     },
   },
-  documents: [
-    "src/graphql/*.ts",
-    "src/**/*.vue",
-    "src/**/*.ts",
-    "!src/gql/**/*",
-  ],
+  documents: ["src/**/*.vue", "src/**/*.ts", "!src/gql/**/*"],
   ignoreNoDocuments: true,
   generates: {
     "src/gql/": {

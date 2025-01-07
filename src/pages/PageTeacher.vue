@@ -8,17 +8,28 @@ import { GetTeacherDetailsDocument } from "@/gql/graphql.ts";
 import { useAuthenticationStore } from "@/stores/authentication.ts";
 import { useYearsStore } from "@/stores/years.ts";
 
-import DetailsTeacher from "@/components/DetailsTeacher.vue";
+import TeacherNoService from "@/components/teacher/TeacherNoService.vue";
+import TeacherResponsibilities from "@/components/teacher/TeacherResponsibilities.vue";
+import TeacherService from "@/components/teacher/TeacherService.vue";
+import TeacherTitle from "@/components/teacher/TeacherTitle.vue";
 
 graphql(`
   query GetTeacherDetails($year: Int!, $uid: String!) {
     teacher: intervenant_by_pk(uid: $uid) {
-      ...TeacherDetails
+      responsibilitiesAggregate: responsabilites_aggregate {
+        aggregate {
+          count
+        }
+      }
+      ...TeacherTitle
+      ...TeacherResponsibilities
+      ...TeacherNoService
 
       services(
         where: { annee: { _eq: $year } }
         limit: 1 # unique
       ) {
+        id
         ...TeacherService
       }
     }
@@ -29,11 +40,13 @@ const { activeYear } = useYearsStore();
 const { profile } = useAuthenticationStore();
 const { getValue: uid } = useQueryParam("uid");
 
+const activeUid = computed(() => uid.value ?? profile.uid);
+
 const teacherDetailsQueryResult = useQuery({
   query: GetTeacherDetailsDocument,
   variables: {
     year: activeYear,
-    uid: uid.value ?? profile.uid,
+    uid: activeUid,
   },
   pause: () => activeYear.value === null,
   context: {
@@ -45,20 +58,28 @@ const teacherDetailsQueryResult = useQuery({
     ],
   },
 });
-const details = computed(
-  () => teacherDetailsQueryResult.data.value?.teacher ?? null,
+const data = computed(() => teacherDetailsQueryResult.data.value);
+const teacher = computed(() => data.value?.teacher ?? null);
+const service = computed(() => data.value?.teacher?.services[0] ?? null);
+const hasResponsibilities = computed(
+  () => !!data.value?.teacher?.responsibilitiesAggregate.aggregate?.count,
 );
 </script>
 
 <template>
   <QPage>
-    <QCard flat square class="column items-center">
-      <DetailsTeacher
-        v-if="activeYear !== null && details"
+    <QCard v-if="activeYear && teacher" flat square class="column items-center">
+      <TeacherTitle v-if="teacher" :data-fragment="teacher" />
+      <TeacherResponsibilities
+        v-if="hasResponsibilities"
+        :data-fragment="teacher"
+      />
+      <TeacherService v-if="service" :data-fragment="service" />
+      <TeacherNoService
+        v-else
         :year="activeYear"
-        :uid="uid ?? profile.uid"
-        :details-fragment="details"
-        :service-fragment="details.services[0] ?? null"
+        :uid="activeUid"
+        :data-fragment="teacher"
       />
     </QCard>
   </QPage>

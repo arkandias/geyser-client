@@ -15,8 +15,8 @@ graphql(`
   fragment CoursePriorities on enseignement {
     priorities: priorites(
       order_by: [
-        { intervenant: { nom: asc } }
-        { intervenant: { prenom: asc } }
+        { service: { intervenant: { nom: asc } } }
+        { service: { intervenant: { prenom: asc } } }
       ]
     ) {
       id
