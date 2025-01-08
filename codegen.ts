@@ -1,19 +1,35 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 import dotenv from "dotenv";
 
+// Load environment variables
 dotenv.config({ path: ".env.development" });
 dotenv.config({ path: ".env.development.local" });
 
-export default {
+// Validate required environment variables
+const GRAPHQL_URL = process.env["VITE_GRAPHQL_URL"];
+const HASURA_ADMIN_SECRET = process.env["VITE_HASURA_ADMIN_SECRET"];
+if (!GRAPHQL_URL) {
+  throw new Error("VITE_GRAPHQL_URL environment variable is required");
+}
+if (!HASURA_ADMIN_SECRET) {
+  throw new Error("VITE_HASURA_ADMIN_SECRET environment variable is required");
+}
+
+const config: CodegenConfig = {
   overwrite: true,
   schema: {
-    [process.env["VITE_GRAPHQL_URL"] ?? ""]: {
+    [GRAPHQL_URL]: {
       headers: {
-        "X-Hasura-Admin-Secret": process.env["VITE_HASURA_ADMIN_SECRET"] ?? "",
+        "X-Hasura-Admin-Secret": HASURA_ADMIN_SECRET,
       },
     },
   },
-  documents: ["src/**/*.vue", "src/**/*.ts", "!src/gql/**/*"],
+  documents: [
+    "src/**/*.graphql",
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "!src/gql/**/*",
+  ],
   ignoreNoDocuments: true,
   generates: {
     "src/gql/": {
@@ -23,14 +39,12 @@ export default {
       },
       config: {
         useTypeImports: true,
-        avoidOptionals: true,
       },
     },
     "schema.graphql": {
       plugins: ["schema-ast"],
     },
   },
-  hooks: {
-    afterOneFileWrite: ["prettier --write"],
-  },
-} satisfies CodegenConfig;
+};
+
+export default config;

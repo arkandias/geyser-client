@@ -141,7 +141,7 @@ const courseDetails = computed(() =>
 const teacherCoursesQueryResult = useQuery({
   query: GetTeacherCoursesDocument,
   variables: {
-    year: () => activeYear.value ?? null,
+    year: () => activeYear.value ?? -1,
     uid: () => selectedTeacher.value ?? "",
   },
   pause: () => !activeYear.value || !selectedTeacher.value,

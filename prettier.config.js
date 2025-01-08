@@ -1,4 +1,4 @@
-export default {
+const config = {
   plugins: ["@trivago/prettier-plugin-sort-imports"],
   importOrder: [
     "^node:",
@@ -17,3 +17,5 @@ export default {
   // importOrderParserPlugins: ["typescript", "jsx"],
   importOrderSideEffects: true,
 };
+
+export default config;
