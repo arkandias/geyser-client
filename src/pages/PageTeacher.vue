@@ -45,7 +45,7 @@ const activeUid = computed(() => uid.value ?? profile.uid);
 const teacherDetailsQueryResult = useQuery({
   query: GetTeacherDetailsDocument,
   variables: {
-    year: activeYear,
+    year: () => activeYear.value ?? -1,
     uid: activeUid,
   },
   pause: () => activeYear.value === null,

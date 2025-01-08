@@ -37,21 +37,21 @@ const hours = ref<number | null>(null);
 watch(
   () => data.value.hoursPerGroup,
   (value) => {
-    hours.value = value;
+    hours.value = value ?? null;
   },
   { immediate: true },
 );
 
 const groups = computed<number | null>({
   get: () =>
-    hours.value === null || data.value.hoursPerGroup === null
+    hours.value === null || data.value.hoursPerGroup == null
       ? null
       : Math.round(
           (hours.value / data.value.hoursPerGroup + Number.EPSILON) * 100,
         ) / 100,
   set: (val) => {
     hours.value =
-      val === null || data.value.hoursPerGroup === null
+      val === null || data.value.hoursPerGroup == null
         ? null
         : val * data.value.hoursPerGroup;
   },
@@ -128,7 +128,7 @@ const submitForm = async (): Promise<void> => {
 };
 const resetForm = (): void => {
   uid.value = uidInit.value;
-  hours.value = data.value.hoursPerGroup;
+  hours.value = data.value.hoursPerGroup ?? null;
   requestType.value = requestTypeInit.value;
 };
 </script>

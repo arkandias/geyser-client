@@ -50,9 +50,9 @@ export const formatCourseExtra = (course: Course) =>
   (course.track ? `, parcours ${displayName(course.track)}` : "");
 
 type Responsibility = {
-  program: Program | null;
-  track: Track | null;
-  course: Course | null;
+  program?: Program | null;
+  track?: Track | null;
+  course?: Course | null;
   comment?: string | null;
 };
 
@@ -82,8 +82,8 @@ type Priority = {
     };
     semester: number;
   };
-  seniority: number | null;
-  isPriority: boolean | null;
+  seniority?: number | null;
+  isPriority?: boolean | null;
 };
 
 export const formatPriorityTS = (priority: Priority) =>

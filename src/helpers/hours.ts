@@ -1,15 +1,15 @@
 type TotalHours = {
-  aggregate: {
-    sum: {
-      hours: number | null;
+  aggregate?: {
+    sum?: {
+      hours?: number | null;
     } | null;
   } | null;
 };
 
 type TotalWeightedHours = {
-  aggregate: {
-    sum: {
-      weightedHours: number | null;
+  aggregate?: {
+    sum?: {
+      weightedHours?: number | null;
     } | null;
   } | null;
 };
