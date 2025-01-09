@@ -2,7 +2,6 @@
 import { computed, ref, toValue, watchEffect } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
-import "@/composables/query-param.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";

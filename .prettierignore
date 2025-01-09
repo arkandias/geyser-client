@@ -5,3 +5,4 @@ node_modules/
 /public/
 /src/gql/
 pnpm-lock.yaml
+schema.graphql

@@ -6,8 +6,13 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 const tsrules: Linter.RulesRecord = {
+  "no-duplicate-imports": "error",
   // https://typescript-eslint.io/troubleshooting/faqs/eslint#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
   "no-undef": "off",
+  "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+  "@typescript-eslint/consistent-type-exports": "error",
+  "@typescript-eslint/consistent-type-imports": "error",
+  "@typescript-eslint/no-import-type-side-effects": "error",
   "@typescript-eslint/no-unused-vars": [
     "error",
     {
@@ -20,10 +25,6 @@ const tsrules: Linter.RulesRecord = {
       ignoreRestSiblings: true,
     },
   ],
-  "@typescript-eslint/consistent-type-definitions": ["error", "type"],
-  "@typescript-eslint/consistent-type-exports": "error",
-  "@typescript-eslint/consistent-type-imports": "error",
-  "@typescript-eslint/no-import-type-side-effects": "error",
 };
 
 export default tseslint.config(
