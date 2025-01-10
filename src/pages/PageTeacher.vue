@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { computed } from "vue";
+import { computed, reactive } from "vue";
 
 import { useQueryParam } from "@/composables/query-param.ts";
 import { graphql } from "@/gql";
@@ -44,10 +44,10 @@ const activeUid = computed(() => uid.value ?? profile.uid);
 
 const teacherDetailsQueryResult = useQuery({
   query: GetTeacherDetailsDocument,
-  variables: {
-    year: () => activeYear.value ?? -1,
+  variables: reactive({
+    year: computed(() => activeYear.value ?? -1),
     uid: activeUid,
-  },
+  }),
   pause: () => activeYear.value === null,
   context: {
     additionalTypenames: [

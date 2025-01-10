@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { computed, watch } from "vue";
+import { computed, reactive, watch } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { PHASES, isPhase } from "@/config/types/phases.ts";
@@ -57,9 +57,9 @@ const perm = usePermissions();
 const claimsRef = computed(() => getClaims());
 const userProfileQueryResult = useQuery({
   query: GetUserProfileDocument,
-  variables: {
-    uid: () => claimsRef.value?.userId ?? "",
-  },
+  variables: reactive({
+    uid: computed(() => claimsRef.value?.userId ?? ""),
+  }),
   pause: () => !claimsRef.value,
 });
 watch(

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { computed, watch } from "vue";
+import { computed, reactive, watch } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
@@ -85,9 +85,9 @@ const perm = usePermissions();
 // Course rows
 const courseRowsQueryResult = useQuery({
   query: GetCourseRowsDocument,
-  variables: {
-    year: () => activeYear.value ?? -1,
-  },
+  variables: reactive({
+    year: computed(() => activeYear.value ?? -1),
+  }),
   pause: () => activeYear.value === null,
   context: { additionalTypenames: ["demande"] },
 });
@@ -99,10 +99,12 @@ const courseRows = computed(
 // Teacher rows
 const teacherRowsQueryResult = useQuery({
   query: GetTeacherRowsDocument,
-  variables: {
-    year: () => activeYear.value ?? -1,
-    where: () => (perm.toViewAllServices ? {} : { uid: { _eq: profile.uid } }),
-  },
+  variables: reactive({
+    year: computed(() => activeYear.value ?? -1),
+    where: computed(() =>
+      perm.toViewAllServices ? {} : { uid: { _eq: profile.uid } },
+    ),
+  }),
   pause: () => activeYear.value === null,
   context: {
     additionalTypenames: [
@@ -123,9 +125,9 @@ const teacherRows = computed(
 // Selected course details
 const courseDetailsQueryResult = useQuery({
   query: GetCourseDetailsDocument,
-  variables: {
-    courseId: () => selectedCourse.value ?? -1,
-  },
+  variables: reactive({
+    courseId: computed(() => selectedCourse.value ?? -1),
+  }),
   pause: () => selectedCourse.value === null,
   context: {
     additionalTypenames: ["demande", "priorite"],
@@ -140,10 +142,10 @@ const courseDetails = computed(() =>
 // Selected teacher courses
 const teacherCoursesQueryResult = useQuery({
   query: GetTeacherCoursesDocument,
-  variables: {
-    year: () => activeYear.value ?? -1,
-    uid: () => selectedTeacher.value ?? "",
-  },
+  variables: reactive({
+    year: computed(() => activeYear.value ?? -1),
+    uid: computed(() => selectedTeacher.value ?? ""),
+  }),
   pause: () => !activeYear.value || !selectedTeacher.value,
   context: {
     additionalTypenames: [
