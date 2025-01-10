@@ -44,7 +44,9 @@ graphql(`
         }
       }
     }
-    modifications {
+    modifications(
+      order_by: [{ typeByType: { label: asc } }, { heures_eqtd: asc }]
+    ) {
       id
       modificationType: typeByType {
         label

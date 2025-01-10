@@ -21,7 +21,7 @@ import { useYearsStore } from "@/stores/years.ts";
 
 import TableCourses from "@/components/TableCourses.vue";
 import TableTeachers from "@/components/TableTeachers.vue";
-import DetailsCourse from "@/components/courses/DetailsCourse.vue";
+import DetailsCourse from "@/components/course/DetailsCourse.vue";
 
 graphql(`
   query GetCourseRows($year: Int!) {
