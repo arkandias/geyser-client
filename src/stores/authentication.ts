@@ -1,14 +1,11 @@
 import { reactive, readonly, ref } from "vue";
 
 import type { Role } from "@/config/types/roles.ts";
-import type { UserName } from "@/types/user.ts";
+import type { Profile } from "@/types/user.ts";
 
-type Profile = UserName & {
-  uid: string;
-  active: boolean;
-};
+type ProfileWithActive = Profile & { active: boolean };
 
-const profile: Profile = reactive({
+const profile: ProfileWithActive = reactive({
   uid: "",
   firstname: "",
   lastname: "",
@@ -25,18 +22,24 @@ const setActiveRole = (role: Role | null): void => {
 };
 
 const login = (
-  newProfile: Profile,
-  newDefaultRole: Role,
-  newAllowedRoles: Role[],
-  newLogout: () => Promise<void>,
+  newProfile: ProfileWithActive,
+  newDefaultRole?: Role,
+  newAllowedRoles?: Role[],
+  newLogout?: () => Promise<void>,
 ) => {
   Object.assign(profile, newProfile);
-  activeRole.value = newDefaultRole;
-  allowedRoles.value = newAllowedRoles;
-  logout.value = async () => {
-    logged.value = false;
-    await newLogout();
-  };
+  if (newDefaultRole !== undefined) {
+    activeRole.value = newDefaultRole;
+  }
+  if (newAllowedRoles !== undefined) {
+    allowedRoles.value = newAllowedRoles;
+  }
+  if (newLogout !== undefined) {
+    logout.value = async () => {
+      logged.value = false;
+      await newLogout();
+    };
+  }
   logged.value = true;
   console.debug("Logged in");
 };

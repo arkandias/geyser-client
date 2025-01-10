@@ -7,8 +7,10 @@ import { GetActiveTeachersDocument } from "@/gql/graphql.ts";
 import { formatUser } from "@/helpers/format.ts";
 import { normalizeForSearch } from "@/helpers/misc.ts";
 import type { OptionSearch } from "@/types/option.ts";
+import type { Profile } from "@/types/user.ts";
 
 const uid = defineModel<string | null>();
+const profile = defineModel<Profile | null>("profile");
 
 graphql(`
   query GetActiveTeachers {
@@ -41,6 +43,16 @@ watch(
   optionsInit,
   (value) => {
     options.value = value;
+  },
+  { immediate: true },
+);
+watch(
+  uid,
+  (value) => {
+    profile.value =
+      activeTeachersQueryResult.data.value?.teachers.find(
+        (teacher) => teacher.uid === value,
+      ) ?? null;
   },
   { immediate: true },
 );

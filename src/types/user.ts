@@ -3,3 +3,5 @@ export type UserName = {
   lastname: string;
   alias?: string | null;
 };
+
+export type Profile = { uid: string } & UserName;

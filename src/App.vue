@@ -74,7 +74,7 @@ watch(
       return;
     }
     if (result.profile === null) {
-      console.error("Login failed: Profile not found", result.profile);
+      console.error("Login failed: Profile not found");
       return;
     }
     login(result.profile, claims.defaultRole, claims.allowedRoles, logout);
