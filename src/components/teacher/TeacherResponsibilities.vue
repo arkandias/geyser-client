@@ -71,7 +71,7 @@ graphql(`
   }
 `);
 
-const responsabilities = computed(
+const responsibilities = computed(
   () =>
     useFragment(TeacherResponsibilitiesFragmentDoc, dataFragment)
       .responsibilities,
@@ -82,7 +82,7 @@ const responsabilities = computed(
   <DetailsSection title="Responsabilités">
     <TeacherList>
       <QItem
-        v-for="responsibility in responsabilities"
+        v-for="responsibility in responsibilities"
         :key="responsibility.id"
         class="q-pa-none"
       >

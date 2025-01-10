@@ -62,23 +62,24 @@ graphql(`
 const data = computed(() =>
   useFragment(CourseCoordinatorsFragmentDoc, dataFragment),
 );
+const courseCoordinators = computed(() => data.value.coordinators);
+const programCoordinators = computed(() => data.value.program.coordinators);
+const trackCoordinators = computed(() => data.value.track?.coordinators ?? []);
 </script>
 
 <template>
   <DetailsSubsection title="Responsables">
-    <div v-if="data.program.coordinators.length">
-      Responsable{{ data.program.coordinators.length > 1 ? "s" : "" }}
-      de la mention :
-      {{ formatCoordinators(data.program.coordinators) }}
+    <div v-if="programCoordinators.length">
+      Responsable{{ programCoordinators.length > 1 ? "s" : "" }} de la mention :
+      {{ formatCoordinators(programCoordinators) }}
     </div>
-    <div v-if="data.track?.coordinators.length">
-      Responsable{{ data.track?.coordinators.length > 1 ? "s" : "" }} du
-      parcours :
-      {{ formatCoordinators(data.track?.coordinators) }}
+    <div v-if="trackCoordinators.length">
+      Responsable{{ trackCoordinators.length > 1 ? "s" : "" }} du parcours :
+      {{ formatCoordinators(trackCoordinators) }}
     </div>
-    <div v-if="data.coordinators.length">
-      Responsable{{ data.coordinators.length > 1 ? "s" : "" }} de l'UE :
-      {{ formatCoordinators(data.coordinators) }}
+    <div v-if="courseCoordinators.length">
+      Responsable{{ courseCoordinators.length > 1 ? "s" : "" }} de l'UE :
+      {{ formatCoordinators(courseCoordinators) }}
     </div>
   </DetailsSubsection>
 </template>

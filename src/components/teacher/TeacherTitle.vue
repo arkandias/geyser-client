@@ -20,15 +20,17 @@ graphql(`
   }
 `);
 
-const data = computed(() => useFragment(TeacherTitleFragmentDoc, dataFragment));
+const teacher = computed(() =>
+  useFragment(TeacherTitleFragmentDoc, dataFragment),
+);
 </script>
 
 <template>
   <QCard flat square class="text-center">
     <QCardSection>
-      <div class="text-h5">{{ formatUser(data) }}</div>
-      <div v-if="data.position" class="text-body1 text-italic">
-        {{ data.position.label }}
+      <div class="text-h5">{{ formatUser(teacher) }}</div>
+      <div v-if="teacher.position" class="text-body1 text-italic">
+        {{ teacher.position.label }}
       </div>
     </QCardSection>
   </QCard>

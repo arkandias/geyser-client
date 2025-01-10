@@ -25,8 +25,8 @@ graphql(`
   }
 `);
 
-const data = computed(() =>
-  useFragment(CoursePrioritiesFragmentDoc, dataFragment),
+const priorities = computed(
+  () => useFragment(CoursePrioritiesFragmentDoc, dataFragment).priorities,
 );
 </script>
 
@@ -34,7 +34,7 @@ const data = computed(() =>
   <DetailsSection title="Priorités">
     <QCardSection>
       <PriorityChip
-        v-for="priority in data.priorities"
+        v-for="priority in priorities"
         :key="priority.id"
         :data-fragment="priority"
       />

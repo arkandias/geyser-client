@@ -94,7 +94,7 @@ graphql(`
   }
 
   fragment TeacherCourses on service {
-    teacher: intervenant {
+    name: intervenant {
       uid
       firstname: prenom
       lastname: nom
@@ -118,7 +118,7 @@ const courses = computed(() =>
 const teacher = computed(() =>
   useFragment(TeacherCoursesFragmentDoc, teacherCoursesFragment),
 );
-const teacherName = computed(() => teacher.value?.teacher ?? null);
+const teacherName = computed(() => teacher.value?.name ?? null);
 const teacherRequests = computed(() => teacher.value?.requests ?? null);
 
 const title = computed(() =>

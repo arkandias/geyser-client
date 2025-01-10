@@ -40,7 +40,7 @@ const data = computed(() =>
   useFragment(CourseRequestsFragmentDoc, dataFragment),
 );
 
-const requestsOptions = computed(() =>
+const requestsByType = computed(() =>
   REQUEST_TYPE_OPTIONS.filter(
     (requestType) =>
       requestType.value !== REQUEST_TYPES.ASSIGNMENT || perm.toViewAssignments,
@@ -59,7 +59,7 @@ const requestsOptions = computed(() =>
       <RequestForm :data-fragment="data" />
     </DetailsSubsection>
     <DetailsSubsection
-      v-for="option in requestsOptions"
+      v-for="option in requestsByType"
       :key="option.value"
       :title="option.label + 's'"
     >

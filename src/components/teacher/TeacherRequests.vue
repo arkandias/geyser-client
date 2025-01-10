@@ -42,7 +42,7 @@ graphql(`
 
 const perm = usePermissions();
 
-const requests = computed(() =>
+const requestsTotals = computed(() =>
   useFragment(TeacherRequestsFragmentDoc, dataFragment),
 );
 </script>
@@ -52,15 +52,15 @@ const requests = computed(() =>
     <TeacherTable>
       <tr v-if="perm.toViewAssignments">
         <td>Attributions</td>
-        <td>{{ formatWH(totalWH(requests.assigned)) }}</td>
+        <td>{{ formatWH(totalWH(requestsTotals.assigned)) }}</td>
       </tr>
       <tr>
         <td>Demandes principales</td>
-        <td>{{ formatWH(totalWH(requests.primary)) }}</td>
+        <td>{{ formatWH(totalWH(requestsTotals.primary)) }}</td>
       </tr>
       <tr>
         <td>Demandes secondaires</td>
-        <td>{{ formatWH(totalWH(requests.secondary)) }}</td>
+        <td>{{ formatWH(totalWH(requestsTotals.secondary)) }}</td>
       </tr>
     </TeacherTable>
   </DetailsSection>
