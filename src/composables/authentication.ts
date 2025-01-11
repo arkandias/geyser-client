@@ -101,7 +101,7 @@ const impersonate = (
 };
 
 const stopImpersonating = () => {
-  if (!isImpersonating.value) {
+  if (isImpersonating.value) {
     setClaims(claimsSaved);
     setProfile(profileSaved);
     isImpersonating.value = false;

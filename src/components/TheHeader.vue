@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 
+import { useAuthentication } from "@/composables/authentication.ts";
 import { useDarkMode } from "@/composables/dark-mode.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRefreshData } from "@/composables/refresh-data.ts";
@@ -15,6 +16,7 @@ import MenusCourses from "@/components/header/MenusCourses.vue";
 defineProps<{ disable?: boolean }>();
 
 const router = useRouter();
+const { profile, isImpersonating, stopImpersonating } = useAuthentication();
 const perm = usePermissions();
 const { refreshData } = useRefreshData();
 const { isDarkModeActive, toggleDarkMode } = useDarkMode();
@@ -26,6 +28,12 @@ const version = computed(() =>
 
 <template>
   <QHeader id="header">
+    <QBar v-if="isImpersonating" id="warning-impersonating">
+      <div class="col">
+        Vous incarnez un autre intervenant ({{ profile.uid }})
+      </div>
+      <QBtn icon="sym_s_close" flat square @click="stopImpersonating()" />
+    </QBar>
     <QToolbar>
       <QToolbarTitle shrink>
         <QAvatar icon="sym_s_spa" square size="xl" />
@@ -97,6 +105,12 @@ const version = computed(() =>
 }
 .dev #header {
   background-color: $secondary;
+}
+#warning-impersonating {
+  height: $archive-warning-height;
+  text-align: center;
+  background-color: $accent;
+  color: black;
 }
 #transition-wrapper {
   display: flex;
