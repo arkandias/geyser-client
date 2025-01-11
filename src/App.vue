@@ -31,16 +31,6 @@ graphql(`
       value
     }
   }
-
-  query GetUserProfile($uid: String!) {
-    profile: intervenant_by_pk(uid: $uid) {
-      uid
-      firstname: prenom
-      lastname: nom
-      alias
-      active: actif
-    }
-  }
 `);
 
 const { setYears, setCurrentYear } = useYearsStore();
