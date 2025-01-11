@@ -33,7 +33,7 @@ watch(
 
 <template>
   <MenuBase label="Année" icon="sym_s_history">
-    <QList dense>
+    <QList>
       <QItem class="flex-center">
         <QItemLabel header>Année</QItemLabel>
       </QItem>

@@ -5,3 +5,5 @@ export type UserName = {
 };
 
 export type Profile = { uid: string } & UserName;
+
+export type ProfileWithActive = Profile & { active: boolean };

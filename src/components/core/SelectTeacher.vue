@@ -30,10 +30,13 @@ const activeTeachersQueryResult = useQuery({
   query: GetActiveTeachersDocument,
   variables: {},
 });
+const teachers = computed(
+  () => activeTeachersQueryResult.data.value?.teachers ?? [],
+);
 
 const options = ref<OptionSearch<string>[]>([]);
 const optionsInit = computed(() =>
-  (activeTeachersQueryResult.data.value?.teachers ?? []).map((teacher) => ({
+  teachers.value.map((teacher) => ({
     value: teacher.uid,
     label: formatUser(teacher),
     search: normalizeForSearch(formatUser(teacher)),
@@ -46,16 +49,10 @@ watch(
   },
   { immediate: true },
 );
-watch(
-  uid,
-  (value) => {
-    profile.value =
-      activeTeachersQueryResult.data.value?.teachers.find(
-        (teacher) => teacher.uid === value,
-      ) ?? null;
-  },
-  { immediate: true },
-);
+watch(uid, (value) => {
+  profile.value =
+    teachers.value.find((teacher) => teacher.uid === value) ?? null;
+});
 
 const filter = (val: string, update: (x: () => void) => void) => {
   update(() => {

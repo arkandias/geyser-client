@@ -1,22 +1,14 @@
 <script setup lang="ts">
-import { computed } from "vue";
-
+import { useAuthentication } from "@/composables/authentication.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
 import { buttonColor } from "@/helpers/colors.ts";
-import { useAuthenticationStore } from "@/stores/authentication.ts";
 import { useLeftPanelStore } from "@/stores/left-panel.ts";
 
 import MenuYear from "@/components/header/MenuYear.vue";
 
 const { isLeftPanelOpen, toggleLeftPanel } = useLeftPanelStore();
-const { profile } = useAuthenticationStore();
-const { getValue: uid, toggleValue: toggleUid } = useQueryParam("uid");
-
-const isMyUidSelected = computed(() => uid.value === profile.uid);
-
-const toggleMyUid = async () => {
-  await toggleUid(profile.uid);
-};
+const { profile } = useAuthentication();
+const { getValue: selectedUid, toggleValue: toggleUid } = useQueryParam("uid");
 </script>
 
 <template>
@@ -33,11 +25,10 @@ const toggleMyUid = async () => {
   </QBtn>
   <QBtn
     icon="sym_s_assignment"
-    :color="buttonColor(isMyUidSelected)"
-    :disable="!profile.active"
+    :color="buttonColor(selectedUid === profile.uid)"
     flat
     square
-    @click="toggleMyUid"
+    @click="toggleUid(profile.uid)"
   >
     <QTooltip>Mes demandes</QTooltip>
   </QBtn>

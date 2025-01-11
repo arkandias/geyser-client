@@ -83,9 +83,9 @@ const version = computed(() =>
       >
         <QTooltip>Mode sombre</QTooltip>
       </QBtn>
-      <MenuInfo />
       <MenuUser />
       <MenuAdmin v-if="perm.toAdmin" />
+      <MenuInfo />
     </QToolbar>
   </QHeader>
 </template>

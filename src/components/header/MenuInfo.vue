@@ -16,16 +16,25 @@ const licenceLabel = "Licence";
   <MenuBase label="Infos" icon="sym_s_info">
     <QList>
       <QItem v-close-popup clickable @click="isInformationOpen = true">
+        <QItemSection side>
+          <QIcon name="sym_s_info" />
+        </QItemSection>
         <QItemSection>
           <QItemLabel>{{ informationLabel }}</QItemLabel>
         </QItemSection>
       </QItem>
       <QItem v-close-popup clickable @click="isLegalNoticeOpen = true">
+        <QItemSection side>
+          <QIcon name="sym_s_balance" />
+        </QItemSection>
         <QItemSection>
           <QItemLabel>{{ legalNoticeLabel }}</QItemLabel>
         </QItemSection>
       </QItem>
       <QItem v-close-popup clickable @click="isLicenceOpen = true">
+        <QItemSection side>
+          <QIcon name="sym_s_license" />
+        </QItemSection>
         <QItemSection>
           <QItemLabel>{{ licenceLabel }}</QItemLabel>
         </QItemSection>

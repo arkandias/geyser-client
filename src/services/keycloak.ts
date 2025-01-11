@@ -8,6 +8,25 @@ import { bypassClaims, bypassKeycloak } from "@/config/env.ts";
 import { type Role, isRole } from "@/config/types/roles.ts";
 import { type HasuraClaims, isXHasuraClaims } from "@/types/claims.ts";
 
+if (bypassKeycloak) {
+  if (import.meta.env.VITE_HASURA_ADMIN_SECRET === undefined) {
+    throw new Error(
+      "Missing VITE_HASURA_ADMIN_SECRET environment variable. This is required for local development when bypassing Keycloak authentication.",
+    );
+  }
+  if (import.meta.env.VITE_HASURA_USER_ID === undefined) {
+    throw new Error(
+      "Missing VITE_HASURA_USER_ID environment variable. This is required for local development when bypassing Keycloak authentication.",
+    );
+  }
+} else {
+  if (import.meta.env.VITE_KEYCLOAK_URL === undefined) {
+    throw new Error(
+      "Missing VITE_KEYCLOAK_URL environment variable. This is required when using Keycloak authentication.",
+    );
+  }
+}
+
 const keycloak = new Keycloak({
   url: import.meta.env.VITE_KEYCLOAK_URL ?? "",
   realm: "geyser",
@@ -22,7 +41,7 @@ keycloak.onTokenExpired = () => {
   console.debug("Token expired");
 };
 
-export const initKeycloak = async (): Promise<void> => {
+export const initKeycloak = async () => {
   if (bypassKeycloak) {
     console.debug("Bypassing Keycloak authentication");
     return;
@@ -44,7 +63,13 @@ export const initKeycloak = async (): Promise<void> => {
   }
 };
 
-export const refreshToken = async (): Promise<void> => {
+export const logout = async () => {
+  if (!bypassKeycloak) {
+    await keycloak.logout();
+  }
+};
+
+export const refreshToken = async () => {
   if (bypassKeycloak) {
     return;
   }
@@ -63,9 +88,11 @@ export const getAuthorizationHeader = (): Record<string, string> =>
         "X-Hasura-Admin-Secret": import.meta.env.VITE_HASURA_ADMIN_SECRET ?? "",
         "X-Hasura-User-Id": import.meta.env.VITE_HASURA_USER_ID ?? "",
       }
-    : { Authorization: "Bearer " + (keycloak.token ?? "") };
+    : keycloak.token
+      ? { Authorization: "Bearer " + keycloak.token }
+      : {};
 
-export const getClaims = (): HasuraClaims | null => {
+export const getClaims = () => {
   if (bypassKeycloak) {
     return bypassClaims;
   }
@@ -77,11 +104,17 @@ export const getClaims = (): HasuraClaims | null => {
     console.error("No parsed token");
     return null;
   }
-  if (!isXHasuraClaims(HASURA_CLAIMS_NAMESPACE, keycloak.tokenParsed)) {
+  return validateClaims(keycloak.tokenParsed);
+};
+
+const validateClaims = (
+  tokenParsed: Record<string, unknown>,
+): HasuraClaims | null => {
+  if (!isXHasuraClaims(HASURA_CLAIMS_NAMESPACE, tokenParsed)) {
     console.error("No valid X-Hasura claims in parsed token");
     return null;
   }
-  const claims = keycloak.tokenParsed[HASURA_CLAIMS_NAMESPACE];
+  const claims = tokenParsed[HASURA_CLAIMS_NAMESPACE];
   const validRoles = claims["x-hasura-allowed-roles"].filter(
     (role): role is Role => {
       if (!isRole(role)) {
@@ -100,14 +133,8 @@ export const getClaims = (): HasuraClaims | null => {
     return null;
   }
   return {
-    allowedRoles: validRoles,
-    defaultRole: claims["x-hasura-default-role"],
     userId: claims["x-hasura-user-id"],
+    defaultRole: claims["x-hasura-default-role"],
+    allowedRoles: validRoles,
   };
-};
-
-export const logout = async (): Promise<void> => {
-  if (!bypassKeycloak) {
-    await keycloak.logout();
-  }
 };

@@ -1,18 +1,20 @@
 import { computed, readonly } from "vue";
 
+import { useAuthentication } from "@/composables/authentication.ts";
 import { PHASES } from "@/config/types/phases.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { ROLES } from "@/config/types/roles.ts";
-import { useAuthenticationStore } from "@/stores/authentication.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 import { useYearsStore } from "@/stores/years.ts";
 
 export const usePermissions = () => {
   const { isCurrentYearActive } = useYearsStore();
   const { currentPhase } = usePhaseStore();
-  const { activeRole, profile } = useAuthenticationStore();
+  const { activeRole, profile } = useAuthentication();
 
   const toAdmin = computed(() => activeRole.value === ROLES.ADMIN);
+
+  const toImpersonate = computed(() => toAdmin.value && import.meta.env.DEV);
 
   const toAccess = computed(
     () =>
@@ -108,6 +110,7 @@ export const usePermissions = () => {
 
   return readonly({
     toAdmin,
+    toImpersonate,
     toAccess,
     toSubmitRequestsForOthers,
     toSubmitRequests,

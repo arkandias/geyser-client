@@ -21,7 +21,8 @@ const defaultOptions = (type: NotifyType): QNotifyCreateOptions => {
       return {
         ...commonProps,
         color: "negative",
-        caption: "Essayez de recharcher la page ou contactez un administrateur",
+        caption:
+          "Si le problème persiste, merci de contacter un administrateur",
       };
     case NotifyType.SUCCESS:
       return {

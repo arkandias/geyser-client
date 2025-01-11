@@ -7,14 +7,22 @@ import {
   mapExchange,
 } from "@urql/vue";
 
-import type { Role } from "@/config/types/roles.ts";
+import { ROLES, type Role } from "@/config/types/roles.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 import { getAuthorizationHeader, refreshToken } from "@/services/keycloak.ts";
 
-export const roleHeader: { "X-Hasura-Role"?: Role } = {};
+if (import.meta.env.VITE_GRAPHQL_URL === undefined) {
+  throw new Error(
+    "Missing VITE_GRAPHQL_URL in environment variables. This URL is required to connect to your GraphQL API.",
+  );
+}
+
+export const roleHeader: { "X-Hasura-Role": Role } = {
+  "X-Hasura-Role": ROLES.USER,
+};
 
 export const clientOptions: ClientOptions = {
-  url: import.meta.env.VITE_GRAPHQL_URL,
+  url: import.meta.env.VITE_GRAPHQL_URL ?? "",
   exchanges: [
     devtoolsExchange,
     cacheExchange,

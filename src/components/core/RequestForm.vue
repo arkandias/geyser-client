@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 
+import { useAuthentication } from "@/composables/authentication.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRequestOperations } from "@/composables/request-operations.ts";
 import {
@@ -10,9 +11,8 @@ import {
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestFormDataFragmentDoc } from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
-import { useAuthenticationStore } from "@/stores/authentication.ts";
 
-import TeacherSelect from "@/components/core/TeacherSelect.vue";
+import SelectTeacher from "@/components/core/SelectTeacher.vue";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof RequestFormDataFragmentDoc>;
@@ -25,7 +25,7 @@ graphql(`
   }
 `);
 
-const { profile } = useAuthenticationStore();
+const { profile } = useAuthentication();
 const perm = usePermissions();
 const { updateRequest } = useRequestOperations();
 
@@ -140,7 +140,7 @@ const resetForm = (): void => {
     @submit="submitForm"
     @reset="resetForm"
   >
-    <TeacherSelect
+    <SelectTeacher
       v-if="perm.toSubmitRequestsForOthers || perm.toAssignCourses"
       v-model="uid"
       dense

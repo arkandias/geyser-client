@@ -2,6 +2,7 @@
 import { useQuery } from "@urql/vue";
 import { computed, reactive, watch } from "vue";
 
+import { useAuthentication } from "@/composables/authentication.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
 import { graphql } from "@/gql";
@@ -11,7 +12,6 @@ import {
   GetTeacherCoursesDocument,
   GetTeacherRowsDocument,
 } from "@/gql/graphql.ts";
-import { useAuthenticationStore } from "@/stores/authentication.ts";
 import {
   hSplitterRatio,
   useLeftPanelStore,
@@ -75,7 +75,7 @@ graphql(`
 `);
 
 const { activeYear, isCurrentYearActive } = useYearsStore();
-const { profile } = useAuthenticationStore();
+const { profile } = useAuthentication();
 const { closeLeftPanel, isLeftPanelOpen, openLeftPanel } = useLeftPanelStore();
 
 const { getValue: selectedCourse } = useQueryParam("courseId", true);

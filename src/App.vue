@@ -1,18 +1,14 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { computed, reactive, watch } from "vue";
+import { computed, watch } from "vue";
 
+import { useAuthentication } from "@/composables/authentication.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { PHASES, isPhase } from "@/config/types/phases.ts";
 import { graphql } from "@/gql";
-import {
-  GetCurrentPhaseDocument,
-  GetUserProfileDocument,
-  GetYearsDocument,
-} from "@/gql/graphql.ts";
-import { getClaims, logout } from "@/services/keycloak.ts";
+import { GetCurrentPhaseDocument, GetYearsDocument } from "@/gql/graphql.ts";
+import { NotifyType, notify } from "@/helpers/notify.ts";
 import { roleHeader } from "@/services/urql.ts";
-import { useAuthenticationStore } from "@/stores/authentication.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 import { useYearsStore } from "@/stores/years.ts";
 
@@ -50,55 +46,25 @@ graphql(`
 
 const { setYears, setCurrentYear } = useYearsStore();
 const { currentPhase, setCurrentPhase } = usePhaseStore();
-const { login, logged, activeRole } = useAuthenticationStore();
+const { isLogged, activeRole, login } = useAuthentication();
 const perm = usePermissions();
 
 // User profile
-const claimsRef = computed(() => getClaims());
-const userProfileQueryResult = useQuery({
-  query: GetUserProfileDocument,
-  variables: reactive({
-    uid: computed(() => claimsRef.value?.userId ?? ""),
-  }),
-  pause: () => !claimsRef.value,
-});
-watch(
-  [claimsRef, userProfileQueryResult.data],
-  ([claims, result]) => {
-    if (claims === null) {
-      console.error("Login failed: No claims");
-      return;
-    }
-    if (result?.profile === undefined) {
-      // not fetched yet
-      return;
-    }
-    if (result.profile === null) {
-      console.error("Login failed: Profile not found");
-      return;
-    }
-    login(result.profile, claims.defaultRole, claims.allowedRoles, logout);
-  },
-  { immediate: true },
-);
+void login();
 watch(activeRole, (value) => {
-  if (value === null) {
-    delete roleHeader["X-Hasura-Role"];
-  } else {
-    roleHeader["X-Hasura-Role"] = value;
-  }
+  roleHeader["X-Hasura-Role"] = value;
 });
 
 // App parameters
 const yearsQueryResult = useQuery({
   query: GetYearsDocument,
   variables: {},
-  pause: () => !logged.value,
+  pause: () => !isLogged.value,
 });
 const currentPhaseQueryResult = useQuery({
   query: GetCurrentPhaseDocument,
   variables: {},
-  pause: () => !logged.value,
+  pause: () => !isLogged.value,
 });
 watch(
   yearsQueryResult.data,
@@ -125,9 +91,9 @@ watch(
   { immediate: true },
 );
 
-const accessGranted = computed(() => logged.value && perm.toAccess);
+const accessGranted = computed(() => isLogged.value && perm.toAccess);
 const accessDeniedMessage = computed(() => {
-  if (!logged.value) {
+  if (!isLogged.value) {
     return "Vous n'êtes pas connecté";
   }
   if (currentPhase.value === PHASES.SHUTDOWN) {

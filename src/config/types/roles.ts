@@ -5,7 +5,7 @@ export const ROLES = {
 } as const;
 
 export const ROLE_OPTIONS = [
-  { value: ROLES.USER, label: "Intervenant" },
+  { value: ROLES.USER, label: "Intervenant", default: true },
   { value: ROLES.COMMISSIONER, label: "Commissaire" },
   { value: ROLES.ADMIN, label: "Administrateur" },
 ] as const;
