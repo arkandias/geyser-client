@@ -178,7 +178,7 @@ watch(
 
 <template>
   <QPage>
-    <QCard v-if="!isCurrentYearActive" id="warning-archive">
+    <QCard v-if="!isCurrentYearActive" id="warning-archive" class="text-body1">
       Vous consultez une archive ({{ activeYear }})
     </QCard>
     <QSplitter
@@ -213,7 +213,7 @@ watch(
 
 <style scoped lang="scss">
 #warning-archive {
-  height: $archive-warning-height;
+  height: $warning-height;
   text-align: center;
   background-color: $accent;
   color: black;
@@ -232,13 +232,13 @@ watch(
 }
 #warning-archive + #first-splitter,
 #warning-archive + #first-splitter :deep(.sticky-header-table) {
-  height: calc(100vh - $header-height - $archive-warning-height);
+  height: calc(100vh - $header-height - $warning-height);
 }
 #first-splitter #second-splitter :deep(.sticky-header-table) {
   height: calc((100vh - $header-height) * v-bind("hSplitterRatio") / 100);
 }
 /* prettier-ignore */
 #warning-archive + #first-splitter #second-splitter :deep(.sticky-header-table) {
-  height: calc((100vh - $header-height - $archive-warning-height) * v-bind('hSplitterRatio') / 100);
+  height: calc((100vh - $header-height - $warning-height) * v-bind('hSplitterRatio') / 100);
 }
 </style>

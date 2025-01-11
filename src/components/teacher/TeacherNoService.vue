@@ -105,14 +105,14 @@ const submitServiceCreation = async (): Promise<void> => {
             flat
             square
             dense
-            @click="resetServiceCreation"
+            @click="resetServiceCreation()"
           />
           <QBtn
             label="Enregistrer"
             flat
             square
             dense
-            @click="submitServiceCreation"
+            @click="submitServiceCreation()"
           />
         </QCardActions>
       </QCard>

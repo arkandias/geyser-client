@@ -110,7 +110,7 @@ const displayAssignButton = computed(
         flat
         square
         dense
-        @click="assign"
+        @click="assign()"
       >
         <QTooltip
           :delay="TOOLTIP_DELAY"
@@ -128,7 +128,7 @@ const displayAssignButton = computed(
         flat
         square
         dense
-        @click="remove"
+        @click="remove()"
       >
         <QTooltip
           :delay="TOOLTIP_DELAY"

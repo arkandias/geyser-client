@@ -29,8 +29,8 @@ const version = computed(() =>
 <template>
   <QHeader id="header">
     <QBar v-if="isImpersonating" id="warning-impersonating">
-      <div class="col">
-        Vous incarnez un autre intervenant ({{ profile.uid }})
+      <div class="col text-body1">
+        Vous incarnez un intervenant ({{ profile.uid }})
       </div>
       <QBtn icon="sym_s_close" flat square @click="stopImpersonating()" />
     </QBar>
@@ -79,7 +79,7 @@ const version = computed(() =>
         </div>
       </Transition>
       <QSeparator vertical inset color="white" />
-      <QBtn icon="sym_s_refresh" :disable flat square @click="refreshData">
+      <QBtn icon="sym_s_refresh" :disable flat square @click="refreshData()">
         <QTooltip>Rafraîchir les données</QTooltip>
       </QBtn>
       <QBtn
@@ -87,7 +87,7 @@ const version = computed(() =>
         :color="buttonColor(isDarkModeActive)"
         flat
         square
-        @click="toggleDarkMode"
+        @click="toggleDarkMode()"
       >
         <QTooltip>Mode sombre</QTooltip>
       </QBtn>
@@ -107,7 +107,7 @@ const version = computed(() =>
   background-color: $secondary;
 }
 #warning-impersonating {
-  height: $archive-warning-height;
+  height: $warning-height;
   text-align: center;
   background-color: $accent;
   color: black;

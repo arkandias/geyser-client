@@ -19,7 +19,7 @@ const { getValue: selectedUid, toggleValue: toggleUid } = useQueryParam("uid");
     :color="buttonColor(isLeftPanelOpen)"
     flat
     square
-    @click="toggleLeftPanel"
+    @click="toggleLeftPanel()"
   >
     <QTooltip>Filtre intervenants</QTooltip>
   </QBtn>

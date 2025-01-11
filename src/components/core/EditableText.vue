@@ -104,8 +104,8 @@ const isOnlyWhitespace = (htmlString: string) => {
       </QCardSection>
       <QSeparator />
       <QCardActions align="right">
-        <QBtn label="Annuler" flat square dense @click="onAbort" />
-        <QBtn label="Enregistrer" flat square dense @click="onSave" />
+        <QBtn label="Annuler" flat square dense @click="onAbort()" />
+        <QBtn label="Enregistrer" flat square dense @click="onSave()" />
       </QCardActions>
     </QCard>
   </QDialog>
