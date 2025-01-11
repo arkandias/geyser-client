@@ -225,20 +225,62 @@ watch(
   background-color: $secondary;
 }
 
-// adjust splitter's height to window's height
+// Adjust splitters height to window's height
+// and set tables height for sticky headers
 #first-splitter,
 #first-splitter :deep(.sticky-header-table) {
   height: calc(100vh - $header-height);
+  #header:has(#warning-impersonating) ~ .q-page-container & {
+    height: calc(100vh - $header-height - $warning-height);
+  }
 }
 #warning-archive + #first-splitter,
 #warning-archive + #first-splitter :deep(.sticky-header-table) {
   height: calc(100vh - $header-height - $warning-height);
+  #header:has(#warning-impersonating) ~ .q-page-container & {
+    height: calc(100vh - $header-height - $warning-height - $warning-height);
+  }
 }
 #first-splitter #second-splitter :deep(.sticky-header-table) {
   height: calc((100vh - $header-height) * v-bind("hSplitterRatio") / 100);
+  #header:has(#warning-impersonating) ~ .q-page-container & {
+    height: calc(
+      (100vh - $header-height - $warning-height) * v-bind("hSplitterRatio") /
+        100
+    );
+  }
 }
 /* prettier-ignore */
 #warning-archive + #first-splitter #second-splitter :deep(.sticky-header-table) {
   height: calc((100vh - $header-height - $warning-height) * v-bind('hSplitterRatio') / 100);
+  #header:has(#warning-impersonating) ~ .q-page-container & {
+    height: calc((100vh - $header-height - $warning-height - $warning-height) * v-bind('hSplitterRatio') / 100);
+  }
+}
+
+// sticky header tables
+:deep(.sticky-header-table) {
+  thead tr:first-child th {
+    background-color: #ffffff;
+    top: 0;
+  }
+  thead tr th {
+    position: sticky;
+    z-index: 1;
+  }
+  /* this is when the loading indicator appears */
+  &.q-table--loading thead tr:last-child th {
+    /* height of all previous header rows */
+    top: 48px;
+  }
+  /* prevent scrolling behind sticky top row on focus */
+  tbody {
+    /* height of all previous header rows */
+    scroll-margin-top: 48px;
+  }
+}
+/* background color in dark mode */
+.body--dark :deep(.sticky-header-table) thead tr:first-child th {
+  background-color: $dark;
 }
 </style>

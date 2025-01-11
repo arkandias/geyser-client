@@ -1,31 +1,4 @@
-/* sticky header table */
-.sticky-header-table {
-  // N.B. height or max-height must be set (in SFC or here)
-  thead tr:first-child th {
-    background-color: #ffffff;
-    top: 0;
-  }
-  thead tr th {
-    position: sticky;
-    z-index: 1;
-  }
-  /* this is when the loading indicator appears */
-  &.q-table--loading thead tr:last-child th {
-    /* height of all previous header rows */
-    top: 48px;
-  }
-  /* prevent scrolling behind sticky top row on focus */
-  tbody {
-    /* height of all previous header rows */
-    scroll-margin-top: 48px;
-  }
-}
-/* background color in dark mode */
-.body--dark .sticky-header-table thead tr:first-child th {
-  background-color: $dark;
-}
-
-/* couleurs des liens hypertextes */
+// couleurs des liens hypertextes
 a:link,
 a:visited {
   color: var(--q-primary);
@@ -35,7 +8,7 @@ a:active {
   color: $accent;
 }
 
-/* marges des listes et paragraphes */
+// lists and paragraphs margins
 ol,
 ul,
 li {

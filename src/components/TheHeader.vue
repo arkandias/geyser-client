@@ -103,6 +103,9 @@ const version = computed(() =>
   height: $header-height;
   background-color: $primary;
 }
+#header:has(#warning-impersonating) {
+  height: $header-height + $warning-height;
+}
 .dev #header {
   background-color: $secondary;
 }

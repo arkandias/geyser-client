@@ -14,8 +14,6 @@ export const usePermissions = () => {
 
   const toAdmin = computed(() => activeRole.value === ROLES.ADMIN);
 
-  const toImpersonate = computed(() => toAdmin.value && import.meta.env.DEV);
-
   const toAccess = computed(
     () =>
       activeRole.value === ROLES.ADMIN ||
@@ -110,7 +108,6 @@ export const usePermissions = () => {
 
   return readonly({
     toAdmin,
-    toImpersonate,
     toAccess,
     toSubmitRequestsForOthers,
     toSubmitRequests,
