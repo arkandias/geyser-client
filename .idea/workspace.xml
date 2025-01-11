@@ -19,29 +19,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="98fb9750-14d1-4887-9bbc-f1f5fcf8ae66" name="Changes" comment="WIP">
-      <change afterPath="$PROJECT_DIR$/src/composables/authentication.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TheHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TheHeader.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/RequestForm.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/RequestForm.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/core/TeacherSelect.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/core/SelectTeacher.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuAdmin.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuInfo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuInfo.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/header/MenuUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuUser.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenuYear.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenuYear.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/header/MenusCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/header/MenusCourses.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/composables/permissions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/composables/permissions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/types/roles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/types/roles.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/css/global.variables.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/global.variables.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/helpers/notify.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/helpers/notify.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PageCourses.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageCourses.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PageTeacher.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PageTeacher.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/keycloak.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/keycloak.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/urql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/urql.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stores/authentication.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/claims.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/claims.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/user.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vite-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/vite-env.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -358,15 +338,7 @@
       <workItem from="1736206536097" duration="77000" />
       <workItem from="1736206622553" duration="1245000" />
       <workItem from="1736207972150" duration="5251000" />
-      <workItem from="1736271002763" duration="44939000" />
-    </task>
-    <task id="LOCAL-00344" summary="WIP">
-      <option name="closed" value="true" />
-      <created>1735555816280</created>
-      <option name="number" value="00344" />
-      <option name="presentableId" value="LOCAL-00344" />
-      <option name="project" value="LOCAL" />
-      <updated>1735555816280</updated>
+      <workItem from="1736271002763" duration="45009000" />
     </task>
     <task id="LOCAL-00345" summary="WIP">
       <option name="closed" value="true" />
@@ -752,7 +724,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736484938747</updated>
     </task>
-    <option name="localTasksCounter" value="393" />
+    <task id="LOCAL-00393" summary="WIP">
+      <option name="closed" value="true" />
+      <created>1736555619856</created>
+      <option name="number" value="00393" />
+      <option name="presentableId" value="LOCAL-00393" />
+      <option name="project" value="LOCAL" />
+      <updated>1736555619858</updated>
+    </task>
+    <option name="localTasksCounter" value="394" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

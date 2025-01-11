@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed, reactive, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 
 import { useAuthentication } from "@/composables/authentication.ts";
 import { PHASE_OPTIONS } from "@/config/types/phases.ts";

@@ -5,10 +5,7 @@ import { useAuthentication } from "@/composables/authentication.ts";
 import { useRefreshData } from "@/composables/refresh-data.ts";
 import { ROLE_OPTIONS, type Role } from "@/config/types/roles.ts";
 import { formatUser } from "@/helpers/format.ts";
-import { NotifyType, notify } from "@/helpers/notify.ts";
-import type { Profile } from "@/types/user.ts";
 
-import SelectTeacher from "@/components/core/SelectTeacher.vue";
 import MenuBase from "@/components/header/MenuBase.vue";
 
 const { claims, profile, activeRole, isLogged, setActiveRole, login, logout } =

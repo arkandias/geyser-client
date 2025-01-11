@@ -7,7 +7,6 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { PHASES, isPhase } from "@/config/types/phases.ts";
 import { graphql } from "@/gql";
 import { GetCurrentPhaseDocument, GetYearsDocument } from "@/gql/graphql.ts";
-import { NotifyType, notify } from "@/helpers/notify.ts";
 import { roleHeader } from "@/services/urql.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 import { useYearsStore } from "@/stores/years.ts";
