@@ -13,7 +13,6 @@ import {
 import { usePhaseStore } from "@/stores/phase.ts";
 import { useYearsStore } from "@/stores/years.ts";
 import type { HasuraClaims } from "@/types/claims.ts";
-import type { ProfileWithActive } from "@/types/user.ts";
 
 import SelectTeacher from "@/components/core/SelectTeacher.vue";
 import MenuAdminOptions from "@/components/header/MenuAdminOptions.vue";
@@ -57,7 +56,7 @@ graphql(`
 
 const { years, currentYear } = useYearsStore();
 const { currentPhase } = usePhaseStore();
-const { claims, profile, impersonate } = useAuthentication();
+const { claims, impersonate } = useAuthentication();
 
 const setCurrentYear = useMutation(SetCurrentYearDocument);
 const setCurrentPhase = useMutation(SetCurrentPhaseDocument);
@@ -92,7 +91,6 @@ const newClaims = ref<HasuraClaims>({
   defaultRole: ROLES.USER,
   allowedRoles: [ROLES.USER],
 });
-const newProfile = ref<ProfileWithActive>({ ...profile });
 watch(
   () => newClaims.value.allowedRoles.includes(newClaims.value.defaultRole),
   () => {
@@ -136,10 +134,7 @@ watch(
   <QDialog v-model="isImpersonatingFormOpen">
     <QCard square class="select-profile">
       <QCardSection>
-        <SelectTeacher
-          v-model="newClaims.userId"
-          v-model:profile="newProfile"
-        />
+        <SelectTeacher v-model="newClaims.userId" />
       </QCardSection>
       <QCardSection>
         <div class="text-body1">Rôles autorisés :</div>
@@ -163,10 +158,9 @@ watch(
         <QBtn
           v-close-popup
           label="Incarner"
-          :disable="!newProfile"
           flat
           square
-          @click="impersonate(newClaims, newProfile)"
+          @click="impersonate(newClaims)"
         />
       </QCardActions>
     </QCard>

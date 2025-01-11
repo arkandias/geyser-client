@@ -56,13 +56,7 @@ const getProfile = async (client: Client, uid: string) =>
     .query(GetUserProfileDocument, { uid })
     .then((result) => result.data?.profile ?? null);
 
-const login = (client: Client) => async () => {
-  const claims = getClaims();
-  if (claims === null) {
-    console.error("Login failed: No claims");
-    notify(NotifyType.ERROR, { message: "Attributs Hasura non trouvés" });
-    return;
-  }
+const loginWithClaims = async (client: Client) => {
   const profile = await getProfile(client, claims.userId);
   if (!profile) {
     console.error(
@@ -71,10 +65,20 @@ const login = (client: Client) => async () => {
     notify(NotifyType.ERROR, { message: "Profil non trouvé" });
     return;
   }
-  setClaims(claims);
   setProfile(profile);
   isLogged.value = true;
   notify(NotifyType.SUCCESS, { message: "Connecté" });
+};
+
+const login = (client: Client) => async () => {
+  const claims = getClaims();
+  if (claims === null) {
+    console.error("Login failed: No claims");
+    notify(NotifyType.ERROR, { message: "Attributs Hasura non trouvés" });
+    return;
+  }
+  setClaims(claims);
+  await loginWithClaims(client);
 };
 
 const logout = async () => {
@@ -85,25 +89,20 @@ const logout = async () => {
 // Impersonating
 const isImpersonating = ref(false);
 const claimsSaved = reactive<HasuraClaims>({ ...claims });
-const profileSaved = reactive<ProfileWithActive>({ ...profile });
 
-const impersonate = (
-  otherClaims: HasuraClaims,
-  otherProfile: ProfileWithActive,
-) => {
+const impersonate = (client: Client) => async (otherClaims: HasuraClaims) => {
   if (!isImpersonating.value) {
     Object.assign(claimsSaved, claims);
-    Object.assign(profileSaved, profile);
   }
   setClaims(otherClaims);
-  setProfile(otherProfile);
+  await loginWithClaims(client);
   isImpersonating.value = true;
 };
 
-const stopImpersonating = () => {
+const stopImpersonating = (client: Client) => async () => {
   if (isImpersonating.value) {
     setClaims(claimsSaved);
-    setProfile(profileSaved);
+    await loginWithClaims(client);
     isImpersonating.value = false;
   }
 };
@@ -119,7 +118,7 @@ export const useAuthentication = () => {
     setActiveRole,
     login: login(client),
     logout,
-    impersonate,
-    stopImpersonating,
+    impersonate: impersonate(client),
+    stopImpersonating: stopImpersonating(client),
   };
 };
