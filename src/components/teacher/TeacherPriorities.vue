@@ -3,12 +3,12 @@ import { computed } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { TeacherPrioritiesFragmentDoc } from "@/gql/graphql.ts";
-import { priorityColor } from "@/helpers/colors.ts";
+import { priorityColor } from "@/utils/colors.ts";
 import {
   formatPriority,
   formatPriorityExtra,
   formatPriorityTS,
-} from "@/helpers/format.ts";
+} from "@/utils/format.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import TeacherList from "@/components/teacher/TeacherList.vue";

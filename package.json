@@ -13,10 +13,11 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
+    "test": "vitest",
     "format": "prettier . --check",
     "lint": "eslint --flag unstable_ts_config .",
     "typecheck": "tsc --noEmit -p tsconfig.node.json && vue-tsc --noEmit -p tsconfig.app.json",
-    "validate": "pnpm run format && pnpm run lint && pnpm run typecheck",
+    "validate": "pnpm test && pnpm run format && pnpm run lint && pnpm run typecheck",
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
@@ -45,16 +46,19 @@
     "@typescript-eslint/parser": "^8.19.1",
     "@urql/devtools": "^2.0.3",
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/test-utils": "^2.4.6",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.32.0",
     "globals": "^15.14.0",
+    "happy-dom": "^16.5.3",
     "prettier": "^3.4.2",
     "sass-embedded": "^1.83.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.19.1",
-    "vite": "^6.0.7",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.8",
     "vue-tsc": "^2.2.0"
   }
 }

@@ -3,7 +3,7 @@ import { computed } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CourseCoordinatorsFragmentDoc } from "@/gql/graphql.ts";
-import { formatCoordinators } from "@/helpers/format.ts";
+import { formatCoordinators } from "@/utils/format.ts";
 
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 

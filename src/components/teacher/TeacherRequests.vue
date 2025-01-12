@@ -4,8 +4,8 @@ import { computed } from "vue";
 import { usePermissions } from "@/composables/permissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { TeacherRequestsFragmentDoc } from "@/gql/graphql.ts";
-import { formatWH } from "@/helpers/format.ts";
-import { totalWH } from "@/helpers/hours.ts";
+import { formatWH } from "@/utils/format.ts";
+import { totalWH } from "@/utils/hours.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import TeacherTable from "@/components/teacher/TeacherTable.vue";

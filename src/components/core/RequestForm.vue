@@ -10,7 +10,7 @@ import {
 } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestFormDataFragmentDoc } from "@/gql/graphql.ts";
-import { NotifyType, notify } from "@/helpers/notify.ts";
+import { NotifyType, notify } from "@/utils/notify.ts";
 
 import SelectTeacher from "@/components/core/SelectTeacher.vue";
 

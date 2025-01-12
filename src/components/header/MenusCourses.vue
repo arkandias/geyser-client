@@ -2,8 +2,8 @@
 import { useAuthentication } from "@/composables/authentication.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
 import { useService } from "@/composables/service.ts";
-import { buttonColor } from "@/helpers/colors.ts";
 import { useLeftPanelStore } from "@/stores/left-panel.ts";
+import { buttonColor } from "@/utils/colors.ts";
 
 import MenuYear from "@/components/header/MenuYear.vue";
 

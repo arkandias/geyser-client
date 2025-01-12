@@ -1,7 +1,10 @@
 <script setup lang="ts" generic="T extends string | number">
 import { ref, watch } from "vue";
 
-import type { Option } from "@/types/option.ts";
+type Option<T> = {
+  value: T;
+  label: string;
+};
 
 const { getValue } = defineProps<{
   label: string;

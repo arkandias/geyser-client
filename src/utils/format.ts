@@ -1,9 +1,13 @@
-import type { UserName } from "@/types/user.ts";
-
 export const nf = new Intl.NumberFormat("fr-FR", {
   style: "decimal",
   maximumFractionDigits: 2,
 });
+
+type UserName = {
+  firstname: string;
+  lastname: string;
+  alias?: string | null;
+};
 
 export const formatUser = (user: UserName) =>
   user.alias ?? user.firstname + " " + user.lastname;

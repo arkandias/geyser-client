@@ -9,10 +9,10 @@ import {
   type TeacherRowFragment,
   TeacherRowFragmentDoc,
 } from "@/gql/graphql.ts";
-import { nf } from "@/helpers/format.ts";
-import { modifiedService, totalWH } from "@/helpers/hours.ts";
-import { normalizeForSearch } from "@/helpers/misc.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
+import { nf } from "@/utils/format.ts";
+import { modifiedService, totalWH } from "@/utils/hours.ts";
+import { normalizeForSearch } from "@/utils/misc.ts";
 
 const { teacherRowFragments } = defineProps<{
   teacherRowFragments: FragmentType<typeof TeacherRowFragmentDoc>[];

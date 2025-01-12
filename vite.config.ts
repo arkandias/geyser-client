@@ -1,8 +1,9 @@
-// sort-imports-ignore
+/// <reference types="vitest/config" />
 import { fileURLToPath } from "node:url";
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
+
 import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
+import vue from "@vitejs/plugin-vue";
+import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -40,5 +41,10 @@ export default defineConfig({
         additionalData: `@import "@/css/global.variables.scss";`,
       },
     },
+  },
+  // https://vitest.dev/config/
+  test: {
+    globals: true,
+    environment: "happy-dom",
   },
 });

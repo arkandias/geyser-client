@@ -12,7 +12,7 @@ import {
   GetServiceByCourseIdDocument,
   UpsertRequestDocument,
 } from "@/gql/graphql.ts";
-import { NotifyType, notify } from "@/helpers/notify.ts";
+import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
   query GetServiceByCourseId($uid: String!, $courseId: Int!) {

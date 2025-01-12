@@ -7,7 +7,7 @@ import {
   InsertServiceDocument,
   TeacherNoServiceFragmentDoc,
 } from "@/gql/graphql.ts";
-import { NotifyType, notify } from "@/helpers/notify.ts";
+import { NotifyType, notify } from "@/utils/notify.ts";
 
 const { year, uid, dataFragment } = defineProps<{
   year: number;

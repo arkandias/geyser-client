@@ -2,7 +2,7 @@
 import { computed, ref, watch } from "vue";
 import xss from "xss";
 
-import { NotifyType, notify } from "@/helpers/notify.ts";
+import { NotifyType, notify } from "@/utils/notify.ts";
 
 const showEditor = defineModel<boolean>();
 const {

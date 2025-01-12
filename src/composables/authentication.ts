@@ -4,10 +4,9 @@ import { reactive, readonly, ref } from "vue";
 import { ROLES, type Role } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
 import { GetUserProfileDocument } from "@/gql/graphql.ts";
-import { NotifyType, notify } from "@/helpers/notify.ts";
 import { getClaims, logout as logoutKeycloak } from "@/services/keycloak.ts";
 import type { HasuraClaims } from "@/types/claims.ts";
-import type { ProfileWithActive } from "@/types/user.ts";
+import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
   query GetUserProfile($uid: String!) {
@@ -21,13 +20,21 @@ graphql(`
   }
 `);
 
+type Profile = {
+  uid: string;
+  firstname: string;
+  lastname: string;
+  alias?: string | null;
+  active: boolean;
+};
+
 const isLogged = ref(false);
 const claims = reactive<HasuraClaims>({
   userId: "",
   defaultRole: ROLES.USER,
   allowedRoles: [ROLES.USER],
 });
-const profile = reactive<ProfileWithActive>({
+const profile = reactive<Profile>({
   uid: "",
   firstname: "",
   lastname: "",
@@ -47,7 +54,7 @@ const setClaims = (newClaims: HasuraClaims) => {
   setActiveRole(newClaims.defaultRole);
 };
 
-const setProfile = (newProfile: ProfileWithActive) => {
+const setProfile = (newProfile: Profile) => {
   Object.assign(profile, newProfile);
 };
 

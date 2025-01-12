@@ -8,8 +8,8 @@ import {
 } from "@urql/vue";
 
 import { ROLES, type Role } from "@/config/types/roles.ts";
-import { NotifyType, notify } from "@/helpers/notify.ts";
 import { getAuthorizationHeader, refreshToken } from "@/services/keycloak.ts";
+import { NotifyType, notify } from "@/utils/notify.ts";
 
 if (import.meta.env.VITE_GRAPHQL_URL === undefined) {
   throw new Error(
