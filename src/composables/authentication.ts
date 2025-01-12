@@ -111,13 +111,13 @@ export const useAuthentication = () => {
   const client: Client = useClientHandle().client;
   return {
     isLogged: readonly(isLogged),
-    isImpersonating: readonly(isImpersonating),
     claims: readonly(claims),
     profile: readonly(profile),
     activeRole: readonly(activeRole),
     setActiveRole,
     login: login(client),
     logout,
+    isImpersonating: readonly(isImpersonating),
     impersonate: impersonate(client),
     stopImpersonating: stopImpersonating(client),
   };

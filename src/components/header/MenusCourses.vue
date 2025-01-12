@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { useAuthentication } from "@/composables/authentication.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
+import { useService } from "@/composables/service.ts";
 import { buttonColor } from "@/helpers/colors.ts";
 import { useLeftPanelStore } from "@/stores/left-panel.ts";
 
 import MenuYear from "@/components/header/MenuYear.vue";
 
-const { isLeftPanelOpen, toggleLeftPanel } = useLeftPanelStore();
 const { profile } = useAuthentication();
+const { hasService } = useService();
 const { getValue: selectedUid, toggleValue: toggleUid } = useQueryParam("uid");
+const { isLeftPanelOpen, toggleLeftPanel } = useLeftPanelStore();
 </script>
 
 <template>
@@ -26,6 +28,7 @@ const { getValue: selectedUid, toggleValue: toggleUid } = useQueryParam("uid");
   <QBtn
     icon="sym_s_assignment"
     :color="buttonColor(selectedUid === profile.uid)"
+    :disable="!hasService"
     flat
     square
     @click="toggleUid(profile.uid)"

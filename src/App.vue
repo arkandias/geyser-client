@@ -40,9 +40,13 @@ const perm = usePermissions();
 
 // User profile
 void login();
-watch(activeRole, (value) => {
-  roleHeader["X-Hasura-Role"] = value;
-});
+watch(
+  activeRole,
+  (value) => {
+    roleHeader["X-Hasura-Role"] = value;
+  },
+  { immediate: true },
+);
 
 // App parameters
 const yearsQueryResult = useQuery({

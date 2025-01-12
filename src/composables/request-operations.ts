@@ -9,13 +9,13 @@ import {
   DeleteRequestByIdDocument,
   DeleteRequestDocument,
   GetRequestDocument,
-  GetServiceDocument,
+  GetServiceByCourseIdDocument,
   UpsertRequestDocument,
 } from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/helpers/notify.ts";
 
 graphql(`
-  query GetService($uid: String!, $courseId: Int!) {
+  query GetServiceByCourseId($uid: String!, $courseId: Int!) {
     course: enseignement_by_pk(id: $courseId) {
       year: annee
       yearByYear: anneeByAnnee {
@@ -107,8 +107,8 @@ const getService = async (
     uid: string;
     courseId: number;
   },
-): Promise<number | null> => {
-  const result = await client.query(GetServiceDocument, variables, {
+) => {
+  const result = await client.query(GetServiceByCourseIdDocument, variables, {
     requestPolicy: "network-only",
   });
   if (!result.data) {
@@ -145,7 +145,7 @@ const getRequest = async (
     courseId: number;
     requestType: string;
   },
-): Promise<number | null> => {
+) => {
   const result = await client.query(GetRequestDocument, variables, {
     requestPolicy: "network-only",
   });
@@ -166,7 +166,7 @@ const updateRequest =
     courseId: number;
     requestType: string;
     hours: number;
-  }): Promise<void> => {
+  }) => {
     const { uid, courseId, ...rest } = variables;
     const serviceId = await getService(client, { uid, courseId });
     if (serviceId === null) {
@@ -182,7 +182,7 @@ const updateRequestWithServiceId =
     courseId: number;
     requestType: string;
     hours: number;
-  }): Promise<void> => {
+  }) => {
     if (!isRequestType(variables.requestType)) {
       console.error(`Invalid request type '${variables.requestType}'`);
       notify(NotifyType.ERROR, {
@@ -226,18 +226,16 @@ const updateRequestWithServiceId =
     }
   };
 
-const deleteRequestById =
-  (client: Client) =>
-  async (id: number): Promise<void> => {
-    const result = await client.mutation(DeleteRequestByIdDocument, { id });
-    if (result.data?.request && !result.error) {
-      notify(NotifyType.SUCCESS, {
-        message: getLabel(result.data.request.type) + " supprimée",
-      });
-    } else {
-      notify(NotifyType.ERROR, { message: "Échec de la suppression" });
-    }
-  };
+const deleteRequestById = (client: Client) => async (id: number) => {
+  const result = await client.mutation(DeleteRequestByIdDocument, { id });
+  if (result.data?.request && !result.error) {
+    notify(NotifyType.SUCCESS, {
+      message: getLabel(result.data.request.type) + " supprimée",
+    });
+  } else {
+    notify(NotifyType.ERROR, { message: "Échec de la suppression" });
+  }
+};
 
 export const useRequestOperations = () => {
   const client = useClientHandle().client;
