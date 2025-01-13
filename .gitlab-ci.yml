@@ -17,6 +17,15 @@ default:
     paths:
       - .pnpm-store
 
+test:
+  stage: validate
+  rules:
+    - if: $CI_COMMIT_TAG
+    - when: on_success
+      interruptible: true
+  script:
+    - pnpm run test
+
 format:
   stage: validate
   rules:
