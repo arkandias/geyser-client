@@ -215,9 +215,9 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             square
             dense
           >
-            <QTooltip :delay="TOOLTIP_DELAY"
-              >Valider le service de base</QTooltip
-            >
+            <QTooltip :delay="TOOLTIP_DELAY">
+              Valider le service de base
+            </QTooltip>
           </QBtn>
           <QBtn
             v-else-if="perm.toEditAService(service.uid)"
@@ -230,9 +230,9 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             dense
             @click="isBaseServiceFormOpen = true"
           >
-            <QTooltip :delay="TOOLTIP_DELAY"
-              >Éditer le service de base</QTooltip
-            >
+            <QTooltip :delay="TOOLTIP_DELAY">
+              Éditer le service de base
+            </QTooltip>
           </QBtn>
         </td>
         <td v-if="isBaseServiceFormOpen">
@@ -291,9 +291,9 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             square
             dense
           >
-            <QTooltip :delay="TOOLTIP_DELAY"
-              >Supprimer la modification</QTooltip
-            >
+            <QTooltip :delay="TOOLTIP_DELAY">
+              Supprimer la modification
+            </QTooltip>
           </QBtn>
           <QSelect
             v-model="modificationType"
@@ -344,9 +344,9 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             dense
             @click="handleModificationDeletion(modification.id)"
           >
-            <QTooltip :delay="TOOLTIP_DELAY"
-              >Supprimer la modification</QTooltip
-            >
+            <QTooltip :delay="TOOLTIP_DELAY">
+              Supprimer la modification
+            </QTooltip>
           </QBtn>
           {{ modification.modificationType.label }}
         </td>

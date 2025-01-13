@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref, toValue, watchEffect } from "vue";
 
+import { useDownloadAssignments } from "@/composables/download-assignments.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
@@ -14,6 +15,7 @@ import {
   CourseRowFragmentDoc,
   TeacherCoursesFragmentDoc,
 } from "@/gql/graphql.ts";
+import { useYearsStore } from "@/stores/years.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
 import { formatProgram, formatUser, nf } from "@/utils/format.ts";
 import { totalH } from "@/utils/hours.ts";
@@ -108,7 +110,9 @@ graphql(`
   }
 `);
 
+const { activeYear } = useYearsStore();
 const perm = usePermissions();
+const { downloadAssignments } = useDownloadAssignments();
 
 const courses = computed(() =>
   courseRowFragments.map((fragment) =>
@@ -421,6 +425,19 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
       return totalH(row.totalSecondary);
   }
 };
+
+const downloadTeacherAssignments = async () => {
+  if (!teacherName.value || activeYear.value === null) {
+    return;
+  }
+  await downloadAssignments(
+    {
+      year: activeYear.value,
+      where: { service: { uid: { _eq: teacherName.value.uid } } },
+    },
+    activeYear.value.toString() + " " + formatUser(teacherName.value),
+  );
+};
 </script>
 
 <template>
@@ -479,6 +496,20 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
         >
           <QTooltip :delay="TOOLTIP_DELAY">
             Désélectionner l'intervenant
+          </QTooltip>
+        </QBtn>
+        <QBtn
+          v-if="teacher && perm.toViewAssignments"
+          icon="sym_s_download"
+          color="primary"
+          size="sm"
+          flat
+          square
+          dense
+          @click="downloadTeacherAssignments()"
+        >
+          <QTooltip :delay="TOOLTIP_DELAY">
+            Télécharger les attributions de l'intervenant
           </QTooltip>
         </QBtn>
       </div>

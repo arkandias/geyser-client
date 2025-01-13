@@ -286,9 +286,9 @@ const stickyHeader = ref(false);
           square
           dense
         >
-          <QTooltip v-model="isMenuColumnsTooltipVisible"
-            >Colonnes visibles</QTooltip
-          >
+          <QTooltip v-model="isMenuColumnsTooltipVisible">
+            Colonnes visibles
+          </QTooltip>
           <QMenu
             v-model="isMenuColumnsOpen"
             auto-close
