@@ -13,7 +13,7 @@ if (!HASURA_ADMIN_SECRET) {
   throw new Error("VITE_HASURA_ADMIN_SECRET environment variable is required");
 }
 
-export default {
+const config = {
   schema: "schema.graphql",
   extensions: {
     endpoints: {
@@ -27,3 +27,5 @@ export default {
   },
   documents: "**/*.graphql",
 };
+
+export default config;
