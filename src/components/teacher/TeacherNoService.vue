@@ -17,6 +17,7 @@ const { year, uid, dataFragment } = defineProps<{
 
 graphql(`
   fragment TeacherNoService on intervenant {
+    baseServiceHours: heures_eqtd_service_base
     position: fonctionByFonction {
       baseServiceHours: heures_eqtd_service_base
     }
@@ -40,7 +41,7 @@ const insertService = useMutation(InsertServiceDocument);
 const isServiceFormOpen = ref(false);
 const baseServiceHours = ref(
   // eslint-disable-next-line vue/no-ref-object-reactivity-loss
-  data.value.position?.baseServiceHours ?? 0,
+  data.value.baseServiceHours ?? data.value.position?.baseServiceHours ?? 0,
 );
 const resetServiceCreation = (): void => {
   isServiceFormOpen.value = false;
