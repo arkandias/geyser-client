@@ -2,8 +2,12 @@
 import { computed } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { CourseCoordinatorsFragmentDoc } from "@/gql/graphql.ts";
-import { formatCoordinators } from "@/utils/format.ts";
+import {
+  type CourseCoordinatorsFragment,
+  CourseCoordinatorsFragmentDoc,
+} from "@/gql/graphql.ts";
+import type { ArrayElement } from "@/types/misc.ts";
+import { formatUser } from "@/utils/format.ts";
 
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 
@@ -65,6 +69,17 @@ const data = computed(() =>
 const courseCoordinators = computed(() => data.value.coordinators);
 const programCoordinators = computed(() => data.value.program.coordinators);
 const trackCoordinators = computed(() => data.value.track?.coordinators ?? []);
+
+// Helpers
+type Coordinator = ArrayElement<CourseCoordinatorsFragment["coordinators"]>;
+
+const formatCoordinators = (coordinators: Coordinator[]) =>
+  coordinators
+    .map(
+      ({ username, comment }) =>
+        formatUser(username) + (comment ? ` (${comment})` : ""),
+    )
+    .join(", ");
 </script>
 
 <template>

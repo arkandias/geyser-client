@@ -54,7 +54,7 @@ export const initKeycloak = async () => {
       console.debug("Authenticated!");
       return;
     } else {
-      console.warn("Authentication failed");
+      console.error("Authentication failed");
       return;
     }
   } catch (error: unknown) {
@@ -118,7 +118,7 @@ const validateClaims = (
   const validRoles = claims["x-hasura-allowed-roles"].filter(
     (role): role is Role => {
       if (!isRole(role)) {
-        console.warn(`Invalid allowed role: ${role}`);
+        console.error(`Invalid allowed role: ${role}`);
         return false;
       }
       return true;

@@ -1,9 +1,11 @@
+import slugify from "slugify";
+
 import { nf } from "@/utils/format.ts";
 
-type CSVScalar = string | number | boolean | null | undefined;
-type SimpleObject = { [key: string]: CSVScalar | SimpleObject };
+type Scalar = string | number | boolean | null | undefined;
+type SimpleObject = { [key: string]: Scalar | SimpleObject };
 
-export const formatValue = (value: CSVScalar): string => {
+export const formatValue = (value: Scalar, sep = ","): string => {
   const str =
     value === null || value === undefined
       ? ""
@@ -12,7 +14,7 @@ export const formatValue = (value: CSVScalar): string => {
         : typeof value === "boolean"
           ? String(value)
           : value; // string
-  return str.includes(",") ||
+  return str.includes(sep) ||
     str.includes('"') ||
     str.includes("\n") ||
     str.includes("\r")
@@ -30,13 +32,13 @@ const prefixObjectKeys = <T>(
 
 export const flattenSimpleObject = (
   obj: SimpleObject,
-): Record<string, CSVScalar> => {
-  return Object.entries(obj).reduce<Record<string, CSVScalar>>(
+): Record<string, Scalar> => {
+  return Object.entries(obj).reduce<Record<string, Scalar>>(
     (acc, [key, value]) => {
       if (typeof value === "object" && value !== null) {
         return {
           ...acc,
-          ...prefixObjectKeys<CSVScalar>(flattenSimpleObject(value), key),
+          ...prefixObjectKeys<Scalar>(flattenSimpleObject(value), key),
         };
       }
       return { ...acc, [key]: value };
@@ -45,17 +47,22 @@ export const flattenSimpleObject = (
   );
 };
 
-const dataToRow = (obj: SimpleObject, headers: string[]): string => {
-  const flattened = flattenSimpleObject(obj);
-  return headers.map((key) => formatValue(flattened[key])).join(",");
-};
+const flatDataToRow = (
+  obj: Record<string, Scalar>,
+  headers: string[],
+  sep = ",",
+) => headers.map((key) => formatValue(obj[key], sep)).join(sep);
+
+const dataToRow = (obj: SimpleObject, headers: string[], sep = ","): string =>
+  flatDataToRow(flattenSimpleObject(obj), headers, sep);
 
 export const dataArrayToCSV = (
   data: SimpleObject[],
   headers: string[],
+  sep = ",",
 ): string => {
-  const headersRow = headers.join(",");
-  const rows = data.map((row) => dataToRow(row, headers));
+  const headersRow = headers.join(sep);
+  const rows = data.map((row) => dataToRow(row, headers, sep));
   return [headersRow, ...rows].join("\n");
 };
 
@@ -63,15 +70,23 @@ export const downloadCSV = (
   data: SimpleObject[],
   headers: string[],
   filename: string,
+  sep = ",",
 ) => {
-  const csv = dataArrayToCSV(data, headers);
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const BOM = "\uFEFF"; // Byte Order Mark
+  const csv = dataArrayToCSV(data, headers, sep);
+  const blob = new Blob([BOM + csv], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
 
   const link = document.createElement("a");
   link.style.display = "none";
   link.href = url;
-  link.download = filename;
+  link.download =
+    slugify(filename, {
+      lower: true,
+      replacement: "_",
+      strict: true,
+      trim: true,
+    }) + ".csv";
 
   document.body.appendChild(link);
   link.click();

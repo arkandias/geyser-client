@@ -41,9 +41,10 @@ const label = computed(() =>
 
 const caption = computed(() =>
   data.value
-    ? `${data.value.program.degree.name} — ${data.value.program.name} — ` +
+    ? `${data.value.program.degree.name} — ` +
+      `${data.value.program.name} — ` +
       (data.value.track?.name ? `${data.value.track.name} — ` : "") +
-      `S${String(data.value.semester)} — ` +
+      `S${data.value.semester.toString()} — ` +
       data.value.courseType.label
     : "Cliquez sur ce volet pour afficher des informations supplémentaires",
 );

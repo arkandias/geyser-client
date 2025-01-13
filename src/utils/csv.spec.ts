@@ -1,3 +1,4 @@
+import slugify from "slugify";
 import {
   type MockInstance,
   afterEach,
@@ -31,8 +32,20 @@ describe("formatValue", () => {
     expect(formatValue("hello\rworld")).toBe('"hello\rworld"');
   });
 
+  it("handles strings with special characters and custom separator", () => {
+    expect(formatValue("hello,world", ";")).toBe("hello,world");
+    expect(formatValue("hello;world", ";")).toBe('"hello;world"');
+    expect(formatValue('hello"world', ";")).toBe('"hello""world"');
+    expect(formatValue("hello\nworld", ";")).toBe('"hello\nworld"');
+    expect(formatValue("hello\rworld", ";")).toBe('"hello\rworld"');
+  });
+
   it("handles formatted numbers", () => {
     expect(formatValue(1234.56789)).toBe('"1\u202F234,57"');
+  });
+
+  it("handles formatted numbers with custom separator", () => {
+    expect(formatValue(1234.56789, ";")).toBe("1\u202F234,57");
   });
 });
 
@@ -100,6 +113,19 @@ describe("dataArrayToCSV", () => {
     expect(dataArrayToCSV(data, headers)).toBe(expected);
   });
 
+  it("generates CSV with custom separator", () => {
+    const data = [
+      { name: "John", age: 30, city: "New York" },
+      { name: "Jane", age: 25, city: "Los Angeles" },
+    ];
+    const headers = ["name", "age", "city"];
+
+    const expected =
+      "name;age;city\n" + "John;30;New York\n" + "Jane;25;Los Angeles";
+
+    expect(dataArrayToCSV(data, headers, ";")).toBe(expected);
+  });
+
   it("handles data with special characters", () => {
     const data = [
       { name: "John,Doe", age: 1234.56789, notes: "line1\nline2" },
@@ -113,6 +139,25 @@ describe("dataArrayToCSV", () => {
       '"Jane ""The Doctor"" Doe",25,"note,with,commas"';
 
     expect(dataArrayToCSV(data, headers)).toBe(expected);
+  });
+
+  it("handles data with special characters and custom separators", () => {
+    const data = [
+      { name: "John,Doe", age: 1234.56789, notes: "line1\nline2" },
+      {
+        name: 'Jane "The Doctor" Doe',
+        age: 25,
+        notes: "note;with;semicolons",
+      },
+    ];
+    const headers = ["name", "age", "notes"];
+
+    const expected =
+      "name;age;notes\n" +
+      'John,Doe;1\u202F234,57;"line1\nline2"\n' +
+      '"Jane ""The Doctor"" Doe";25;"note;with;semicolons"';
+
+    expect(dataArrayToCSV(data, headers, ";")).toBe(expected);
   });
 
   it("handles nested objects", () => {
@@ -238,19 +283,19 @@ describe("downloadCSV", () => {
   it("creates and downloads a CSV file", () => {
     const data = [{ name: "John", age: 30 }];
     const headers = ["name", "age"];
-    const filename = "test.csv";
+    const filename = "test";
 
     downloadCSV(data, headers, filename);
 
     // Check Blob creation
     const createObjectURLCall = createObjectURLSpy.mock.lastCall?.[0] as Blob;
     expect(createObjectURLCall).toBeInstanceOf(Blob);
-    expect(createObjectURLCall.type).toBe("text/csv;charset=utf-8");
+    expect(createObjectURLCall.type).toBe("text/csv");
 
     // Verify link setup
     expect(mockLink.style.display).toBe("none");
     expect(mockLink.href).toBe("mock-url");
-    expect(mockLink.download).toBe(filename);
+    expect(mockLink.download).toBe(slugify(filename) + ".csv");
 
     // Verify DOM operations sequence
     expect(createElementSpy).toHaveBeenCalledWith("a");

@@ -25,7 +25,7 @@ export const useService = () => {
   const serviceQueryResult = useQuery({
     query: GetServiceDocument,
     variables: reactive({
-      year: computed(() => activeYear.value ?? -1),
+      year: computed(() => activeYear.value ?? NaN),
       uid: computed(() => profile.uid),
     }),
     pause: () => activeYear.value === null,

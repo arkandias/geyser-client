@@ -145,11 +145,8 @@ const columns: Column<CourseRowFragment>[] = [
     name: "program",
     label: "Formation",
     field: (row) => ({
-      long: formatProgram(row.program),
-      short:
-        row.program.degree.shortName !== null || row.program.shortName !== null
-          ? formatProgram(row.program)
-          : null,
+      long: row.program.degree.name + " " + row.program.name,
+      short: formatProgram(row.program),
     }),
     align: "left",
     sortable: true,
@@ -163,7 +160,7 @@ const columns: Column<CourseRowFragment>[] = [
     label: "Parcours",
     field: (row) => ({
       long: row.track?.name ?? "",
-      short: row.track?.shortName,
+      short: row.track?.shortName ?? null,
     }),
     align: "left",
     sortable: true,
@@ -177,7 +174,7 @@ const columns: Column<CourseRowFragment>[] = [
     label: "Nom",
     field: (row) => ({
       long: row.name,
-      short: row.shortName,
+      short: row.shortName ?? null,
     }),
     align: "left",
     sortable: true,
@@ -384,11 +381,9 @@ const filterMethod = (
           terms.semesters.includes(row.semester)) &&
         terms.searchColumns.some((col) =>
           normalizeForSearch(
-            String(
-              isAbbreviable(col)
-                ? col.field(row).long + (col.field(row).short ?? "")
-                : col.field(row),
-            ),
+            isAbbreviable(col)
+              ? col.field(row).long + " " + (col.field(row).short ?? "")
+              : String(col.field(row)),
           ).includes(terms.search),
         ),
   );
@@ -598,9 +593,9 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
           square
           dense
         >
-          <QTooltip v-model="isMenuColumnsTooltipVisible"
-            >Colonnes visibles</QTooltip
-          >
+          <QTooltip v-model="isMenuColumnsTooltipVisible">
+            Colonnes visibles
+          </QTooltip>
           <QMenu
             v-model="isMenuColumnsOpen"
             auto-close

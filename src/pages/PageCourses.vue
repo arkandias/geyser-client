@@ -86,7 +86,7 @@ const perm = usePermissions();
 const courseRowsQueryResult = useQuery({
   query: GetCourseRowsDocument,
   variables: reactive({
-    year: computed(() => activeYear.value ?? -1),
+    year: computed(() => activeYear.value ?? NaN),
   }),
   pause: () => activeYear.value === null,
   context: { additionalTypenames: ["demande"] },
@@ -100,7 +100,7 @@ const courseRows = computed(
 const teacherRowsQueryResult = useQuery({
   query: GetTeacherRowsDocument,
   variables: reactive({
-    year: computed(() => activeYear.value ?? -1),
+    year: computed(() => activeYear.value ?? NaN),
     where: computed(() =>
       perm.toViewAllServices ? {} : { uid: { _eq: profile.uid } },
     ),
@@ -126,7 +126,7 @@ const teacherRows = computed(
 const courseDetailsQueryResult = useQuery({
   query: GetCourseDetailsDocument,
   variables: reactive({
-    courseId: computed(() => selectedCourse.value ?? -1),
+    courseId: computed(() => selectedCourse.value ?? NaN),
   }),
   pause: () => selectedCourse.value === null,
   context: {
@@ -143,7 +143,7 @@ const courseDetails = computed(() =>
 const teacherCoursesQueryResult = useQuery({
   query: GetTeacherCoursesDocument,
   variables: reactive({
-    year: computed(() => activeYear.value ?? -1),
+    year: computed(() => activeYear.value ?? NaN),
     uid: computed(() => selectedTeacher.value ?? ""),
   }),
   pause: () => !activeYear.value || !selectedTeacher.value,

@@ -1,22 +1,22 @@
 import type { QTableProps } from "quasar";
 import type { MaybeRefOrGetter } from "vue";
 
-type ArrayElement<ArrayType extends readonly unknown[]> =
-  ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
+import type { ArrayElement } from "@/types/misc.ts";
 
 type ColumnBase = ArrayElement<NonNullable<QTableProps["columns"]>> & {
   tooltip?: string;
   visible: MaybeRefOrGetter<boolean>;
   searchable: boolean;
-  abbreviable: boolean;
 };
 
 export type ColumnAbbreviable<T> = Omit<ColumnBase, "field"> & {
   field: (row: T) => { long: string; short: string | null };
+  abbreviable: true;
 };
 
 export type ColumnNonAbbreviable<T> = Omit<ColumnBase, "field"> & {
   field: (row: T) => unknown;
+  abbreviable: false;
 };
 
 export type Column<T> = ColumnAbbreviable<T> | ColumnNonAbbreviable<T>;

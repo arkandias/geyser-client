@@ -119,15 +119,15 @@ const getService = async (
     return null;
   }
   if (!result.data.course) {
-    console.warn(`No course found with id ${String(variables.courseId)}`);
+    console.error(`No course found (id=${variables.courseId.toString()})`);
     notify(NotifyType.ERROR, {
       message: "Erreur lors de la récupération du cours",
     });
     return null;
   }
   if (!result.data.course.yearByYear.services[0]) {
-    console.warn(
-      `No service found with year ${String(result.data.course.year)} and user ${variables.uid}`,
+    console.error(
+      `No service found (year=${result.data.course.year.toString()}, uid=${variables.uid})`,
     );
     notify(NotifyType.ERROR, {
       message: `Pas de service trouvé`,
@@ -184,7 +184,7 @@ const updateRequestWithServiceId =
     hours: number;
   }) => {
     if (!isRequestType(variables.requestType)) {
-      console.error(`Invalid request type '${variables.requestType}'`);
+      console.error(`Invalid request type: ${variables.requestType}`);
       notify(NotifyType.ERROR, {
         message: "Type de requête invalide",
       });

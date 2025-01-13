@@ -66,9 +66,7 @@ const getProfile = async (client: Client, uid: string) =>
 const loginWithClaims = async (client: Client) => {
   const profile = await getProfile(client, claims.userId);
   if (!profile) {
-    console.error(
-      `Login failed: Profile not found with uid '${claims.userId}'`,
-    );
+    console.error(`Login failed: Profile not found (uid=${claims.userId})`);
     notify(NotifyType.ERROR, { message: "Profil non trouvé" });
     return;
   }

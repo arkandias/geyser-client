@@ -78,7 +78,7 @@ watch(
       setCurrentPhase(value.phases[0].value);
       return;
     }
-    console.warn("Invalid current phase", value.phases[0].value);
+    console.error(`Invalid current phase: ${value.phases[0].value}`);
     setCurrentPhase(null);
   },
   { immediate: true },
