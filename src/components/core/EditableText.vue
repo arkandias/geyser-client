@@ -81,6 +81,7 @@ const toolbar = [
   ["unordered", "ordered", "outdent", "indent"],
 ];
 
+// Helpers
 const isOnlyWhitespace = (htmlString: string) => {
   // First remove common whitespace HTML entities
   const withoutEntities = htmlString.replace(

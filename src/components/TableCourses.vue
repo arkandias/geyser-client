@@ -312,7 +312,6 @@ const searchableColumns: string[] = columns
   .filter((col) => col.searchable)
   .map((col) => col.name);
 const visibleColumns = ref<string[]>([]);
-// reset visible columns if permissions change
 watchEffect(() => {
   visibleColumns.value = columns
     .filter((col) => toValue(col.visible))
