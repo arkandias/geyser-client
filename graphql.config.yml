@@ -1,0 +1,6 @@
+schema: schema.graphql
+documents:
+  - "src/**/*.graphql"
+  - "src/**/*.ts"
+  - "src/**/*.vue"
+  - "!src/gql/**/*"
