@@ -29,37 +29,34 @@ graphql(`
       where: {
         _and: [
           { year: { _eq: $year } }
-          { hours_effective: { _gt: 0 } }
-          { groups_effective: { _gt: 0 } }
+          { hoursEffective: { _gt: 0 } }
+          { groupsEffective: { _gt: 0 } }
         ]
       }
-      order_by: [
-        { program: { degree: { name: asc } } }
-        { program: { name: asc } }
-        { track: { name: asc } }
-        { semester: asc }
-        { name: asc }
-        { type: asc }
+      orderBy: [
+        { program: { degree: { name: ASC } } }
+        { program: { name: ASC } }
+        { track: { name: ASC } }
+        { semester: ASC }
+        { name: ASC }
+        { type: ASC }
       ]
     ) {
       ...CourseRow
     }
   }
 
-  query GetTeacherRows($year: Int!, $where: teacher_bool_exp = {}) {
+  query GetTeacherRows($year: Int!, $where: TeacherBoolExp = {}) {
     teachers: service(
       where: { _and: [{ year: { _eq: $year } }, { teacher: $where }] }
-      order_by: [
-        { teacher: { lastname: asc } }
-        { teacher: { firstname: asc } }
-      ]
+      orderBy: [{ teacher: { lastname: ASC } }, { teacher: { firstname: ASC } }]
     ) {
       ...TeacherRow
     }
   }
 
   query GetCourseDetails($courseId: Int!) {
-    course: course_by_pk(id: $courseId) {
+    course: courseByPk(id: $courseId) {
       ...CourseDetails
     }
   }
@@ -89,7 +86,9 @@ const courseRowsQueryResult = useQuery({
     year: computed(() => activeYear.value ?? NaN),
   }),
   pause: () => activeYear.value === null,
-  context: { additionalTypenames: ["demande"] },
+  context: {
+    additionalTypenames: ["Request"],
+  },
 });
 const fetchingCourseRows = computed(() => courseRowsQueryResult.fetching.value);
 const courseRows = computed(
@@ -107,12 +106,7 @@ const teacherRowsQueryResult = useQuery({
   }),
   pause: () => activeYear.value === null,
   context: {
-    additionalTypenames: [
-      "demande",
-      "message",
-      "modification_service",
-      "service",
-    ],
+    additionalTypenames: ["Request", "ServiceModification", "Service"],
   },
 });
 const fetchingTeacherRows = computed(
@@ -130,7 +124,7 @@ const courseDetailsQueryResult = useQuery({
   }),
   pause: () => selectedCourse.value === null,
   context: {
-    additionalTypenames: ["demande", "priorite"],
+    additionalTypenames: ["Request", "Priority"],
   },
 });
 const courseDetails = computed(() =>
@@ -148,12 +142,7 @@ const teacherCoursesQueryResult = useQuery({
   }),
   pause: () => !activeYear.value || !selectedTeacher.value,
   context: {
-    additionalTypenames: [
-      "demande",
-      "message",
-      "modification_service",
-      "service",
-    ],
+    additionalTypenames: ["Request", "ServiceModification", "Service"],
   },
 });
 const teacher = computed(() =>

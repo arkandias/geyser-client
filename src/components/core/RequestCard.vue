@@ -16,7 +16,7 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment RequestCardData on request {
+  fragment RequestCardData on Request {
     id
     service {
       id
@@ -29,11 +29,11 @@ graphql(`
     }
     course {
       id
-      hoursPerGroup: hours_effective
+      hoursPerGroup: hoursEffective
     }
     type
     hours
-    isPriority: is_priority
+    isPriority
   }
 `);
 

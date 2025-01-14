@@ -11,7 +11,7 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment PriorityChipData on priority {
+  fragment PriorityChipData on Priority {
     service {
       teacher {
         firstname
@@ -20,7 +20,7 @@ graphql(`
       }
     }
     seniority
-    isPriority: is_priority
+    isPriority
   }
 `);
 

@@ -13,7 +13,7 @@ graphql(`
   query GetActiveTeachers {
     teachers: teacher(
       where: { active: { _eq: true } }
-      order_by: [{ lastname: asc }, { firstname: asc }]
+      orderBy: [{ lastname: ASC }, { firstname: ASC }]
     ) {
       uid
       firstname

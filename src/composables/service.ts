@@ -8,7 +8,7 @@ import { useYearsStore } from "@/stores/years.ts";
 
 graphql(`
   query GetService($year: Int!, $uid: String!) {
-    teacher: teacher_by_pk(uid: $uid) {
+    teacher: teacherByPk(uid: $uid) {
       services(
         where: { year: { _eq: $year } }
         limit: 1 # unique

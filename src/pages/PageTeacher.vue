@@ -15,8 +15,8 @@ import TeacherTitle from "@/components/teacher/TeacherTitle.vue";
 
 graphql(`
   query GetTeacherDetails($year: Int!, $uid: String!) {
-    teacher: teacher_by_pk(uid: $uid) {
-      responsibilitiesAggregate: responsibilities_aggregate {
+    teacher: teacherByPk(uid: $uid) {
+      responsibilitiesAggregate {
         aggregate {
           count
         }
@@ -50,12 +50,7 @@ const teacherDetailsQueryResult = useQuery({
   }),
   pause: () => activeYear.value === null,
   context: {
-    additionalTypenames: [
-      "demande",
-      "message",
-      "modification_service",
-      "service",
-    ],
+    additionalTypenames: ["Request", "ServiceModification", "Service"],
   },
 });
 const data = computed(() => teacherDetailsQueryResult.data.value);

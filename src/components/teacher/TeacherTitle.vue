@@ -10,7 +10,7 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment TeacherTitle on teacher {
+  fragment TeacherTitle on Teacher {
     firstname
     lastname
     alias

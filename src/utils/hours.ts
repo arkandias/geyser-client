@@ -9,7 +9,7 @@ type TotalHours = {
 type TotalWeightedHours = {
   aggregate?: {
     sum?: {
-      weightedHours?: number | null;
+      hoursWeighted?: number | null;
     } | null;
   } | null;
 };
@@ -17,7 +17,7 @@ type TotalWeightedHours = {
 export const totalH = (total?: TotalHours) => total?.aggregate?.sum?.hours ?? 0;
 
 export const totalWH = (total?: TotalWeightedHours) =>
-  total?.aggregate?.sum?.weightedHours ?? 0;
+  total?.aggregate?.sum?.hoursWeighted ?? 0;
 
 export const modifiedService = (service?: {
   hours: number;

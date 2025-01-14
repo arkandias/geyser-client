@@ -14,7 +14,7 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment TeacherService on service {
+  fragment TeacherService on Service {
     ...TeacherServiceDetails
     ...TeacherRequests
     ...TeacherPriorities

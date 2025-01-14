@@ -11,7 +11,7 @@ import { displayName, formatProgram, formatUser } from "@/utils/format.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
-  query GetAssignments($year: Int!, $where: request_bool_exp = {}) {
+  query GetAssignments($year: Int!, $where: RequestBoolExp = {}) {
     assignments: request(
       where: {
         _and: [
@@ -20,37 +20,37 @@ graphql(`
           $where
         ]
       }
-      order_by: [
-        { course: { program: { degree: { name: asc } } } }
-        { course: { program: { name: asc } } }
-        { course: { track: { name: asc } } }
-        { course: { semester: asc } }
-        { course: { name: asc } }
-        { course: { typeByType: { label: asc } } }
-        { service: { teacher: { lastname: asc } } }
-        { service: { teacher: { firstname: asc } } }
+      orderBy: [
+        { course: { program: { degree: { name: ASC } } } }
+        { course: { program: { name: ASC } } }
+        { course: { track: { name: ASC } } }
+        { course: { semester: ASC } }
+        { course: { name: ASC } }
+        { course: { typeByType: { label: ASC } } }
+        { service: { teacher: { lastname: ASC } } }
+        { service: { teacher: { firstname: ASC } } }
       ]
     ) {
       course {
         name
-        shortName: name_short
+        shortName: nameShort
         program {
           name
-          shortName: name_short
+          shortName: nameShort
           degree {
             name
-            shortName: name_short
+            shortName: nameShort
           }
         }
         track {
           name
-          shortName: name_short
+          shortName: nameShort
           program {
             name
-            shortName: name_short
+            shortName: nameShort
             degree {
               name
-              shortName: name_short
+              shortName: nameShort
             }
           }
         }
@@ -90,7 +90,7 @@ const formatAssignments = (assignments: GetAssignmentsQuery["assignments"]) =>
     enseignement: assignment.course.name,
     semestre: assignment.course.semester,
     type: assignment.course.typeByType.label,
-    teacher: formatUser(assignment.service.teacher),
+    intervenant: formatUser(assignment.service.teacher),
     email: assignment.service.teacher.uid,
   }));
 

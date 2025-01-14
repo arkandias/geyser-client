@@ -6,7 +6,7 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  type Request_Bool_Exp,
+  type RequestBoolExp,
   type TeacherResponsibilitiesFragment,
   TeacherResponsibilitiesFragmentDoc,
 } from "@/gql/graphql.ts";
@@ -23,30 +23,30 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment TeacherResponsibilities on teacher {
+  fragment TeacherResponsibilities on Teacher {
     responsibilities(
-      order_by: [{ program_id: asc }, { track_id: asc }, { course_id: asc }]
+      orderBy: [{ programId: ASC }, { trackId: ASC }, { courseId: ASC }]
     ) {
       id
       program {
         id
         name
-        shortName: name_short
+        shortName: nameShort
         degree {
           name
-          shortName: name_short
+          shortName: nameShort
         }
       }
       track {
         id
         name
-        shortName: name_short
+        shortName: nameShort
         program {
           name
-          shortName: name_short
+          shortName: nameShort
           degree {
             name
-            shortName: name_short
+            shortName: nameShort
           }
         }
       }
@@ -54,24 +54,24 @@ graphql(`
         id
         year
         name
-        shortName: name_short
+        shortName: nameShort
         program {
           name
-          shortName: name_short
+          shortName: nameShort
           degree {
             name
-            shortName: name_short
+            shortName: nameShort
           }
         }
         track {
           name
-          shortName: name_short
+          shortName: nameShort
           program {
             name
-            shortName: name_short
+            shortName: nameShort
             degree {
               name
-              shortName: name_short
+              shortName: nameShort
             }
           }
         }
@@ -133,17 +133,17 @@ const downloadProgramAssignments = async (responsibility: Responsibility) => {
   if (activeYear.value === null) {
     return;
   }
-  let where: Request_Bool_Exp;
+  let where: RequestBoolExp;
   let filename: string;
   if (responsibility.program) {
     where = {
-      course: { program_id: { _eq: responsibility.program.id } },
+      course: { programId: { _eq: responsibility.program.id } },
     };
     filename =
       activeYear.value.toString() + " " + formatProgram(responsibility.program);
   } else if (responsibility.track) {
     where = {
-      course: { track_id: { _eq: responsibility.track.id } },
+      course: { trackId: { _eq: responsibility.track.id } },
     };
     filename =
       activeYear.value.toString() +

@@ -15,25 +15,25 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment TeacherRequests on service {
-    assigned: requests_aggregate(where: { type: { _eq: "attribution" } }) {
+  fragment TeacherRequests on Service {
+    assigned: requestsAggregate(where: { type: { _eq: "attribution" } }) {
       aggregate {
         sum {
-          weightedHours: hours_weighted
+          hoursWeighted
         }
       }
     }
-    primary: requests_aggregate(where: { type: { _eq: "principale" } }) {
+    primary: requestsAggregate(where: { type: { _eq: "principale" } }) {
       aggregate {
         sum {
-          weightedHours: hours_weighted
+          hoursWeighted
         }
       }
     }
-    secondary: requests_aggregate(where: { type: { _eq: "secondaire" } }) {
+    secondary: requestsAggregate(where: { type: { _eq: "secondaire" } }) {
       aggregate {
         sum {
-          weightedHours: hours_weighted
+          hoursWeighted
         }
       }
     }

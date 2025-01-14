@@ -10,7 +10,7 @@ import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
   query GetUserProfile($uid: String!) {
-    profile: teacher_by_pk(uid: $uid) {
+    profile: teacherByPk(uid: $uid) {
       uid
       firstname
       lastname

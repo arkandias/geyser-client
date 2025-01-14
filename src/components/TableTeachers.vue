@@ -20,7 +20,7 @@ const { teacherRowFragments } = defineProps<{
 }>();
 
 graphql(`
-  fragment TeacherRow on service {
+  fragment TeacherRow on Service {
     teacher {
       uid
       firstname
@@ -29,37 +29,37 @@ graphql(`
       visible
     }
     hours
-    totalModifications: modifications_aggregate {
+    totalModifications: modificationsAggregate {
       aggregate {
         sum {
           hours
         }
       }
     }
-    totalAssigned: requests_aggregate(
+    totalAssigned: requestsAggregate(
       where: { _and: [{ type: { _eq: "attribution" } }] }
     ) {
       aggregate {
         sum {
-          weightedHours: hours_weighted
+          hoursWeighted
         }
       }
     }
-    totalPrimary: requests_aggregate(
+    totalPrimary: requestsAggregate(
       where: { _and: [{ type: { _eq: "principale" } }] }
     ) {
       aggregate {
         sum {
-          weightedHours: hours_weighted
+          hoursWeighted
         }
       }
     }
-    totalSecondary: requests_aggregate(
+    totalSecondary: requestsAggregate(
       where: { _and: [{ type: { _eq: "secondaire" } }] }
     ) {
       aggregate {
         sum {
-          weightedHours: hours_weighted
+          hoursWeighted
         }
       }
     }
@@ -116,9 +116,9 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     abbreviable: false,
   },
   {
-    name: "messages",
+    name: "message",
     label: "M.",
-    tooltip: "Messages",
+    tooltip: "Message",
     align: "left",
     field: (row) => (row.message ? "✓" : "✗"),
     sortable: true,
@@ -139,7 +139,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     abbreviable: false,
   },
   {
-    name: "attributions",
+    name: "assignment",
     label: "A.",
     tooltip: "Nombre d'heures EQTD attribuées",
     field: (row) => totalWH(row.totalAssigned),
@@ -151,7 +151,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     abbreviable: false,
   },
   {
-    name: "diff_attribution",
+    name: "diff_assignment",
     label: "\u0394A",
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD attribuées",
@@ -164,7 +164,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     abbreviable: false,
   },
   {
-    name: "principales",
+    name: "primary",
     label: "V1",
     tooltip: "Nombre d'heures EQTD demandées en vœux principaux",
     field: (row) => totalWH(row.totalPrimary),
@@ -176,7 +176,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     abbreviable: false,
   },
   {
-    name: "diff_principales",
+    name: "diff_primary",
     label: "\u0394V1",
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",
@@ -189,7 +189,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     abbreviable: false,
   },
   {
-    name: "secondaires",
+    name: "secondary",
     label: "V2",
     tooltip: "Nombre d'heures EQTD demandées en vœux secondaires",
     field: (row) => totalWH(row.totalSecondary),

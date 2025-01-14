@@ -17,22 +17,19 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment CourseDescriptionData on course {
+  fragment CourseDescriptionData on Course {
     courseId: id
     description
     coordinators(
-      order_by: [
-        { teacher: { lastname: asc } }
-        { teacher: { firstname: asc } }
-      ]
+      orderBy: [{ teacher: { lastname: ASC } }, { teacher: { firstname: ASC } }]
     ) {
       uid
     }
     program {
       coordinators(
-        order_by: [
-          { teacher: { lastname: asc } }
-          { teacher: { firstname: asc } }
+        orderBy: [
+          { teacher: { lastname: ASC } }
+          { teacher: { firstname: ASC } }
         ]
       ) {
         uid
@@ -40,9 +37,9 @@ graphql(`
     }
     track {
       coordinators(
-        order_by: [
-          { teacher: { lastname: asc } }
-          { teacher: { firstname: asc } }
+        orderBy: [
+          { teacher: { lastname: ASC } }
+          { teacher: { firstname: ASC } }
         ]
       ) {
         uid
@@ -51,8 +48,8 @@ graphql(`
   }
 
   mutation UpdateDescription($courseId: Int!, $description: String) {
-    course: update_course_by_pk(
-      pk_columns: { id: $courseId }
+    course: updateCourseByPk(
+      pkColumns: { id: $courseId }
       _set: { description: $description }
     ) {
       id

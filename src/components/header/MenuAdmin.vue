@@ -20,7 +20,7 @@ import MenuBase from "@/components/header/MenuBase.vue";
 
 graphql(`
   mutation SetCurrentYear($value: Int!) {
-    years: update_year(
+    years: updateYear(
       where: { value: { _neq: $value } }
       _set: { current: null }
     ) {
@@ -28,8 +28,8 @@ graphql(`
         value
       }
     }
-    current: update_year_by_pk(
-      pk_columns: { value: $value }
+    current: updateYearByPk(
+      pkColumns: { value: $value }
       _set: { current: true }
     ) {
       value
@@ -37,7 +37,7 @@ graphql(`
   }
 
   mutation SetCurrentPhase($value: String!) {
-    phases: update_phase(
+    phases: updatePhase(
       where: { value: { _neq: $value } }
       _set: { current: null }
     ) {
@@ -45,8 +45,8 @@ graphql(`
         value
       }
     }
-    enCours: update_phase_by_pk(
-      pk_columns: { value: $value }
+    enCours: updatePhaseByPk(
+      pkColumns: { value: $value }
       _set: { current: true }
     ) {
       value

@@ -5,7 +5,7 @@ import { DummyMutationDocument } from "@/gql/graphql.ts";
 
 graphql(`
   mutation DummyMutation {
-    requests: insert_request(objects: []) {
+    requests: insertRequest(objects: []) {
       returning {
         id
       }
@@ -22,11 +22,10 @@ export const useRefreshData = () => {
       {},
       {
         additionalTypenames: [
-          "demande",
-          "message",
-          "modification_service",
-          "priorite",
-          "service",
+          "Request",
+          "ServiceModificaton",
+          "Priority",
+          "Service",
         ],
       },
     );

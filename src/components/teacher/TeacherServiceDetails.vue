@@ -25,26 +25,26 @@ const { dataFragment } = defineProps<{
 
 graphql(`
   query GetModificationTypes {
-    modificationTypes: service_modification_type(order_by: { value: asc }) {
+    modificationTypes: serviceModificationType(orderBy: { value: ASC }) {
       value
       label
       description
     }
   }
 
-  fragment TeacherServiceDetails on service {
+  fragment TeacherServiceDetails on Service {
     id
     uid
     year
     hours
-    totalModifications: modifications_aggregate {
+    totalModifications: modificationsAggregate {
       aggregate {
         sum {
           hours
         }
       }
     }
-    modifications(order_by: [{ typeByType: { label: asc } }, { hours: asc }]) {
+    modifications(orderBy: [{ typeByType: { label: ASC } }, { hours: ASC }]) {
       id
       modificationType: typeByType {
         label
@@ -54,9 +54,9 @@ graphql(`
   }
 
   mutation UpsertService($year: Int!, $uid: String!, $hours: Float!) {
-    service: insert_service_one(
+    service: insertServiceOne(
       object: { year: $year, uid: $uid, hours: $hours }
-      on_conflict: { constraint: service_year_uid_key, update_columns: [hours] }
+      onConflict: { constraint: service_year_uid_key, updateColumns: [hours] }
     ) {
       id
     }
@@ -67,15 +67,15 @@ graphql(`
     $modificationType: String!
     $hours: Float!
   ) {
-    serviceModification: insert_service_modification_one(
-      object: { service_id: $serviceId, type: $modificationType, hours: $hours }
+    serviceModification: insertServiceModificationOne(
+      object: { serviceId: $serviceId, type: $modificationType, hours: $hours }
     ) {
       id
     }
   }
 
   mutation DeleteModification($id: Int!) {
-    serviceModification: delete_service_modification_by_pk(id: $id) {
+    serviceModification: deleteServiceModificationByPk(id: $id) {
       id
     }
   }
@@ -170,7 +170,7 @@ const submitModificationForm = async (): Promise<void> => {
 };
 
 const handleModificationDeletion = async (id: number): Promise<void> => {
-  const result = await deleteModification.executeMutation({ id: id });
+  const result = await deleteModification.executeMutation({ id });
   if (result.data?.serviceModification && !result.error) {
     notify(NotifyType.SUCCESS, { message: "Modification supprimée" });
   } else {

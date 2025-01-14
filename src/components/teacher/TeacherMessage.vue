@@ -17,15 +17,15 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment TeacherMessage on service {
+  fragment TeacherMessage on Service {
     id
     uid
     message
   }
 
   mutation UpdateMessage($serviceId: Int!, $message: String) {
-    service: update_service_by_pk(
-      pk_columns: { id: $serviceId }
+    service: updateServiceByPk(
+      pkColumns: { id: $serviceId }
       _set: { message: $message }
     ) {
       id

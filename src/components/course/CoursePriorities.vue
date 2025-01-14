@@ -12,11 +12,11 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment CoursePriorities on course {
+  fragment CoursePriorities on Course {
     priorities(
-      order_by: [
-        { service: { teacher: { lastname: asc } } }
-        { service: { teacher: { firstname: asc } } }
+      orderBy: [
+        { service: { teacher: { lastname: ASC } } }
+        { service: { teacher: { firstname: ASC } } }
       ]
     ) {
       id

@@ -16,15 +16,15 @@ const { year, uid, dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment TeacherNoService on teacher {
-    baseServiceHours: base_service_hours
+  fragment TeacherNoService on Teacher {
+    baseServiceHours
     positionByPosition {
-      baseServiceHours: base_service_hours
+      baseServiceHours
     }
   }
 
   mutation InsertService($year: Int!, $uid: String!, $hours: Float!) {
-    service: insert_service_one(
+    service: insertServiceOne(
       object: { year: $year, uid: $uid, hours: $hours }
     ) {
       id

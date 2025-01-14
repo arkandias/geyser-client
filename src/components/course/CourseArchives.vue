@@ -13,14 +13,14 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment CourseArchives on course {
+  fragment CourseArchives on Course {
     parent {
       year
       requests(
         where: { type: { _eq: "attribution" } }
-        order_by: [
-          { service: { teacher: { lastname: asc } } }
-          { service: { teacher: { firstname: asc } } }
+        orderBy: [
+          { service: { teacher: { lastname: ASC } } }
+          { service: { teacher: { firstname: ASC } } }
         ]
       ) {
         id
@@ -30,9 +30,9 @@ graphql(`
         year
         requests(
           where: { type: { _eq: "attribution" } }
-          order_by: [
-            { service: { teacher: { lastname: asc } } }
-            { service: { teacher: { firstname: asc } } }
+          orderBy: [
+            { service: { teacher: { lastname: ASC } } }
+            { service: { teacher: { firstname: ASC } } }
           ]
         ) {
           id
@@ -42,9 +42,9 @@ graphql(`
           year
           requests(
             where: { type: { _eq: "attribution" } }
-            order_by: [
-              { service: { teacher: { lastname: asc } } }
-              { service: { teacher: { firstname: asc } } }
+            orderBy: [
+              { service: { teacher: { lastname: ASC } } }
+              { service: { teacher: { firstname: ASC } } }
             ]
           ) {
             id

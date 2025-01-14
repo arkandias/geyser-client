@@ -18,47 +18,47 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment TeacherPriorities on service {
+  fragment TeacherPriorities on Service {
     priorities(
-      order_by: [
-        { course: { semester: asc } }
-        { course: { typeByType: { label: asc } } }
-        { course: { program_id: asc } }
-        { course: { track_id: asc } }
-        { course: { name: asc } }
+      orderBy: [
+        { course: { semester: ASC } }
+        { course: { typeByType: { label: ASC } } }
+        { course: { programId: ASC } }
+        { course: { trackId: ASC } }
+        { course: { name: ASC } }
       ]
     ) {
       id
       course {
         name
-        shortName: name_short
+        shortName: nameShort
         semester
         typeByType {
           label
         }
         program {
           name
-          shortName: name_short
+          shortName: nameShort
           degree {
             name
-            shortName: name_short
+            shortName: nameShort
           }
         }
         track {
           name
-          shortName: name_short
+          shortName: nameShort
           program {
             name
-            shortName: name_short
+            shortName: nameShort
             degree {
               name
-              shortName: name_short
+              shortName: nameShort
             }
           }
         }
       }
       seniority
-      isPriority: is_priority
+      isPriority
     }
   }
 `);

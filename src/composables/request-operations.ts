@@ -16,7 +16,7 @@ import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
   query GetServiceByCourseId($uid: String!, $courseId: Int!) {
-    course: course_by_pk(id: $courseId) {
+    course: courseByPk(id: $courseId) {
       year
       yearByYear {
         services(
@@ -33,8 +33,8 @@ graphql(`
     requests: request(
       where: {
         _and: [
-          { service_id: { _eq: $serviceId } }
-          { course_id: { _eq: $courseId } }
+          { serviceId: { _eq: $serviceId } }
+          { courseId: { _eq: $courseId } }
           { type: { _eq: $requestType } }
         ]
       }
@@ -50,16 +50,16 @@ graphql(`
     $requestType: String!
     $hours: Float!
   ) {
-    request: insert_request_one(
+    request: insertRequestOne(
       object: {
-        service_id: $serviceId
-        course_id: $courseId
+        serviceId: $serviceId
+        courseId: $courseId
         type: $requestType
         hours: $hours
       }
-      on_conflict: {
+      onConflict: {
         constraint: request_service_id_course_id_type_key
-        update_columns: [hours]
+        updateColumns: [hours]
       }
     ) {
       id
@@ -71,11 +71,11 @@ graphql(`
     $courseId: Int!
     $requestType: String!
   ) {
-    requests: delete_request(
+    requests: deleteRequest(
       where: {
         _and: [
-          { service_id: { _eq: $serviceId } }
-          { course_id: { _eq: $courseId } }
+          { serviceId: { _eq: $serviceId } }
+          { courseId: { _eq: $courseId } }
           { type: { _eq: $requestType } }
         ]
       }
@@ -87,7 +87,7 @@ graphql(`
   }
 
   mutation DeleteRequestById($id: Int!) {
-    request: delete_request_by_pk(id: $id) {
+    request: deleteRequestByPk(id: $id) {
       id
       type
     }

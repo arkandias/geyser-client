@@ -30,61 +30,61 @@ const { courseRowFragments, teacherCoursesFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment CourseRow on course {
+  fragment CourseRow on Course {
     id
     name
-    shortName: name_short
+    shortName: nameShort
     visible
     program {
       degree {
         id
         name
-        shortName: name_short
+        shortName: nameShort
         visible
       }
       id
       name
-      shortName: name_short
+      shortName: nameShort
       visible
     }
     track {
       id
       name
-      shortName: name_short
+      shortName: nameShort
       visible
     }
     courseType: typeByType {
       value
       label
     }
-    semester: semester
-    hoursPerGroup: hours_effective
-    numberOfGroups: groups_effective
-    totalHours: total_hours_effective
-    totalAssigned: requests_aggregate(where: { type: { _eq: "attribution" } }) {
+    semester
+    hoursPerGroup: hoursEffective
+    numberOfGroups: groupsEffective
+    totalHours: totalHoursEffective
+    totalAssigned: requestsAggregate(where: { type: { _eq: "attribution" } }) {
       aggregate {
         sum {
           hours
         }
       }
     }
-    totalPrimary: requests_aggregate(where: { type: { _eq: "principale" } }) {
+    totalPrimary: requestsAggregate(where: { type: { _eq: "principale" } }) {
       aggregate {
         sum {
           hours
         }
       }
     }
-    totalSecondary: requests_aggregate(where: { type: { _eq: "secondaire" } }) {
+    totalSecondary: requestsAggregate(where: { type: { _eq: "secondaire" } }) {
       aggregate {
         sum {
           hours
         }
       }
     }
-    totalPriority: requests_aggregate(
+    totalPriority: requestsAggregate(
       where: {
-        _and: [{ type: { _eq: "principale" } }, { is_priority: { _eq: true } }]
+        _and: [{ type: { _eq: "principale" } }, { isPriority: { _eq: true } }]
       }
     ) {
       aggregate {
@@ -95,15 +95,15 @@ graphql(`
     }
   }
 
-  fragment TeacherCourses on service {
+  fragment TeacherCourses on Service {
     name: teacher {
       uid
       firstname
       lastname
       alias
     }
-    requests(order_by: [{ type: asc }, { course_id: asc }]) {
-      courseId: course_id
+    requests(orderBy: [{ type: ASC }, { courseId: ASC }]) {
+      courseId
       type
       hours
     }

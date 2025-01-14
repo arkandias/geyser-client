@@ -11,7 +11,7 @@ const { dataFragment } = defineProps<{
 defineSlots<{ default(): unknown }>();
 
 graphql(`
-  fragment CourseExpansion on course {
+  fragment CourseExpansion on Course {
     name
     courseType: typeByType {
       label

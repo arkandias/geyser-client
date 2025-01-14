@@ -16,7 +16,7 @@ import PageHome from "@/pages/PageHome.vue";
 
 graphql(`
   query GetYears {
-    years: year(order_by: { value: desc }) {
+    years: year(orderBy: { value: DESC }) {
       value
       current
       visible
