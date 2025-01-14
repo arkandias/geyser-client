@@ -19,9 +19,9 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment RequestFormData on enseignement {
+  fragment RequestFormData on course {
     courseId: id
-    hoursPerGroup: heures_corrigees
+    hoursPerGroup: hours_effective
   }
 `);
 

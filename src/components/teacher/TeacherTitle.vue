@@ -10,11 +10,11 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment TeacherTitle on intervenant {
-    firstname: prenom
-    lastname: nom
+  fragment TeacherTitle on teacher {
+    firstname
+    lastname
     alias
-    position: fonctionByFonction {
+    positionByPosition {
       label
     }
   }
@@ -29,8 +29,8 @@ const teacher = computed(() =>
   <QCard flat square class="text-center">
     <QCardSection>
       <div class="text-h5">{{ formatUser(teacher) }}</div>
-      <div v-if="teacher.position" class="text-body1 text-italic">
-        {{ teacher.position.label }}
+      <div v-if="teacher.positionByPosition" class="text-body1 text-italic">
+        {{ teacher.positionByPosition.label }}
       </div>
     </QCardSection>
   </QCard>

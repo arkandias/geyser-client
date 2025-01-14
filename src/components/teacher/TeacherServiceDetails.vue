@@ -25,7 +25,7 @@ const { dataFragment } = defineProps<{
 
 graphql(`
   query GetModificationTypes {
-    modificationTypes: type_modification_service(order_by: { value: asc }) {
+    modificationTypes: service_modification_type(order_by: { value: asc }) {
       value
       label
       description
@@ -35,33 +35,28 @@ graphql(`
   fragment TeacherServiceDetails on service {
     id
     uid
-    year: annee
-    base: heures_eqtd
+    year
+    hours
     totalModifications: modifications_aggregate {
       aggregate {
         sum {
-          hours: heures_eqtd
+          hours
         }
       }
     }
-    modifications(
-      order_by: [{ typeByType: { label: asc } }, { heures_eqtd: asc }]
-    ) {
+    modifications(order_by: [{ typeByType: { label: asc } }, { hours: asc }]) {
       id
       modificationType: typeByType {
         label
       }
-      hours: heures_eqtd
+      hours
     }
   }
 
   mutation UpsertService($year: Int!, $uid: String!, $hours: Float!) {
     service: insert_service_one(
-      object: { annee: $year, uid: $uid, heures_eqtd: $hours }
-      on_conflict: {
-        constraint: service_annee_uid_key
-        update_columns: [heures_eqtd]
-      }
+      object: { year: $year, uid: $uid, hours: $hours }
+      on_conflict: { constraint: service_year_uid_key, update_columns: [hours] }
     ) {
       id
     }
@@ -72,19 +67,15 @@ graphql(`
     $modificationType: String!
     $hours: Float!
   ) {
-    serviceModification: insert_modification_service_one(
-      object: {
-        service_id: $serviceId
-        type: $modificationType
-        heures_eqtd: $hours
-      }
+    serviceModification: insert_service_modification_one(
+      object: { service_id: $serviceId, type: $modificationType, hours: $hours }
     ) {
       id
     }
   }
 
   mutation DeleteModification($id: Int!) {
-    serviceModification: delete_modification_service_by_pk(id: $id) {
+    serviceModification: delete_service_modification_by_pk(id: $id) {
       id
     }
   }
@@ -107,11 +98,11 @@ const deleteModification = useMutation(DeleteModificationDocument);
 const isBaseServiceFormOpen = ref(false);
 const baseServiceHours = ref(
   // eslint-disable-next-line vue/no-ref-object-reactivity-loss
-  service.value.base,
+  service.value.hours,
 );
 const resetBaseServiceForm = (): void => {
   isBaseServiceFormOpen.value = false;
-  baseServiceHours.value = service.value.base;
+  baseServiceHours.value = service.value.hours;
 };
 const submitBaseServiceForm = async (): Promise<void> => {
   if (baseServiceHours.value < 0) {
@@ -121,7 +112,7 @@ const submitBaseServiceForm = async (): Promise<void> => {
     });
     return;
   }
-  if (baseServiceHours.value === service.value.base) {
+  if (baseServiceHours.value === service.value.hours) {
     notify(NotifyType.DEFAULT, { message: "Pas de changement à enregistrer" });
   } else {
     const result = await upsertService.executeMutation({
@@ -247,7 +238,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             class="inline-block"
           />
         </td>
-        <td v-else>{{ formatWH(service.base) }}</td>
+        <td v-else>{{ formatWH(service.hours) }}</td>
       </tr>
       <tr>
         <td>

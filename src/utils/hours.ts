@@ -20,6 +20,6 @@ export const totalWH = (total?: TotalWeightedHours) =>
   total?.aggregate?.sum?.weightedHours ?? 0;
 
 export const modifiedService = (service?: {
-  base: number;
+  hours: number;
   totalModifications: TotalHours;
-}) => (service?.base ?? 0) - totalH(service?.totalModifications);
+}) => (service?.hours ?? 0) - totalH(service?.totalModifications);

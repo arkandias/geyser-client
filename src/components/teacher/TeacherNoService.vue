@@ -16,16 +16,16 @@ const { year, uid, dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment TeacherNoService on intervenant {
-    baseServiceHours: heures_eqtd_service_base
-    position: fonctionByFonction {
-      baseServiceHours: heures_eqtd_service_base
+  fragment TeacherNoService on teacher {
+    baseServiceHours: base_service_hours
+    positionByPosition {
+      baseServiceHours: base_service_hours
     }
   }
 
   mutation InsertService($year: Int!, $uid: String!, $hours: Float!) {
     service: insert_service_one(
-      object: { annee: $year, uid: $uid, heures_eqtd: $hours }
+      object: { year: $year, uid: $uid, hours: $hours }
     ) {
       id
     }
@@ -41,11 +41,14 @@ const insertService = useMutation(InsertServiceDocument);
 const isServiceFormOpen = ref(false);
 const baseServiceHours = ref(
   // eslint-disable-next-line vue/no-ref-object-reactivity-loss
-  data.value.baseServiceHours ?? data.value.position?.baseServiceHours ?? 0,
+  data.value.baseServiceHours ??
+    // eslint-disable-next-line vue/no-ref-object-reactivity-loss
+    data.value.positionByPosition?.baseServiceHours ??
+    0,
 );
 const resetServiceCreation = (): void => {
   isServiceFormOpen.value = false;
-  baseServiceHours.value = data.value.position?.baseServiceHours ?? 0;
+  baseServiceHours.value = data.value.positionByPosition?.baseServiceHours ?? 0;
 };
 const submitServiceCreation = async (): Promise<void> => {
   if (baseServiceHours.value < 0) {

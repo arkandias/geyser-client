@@ -6,7 +6,7 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  type Demande_Bool_Exp,
+  type Request_Bool_Exp,
   type TeacherResponsibilitiesFragment,
   TeacherResponsibilitiesFragmentDoc,
 } from "@/gql/graphql.ts";
@@ -23,60 +23,60 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment TeacherResponsibilities on intervenant {
-    responsibilities: responsabilites(
-      order_by: [{ mention_id: asc }, { parcours_id: asc }, { ens_id: asc }]
+  fragment TeacherResponsibilities on teacher {
+    responsibilities(
+      order_by: [{ program_id: asc }, { track_id: asc }, { course_id: asc }]
     ) {
       id
-      program: mention {
+      program {
         id
-        name: nom
-        shortName: nom_court
-        degree: cursus {
-          name: nom
-          shortName: nom_court
+        name
+        shortName: name_short
+        degree {
+          name
+          shortName: name_short
         }
       }
-      track: parcours {
+      track {
         id
-        name: nom
-        shortName: nom_court
-        program: mention {
-          name: nom
-          shortName: nom_court
-          degree: cursus {
-            name: nom
-            shortName: nom_court
+        name
+        shortName: name_short
+        program {
+          name
+          shortName: name_short
+          degree {
+            name
+            shortName: name_short
           }
         }
       }
-      course: enseignement {
+      course {
         id
-        year: annee
-        name: nom
-        shortName: nom_court
-        program: mention {
-          name: nom
-          shortName: nom_court
-          degree: cursus {
-            name: nom
-            shortName: nom_court
+        year
+        name
+        shortName: name_short
+        program {
+          name
+          shortName: name_short
+          degree {
+            name
+            shortName: name_short
           }
         }
-        track: parcours {
-          name: nom
-          shortName: nom_court
-          program: mention {
-            name: nom
-            shortName: nom_court
-            degree: cursus {
-              name: nom
-              shortName: nom_court
+        track {
+          name
+          shortName: name_short
+          program {
+            name
+            shortName: name_short
+            degree {
+              name
+              shortName: name_short
             }
           }
         }
       }
-      comment: commentaire
+      comment
     }
   }
 `);
@@ -133,17 +133,17 @@ const downloadProgramAssignments = async (responsibility: Responsibility) => {
   if (activeYear.value === null) {
     return;
   }
-  let where: Demande_Bool_Exp;
+  let where: Request_Bool_Exp;
   let filename: string;
   if (responsibility.program) {
     where = {
-      enseignement: { mention_id: { _eq: responsibility.program.id } },
+      course: { program_id: { _eq: responsibility.program.id } },
     };
     filename =
       activeYear.value.toString() + " " + formatProgram(responsibility.program);
   } else if (responsibility.track) {
     where = {
-      enseignement: { parcours_id: { _eq: responsibility.track.id } },
+      course: { track_id: { _eq: responsibility.track.id } },
     };
     filename =
       activeYear.value.toString() +
@@ -153,7 +153,7 @@ const downloadProgramAssignments = async (responsibility: Responsibility) => {
       displayName(responsibility.track);
   } else if (responsibility.course) {
     where = {
-      enseignement: { id: { _eq: responsibility.course.id } },
+      course: { id: { _eq: responsibility.course.id } },
     };
     filename =
       activeYear.value.toString() +

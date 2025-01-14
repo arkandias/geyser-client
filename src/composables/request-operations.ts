@@ -16,11 +16,11 @@ import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
   query GetServiceByCourseId($uid: String!, $courseId: Int!) {
-    course: enseignement_by_pk(id: $courseId) {
-      year: annee
-      yearByYear: anneeByAnnee {
+    course: course_by_pk(id: $courseId) {
+      year
+      yearByYear {
         services(
-          where: { intervenant: { uid: { _eq: $uid } } }
+          where: { teacher: { uid: { _eq: $uid } } }
           limit: 1 # unique
         ) {
           id
@@ -30,17 +30,17 @@ graphql(`
   }
 
   query GetRequest($serviceId: Int!, $courseId: Int!, $requestType: String!) {
-    requests: demande(
+    requests: request(
       where: {
         _and: [
           { service_id: { _eq: $serviceId } }
-          { ens_id: { _eq: $courseId } }
+          { course_id: { _eq: $courseId } }
           { type: { _eq: $requestType } }
         ]
       }
       limit: 1 # unique
     ) {
-      hours: heures
+      hours
     }
   }
 
@@ -50,16 +50,16 @@ graphql(`
     $requestType: String!
     $hours: Float!
   ) {
-    request: insert_demande_one(
+    request: insert_request_one(
       object: {
         service_id: $serviceId
-        ens_id: $courseId
+        course_id: $courseId
         type: $requestType
-        heures: $hours
+        hours: $hours
       }
       on_conflict: {
-        constraint: demande_service_id_ens_id_type_key
-        update_columns: [heures]
+        constraint: request_service_id_course_id_type_key
+        update_columns: [hours]
       }
     ) {
       id
@@ -71,11 +71,11 @@ graphql(`
     $courseId: Int!
     $requestType: String!
   ) {
-    requests: delete_demande(
+    requests: delete_request(
       where: {
         _and: [
           { service_id: { _eq: $serviceId } }
-          { ens_id: { _eq: $courseId } }
+          { course_id: { _eq: $courseId } }
           { type: { _eq: $requestType } }
         ]
       }
@@ -87,7 +87,7 @@ graphql(`
   }
 
   mutation DeleteRequestById($id: Int!) {
-    request: delete_demande_by_pk(id: $id) {
+    request: delete_request_by_pk(id: $id) {
       id
       type
     }

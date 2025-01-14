@@ -30,82 +30,82 @@ const { courseRowFragments, teacherCoursesFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment CourseRow on enseignement {
+  fragment CourseRow on course {
     id
-    name: nom
-    shortName: nom_court
+    name
+    shortName: name_short
     visible
-    program: mention {
-      degree: cursus {
+    program {
+      degree {
         id
-        name: nom
-        shortName: nom_court
+        name
+        shortName: name_short
         visible
       }
       id
-      name: nom
-      shortName: nom_court
+      name
+      shortName: name_short
       visible
     }
-    track: parcours {
+    track {
       id
-      name: nom
-      shortName: nom_court
+      name
+      shortName: name_short
       visible
     }
     courseType: typeByType {
       value
       label
     }
-    semester: semestre
-    hoursPerGroup: heures_corrigees
-    numberOfGroups: groupes_corriges
-    totalHours: total_heures_corrigees
-    totalAssigned: demandes_aggregate(where: { type: { _eq: "attribution" } }) {
+    semester: semester
+    hoursPerGroup: hours_effective
+    numberOfGroups: groups_effective
+    totalHours: total_hours_effective
+    totalAssigned: requests_aggregate(where: { type: { _eq: "attribution" } }) {
       aggregate {
         sum {
-          hours: heures
+          hours
         }
       }
     }
-    totalPrimary: demandes_aggregate(where: { type: { _eq: "principale" } }) {
+    totalPrimary: requests_aggregate(where: { type: { _eq: "principale" } }) {
       aggregate {
         sum {
-          hours: heures
+          hours
         }
       }
     }
-    totalSecondary: demandes_aggregate(where: { type: { _eq: "secondaire" } }) {
+    totalSecondary: requests_aggregate(where: { type: { _eq: "secondaire" } }) {
       aggregate {
         sum {
-          hours: heures
+          hours
         }
       }
     }
-    totalPriority: demandes_aggregate(
+    totalPriority: requests_aggregate(
       where: {
-        _and: [{ type: { _eq: "principale" } }, { prioritaire: { _eq: true } }]
+        _and: [{ type: { _eq: "principale" } }, { is_priority: { _eq: true } }]
       }
     ) {
       aggregate {
         sum {
-          hours: heures
+          hours
         }
       }
     }
   }
 
   fragment TeacherCourses on service {
-    name: intervenant {
+    name: teacher {
       uid
-      firstname: prenom
-      lastname: nom
+      firstname
+      lastname
       alias
     }
-    requests: demandes(order_by: [{ type: asc }, { ens_id: asc }]) {
-      courseId: ens_id
+    requests(order_by: [{ type: asc }, { course_id: asc }]) {
+      courseId: course_id
       type
-      hours: heures
+      hours
     }
   }
 `);

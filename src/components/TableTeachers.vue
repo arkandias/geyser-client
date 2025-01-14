@@ -21,45 +21,45 @@ const { teacherRowFragments } = defineProps<{
 
 graphql(`
   fragment TeacherRow on service {
-    teacher: intervenant {
+    teacher {
       uid
-      firstname: prenom
-      lastname: nom
+      firstname
+      lastname
       alias
       visible
     }
-    base: heures_eqtd
+    hours
     totalModifications: modifications_aggregate {
       aggregate {
         sum {
-          hours: heures_eqtd
+          hours
         }
       }
     }
-    totalAssigned: demandes_aggregate(
+    totalAssigned: requests_aggregate(
       where: { _and: [{ type: { _eq: "attribution" } }] }
     ) {
       aggregate {
         sum {
-          weightedHours: heures_eqtd
+          weightedHours: hours_weighted
         }
       }
     }
-    totalPrimary: demandes_aggregate(
+    totalPrimary: requests_aggregate(
       where: { _and: [{ type: { _eq: "principale" } }] }
     ) {
       aggregate {
         sum {
-          weightedHours: heures_eqtd
+          weightedHours: hours_weighted
         }
       }
     }
-    totalSecondary: demandes_aggregate(
+    totalSecondary: requests_aggregate(
       where: { _and: [{ type: { _eq: "secondaire" } }] }
     ) {
       aggregate {
         sum {
-          weightedHours: heures_eqtd
+          weightedHours: hours_weighted
         }
       }
     }

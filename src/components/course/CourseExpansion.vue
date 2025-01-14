@@ -11,20 +11,20 @@ const { dataFragment } = defineProps<{
 defineSlots<{ default(): unknown }>();
 
 graphql(`
-  fragment CourseExpansion on enseignement {
-    name: nom
+  fragment CourseExpansion on course {
+    name
     courseType: typeByType {
       label
     }
-    semester: semestre
-    program: mention {
-      degree: cursus {
-        name: nom
+    semester
+    program {
+      degree {
+        name
       }
-      name: nom
+      name
     }
-    track: parcours {
-      name: nom
+    track {
+      name
     }
   }
 `);
@@ -36,7 +36,7 @@ const data = computed(() =>
 const label = computed(() =>
   data.value
     ? data.value.name
-    : "Sélectionnez un enseignement dans la liste ci-dessus",
+    : "Sélectionnez un course dans la liste ci-dessus",
 );
 
 const caption = computed(() =>

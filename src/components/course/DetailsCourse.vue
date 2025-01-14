@@ -18,7 +18,7 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment CourseDetails on enseignement {
+  fragment CourseDetails on course {
     courseId: id
     ...CourseExpansion
     ...CourseCoordinators

@@ -13,38 +13,38 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment CourseArchives on enseignement {
+  fragment CourseArchives on course {
     parent {
-      year: annee
-      requests: demandes(
+      year
+      requests(
         where: { type: { _eq: "attribution" } }
         order_by: [
-          { service: { intervenant: { nom: asc } } }
-          { service: { intervenant: { prenom: asc } } }
+          { service: { teacher: { lastname: asc } } }
+          { service: { teacher: { firstname: asc } } }
         ]
       ) {
         id
         ...RequestCardData
       }
       parent {
-        year: annee
-        requests: demandes(
+        year
+        requests(
           where: { type: { _eq: "attribution" } }
           order_by: [
-            { service: { intervenant: { nom: asc } } }
-            { service: { intervenant: { prenom: asc } } }
+            { service: { teacher: { lastname: asc } } }
+            { service: { teacher: { firstname: asc } } }
           ]
         ) {
           id
           ...RequestCardData
         }
         parent {
-          year: annee
-          requests: demandes(
+          year
+          requests(
             where: { type: { _eq: "attribution" } }
             order_by: [
-              { service: { intervenant: { nom: asc } } }
-              { service: { intervenant: { prenom: asc } } }
+              { service: { teacher: { lastname: asc } } }
+              { service: { teacher: { firstname: asc } } }
             ]
           ) {
             id

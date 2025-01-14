@@ -11,13 +11,13 @@ const uid = defineModel<string | null>();
 
 graphql(`
   query GetActiveTeachers {
-    teachers: intervenant(
-      where: { actif: { _eq: true } }
-      order_by: [{ nom: asc }, { prenom: asc }]
+    teachers: teacher(
+      where: { active: { _eq: true } }
+      order_by: [{ lastname: asc }, { firstname: asc }]
     ) {
       uid
-      firstname: prenom
-      lastname: nom
+      firstname
+      lastname
       alias
     }
   }

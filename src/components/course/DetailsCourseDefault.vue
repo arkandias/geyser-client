@@ -3,11 +3,11 @@
 <template>
   <QCardSection class="text-body2 text-justify">
     <p>
-      Cliquez sur la ligne d'un enseignement pour afficher ici des informations
-      détaillées. Si un enseignement et un intervenant sont sélectionnés en même
+      Cliquez sur la ligne d'un course pour afficher ici des informations
+      détaillées. Si un course et un intervenant sont sélectionnés en même
       temps, ce sont les informations de l'enseignement qui sont affichées. Vous
-      pouvez désélectionner un enseignement ou un intervenant en cliquant à
-      nouveau sur la ligne correspondante.
+      pouvez désélectionner un course ou un intervenant en cliquant à nouveau
+      sur la ligne correspondante.
     </p>
     <p>Boutons dans l'en-tête (accessibles uniquement depuis cette page) :</p>
     <ul>

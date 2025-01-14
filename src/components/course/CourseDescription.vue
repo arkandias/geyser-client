@@ -17,32 +17,32 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment CourseDescriptionData on enseignement {
+  fragment CourseDescriptionData on course {
     courseId: id
     description
-    coordinators: responsables(
+    coordinators(
       order_by: [
-        { intervenant: { nom: asc } }
-        { intervenant: { prenom: asc } }
+        { teacher: { lastname: asc } }
+        { teacher: { firstname: asc } }
       ]
     ) {
       uid
     }
-    program: mention {
-      coordinators: responsables(
+    program {
+      coordinators(
         order_by: [
-          { intervenant: { nom: asc } }
-          { intervenant: { prenom: asc } }
+          { teacher: { lastname: asc } }
+          { teacher: { firstname: asc } }
         ]
       ) {
         uid
       }
     }
-    track: parcours {
-      coordinators: responsables(
+    track {
+      coordinators(
         order_by: [
-          { intervenant: { nom: asc } }
-          { intervenant: { prenom: asc } }
+          { teacher: { lastname: asc } }
+          { teacher: { firstname: asc } }
         ]
       ) {
         uid
@@ -51,7 +51,7 @@ graphql(`
   }
 
   mutation UpdateDescription($courseId: Int!, $description: String) {
-    course: update_enseignement_by_pk(
+    course: update_course_by_pk(
       pk_columns: { id: $courseId }
       _set: { description: $description }
     ) {

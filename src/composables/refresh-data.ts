@@ -5,7 +5,7 @@ import { DummyMutationDocument } from "@/gql/graphql.ts";
 
 graphql(`
   mutation DummyMutation {
-    requests: insert_demande(objects: []) {
+    requests: insert_request(objects: []) {
       returning {
         id
       }

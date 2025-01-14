@@ -25,20 +25,20 @@ import DetailsCourse from "@/components/course/DetailsCourse.vue";
 
 graphql(`
   query GetCourseRows($year: Int!) {
-    courses: enseignement(
+    courses: course(
       where: {
         _and: [
-          { annee: { _eq: $year } }
-          { heures_corrigees: { _gt: 0 } }
-          { groupes_corriges: { _gt: 0 } }
+          { year: { _eq: $year } }
+          { hours_effective: { _gt: 0 } }
+          { groups_effective: { _gt: 0 } }
         ]
       }
       order_by: [
-        { mention: { cursus: { nom: asc } } }
-        { mention: { nom: asc } }
-        { parcours: { nom: asc } }
-        { semestre: asc }
-        { nom: asc }
+        { program: { degree: { name: asc } } }
+        { program: { name: asc } }
+        { track: { name: asc } }
+        { semester: asc }
+        { name: asc }
         { type: asc }
       ]
     ) {
@@ -46,12 +46,12 @@ graphql(`
     }
   }
 
-  query GetTeacherRows($year: Int!, $where: intervenant_bool_exp = {}) {
+  query GetTeacherRows($year: Int!, $where: teacher_bool_exp = {}) {
     teachers: service(
-      where: { _and: [{ annee: { _eq: $year } }, { intervenant: $where }] }
+      where: { _and: [{ year: { _eq: $year } }, { teacher: $where }] }
       order_by: [
-        { intervenant: { nom: asc } }
-        { intervenant: { prenom: asc } }
+        { teacher: { lastname: asc } }
+        { teacher: { firstname: asc } }
       ]
     ) {
       ...TeacherRow
@@ -59,14 +59,14 @@ graphql(`
   }
 
   query GetCourseDetails($courseId: Int!) {
-    course: enseignement_by_pk(id: $courseId) {
+    course: course_by_pk(id: $courseId) {
       ...CourseDetails
     }
   }
 
   query GetTeacherCourses($year: Int!, $uid: String!) {
     services: service(
-      where: { _and: [{ annee: { _eq: $year } }, { uid: { _eq: $uid } }] }
+      where: { _and: [{ year: { _eq: $year } }, { uid: { _eq: $uid } }] }
       limit: 1 # unique
     ) {
       ...TeacherCourses

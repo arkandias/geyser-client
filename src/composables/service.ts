@@ -8,9 +8,9 @@ import { useYearsStore } from "@/stores/years.ts";
 
 graphql(`
   query GetService($year: Int!, $uid: String!) {
-    teacher: intervenant_by_pk(uid: $uid) {
+    teacher: teacher_by_pk(uid: $uid) {
       services(
-        where: { annee: { _eq: $year } }
+        where: { year: { _eq: $year } }
         limit: 1 # unique
       ) {
         id

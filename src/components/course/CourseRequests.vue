@@ -19,12 +19,12 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment CourseRequests on enseignement {
+  fragment CourseRequests on course {
     ...RequestFormData
-    requests: demandes(
+    requests(
       order_by: [
-        { service: { intervenant: { nom: asc } } }
-        { service: { intervenant: { prenom: asc } } }
+        { service: { teacher: { lastname: asc } } }
+        { service: { teacher: { firstname: asc } } }
       ]
     ) {
       id

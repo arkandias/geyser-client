@@ -11,59 +11,59 @@ import { displayName, formatProgram, formatUser } from "@/utils/format.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
-  query GetAssignments($year: Int!, $where: demande_bool_exp = {}) {
-    assignments: demande(
+  query GetAssignments($year: Int!, $where: request_bool_exp = {}) {
+    assignments: request(
       where: {
         _and: [
-          { service: { annee: { _eq: $year } } }
+          { service: { year: { _eq: $year } } }
           { type: { _eq: "attribution" } }
           $where
         ]
       }
       order_by: [
-        { enseignement: { mention: { cursus: { nom: asc } } } }
-        { enseignement: { mention: { nom: asc } } }
-        { enseignement: { parcours: { nom: asc } } }
-        { enseignement: { semestre: asc } }
-        { enseignement: { nom: asc } }
-        { enseignement: { typeByType: { label: asc } } }
-        { service: { intervenant: { nom: asc } } }
-        { service: { intervenant: { prenom: asc } } }
+        { course: { program: { degree: { name: asc } } } }
+        { course: { program: { name: asc } } }
+        { course: { track: { name: asc } } }
+        { course: { semester: asc } }
+        { course: { name: asc } }
+        { course: { typeByType: { label: asc } } }
+        { service: { teacher: { lastname: asc } } }
+        { service: { teacher: { firstname: asc } } }
       ]
     ) {
-      course: enseignement {
-        name: nom
-        shortName: nom_court
-        program: mention {
-          name: nom
-          shortName: nom_court
-          degree: cursus {
-            name: nom
-            shortName: nom_court
+      course {
+        name
+        shortName: name_short
+        program {
+          name
+          shortName: name_short
+          degree {
+            name
+            shortName: name_short
           }
         }
-        track: parcours {
-          name: nom
-          shortName: nom_court
-          program: mention {
-            name: nom
-            shortName: nom_court
-            degree: cursus {
-              name: nom
-              shortName: nom_court
+        track {
+          name
+          shortName: name_short
+          program {
+            name
+            shortName: name_short
+            degree {
+              name
+              shortName: name_short
             }
           }
         }
-        semester: semestre
+        semester
         typeByType {
           label
         }
       }
       service {
-        teacher: intervenant {
+        teacher {
           uid
-          firstname: prenom
-          lastname: nom
+          firstname
+          lastname
           alias
         }
       }
@@ -90,7 +90,7 @@ const formatAssignments = (assignments: GetAssignmentsQuery["assignments"]) =>
     enseignement: assignment.course.name,
     semestre: assignment.course.semester,
     type: assignment.course.typeByType.label,
-    intervenant: formatUser(assignment.service.teacher),
+    teacher: formatUser(assignment.service.teacher),
     email: assignment.service.teacher.uid,
   }));
 

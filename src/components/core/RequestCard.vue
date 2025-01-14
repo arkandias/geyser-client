@@ -16,24 +16,24 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment RequestCardData on demande {
+  fragment RequestCardData on request {
     id
     service {
       id
-      teacher: intervenant {
+      teacher {
         uid
-        firstname: prenom
-        lastname: nom
+        firstname
+        lastname
         alias
       }
     }
-    course: enseignement {
+    course {
       id
-      hoursPerGroup: heures_corrigees
+      hoursPerGroup: hours_effective
     }
     type
-    hours: heures
-    isPriority: prioritaire
+    hours
+    isPriority: is_priority
   }
 `);
 

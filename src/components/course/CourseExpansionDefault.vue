@@ -3,7 +3,7 @@
 <template>
   <QCardSection class="text-justify">
     <p>
-      Lorsqu'un enseignement est sélectionné, les informations suivantes sont
+      Lorsqu'un course est sélectionné, les informations suivantes sont
       affichées ici :
     </p>
     <ul>

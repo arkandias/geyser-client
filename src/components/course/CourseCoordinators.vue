@@ -16,48 +16,48 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  fragment CourseCoordinators on enseignement {
-    coordinators: responsables(
+  fragment CourseCoordinators on course {
+    coordinators(
       order_by: [
-        { intervenant: { nom: asc } }
-        { intervenant: { prenom: asc } }
+        { teacher: { lastname: asc } }
+        { teacher: { firstname: asc } }
       ]
     ) {
-      username: intervenant {
-        firstname: prenom
-        lastname: nom
+      username: teacher {
+        firstname
+        lastname
         alias
       }
-      comment: commentaire
+      comment
     }
-    program: mention {
-      coordinators: responsables(
+    program {
+      coordinators(
         order_by: [
-          { intervenant: { nom: asc } }
-          { intervenant: { prenom: asc } }
+          { teacher: { lastname: asc } }
+          { teacher: { firstname: asc } }
         ]
       ) {
-        username: intervenant {
-          firstname: prenom
-          lastname: nom
+        username: teacher {
+          firstname
+          lastname
           alias
         }
-        comment: commentaire
+        comment
       }
     }
-    track: parcours {
-      coordinators: responsables(
+    track {
+      coordinators(
         order_by: [
-          { intervenant: { nom: asc } }
-          { intervenant: { prenom: asc } }
+          { teacher: { lastname: asc } }
+          { teacher: { firstname: asc } }
         ]
       ) {
-        username: intervenant {
-          firstname: prenom
-          lastname: nom
+        username: teacher {
+          firstname
+          lastname
           alias
         }
-        comment: commentaire
+        comment
       }
     }
   }
@@ -85,7 +85,7 @@ const formatCoordinators = (coordinators: Coordinator[]) =>
 <template>
   <DetailsSubsection title="Responsables">
     <div v-if="programCoordinators.length">
-      Responsable{{ programCoordinators.length > 1 ? "s" : "" }} de la mention :
+      Responsable{{ programCoordinators.length > 1 ? "s" : "" }} de la program :
       {{ formatCoordinators(programCoordinators) }}
     </div>
     <div v-if="trackCoordinators.length">

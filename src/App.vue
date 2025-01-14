@@ -16,16 +16,16 @@ import PageHome from "@/pages/PageHome.vue";
 
 graphql(`
   query GetYears {
-    years: annee(order_by: { value: desc }) {
+    years: year(order_by: { value: desc }) {
       value
-      current: en_cours
+      current
       visible
     }
   }
 
   query GetCurrentPhase {
     phases: phase(
-      where: { en_cours: { _eq: true } }
+      where: { current: { _eq: true } }
       limit: 1 # unique
     ) {
       value

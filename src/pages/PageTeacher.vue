@@ -15,8 +15,8 @@ import TeacherTitle from "@/components/teacher/TeacherTitle.vue";
 
 graphql(`
   query GetTeacherDetails($year: Int!, $uid: String!) {
-    teacher: intervenant_by_pk(uid: $uid) {
-      responsibilitiesAggregate: responsabilites_aggregate {
+    teacher: teacher_by_pk(uid: $uid) {
+      responsibilitiesAggregate: responsibilities_aggregate {
         aggregate {
           count
         }
@@ -26,7 +26,7 @@ graphql(`
       ...TeacherNoService
 
       services(
-        where: { annee: { _eq: $year } }
+        where: { year: { _eq: $year } }
         limit: 1 # unique
       ) {
         id
