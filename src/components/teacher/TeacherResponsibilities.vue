@@ -52,6 +52,7 @@ graphql(`
       }
       course: enseignement {
         id
+        year: annee
         name: nom
         shortName: nom_court
         program: mention {
@@ -84,10 +85,15 @@ const { activeYear } = useYearsStore();
 const perm = usePermissions();
 const { downloadAssignments } = useDownloadAssignments();
 
-const responsibilities = computed(
-  () =>
-    useFragment(TeacherResponsibilitiesFragmentDoc, dataFragment)
-      .responsibilities,
+const responsibilities = computed(() =>
+  useFragment(
+    TeacherResponsibilitiesFragmentDoc,
+    dataFragment,
+  ).responsibilities.filter(
+    (responsibility) =>
+      responsibility.course == null ||
+      responsibility.course.year === activeYear.value,
+  ),
 );
 
 // Helpers
