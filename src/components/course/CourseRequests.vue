@@ -55,7 +55,7 @@ const requestsByType = computed(() =>
 
 <template>
   <DetailsSection title="Demandes">
-    <DetailsSubsection v-if="perm.toSubmitRequests || perm.toAssignCourses">
+    <DetailsSubsection v-if="perm.toSubmitRequests || perm.toEditAssignments">
       <RequestForm :data-fragment="data" />
     </DetailsSubsection>
     <DetailsSubsection

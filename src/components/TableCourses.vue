@@ -480,7 +480,7 @@ const downloadTeacherAssignments = async () => {
           @click="showTeacherDetails = true"
         >
           <QTooltip :delay="TOOLTIP_DELAY">
-            Afficher les informations sur l'intervenant
+            Afficher les informations de l'intervenant
           </QTooltip>
         </QBtn>
         <QBtn

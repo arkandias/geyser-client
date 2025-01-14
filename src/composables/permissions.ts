@@ -2,7 +2,6 @@ import { computed, readonly } from "vue";
 
 import { useAuthentication } from "@/composables/authentication.ts";
 import { PHASES } from "@/config/types/phases.ts";
-import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { ROLES } from "@/config/types/roles.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 import { useYearsStore } from "@/stores/years.ts";
@@ -20,45 +19,38 @@ export const usePermissions = () => {
       (currentPhase.value !== PHASES.SHUTDOWN && profile.active),
   );
 
-  const toSubmitRequestsForOthers = computed(
-    () => activeRole.value === ROLES.ADMIN,
-  );
-
-  const toSubmitRequests = computed(
+  const toSubmitRequestsForSelf = computed(
     () =>
-      toSubmitRequestsForOthers.value ||
+      activeRole.value === ROLES.ADMIN ||
       (profile.active &&
         activeRole.value === ROLES.USER &&
         currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value),
   );
 
-  const toAssignCourses = computed(
+  const toSubmitRequestsForOthers = computed(
+    () => activeRole.value === ROLES.ADMIN,
+  );
+
+  const toSubmitRequests = computed(
+    () => toSubmitRequestsForSelf.value || toSubmitRequestsForOthers.value,
+  );
+
+  const toDeleteRequests = computed(() => activeRole.value === ROLES.ADMIN);
+
+  const toViewAssignments = computed(
+    () =>
+      toEditAssignments.value ||
+      currentPhase.value === PHASES.RESULTS ||
+      !isCurrentYearActive.value,
+  );
+
+  const toEditAssignments = computed(
     () =>
       activeRole.value === ROLES.ADMIN ||
       (activeRole.value === ROLES.COMMISSIONER &&
         currentPhase.value === PHASES.ASSIGNMENTS &&
         isCurrentYearActive.value),
-  );
-
-  const toViewAssignments = computed(
-    () =>
-      toAssignCourses.value ||
-      currentPhase.value === PHASES.RESULTS ||
-      !isCurrentYearActive.value,
-  );
-
-  const toDeleteARequest = computed(
-    () => (uid: string, requestType: string) => {
-      switch (requestType) {
-        case REQUEST_TYPES.ASSIGNMENT:
-          return toAssignCourses.value;
-        default:
-          return uid === profile.uid
-            ? toSubmitRequests.value
-            : toSubmitRequestsForOthers.value;
-      }
-    },
   );
 
   const toEditADescription = computed(
@@ -72,12 +64,6 @@ export const usePermissions = () => {
       activeRole.value === ROLES.ADMIN ||
       (activeRole.value === ROLES.COMMISSIONER &&
         currentPhase.value === PHASES.ASSIGNMENTS),
-  );
-
-  const toViewAService = computed(
-    () => (uid: string) =>
-      toViewAllServices.value ||
-      (activeRole.value === ROLES.USER && uid === profile.uid),
   );
 
   const toEditAService = computed(
@@ -98,27 +84,18 @@ export const usePermissions = () => {
         uid === profile.uid),
   );
 
-  const toViewAMessage = computed(
-    () => (uid: string) =>
-      toEditAMessage.value(uid) ||
-      (activeRole.value === ROLES.COMMISSIONER &&
-        currentPhase.value === PHASES.ASSIGNMENTS) ||
-      (activeRole.value === ROLES.USER && uid === profile.uid),
-  );
-
   return readonly({
     toAdmin,
     toAccess,
+    toSubmitRequestsForSelf,
     toSubmitRequestsForOthers,
     toSubmitRequests,
+    toDeleteRequests,
     toViewAssignments,
-    toAssignCourses,
-    toDeleteARequest,
+    toEditAssignments,
     toEditADescription,
     toViewAllServices,
-    toViewAService,
     toEditAService,
-    toViewAMessage,
     toEditAMessage,
   });
 };

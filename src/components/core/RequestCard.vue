@@ -63,18 +63,22 @@ const groups = computed(() =>
     : 0,
 );
 
-const displayActions = computed(() => (requestType: string) => {
-  switch (requestType) {
-    case REQUEST_TYPES.ASSIGNMENT:
-      return perm.toAssignCourses;
-    default:
-      return perm.toSubmitRequestsForOthers || perm.toAssignCourses;
-  }
-});
-
 const displayAssignButton = computed(
   () => (requestType: string) =>
-    requestType !== REQUEST_TYPES.ASSIGNMENT && perm.toAssignCourses,
+    requestType !== REQUEST_TYPES.ASSIGNMENT && perm.toEditAssignments,
+);
+const displayDeleteButton = computed(() => (requestType: string) => {
+  switch (requestType) {
+    case REQUEST_TYPES.ASSIGNMENT:
+      return perm.toEditAssignments;
+    default:
+      return perm.toDeleteRequests;
+  }
+});
+const displayActions = computed(
+  () => (requestType: string) =>
+    displayAssignButton.value(requestType) ||
+    displayDeleteButton.value(requestType),
 );
 </script>
 
@@ -121,10 +125,10 @@ const displayAssignButton = computed(
         </QTooltip>
       </QBtn>
       <QBtn
+        v-if="displayDeleteButton(data.type)"
         icon="sym_s_close"
         color="negative"
         size="sm"
-        :disable="!perm.toDeleteARequest(data.service.teacher.uid, data.type)"
         flat
         square
         dense

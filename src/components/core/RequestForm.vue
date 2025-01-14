@@ -59,14 +59,14 @@ const groups = computed<number | null>({
 
 const requestType = ref<string | null>(null);
 const requestTypeInit = computed(() =>
-  perm.toAssignCourses
+  perm.toEditAssignments
     ? REQUEST_TYPES.ASSIGNMENT
     : perm.toSubmitRequests
       ? REQUEST_TYPES.PRIMARY
       : null,
 );
 const requestTypeOptions = computed(() => [
-  ...(perm.toAssignCourses
+  ...(perm.toEditAssignments
     ? REQUEST_TYPE_OPTIONS.filter(
         (type) => type.value === REQUEST_TYPES.ASSIGNMENT,
       )
@@ -85,9 +85,13 @@ watch(
   { immediate: true },
 );
 
+const displayTeacherSelection = computed(
+  () => perm.toSubmitRequestsForOthers || perm.toEditAssignments,
+);
+
 const uid = ref<string | null>(null);
 const uidInit = computed(() =>
-  perm.toSubmitRequestsForOthers || perm.toAssignCourses ? null : profile.uid,
+  displayTeacherSelection.value ? null : profile.uid,
 );
 watch(
   uidInit,
@@ -141,7 +145,7 @@ const resetForm = (): void => {
     @reset="resetForm"
   >
     <SelectTeacher
-      v-if="perm.toSubmitRequestsForOthers || perm.toAssignCourses"
+      v-if="displayTeacherSelection"
       v-model="uid"
       dense
       options-dense

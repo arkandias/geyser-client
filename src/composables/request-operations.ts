@@ -131,7 +131,7 @@ const getService = async (
     );
     notify(NotifyType.ERROR, {
       message: `Pas de service trouvé`,
-      caption: `Veuillez d'abord créer un service sur la page enseignant`,
+      caption: `Veuillez d'abord créer un service`,
     });
     return null;
   }
