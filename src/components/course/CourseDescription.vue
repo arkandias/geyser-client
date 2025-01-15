@@ -5,7 +5,7 @@ import { computed, ref } from "vue";
 import { usePermissions } from "@/composables/permissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  CourseDescriptionDataFragmentDoc,
+  CourseDescriptionFragmentDoc,
   UpdateDescriptionDocument,
 } from "@/gql/graphql.ts";
 
@@ -13,20 +13,20 @@ import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 import EditableText from "@/components/core/EditableText.vue";
 
 const { dataFragment } = defineProps<{
-  dataFragment: FragmentType<typeof CourseDescriptionDataFragmentDoc>;
+  dataFragment: FragmentType<typeof CourseDescriptionFragmentDoc>;
 }>();
 
 graphql(`
-  fragment CourseDescriptionData on Course {
+  fragment CourseDescription on Course {
     courseId: id
     description
-    coordinators(
+    coordinations(
       orderBy: [{ teacher: { lastname: ASC } }, { teacher: { firstname: ASC } }]
     ) {
       uid
     }
     program {
-      coordinators(
+      coordinations(
         orderBy: [
           { teacher: { lastname: ASC } }
           { teacher: { firstname: ASC } }
@@ -36,7 +36,7 @@ graphql(`
       }
     }
     track {
-      coordinators(
+      coordinations(
         orderBy: [
           { teacher: { lastname: ASC } }
           { teacher: { firstname: ASC } }
@@ -60,12 +60,12 @@ graphql(`
 const perm = usePermissions();
 
 const data = computed(() =>
-  useFragment(CourseDescriptionDataFragmentDoc, dataFragment),
+  useFragment(CourseDescriptionFragmentDoc, dataFragment),
 );
 const coordinators = computed(() => [
-  ...data.value.coordinators.map((coordinator) => coordinator.uid),
-  ...data.value.program.coordinators.map((coordinator) => coordinator.uid),
-  ...(data.value.track?.coordinators.map((coordinator) => coordinator.uid) ??
+  ...data.value.coordinations.map((coordination) => coordination.uid),
+  ...data.value.program.coordinations.map((coordination) => coordination.uid),
+  ...(data.value.track?.coordinations.map((coordination) => coordination.uid) ??
     []),
 ]);
 

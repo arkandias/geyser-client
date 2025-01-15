@@ -17,7 +17,7 @@ const { dataFragment } = defineProps<{
 
 graphql(`
   fragment CourseCoordinators on Course {
-    coordinators(
+    coordinations(
       orderBy: [{ teacher: { lastname: ASC } }, { teacher: { firstname: ASC } }]
     ) {
       teacher {
@@ -28,7 +28,7 @@ graphql(`
       comment
     }
     program {
-      coordinators(
+      coordinations(
         orderBy: [
           { teacher: { lastname: ASC } }
           { teacher: { firstname: ASC } }
@@ -43,7 +43,7 @@ graphql(`
       }
     }
     track {
-      coordinators(
+      coordinations(
         orderBy: [
           { teacher: { lastname: ASC } }
           { teacher: { firstname: ASC } }
@@ -63,12 +63,12 @@ graphql(`
 const data = computed(() =>
   useFragment(CourseCoordinatorsFragmentDoc, dataFragment),
 );
-const courseCoordinators = computed(() => data.value.coordinators);
-const programCoordinators = computed(() => data.value.program.coordinators);
-const trackCoordinators = computed(() => data.value.track?.coordinators ?? []);
+const courseCoordinators = computed(() => data.value.coordinations);
+const programCoordinators = computed(() => data.value.program.coordinations);
+const trackCoordinators = computed(() => data.value.track?.coordinations ?? []);
 
 // Helpers
-type Coordinator = ArrayElement<CourseCoordinatorsFragment["coordinators"]>;
+type Coordinator = ArrayElement<CourseCoordinatorsFragment["coordinations"]>;
 
 const formatCoordinators = (coordinators: Coordinator[]) =>
   coordinators
@@ -82,7 +82,7 @@ const formatCoordinators = (coordinators: Coordinator[]) =>
 <template>
   <DetailsSubsection title="Responsables">
     <div v-if="programCoordinators.length">
-      Responsable{{ programCoordinators.length > 1 ? "s" : "" }} de la program :
+      Responsable{{ programCoordinators.length > 1 ? "s" : "" }} de la mention :
       {{ formatCoordinators(programCoordinators) }}
     </div>
     <div v-if="trackCoordinators.length">

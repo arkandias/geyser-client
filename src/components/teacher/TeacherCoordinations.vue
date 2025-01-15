@@ -7,8 +7,8 @@ import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type RequestBoolExp,
-  type TeacherResponsibilitiesFragment,
-  TeacherResponsibilitiesFragmentDoc,
+  type TeacherCoordinationsFragment,
+  TeacherCoordinationsFragmentDoc,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/years.ts";
 import type { ArrayElement } from "@/types/misc.ts";
@@ -19,12 +19,12 @@ import DetailsSection from "@/components/core/DetailsSection.vue";
 import TeacherList from "@/components/teacher/TeacherList.vue";
 
 const { dataFragment } = defineProps<{
-  dataFragment: FragmentType<typeof TeacherResponsibilitiesFragmentDoc>;
+  dataFragment: FragmentType<typeof TeacherCoordinationsFragmentDoc>;
 }>();
 
 graphql(`
-  fragment TeacherResponsibilities on Teacher {
-    responsibilities(
+  fragment TeacherCoordinations on Teacher {
+    coordinations(
       orderBy: [{ programId: ASC }, { trackId: ASC }, { courseId: ASC }]
     ) {
       id
@@ -85,87 +85,85 @@ const { activeYear } = useYearsStore();
 const perm = usePermissions();
 const { downloadAssignments } = useDownloadAssignments();
 
-const responsibilities = computed(() =>
+const coordinations = computed(() =>
   useFragment(
-    TeacherResponsibilitiesFragmentDoc,
+    TeacherCoordinationsFragmentDoc,
     dataFragment,
-  ).responsibilities.filter(
-    (responsibility) =>
-      responsibility.course == null ||
-      responsibility.course.year === activeYear.value,
+  ).coordinations.filter(
+    (coordination) =>
+      coordination.course == null ||
+      coordination.course.year === activeYear.value,
   ),
 );
 
 // Helpers
-type Responsibility = ArrayElement<
-  TeacherResponsibilitiesFragment["responsibilities"]
->;
+type Coordination = ArrayElement<TeacherCoordinationsFragment["coordinations"]>;
 
-const formatResponsibilityType = (responsibility: Responsibility) =>
-  responsibility.program
+const formatCoordinationType = (coordination: Coordination) =>
+  coordination.program
     ? "Mention"
-    : responsibility.track
+    : coordination.track
       ? "Parcours"
-      : responsibility.course
+      : coordination.course
         ? "UE"
         : "";
 
-const formatResponsibility = (responsibility: Responsibility) =>
-  (responsibility.program
-    ? formatProgram(responsibility.program)
-    : responsibility.track
-      ? displayName(responsibility.track)
-      : responsibility.course
-        ? displayName(responsibility.course)
-        : "") + (responsibility.comment ? ` (${responsibility.comment})` : "");
+const formatCoordination = (coordination: Coordination) =>
+  (coordination.program
+    ? formatProgram(coordination.program)
+    : coordination.track
+      ? displayName(coordination.track)
+      : coordination.course
+        ? displayName(coordination.course)
+        : "") + (coordination.comment ? ` (${coordination.comment})` : "");
 
-const formatResponsibilityExtra = (responsibility: Responsibility) =>
-  responsibility.track
-    ? formatProgram(responsibility.track.program)
-    : responsibility.course
-      ? formatProgram(responsibility.course.program) +
-        (responsibility.course.track
-          ? `, parcours ${displayName(responsibility.course.track)}`
+const formatCoordinationExtra = (coordination: Coordination) =>
+  coordination.track
+    ? formatProgram(coordination.track.program)
+    : coordination.course
+      ? formatProgram(coordination.course.program) +
+        (coordination.course.track
+          ? `, parcours ${displayName(coordination.course.track)}`
           : "")
       : "";
 
-const downloadProgramAssignments = async (responsibility: Responsibility) => {
+const downloadProgramAssignments = async (coordination: Coordination) => {
   if (activeYear.value === null) {
     return;
   }
   let where: RequestBoolExp;
   let filename: string;
-  if (responsibility.program) {
+  if (coordination.program) {
     where = {
-      course: { programId: { _eq: responsibility.program.id } },
+      course: { programId: { _eq: coordination.program.id } },
     };
     filename =
-      activeYear.value.toString() + " " + formatProgram(responsibility.program);
-  } else if (responsibility.track) {
+      activeYear.value.toString() + " " + formatProgram(coordination.program);
+  } else if (coordination.track) {
     where = {
-      course: { trackId: { _eq: responsibility.track.id } },
-    };
-    filename =
-      activeYear.value.toString() +
-      " " +
-      formatProgram(responsibility.track.program) +
-      " " +
-      displayName(responsibility.track);
-  } else if (responsibility.course) {
-    where = {
-      course: { id: { _eq: responsibility.course.id } },
+      course: { trackId: { _eq: coordination.track.id } },
     };
     filename =
       activeYear.value.toString() +
       " " +
-      formatProgram(responsibility.course.program) +
-      (responsibility.course.track
-        ? " " + displayName(responsibility.course.track)
+      formatProgram(coordination.track.program) +
+      " " +
+      displayName(coordination.track);
+  } else if (coordination.course) {
+    where = {
+      course: { id: { _eq: coordination.course.id } },
+    };
+    filename =
+      activeYear.value.toString() +
+      " " +
+      formatProgram(coordination.course.program) +
+      (coordination.course.track
+        ? " " + displayName(coordination.course.track)
         : "") +
       " " +
-      displayName(responsibility.course);
+      displayName(coordination.course);
   } else {
-    console.error("Invalid responsibility", responsibility);
+    console.error("Invalid coordination", coordination);
     notify(NotifyType.ERROR, {
       message: "Responsabilité non valide",
     });
@@ -185,17 +183,17 @@ const downloadProgramAssignments = async (responsibility: Responsibility) => {
   <DetailsSection title="Responsabilités">
     <TeacherList>
       <QItem
-        v-for="responsibility in responsibilities"
-        :key="responsibility.id"
+        v-for="coordination in coordinations"
+        :key="coordination.id"
         class="q-pa-none"
       >
         <QItemSection>
           <QItemLabel overline>
-            {{ formatResponsibilityType(responsibility) }}
+            {{ formatCoordinationType(coordination) }}
           </QItemLabel>
-          <QItemLabel>{{ formatResponsibility(responsibility) }}</QItemLabel>
+          <QItemLabel>{{ formatCoordination(coordination) }}</QItemLabel>
           <QItemLabel caption>
-            {{ formatResponsibilityExtra(responsibility) }}
+            {{ formatCoordinationExtra(coordination) }}
           </QItemLabel>
         </QItemSection>
         <QItemSection v-if="perm.toViewAssignments" avatar>
@@ -205,7 +203,7 @@ const downloadProgramAssignments = async (responsibility: Responsibility) => {
             size="md"
             flat
             square
-            @click="downloadProgramAssignments(responsibility)"
+            @click="downloadProgramAssignments(coordination)"
           >
             <QTooltip :delay="TOOLTIP_DELAY">
               Télécharger les attributions

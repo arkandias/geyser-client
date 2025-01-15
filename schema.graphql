@@ -31,7 +31,7 @@ input BooleanComparisonExp {
 """
 Table containing coordinators of programs, tracks, or courses. Each row corresponds to exactly one of these three types of responsibility.
 """
-type Coordinator {
+type Coordination {
   """
   Additional information (optional, e.g., to specify year for program or track coordination).
   """
@@ -72,63 +72,63 @@ type Coordinator {
 }
 
 """
-aggregated selection of "coordinator"
+aggregated selection of "coordination"
 """
-type CoordinatorAggregate {
-  aggregate: CoordinatorAggregateFields
-  nodes: [Coordinator!]!
+type CoordinationAggregate {
+  aggregate: CoordinationAggregateFields
+  nodes: [Coordination!]!
 }
 
-input CoordinatorAggregateBoolExp {
-  count: coordinatorAggregateBoolExpCount
-}
-
-"""
-aggregate fields of "coordinator"
-"""
-type CoordinatorAggregateFields {
-  avg: CoordinatorAvgFields
-  count(columns: [CoordinatorSelectColumn!], distinct: Boolean): Int!
-  max: CoordinatorMaxFields
-  min: CoordinatorMinFields
-  stddev: CoordinatorStddevFields
-  stddevPop: CoordinatorStddevPopFields
-  stddevSamp: CoordinatorStddevSampFields
-  sum: CoordinatorSumFields
-  varPop: CoordinatorVarPopFields
-  varSamp: CoordinatorVarSampFields
-  variance: CoordinatorVarianceFields
+input CoordinationAggregateBoolExp {
+  count: coordinationAggregateBoolExpCount
 }
 
 """
-order by aggregate values of table "coordinator"
+aggregate fields of "coordination"
 """
-input CoordinatorAggregateOrderBy {
-  avg: CoordinatorAvgOrderBy
+type CoordinationAggregateFields {
+  avg: CoordinationAvgFields
+  count(columns: [CoordinationSelectColumn!], distinct: Boolean): Int!
+  max: CoordinationMaxFields
+  min: CoordinationMinFields
+  stddev: CoordinationStddevFields
+  stddevPop: CoordinationStddevPopFields
+  stddevSamp: CoordinationStddevSampFields
+  sum: CoordinationSumFields
+  varPop: CoordinationVarPopFields
+  varSamp: CoordinationVarSampFields
+  variance: CoordinationVarianceFields
+}
+
+"""
+order by aggregate values of table "coordination"
+"""
+input CoordinationAggregateOrderBy {
+  avg: CoordinationAvgOrderBy
   count: OrderBy
-  max: CoordinatorMaxOrderBy
-  min: CoordinatorMinOrderBy
-  stddev: CoordinatorStddevOrderBy
-  stddevPop: CoordinatorStddevPopOrderBy
-  stddevSamp: CoordinatorStddevSampOrderBy
-  sum: CoordinatorSumOrderBy
-  varPop: CoordinatorVarPopOrderBy
-  varSamp: CoordinatorVarSampOrderBy
-  variance: CoordinatorVarianceOrderBy
+  max: CoordinationMaxOrderBy
+  min: CoordinationMinOrderBy
+  stddev: CoordinationStddevOrderBy
+  stddevPop: CoordinationStddevPopOrderBy
+  stddevSamp: CoordinationStddevSampOrderBy
+  sum: CoordinationSumOrderBy
+  varPop: CoordinationVarPopOrderBy
+  varSamp: CoordinationVarSampOrderBy
+  variance: CoordinationVarianceOrderBy
 }
 
 """
-input type for inserting array relation for remote table "coordinator"
+input type for inserting array relation for remote table "coordination"
 """
-input CoordinatorArrRelInsertInput {
-  data: [CoordinatorInsertInput!]!
+input CoordinationArrRelInsertInput {
+  data: [CoordinationInsertInput!]!
 
   """upsert condition"""
-  onConflict: CoordinatorOnConflict
+  onConflict: CoordinationOnConflict
 }
 
 """aggregate avg on columns"""
-type CoordinatorAvgFields {
+type CoordinationAvgFields {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -149,9 +149,9 @@ type CoordinatorAvgFields {
 }
 
 """
-order by avg() on columns of table "coordinator"
+order by avg() on columns of table "coordination"
 """
-input CoordinatorAvgOrderBy {
+input CoordinationAvgOrderBy {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -172,12 +172,12 @@ input CoordinatorAvgOrderBy {
 }
 
 """
-Boolean expression to filter rows from the table "coordinator". All fields are combined with a logical 'AND'.
+Boolean expression to filter rows from the table "coordination". All fields are combined with a logical 'AND'.
 """
-input CoordinatorBoolExp {
-  _and: [CoordinatorBoolExp!]
-  _not: CoordinatorBoolExp
-  _or: [CoordinatorBoolExp!]
+input CoordinationBoolExp {
+  _and: [CoordinationBoolExp!]
+  _not: CoordinationBoolExp
+  _or: [CoordinationBoolExp!]
   comment: StringComparisonExp
   course: CourseBoolExp
   courseId: IntComparisonExp
@@ -191,9 +191,9 @@ input CoordinatorBoolExp {
 }
 
 """
-unique or primary key constraints on table "coordinator"
+unique or primary key constraints on table "coordination"
 """
-enum CoordinatorConstraint {
+enum CoordinationConstraint {
   """
   unique or primary key constraint on columns "id"
   """
@@ -206,9 +206,9 @@ enum CoordinatorConstraint {
 }
 
 """
-input type for incrementing numeric columns in table "coordinator"
+input type for incrementing numeric columns in table "coordination"
 """
-input CoordinatorIncInput {
+input CoordinationIncInput {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -229,9 +229,9 @@ input CoordinatorIncInput {
 }
 
 """
-input type for inserting data into table "coordinator"
+input type for inserting data into table "coordination"
 """
-input CoordinatorInsertInput {
+input CoordinationInsertInput {
   """
   Additional information (optional, e.g., to specify year for program or track coordination).
   """
@@ -264,7 +264,7 @@ input CoordinatorInsertInput {
 }
 
 """aggregate max on columns"""
-type CoordinatorMaxFields {
+type CoordinationMaxFields {
   """
   Additional information (optional, e.g., to specify year for program or track coordination).
   """
@@ -293,9 +293,9 @@ type CoordinatorMaxFields {
 }
 
 """
-order by max() on columns of table "coordinator"
+order by max() on columns of table "coordination"
 """
-input CoordinatorMaxOrderBy {
+input CoordinationMaxOrderBy {
   """
   Additional information (optional, e.g., to specify year for program or track coordination).
   """
@@ -324,7 +324,7 @@ input CoordinatorMaxOrderBy {
 }
 
 """aggregate min on columns"""
-type CoordinatorMinFields {
+type CoordinationMinFields {
   """
   Additional information (optional, e.g., to specify year for program or track coordination).
   """
@@ -353,9 +353,9 @@ type CoordinatorMinFields {
 }
 
 """
-order by min() on columns of table "coordinator"
+order by min() on columns of table "coordination"
 """
-input CoordinatorMinOrderBy {
+input CoordinationMinOrderBy {
   """
   Additional information (optional, e.g., to specify year for program or track coordination).
   """
@@ -384,27 +384,27 @@ input CoordinatorMinOrderBy {
 }
 
 """
-response of any mutation on the table "coordinator"
+response of any mutation on the table "coordination"
 """
-type CoordinatorMutationResponse {
+type CoordinationMutationResponse {
   """number of rows affected by the mutation"""
   affectedRows: Int!
 
   """data from the rows affected by the mutation"""
-  returning: [Coordinator!]!
+  returning: [Coordination!]!
 }
 
 """
-on_conflict condition type for table "coordinator"
+on_conflict condition type for table "coordination"
 """
-input CoordinatorOnConflict {
-  constraint: CoordinatorConstraint!
-  updateColumns: [CoordinatorUpdateColumn!]! = []
-  where: CoordinatorBoolExp
+input CoordinationOnConflict {
+  constraint: CoordinationConstraint!
+  updateColumns: [CoordinationUpdateColumn!]! = []
+  where: CoordinationBoolExp
 }
 
-"""Ordering options when selecting data from "coordinator"."""
-input CoordinatorOrderBy {
+"""Ordering options when selecting data from "coordination"."""
+input CoordinationOrderBy {
   comment: OrderBy
   course: CourseOrderBy
   courseId: OrderBy
@@ -417,16 +417,16 @@ input CoordinatorOrderBy {
   uid: OrderBy
 }
 
-"""primary key columns input for table: coordinator"""
-input CoordinatorPkColumnsInput {
+"""primary key columns input for table: coordination"""
+input CoordinationPkColumnsInput {
   """Unique identifier for the coordinator entry."""
   id: Int!
 }
 
 """
-select columns of table "coordinator"
+select columns of table "coordination"
 """
-enum CoordinatorSelectColumn {
+enum CoordinationSelectColumn {
   """column name"""
   comment
 
@@ -447,9 +447,9 @@ enum CoordinatorSelectColumn {
 }
 
 """
-input type for updating data in table "coordinator"
+input type for updating data in table "coordination"
 """
-input CoordinatorSetInput {
+input CoordinationSetInput {
   """
   Additional information (optional, e.g., to specify year for program or track coordination).
   """
@@ -478,7 +478,7 @@ input CoordinatorSetInput {
 }
 
 """aggregate stddev on columns"""
-type CoordinatorStddevFields {
+type CoordinationStddevFields {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -499,9 +499,9 @@ type CoordinatorStddevFields {
 }
 
 """
-order by stddev() on columns of table "coordinator"
+order by stddev() on columns of table "coordination"
 """
-input CoordinatorStddevOrderBy {
+input CoordinationStddevOrderBy {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -522,7 +522,7 @@ input CoordinatorStddevOrderBy {
 }
 
 """aggregate stddevPop on columns"""
-type CoordinatorStddevPopFields {
+type CoordinationStddevPopFields {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -543,9 +543,9 @@ type CoordinatorStddevPopFields {
 }
 
 """
-order by stddevPop() on columns of table "coordinator"
+order by stddevPop() on columns of table "coordination"
 """
-input CoordinatorStddevPopOrderBy {
+input CoordinationStddevPopOrderBy {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -566,7 +566,7 @@ input CoordinatorStddevPopOrderBy {
 }
 
 """aggregate stddevSamp on columns"""
-type CoordinatorStddevSampFields {
+type CoordinationStddevSampFields {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -587,9 +587,9 @@ type CoordinatorStddevSampFields {
 }
 
 """
-order by stddevSamp() on columns of table "coordinator"
+order by stddevSamp() on columns of table "coordination"
 """
-input CoordinatorStddevSampOrderBy {
+input CoordinationStddevSampOrderBy {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -610,18 +610,18 @@ input CoordinatorStddevSampOrderBy {
 }
 
 """
-Streaming cursor of the table "coordinator"
+Streaming cursor of the table "coordination"
 """
-input CoordinatorStreamCursorInput {
+input CoordinationStreamCursorInput {
   """Stream column input with initial value"""
-  initialValue: CoordinatorStreamCursorValueInput!
+  initialValue: CoordinationStreamCursorValueInput!
 
   """cursor ordering"""
   ordering: CursorOrdering
 }
 
 """Initial value of the column from where the streaming should start"""
-input CoordinatorStreamCursorValueInput {
+input CoordinationStreamCursorValueInput {
   """
   Additional information (optional, e.g., to specify year for program or track coordination).
   """
@@ -650,7 +650,7 @@ input CoordinatorStreamCursorValueInput {
 }
 
 """aggregate sum on columns"""
-type CoordinatorSumFields {
+type CoordinationSumFields {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -671,9 +671,9 @@ type CoordinatorSumFields {
 }
 
 """
-order by sum() on columns of table "coordinator"
+order by sum() on columns of table "coordination"
 """
-input CoordinatorSumOrderBy {
+input CoordinationSumOrderBy {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -694,9 +694,9 @@ input CoordinatorSumOrderBy {
 }
 
 """
-update columns of table "coordinator"
+update columns of table "coordination"
 """
-enum CoordinatorUpdateColumn {
+enum CoordinationUpdateColumn {
   """column name"""
   comment
 
@@ -716,19 +716,19 @@ enum CoordinatorUpdateColumn {
   uid
 }
 
-input CoordinatorUpdates {
+input CoordinationUpdates {
   """increments the numeric columns with given value of the filtered values"""
-  _inc: CoordinatorIncInput
+  _inc: CoordinationIncInput
 
   """sets the columns of the filtered rows to the given values"""
-  _set: CoordinatorSetInput
+  _set: CoordinationSetInput
 
   """filter the rows which have to be updated"""
-  where: CoordinatorBoolExp!
+  where: CoordinationBoolExp!
 }
 
 """aggregate varPop on columns"""
-type CoordinatorVarPopFields {
+type CoordinationVarPopFields {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -749,9 +749,9 @@ type CoordinatorVarPopFields {
 }
 
 """
-order by varPop() on columns of table "coordinator"
+order by varPop() on columns of table "coordination"
 """
-input CoordinatorVarPopOrderBy {
+input CoordinationVarPopOrderBy {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -772,7 +772,7 @@ input CoordinatorVarPopOrderBy {
 }
 
 """aggregate varSamp on columns"""
-type CoordinatorVarSampFields {
+type CoordinationVarSampFields {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -793,9 +793,9 @@ type CoordinatorVarSampFields {
 }
 
 """
-order by varSamp() on columns of table "coordinator"
+order by varSamp() on columns of table "coordination"
 """
-input CoordinatorVarSampOrderBy {
+input CoordinationVarSampOrderBy {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -816,7 +816,7 @@ input CoordinatorVarSampOrderBy {
 }
 
 """aggregate variance on columns"""
-type CoordinatorVarianceFields {
+type CoordinationVarianceFields {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -837,9 +837,9 @@ type CoordinatorVarianceFields {
 }
 
 """
-order by variance() on columns of table "coordinator"
+order by variance() on columns of table "coordination"
 """
-input CoordinatorVarianceOrderBy {
+input CoordinationVarianceOrderBy {
   """
   Course ID (optional, if and only if the row corresponds to course coordination).
   """
@@ -862,9 +862,9 @@ input CoordinatorVarianceOrderBy {
 """Table contenant les enseignements."""
 type Course {
   """An array relationship"""
-  coordinators(
+  coordinations(
     """distinct select on columns"""
-    distinctOn: [CoordinatorSelectColumn!]
+    distinctOn: [CoordinationSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -873,16 +873,16 @@ type Course {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [CoordinatorOrderBy!]
+    orderBy: [CoordinationOrderBy!]
 
     """filter the rows returned"""
-    where: CoordinatorBoolExp
-  ): [Coordinator!]!
+    where: CoordinationBoolExp
+  ): [Coordination!]!
 
   """An aggregate relationship"""
-  coordinatorsAggregate(
+  coordinationsAggregate(
     """distinct select on columns"""
-    distinctOn: [CoordinatorSelectColumn!]
+    distinctOn: [CoordinationSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -891,11 +891,11 @@ type Course {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [CoordinatorOrderBy!]
+    orderBy: [CoordinationOrderBy!]
 
     """filter the rows returned"""
-    where: CoordinatorBoolExp
-  ): CoordinatorAggregate!
+    where: CoordinationBoolExp
+  ): CoordinationAggregate!
 
   """
   L'année du cycle universitaire durant laquelle l'enseignement a lieu (calculée automatiquement à partir du semestre).
@@ -1268,8 +1268,8 @@ input CourseBoolExp {
   _and: [CourseBoolExp!]
   _not: CourseBoolExp
   _or: [CourseBoolExp!]
-  coordinators: CoordinatorBoolExp
-  coordinatorsAggregate: CoordinatorAggregateBoolExp
+  coordinations: CoordinationBoolExp
+  coordinationsAggregate: CoordinationAggregateBoolExp
   cycleYear: IntComparisonExp
   description: StringComparisonExp
   enfants: CourseBoolExp
@@ -1376,7 +1376,7 @@ input CourseIncInput {
 input type for inserting data into table "course"
 """
 input CourseInsertInput {
-  coordinators: CoordinatorArrRelInsertInput
+  coordinations: CoordinationArrRelInsertInput
 
   """Une description de l'enseignement."""
   description: String
@@ -1758,7 +1758,7 @@ input CourseOnConflict {
 
 """Ordering options when selecting data from "course"."""
 input CourseOrderBy {
-  coordinatorsAggregate: CoordinatorAggregateOrderBy
+  coordinationsAggregate: CoordinationAggregateOrderBy
   cycleYear: OrderBy
   description: OrderBy
   enfantsAggregate: CourseAggregateOrderBy
@@ -4795,9 +4795,9 @@ input PriorityVarianceOrderBy {
 """Table contenant les différentes mentions."""
 type Program {
   """An array relationship"""
-  coordinators(
+  coordinations(
     """distinct select on columns"""
-    distinctOn: [CoordinatorSelectColumn!]
+    distinctOn: [CoordinationSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -4806,16 +4806,16 @@ type Program {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [CoordinatorOrderBy!]
+    orderBy: [CoordinationOrderBy!]
 
     """filter the rows returned"""
-    where: CoordinatorBoolExp
-  ): [Coordinator!]!
+    where: CoordinationBoolExp
+  ): [Coordination!]!
 
   """An aggregate relationship"""
-  coordinatorsAggregate(
+  coordinationsAggregate(
     """distinct select on columns"""
-    distinctOn: [CoordinatorSelectColumn!]
+    distinctOn: [CoordinationSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -4824,11 +4824,11 @@ type Program {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [CoordinatorOrderBy!]
+    orderBy: [CoordinationOrderBy!]
 
     """filter the rows returned"""
-    where: CoordinatorBoolExp
-  ): CoordinatorAggregate!
+    where: CoordinationBoolExp
+  ): CoordinationAggregate!
 
   """An array relationship"""
   courses(
@@ -5003,8 +5003,8 @@ input ProgramBoolExp {
   _and: [ProgramBoolExp!]
   _not: ProgramBoolExp
   _or: [ProgramBoolExp!]
-  coordinators: CoordinatorBoolExp
-  coordinatorsAggregate: CoordinatorAggregateBoolExp
+  coordinations: CoordinationBoolExp
+  coordinationsAggregate: CoordinationAggregateBoolExp
   courses: CourseBoolExp
   coursesAggregate: CourseAggregateBoolExp
   degree: DegreeBoolExp
@@ -5047,7 +5047,7 @@ input ProgramIncInput {
 input type for inserting data into table "program"
 """
 input ProgramInsertInput {
-  coordinators: CoordinatorArrRelInsertInput
+  coordinations: CoordinationArrRelInsertInput
   courses: CourseArrRelInsertInput
   degree: DegreeObjRelInsertInput
   degreeId: Int
@@ -5163,7 +5163,7 @@ input ProgramOnConflict {
 
 """Ordering options when selecting data from "program"."""
 input ProgramOrderBy {
-  coordinatorsAggregate: CoordinatorAggregateOrderBy
+  coordinationsAggregate: CoordinationAggregateOrderBy
   coursesAggregate: CourseAggregateOrderBy
   degree: DegreeOrderBy
   degreeId: OrderBy
@@ -8005,6 +8005,42 @@ type Teacher {
   """Le service de base en heures EQTD de l'intervenant (optionnel)."""
   baseServiceHours: Float
 
+  """An array relationship"""
+  coordinations(
+    """distinct select on columns"""
+    distinctOn: [CoordinationSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [CoordinationOrderBy!]
+
+    """filter the rows returned"""
+    where: CoordinationBoolExp
+  ): [Coordination!]!
+
+  """An aggregate relationship"""
+  coordinationsAggregate(
+    """distinct select on columns"""
+    distinctOn: [CoordinationSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [CoordinationOrderBy!]
+
+    """filter the rows returned"""
+    where: CoordinationBoolExp
+  ): CoordinationAggregate!
+
   """Le prénom de l'intervenant."""
   firstname: String!
 
@@ -8014,42 +8050,6 @@ type Teacher {
 
   """An object relationship"""
   positionByPosition: Position
-
-  """An array relationship"""
-  responsibilities(
-    """distinct select on columns"""
-    distinctOn: [CoordinatorSelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [CoordinatorOrderBy!]
-
-    """filter the rows returned"""
-    where: CoordinatorBoolExp
-  ): [Coordinator!]!
-
-  """An aggregate relationship"""
-  responsibilitiesAggregate(
-    """distinct select on columns"""
-    distinctOn: [CoordinatorSelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [CoordinatorOrderBy!]
-
-    """filter the rows returned"""
-    where: CoordinatorBoolExp
-  ): CoordinatorAggregate!
 
   """An array relationship"""
   services(
@@ -8176,12 +8176,12 @@ input TeacherBoolExp {
   active: BooleanComparisonExp
   alias: StringComparisonExp
   baseServiceHours: FloatComparisonExp
+  coordinations: CoordinationBoolExp
+  coordinationsAggregate: CoordinationAggregateBoolExp
   firstname: StringComparisonExp
   lastname: StringComparisonExp
   position: StringComparisonExp
   positionByPosition: PositionBoolExp
-  responsibilities: CoordinatorBoolExp
-  responsibilitiesAggregate: CoordinatorAggregateBoolExp
   services: ServiceBoolExp
   servicesAggregate: ServiceAggregateBoolExp
   uid: StringComparisonExp
@@ -8222,6 +8222,7 @@ input TeacherInsertInput {
 
   """Le service de base en heures EQTD de l'intervenant (optionnel)."""
   baseServiceHours: Float
+  coordinations: CoordinationArrRelInsertInput
 
   """Le prénom de l'intervenant."""
   firstname: String
@@ -8230,7 +8231,6 @@ input TeacherInsertInput {
   lastname: String
   position: String
   positionByPosition: PositionObjRelInsertInput
-  responsibilities: CoordinatorArrRelInsertInput
   services: ServiceArrRelInsertInput
 
   """L'identifiant unique de l'intervenant."""
@@ -8363,11 +8363,11 @@ input TeacherOrderBy {
   active: OrderBy
   alias: OrderBy
   baseServiceHours: OrderBy
+  coordinationsAggregate: CoordinationAggregateOrderBy
   firstname: OrderBy
   lastname: OrderBy
   position: OrderBy
   positionByPosition: PositionOrderBy
-  responsibilitiesAggregate: CoordinatorAggregateOrderBy
   servicesAggregate: ServiceAggregateOrderBy
   uid: OrderBy
   visible: OrderBy
@@ -8657,9 +8657,9 @@ input TimestamptzComparisonExp {
 """Table contenant les différents parcours."""
 type Track {
   """An array relationship"""
-  coordinators(
+  coordinations(
     """distinct select on columns"""
-    distinctOn: [CoordinatorSelectColumn!]
+    distinctOn: [CoordinationSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -8668,16 +8668,16 @@ type Track {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [CoordinatorOrderBy!]
+    orderBy: [CoordinationOrderBy!]
 
     """filter the rows returned"""
-    where: CoordinatorBoolExp
-  ): [Coordinator!]!
+    where: CoordinationBoolExp
+  ): [Coordination!]!
 
   """An aggregate relationship"""
-  coordinatorsAggregate(
+  coordinationsAggregate(
     """distinct select on columns"""
-    distinctOn: [CoordinatorSelectColumn!]
+    distinctOn: [CoordinationSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -8686,11 +8686,11 @@ type Track {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [CoordinatorOrderBy!]
+    orderBy: [CoordinationOrderBy!]
 
     """filter the rows returned"""
-    where: CoordinatorBoolExp
-  ): CoordinatorAggregate!
+    where: CoordinationBoolExp
+  ): CoordinationAggregate!
 
   """An array relationship"""
   courses(
@@ -8827,8 +8827,8 @@ input TrackBoolExp {
   _and: [TrackBoolExp!]
   _not: TrackBoolExp
   _or: [TrackBoolExp!]
-  coordinators: CoordinatorBoolExp
-  coordinatorsAggregate: CoordinatorAggregateBoolExp
+  coordinations: CoordinationBoolExp
+  coordinationsAggregate: CoordinationAggregateBoolExp
   courses: CourseBoolExp
   coursesAggregate: CourseAggregateBoolExp
   id: IntComparisonExp
@@ -8868,7 +8868,7 @@ input TrackIncInput {
 input type for inserting data into table "track"
 """
 input TrackInsertInput {
-  coordinators: CoordinatorArrRelInsertInput
+  coordinations: CoordinationArrRelInsertInput
   courses: CourseArrRelInsertInput
 
   """L'identifiant unique du parcours."""
@@ -8979,7 +8979,7 @@ input TrackOnConflict {
 
 """Ordering options when selecting data from "track"."""
 input TrackOrderBy {
-  coordinatorsAggregate: CoordinatorAggregateOrderBy
+  coordinationsAggregate: CoordinationAggregateOrderBy
   coursesAggregate: CourseAggregateOrderBy
   id: OrderBy
   name: OrderBy
@@ -9582,10 +9582,10 @@ type YearVarianceFields {
   value: Float
 }
 
-input coordinatorAggregateBoolExpCount {
-  arguments: [CoordinatorSelectColumn!]
+input coordinationAggregateBoolExpCount {
+  arguments: [CoordinationSelectColumn!]
   distinct: Boolean
-  filter: CoordinatorBoolExp
+  filter: CoordinationBoolExp
   predicate: IntComparisonExp!
 }
 
@@ -9613,20 +9613,20 @@ input courseAggregateBoolExpCount {
 """mutation root"""
 type mutation_root {
   """
-  delete data from the table: "coordinator"
+  delete data from the table: "coordination"
   """
-  deleteCoordinator(
+  deleteCoordination(
     """filter the rows which have to be deleted"""
-    where: CoordinatorBoolExp!
-  ): CoordinatorMutationResponse
+    where: CoordinationBoolExp!
+  ): CoordinationMutationResponse
 
   """
-  delete single row from the table: "coordinator"
+  delete single row from the table: "coordination"
   """
-  deleteCoordinatorByPk(
+  deleteCoordinationByPk(
     """Unique identifier for the coordinator entry."""
     id: Int!
-  ): Coordinator
+  ): Coordination
 
   """
   delete data from the table: "course"
@@ -9863,26 +9863,26 @@ type mutation_root {
   ): Year
 
   """
-  insert data into the table: "coordinator"
+  insert data into the table: "coordination"
   """
-  insertCoordinator(
+  insertCoordination(
     """the rows to be inserted"""
-    objects: [CoordinatorInsertInput!]!
+    objects: [CoordinationInsertInput!]!
 
     """upsert condition"""
-    onConflict: CoordinatorOnConflict
-  ): CoordinatorMutationResponse
+    onConflict: CoordinationOnConflict
+  ): CoordinationMutationResponse
 
   """
-  insert a single row into the table: "coordinator"
+  insert a single row into the table: "coordination"
   """
-  insertCoordinatorOne(
+  insertCoordinationOne(
     """the row to be inserted"""
-    object: CoordinatorInsertInput!
+    object: CoordinationInsertInput!
 
     """upsert condition"""
-    onConflict: CoordinatorOnConflict
-  ): Coordinator
+    onConflict: CoordinationOnConflict
+  ): Coordination
 
   """
   insert data into the table: "course"
@@ -10215,38 +10215,38 @@ type mutation_root {
   ): Year
 
   """
-  update data of the table: "coordinator"
+  update data of the table: "coordination"
   """
-  updateCoordinator(
+  updateCoordination(
     """increments the numeric columns with given value of the filtered values"""
-    _inc: CoordinatorIncInput
+    _inc: CoordinationIncInput
 
     """sets the columns of the filtered rows to the given values"""
-    _set: CoordinatorSetInput
+    _set: CoordinationSetInput
 
     """filter the rows which have to be updated"""
-    where: CoordinatorBoolExp!
-  ): CoordinatorMutationResponse
+    where: CoordinationBoolExp!
+  ): CoordinationMutationResponse
 
   """
-  update single row of the table: "coordinator"
+  update single row of the table: "coordination"
   """
-  updateCoordinatorByPk(
+  updateCoordinationByPk(
     """increments the numeric columns with given value of the filtered values"""
-    _inc: CoordinatorIncInput
+    _inc: CoordinationIncInput
 
     """sets the columns of the filtered rows to the given values"""
-    _set: CoordinatorSetInput
-    pkColumns: CoordinatorPkColumnsInput!
-  ): Coordinator
+    _set: CoordinationSetInput
+    pkColumns: CoordinationPkColumnsInput!
+  ): Coordination
 
   """
-  update multiples rows of table: "coordinator"
+  update multiples rows of table: "coordination"
   """
-  updateCoordinatorMany(
+  updateCoordinationMany(
     """updates to execute, in order"""
-    updates: [CoordinatorUpdates!]!
-  ): [CoordinatorMutationResponse]
+    updates: [CoordinationUpdates!]!
+  ): [CoordinationMutationResponse]
 
   """
   update data of the table: "course"
@@ -10785,11 +10785,11 @@ input programAggregateBoolExpCount {
 
 type query_root {
   """
-  fetch data from the table: "coordinator"
+  fetch data from the table: "coordination"
   """
-  coordinator(
+  coordination(
     """distinct select on columns"""
-    distinctOn: [CoordinatorSelectColumn!]
+    distinctOn: [CoordinationSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -10798,18 +10798,18 @@ type query_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [CoordinatorOrderBy!]
+    orderBy: [CoordinationOrderBy!]
 
     """filter the rows returned"""
-    where: CoordinatorBoolExp
-  ): [Coordinator!]!
+    where: CoordinationBoolExp
+  ): [Coordination!]!
 
   """
-  fetch aggregated fields from the table: "coordinator"
+  fetch aggregated fields from the table: "coordination"
   """
-  coordinatorAggregate(
+  coordinationAggregate(
     """distinct select on columns"""
-    distinctOn: [CoordinatorSelectColumn!]
+    distinctOn: [CoordinationSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -10818,17 +10818,17 @@ type query_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [CoordinatorOrderBy!]
+    orderBy: [CoordinationOrderBy!]
 
     """filter the rows returned"""
-    where: CoordinatorBoolExp
-  ): CoordinatorAggregate!
+    where: CoordinationBoolExp
+  ): CoordinationAggregate!
 
-  """fetch data from the table: "coordinator" using primary key columns"""
-  coordinatorByPk(
+  """fetch data from the table: "coordination" using primary key columns"""
+  coordinationByPk(
     """Unique identifier for the coordinator entry."""
     id: Int!
-  ): Coordinator
+  ): Coordination
 
   """
   fetch data from the table: "course"
@@ -11542,11 +11542,11 @@ input serviceModificationAggregateBoolExpCount {
 
 type subscription_root {
   """
-  fetch data from the table: "coordinator"
+  fetch data from the table: "coordination"
   """
-  coordinator(
+  coordination(
     """distinct select on columns"""
-    distinctOn: [CoordinatorSelectColumn!]
+    distinctOn: [CoordinationSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -11555,18 +11555,18 @@ type subscription_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [CoordinatorOrderBy!]
+    orderBy: [CoordinationOrderBy!]
 
     """filter the rows returned"""
-    where: CoordinatorBoolExp
-  ): [Coordinator!]!
+    where: CoordinationBoolExp
+  ): [Coordination!]!
 
   """
-  fetch aggregated fields from the table: "coordinator"
+  fetch aggregated fields from the table: "coordination"
   """
-  coordinatorAggregate(
+  coordinationAggregate(
     """distinct select on columns"""
-    distinctOn: [CoordinatorSelectColumn!]
+    distinctOn: [CoordinationSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -11575,31 +11575,31 @@ type subscription_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [CoordinatorOrderBy!]
+    orderBy: [CoordinationOrderBy!]
 
     """filter the rows returned"""
-    where: CoordinatorBoolExp
-  ): CoordinatorAggregate!
+    where: CoordinationBoolExp
+  ): CoordinationAggregate!
 
-  """fetch data from the table: "coordinator" using primary key columns"""
-  coordinatorByPk(
+  """fetch data from the table: "coordination" using primary key columns"""
+  coordinationByPk(
     """Unique identifier for the coordinator entry."""
     id: Int!
-  ): Coordinator
+  ): Coordination
 
   """
-  fetch data from the table in a streaming manner: "coordinator"
+  fetch data from the table in a streaming manner: "coordination"
   """
-  coordinatorStream(
+  coordinationStream(
     """maximum number of rows returned in a single batch"""
     batchSize: Int!
 
     """cursor to stream the results returned by the query"""
-    cursor: [CoordinatorStreamCursorInput]!
+    cursor: [CoordinationStreamCursorInput]!
 
     """filter the rows returned"""
-    where: CoordinatorBoolExp
-  ): [Coordinator!]!
+    where: CoordinationBoolExp
+  ): [Coordination!]!
 
   """
   fetch data from the table: "course"

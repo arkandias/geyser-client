@@ -22,7 +22,7 @@ graphql(`
     courseId: id
     ...CourseExpansion
     ...CourseCoordinators
-    ...CourseDescriptionData
+    ...CourseDescription
     ...CourseRequests
     ...CoursePriorities
     ...CourseArchives

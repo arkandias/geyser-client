@@ -54,9 +54,9 @@ export const usePermissions = () => {
   );
 
   const toEditADescription = computed(
-    () => (coordinatorsIds: string[]) =>
+    () => (coordinators: string[]) =>
       activeRole.value === ROLES.ADMIN ||
-      (isCurrentYearActive.value && coordinatorsIds.includes(profile.uid)),
+      (isCurrentYearActive.value && coordinators.includes(profile.uid)),
   );
 
   const toViewAllServices = computed(
