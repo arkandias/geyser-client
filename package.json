@@ -55,7 +55,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.32.0",
     "globals": "^15.14.0",
-    "happy-dom": "^16.5.3",
+    "happy-dom": "^16.6.0",
     "prettier": "^3.4.2",
     "sass-embedded": "^1.83.4",
     "ts-node": "^10.9.2",
