@@ -6,21 +6,21 @@ import { useQueryParam } from "@/composables/query-param.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  type TeacherRowFragment,
-  TeacherRowFragmentDoc,
+  type ServiceRowsFragment,
+  ServiceRowsFragmentDoc,
 } from "@/gql/graphql.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import { nf } from "@/utils/format.ts";
-import { modifiedService, totalWH } from "@/utils/hours.ts";
+import { modifiedService, totalHW } from "@/utils/hours.ts";
 import { normalizeForSearch } from "@/utils/misc.ts";
 
-const { teacherRowFragments } = defineProps<{
-  teacherRowFragments: FragmentType<typeof TeacherRowFragmentDoc>[];
+const { serviceRowFragments } = defineProps<{
+  serviceRowFragments: FragmentType<typeof ServiceRowsFragmentDoc>[];
   fetching?: boolean;
 }>();
 
 graphql(`
-  fragment TeacherRow on Service {
+  fragment ServiceRows on Service {
     teacher {
       uid
       firstname
@@ -69,9 +69,9 @@ graphql(`
 
 const perm = usePermissions();
 
-const teachers = computed(() =>
-  teacherRowFragments.map((fragment) =>
-    useFragment(TeacherRowFragmentDoc, fragment),
+const services = computed(() =>
+  serviceRowFragments.map((fragment) =>
+    useFragment(ServiceRowsFragmentDoc, fragment),
   ),
 );
 
@@ -79,12 +79,12 @@ const teachers = computed(() =>
 const { getValue: selectedTeacher, toggleValue: toggleTeacher } =
   useQueryParam("uid");
 const selectedRow = computed(() => [{ uid: selectedTeacher.value }]);
-const onRowClick = async (_: Event, row: TeacherRowFragment) => {
+const onRowClick = async (_: Event, row: ServiceRowsFragment) => {
   await toggleTeacher(row.teacher.uid);
 };
 
 // Columns definition
-const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
+const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
   {
     name: "firstname",
     label: "Prénom",
@@ -142,7 +142,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     name: "assignment",
     label: "A.",
     tooltip: "Nombre d'heures EQTD attribuées",
-    field: (row) => totalWH(row.totalAssigned),
+    field: (row) => totalHW(row.totalAssigned),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -155,7 +155,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     label: "\u0394A",
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD attribuées",
-    field: (row) => modifiedService(row) - totalWH(row.totalAssigned),
+    field: (row) => modifiedService(row) - totalHW(row.totalAssigned),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -167,7 +167,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     name: "primary",
     label: "V1",
     tooltip: "Nombre d'heures EQTD demandées en vœux principaux",
-    field: (row) => totalWH(row.totalPrimary),
+    field: (row) => totalHW(row.totalPrimary),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -180,7 +180,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     label: "\u0394V1",
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",
-    field: (row) => modifiedService(row) - totalWH(row.totalPrimary),
+    field: (row) => modifiedService(row) - totalHW(row.totalPrimary),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -192,7 +192,7 @@ const columns: ColumnNonAbbreviable<TeacherRowFragment>[] = [
     name: "secondary",
     label: "V2",
     tooltip: "Nombre d'heures EQTD demandées en vœux secondaires",
-    field: (row) => totalWH(row.totalSecondary),
+    field: (row) => totalHW(row.totalSecondary),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -223,9 +223,9 @@ const filterObj = computed(() => ({
   searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
 }));
 const filterMethod = (
-  rows: readonly TeacherRowFragment[],
+  rows: readonly ServiceRowsFragment[],
   terms: typeof filterObj.value,
-): readonly TeacherRowFragment[] =>
+): readonly ServiceRowsFragment[] =>
   rows.filter((row) =>
     terms.searchColumns.some((col) =>
       normalizeForSearch(String(col.field(row))).includes(terms.search),
@@ -241,7 +241,7 @@ const stickyHeader = ref(false);
     v-model:selected="selectedRow"
     :columns
     :visible-columns
-    :rows="teachers"
+    :rows="services"
     :loading="fetching"
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"

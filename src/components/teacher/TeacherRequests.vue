@@ -5,7 +5,7 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { TeacherRequestsFragmentDoc } from "@/gql/graphql.ts";
 import { formatWH } from "@/utils/format.ts";
-import { totalWH } from "@/utils/hours.ts";
+import { totalHW } from "@/utils/hours.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import TeacherTable from "@/components/teacher/TeacherTable.vue";
@@ -52,15 +52,15 @@ const requestsTotals = computed(() =>
     <TeacherTable>
       <tr v-if="perm.toViewAssignments">
         <td>Attributions</td>
-        <td>{{ formatWH(totalWH(requestsTotals.assigned)) }}</td>
+        <td>{{ formatWH(totalHW(requestsTotals.assigned)) }}</td>
       </tr>
       <tr>
         <td>Demandes principales</td>
-        <td>{{ formatWH(totalWH(requestsTotals.primary)) }}</td>
+        <td>{{ formatWH(totalHW(requestsTotals.primary)) }}</td>
       </tr>
       <tr>
         <td>Demandes secondaires</td>
-        <td>{{ formatWH(totalWH(requestsTotals.secondary)) }}</td>
+        <td>{{ formatWH(totalHW(requestsTotals.secondary)) }}</td>
       </tr>
     </TeacherTable>
   </DetailsSection>

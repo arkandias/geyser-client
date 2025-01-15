@@ -13,7 +13,7 @@ import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type CourseRowFragment,
   CourseRowFragmentDoc,
-  TeacherCoursesFragmentDoc,
+  ServiceDetailsFragmentDoc,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/years.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
@@ -23,10 +23,10 @@ import { compare, normalizeForSearch, uniqueValue } from "@/utils/misc.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
 
-const { courseRowFragments, teacherCoursesFragment } = defineProps<{
+const { courseRowFragments, serviceDetailsFragment } = defineProps<{
   courseRowFragments: FragmentType<typeof CourseRowFragmentDoc>[];
   fetchingCourses?: boolean;
-  teacherCoursesFragment: FragmentType<typeof TeacherCoursesFragmentDoc> | null;
+  serviceDetailsFragment: FragmentType<typeof ServiceDetailsFragmentDoc> | null;
 }>();
 
 graphql(`
@@ -95,7 +95,7 @@ graphql(`
     }
   }
 
-  fragment TeacherCourses on Service {
+  fragment ServiceDetails on Service {
     teacher {
       uid
       firstname
@@ -120,7 +120,7 @@ const courses = computed(() =>
   ),
 );
 const service = computed(() =>
-  useFragment(TeacherCoursesFragmentDoc, teacherCoursesFragment),
+  useFragment(ServiceDetailsFragmentDoc, serviceDetailsFragment),
 );
 const teacher = computed(() => service.value?.teacher ?? null);
 const requests = computed(() => service.value?.requests ?? null);

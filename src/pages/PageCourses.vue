@@ -9,8 +9,8 @@ import { graphql } from "@/gql";
 import {
   GetCourseDetailsDocument,
   GetCourseRowsDocument,
-  GetTeacherCoursesDocument,
-  GetTeacherRowsDocument,
+  GetServiceDetailsDocument,
+  GetServiceRowsDocument,
 } from "@/gql/graphql.ts";
 import {
   hSplitterRatio,
@@ -46,12 +46,12 @@ graphql(`
     }
   }
 
-  query GetTeacherRows($year: Int!, $where: TeacherBoolExp = {}) {
-    teachers: service(
+  query GetServiceRows($year: Int!, $where: TeacherBoolExp = {}) {
+    services: service(
       where: { _and: [{ year: { _eq: $year } }, { teacher: $where }] }
       orderBy: [{ teacher: { lastname: ASC } }, { teacher: { firstname: ASC } }]
     ) {
-      ...TeacherRow
+      ...ServiceRows
     }
   }
 
@@ -61,12 +61,12 @@ graphql(`
     }
   }
 
-  query GetTeacherCourses($year: Int!, $uid: String!) {
+  query GetServiceDetails($year: Int!, $uid: String!) {
     services: service(
       where: { _and: [{ year: { _eq: $year } }, { uid: { _eq: $uid } }] }
       limit: 1 # unique
     ) {
-      ...TeacherCourses
+      ...ServiceDetails
     }
   }
 `);
@@ -95,9 +95,9 @@ const courseRows = computed(
   () => courseRowsQueryResult.data.value?.courses ?? [],
 );
 
-// Teacher rows
-const teacherRowsQueryResult = useQuery({
-  query: GetTeacherRowsDocument,
+// Service rows
+const serviceRowsQueryResult = useQuery({
+  query: GetServiceRowsDocument,
   variables: reactive({
     year: computed(() => activeYear.value ?? NaN),
     where: computed(() =>
@@ -109,11 +109,11 @@ const teacherRowsQueryResult = useQuery({
     additionalTypenames: ["Request", "ServiceModification", "Service"],
   },
 });
-const fetchingTeacherRows = computed(
-  () => teacherRowsQueryResult.fetching.value,
+const fetchingServiceRowss = computed(
+  () => serviceRowsQueryResult.fetching.value,
 );
-const teacherRows = computed(
-  () => teacherRowsQueryResult.data.value?.teachers ?? [],
+const serviceRows = computed(
+  () => serviceRowsQueryResult.data.value?.services ?? [],
 );
 
 // Selected course details
@@ -135,7 +135,7 @@ const courseDetails = computed(() =>
 
 // Selected teacher courses
 const teacherCoursesQueryResult = useQuery({
-  query: GetTeacherCoursesDocument,
+  query: GetServiceDetailsDocument,
   variables: reactive({
     year: computed(() => activeYear.value ?? NaN),
     uid: computed(() => selectedTeacher.value ?? ""),
@@ -178,8 +178,8 @@ watch(
     >
       <template #before>
         <TableTeachers
-          :teacher-row-fragments="teacherRows"
-          :fetching="fetchingTeacherRows"
+          :service-row-fragments="serviceRows"
+          :fetching="fetchingServiceRowss"
         />
       </template>
       <template #after>
@@ -188,7 +188,7 @@ watch(
             <TableCourses
               :course-row-fragments="courseRows"
               :fetching-courses="fetchingCourseRows"
-              :teacher-courses-fragment="teacher"
+              :service-details-fragment="teacher"
             />
           </template>
           <template #after>
