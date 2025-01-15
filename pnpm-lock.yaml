@@ -21,8 +21,8 @@ importers:
         specifier: ^16.10.0
         version: 16.10.0
       keycloak-js:
-        specifier: ^26.0.8
-        version: 26.0.8
+        specifier: ^26.1.0
+        version: 26.1.0
       quasar:
         specifier: ^2.17.6
         version: 2.17.6
@@ -55,8 +55,8 @@ importers:
         specifier: ^3.2.0
         version: 3.2.0(graphql@16.10.0)
       '@quasar/vite-plugin':
-        specifier: ^1.8.1
-        version: 1.8.1(@vitejs/plugin-vue@5.2.1(vite@5.4.11(@types/node@22.10.6)(sass-embedded@1.83.4)(sass@1.83.1))(vue@3.5.13(typescript@5.7.3)))(quasar@2.17.6)(vite@5.4.11(@types/node@22.10.6)(sass-embedded@1.83.4)(sass@1.83.1))(vue@3.5.13(typescript@5.7.3))
+        specifier: ^1.9.0
+        version: 1.9.0(@vitejs/plugin-vue@5.2.1(vite@5.4.11(@types/node@22.10.6)(sass-embedded@1.83.4)(sass@1.83.1))(vue@3.5.13(typescript@5.7.3)))(quasar@2.17.6)(vite@5.4.11(@types/node@22.10.6)(sass-embedded@1.83.4)(sass@1.83.1))(vue@3.5.13(typescript@5.7.3))
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^5.2.1
         version: 5.2.1(@vue/compiler-sfc@3.5.13)(prettier@3.4.2)
@@ -97,8 +97,8 @@ importers:
         specifier: ^15.14.0
         version: 15.14.0
       happy-dom:
-        specifier: ^16.5.3
-        version: 16.5.3
+        specifier: ^16.6.0
+        version: 16.6.0
       prettier:
         specifier: ^3.4.2
         version: 3.4.2
@@ -119,7 +119,7 @@ importers:
         version: 5.4.11(@types/node@22.10.6)(sass-embedded@1.83.4)(sass@1.83.1)
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(@types/node@22.10.6)(happy-dom@16.5.3)(sass-embedded@1.83.4)(sass@1.83.1)
+        version: 2.1.8(@types/node@22.10.6)(happy-dom@16.6.0)(sass-embedded@1.83.4)(sass@1.83.1)
       vue-tsc:
         specifier: ^2.2.0
         version: 2.2.0(typescript@5.7.3)
@@ -708,8 +708,8 @@ packages:
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
 
-  '@graphql-tools/executor-http@1.2.4':
-    resolution: {integrity: sha512-2WwymmIplDdzdPgs/qcqfqYfGGfpd626VejsREylTtyrBcURtyNfGw95sHOPo1O2NEXC5wJRN2o+GQBfC3Zy0g==}
+  '@graphql-tools/executor-http@1.2.5':
+    resolution: {integrity: sha512-pG5YXsF2EhKS4JMhwFwI+0S5RGhPuJ3j3Dg1vWItzeBFiTzr2+VO8yyyahHIncLx7OzSYP/6pBDFp76FC55e+g==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
@@ -973,13 +973,13 @@ packages:
   '@quasar/extras@1.16.15':
     resolution: {integrity: sha512-ZM8rUAagZ3Gm7Thu6DjKdGfkyFBv61RaCeVSIWdve6+q300yN+6aouxttf2RmxCk12RsSqEyzBnIg7BlF1s7MA==}
 
-  '@quasar/vite-plugin@1.8.1':
-    resolution: {integrity: sha512-uaws342JRToH+6TMJRA4/oxuzzEM8K68y0C1xYlBYaCll/FoS9rIx9kDpuu5bYHA51Y3q7yRGN01EsUaAq9vCA==}
+  '@quasar/vite-plugin@1.9.0':
+    resolution: {integrity: sha512-r1MFtI2QZJ2g20pe75Zuv4aoi0uoK8oP0yEdzLWRoOLCbhtf2+StJpUza9TydYi3KcvCl9+4HUf3OAWVKoxDmQ==}
     engines: {node: '>=18'}
     peerDependencies:
       '@vitejs/plugin-vue': ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
       quasar: ^2.16.0
-      vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0-beta.9
+      vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
       vue: ^3.0.0
 
   '@repeaterjs/repeater@3.0.6':
@@ -1650,8 +1650,8 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  electron-to-chromium@1.5.82:
-    resolution: {integrity: sha512-Zq16uk1hfQhyGx5GpwPAYDwddJuSGhtRhgOA2mCxANYaDT79nAeGnaXogMGng4KqLaJUVnOnuL0+TDop9nLOiA==}
+  electron-to-chromium@1.5.83:
+    resolution: {integrity: sha512-LcUDPqSt+V0QmI47XLzZrz5OqILSMGsPFkDYus22rIbgorSvBYEFqq854ltTmUdHkY92FSdAAvsh4jWEULMdfQ==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -1922,8 +1922,8 @@ packages:
     resolution: {integrity: sha512-AjqGKbDGUFRKIRCP9tCKiIGHyriz2oHEbPIbEtcSLSs4YjReZOIPQQWek4+6hjw62H9QShXHyaGivGiYVLeYFQ==}
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
 
-  happy-dom@16.5.3:
-    resolution: {integrity: sha512-7zGnyROZuntn+5X84MQ535qiQ3ccm45uHl+Q7EFAcPP0NhkbrfPitqprz0GgszX91/QqsZKQ7nTYkyObCTDUjg==}
+  happy-dom@16.6.0:
+    resolution: {integrity: sha512-Zz5S9sog8a3p8XYZbO+eI1QMOAvCNnIoyrH8A8MLX+X2mJrzADTy+kdETmc4q+uD9AGAvQYGn96qBAn2RAciKw==}
     engines: {node: '>=18.0.0'}
 
   has-flag@4.0.0:
@@ -2112,8 +2112,8 @@ packages:
     engines: {node: '>=6'}
     hasBin: true
 
-  keycloak-js@26.0.8:
-    resolution: {integrity: sha512-KRCu6f2QQ4Bk2TeQFsA1ogvEGaWNP9q26XMdgF3qtPZ5ftzkekwzRweIynKJ3Qqb1fsv6pgtwpeyepsRuotdaw==}
+  keycloak-js@26.1.0:
+    resolution: {integrity: sha512-3CTelLNADK6sIxGHCQmKlT3ezcIp8O3Iimmg+ybS78RHy+HAUkkoBaW/YuHGdYkfEDMBlrqD3u+CQ4vLsrmyFA==}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -3837,7 +3837,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@graphql-tools/executor-http@1.2.4(@types/node@22.10.6)(graphql@16.10.0)':
+  '@graphql-tools/executor-http@1.2.5(@types/node@22.10.6)(graphql@16.10.0)':
     dependencies:
       '@graphql-hive/gateway-abort-signal-any': 0.0.3(graphql@16.10.0)
       '@graphql-tools/executor-common': 0.0.1(graphql@16.10.0)
@@ -3889,7 +3889,7 @@ snapshots:
 
   '@graphql-tools/github-loader@8.0.13(@types/node@22.10.6)(graphql@16.10.0)':
     dependencies:
-      '@graphql-tools/executor-http': 1.2.4(@types/node@22.10.6)(graphql@16.10.0)
+      '@graphql-tools/executor-http': 1.2.5(@types/node@22.10.6)(graphql@16.10.0)
       '@graphql-tools/graphql-tag-pluck': 8.3.12(graphql@16.10.0)
       '@graphql-tools/utils': 10.7.2(graphql@16.10.0)
       '@whatwg-node/fetch': 0.10.3
@@ -4004,7 +4004,7 @@ snapshots:
   '@graphql-tools/url-loader@8.0.24(@types/node@22.10.6)(graphql@16.10.0)':
     dependencies:
       '@graphql-tools/executor-graphql-ws': 1.3.7(graphql@16.10.0)
-      '@graphql-tools/executor-http': 1.2.4(@types/node@22.10.6)(graphql@16.10.0)
+      '@graphql-tools/executor-http': 1.2.5(@types/node@22.10.6)(graphql@16.10.0)
       '@graphql-tools/executor-legacy-ws': 1.1.10(graphql@16.10.0)
       '@graphql-tools/utils': 10.7.2(graphql@16.10.0)
       '@graphql-tools/wrap': 10.0.27(graphql@16.10.0)
@@ -4167,7 +4167,7 @@ snapshots:
 
   '@quasar/extras@1.16.15': {}
 
-  '@quasar/vite-plugin@1.8.1(@vitejs/plugin-vue@5.2.1(vite@5.4.11(@types/node@22.10.6)(sass-embedded@1.83.4)(sass@1.83.1))(vue@3.5.13(typescript@5.7.3)))(quasar@2.17.6)(vite@5.4.11(@types/node@22.10.6)(sass-embedded@1.83.4)(sass@1.83.1))(vue@3.5.13(typescript@5.7.3))':
+  '@quasar/vite-plugin@1.9.0(@vitejs/plugin-vue@5.2.1(vite@5.4.11(@types/node@22.10.6)(sass-embedded@1.83.4)(sass@1.83.1))(vue@3.5.13(typescript@5.7.3)))(quasar@2.17.6)(vite@5.4.11(@types/node@22.10.6)(sass-embedded@1.83.4)(sass@1.83.1))(vue@3.5.13(typescript@5.7.3))':
     dependencies:
       '@vitejs/plugin-vue': 5.2.1(vite@5.4.11(@types/node@22.10.6)(sass-embedded@1.83.4)(sass@1.83.1))(vue@3.5.13(typescript@5.7.3))
       quasar: 2.17.6
@@ -4654,7 +4654,7 @@ snapshots:
   browserslist@4.24.4:
     dependencies:
       caniuse-lite: 1.0.30001692
-      electron-to-chromium: 1.5.82
+      electron-to-chromium: 1.5.83
       node-releases: 2.0.19
       update-browserslist-db: 1.1.2(browserslist@4.24.4)
 
@@ -4888,7 +4888,7 @@ snapshots:
       minimatch: 9.0.1
       semver: 7.6.3
 
-  electron-to-chromium@1.5.82: {}
+  electron-to-chromium@1.5.83: {}
 
   emoji-regex@8.0.0: {}
 
@@ -5227,7 +5227,7 @@ snapshots:
 
   graphql@16.10.0: {}
 
-  happy-dom@16.5.3:
+  happy-dom@16.6.0:
     dependencies:
       webidl-conversions: 7.0.0
       whatwg-mimetype: 3.0.0
@@ -5401,7 +5401,7 @@ snapshots:
 
   json5@2.2.3: {}
 
-  keycloak-js@26.0.8: {}
+  keycloak-js@26.1.0: {}
 
   keyv@4.5.4:
     dependencies:
@@ -6141,7 +6141,7 @@ snapshots:
       sass: 1.83.1
       sass-embedded: 1.83.4
 
-  vitest@2.1.8(@types/node@22.10.6)(happy-dom@16.5.3)(sass-embedded@1.83.4)(sass@1.83.1):
+  vitest@2.1.8(@types/node@22.10.6)(happy-dom@16.6.0)(sass-embedded@1.83.4)(sass@1.83.1):
     dependencies:
       '@vitest/expect': 2.1.8
       '@vitest/mocker': 2.1.8(vite@5.4.11(@types/node@22.10.6)(sass-embedded@1.83.4)(sass@1.83.1))
@@ -6165,7 +6165,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 22.10.6
-      happy-dom: 16.5.3
+      happy-dom: 16.6.0
     transitivePeerDependencies:
       - less
       - lightningcss
