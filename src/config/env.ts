@@ -8,7 +8,7 @@ export const bypassKeycloak =
   );
 
 export const bypassClaims: HasuraClaims = {
-  allowedRoles: [ROLES.USER, ROLES.COMMISSIONER, ROLES.ADMIN],
+  allowedRoles: [ROLES.TEACHER, ROLES.ASSIGNER, ROLES.ADMIN],
   defaultRole: ROLES.ADMIN,
   userId: import.meta.env.VITE_HASURA_USER_ID ?? "",
 } as const;

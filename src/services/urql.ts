@@ -18,7 +18,7 @@ if (import.meta.env.VITE_GRAPHQL_URL === undefined) {
 }
 
 export const roleHeader: { "X-Hasura-Role": Role } = {
-  "X-Hasura-Role": ROLES.USER,
+  "X-Hasura-Role": ROLES.TEACHER,
 };
 
 export const clientOptions: ClientOptions = {

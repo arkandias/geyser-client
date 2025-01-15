@@ -88,13 +88,13 @@ const yearOptions = computed(() =>
 const isImpersonatingFormOpen = ref(false);
 const newClaims = ref<HasuraClaims>({
   userId: claims.userId,
-  defaultRole: ROLES.USER,
-  allowedRoles: [ROLES.USER],
+  defaultRole: ROLES.TEACHER,
+  allowedRoles: [ROLES.TEACHER],
 });
 watch(
   () => newClaims.value.allowedRoles.includes(newClaims.value.defaultRole),
   () => {
-    newClaims.value.defaultRole = ROLES.USER;
+    newClaims.value.defaultRole = ROLES.TEACHER;
   },
 );
 </script>

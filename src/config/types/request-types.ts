@@ -1,7 +1,7 @@
 export const REQUEST_TYPES = {
-  ASSIGNMENT: "attribution",
-  PRIMARY: "principale",
-  SECONDARY: "secondaire",
+  ASSIGNMENT: "assignment",
+  PRIMARY: "primary",
+  SECONDARY: "secondary",
 } as const;
 
 export const REQUEST_TYPE_OPTIONS = [

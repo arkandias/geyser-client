@@ -33,24 +33,24 @@ graphql(`
   fragment CourseRow on Course {
     id
     name
-    shortName: nameShort
+    nameShort
     visible
     program {
       degree {
         id
         name
-        shortName: nameShort
+        nameShort
         visible
       }
       id
       name
-      shortName: nameShort
+      nameShort
       visible
     }
     track {
       id
       name
-      shortName: nameShort
+      nameShort
       visible
     }
     courseType: typeByType {
@@ -61,21 +61,21 @@ graphql(`
     hoursPerGroup: hoursEffective
     numberOfGroups: groupsEffective
     totalHours: totalHoursEffective
-    totalAssigned: requestsAggregate(where: { type: { _eq: "attribution" } }) {
+    totalAssigned: requestsAggregate(where: { type: { _eq: "assignment" } }) {
       aggregate {
         sum {
           hours
         }
       }
     }
-    totalPrimary: requestsAggregate(where: { type: { _eq: "principale" } }) {
+    totalPrimary: requestsAggregate(where: { type: { _eq: "primary" } }) {
       aggregate {
         sum {
           hours
         }
       }
     }
-    totalSecondary: requestsAggregate(where: { type: { _eq: "secondaire" } }) {
+    totalSecondary: requestsAggregate(where: { type: { _eq: "secondary" } }) {
       aggregate {
         sum {
           hours
@@ -84,7 +84,7 @@ graphql(`
     }
     totalPriority: requestsAggregate(
       where: {
-        _and: [{ type: { _eq: "principale" } }, { isPriority: { _eq: true } }]
+        _and: [{ type: { _eq: "primary" } }, { isPriority: { _eq: true } }]
       }
     ) {
       aggregate {
@@ -96,7 +96,7 @@ graphql(`
   }
 
   fragment TeacherCourses on Service {
-    name: teacher {
+    teacher {
       uid
       firstname
       lastname
@@ -119,14 +119,14 @@ const courses = computed(() =>
     useFragment(CourseRowFragmentDoc, fragment),
   ),
 );
-const teacher = computed(() =>
+const service = computed(() =>
   useFragment(TeacherCoursesFragmentDoc, teacherCoursesFragment),
 );
-const teacherName = computed(() => teacher.value?.name ?? null);
-const teacherRequests = computed(() => teacher.value?.requests ?? null);
+const teacher = computed(() => service.value?.teacher ?? null);
+const requests = computed(() => service.value?.requests ?? null);
 
 const title = computed(() =>
-  teacherName.value ? formatUser(teacherName.value) : "Enseignements",
+  teacher.value ? formatUser(teacher.value) : "Enseignements",
 );
 
 // Row selection
@@ -164,7 +164,7 @@ const columns: Column<CourseRowFragment>[] = [
     label: "Parcours",
     field: (row) => ({
       long: row.track?.name ?? "",
-      short: row.track?.shortName ?? null,
+      short: row.track?.nameShort ?? null,
     }),
     align: "left",
     sortable: true,
@@ -178,7 +178,7 @@ const columns: Column<CourseRowFragment>[] = [
     label: "Nom",
     field: (row) => ({
       long: row.name,
-      short: row.shortName ?? null,
+      short: row.nameShort ?? null,
     }),
     align: "left",
     sortable: true,
@@ -358,7 +358,7 @@ const clearSearch = () => {
 };
 // Filter attributes
 const filterObj = reactive({
-  teacherRequests,
+  teacherRequests: requests,
   programs,
   courseTypes,
   semesters,
@@ -394,12 +394,12 @@ const filterMethod = (
 // Styling options controllers
 const stickyHeader = ref(false);
 const isAssigned = (row: CourseRowFragment) =>
-  !!teacherRequests.value?.some(
+  !!requests.value?.some(
     (request) =>
       request.courseId === row.id && request.type === REQUEST_TYPES.ASSIGNMENT,
   );
 const isVisible = (row: CourseRowFragment): boolean =>
-  !!teacher.value ||
+  !!service.value ||
   (row.visible &&
     row.program.degree.visible &&
     row.program.visible &&
@@ -407,9 +407,9 @@ const isVisible = (row: CourseRowFragment): boolean =>
 
 // Helper
 const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
-  if (teacherRequests.value) {
+  if (requests.value) {
     return (
-      teacherRequests.value.find(
+      requests.value.find(
         (request) =>
           request.courseId === row.id && request.type === requestType,
       )?.hours ?? 0
@@ -426,15 +426,15 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
 };
 
 const downloadTeacherAssignments = async () => {
-  if (!teacherName.value || activeYear.value === null) {
+  if (!teacher.value || activeYear.value === null) {
     return;
   }
   await downloadAssignments(
     {
       year: activeYear.value,
-      where: { service: { uid: { _eq: teacherName.value.uid } } },
+      where: { service: { uid: { _eq: teacher.value.uid } } },
     },
-    activeYear.value.toString() + " " + formatUser(teacherName.value),
+    activeYear.value.toString() + " " + formatUser(teacher.value),
   );
 };
 </script>
@@ -470,7 +470,7 @@ const downloadTeacherAssignments = async () => {
       <div class="q-table__title">
         {{ title }}
         <QBtn
-          v-if="teacher"
+          v-if="service"
           icon="sym_s_visibility"
           color="primary"
           size="sm"
@@ -484,7 +484,7 @@ const downloadTeacherAssignments = async () => {
           </QTooltip>
         </QBtn>
         <QBtn
-          v-if="teacher"
+          v-if="service"
           icon="sym_s_close"
           color="primary"
           size="sm"
@@ -498,7 +498,7 @@ const downloadTeacherAssignments = async () => {
           </QTooltip>
         </QBtn>
         <QBtn
-          v-if="teacher && perm.toViewAssignments"
+          v-if="service && perm.toViewAssignments"
           icon="sym_s_download"
           color="primary"
           size="sm"
@@ -517,7 +517,7 @@ const downloadTeacherAssignments = async () => {
         <QSelect
           v-model="programs"
           :options="programsOptions"
-          :disable="!!teacher"
+          :disable="!!service"
           color="primary"
           label="Formation"
           emit-value
@@ -545,7 +545,7 @@ const downloadTeacherAssignments = async () => {
         <QSelect
           v-model="courseTypes"
           :options="courseTypesOptions"
-          :disable="!!teacher"
+          :disable="!!service"
           color="primary"
           label="Type"
           emit-value
@@ -572,7 +572,7 @@ const downloadTeacherAssignments = async () => {
         <QSelect
           v-model="semesters"
           :options="semestersOptions"
-          :disable="!!teacher"
+          :disable="!!service"
           color="primary"
           label="Semestre"
           emit-value
@@ -598,7 +598,7 @@ const downloadTeacherAssignments = async () => {
         </QSelect>
         <QInput
           v-model="search"
-          :disable="!!teacher"
+          :disable="!!service"
           color="primary"
           placeholder="Recherche"
           clear-icon="sym_s_close"

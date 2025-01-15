@@ -31,28 +31,28 @@ graphql(`
       id
       course {
         name
-        shortName: nameShort
+        nameShort
         semester
         typeByType {
           label
         }
         program {
           name
-          shortName: nameShort
+          nameShort
           degree {
             name
-            shortName: nameShort
+            nameShort
           }
         }
         track {
           name
-          shortName: nameShort
+          nameShort
           program {
             name
-            shortName: nameShort
+            nameShort
             degree {
               name
-              shortName: nameShort
+              nameShort
             }
           }
         }

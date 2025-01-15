@@ -37,7 +37,7 @@ graphql(`
       }
     }
     totalAssigned: requestsAggregate(
-      where: { _and: [{ type: { _eq: "attribution" } }] }
+      where: { _and: [{ type: { _eq: "assignments" } }] }
     ) {
       aggregate {
         sum {
@@ -46,7 +46,7 @@ graphql(`
       }
     }
     totalPrimary: requestsAggregate(
-      where: { _and: [{ type: { _eq: "principale" } }] }
+      where: { _and: [{ type: { _eq: "primary" } }] }
     ) {
       aggregate {
         sum {
@@ -55,7 +55,7 @@ graphql(`
       }
     }
     totalSecondary: requestsAggregate(
-      where: { _and: [{ type: { _eq: "secondaire" } }] }
+      where: { _and: [{ type: { _eq: "secondary" } }] }
     ) {
       aggregate {
         sum {

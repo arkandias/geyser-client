@@ -31,22 +31,22 @@ graphql(`
       program {
         id
         name
-        shortName: nameShort
+        nameShort
         degree {
           name
-          shortName: nameShort
+          nameShort
         }
       }
       track {
         id
         name
-        shortName: nameShort
+        nameShort
         program {
           name
-          shortName: nameShort
+          nameShort
           degree {
             name
-            shortName: nameShort
+            nameShort
           }
         }
       }
@@ -54,24 +54,24 @@ graphql(`
         id
         year
         name
-        shortName: nameShort
+        nameShort
         program {
           name
-          shortName: nameShort
+          nameShort
           degree {
             name
-            shortName: nameShort
+            nameShort
           }
         }
         track {
           name
-          shortName: nameShort
+          nameShort
           program {
             name
-            shortName: nameShort
+            nameShort
             degree {
               name
-              shortName: nameShort
+              nameShort
             }
           }
         }

@@ -3,22 +3,22 @@ export const nf = new Intl.NumberFormat("fr-FR", {
   maximumFractionDigits: 2,
 });
 
-type UserName = {
+type TeacherName = {
   firstname: string;
   lastname: string;
   alias?: string | null;
 };
 
-export const formatUser = (user: UserName) =>
+export const formatUser = (user: TeacherName) =>
   user.alias ?? user.firstname + " " + user.lastname;
 
 type DisplayName = {
   name: string;
-  shortName?: string | null;
+  nameShort?: string | null;
 };
 
 export const displayName = (displayName: DisplayName) =>
-  displayName.shortName ?? displayName.name;
+  displayName.nameShort ?? displayName.name;
 
 type Program = DisplayName & {
   degree: DisplayName;

@@ -16,7 +16,7 @@ graphql(`
       where: {
         _and: [
           { service: { year: { _eq: $year } } }
-          { type: { _eq: "attribution" } }
+          { type: { _eq: "assignments" } }
           $where
         ]
       }
@@ -33,24 +33,24 @@ graphql(`
     ) {
       course {
         name
-        shortName: nameShort
+        nameShort
         program {
           name
-          shortName: nameShort
+          nameShort
           degree {
             name
-            shortName: nameShort
+            nameShort
           }
         }
         track {
           name
-          shortName: nameShort
+          nameShort
           program {
             name
-            shortName: nameShort
+            nameShort
             degree {
               name
-              shortName: nameShort
+              nameShort
             }
           }
         }

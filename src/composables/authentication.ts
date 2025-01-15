@@ -31,8 +31,8 @@ type Profile = {
 const isLogged = ref(false);
 const claims = reactive<HasuraClaims>({
   userId: "",
-  defaultRole: ROLES.USER,
-  allowedRoles: [ROLES.USER],
+  defaultRole: ROLES.TEACHER,
+  allowedRoles: [ROLES.TEACHER],
 });
 const profile = reactive<Profile>({
   uid: "",
@@ -41,7 +41,7 @@ const profile = reactive<Profile>({
   alias: null,
   active: false,
 });
-const activeRole = ref<Role>(ROLES.USER);
+const activeRole = ref<Role>(ROLES.TEACHER);
 
 const setActiveRole = (role: Role) => {
   if (claims.allowedRoles.includes(role)) {

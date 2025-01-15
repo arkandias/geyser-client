@@ -23,7 +23,7 @@ export const usePermissions = () => {
     () =>
       activeRole.value === ROLES.ADMIN ||
       (profile.active &&
-        activeRole.value === ROLES.USER &&
+        activeRole.value === ROLES.TEACHER &&
         currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value),
   );
@@ -48,7 +48,7 @@ export const usePermissions = () => {
   const toEditAssignments = computed(
     () =>
       activeRole.value === ROLES.ADMIN ||
-      (activeRole.value === ROLES.COMMISSIONER &&
+      (activeRole.value === ROLES.ASSIGNER &&
         currentPhase.value === PHASES.ASSIGNMENTS &&
         isCurrentYearActive.value),
   );
@@ -62,14 +62,14 @@ export const usePermissions = () => {
   const toViewAllServices = computed(
     () =>
       activeRole.value === ROLES.ADMIN ||
-      (activeRole.value === ROLES.COMMISSIONER &&
+      (activeRole.value === ROLES.ASSIGNER &&
         currentPhase.value === PHASES.ASSIGNMENTS),
   );
 
   const toEditAService = computed(
     () => (uid: string) =>
       activeRole.value === ROLES.ADMIN ||
-      (activeRole.value === ROLES.USER &&
+      (activeRole.value === ROLES.TEACHER &&
         currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value &&
         uid === profile.uid),
@@ -78,7 +78,7 @@ export const usePermissions = () => {
   const toEditAMessage = computed(
     () => (uid: string) =>
       activeRole.value === ROLES.ADMIN ||
-      (activeRole.value === ROLES.USER &&
+      (activeRole.value === ROLES.TEACHER &&
         currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value &&
         uid === profile.uid),

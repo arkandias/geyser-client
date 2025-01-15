@@ -20,7 +20,7 @@ graphql(`
     coordinators(
       orderBy: [{ teacher: { lastname: ASC } }, { teacher: { firstname: ASC } }]
     ) {
-      username: teacher {
+      teacher {
         firstname
         lastname
         alias
@@ -34,7 +34,7 @@ graphql(`
           { teacher: { firstname: ASC } }
         ]
       ) {
-        username: teacher {
+        teacher {
           firstname
           lastname
           alias
@@ -49,7 +49,7 @@ graphql(`
           { teacher: { firstname: ASC } }
         ]
       ) {
-        username: teacher {
+        teacher {
           firstname
           lastname
           alias
@@ -73,8 +73,8 @@ type Coordinator = ArrayElement<CourseCoordinatorsFragment["coordinators"]>;
 const formatCoordinators = (coordinators: Coordinator[]) =>
   coordinators
     .map(
-      ({ username, comment }) =>
-        formatUser(username) + (comment ? ` (${comment})` : ""),
+      ({ teacher, comment }) =>
+        formatUser(teacher) + (comment ? ` (${comment})` : ""),
     )
     .join(", ");
 </script>

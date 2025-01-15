@@ -1,8 +1,8 @@
 export const PHASES = {
-  REQUESTS: "voeux",
-  ASSIGNMENTS: "commission",
-  RESULTS: "consultation",
-  SHUTDOWN: "fermeture",
+  REQUESTS: "requests",
+  ASSIGNMENTS: "assignments",
+  RESULTS: "results",
+  SHUTDOWN: "shutdown",
 } as const;
 
 export const PHASE_OPTIONS = [
