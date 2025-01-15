@@ -9,13 +9,13 @@ import {
   DeleteRequestByIdDocument,
   DeleteRequestDocument,
   GetRequestDocument,
-  GetServiceByCourseDocument,
+  GetServiceFromCourseDocument,
   UpsertRequestDocument,
 } from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
-  query GetServiceByCourse($uid: String!, $courseId: Int!) {
+  query GetServiceFromCourse($uid: String!, $courseId: Int!) {
     course: courseByPk(id: $courseId) {
       year
       yearByYear {
@@ -108,7 +108,7 @@ const getService = async (
     courseId: number;
   },
 ) => {
-  const result = await client.query(GetServiceByCourseDocument, variables, {
+  const result = await client.query(GetServiceFromCourseDocument, variables, {
     requestPolicy: "network-only",
   });
   if (!result.data) {
