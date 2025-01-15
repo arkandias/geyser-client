@@ -3,7 +3,7 @@ import { computed } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { TeacherRequestsFragmentDoc } from "@/gql/graphql.ts";
+import { TeacherServiceRequestsFragmentDoc } from "@/gql/graphql.ts";
 import { formatWH } from "@/utils/format.ts";
 import { totalHW } from "@/utils/hours.ts";
 
@@ -11,11 +11,11 @@ import DetailsSection from "@/components/core/DetailsSection.vue";
 import TeacherTable from "@/components/teacher/TeacherTable.vue";
 
 const { dataFragment } = defineProps<{
-  dataFragment: FragmentType<typeof TeacherRequestsFragmentDoc>;
+  dataFragment: FragmentType<typeof TeacherServiceRequestsFragmentDoc>;
 }>();
 
 graphql(`
-  fragment TeacherRequests on Service {
+  fragment TeacherServiceRequests on Service {
     assigned: requestsAggregate(where: { type: { _eq: "assignments" } }) {
       aggregate {
         sum {
@@ -43,7 +43,7 @@ graphql(`
 const perm = usePermissions();
 
 const requestsTotals = computed(() =>
-  useFragment(TeacherRequestsFragmentDoc, dataFragment),
+  useFragment(TeacherServiceRequestsFragmentDoc, dataFragment),
 );
 </script>
 

@@ -21,7 +21,7 @@ import { useYearsStore } from "@/stores/years.ts";
 
 import TableCourses from "@/components/TableCourses.vue";
 import TableTeachers from "@/components/TableTeachers.vue";
-import DetailsCourse from "@/components/course/DetailsCourse.vue";
+import CourseDetails from "@/components/course/CourseDetails.vue";
 
 graphql(`
   query GetCourseRows($year: Int!) {
@@ -192,7 +192,7 @@ watch(
             />
           </template>
           <template #after>
-            <DetailsCourse :data-fragment="courseDetails" />
+            <CourseDetails :data-fragment="courseDetails" />
           </template>
         </QSplitter>
       </template>

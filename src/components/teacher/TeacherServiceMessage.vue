@@ -5,7 +5,7 @@ import { computed, ref } from "vue";
 import { usePermissions } from "@/composables/permissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  TeacherMessageFragmentDoc,
+  TeacherServiceMessageFragmentDoc,
   UpdateMessageDocument,
 } from "@/gql/graphql.ts";
 
@@ -13,11 +13,11 @@ import DetailsSection from "@/components/core/DetailsSection.vue";
 import EditableText from "@/components/core/EditableText.vue";
 
 const { dataFragment } = defineProps<{
-  dataFragment: FragmentType<typeof TeacherMessageFragmentDoc>;
+  dataFragment: FragmentType<typeof TeacherServiceMessageFragmentDoc>;
 }>();
 
 graphql(`
-  fragment TeacherMessage on Service {
+  fragment TeacherServiceMessage on Service {
     id
     uid
     message
@@ -36,7 +36,7 @@ graphql(`
 const perm = usePermissions();
 
 const data = computed(() =>
-  useFragment(TeacherMessageFragmentDoc, dataFragment),
+  useFragment(TeacherServiceMessageFragmentDoc, dataFragment),
 );
 const updateMessage = useMutation(UpdateMessageDocument);
 

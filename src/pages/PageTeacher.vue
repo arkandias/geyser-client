@@ -8,9 +8,9 @@ import { graphql } from "@/gql";
 import { GetTeacherDetailsDocument } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/years.ts";
 
-import TeacherNoService from "@/components/teacher/TeacherNoService.vue";
 import TeacherResponsibilities from "@/components/teacher/TeacherResponsibilities.vue";
 import TeacherService from "@/components/teacher/TeacherService.vue";
+import TeacherServiceCreation from "@/components/teacher/TeacherServiceCreation.vue";
 import TeacherTitle from "@/components/teacher/TeacherTitle.vue";
 
 graphql(`
@@ -70,7 +70,7 @@ const hasResponsibilities = computed(
         :data-fragment="teacher"
       />
       <TeacherService v-if="service" :data-fragment="service" />
-      <TeacherNoService
+      <TeacherServiceCreation
         v-else
         :year="activeYear"
         :uid="activeUid"

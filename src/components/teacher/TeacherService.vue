@@ -4,10 +4,10 @@ import { computed } from "vue";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { TeacherServiceFragmentDoc } from "@/gql/graphql.ts";
 
-import TeacherMessage from "@/components/teacher/TeacherMessage.vue";
-import TeacherPriorities from "@/components/teacher/TeacherPriorities.vue";
-import TeacherRequests from "@/components/teacher/TeacherRequests.vue";
 import TeacherServiceDetails from "@/components/teacher/TeacherServiceDetails.vue";
+import TeacherServiceMessage from "@/components/teacher/TeacherServiceMessage.vue";
+import TeacherServicePriorities from "@/components/teacher/TeacherServicePriorities.vue";
+import TeacherServiceRequests from "@/components/teacher/TeacherServiceRequests.vue";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof TeacherServiceFragmentDoc>;
@@ -16,9 +16,9 @@ const { dataFragment } = defineProps<{
 graphql(`
   fragment TeacherService on Service {
     ...TeacherServiceDetails
-    ...TeacherRequests
-    ...TeacherPriorities
-    ...TeacherMessage
+    ...TeacherServiceRequests
+    ...TeacherServicePriorities
+    ...TeacherServiceMessage
   }
 `);
 
@@ -29,9 +29,9 @@ const service = computed(() =>
 
 <template>
   <TeacherServiceDetails :data-fragment="service" />
-  <TeacherRequests :data-fragment="service" />
-  <TeacherPriorities :data-fragment="service" />
-  <TeacherMessage :data-fragment="service" />
+  <TeacherServiceRequests :data-fragment="service" />
+  <TeacherServicePriorities :data-fragment="service" />
+  <TeacherServiceMessage :data-fragment="service" />
 </template>
 
 <style scoped lang="scss">

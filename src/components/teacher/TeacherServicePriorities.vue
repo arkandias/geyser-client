@@ -3,8 +3,8 @@ import { computed } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  type TeacherPrioritiesFragment,
-  TeacherPrioritiesFragmentDoc,
+  type TeacherServicePrioritiesFragment,
+  TeacherServicePrioritiesFragmentDoc,
 } from "@/gql/graphql.ts";
 import type { ArrayElement } from "@/types/misc.ts";
 import { priorityColor } from "@/utils/colors.ts";
@@ -14,11 +14,11 @@ import DetailsSection from "@/components/core/DetailsSection.vue";
 import TeacherList from "@/components/teacher/TeacherList.vue";
 
 const { dataFragment } = defineProps<{
-  dataFragment: FragmentType<typeof TeacherPrioritiesFragmentDoc>;
+  dataFragment: FragmentType<typeof TeacherServicePrioritiesFragmentDoc>;
 }>();
 
 graphql(`
-  fragment TeacherPriorities on Service {
+  fragment TeacherServicePriorities on Service {
     priorities(
       orderBy: [
         { course: { semester: ASC } }
@@ -64,11 +64,12 @@ graphql(`
 `);
 
 const priorities = computed(
-  () => useFragment(TeacherPrioritiesFragmentDoc, dataFragment).priorities,
+  () =>
+    useFragment(TeacherServicePrioritiesFragmentDoc, dataFragment).priorities,
 );
 
 // Helpers
-type Priority = ArrayElement<TeacherPrioritiesFragment["priorities"]>;
+type Priority = ArrayElement<TeacherServicePrioritiesFragment["priorities"]>;
 
 const formatPriorityTS = (priority: Priority) =>
   priority.course.typeByType.label +
