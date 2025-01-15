@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 import { useAuthentication } from "@/composables/authentication.ts";
 import { useDarkMode } from "@/composables/dark-mode.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRefreshData } from "@/composables/refresh-data.ts";
+import { version } from "@/config/env.ts";
 import { buttonColor } from "@/utils/colors.ts";
 
 import MenuAdmin from "@/components/header/MenuAdmin.vue";
@@ -20,10 +20,6 @@ const { profile, isImpersonating, stopImpersonating } = useAuthentication();
 const perm = usePermissions();
 const { refreshData } = useRefreshData();
 const { isDarkModeActive, toggleDarkMode } = useDarkMode();
-
-const version = computed(() =>
-  import.meta.env.DEV ? "dev" : (import.meta.env.VITE_BUILD_VERSION ?? null),
-);
 </script>
 
 <template>

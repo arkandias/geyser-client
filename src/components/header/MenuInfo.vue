@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+import legalNotice from "@/content/legal-notice.html?raw";
+
 import MenuBase from "@/components/header/MenuBase.vue";
 
 const isInformationOpen = ref(false);
-const isLegalNoticeOpen = ref(false);
 const isLicenceOpen = ref(false);
+const isLegalNoticeOpen = ref(false);
 
 const informationLabel = "À propos";
-const legalNoticeLabel = "Mentions légales";
 const licenceLabel = "Licence";
+const legalNoticeLabel = "Mentions légales";
 </script>
 
 <template>
@@ -23,20 +25,25 @@ const licenceLabel = "Licence";
           <QItemLabel>{{ informationLabel }}</QItemLabel>
         </QItemSection>
       </QItem>
-      <QItem v-close-popup clickable @click="isLegalNoticeOpen = true">
-        <QItemSection side>
-          <QIcon name="sym_s_balance" />
-        </QItemSection>
-        <QItemSection>
-          <QItemLabel>{{ legalNoticeLabel }}</QItemLabel>
-        </QItemSection>
-      </QItem>
       <QItem v-close-popup clickable @click="isLicenceOpen = true">
         <QItemSection side>
           <QIcon name="sym_s_license" />
         </QItemSection>
         <QItemSection>
           <QItemLabel>{{ licenceLabel }}</QItemLabel>
+        </QItemSection>
+      </QItem>
+      <QItem
+        v-if="legalNotice"
+        v-close-popup
+        clickable
+        @click="isLegalNoticeOpen = true"
+      >
+        <QItemSection side>
+          <QIcon name="sym_s_balance" />
+        </QItemSection>
+        <QItemSection>
+          <QItemLabel>{{ legalNoticeLabel }}</QItemLabel>
         </QItemSection>
       </QItem>
     </QList>
@@ -59,77 +66,13 @@ const licenceLabel = "Licence";
     </QCard>
   </QDialog>
 
-  <QDialog v-model="isLegalNoticeOpen">
-    <QCard square>
-      <QCardSection class="text-h6">{{ legalNoticeLabel }}</QCardSection>
-      <QCardSection class="text-justify">
-        <p>
-          Les informations recueillies dans cette application sont enregistrées
-          dans un fichier informatisé par le département de mathématiques pour
-          faciliter la gestion des services prévisionnels des intervenants dans
-          les enseignements de mathématiques de l’Université de Lille. La base
-          légale du traitement est le consentement.
-        </p>
-        <p>
-          Les données collectées seront conservées sur les serveurs du
-          département de mathématiques pendant une période de 5 ans et ne seront
-          communiquées à aucun service extérieur.
-        </p>
-        La confidentialité des données est de deux types :
-        <ol>
-          <li>
-            Vos vœux (principaux et secondaires) et vos attributions de services
-            seront visibles par l’ensemble des intervenants dans les
-            enseignements de mathématiques.
-          </li>
-          <li>
-            Vos modifications de services (décharges, délégations, etc.) et les
-            commentaires à l’attention de la commission d’attribution des
-            services ne seront visibles que par les membres de cette commission.
-          </li>
-        </ol>
-        <p>
-          Vous pouvez accéder aux données vous concernant, les rectifier,
-          demander leur effacement ou exercer votre droit à la limitation du
-          traitement de vos données. Vous pouvez également retirer à tout moment
-          votre consentement au traitement de vos données. Consultez le site
-          <a
-            href="https://www.cnil.fr/fr"
-            target="_blank"
-            rel="noopener noreferrer"
-            >cnil.fr</a
-          >
-          pour plus d’informations sur vos droits.
-        </p>
-        <p>
-          Pour exercer ces droits ou pour toute question sur le traitement de
-          vos données dans ce dispositif, vous pouvez contacter le directeur du
-          département de mathématiques :
-        </p>
-        <div class="resp-rgpd">
-          M. Amaël Broustet<br />
-          Bâtiment M2, Bureau 004<br />
-          +33 (0) 3 20 43 42 38<br />
-          <a href="mailto:direction-dpt-maths@univ-lille.fr"
-            >direction-dpt-maths@univ-lille.fr</a
-          >
-        </div>
-        <p>
-          Si vous estimez, après avoir contacté le directeur du département de
-          mathématiques, que vos droits «&nbsp;Informatique et Libertés&nbsp;»
-          ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL.
-        </p>
-      </QCardSection>
-    </QCard>
-  </QDialog>
-
   <QDialog v-model="isLicenceOpen">
     <QCard square>
       <QCardSection class="text-h6">{{ licenceLabel }}</QCardSection>
       <QCardSection class="text-justify">
         <p>
           Geyser &mdash; Gestion des enseignements prévisionnels<br />
-          Copyright &copy; 2021-2024 Amaël Broustet, Julien Hauseux
+          Copyright &copy; 2021-2025 Amaël Broustet, Julien Hauseux
         </p>
         <p>
           Geyser est un logiciel libre distribué sous les termes de la licence
@@ -158,27 +101,34 @@ const licenceLabel = "Licence";
           >
           le 03/03/2024.
         </p>
-        Le code source de Geyser est disponible sur l'instance GitLab de
-        l'Université de Lille :
+        Le code source de Geyser est disponible sur GitHub :
         <ol>
           <li>
             <a
-              href="https://gitlab.univ-lille.fr/julien.hauseux/geyser-backend"
+              href="https://github.com/arkandias/geyser-backend"
               target="_blank"
               rel="noopener noreferrer"
-              >https://gitlab.univ-lille.fr/julien.hauseux/geyser-backend</a
+              >https://github.com/arkandias/geyser-backend</a
             >
           </li>
           <li>
             <a
-              href="https://gitlab.univ-lille.fr/julien.hauseux/geyser-frontend"
+              href="https://github.com/arkandias/geyser-frontend"
               target="_blank"
               rel="noopener noreferrer"
-              >https://gitlab.univ-lille.fr/julien.hauseux/geyser-frontend</a
+              >https://github.com/arkandias/geyser-frontend</a
             >
           </li>
         </ol>
       </QCardSection>
+    </QCard>
+  </QDialog>
+
+  <QDialog v-model="isLegalNoticeOpen">
+    <QCard square>
+      <QCardSection class="text-h6">{{ legalNoticeLabel }}</QCardSection>
+      <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
+      <QCardSection class="text-justify" v-html="legalNotice" />
     </QCard>
   </QDialog>
 </template>

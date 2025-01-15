@@ -1,6 +1,10 @@
 import { ROLES } from "@/config/types/roles.ts";
 import type { HasuraClaims } from "@/types/claims.ts";
 
+export const version = import.meta.env.DEV
+  ? "dev"
+  : (import.meta.env.VITE_BUILD_VERSION ?? null);
+
 export const bypassKeycloak =
   import.meta.env.DEV &&
   ["TRUE", "T", "1", "YES", "Y"].includes(

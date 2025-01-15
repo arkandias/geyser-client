@@ -25,51 +25,75 @@ pnpm i
 
 ## Package scripts
 
-The project contains several pnpm scripts for automation of different tasks:
+The following pnpm scripts are available:
 
-- Development server with live reload:
+- Launch the development server with hot module replacement (HMR)
 
 ```shell
 pnpm run dev
 ```
 
-- Type check and build for production:
+- Create an optimized production build
 
 ```shell
 pnpm run build
 ```
 
-- Preview production build in a local server:
+- Serve the production build locally for testing
 
 ```shell
 pnpm run preview
 ```
 
-- Check code formatting with Prettier:
+- Execute the test suite once
+
+```shell
+pnpm run test
+```
+
+- Run tests in watch mode for development
+
+```shell
+pnpm run test:watch
+```
+
+- Auto-fix code formatting using Prettier
 
 ```shell
 pnpm run format
 ```
 
-- Run ESLint:
+- Check code formatting without making changes
+
+```shell
+pnpm run format:check
+```
+
+- Check code for quality issues using ESLint
 
 ```shell
 pnpm run lint
 ```
 
-- Type check:
+- Auto-fix ESLint issues where possible
+
+```shell
+pnpm run lint:fix
+```
+
+- Verify TypeScript types across all source files
 
 ```shell
 pnpm run typecheck
 ```
 
-- Run format, lint and type checks (used in CI):
+- Run all quality checks (types, formatting, linting, and tests)
 
 ```shell
 pnpm run validate
 ```
 
-- Generate GraphQL code:
+- Generate code from GraphQL schema and operations
 
 ```shell
 pnpm run codegen
@@ -80,19 +104,19 @@ pnpm run codegen
 Environment variables can be stored in either of the following .env files:
 
 - `.env.local`
-- `.env.development` and `.env.development.local` (development)
-- `.env.production` and `.env.production.local` (production)
+- `.env.development` and `.env.development.local` (development mode)
+- `.env.production` and `.env.production.local` (production mode)
 
 The following environment variables are used by the client.
 
-| Environment variable       | Description                                         |
-| -------------------------- | --------------------------------------------------- |
-| `VITE_GRAPHQL_URL`         | GraphQL engine URL                                  |
-| `VITE_KEYCLOAK_URL`        | Keycloak authentication server URL                  |
-| `VITE_BYPASS_KEYCLOAK`     | Bypass Keycloak auth in development (set to `true`) |
-| `VITE_HASURA_ADMIN_SECRET` | Hasura admin secret (when bypassing Keycloak)       |
-| `VITE_HASURA_USER_ID`      | Hasura user ID (when bypassing Keycloak)            |
-| `VITE_BUILD_VERSION`       | Build version (shown in top-left corner)            |
+| Environment variable       | Description                                            |
+| -------------------------- | ------------------------------------------------------ |
+| `VITE_GRAPHQL_URL`         | GraphQL engine URL                                     |
+| `VITE_KEYCLOAK_URL`        | Keycloak authentication server URL                     |
+| `VITE_BYPASS_KEYCLOAK`     | Bypass Keycloak auth in development (if set to `true`) |
+| `VITE_HASURA_ADMIN_SECRET` | Hasura admin secret (when bypassing Keycloak)          |
+| `VITE_HASURA_USER_ID`      | Hasura user ID (when bypassing Keycloak)               |
+| `VITE_BUILD_VERSION`       | Build version (shown in top-left corner)               |
 
 ## Contact
 
