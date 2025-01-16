@@ -4,7 +4,7 @@ import {
   HASURA_CLAIMS_NAMESPACE,
   KEYCLOAK_TOKEN_MIN_VALIDITY,
 } from "@/config/constants.ts";
-import { bypassClaims, bypassAuth } from "@/config/env.ts";
+import { bypassAuth, bypassClaims } from "@/config/env.ts";
 import { type Role, isRole } from "@/config/types/roles.ts";
 import { type HasuraClaims, isXHasuraClaims } from "@/types/claims.ts";
 
