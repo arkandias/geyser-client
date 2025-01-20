@@ -14,5 +14,5 @@ export const bypassAuth =
 export const bypassClaims: HasuraClaims = {
   allowedRoles: [ROLES.TEACHER, ROLES.ASSIGNER, ROLES.ADMIN],
   defaultRole: ROLES.ADMIN,
-  userId: import.meta.env.VITE_HASURA_USER_ID ?? "",
+  userId: import.meta.env.VITE_HASURA_USER_ID ?? "admin",
 } as const;
