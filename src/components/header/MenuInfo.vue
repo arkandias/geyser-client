@@ -105,18 +105,18 @@ const legalNoticeLabel = "Mentions légales";
         <ol>
           <li>
             <a
-              href="https://github.com/arkandias/geyser-backend"
+              href="https://github.com/arkandias/geyser"
               target="_blank"
               rel="noopener noreferrer"
-              >https://github.com/arkandias/geyser-backend</a
+              >https://github.com/arkandias/geyser</a
             >
           </li>
           <li>
             <a
-              href="https://github.com/arkandias/geyser-frontend"
+              href="https://github.com/arkandias/geyser-client"
               target="_blank"
               rel="noopener noreferrer"
-              >https://github.com/arkandias/geyser-frontend</a
+              >https://github.com/arkandias/geyser-client</a
             >
           </li>
         </ol>
