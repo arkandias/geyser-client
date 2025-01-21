@@ -35,9 +35,5 @@
     /* Completeness */
     "skipLibCheck": true
   },
-  // For GraphQL plugin
-  "ts-node": {
-    "esm": true
-  },
   "include": ["*.ts"]
 }
