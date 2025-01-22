@@ -4,11 +4,11 @@ import {
   HASURA_CLAIMS_NAMESPACE,
   KEYCLOAK_TOKEN_MIN_VALIDITY,
 } from "@/config/constants.ts";
-import { bypassAuth, bypassClaims } from "@/config/env.ts";
+import { bypassClaims, bypassKeycloak } from "@/config/env.ts";
 import { type Role, isRole } from "@/config/types/roles.ts";
 import { type HasuraClaims, isXHasuraClaims } from "@/types/claims.ts";
 
-if (bypassAuth) {
+if (bypassKeycloak) {
   if (import.meta.env.VITE_HASURA_ADMIN_SECRET === undefined) {
     throw new Error(
       "Missing VITE_HASURA_ADMIN_SECRET environment variable. This is required for local development when bypassing Keycloak authentication.",
@@ -42,7 +42,7 @@ keycloak.onTokenExpired = () => {
 };
 
 export const initKeycloak = async () => {
-  if (bypassAuth) {
+  if (bypassKeycloak) {
     console.debug("Bypassing Keycloak authentication");
     return;
   }
@@ -64,13 +64,13 @@ export const initKeycloak = async () => {
 };
 
 export const logout = async () => {
-  if (!bypassAuth) {
+  if (!bypassKeycloak) {
     await keycloak.logout();
   }
 };
 
 export const refreshToken = async () => {
-  if (bypassAuth) {
+  if (bypassKeycloak) {
     return;
   }
   try {
@@ -83,7 +83,7 @@ export const refreshToken = async () => {
 };
 
 export const getAuthorizationHeader = (): Record<string, string> =>
-  bypassAuth
+  bypassKeycloak
     ? {
         "X-Hasura-Admin-Secret": import.meta.env.VITE_HASURA_ADMIN_SECRET ?? "",
         "X-Hasura-User-Id": import.meta.env.VITE_HASURA_USER_ID ?? "",
@@ -93,7 +93,7 @@ export const getAuthorizationHeader = (): Record<string, string> =>
       : {};
 
 export const getClaims = () => {
-  if (bypassAuth) {
+  if (bypassKeycloak) {
     return bypassClaims;
   }
   if (keycloak.authenticated !== true) {

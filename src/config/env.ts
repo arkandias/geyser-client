@@ -5,10 +5,10 @@ export const version = import.meta.env.DEV
   ? "dev"
   : (import.meta.env.VITE_BUILD_VERSION ?? null);
 
-export const bypassAuth =
+export const bypassKeycloak =
   import.meta.env.DEV &&
   ["TRUE", "T", "1", "YES", "Y"].includes(
-    (import.meta.env.VITE_BYPASS_AUTH ?? "").trim().toUpperCase(),
+    (import.meta.env.VITE_BYPASS_KEYCLOAK ?? "").trim().toUpperCase(),
   );
 
 export const bypassClaims: HasuraClaims = {

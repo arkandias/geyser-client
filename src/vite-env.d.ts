@@ -12,7 +12,7 @@ interface ImportMetaEnv {
   readonly VITE_GRAPHQL_URL?: string;
   readonly VITE_KEYCLOAK_URL?: string;
   readonly VITE_BUILD_VERSION?: string;
-  readonly VITE_BYPASS_AUTH?: string;
+  readonly VITE_BYPASS_KEYCLOAK?: string;
   readonly VITE_HASURA_ADMIN_SECRET?: string;
   readonly VITE_HASURA_USER_ID?: string;
 }
