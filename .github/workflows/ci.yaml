@@ -71,5 +71,5 @@ jobs:
             --title "${{ github.ref_name }}" \
             --generate-notes \
             --draft
-          gh release upload ${{ github.ref_name }} dist/* --clobber
+          gh release upload ${{ github.ref_name }} dist.tar.gz --clobber
           gh release edit ${{ github.ref_name }} --draft=false
