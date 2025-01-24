@@ -62,6 +62,8 @@ jobs:
           name: dist
           path: dist/
       - name: Create Release
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh release create ${{ github.ref_name }} \
             --draft \
