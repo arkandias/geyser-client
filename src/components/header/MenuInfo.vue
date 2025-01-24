@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import legalNotice from "@/content/legal-notice.html?raw";
+import legalNotice from "/public/legal-notice.html?raw";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
