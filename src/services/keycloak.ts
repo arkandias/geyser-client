@@ -1,34 +1,20 @@
 import Keycloak from "keycloak-js";
 
 import {
+  authURL,
+  bypassAuth,
+  hasuraAdminSecret,
+  hasuraUserId,
+} from "@/config/config.ts";
+import {
   HASURA_CLAIMS_NAMESPACE,
   KEYCLOAK_TOKEN_MIN_VALIDITY,
 } from "@/config/constants.ts";
-import { bypassClaims, bypassKeycloak } from "@/config/env.ts";
-import { type Role, isRole } from "@/config/types/roles.ts";
+import { ROLES, type Role, isRole } from "@/config/types/roles.ts";
 import { type HasuraClaims, isXHasuraClaims } from "@/types/claims.ts";
 
-if (bypassKeycloak) {
-  if (import.meta.env.VITE_HASURA_ADMIN_SECRET === undefined) {
-    throw new Error(
-      "Missing VITE_HASURA_ADMIN_SECRET environment variable. This is required for local development when bypassing Keycloak authentication.",
-    );
-  }
-  if (import.meta.env.VITE_HASURA_USER_ID === undefined) {
-    throw new Error(
-      "Missing VITE_HASURA_USER_ID environment variable. This is required for local development when bypassing Keycloak authentication.",
-    );
-  }
-} else {
-  if (import.meta.env.VITE_KEYCLOAK_URL === undefined) {
-    throw new Error(
-      "Missing VITE_KEYCLOAK_URL environment variable. This is required when using Keycloak authentication.",
-    );
-  }
-}
-
 const keycloak = new Keycloak({
-  url: import.meta.env.VITE_KEYCLOAK_URL ?? "",
+  url: authURL,
   realm: "geyser",
   clientId: "hasura",
 });
@@ -42,7 +28,7 @@ keycloak.onTokenExpired = () => {
 };
 
 export const initKeycloak = async () => {
-  if (bypassKeycloak) {
+  if (bypassAuth) {
     console.debug("Bypassing Keycloak authentication");
     return;
   }
@@ -64,13 +50,13 @@ export const initKeycloak = async () => {
 };
 
 export const logout = async () => {
-  if (!bypassKeycloak) {
+  if (!bypassAuth) {
     await keycloak.logout();
   }
 };
 
 export const refreshToken = async () => {
-  if (bypassKeycloak) {
+  if (bypassAuth) {
     return;
   }
   try {
@@ -82,19 +68,23 @@ export const refreshToken = async () => {
   }
 };
 
-export const getAuthorizationHeader = (): Record<string, string> =>
-  bypassKeycloak
+export const getAuthHeader = (): Record<string, string> =>
+  bypassAuth
     ? {
-        "X-Hasura-Admin-Secret": import.meta.env.VITE_HASURA_ADMIN_SECRET ?? "",
-        "X-Hasura-User-Id": import.meta.env.VITE_HASURA_USER_ID ?? "",
+        "X-Hasura-Admin-Secret": hasuraAdminSecret,
+        "X-Hasura-User-Id": hasuraUserId ?? "admin",
       }
     : keycloak.token
       ? { Authorization: "Bearer " + keycloak.token }
       : {};
 
-export const getClaims = () => {
-  if (bypassKeycloak) {
-    return bypassClaims;
+export const getClaims = (): HasuraClaims | null => {
+  if (bypassAuth) {
+    return {
+      userId: hasuraUserId ?? "admin",
+      defaultRole: ROLES.ADMIN,
+      allowedRoles: [ROLES.TEACHER, ROLES.ASSIGNER, ROLES.ADMIN],
+    };
   }
   if (keycloak.authenticated !== true) {
     console.error("Not authenticated");

@@ -5,7 +5,7 @@ import { useAuthentication } from "@/composables/authentication.ts";
 import { useDarkMode } from "@/composables/dark-mode.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRefreshData } from "@/composables/refresh-data.ts";
-import { version } from "@/config/env.ts";
+import { version } from "@/config/config.ts";
 import { buttonColor } from "@/utils/colors.ts";
 
 import MenuAdmin from "@/components/header/MenuAdmin.vue";

@@ -1,13 +1,13 @@
 export const ROLES = {
-  TEACHER: "teacher",
-  ASSIGNER: "assigner",
   ADMIN: "admin",
+  ASSIGNER: "assigner",
+  TEACHER: "teacher",
 } as const;
 
 export const ROLE_OPTIONS = [
-  { value: ROLES.TEACHER, label: "Intervenant", default: true },
-  { value: ROLES.ASSIGNER, label: "Commissaire" },
   { value: ROLES.ADMIN, label: "Administrateur" },
+  { value: ROLES.ASSIGNER, label: "Commissaire" },
+  { value: ROLES.TEACHER, label: "Intervenant" },
 ] as const;
 
 export type Role = (typeof ROLES)[keyof typeof ROLES];

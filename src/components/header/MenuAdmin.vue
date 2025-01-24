@@ -141,7 +141,7 @@ watch(
         <QOptionGroup
           v-model="newClaims.allowedRoles"
           :options="[...ROLE_OPTIONS]"
-          option-disable="default"
+          :option-disable="(role) => role.value === ROLES.TEACHER"
           type="checkbox"
           inline
         />
