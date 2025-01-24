@@ -50,7 +50,7 @@ jobs:
         with:
           name: dist
           path: dist
-  
+
   release:
     needs: build
     if: github.ref_type == 'tag'

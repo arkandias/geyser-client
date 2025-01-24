@@ -7,7 +7,7 @@ import {
   mapExchange,
 } from "@urql/vue";
 
-import { graphqlURL } from "@/config/config.ts";
+import { graphqlURL } from "@/config/env.ts";
 import { ROLES, type Role } from "@/config/types/roles.ts";
 import { getAuthHeader, refreshToken } from "@/services/keycloak.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";

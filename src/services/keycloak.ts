@@ -1,15 +1,15 @@
 import Keycloak from "keycloak-js";
 
 import {
+  HASURA_CLAIMS_NAMESPACE,
+  KEYCLOAK_TOKEN_MIN_VALIDITY,
+} from "@/config/constants.ts";
+import {
   authURL,
   bypassAuth,
   hasuraAdminSecret,
   hasuraUserId,
-} from "@/config/config.ts";
-import {
-  HASURA_CLAIMS_NAMESPACE,
-  KEYCLOAK_TOKEN_MIN_VALIDITY,
-} from "@/config/constants.ts";
+} from "@/config/env.ts";
 import { ROLES, type Role, isRole } from "@/config/types/roles.ts";
 import { type HasuraClaims, isXHasuraClaims } from "@/types/claims.ts";
 
