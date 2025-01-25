@@ -426,7 +426,7 @@ const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
 };
 
 const downloadTeacherAssignments = async () => {
-  if (!teacher.value || activeYear.value === null) {
+  if (activeYear.value === null || !teacher.value) {
     return;
   }
   await downloadAssignments(

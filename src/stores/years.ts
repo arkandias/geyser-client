@@ -23,7 +23,7 @@ export const useYearsStore = () => {
       : currentYear.value,
   );
   const isCurrentYearActive = computed(
-    () => activeYear.value === currentYear.value,
+    () => activeYear.value !== null && activeYear.value === currentYear.value,
   );
 
   return {
