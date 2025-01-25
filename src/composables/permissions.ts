@@ -48,7 +48,7 @@ export const usePermissions = () => {
   const toEditAssignments = computed(
     () =>
       activeRole.value === ROLES.ADMIN ||
-      (activeRole.value === ROLES.ASSIGNER &&
+      (activeRole.value === ROLES.COMMISSIONER &&
         currentPhase.value === PHASES.ASSIGNMENTS &&
         isCurrentYearActive.value),
   );
@@ -62,7 +62,7 @@ export const usePermissions = () => {
   const toViewAllServices = computed(
     () =>
       activeRole.value === ROLES.ADMIN ||
-      (activeRole.value === ROLES.ASSIGNER &&
+      (activeRole.value === ROLES.COMMISSIONER &&
         currentPhase.value === PHASES.ASSIGNMENTS),
   );
 

@@ -1,12 +1,12 @@
 export const ROLES = {
   ADMIN: "admin",
-  ASSIGNER: "assigner",
+  COMMISSIONER: "commissioner",
   TEACHER: "teacher",
 } as const;
 
 export const ROLE_OPTIONS = [
   { value: ROLES.ADMIN, label: "Administrateur" },
-  { value: ROLES.ASSIGNER, label: "Commissaire" },
+  { value: ROLES.COMMISSIONER, label: "Commissaire" },
   { value: ROLES.TEACHER, label: "Intervenant" },
 ] as const;
 

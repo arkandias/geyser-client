@@ -83,7 +83,7 @@ export const getClaims = (): HasuraClaims | null => {
     return {
       userId: hasuraUserId ?? "admin",
       defaultRole: ROLES.ADMIN,
-      allowedRoles: [ROLES.TEACHER, ROLES.ASSIGNER, ROLES.ADMIN],
+      allowedRoles: [ROLES.TEACHER, ROLES.COMMISSIONER, ROLES.ADMIN],
     };
   }
   if (keycloak.authenticated !== true) {
