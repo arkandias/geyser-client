@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
-
-import legalNotice from "/public/legal-notice.html?raw";
+import { onMounted, ref } from "vue";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
@@ -12,6 +10,27 @@ const isLegalNoticeOpen = ref(false);
 const informationLabel = "À propos";
 const licenceLabel = "Licence";
 const legalNoticeLabel = "Mentions légales";
+
+// Fetch legal notice
+const legalNotice = ref("");
+const fetchLegalNotice = async () => {
+  try {
+    const response = await fetch("/legal-notice.html");
+    if (!response.ok) {
+      console.error(
+        `Failed to load legal notice: ${response.status.toString()} ${response.statusText}`,
+      );
+    }
+    legalNotice.value = await response.text();
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Error loading legal notice:", error.name, error.message);
+    } else {
+      console.error("Unknown error loading legal notice:", error);
+    }
+  }
+};
+onMounted(fetchLegalNotice);
 </script>
 
 <template>
@@ -34,9 +53,9 @@ const legalNoticeLabel = "Mentions légales";
         </QItemSection>
       </QItem>
       <QItem
-        v-if="legalNotice"
         v-close-popup
         clickable
+        :disable="!legalNotice"
         @click="isLegalNoticeOpen = true"
       >
         <QItemSection side>
