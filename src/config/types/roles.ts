@@ -5,9 +5,9 @@ export const ROLES = {
 } as const;
 
 export const ROLE_OPTIONS = [
-  { value: ROLES.ADMIN, label: "Administrateur" },
-  { value: ROLES.COMMISSIONER, label: "Commissaire" },
   { value: ROLES.TEACHER, label: "Intervenant" },
+  { value: ROLES.COMMISSIONER, label: "Commissaire" },
+  { value: ROLES.ADMIN, label: "Administrateur" },
 ] as const;
 
 export type Role = (typeof ROLES)[keyof typeof ROLES];

@@ -16,7 +16,7 @@ const { dataFragment } = defineProps<{
 
 graphql(`
   fragment TeacherServiceRequests on Service {
-    assigned: requestsAggregate(where: { type: { _eq: "assignments" } }) {
+    assigned: requestsAggregate(where: { type: { _eq: "assignment" } }) {
       aggregate {
         sum {
           hoursWeighted

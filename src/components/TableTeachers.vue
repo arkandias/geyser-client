@@ -37,7 +37,7 @@ graphql(`
       }
     }
     totalAssigned: requestsAggregate(
-      where: { _and: [{ type: { _eq: "assignments" } }] }
+      where: { _and: [{ type: { _eq: "assignment" } }] }
     ) {
       aggregate {
         sum {

@@ -17,7 +17,7 @@ graphql(`
     parent {
       year
       requests(
-        where: { type: { _eq: "assignments" } }
+        where: { type: { _eq: "assignment" } }
         orderBy: [
           { service: { teacher: { lastname: ASC } } }
           { service: { teacher: { firstname: ASC } } }
@@ -29,7 +29,7 @@ graphql(`
       parent {
         year
         requests(
-          where: { type: { _eq: "assignments" } }
+          where: { type: { _eq: "assignment" } }
           orderBy: [
             { service: { teacher: { lastname: ASC } } }
             { service: { teacher: { firstname: ASC } } }
@@ -41,7 +41,7 @@ graphql(`
         parent {
           year
           requests(
-            where: { type: { _eq: "assignments" } }
+            where: { type: { _eq: "assignment" } }
             orderBy: [
               { service: { teacher: { lastname: ASC } } }
               { service: { teacher: { firstname: ASC } } }
