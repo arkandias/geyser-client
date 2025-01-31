@@ -87,9 +87,9 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
       >
         <QTooltip>Mode sombre</QTooltip>
       </QBtn>
-      <MenuUser />
-      <MenuAdmin v-if="perm.toAdmin" />
       <MenuInfo />
+      <MenuAdmin v-if="perm.toAdmin" />
+      <MenuUser />
     </QToolbar>
   </QHeader>
 </template>

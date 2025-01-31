@@ -12,8 +12,12 @@ import { ROLES, type Role } from "@/config/types/roles.ts";
 import { getAuthHeader, refreshToken } from "@/services/keycloak.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
-export const roleHeader: { "X-Hasura-Role": Role } = {
+const roleHeader: { "X-Hasura-Role": Role } = {
   "X-Hasura-Role": ROLES.TEACHER,
+};
+
+export const setRole = (role: Role) => {
+  roleHeader["X-Hasura-Role"] = role;
 };
 
 export const clientOptions: ClientOptions = {

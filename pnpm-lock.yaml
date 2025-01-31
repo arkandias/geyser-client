@@ -11,6 +11,9 @@ importers:
       '@quasar/extras':
         specifier: ^1.16.16
         version: 1.16.16
+      '@urql/exchange-auth':
+        specifier: ^2.2.0
+        version: 2.2.0(@urql/core@5.1.0(graphql@16.10.0))
       '@urql/vue':
         specifier: ^1.4.2
         version: 1.4.2(@urql/core@5.1.0(graphql@16.10.0))(vue@3.5.13(typescript@5.7.3))
@@ -1193,6 +1196,11 @@ packages:
     peerDependencies:
       '@urql/core': '>= 1.14.0'
       graphql: '>= 0.11.0'
+
+  '@urql/exchange-auth@2.2.0':
+    resolution: {integrity: sha512-4bJR22EYa/flbhwMBj4lU8MI4cO3ddo/DX7FygWeaeHZU+RWfnQKifCKwxIYlnoV8/CgYRM4lFSMIByYlhmWcg==}
+    peerDependencies:
+      '@urql/core': ^5.0.0
 
   '@urql/vue@1.4.2':
     resolution: {integrity: sha512-ELMlVhWsVPaKyIgocNA2eAxSZgwzBqaw5YB4q3wQTAExxGlx6UNVluiBnuDLhs5ctSDIrGBR6Dfkwl6+M3B0QQ==}
@@ -4307,6 +4315,11 @@ snapshots:
     dependencies:
       '@urql/core': 5.1.0(graphql@16.10.0)
       graphql: 16.10.0
+      wonka: 6.3.4
+
+  '@urql/exchange-auth@2.2.0(@urql/core@5.1.0(graphql@16.10.0))':
+    dependencies:
+      '@urql/core': 5.1.0(graphql@16.10.0)
       wonka: 6.3.4
 
   '@urql/vue@1.4.2(@urql/core@5.1.0(graphql@16.10.0))(vue@3.5.13(typescript@5.7.3))':

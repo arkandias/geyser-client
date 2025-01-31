@@ -7,7 +7,7 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { PHASES, isPhase } from "@/config/types/phases.ts";
 import { graphql } from "@/gql";
 import { GetCurrentPhaseDocument, GetYearsDocument } from "@/gql/graphql.ts";
-import { roleHeader } from "@/services/urql.ts";
+import { setRole } from "@/services/urql.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 import { useYearsStore } from "@/stores/years.ts";
 
@@ -40,13 +40,7 @@ const perm = usePermissions();
 
 // User profile
 void login();
-watch(
-  activeRole,
-  (value) => {
-    roleHeader["X-Hasura-Role"] = value;
-  },
-  { immediate: true },
-);
+watch(activeRole, setRole, { immediate: true });
 
 // App parameters
 const yearsQueryResult = useQuery({
