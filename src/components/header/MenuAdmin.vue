@@ -2,7 +2,6 @@
 import { useMutation } from "@urql/vue";
 import { computed, ref, watch } from "vue";
 
-import { useAuthentication } from "@/composables/authentication.ts";
 import { PHASE_OPTIONS } from "@/config/types/phases.ts";
 import { ROLES, ROLE_OPTIONS } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
@@ -11,6 +10,7 @@ import {
   SetCurrentYearDocument,
 } from "@/gql/graphql.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
+import { useProfileStore } from "@/stores/profile.ts";
 import { useYearsStore } from "@/stores/years.ts";
 import type { HasuraClaims } from "@/types/claims.ts";
 
@@ -56,7 +56,7 @@ graphql(`
 
 const { years, currentYear } = useYearsStore();
 const { currentPhase } = usePhaseStore();
-const { claims, impersonate } = useAuthentication();
+const { impersonate } = useProfileStore();
 
 const setCurrentYear = useMutation(SetCurrentYearDocument);
 const setCurrentPhase = useMutation(SetCurrentPhaseDocument);

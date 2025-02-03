@@ -2,10 +2,10 @@
 import { useQuery } from "@urql/vue";
 import { computed, reactive } from "vue";
 
-import { useAuthentication } from "@/composables/authentication.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
 import { graphql } from "@/gql";
 import { GetTeacherDetailsDocument } from "@/gql/graphql.ts";
+import { useProfileStore } from "@/stores/profile.ts";
 import { useYearsStore } from "@/stores/years.ts";
 
 import TeacherCoordinations from "@/components/teacher/TeacherCoordinations.vue";
@@ -37,7 +37,7 @@ graphql(`
 `);
 
 const { activeYear } = useYearsStore();
-const { profile } = useAuthentication();
+const { profile } = useProfileStore();
 const { getValue: uid } = useQueryParam("uid");
 
 const activeUid = computed(() => uid.value ?? profile.uid);

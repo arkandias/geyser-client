@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 
-import { useAuthentication } from "@/composables/authentication.ts";
 import { useDarkMode } from "@/composables/dark-mode.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRefreshData } from "@/composables/refresh-data.ts";
 import { version } from "@/config/env.ts";
+import { useProfileStore } from "@/stores/profile.ts";
 import { buttonColor } from "@/utils/colors.ts";
 
 import MenuAdmin from "@/components/header/MenuAdmin.vue";
@@ -16,7 +16,7 @@ import MenusCourses from "@/components/header/MenusCourses.vue";
 defineProps<{ disable?: boolean }>();
 
 const router = useRouter();
-const { profile, isImpersonating, stopImpersonating } = useAuthentication();
+const { profile, isImpersonating, stopImpersonating } = useProfileStore();
 const perm = usePermissions();
 const { refreshData } = useRefreshData();
 const { isDarkModeActive, toggleDarkMode } = useDarkMode();

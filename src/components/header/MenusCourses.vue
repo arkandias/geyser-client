@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useAuthentication } from "@/composables/authentication.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
 import { useService } from "@/composables/service.ts";
 import { useLeftPanelStore } from "@/stores/left-panel.ts";
+import { useProfileStore } from "@/stores/profile.ts";
 import { buttonColor } from "@/utils/colors.ts";
 
 import MenuYear from "@/components/header/MenuYear.vue";
 
-const { profile } = useAuthentication();
+const { profile } = useProfileStore();
 const { hasService } = useService();
 const { getValue: selectedUid, toggleValue: toggleUid } = useQueryParam("uid");
 const { isLeftPanelOpen, toggleLeftPanel } = useLeftPanelStore();

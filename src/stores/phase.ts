@@ -1,10 +1,10 @@
 import { readonly, ref } from "vue";
 
-import type { Phase } from "@/config/types/phases.ts";
+import { PHASES, type Phase } from "@/config/types/phases.ts";
 
-const currentPhase = ref<Phase | null>(null);
+const currentPhase = ref<Phase>(PHASES.SHUTDOWN);
 
-const setCurrentPhase = (phase: Phase | null) => {
+const setCurrentPhase = (phase: Phase) => {
   currentPhase.value = phase;
 };
 

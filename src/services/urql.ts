@@ -16,7 +16,7 @@ const roleHeader: { "X-Hasura-Role": Role } = {
   "X-Hasura-Role": ROLES.TEACHER,
 };
 
-export const setRole = (role: Role) => {
+export const setRoleHeader = (role: Role) => {
   roleHeader["X-Hasura-Role"] = role;
 };
 

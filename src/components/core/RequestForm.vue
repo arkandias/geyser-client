@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 
-import { useAuthentication } from "@/composables/authentication.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRequestOperations } from "@/composables/request-operations.ts";
 import {
@@ -10,6 +9,7 @@ import {
 } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestFormDataFragmentDoc } from "@/gql/graphql.ts";
+import { useProfileStore } from "@/stores/profile.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 import SelectTeacher from "@/components/core/SelectTeacher.vue";
@@ -25,7 +25,7 @@ graphql(`
   }
 `);
 
-const { profile } = useAuthentication();
+const { profile } = useProfileStore();
 const perm = usePermissions();
 const { updateRequest } = useRequestOperations();
 

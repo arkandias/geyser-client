@@ -1,9 +1,9 @@
 import { useQuery } from "@urql/vue";
 import { computed, reactive } from "vue";
 
-import { useAuthentication } from "@/composables/authentication.ts";
 import { graphql } from "@/gql";
 import { GetServiceFromTeacherDocument } from "@/gql/graphql.ts";
+import { useProfileStore } from "@/stores/profile.ts";
 import { useYearsStore } from "@/stores/years.ts";
 
 graphql(`
@@ -20,7 +20,7 @@ graphql(`
 `);
 
 export const useService = () => {
-  const { profile } = useAuthentication();
+  const { profile } = useProfileStore();
   const { activeYear } = useYearsStore();
   const serviceQueryResult = useQuery({
     query: GetServiceFromTeacherDocument,
