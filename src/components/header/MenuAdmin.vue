@@ -12,7 +12,6 @@ import {
 import { usePhaseStore } from "@/stores/phase.ts";
 import { useProfileStore } from "@/stores/profile.ts";
 import { useYearsStore } from "@/stores/years.ts";
-import type { HasuraClaims } from "@/types/claims.ts";
 
 import SelectTeacher from "@/components/core/SelectTeacher.vue";
 import MenuAdminOptions from "@/components/header/MenuAdminOptions.vue";
@@ -56,7 +55,7 @@ graphql(`
 
 const { years, currentYear } = useYearsStore();
 const { currentPhase } = usePhaseStore();
-const { impersonate } = useProfileStore();
+const { profile, impersonate } = useProfileStore();
 
 const setCurrentYear = useMutation(SetCurrentYearDocument);
 const setCurrentPhase = useMutation(SetCurrentPhaseDocument);
@@ -86,17 +85,7 @@ const yearOptions = computed(() =>
 );
 
 const isImpersonatingFormOpen = ref(false);
-const newClaims = ref<HasuraClaims>({
-  userId: claims.userId,
-  defaultRole: ROLES.TEACHER,
-  allowedRoles: [ROLES.TEACHER],
-});
-watch(
-  () => newClaims.value.allowedRoles.includes(newClaims.value.defaultRole),
-  () => {
-    newClaims.value.defaultRole = ROLES.TEACHER;
-  },
-);
+const uid = ref(profile.uid);
 </script>
 
 <template>
@@ -134,25 +123,7 @@ watch(
   <QDialog v-model="isImpersonatingFormOpen">
     <QCard square class="select-profile">
       <QCardSection>
-        <SelectTeacher v-model="newClaims.userId" />
-      </QCardSection>
-      <QCardSection>
-        <div class="text-body1">Rôles autorisés :</div>
-        <QOptionGroup
-          v-model="newClaims.allowedRoles"
-          :options="[...ROLE_OPTIONS]"
-          :option-disable="(role) => role.value === ROLES.TEACHER"
-          type="checkbox"
-          inline
-        />
-      </QCardSection>
-      <QCardSection>
-        <div class="text-body1">Rôle par défaut :</div>
-        <QOptionGroup
-          v-model="newClaims.defaultRole"
-          :options="[...ROLE_OPTIONS]"
-          inline
-        />
+        <SelectTeacher v-model="uid" />
       </QCardSection>
       <QCardActions align="right">
         <QBtn
@@ -160,7 +131,7 @@ watch(
           label="Incarner"
           flat
           square
-          @click="impersonate(newClaims)"
+          @click="impersonate(uid)"
         />
       </QCardActions>
     </QCard>

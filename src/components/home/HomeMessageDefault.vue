@@ -3,12 +3,15 @@ import { PHASES } from "@/config/types/phases.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 
 const { currentPhase } = usePhaseStore();
+
+const subtitleClass = ["text-h6", "text-center"];
+const messageClass = ["text-justify"];
 </script>
 
 <template>
   <QCardSection v-if="currentPhase === PHASES.REQUESTS">
-    <p class="text-subtitle1">Geyser est actuellement en phase de vœux</p>
-    <div class="text-justify">
+    <p :class="subtitleClass">Geyser est actuellement en phase de vœux</p>
+    <div :class="messageClass">
       <p>
         Vérifiez que votre service de base (ci-dessous) est correct. Dans le cas
         contraire contactez un membre de la commission. Ajoutez ensuite vos
@@ -38,8 +41,8 @@ const { currentPhase } = usePhaseStore();
   </QCardSection>
 
   <QCardSection v-if="currentPhase === PHASES.ASSIGNMENTS">
-    <p class="text-subtitle1">Geyser est actuellement en phase de commission</p>
-    <p class="text-justify">
+    <p :class="subtitleClass">Geyser est actuellement en phase de commission</p>
+    <p :class="messageClass">
       Les travaux de la commission sont en cours. Vous serez informé lorsqu'ils
       seront terminés pour consulter les attributions. En attendant, vous pouvez
       toujours consulter les demandes mais il n'est plus possible de les
@@ -48,10 +51,10 @@ const { currentPhase } = usePhaseStore();
   </QCardSection>
 
   <QCardSection v-if="currentPhase === PHASES.RESULTS">
-    <p class="text-subtitle1">
+    <p :class="subtitleClass">
       Geyser est actuellement en phase de consultation
     </p>
-    <p class="text-justify">
+    <p :class="messageClass">
       Vous pouvez à présent consulter les attributions des enseignements de
       cette année. Vous avez également toujours accès aux demandes et aux
       attributions des années précédentes. À l'année prochaine !
@@ -59,7 +62,7 @@ const { currentPhase } = usePhaseStore();
   </QCardSection>
 
   <QCardSection v-if="currentPhase === PHASES.SHUTDOWN">
-    <p class="text-subtitle2">Geyser est actuellement fermé</p>
+    <p :class="subtitleClass">Geyser est actuellement fermé</p>
   </QCardSection>
 </template>
 
