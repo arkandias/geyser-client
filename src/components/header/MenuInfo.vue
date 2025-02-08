@@ -1,29 +1,10 @@
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
-import { graphql } from "@/gql";
-import { GetLegalNoticeDocument } from "@/gql/graphql.ts";
+import { useAppSettings } from "@/composables/app-settings.ts";
 import { sanitize } from "@/utils/sanitizer.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
-
-graphql(`
-  query GetLegalNotice {
-    legalNotice: appSettingsByPk(key: "legal-notice") {
-      value
-    }
-  }
-`);
-
-const legalNoticeQueryResult = useQuery({
-  query: GetLegalNoticeDocument,
-  variables: {},
-});
-const legalNotice = computed(() =>
-  // Sanitize HTML to prevent XSS attacks
-  sanitize(legalNoticeQueryResult.data.value?.legalNotice?.value ?? ""),
-);
 
 const isInformationOpen = ref(false);
 const isLicenceOpen = ref(false);
@@ -32,6 +13,8 @@ const isLegalNoticeOpen = ref(false);
 const informationLabel = "À propos";
 const licenceLabel = "Licence";
 const legalNoticeLabel = "Mentions légales";
+
+const legalNotice = sanitize((await useAppSettings("legal-notice")) ?? "");
 </script>
 
 <template>

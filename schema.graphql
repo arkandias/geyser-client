@@ -14,12 +14,15 @@ directive @cached(
 ) on QUERY
 
 """Custom application configuration settings"""
-type AppSettings {
+type AppSetting {
   """Timestamp when the record was created"""
   createdAt: timestamptz!
 
   """Setting identifier"""
   key: String!
+
+  """Human-readable setting name for display purposes"""
+  label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -31,39 +34,40 @@ type AppSettings {
 }
 
 """
-aggregated selection of "app_settings"
+aggregated selection of "app_setting"
 """
-type AppSettingsAggregate {
-  aggregate: AppSettingsAggregateFields
-  nodes: [AppSettings!]!
+type AppSettingAggregate {
+  aggregate: AppSettingAggregateFields
+  nodes: [AppSetting!]!
 }
 
 """
-aggregate fields of "app_settings"
+aggregate fields of "app_setting"
 """
-type AppSettingsAggregateFields {
-  count(columns: [AppSettingsSelectColumn!], distinct: Boolean): Int!
-  max: AppSettingsMaxFields
-  min: AppSettingsMinFields
+type AppSettingAggregateFields {
+  count(columns: [AppSettingSelectColumn!], distinct: Boolean): Int!
+  max: AppSettingMaxFields
+  min: AppSettingMinFields
 }
 
 """
-Boolean expression to filter rows from the table "app_settings". All fields are combined with a logical 'AND'.
+Boolean expression to filter rows from the table "app_setting". All fields are combined with a logical 'AND'.
 """
-input AppSettingsBoolExp {
-  _and: [AppSettingsBoolExp!]
-  _not: AppSettingsBoolExp
-  _or: [AppSettingsBoolExp!]
+input AppSettingBoolExp {
+  _and: [AppSettingBoolExp!]
+  _not: AppSettingBoolExp
+  _or: [AppSettingBoolExp!]
   createdAt: TimestamptzComparisonExp
   key: StringComparisonExp
+  label: StringComparisonExp
   updatedAt: TimestamptzComparisonExp
   value: StringComparisonExp
 }
 
 """
-unique or primary key constraints on table "app_settings"
+unique or primary key constraints on table "app_setting"
 """
-enum AppSettingsConstraint {
+enum AppSettingConstraint {
   """
   unique or primary key constraint on columns "key"
   """
@@ -71,14 +75,17 @@ enum AppSettingsConstraint {
 }
 
 """
-input type for inserting data into table "app_settings"
+input type for inserting data into table "app_setting"
 """
-input AppSettingsInsertInput {
+input AppSettingInsertInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
   """Setting identifier"""
   key: String
+
+  """Human-readable setting name for display purposes"""
+  label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -90,12 +97,15 @@ input AppSettingsInsertInput {
 }
 
 """aggregate max on columns"""
-type AppSettingsMaxFields {
+type AppSettingMaxFields {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
   """Setting identifier"""
   key: String
+
+  """Human-readable setting name for display purposes"""
+  label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -107,12 +117,15 @@ type AppSettingsMaxFields {
 }
 
 """aggregate min on columns"""
-type AppSettingsMinFields {
+type AppSettingMinFields {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
   """Setting identifier"""
   key: String
+
+  """Human-readable setting name for display purposes"""
+  label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -124,48 +137,52 @@ type AppSettingsMinFields {
 }
 
 """
-response of any mutation on the table "app_settings"
+response of any mutation on the table "app_setting"
 """
-type AppSettingsMutationResponse {
+type AppSettingMutationResponse {
   """number of rows affected by the mutation"""
   affectedRows: Int!
 
   """data from the rows affected by the mutation"""
-  returning: [AppSettings!]!
+  returning: [AppSetting!]!
 }
 
 """
-on_conflict condition type for table "app_settings"
+on_conflict condition type for table "app_setting"
 """
-input AppSettingsOnConflict {
-  constraint: AppSettingsConstraint!
-  updateColumns: [AppSettingsUpdateColumn!]! = []
-  where: AppSettingsBoolExp
+input AppSettingOnConflict {
+  constraint: AppSettingConstraint!
+  updateColumns: [AppSettingUpdateColumn!]! = []
+  where: AppSettingBoolExp
 }
 
-"""Ordering options when selecting data from "app_settings"."""
-input AppSettingsOrderBy {
+"""Ordering options when selecting data from "app_setting"."""
+input AppSettingOrderBy {
   createdAt: OrderBy
   key: OrderBy
+  label: OrderBy
   updatedAt: OrderBy
   value: OrderBy
 }
 
-"""primary key columns input for table: app_settings"""
-input AppSettingsPkColumnsInput {
+"""primary key columns input for table: app_setting"""
+input AppSettingPkColumnsInput {
   """Setting identifier"""
   key: String!
 }
 
 """
-select columns of table "app_settings"
+select columns of table "app_setting"
 """
-enum AppSettingsSelectColumn {
+enum AppSettingSelectColumn {
   """column name"""
   createdAt
 
   """column name"""
   key
+
+  """column name"""
+  label
 
   """column name"""
   updatedAt
@@ -175,14 +192,17 @@ enum AppSettingsSelectColumn {
 }
 
 """
-input type for updating data in table "app_settings"
+input type for updating data in table "app_setting"
 """
-input AppSettingsSetInput {
+input AppSettingSetInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
   """Setting identifier"""
   key: String
+
+  """Human-readable setting name for display purposes"""
+  label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -194,23 +214,26 @@ input AppSettingsSetInput {
 }
 
 """
-Streaming cursor of the table "app_settings"
+Streaming cursor of the table "app_setting"
 """
-input AppSettingsStreamCursorInput {
+input AppSettingStreamCursorInput {
   """Stream column input with initial value"""
-  initialValue: AppSettingsStreamCursorValueInput!
+  initialValue: AppSettingStreamCursorValueInput!
 
   """cursor ordering"""
   ordering: CursorOrdering
 }
 
 """Initial value of the column from where the streaming should start"""
-input AppSettingsStreamCursorValueInput {
+input AppSettingStreamCursorValueInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
   """Setting identifier"""
   key: String
+
+  """Human-readable setting name for display purposes"""
+  label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -222,14 +245,17 @@ input AppSettingsStreamCursorValueInput {
 }
 
 """
-update columns of table "app_settings"
+update columns of table "app_setting"
 """
-enum AppSettingsUpdateColumn {
+enum AppSettingUpdateColumn {
   """column name"""
   createdAt
 
   """column name"""
   key
+
+  """column name"""
+  label
 
   """column name"""
   updatedAt
@@ -238,12 +264,12 @@ enum AppSettingsUpdateColumn {
   value
 }
 
-input AppSettingsUpdates {
+input AppSettingUpdates {
   """sets the columns of the filtered rows to the given values"""
-  _set: AppSettingsSetInput
+  _set: AppSettingSetInput
 
   """filter the rows which have to be updated"""
-  where: AppSettingsBoolExp!
+  where: AppSettingBoolExp!
 }
 
 """
@@ -11774,20 +11800,20 @@ input courseAggregateBoolExpCount {
 """mutation root"""
 type mutation_root {
   """
-  delete data from the table: "app_settings"
+  delete data from the table: "app_setting"
   """
-  deleteAppSettings(
+  deleteAppSetting(
     """filter the rows which have to be deleted"""
-    where: AppSettingsBoolExp!
-  ): AppSettingsMutationResponse
+    where: AppSettingBoolExp!
+  ): AppSettingMutationResponse
 
   """
-  delete single row from the table: "app_settings"
+  delete single row from the table: "app_setting"
   """
-  deleteAppSettingsByPk(
+  deleteAppSettingByPk(
     """Setting identifier"""
     key: String!
-  ): AppSettings
+  ): AppSetting
 
   """
   delete data from the table: "coordination"
@@ -12078,26 +12104,26 @@ type mutation_root {
   ): Year
 
   """
-  insert data into the table: "app_settings"
+  insert data into the table: "app_setting"
   """
-  insertAppSettings(
+  insertAppSetting(
     """the rows to be inserted"""
-    objects: [AppSettingsInsertInput!]!
+    objects: [AppSettingInsertInput!]!
 
     """upsert condition"""
-    onConflict: AppSettingsOnConflict
-  ): AppSettingsMutationResponse
+    onConflict: AppSettingOnConflict
+  ): AppSettingMutationResponse
 
   """
-  insert a single row into the table: "app_settings"
+  insert a single row into the table: "app_setting"
   """
-  insertAppSettingsOne(
+  insertAppSettingOne(
     """the row to be inserted"""
-    object: AppSettingsInsertInput!
+    object: AppSettingInsertInput!
 
     """upsert condition"""
-    onConflict: AppSettingsOnConflict
-  ): AppSettings
+    onConflict: AppSettingOnConflict
+  ): AppSetting
 
   """
   insert data into the table: "coordination"
@@ -12496,32 +12522,32 @@ type mutation_root {
   ): Year
 
   """
-  update data of the table: "app_settings"
+  update data of the table: "app_setting"
   """
-  updateAppSettings(
+  updateAppSetting(
     """sets the columns of the filtered rows to the given values"""
-    _set: AppSettingsSetInput
+    _set: AppSettingSetInput
 
     """filter the rows which have to be updated"""
-    where: AppSettingsBoolExp!
-  ): AppSettingsMutationResponse
+    where: AppSettingBoolExp!
+  ): AppSettingMutationResponse
 
   """
-  update single row of the table: "app_settings"
+  update single row of the table: "app_setting"
   """
-  updateAppSettingsByPk(
+  updateAppSettingByPk(
     """sets the columns of the filtered rows to the given values"""
-    _set: AppSettingsSetInput
-    pkColumns: AppSettingsPkColumnsInput!
-  ): AppSettings
+    _set: AppSettingSetInput
+    pkColumns: AppSettingPkColumnsInput!
+  ): AppSetting
 
   """
-  update multiples rows of table: "app_settings"
+  update multiples rows of table: "app_setting"
   """
-  updateAppSettingsMany(
+  updateAppSettingMany(
     """updates to execute, in order"""
-    updates: [AppSettingsUpdates!]!
-  ): [AppSettingsMutationResponse]
+    updates: [AppSettingUpdates!]!
+  ): [AppSettingMutationResponse]
 
   """
   update data of the table: "coordination"
@@ -13156,11 +13182,11 @@ input programAggregateBoolExpCount {
 
 type query_root {
   """
-  fetch data from the table: "app_settings"
+  fetch data from the table: "app_setting"
   """
-  appSettings(
+  appSetting(
     """distinct select on columns"""
-    distinctOn: [AppSettingsSelectColumn!]
+    distinctOn: [AppSettingSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -13169,18 +13195,18 @@ type query_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [AppSettingsOrderBy!]
+    orderBy: [AppSettingOrderBy!]
 
     """filter the rows returned"""
-    where: AppSettingsBoolExp
-  ): [AppSettings!]!
+    where: AppSettingBoolExp
+  ): [AppSetting!]!
 
   """
-  fetch aggregated fields from the table: "app_settings"
+  fetch aggregated fields from the table: "app_setting"
   """
-  appSettingsAggregate(
+  appSettingAggregate(
     """distinct select on columns"""
-    distinctOn: [AppSettingsSelectColumn!]
+    distinctOn: [AppSettingSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -13189,17 +13215,17 @@ type query_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [AppSettingsOrderBy!]
+    orderBy: [AppSettingOrderBy!]
 
     """filter the rows returned"""
-    where: AppSettingsBoolExp
-  ): AppSettingsAggregate!
+    where: AppSettingBoolExp
+  ): AppSettingAggregate!
 
-  """fetch data from the table: "app_settings" using primary key columns"""
-  appSettingsByPk(
+  """fetch data from the table: "app_setting" using primary key columns"""
+  appSettingByPk(
     """Setting identifier"""
     key: String!
-  ): AppSettings
+  ): AppSetting
 
   """
   fetch data from the table: "coordination"
@@ -14064,11 +14090,11 @@ input serviceModificationAggregateBoolExpCount {
 
 type subscription_root {
   """
-  fetch data from the table: "app_settings"
+  fetch data from the table: "app_setting"
   """
-  appSettings(
+  appSetting(
     """distinct select on columns"""
-    distinctOn: [AppSettingsSelectColumn!]
+    distinctOn: [AppSettingSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -14077,18 +14103,18 @@ type subscription_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [AppSettingsOrderBy!]
+    orderBy: [AppSettingOrderBy!]
 
     """filter the rows returned"""
-    where: AppSettingsBoolExp
-  ): [AppSettings!]!
+    where: AppSettingBoolExp
+  ): [AppSetting!]!
 
   """
-  fetch aggregated fields from the table: "app_settings"
+  fetch aggregated fields from the table: "app_setting"
   """
-  appSettingsAggregate(
+  appSettingAggregate(
     """distinct select on columns"""
-    distinctOn: [AppSettingsSelectColumn!]
+    distinctOn: [AppSettingSelectColumn!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -14097,31 +14123,31 @@ type subscription_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    orderBy: [AppSettingsOrderBy!]
+    orderBy: [AppSettingOrderBy!]
 
     """filter the rows returned"""
-    where: AppSettingsBoolExp
-  ): AppSettingsAggregate!
+    where: AppSettingBoolExp
+  ): AppSettingAggregate!
 
-  """fetch data from the table: "app_settings" using primary key columns"""
-  appSettingsByPk(
+  """fetch data from the table: "app_setting" using primary key columns"""
+  appSettingByPk(
     """Setting identifier"""
     key: String!
-  ): AppSettings
+  ): AppSetting
 
   """
-  fetch data from the table in a streaming manner: "app_settings"
+  fetch data from the table in a streaming manner: "app_setting"
   """
-  appSettingsStream(
+  appSettingStream(
     """maximum number of rows returned in a single batch"""
     batchSize: Int!
 
     """cursor to stream the results returned by the query"""
-    cursor: [AppSettingsStreamCursorInput]!
+    cursor: [AppSettingStreamCursorInput]!
 
     """filter the rows returned"""
-    where: AppSettingsBoolExp
-  ): [AppSettings!]!
+    where: AppSettingBoolExp
+  ): [AppSetting!]!
 
   """
   fetch data from the table: "coordination"

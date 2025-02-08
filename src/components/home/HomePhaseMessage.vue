@@ -1,24 +1,18 @@
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
-import { computed, reactive } from "vue";
+import { computed } from "vue";
 
+import { useAppSettings } from "@/composables/app-settings.ts";
 import { PHASES } from "@/config/types/phases.ts";
-import { graphql } from "@/gql";
-import { GetPhaseMessageDocument } from "@/gql/graphql.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 import { sanitize } from "@/utils/sanitizer.ts";
 
-graphql(`
-  query GetPhaseMessage($phase: String!) {
-    phaseMessage: appSettingsByPk(key: $phase) {
-      value
-    }
-  }
-`);
-
 const { currentPhase } = usePhaseStore();
 
-const subtitle = computed(() => {
+const subtitle = sanitize(
+  (await useAppSettings(`phase-subtitle-${currentPhase.value}`)) ?? "",
+);
+
+const defaultSubtitle = computed(() => {
   switch (currentPhase.value) {
     case PHASES.REQUESTS:
       return "Geyser est en phase de vœux";
@@ -33,13 +27,8 @@ const subtitle = computed(() => {
   }
 });
 
-const phaseMessageQueryResult = useQuery({
-  query: GetPhaseMessageDocument,
-  variables: reactive({ phase: currentPhase }),
-});
-
-const message = computed(() =>
-  sanitize(phaseMessageQueryResult.data.value?.phaseMessage?.value ?? ""),
+const message = sanitize(
+  (await useAppSettings(`phase-message-${currentPhase.value}`)) ?? "",
 );
 
 const defaultMessage = computed(() => {
@@ -96,7 +85,7 @@ const messageClass = ["text-justify"];
 <template>
   <QCardSection>
     <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-    <p :class="subtitleClass" v-html="subtitle" />
+    <p :class="subtitleClass" v-html="subtitle || defaultSubtitle" />
     <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
     <div :class="messageClass" v-html="message || defaultMessage" />
   </QCardSection>
