@@ -11,7 +11,7 @@ import { buttonColor } from "@/utils/colors.ts";
 import MenuAdmin from "@/components/header/MenuAdmin.vue";
 import MenuInfo from "@/components/header/MenuInfo.vue";
 import MenuUser from "@/components/header/MenuUser.vue";
-import MenusCourses from "@/components/header/MenusCourses.vue";
+import ToolbarCourses from "@/components/header/ToolbarCourses.vue";
 
 defineProps<{ disable?: boolean }>();
 
@@ -71,7 +71,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
           v-if="!disable && router.currentRoute.value.name === 'courses'"
           id="transition-wrapper"
         >
-          <MenusCourses />
+          <ToolbarCourses />
         </div>
       </Transition>
       <QSeparator vertical inset color="white" />

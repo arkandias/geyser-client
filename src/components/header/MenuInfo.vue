@@ -1,7 +1,27 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { useQuery } from "@urql/vue";
+import { computed, ref } from "vue";
+
+import { graphql } from "@/gql";
+import { GetLegalNoticeDocument } from "@/gql/graphql.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
+
+graphql(`
+  query GetLegalNotice {
+    legalNotice: appSettingsByPk(key: "legal-notice") {
+      value
+    }
+  }
+`);
+
+const legalNoticeQueryResult = useQuery({
+  query: GetLegalNoticeDocument,
+  variables: {},
+});
+const legalNotice = computed(
+  () => legalNoticeQueryResult.data.value?.legalNotice?.value,
+);
 
 const isInformationOpen = ref(false);
 const isLicenceOpen = ref(false);
@@ -10,27 +30,6 @@ const isLegalNoticeOpen = ref(false);
 const informationLabel = "À propos";
 const licenceLabel = "Licence";
 const legalNoticeLabel = "Mentions légales";
-
-// Fetch legal notice
-const legalNotice = ref("");
-const fetchLegalNotice = async () => {
-  try {
-    const response = await fetch("/legal-notice.html");
-    if (!response.ok) {
-      console.error(
-        `Failed to load legal notice: ${response.status.toString()} ${response.statusText}`,
-      );
-    }
-    legalNotice.value = await response.text();
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error("Error loading legal notice:", error.name, error.message);
-    } else {
-      console.error("Unknown error loading legal notice:", error);
-    }
-  }
-};
-onMounted(fetchLegalNotice);
 </script>
 
 <template>
