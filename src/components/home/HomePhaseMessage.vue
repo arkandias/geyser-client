@@ -1,17 +1,51 @@
 <script setup lang="ts">
+import { useQuery } from "@urql/vue";
+import { computed, reactive } from "vue";
+
 import { PHASES } from "@/config/types/phases.ts";
+import { graphql } from "@/gql";
+import { GetPhaseMessageDocument } from "@/gql/graphql.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
+import { sanitize } from "@/utils/sanitizer.ts";
+
+graphql(`
+  query GetPhaseMessage($phase: String!) {
+    phaseMessage: appSettingsByPk(key: $phase) {
+      value
+    }
+  }
+`);
 
 const { currentPhase } = usePhaseStore();
 
-const subtitleClass = ["text-h6", "text-center"];
-const messageClass = ["text-justify"];
-</script>
+const subtitle = computed(() => {
+  switch (currentPhase.value) {
+    case PHASES.REQUESTS:
+      return "Geyser est en phase de vœux";
+    case PHASES.ASSIGNMENTS:
+      return "Les travaux de la commission sont en cours";
+    case PHASES.RESULTS:
+      return "Geyser est en phase de consultation";
+    case PHASES.SHUTDOWN:
+      return "Geyser est fermé";
+    default:
+      throw new Error(`Unknown phase`);
+  }
+});
 
-<template>
-  <QCardSection v-if="currentPhase === PHASES.REQUESTS">
-    <p :class="subtitleClass">Geyser est actuellement en phase de vœux</p>
-    <div :class="messageClass">
+const phaseMessageQueryResult = useQuery({
+  query: GetPhaseMessageDocument,
+  variables: reactive({ phase: currentPhase }),
+});
+
+const message = computed(() =>
+  sanitize(phaseMessageQueryResult.data.value?.phaseMessage?.value ?? ""),
+);
+
+const defaultMessage = computed(() => {
+  switch (currentPhase.value) {
+    case PHASES.REQUESTS:
+      return `
       <p>
         Vérifiez que votre service de base (ci-dessous) est correct. Dans le cas
         contraire contactez un membre de la commission. Ajoutez ensuite vos
@@ -36,33 +70,35 @@ const messageClass = ["text-justify"];
         vous-même. Pour modifier votre message, cliquez sur le bouton
         <QBtn icon="sym_s_edit" color="primary" size="xs" flat square dense />
         qui apparaît à côté du titre de la section correspondante.
-      </p>
-    </div>
-  </QCardSection>
-
-  <QCardSection v-if="currentPhase === PHASES.ASSIGNMENTS">
-    <p :class="subtitleClass">Geyser est actuellement en phase de commission</p>
-    <p :class="messageClass">
+      </p>`;
+    case PHASES.ASSIGNMENTS:
+      return `
       Les travaux de la commission sont en cours. Vous serez informé lorsqu'ils
       seront terminés pour consulter les attributions. En attendant, vous pouvez
       toujours consulter les demandes mais il n'est plus possible de les
-      modifier.
-    </p>
-  </QCardSection>
-
-  <QCardSection v-if="currentPhase === PHASES.RESULTS">
-    <p :class="subtitleClass">
-      Geyser est actuellement en phase de consultation
-    </p>
-    <p :class="messageClass">
+      modifier.`;
+    case PHASES.RESULTS:
+      return `
       Vous pouvez à présent consulter les attributions des enseignements de
       cette année. Vous avez également toujours accès aux demandes et aux
-      attributions des années précédentes. À l'année prochaine !
-    </p>
-  </QCardSection>
+      attributions des années précédentes.`;
+    case PHASES.SHUTDOWN:
+      return "";
+    default:
+      throw new Error(`Unknown phase`);
+  }
+});
 
-  <QCardSection v-if="currentPhase === PHASES.SHUTDOWN">
-    <p :class="subtitleClass">Geyser est actuellement fermé</p>
+const subtitleClass = ["text-h6", "text-center"];
+const messageClass = ["text-justify"];
+</script>
+
+<template>
+  <QCardSection>
+    <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
+    <p :class="subtitleClass" v-html="subtitle" />
+    <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
+    <div :class="messageClass" v-html="message || defaultMessage" />
   </QCardSection>
 </template>
 

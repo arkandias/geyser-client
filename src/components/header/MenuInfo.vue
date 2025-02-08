@@ -4,6 +4,7 @@ import { computed, ref } from "vue";
 
 import { graphql } from "@/gql";
 import { GetLegalNoticeDocument } from "@/gql/graphql.ts";
+import { sanitize } from "@/utils/sanitizer.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
@@ -19,8 +20,9 @@ const legalNoticeQueryResult = useQuery({
   query: GetLegalNoticeDocument,
   variables: {},
 });
-const legalNotice = computed(
-  () => legalNoticeQueryResult.data.value?.legalNotice?.value,
+const legalNotice = computed(() =>
+  // Sanitize HTML to prevent XSS attacks
+  sanitize(legalNoticeQueryResult.data.value?.legalNotice?.value ?? ""),
 );
 
 const isInformationOpen = ref(false);

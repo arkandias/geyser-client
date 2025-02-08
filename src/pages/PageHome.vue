@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import HomeMessageDefault from "@/components/home/HomeMessageDefault.vue";
+import HomePhaseMessage from "@/components/home/HomePhaseMessage.vue";
 
 defineProps<{ message?: string }>();
 </script>
@@ -11,7 +11,7 @@ defineProps<{ message?: string }>();
       <QCardSection v-if="message" class="text-h6 text-center">
         {{ message }}
       </QCardSection>
-      <HomeMessageDefault v-else />
+      <HomePhaseMessage v-else />
     </QCard>
   </QPage>
 </template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import xss from "xss";
 
 import { NotifyType, notify } from "@/utils/notify.ts";
+import { sanitize } from "@/utils/sanitizer.ts";
 
 const showEditor = defineModel<boolean>();
 const {
@@ -15,34 +15,8 @@ const {
   defaultText?: string;
 }>();
 
-// sanitize HTML to prevent XSS attacks
-const options = {
-  whiteList: {
-    font: ["face"],
-    div: ["style"],
-    span: ["style"],
-    p: [],
-    br: [],
-    b: [],
-    i: [],
-    u: [],
-    strike: [],
-    sub: [],
-    sup: [],
-    hr: [],
-    a: ["href"],
-    ol: [],
-    ul: [],
-    li: ["style"],
-  },
-  css: {
-    whiteList: {
-      "font-family": true,
-      "text-align": true,
-    },
-  },
-};
-const sanitizedText = computed(() => xss(text || defaultText, options));
+// Sanitize HTML to prevent XSS attacks
+const sanitizedText = computed(() => sanitize(text || defaultText));
 const editorText = ref("");
 
 const onSave = async (): Promise<void> => {
