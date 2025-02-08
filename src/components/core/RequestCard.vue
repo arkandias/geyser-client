@@ -46,12 +46,12 @@ const data = computed(() =>
 );
 
 const assign = async (): Promise<void> => {
-  await updateRequestWithServiceId({
-    serviceId: data.value.service.id,
-    courseId: data.value.course.id,
-    requestType: REQUEST_TYPES.ASSIGNMENT,
-    hours: data.value.hours,
-  });
+  await updateRequestWithServiceId(
+    data.value.service.id,
+    data.value.course.id,
+    REQUEST_TYPES.ASSIGNMENT,
+    data.value.hours,
+  );
 };
 const remove = async (): Promise<void> => {
   await deleteRequestById(data.value.id);

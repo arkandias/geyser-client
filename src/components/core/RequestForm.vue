@@ -123,12 +123,12 @@ const submitForm = async (): Promise<void> => {
     });
     return;
   }
-  await updateRequest({
-    uid: uid.value,
-    courseId: data.value.courseId,
-    requestType: requestType.value,
-    hours: hours.value,
-  });
+  await updateRequest(
+    uid.value,
+    data.value.courseId,
+    requestType.value,
+    hours.value,
+  );
 };
 const resetForm = (): void => {
   uid.value = uidInit.value;

@@ -112,7 +112,6 @@ graphql(`
 
 const { activeYear } = useYearsStore();
 const perm = usePermissions();
-const { downloadAssignments } = useDownloadAssignments();
 
 const courses = computed(() =>
   courseRowFragments.map((fragment) =>
@@ -429,7 +428,7 @@ const downloadTeacherAssignments = async () => {
   if (activeYear.value === null || !teacher.value) {
     return;
   }
-  await downloadAssignments(
+  await useDownloadAssignments(
     {
       year: activeYear.value,
       where: { service: { uid: { _eq: teacher.value.uid } } },

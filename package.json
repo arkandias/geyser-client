@@ -20,7 +20,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit -p tsconfig.node.json && vue-tsc --noEmit -p tsconfig.app.json",
-    "validate": "pnpm run typecheck && pnpm run format:check && pnpm run lint && pnpm run test",
+    "validate": "pnpm run format:check && pnpm run typecheck && pnpm run lint && pnpm run test",
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {

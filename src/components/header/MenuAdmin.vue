@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 
 import { PHASE_OPTIONS } from "@/config/types/phases.ts";
-import { ROLES, ROLE_OPTIONS } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
 import {
   SetCurrentPhaseDocument,
