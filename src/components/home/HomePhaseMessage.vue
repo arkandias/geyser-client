@@ -9,7 +9,7 @@ import { sanitize } from "@/utils/sanitizer.ts";
 const { currentPhase } = usePhaseStore();
 
 const subtitle = sanitize(
-  (await useAppSettings(`phase-subtitle-${currentPhase.value}`)) ?? "",
+  useAppSettings(`phase-subtitle-${currentPhase.value}`).value ?? "",
 );
 
 const defaultSubtitle = computed(() => {
@@ -28,7 +28,7 @@ const defaultSubtitle = computed(() => {
 });
 
 const message = sanitize(
-  (await useAppSettings(`phase-message-${currentPhase.value}`)) ?? "",
+  useAppSettings(`phase-message-${currentPhase.value}`).value ?? "",
 );
 
 const defaultMessage = computed(() => {

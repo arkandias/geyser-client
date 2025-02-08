@@ -14,7 +14,7 @@ const informationLabel = "À propos";
 const licenceLabel = "Licence";
 const legalNoticeLabel = "Mentions légales";
 
-const legalNotice = sanitize((await useAppSettings("legal-notice")) ?? "");
+const legalNotice = sanitize(useAppSettings("legal-notice").value ?? "");
 </script>
 
 <template>

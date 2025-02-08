@@ -1,4 +1,5 @@
 import { useQuery } from "@urql/vue";
+import { computed } from "vue";
 
 import { graphql } from "@/gql";
 import { GetAppSettingDocument } from "@/gql/graphql.ts";
@@ -11,8 +12,11 @@ graphql(`
   }
 `);
 
-export const useAppSettings = async (key: string) =>
-  await useQuery({
-    query: GetAppSettingDocument,
-    variables: { key },
-  }).then((result) => result.data.value?.appSetting?.value ?? null);
+export const useAppSettings = (key: string) =>
+  computed(
+    () =>
+      useQuery({
+        query: GetAppSettingDocument,
+        variables: { key },
+      }).data.value?.appSetting?.value ?? null,
+  );
