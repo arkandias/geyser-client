@@ -1,4 +1,4 @@
-import { type Client, useClientHandle } from "@urql/vue";
+import { useQuery } from "@urql/vue";
 
 import { graphql } from "@/gql";
 import {
@@ -94,25 +94,21 @@ const formatAssignments = (assignments: GetAssignmentsQuery["assignments"]) =>
     email: assignment.service.teacher.uid,
   }));
 
-const downloadAssignments =
-  (client: Client) =>
-  async (variables: GetAssignmentsQueryVariables, filename: string) => {
-    const result = await client.query(GetAssignmentsDocument, variables, {
-      requestPolicy: "network-only",
+export const useDownloadAssignments = async (
+  variables: GetAssignmentsQueryVariables,
+  filename: string,
+) => {
+  const assignments = await useQuery({
+    query: GetAssignmentsDocument,
+    variables,
+    context: { requestPolicy: "network-only" },
+  }).then((result) => result.data.value?.assignments ?? null);
+  if (!assignments) {
+    console.error("Error while fetching assignments", variables);
+    notify(NotifyType.ERROR, {
+      message: "Erreur lors de la récupération des attributions",
     });
-    if (!result.data) {
-      console.error("Error while fetching assignments", variables);
-      notify(NotifyType.ERROR, {
-        message: "Erreur lors de la récupération des attributions",
-      });
-      return;
-    }
-    downloadCSV(formatAssignments(result.data.assignments), headers, filename);
-  };
-
-export const useDownloadAssignments = () => {
-  const client = useClientHandle().client;
-  return {
-    downloadAssignments: downloadAssignments(client),
-  };
+    return;
+  }
+  downloadCSV(formatAssignments(assignments), headers, filename);
 };

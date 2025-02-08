@@ -1,4 +1,4 @@
-import { type Client, useClientHandle } from "@urql/vue";
+import { useQuery } from "@urql/vue";
 import { computed, reactive, readonly, ref } from "vue";
 
 import { ROLES, type Role, isRole } from "@/config/types/roles.ts";
@@ -51,26 +51,24 @@ const setRoles = (newRoles: Role[]) => {
 const loaded = ref(false);
 const fetching = ref(false);
 
-const fetchProfile = (client: Client) => async (uid: string) => {
+const fetchProfile = async (uid: string) => {
   fetching.value = true;
-  const result = await client.query(
-    GetUserProfileDocument,
-    { uid },
-    {
-      requestPolicy: "network-only",
-    },
-  );
-  if (result.data?.profile) {
-    setProfile(result.data.profile);
+  const profile = await useQuery({
+    query: GetUserProfileDocument,
+    variables: { uid },
+    context: { requestPolicy: "network-only" },
+  }).then((result) => result.data.value?.profile ?? null);
+  if (profile) {
+    setProfile(profile);
     setRoles(
-      result.data.profile.roles
+      profile.roles
         .map((role) => role.type)
         .filter((role) => isRole(role))
         .concat(ROLES.TEACHER),
     );
 
     // Log invalid roles (if any)
-    const invalidRoles = result.data.profile.roles
+    const invalidRoles = profile.roles
       .map((role) => role.type)
       .filter((role) => !isRole(role));
     if (invalidRoles.length > 0) {
@@ -102,13 +100,13 @@ const profileSaved = reactive<Profile>({ ...profile });
 const rolesSaved = ref<Role[]>([]);
 const activeRoleSaved = ref<Role>(ROLES.TEACHER);
 
-const impersonate = (client: Client) => async (uid: string) => {
+const impersonate = async (uid: string) => {
   if (!isImpersonating.value) {
     Object.assign(profileSaved, profile);
     rolesSaved.value = [...roles.value];
     activeRoleSaved.value = activeRole.value;
   }
-  await fetchProfile(client)(uid);
+  await fetchProfile(uid);
   setActiveRole(ROLES.TEACHER);
   isImpersonating.value = true;
 };
@@ -122,19 +120,16 @@ const stopImpersonating = () => {
   }
 };
 
-export const useProfileStore = () => {
-  const client = useClientHandle().client;
-  return {
-    profile: readonly(profile),
-    roles: readonly(roles),
-    activeRole: readonly(activeRole),
-    setActiveRole,
-    isActive,
-    loaded: readonly(loaded),
-    fetching: readonly(fetching),
-    fetchProfile: fetchProfile(client),
-    isImpersonating: readonly(isImpersonating),
-    impersonate: impersonate(client),
-    stopImpersonating,
-  };
-};
+export const useProfileStore = () => ({
+  profile: readonly(profile),
+  roles: readonly(roles),
+  activeRole: readonly(activeRole),
+  setActiveRole,
+  isActive,
+  loaded: readonly(loaded),
+  fetching: readonly(fetching),
+  fetchProfile,
+  isImpersonating: readonly(isImpersonating),
+  impersonate,
+  stopImpersonating,
+});
