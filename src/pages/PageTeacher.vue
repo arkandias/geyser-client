@@ -16,10 +16,8 @@ import TeacherTitle from "@/components/teacher/TeacherTitle.vue";
 graphql(`
   query GetTeacherDetails($year: Int!, $uid: String!) {
     teacher: teacherByPk(uid: $uid) {
-      coordinationsAggregate {
-        aggregate {
-          count
-        }
+      coordinationIds: coordinations {
+        id
       }
       ...TeacherTitle
       ...TeacherCoordinations
@@ -57,7 +55,7 @@ const data = computed(() => teacherDetailsQueryResult.data.value);
 const teacher = computed(() => data.value?.teacher ?? null);
 const service = computed(() => data.value?.teacher?.services[0] ?? null);
 const isCoordinator = computed(
-  () => !!data.value?.teacher?.coordinationsAggregate.aggregate?.count,
+  () => !!data.value?.teacher?.coordinationIds.length,
 );
 </script>
 
