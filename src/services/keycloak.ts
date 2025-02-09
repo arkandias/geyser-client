@@ -2,6 +2,7 @@ import Keycloak from "keycloak-js";
 
 import {
   HASURA_CLAIMS_NAMESPACE,
+  HASURA_DEFAULT_USER_ID,
   KEYCLOAK_TOKEN_MIN_VALIDITY,
 } from "@/config/constants.ts";
 import {
@@ -72,7 +73,7 @@ export const getAuthHeader = (): Record<string, string> =>
   bypassAuth
     ? {
         "X-Hasura-Admin-Secret": hasuraAdminSecret,
-        "X-Hasura-User-Id": hasuraUserId ?? "admin",
+        "X-Hasura-User-Id": hasuraUserId || HASURA_DEFAULT_USER_ID,
       }
     : keycloak.token
       ? { Authorization: "Bearer " + keycloak.token }
@@ -81,7 +82,7 @@ export const getAuthHeader = (): Record<string, string> =>
 export const getClaims = (): HasuraClaims | null => {
   if (bypassAuth) {
     return {
-      userId: hasuraUserId ?? "admin",
+      userId: hasuraUserId || HASURA_DEFAULT_USER_ID,
       defaultRole: ROLES.ADMIN,
       allowedRoles: [ROLES.TEACHER, ROLES.COMMISSIONER, ROLES.ADMIN],
     };
