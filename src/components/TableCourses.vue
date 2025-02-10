@@ -56,6 +56,7 @@ graphql(`
     courseType: typeByType {
       value
       label
+      coefficient
     }
     semester
     hoursPerGroup: hoursEffective
@@ -212,7 +213,9 @@ const columns: Column<CourseRowFragment>[] = [
     name: "hours",
     label: "H.",
     tooltip: "Nombre d'heures par groupe",
-    field: (row) => row.hoursPerGroup,
+    field: (row) =>
+      (row.hoursPerGroup ?? 0) *
+      (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -235,7 +238,9 @@ const columns: Column<CourseRowFragment>[] = [
     name: "assigned",
     label: "A.",
     tooltip: "Nombre d'heures attribuées",
-    field: (row) => getRequestTotal(row, REQUEST_TYPES.ASSIGNMENT),
+    field: (row) =>
+      getRequestTotal(row, REQUEST_TYPES.ASSIGNMENT) *
+      (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -248,7 +253,9 @@ const columns: Column<CourseRowFragment>[] = [
     label: "ΔA",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
-    field: (row) => (row.totalHours ?? 0) - totalH(row.totalAssigned),
+    field: (row) =>
+      ((row.totalHours ?? 0) - totalH(row.totalAssigned)) *
+      (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -260,7 +267,9 @@ const columns: Column<CourseRowFragment>[] = [
     name: "primary",
     label: "V1",
     tooltip: "Nombre d'heures demandées en vœux principaux",
-    field: (row) => getRequestTotal(row, REQUEST_TYPES.PRIMARY),
+    field: (row) =>
+      getRequestTotal(row, REQUEST_TYPES.PRIMARY) *
+      (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -273,7 +282,9 @@ const columns: Column<CourseRowFragment>[] = [
     label: "ΔV1",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
-    field: (row) => (row.totalHours ?? 0) - totalH(row.totalPrimary),
+    field: (row) =>
+      ((row.totalHours ?? 0) - totalH(row.totalPrimary)) *
+      (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -286,7 +297,9 @@ const columns: Column<CourseRowFragment>[] = [
     label: "ΔV1 Prio",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",
-    field: (row) => (row.totalHours ?? 0) - totalH(row.totalPriority),
+    field: (row) =>
+      ((row.totalHours ?? 0) - totalH(row.totalPriority)) *
+      (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -298,7 +311,9 @@ const columns: Column<CourseRowFragment>[] = [
     name: "secondary",
     label: "V2",
     tooltip: "Nombre d'heures demandées en vœux secondaires",
-    field: (row) => getRequestTotal(row, REQUEST_TYPES.SECONDARY),
+    field: (row) =>
+      getRequestTotal(row, REQUEST_TYPES.SECONDARY) *
+      (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
@@ -331,6 +346,7 @@ const programsOptions = computed(() =>
     .filter(uniqueValue)
     .sort(compare("label")),
 );
+
 // Course types
 const courseTypes = ref<string[]>([]);
 const courseTypesOptions = computed(() =>
@@ -339,6 +355,7 @@ const courseTypesOptions = computed(() =>
     .filter(uniqueValue)
     .sort(compare("label")),
 );
+
 // Semesters
 const semesters = ref<number[]>([]);
 const semestersOptions = computed(() =>
@@ -350,11 +367,13 @@ const semestersOptions = computed(() =>
     .filter(uniqueValue)
     .sort(compare("label")),
 );
+
 // Search
 const search = ref("");
 const clearSearch = () => {
   search.value = "";
 };
+
 // Filter attributes
 const filterObj = reactive({
   teacherRequests: requests,
@@ -390,8 +409,11 @@ const filterMethod = (
         ),
   );
 
-// Styling options controllers
+// Options
+const weightedHours = ref(false);
 const stickyHeader = ref(false);
+
+// Styling options controllers
 const isAssigned = (row: CourseRowFragment) =>
   !!requests.value?.some(
     (request) =>
@@ -446,6 +468,7 @@ const downloadTeacherAssignments = async () => {
       </QPageContainer>
     </QLayout>
   </QDialog>
+
   <QTable
     v-model:selected="selectedRow"
     :title
@@ -607,6 +630,14 @@ const downloadTeacherAssignments = async () => {
           @clear="clearSearch"
         >
         </QInput>
+        <QToggle
+          v-model="weightedHours"
+          icon="sym_s_function"
+          color="primary"
+          dense
+        >
+          <QTooltip>Heures EQTD</QTooltip>
+        </QToggle>
         <QToggle
           v-model="stickyHeader"
           icon="sym_s_scrollable_header"

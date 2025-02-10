@@ -1183,6 +1183,42 @@ input CoordinationVarianceOrderBy {
 """Detailed course definitions and configurations"""
 type Course {
   """An array relationship"""
+  children(
+    """distinct select on columns"""
+    distinctOn: [CourseSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [CourseOrderBy!]
+
+    """filter the rows returned"""
+    where: CourseBoolExp
+  ): [Course!]!
+
+  """An aggregate relationship"""
+  childrenAggregate(
+    """distinct select on columns"""
+    distinctOn: [CourseSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [CourseOrderBy!]
+
+    """filter the rows returned"""
+    where: CourseBoolExp
+  ): CourseAggregate!
+
+  """An array relationship"""
   coordinations(
     """distinct select on columns"""
     distinctOn: [CoordinationSelectColumn!]
@@ -1226,42 +1262,6 @@ type Course {
 
   """Detailed course description and objectives"""
   description: String
-
-  """An array relationship"""
-  enfants(
-    """distinct select on columns"""
-    distinctOn: [CourseSelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [CourseOrderBy!]
-
-    """filter the rows returned"""
-    where: CourseBoolExp
-  ): [Course!]!
-
-  """An aggregate relationship"""
-  enfantsAggregate(
-    """distinct select on columns"""
-    distinctOn: [CourseSelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [CourseOrderBy!]
-
-    """filter the rows returned"""
-    where: CourseBoolExp
-  ): CourseAggregate!
   ensIdImport: String
   formationIdImport: String
 
@@ -1583,13 +1583,13 @@ input CourseBoolExp {
   _and: [CourseBoolExp!]
   _not: CourseBoolExp
   _or: [CourseBoolExp!]
+  children: CourseBoolExp
+  childrenAggregate: CourseAggregateBoolExp
   coordinations: CoordinationBoolExp
   coordinationsAggregate: CoordinationAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   cycleYear: IntComparisonExp
   description: StringComparisonExp
-  enfants: CourseBoolExp
-  enfantsAggregate: CourseAggregateBoolExp
   ensIdImport: StringComparisonExp
   formationIdImport: StringComparisonExp
   groups: IntComparisonExp
@@ -1687,6 +1687,7 @@ input CourseIncInput {
 input type for inserting data into table "course"
 """
 input CourseInsertInput {
+  children: CourseArrRelInsertInput
   coordinations: CoordinationArrRelInsertInput
 
   """Timestamp when the record was created"""
@@ -1694,7 +1695,6 @@ input CourseInsertInput {
 
   """Detailed course description and objectives"""
   description: String
-  enfants: CourseArrRelInsertInput
   ensIdImport: String
   formationIdImport: String
 
@@ -2085,11 +2085,11 @@ input CourseOnConflict {
 
 """Ordering options when selecting data from "course"."""
 input CourseOrderBy {
+  childrenAggregate: CourseAggregateOrderBy
   coordinationsAggregate: CoordinationAggregateOrderBy
   createdAt: OrderBy
   cycleYear: OrderBy
   description: OrderBy
-  enfantsAggregate: CourseAggregateOrderBy
   ensIdImport: OrderBy
   formationIdImport: OrderBy
   groups: OrderBy
