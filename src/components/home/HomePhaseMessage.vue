@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { useAppSettings } from "@/composables/app-settings.ts";
+import { useAppSetting } from "@/composables/app-setting.ts";
 import { PHASES } from "@/config/types/phases.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
-import { sanitize } from "@/utils/sanitizer.ts";
 
 const { currentPhase } = usePhaseStore();
 
-const subtitle = sanitize(
-  useAppSettings(`phase-subtitle-${currentPhase.value}`).value ?? "",
-);
+const subtitle = useAppSetting(`phase-subtitle-${currentPhase.value}`, {
+  sanitize: true,
+});
 
 const defaultSubtitle = computed(() => {
   switch (currentPhase.value) {
@@ -27,9 +26,9 @@ const defaultSubtitle = computed(() => {
   }
 });
 
-const message = sanitize(
-  useAppSettings(`phase-message-${currentPhase.value}`).value ?? "",
-);
+const message = useAppSetting(`phase-message-${currentPhase.value}`, {
+  sanitize: true,
+});
 
 const defaultMessage = computed(() => {
   switch (currentPhase.value) {

@@ -2,7 +2,7 @@
 import { computed, ref, watch } from "vue";
 
 import { NotifyType, notify } from "@/utils/notify.ts";
-import { sanitize } from "@/utils/sanitizer.ts";
+import { sanitize } from "@/utils/sanitize.ts";
 
 const showEditor = defineModel<boolean>();
 const {

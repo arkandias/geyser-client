@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import { useAppSettings } from "@/composables/app-settings.ts";
-import { sanitize } from "@/utils/sanitizer.ts";
+import { useAppSetting } from "@/composables/app-setting.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
@@ -14,7 +13,7 @@ const informationLabel = "À propos";
 const licenceLabel = "Licence";
 const legalNoticeLabel = "Mentions légales";
 
-const legalNotice = sanitize(useAppSettings("legal-notice").value ?? "");
+const legalNotice = useAppSetting("legal-notice", { sanitize: true });
 </script>
 
 <template>
