@@ -12,6 +12,7 @@ import { buttonColor } from "@/utils/colors.ts";
 
 import MenuAdmin from "@/components/header/MenuAdmin.vue";
 import MenuInfo from "@/components/header/MenuInfo.vue";
+import MenuLang from "@/components/header/MenuLang.vue";
 import MenuUser from "@/components/header/MenuUser.vue";
 import ToolbarCourses from "@/components/header/ToolbarCourses.vue";
 
@@ -91,6 +92,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
       >
         <QTooltip>{{ t("header.tooltip.dark_mode") }}</QTooltip>
       </QBtn>
+      <MenuLang />
       <MenuInfo />
       <MenuAdmin v-if="perm.toAdmin" />
       <MenuUser />

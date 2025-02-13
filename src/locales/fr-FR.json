@@ -21,7 +21,7 @@
     "program": "Mention",
     "track": "Parcours",
     "semester": "Semestre",
-    "course": "Type"
+    "type": "Type"
   },
   "teacher": {
     "label": "Intervenant | Intervenants",
@@ -62,6 +62,9 @@
     },
     "year": {
       "label": "Année"
+    },
+    "lang": {
+      "label": "Langue"
     },
     "admin": {
       "label": "Administration",

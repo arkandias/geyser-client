@@ -2,6 +2,14 @@ import { createI18n } from "vue-i18n";
 
 import frFR from "@/locales/fr-FR.json";
 
+export const AVAILABLE_LOCALES = ["fr-FR", "en-US"] as const;
+export type AvailableLocale = (typeof AVAILABLE_LOCALES)[number];
+
+export const LOCALE_LABELS: Record<AvailableLocale, string> = {
+  "fr-FR": "Français",
+  "en-US": "English",
+} as const;
+
 // master-like schema for messages resources
 // todo: replace with en-US
 // todo: fix strict typing
