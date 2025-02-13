@@ -10,7 +10,6 @@ import type { I18nOptions } from "@/services/i18n.ts";
 import { useProfileStore } from "@/stores/profile.ts";
 import { buttonColor } from "@/utils/colors.ts";
 
-import MenuAdmin from "@/components/header/MenuAdmin.vue";
 import MenuInfo from "@/components/header/MenuInfo.vue";
 import MenuLang from "@/components/header/MenuLang.vue";
 import MenuUser from "@/components/header/MenuUser.vue";
@@ -80,8 +79,18 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         </div>
       </Transition>
       <QSeparator vertical inset color="white" />
+      <QBtn
+        v-if="perm.toAdmin"
+        icon="sym_s_settings"
+        flat
+        square
+        @click="router.replace({ name: 'admin' })"
+      >
+        <QTooltip>{{ t("header.tooltip.admin") }}</QTooltip>
+      </QBtn>
+      <QSeparator v-if="perm.toAdmin" vertical inset color="white" />
       <QBtn icon="sym_s_refresh" :disable flat square @click="refreshData()">
-        <QTooltip>{{ t("header.tooltip.refresh") }}</QTooltip>
+        <QTooltip>{{ t("header.tooltip.refresh_data") }}</QTooltip>
       </QBtn>
       <QBtn
         icon="sym_s_dark_mode"
@@ -94,7 +103,6 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
       </QBtn>
       <MenuLang />
       <MenuInfo />
-      <MenuAdmin v-if="perm.toAdmin" />
       <MenuUser />
     </QToolbar>
   </QHeader>

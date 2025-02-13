@@ -267,8 +267,8 @@ const stickyHeader = ref(false);
           v-model="search"
           color="primary"
           placeholder="Recherche"
-          clearable
           clear-icon="sym_s_close"
+          clearable
           square
           dense
           @clear="clearSearch"
