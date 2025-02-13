@@ -18,7 +18,6 @@ import {
 import { useYearsStore } from "@/stores/years.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
 import { formatProgram, formatUser, nf } from "@/utils/format.ts";
-import { totalH } from "@/utils/hours.ts";
 import { compare, normalizeForSearch, uniqueValue } from "@/utils/misc.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
@@ -62,37 +61,10 @@ graphql(`
     hoursPerGroup: hoursEffective
     numberOfGroups: groupsEffective
     totalHours: totalHoursEffective
-    totalAssigned: requestsAggregate(where: { type: { _eq: "assignment" } }) {
-      aggregate {
-        sum {
-          hours
-        }
-      }
-    }
-    totalPrimary: requestsAggregate(where: { type: { _eq: "primary" } }) {
-      aggregate {
-        sum {
-          hours
-        }
-      }
-    }
-    totalSecondary: requestsAggregate(where: { type: { _eq: "secondary" } }) {
-      aggregate {
-        sum {
-          hours
-        }
-      }
-    }
-    totalPriority: requestsAggregate(
-      where: {
-        _and: [{ type: { _eq: "primary" } }, { isPriority: { _eq: true } }]
-      }
-    ) {
-      aggregate {
-        sum {
-          hours
-        }
-      }
+    requests {
+      type
+      hours
+      isPriority
     }
   }
 
@@ -114,16 +86,60 @@ graphql(`
 const { activeYear } = useYearsStore();
 const perm = usePermissions();
 
-const courses = computed(() =>
-  courseRowFragments.map((fragment) =>
-    useFragment(CourseRowFragmentDoc, fragment),
-  ),
+type CourseRow = Omit<CourseRowFragment, "requests"> & {
+  totalAssigned: number;
+  totalPrimary: number;
+  totalSecondary: number;
+  totalPriority: number;
+};
+
+const courses = computed<CourseRow[]>(() =>
+  courseRowFragments.map((fragment) => {
+    const { requests, ...rest } = useFragment(CourseRowFragmentDoc, fragment);
+    const totals = requests.reduce(
+      (acc, request) => ({
+        totalAssigned:
+          acc.totalAssigned +
+          (request.type === REQUEST_TYPES.ASSIGNMENT ? request.hours : 0),
+        totalPrimary:
+          acc.totalAssigned +
+          (request.type === REQUEST_TYPES.PRIMARY ? request.hours : 0),
+        totalSecondary:
+          acc.totalAssigned +
+          (request.type === REQUEST_TYPES.SECONDARY ? request.hours : 0),
+        totalPriority:
+          acc.totalAssigned +
+          (request.type === REQUEST_TYPES.PRIMARY && request.isPriority
+            ? request.hours
+            : 0),
+      }),
+      {
+        totalAssigned: 0,
+        totalPrimary: 0,
+        totalSecondary: 0,
+        totalPriority: 0,
+      },
+    );
+    return { ...rest, ...totals };
+  }),
 );
 const service = computed(() =>
   useFragment(ServiceDetailsFragmentDoc, serviceDetailsFragment),
 );
 const teacher = computed(() => service.value?.teacher ?? null);
 const requests = computed(() => service.value?.requests ?? null);
+
+const getTeacherTotal = (row: CourseRow, requestType: RequestType) => {
+  if (requests.value) {
+    return (
+      requests.value.find(
+        (request) =>
+          request.courseId === row.id && request.type === requestType,
+      )?.hours ?? 0
+    );
+  }
+  return null;
+};
 
 const title = computed(() =>
   teacher.value ? formatUser(teacher.value) : "Enseignements",
@@ -144,7 +160,7 @@ const showTeacherDetails = ref(false);
 const { setValue: selectTeacher } = useQueryParam("uid");
 
 // Columns definition
-const columns: Column<CourseRowFragment>[] = [
+const columns: Column<CourseRow>[] = [
   {
     name: "program",
     label: "Formation",
@@ -239,9 +255,9 @@ const columns: Column<CourseRowFragment>[] = [
     label: "A.",
     tooltip: "Nombre d'heures attribuées",
     field: (row) =>
-      getRequestTotal(row, REQUEST_TYPES.ASSIGNMENT) *
+      (getTeacherTotal(row, REQUEST_TYPES.ASSIGNMENT) ?? row.totalAssigned) *
       (weightedHours.value ? row.courseType.coefficient : 1),
-    format: (val: number) => nf.format(val),
+    format: (val: number | null) => (val === null ? "-" : nf.format(val)),
     align: "left",
     sortable: true,
     visible: () => perm.toViewAssignments,
@@ -254,9 +270,9 @@ const columns: Column<CourseRowFragment>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
     field: (row) =>
-      ((row.totalHours ?? 0) - totalH(row.totalAssigned)) *
+      ((row.totalHours ?? 0) - row.totalAssigned) *
       (weightedHours.value ? row.courseType.coefficient : 1),
-    format: (val: number) => nf.format(val),
+    format: (val: number) => (teacher.value ? "-" : nf.format(val)),
     align: "left",
     sortable: true,
     visible: false,
@@ -268,7 +284,7 @@ const columns: Column<CourseRowFragment>[] = [
     label: "V1",
     tooltip: "Nombre d'heures demandées en vœux principaux",
     field: (row) =>
-      getRequestTotal(row, REQUEST_TYPES.PRIMARY) *
+      (getTeacherTotal(row, REQUEST_TYPES.PRIMARY) ?? row.totalPrimary) *
       (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => nf.format(val),
     align: "left",
@@ -283,9 +299,9 @@ const columns: Column<CourseRowFragment>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
     field: (row) =>
-      ((row.totalHours ?? 0) - totalH(row.totalPrimary)) *
+      ((row.totalHours ?? 0) - row.totalPrimary) *
       (weightedHours.value ? row.courseType.coefficient : 1),
-    format: (val: number) => nf.format(val),
+    format: (val: number) => (teacher.value ? "-" : nf.format(val)),
     align: "left",
     sortable: true,
     visible: false,
@@ -298,9 +314,9 @@ const columns: Column<CourseRowFragment>[] = [
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",
     field: (row) =>
-      ((row.totalHours ?? 0) - totalH(row.totalPriority)) *
+      ((row.totalHours ?? 0) - row.totalPriority) *
       (weightedHours.value ? row.courseType.coefficient : 1),
-    format: (val: number) => nf.format(val),
+    format: (val: number) => (teacher.value ? "-" : nf.format(val)),
     align: "left",
     sortable: true,
     visible: false,
@@ -312,7 +328,7 @@ const columns: Column<CourseRowFragment>[] = [
     label: "V2",
     tooltip: "Nombre d'heures demandées en vœux secondaires",
     field: (row) =>
-      getRequestTotal(row, REQUEST_TYPES.SECONDARY) *
+      (getTeacherTotal(row, REQUEST_TYPES.SECONDARY) ?? row.totalSecondary) *
       (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => nf.format(val),
     align: "left",
@@ -386,9 +402,9 @@ const filterObj = reactive({
   ),
 });
 const filterMethod = (
-  rows: readonly CourseRowFragment[],
+  rows: readonly CourseRow[],
   terms: typeof filterObj,
-): readonly CourseRowFragment[] =>
+): readonly CourseRow[] =>
   rows.filter((row) =>
     terms.teacherRequests
       ? terms.teacherRequests.some((request) => request.courseId === row.id)
@@ -425,26 +441,6 @@ const isVisible = (row: CourseRowFragment): boolean =>
     row.program.degree.visible &&
     row.program.visible &&
     (row.track?.visible ?? true));
-
-// Helper
-const getRequestTotal = (row: CourseRowFragment, requestType: RequestType) => {
-  if (requests.value) {
-    return (
-      requests.value.find(
-        (request) =>
-          request.courseId === row.id && request.type === requestType,
-      )?.hours ?? 0
-    );
-  }
-  switch (requestType) {
-    case REQUEST_TYPES.ASSIGNMENT:
-      return totalH(row.totalAssigned);
-    case REQUEST_TYPES.PRIMARY:
-      return totalH(row.totalPrimary);
-    case REQUEST_TYPES.SECONDARY:
-      return totalH(row.totalSecondary);
-  }
-};
 
 const downloadTeacherAssignments = async () => {
   if (activeYear.value === null || !teacher.value) {
