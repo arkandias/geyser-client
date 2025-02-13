@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@urql/vue";
+import { type Client, useClientHandle } from "@urql/vue";
 
 import {
   REQUEST_TYPE_OPTIONS,
@@ -101,131 +101,139 @@ const getLabel = (requestType: string) => {
   return option?.label ?? "";
 };
 
-const getService = async (uid: string, courseId: number) => {
-  const course = await useQuery({
-    query: GetServiceFromCourseDocument,
-    variables: { uid, courseId },
-    context: { requestPolicy: "network-only" },
-  }).then((result) => result.data.value?.course ?? null);
+const getService =
+  (client: Client) => async (uid: string, courseId: number) => {
+    const course = await client
+      .query(
+        GetServiceFromCourseDocument,
+        { uid, courseId },
+        { requestPolicy: "network-only" },
+      )
+      .toPromise()
+      .then((result) => result.data?.course ?? null);
 
-  if (!course) {
-    console.error(`No course found with id ${courseId.toString()}`);
-    notify(NotifyType.ERROR, {
-      message: "Erreur lors de la récupération du cours",
-    });
-    return null;
-  }
-
-  if (!course.yearByYear.services[0]) {
-    console.error(
-      `No service found for teacher ${uid} and year ${course.year.toString()}`,
-    );
-    notify(NotifyType.ERROR, {
-      message: `Pas de service trouvé`,
-      caption: `Veuillez d'abord créer un service`,
-    });
-    return null;
-  }
-
-  return course.yearByYear.services[0].id;
-};
-
-const getRequest = async (
-  serviceId: number,
-  courseId: number,
-  requestType: string,
-) => {
-  const requests = await useQuery({
-    query: GetRequestDocument,
-    variables: { serviceId, courseId, requestType },
-    context: { requestPolicy: "network-only" },
-  }).then((result) => result.data.value?.requests ?? null);
-
-  if (!requests) {
-    console.error("Error while fetching current request");
-    notify(NotifyType.ERROR, {
-      message: "Erreur lors de la récupération de la demande actuelle",
-    });
-    return null;
-  }
-
-  return requests[0]?.hours ?? 0;
-};
-
-const updateRequest = async (
-  uid: string,
-  courseId: number,
-  requestType: string,
-  hours: number,
-) => {
-  const serviceId = await getService(uid, courseId);
-  if (serviceId === null) {
-    return;
-  }
-  return updateRequestWithServiceId(serviceId, courseId, requestType, hours);
-};
-
-const updateRequestWithServiceId = async (
-  serviceId: number,
-  courseId: number,
-  requestType: string,
-  hours: number,
-) => {
-  if (!isRequestType(requestType)) {
-    console.error(`Invalid request type: ${requestType}`);
-    notify(NotifyType.ERROR, {
-      message: "Type de requête invalide",
-    });
-    return;
-  }
-  const current = await getRequest(serviceId, courseId, requestType);
-  if (current === null) {
-    return;
-  }
-  if (hours === current) {
-    notify(NotifyType.DEFAULT, {
-      message: getLabel(requestType) + " déjà enregistrée",
-    });
-    return;
-  }
-  if (hours === 0) {
-    const deleteRequest = useMutation(DeleteRequestDocument);
-    const { data, error } = await deleteRequest.executeMutation({
-      serviceId,
-      courseId,
-      requestType,
-    });
-    if (data?.requests?.returning && !error) {
-      notify(NotifyType.SUCCESS, {
-        message: getLabel(requestType) + " supprimée",
+    if (!course) {
+      console.error(`No course found with id ${courseId.toString()}`);
+      notify(NotifyType.ERROR, {
+        message: "Erreur lors de la récupération du cours",
       });
-    } else {
-      notify(NotifyType.ERROR, { message: "Échec de la suppression" });
+      return null;
     }
-  } else {
-    const upsertRequest = useMutation(UpsertRequestDocument);
-    const { data, error } = await upsertRequest.executeMutation({
+
+    if (!course.yearByYear.services[0]) {
+      console.error(
+        `No service found for teacher ${uid} and year ${course.year.toString()}`,
+      );
+      notify(NotifyType.ERROR, {
+        message: `Pas de service trouvé`,
+        caption: `Veuillez d'abord créer un service`,
+      });
+      return null;
+    }
+
+    return course.yearByYear.services[0].id;
+  };
+
+const getRequest =
+  (client: Client) =>
+  async (serviceId: number, courseId: number, requestType: string) => {
+    const requests = await client
+      .query(
+        GetRequestDocument,
+        { serviceId, courseId, requestType },
+        { requestPolicy: "network-only" },
+      )
+      .toPromise()
+      .then((result) => result.data?.requests ?? null);
+
+    if (!requests) {
+      console.error("Error while fetching current request");
+      notify(NotifyType.ERROR, {
+        message: "Erreur lors de la récupération de la demande actuelle",
+      });
+      return null;
+    }
+
+    return requests[0]?.hours ?? 0;
+  };
+
+const updateRequest =
+  (client: Client) =>
+  async (uid: string, courseId: number, requestType: string, hours: number) => {
+    const serviceId = await getService(client)(uid, courseId);
+    if (serviceId === null) {
+      return;
+    }
+    return updateRequestWithServiceId(client)(
       serviceId,
       courseId,
       requestType,
       hours,
-    });
-    if (data?.request && !error) {
-      notify(NotifyType.SUCCESS, {
-        message:
-          getLabel(requestType) + (current === 0 ? " créée" : " mise à jour"),
-      });
-    } else {
-      notify(NotifyType.ERROR, {
-        message: `Échec de la ${current === 0 ? "création" : "mise à jour"}`,
-      });
-    }
-  }
-};
+    );
+  };
 
-const deleteRequestById = async (id: number) => {
-  const deleteRequestById = useMutation(DeleteRequestByIdDocument);
-  const { data, error } = await deleteRequestById.executeMutation({ id });
+const updateRequestWithServiceId =
+  (client: Client) =>
+  async (
+    serviceId: number,
+    courseId: number,
+    requestType: string,
+    hours: number,
+  ) => {
+    if (!isRequestType(requestType)) {
+      console.error(`Invalid request type: ${requestType}`);
+      notify(NotifyType.ERROR, {
+        message: "Type de requête invalide",
+      });
+      return;
+    }
+    const current = await getRequest(client)(serviceId, courseId, requestType);
+    if (current === null) {
+      return;
+    }
+    if (hours === current) {
+      notify(NotifyType.DEFAULT, {
+        message: getLabel(requestType) + " déjà enregistrée",
+      });
+      return;
+    }
+    if (hours === 0) {
+      const { data, error } = await client.mutation(DeleteRequestDocument, {
+        serviceId,
+        courseId,
+        requestType,
+      });
+      if (data?.requests?.returning && !error) {
+        notify(NotifyType.SUCCESS, {
+          message: getLabel(requestType) + " supprimée",
+        });
+      } else {
+        notify(NotifyType.ERROR, { message: "Échec de la suppression" });
+      }
+    } else {
+      const { data, error } = await client.mutation(UpsertRequestDocument, {
+        serviceId,
+        courseId,
+        requestType,
+        hours,
+      });
+      if (data?.request && !error) {
+        notify(NotifyType.SUCCESS, {
+          message:
+            getLabel(requestType) + (current === 0 ? " créée" : " mise à jour"),
+        });
+      } else {
+        notify(NotifyType.ERROR, {
+          message: `Échec de la ${current === 0 ? "création" : "mise à jour"}`,
+        });
+      }
+    }
+  };
+
+const deleteRequestById = (client: Client) => async (id: number) => {
+  const { data, error } = await client.mutation(DeleteRequestByIdDocument, {
+    id,
+  });
   if (data?.request && !error) {
     notify(NotifyType.SUCCESS, {
       message: getLabel(data.request.type) + " supprimée",
@@ -235,8 +243,11 @@ const deleteRequestById = async (id: number) => {
   }
 };
 
-export const useRequestOperations = () => ({
-  updateRequest,
-  updateRequestWithServiceId,
-  deleteRequestById,
-});
+export const useRequestOperations = () => {
+  const client = useClientHandle().client;
+  return {
+    updateRequest: updateRequest(client),
+    updateRequestWithServiceId: updateRequestWithServiceId(client),
+    deleteRequestById: deleteRequestById(client),
+  };
+};
