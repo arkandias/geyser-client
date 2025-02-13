@@ -3,7 +3,7 @@ import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { useRefreshData } from "@/composables/refresh-data.ts";
-import { ROLE_OPTIONS, type Role } from "@/config/types/roles.ts";
+import { ROLES, type Role } from "@/config/types/roles.ts";
 import type { I18nOptions } from "@/services/i18n.ts";
 import { logout } from "@/services/keycloak.ts";
 import { useProfileStore } from "@/stores/profile.ts";
@@ -26,7 +26,11 @@ watch(
 );
 
 const roleOptions = computed(() =>
-  ROLE_OPTIONS.filter((role) => roles.value.includes(role.value)),
+  [
+    { value: ROLES.TEACHER, label: t("role.teacher") },
+    { value: ROLES.COMMISSIONER, label: t("role.commissioner") },
+    { value: ROLES.ADMIN, label: t("role.admin") },
+  ].filter((role) => roles.value.includes(role.value)),
 );
 
 const onUpdate = async (value: Role) => {

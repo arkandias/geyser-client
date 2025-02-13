@@ -5,12 +5,11 @@ import {
   type QuasarPluginOptions,
 } from "quasar";
 import quasarIconSet from "quasar/icon-set/material-symbols-sharp";
-import quasarLangEnUS from "quasar/lang/en-US.js";
+import quasarLangEnUS from "quasar/lang/en-US";
 import quasarLangFr from "quasar/lang/fr";
 
 import type { AvailableLocale } from "@/services/i18n.ts";
 
-// todo: sync quasar lang with i18n
 export const QUASAR_LANGS: Record<AvailableLocale, QuasarLanguage> = {
   "fr-FR": quasarLangFr,
   "en-US": quasarLangEnUS,

@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { usePermissions } from "@/composables/permissions.ts";
-import {
-  REQUEST_TYPES,
-  REQUEST_TYPE_OPTIONS,
-} from "@/config/types/request-types.ts";
+import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CourseRequestsFragmentDoc } from "@/gql/graphql.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
@@ -34,6 +33,8 @@ graphql(`
   }
 `);
 
+const { t } = useI18n<I18nOptions>();
+
 const perm = usePermissions();
 
 const data = computed(() =>
@@ -41,15 +42,22 @@ const data = computed(() =>
 );
 
 const requestsByType = computed(() =>
-  REQUEST_TYPE_OPTIONS.filter(
-    (requestType) =>
-      requestType.value !== REQUEST_TYPES.ASSIGNMENT || perm.toViewAssignments,
-  ).map((option) => ({
-    ...option,
-    requests: data.value.requests.filter(
-      (request) => request.type === option.value,
-    ),
-  })),
+  [
+    { value: REQUEST_TYPES.ASSIGNMENT, label: t("request_type.assignment") },
+    { value: REQUEST_TYPES.PRIMARY, label: t("request_type.primary") },
+    { value: REQUEST_TYPES.SECONDARY, label: t("request_type.secondary") },
+  ]
+    .filter(
+      (requestType) =>
+        requestType.value !== REQUEST_TYPES.ASSIGNMENT ||
+        perm.toViewAssignments,
+    )
+    .map((option) => ({
+      ...option,
+      requests: data.value.requests.filter(
+        (request) => request.type === option.value,
+      ),
+    })),
 );
 </script>
 
