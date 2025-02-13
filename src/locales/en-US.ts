@@ -56,9 +56,10 @@ export default {
       home: "Home",
       teacher: "My information",
       courses: "Courses",
+      admin: "Administration",
       teachers_filter: "Teachers filter",
       my_requests: "My requests",
-      refresh: "Refresh data",
+      refresh_data: "Refresh data",
       dark_mode: "Dark mode",
     },
     year: {
@@ -66,11 +67,6 @@ export default {
     },
     lang: {
       label: "Language",
-    },
-    admin: {
-      label: "Administration",
-      current_year: "Current year",
-      current_phase: "Current phase",
     },
     info: {
       label: "Info",
