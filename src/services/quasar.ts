@@ -1,12 +1,24 @@
-import { LocalStorage, Notify, type QuasarPluginOptions } from "quasar";
+import {
+  LocalStorage,
+  Notify,
+  type QuasarLanguage,
+  type QuasarPluginOptions,
+} from "quasar";
 import quasarIconSet from "quasar/icon-set/material-symbols-sharp";
-import quasarLang from "quasar/lang/fr";
+import quasarLangEnUS from "quasar/lang/en-US.js";
+import quasarLangFr from "quasar/lang/fr";
+
+import type { AvailableLocale } from "@/services/i18n.ts";
 
 // todo: sync quasar lang with i18n
+export const QUASAR_LANGS: Record<AvailableLocale, QuasarLanguage> = {
+  "fr-FR": quasarLangFr,
+  "en-US": quasarLangEnUS,
+} as const;
 
 export const quasarOptions: Partial<QuasarPluginOptions> = {
   plugins: { LocalStorage, Notify },
-  lang: quasarLang,
+  lang: quasarLangFr,
   iconSet: quasarIconSet,
   config: {
     dark: "auto",

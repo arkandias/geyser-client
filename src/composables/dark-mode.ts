@@ -13,7 +13,7 @@ export const useDarkMode = () => {
 
   const isDarkModeActive = computed(() => $q.dark.isActive);
 
-  const toggleDarkMode = (): void => {
+  const toggleDarkMode = () => {
     $q.dark.toggle();
     $q.localStorage.set("darkMode", $q.dark.isActive);
   };

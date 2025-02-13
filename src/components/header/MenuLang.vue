@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 
+import { useLanguage } from "@/composables/language.ts";
 import {
   AVAILABLE_LOCALES,
   type I18nOptions,
@@ -10,6 +11,7 @@ import {
 import MenuBase from "@/components/header/MenuBase.vue";
 
 const { t, locale } = useI18n<I18nOptions>();
+const { setLang } = useLanguage();
 
 const localeOptions = AVAILABLE_LOCALES.map((locale) => ({
   value: locale,
@@ -32,6 +34,7 @@ const localeOptions = AVAILABLE_LOCALES.map((locale) => ({
           :options="localeOptions"
           color="primary"
           type="radio"
+          @update:model-value="setLang"
         />
       </QItem>
     </QList>
