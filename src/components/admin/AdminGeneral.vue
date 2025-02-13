@@ -114,8 +114,10 @@ const phaseOptions = [
   { value: PHASES.SHUTDOWN, label: t("phase.shutdown") },
 ];
 
-// Data operations
-const generalDataQueryResult = useQuery({ query: GetGeneralDataDocument });
+const generalDataQueryResult = useQuery({
+  query: GetGeneralDataDocument,
+  variables: {},
+});
 const setCurrentPhase = useMutation(SetCurrentPhaseDocument);
 const setCurrentYear = useMutation(SetCurrentYearDocument);
 const updateYearVisibility = useMutation(UpdateYearVisibilityDocument);
