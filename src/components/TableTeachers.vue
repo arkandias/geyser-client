@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, toValue, watchEffect } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
@@ -9,6 +10,7 @@ import {
   type ServiceRowsFragment,
   ServiceRowsFragmentDoc,
 } from "@/gql/graphql.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import { nf } from "@/utils/format.ts";
 import { modifiedService, totalHW } from "@/utils/hours.ts";
@@ -66,6 +68,8 @@ graphql(`
     message
   }
 `);
+
+const { t } = useI18n<I18nOptions>();
 
 const perm = usePermissions();
 
@@ -256,7 +260,7 @@ const stickyHeader = ref(false);
     @row-click="onRowClick"
   >
     <template #top>
-      <div class="q-table__title">Intervenants</div>
+      <div class="q-table__title">{{ t("teacher.label", 2) }}</div>
       <QSpace />
       <div class="row q-gutter-md">
         <QInput

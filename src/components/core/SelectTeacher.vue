@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
 import { computed, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { graphql } from "@/gql";
 import { GetActiveTeachersDocument } from "@/gql/graphql.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
 import { formatUser } from "@/utils/format.ts";
 import { normalizeForSearch } from "@/utils/misc.ts";
 
@@ -22,6 +24,8 @@ graphql(`
     }
   }
 `);
+
+const { t } = useI18n<I18nOptions>();
 
 const activeTeachersQueryResult = useQuery({
   query: GetActiveTeachersDocument,
@@ -66,8 +70,8 @@ const filter = (val: string, update: (x: () => void) => void) => {
   <QSelect
     v-model="uid"
     :options
+    :label="t('role.teacher')"
     color="primary"
-    label="Intervenant"
     emit-value
     map-options
     use-input

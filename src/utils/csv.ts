@@ -2,6 +2,8 @@ import slugify from "slugify";
 
 import { nf } from "@/utils/format.ts";
 
+// todo: CSV with periods
+
 type Scalar = string | number | boolean | null | undefined;
 type SimpleObject = { [key: string]: Scalar | SimpleObject };
 

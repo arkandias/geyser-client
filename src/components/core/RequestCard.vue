@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRequestOperations } from "@/composables/request-operations.ts";
@@ -7,8 +8,9 @@ import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestCardDataFragmentDoc } from "@/gql/graphql.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
 import { priorityColor } from "@/utils/colors.ts";
-import { formatUser, nf } from "@/utils/format.ts";
+import { formatUser } from "@/utils/format.ts";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof RequestCardDataFragmentDoc>;
@@ -36,6 +38,8 @@ graphql(`
     isPriority
   }
 `);
+
+const { t, n } = useI18n<I18nOptions>();
 
 const perm = usePermissions();
 const { updateRequestWithServiceId, deleteRequestById } =
@@ -96,9 +100,11 @@ const displayActions = computed(
       </QTooltip>
     </QCardSection>
     <QCardSection class="q-pa-xs text-caption">
-      {{ nf.format(groups) + " groupe" + (groups > 1 ? "s" : "") }}
+      {{ n(groups, "decimal") }}
+      {{ t("request_card.group", Math.ceil(groups)) }}
       <br />
-      {{ nf.format(data.hours) + " heure" + (data.hours > 1 ? "s" : "") }}
+      {{ n(data.hours, "decimal") }}
+      {{ t("request_card.hour", Math.ceil(data.hours)) }}
     </QCardSection>
     <QSeparator v-if="!archive && displayActions(data.type)" />
     <QCardActions
@@ -121,7 +127,7 @@ const displayActions = computed(
           anchor="bottom middle"
           self="top middle"
         >
-          Attribuer la demande
+          {{ t("request_card.tooltip.assign") }}
         </QTooltip>
       </QBtn>
       <QBtn
@@ -139,7 +145,7 @@ const displayActions = computed(
           anchor="bottom middle"
           self="top middle"
         >
-          Supprimer la demande
+          {{ t("request_card.tooltip.remove") }}
         </QTooltip>
       </QBtn>
     </QCardActions>

@@ -1,3 +1,8 @@
+import { i18n } from "@/services/i18n.ts";
+
+const { t, n } = i18n.global;
+
+// todo: replace with i18n
 export const nf = new Intl.NumberFormat("fr-FR", {
   style: "decimal",
   maximumFractionDigits: 2,
@@ -27,4 +32,5 @@ type Program = DisplayName & {
 export const formatProgram = (program: Program) =>
   displayName(program.degree) + " " + displayName(program);
 
-export const formatWH = (hours: number) => nf.format(hours) + " htd";
+export const formatWH = (hours: number) =>
+  n(hours) + "\u00A0" + t("unit.weighted_hours");

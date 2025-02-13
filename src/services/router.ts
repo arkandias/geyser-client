@@ -4,6 +4,7 @@ import {
   createWebHistory,
 } from "vue-router";
 
+import PageAdmin from "@/pages/PageAdmin.vue";
 import PageCourses from "@/pages/PageCourses.vue";
 import PageHome from "@/pages/PageHome.vue";
 import PageTeacher from "@/pages/PageTeacher.vue";
@@ -23,6 +24,11 @@ const routes: RouteRecordRaw[] = [
     path: "/courses",
     name: "courses",
     component: PageCourses,
+  },
+  {
+    path: "/admin",
+    name: "admin",
+    component: PageAdmin,
   },
   {
     path: "/:pathMatch(.*)*",

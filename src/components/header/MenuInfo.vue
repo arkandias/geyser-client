@@ -1,30 +1,34 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { useAppSetting } from "@/composables/app-setting.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const isInformationOpen = ref(false);
+const { t } = useI18n<I18nOptions>();
+
+const isContactOpen = ref(false);
 const isLicenceOpen = ref(false);
 const isLegalNoticeOpen = ref(false);
 
-const informationLabel = "À propos";
-const licenceLabel = "Licence";
-const legalNoticeLabel = "Mentions légales";
-
 const legalNotice = useAppSetting("legal-notice", { sanitize: true });
+
+// Style
+const dialogHeaderClass = ["text-h6"];
+const dialogBodyClass = ["text-justify"];
 </script>
 
 <template>
-  <MenuBase label="Infos" icon="sym_s_info">
+  <MenuBase :label="t('header.info.label')" icon="sym_s_info">
     <QList>
-      <QItem v-close-popup clickable @click="isInformationOpen = true">
+      <QItem v-close-popup clickable @click="isContactOpen = true">
         <QItemSection side>
-          <QIcon name="sym_s_info" />
+          <QIcon name="sym_s_contact_support" />
         </QItemSection>
         <QItemSection>
-          <QItemLabel>{{ informationLabel }}</QItemLabel>
+          <QItemLabel>{{ t("header.info.contact.label") }}</QItemLabel>
         </QItemSection>
       </QItem>
       <QItem v-close-popup clickable @click="isLicenceOpen = true">
@@ -32,7 +36,7 @@ const legalNotice = useAppSetting("legal-notice", { sanitize: true });
           <QIcon name="sym_s_license" />
         </QItemSection>
         <QItemSection>
-          <QItemLabel>{{ licenceLabel }}</QItemLabel>
+          <QItemLabel>{{ t("header.info.license.label") }}</QItemLabel>
         </QItemSection>
       </QItem>
       <QItem
@@ -45,92 +49,57 @@ const legalNotice = useAppSetting("legal-notice", { sanitize: true });
           <QIcon name="sym_s_balance" />
         </QItemSection>
         <QItemSection>
-          <QItemLabel>{{ legalNoticeLabel }}</QItemLabel>
+          <QItemLabel>{{ t("header.info.legal_notice.label") }}</QItemLabel>
         </QItemSection>
       </QItem>
     </QList>
   </MenuBase>
 
-  <QDialog v-model="isInformationOpen">
+  <!-- TODO: refactor QDialog -->
+
+  <QDialog v-model="isContactOpen">
     <QCard square>
-      <QCardSection class="text-h6">{{ informationLabel }}</QCardSection>
+      <QCardSection :class="dialogHeaderClass">{{
+        t("header.info.contact.label")
+      }}</QCardSection>
       <QCardSection>
-        <p class="text-justify">
-          Pour toute question, remarque, suggestion d'améliorations, signalement
-          d'erreurs ou de bugs éventuels, merci d'utiliser l'adresse
-          électronique de contact ci-dessous.
+        <p :class="dialogBodyClass">
+          {{ t("header.info.contact.message") }}
         </p>
-        Contact :
-        <a href="mailto:julien.hauseux@univ-lille.fr"
-          >julien.hauseux@univ-lille.fr</a
-        >
       </QCardSection>
+      <QCardActions align="right">
+        <QBtn
+          :label="t('header.info.contact.button')"
+          icon="sym_s_mail"
+          flat
+          square
+          dense
+          href="mailto:julien.hauseux@univ-lille.fr"
+        />
+      </QCardActions>
     </QCard>
   </QDialog>
 
+  <!-- eslint-disable vue/no-v-html vue/no-v-text-v-html-on-component -->
+
   <QDialog v-model="isLicenceOpen">
     <QCard square>
-      <QCardSection class="text-h6">{{ licenceLabel }}</QCardSection>
-      <QCardSection class="text-justify">
-        <p>
-          Geyser &mdash; Gestion des enseignements prévisionnels<br />
-          Copyright &copy; 2021-2025 Amaël Broustet, Julien Hauseux
-        </p>
-        <p>
-          Geyser est un logiciel libre distribué sous les termes de la licence
-          <a
-            href="https://www.gnu.org/licenses/agpl-3.0.html#license-text"
-            target="_blank"
-            rel="noopener noreferrer"
-            >GNU Affero GPL v3</a
-          >.
-        </p>
-        <p class="text-italic">
-          La licence publique générale GNU Affero (GNU AGPL) est une version
-          modifiée de la version 3 de la GNU GPL ordinaire. Elle a une seule
-          exigence supplémentaire : si vous exécutez un programme modifié sur un
-          serveur et laissez d'autres utilisateurs communiquer avec lui, votre
-          serveur doit aussi leur permettre de télécharger le code source
-          correspondant à la version modifiée en fonctionnement.
-        </p>
-        <p class="text-right">
-          Extrait de
-          <a
-            href="https://www.gnu.org/licenses/why-affero-gpl.fr.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            >https://www.gnu.org/licenses/why-affero-gpl.fr.html</a
-          >
-          le 03/03/2024.
-        </p>
-        Le code source de Geyser est disponible sur GitHub :
-        <ol>
-          <li>
-            <a
-              href="https://github.com/arkandias/geyser"
-              target="_blank"
-              rel="noopener noreferrer"
-              >https://github.com/arkandias/geyser</a
-            >
-          </li>
-          <li>
-            <a
-              href="https://github.com/arkandias/geyser-client"
-              target="_blank"
-              rel="noopener noreferrer"
-              >https://github.com/arkandias/geyser-client</a
-            >
-          </li>
-        </ol>
-      </QCardSection>
+      <QCardSection :class="dialogHeaderClass">{{
+        t("header.info.license.label")
+      }}</QCardSection>
+      <QCardSection
+        :class="dialogBodyClass"
+        v-html="t('header.info.license.message')"
+      />
     </QCard>
   </QDialog>
 
   <QDialog v-model="isLegalNoticeOpen">
     <QCard square>
-      <QCardSection class="text-h6">{{ legalNoticeLabel }}</QCardSection>
-      <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-      <QCardSection class="text-justify" v-html="legalNotice" />
+      <QCardSection :class="dialogHeaderClass">{{
+        t("header.info.legal_notice.label")
+      }}</QCardSection>
+      <QCardSection :class="dialogBodyClass" v-html="legalNotice" />
     </QCard>
   </QDialog>
 </template>

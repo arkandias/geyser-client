@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
 import { computed, reactive, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
@@ -11,6 +12,7 @@ import {
   GetServiceDetailsDocument,
   GetServiceRowsDocument,
 } from "@/gql/graphql.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
 import {
   hSplitterRatio,
   useLeftPanelStore,
@@ -70,6 +72,8 @@ graphql(`
     }
   }
 `);
+
+const { t } = useI18n<I18nOptions>();
 
 const { activeYear, isCurrentYearActive } = useYearsStore();
 const { profile } = useProfileStore();
@@ -168,7 +172,7 @@ watch(
 <template>
   <QPage>
     <QCard v-if="!isCurrentYearActive" id="warning-archive" class="text-body1">
-      Vous consultez une archive ({{ activeYear }})
+      {{ t("header.warning.archive", String(activeYear)) }}
     </QCard>
     <QSplitter
       id="first-splitter"

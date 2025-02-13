@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 
-import { PHASE_OPTIONS } from "@/config/types/phases.ts";
+import { PHASES } from "@/config/types/phases.ts";
 import { graphql } from "@/gql";
 import {
   SetCurrentPhaseDocument,
   SetCurrentYearDocument,
 } from "@/gql/graphql.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 import { useProfileStore } from "@/stores/profile.ts";
 import { useYearsStore } from "@/stores/years.ts";
@@ -52,6 +54,8 @@ graphql(`
   }
 `);
 
+const { t } = useI18n<I18nOptions>();
+
 const { years, currentYear } = useYearsStore();
 const { currentPhase } = usePhaseStore();
 const { profile, impersonate } = useProfileStore();
@@ -76,6 +80,12 @@ const setCurrentPhaseHandle = async (phase: string | null): Promise<void> => {
   });
 };
 
+const phaseOptions = [
+  { value: PHASES.REQUESTS, label: t("phase.requests") },
+  { value: PHASES.ASSIGNMENTS, label: t("phase.assignments") },
+  { value: PHASES.RESULTS, label: t("phase.results") },
+  { value: PHASES.SHUTDOWN, label: t("phase.shutdown") },
+];
 const yearOptions = computed(() =>
   years.value.map((year) => ({
     value: year,
@@ -88,24 +98,24 @@ const uid = ref(profile.uid);
 </script>
 
 <template>
-  <MenuBase label="Administration" icon="sym_s_settings">
+  <MenuBase :label="t('header.admin.label')" icon="sym_s_settings">
     <QList>
       <QItem class="flex-center">
-        <QItemLabel header>Administration</QItemLabel>
+        <QItemLabel header>{{ t("header.admin.label") }}</QItemLabel>
       </QItem>
       <QSeparator />
       <MenuAdminOptions
         :get-value="currentYear"
         :set-value="setCurrentYearHandle"
         :options="yearOptions"
-        label="Année en cours"
+        :label="t('header.admin.current_year')"
         icon="sym_s_calendar_month"
       />
       <MenuAdminOptions
         :get-value="currentPhase"
         :set-value="setCurrentPhaseHandle"
-        :options="[...PHASE_OPTIONS]"
-        label="Phase en cours"
+        :options="phaseOptions"
+        :label="t('header.admin.current_phase')"
         icon="sym_s_schedule"
       />
       <QItem v-close-popup clickable @click="isImpersonatingFormOpen = true">

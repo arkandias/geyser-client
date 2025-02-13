@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
+import type { I18nOptions } from "@/services/i18n.ts";
 import { useYearsStore } from "@/stores/years.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
+
+const { t } = useI18n<I18nOptions>();
 
 const { years, activeYear, selectYear } = useYearsStore();
 
@@ -32,10 +36,10 @@ watch(
 </script>
 
 <template>
-  <MenuBase label="Année" icon="sym_s_history">
+  <MenuBase :label="t('header.year.label')" icon="sym_s_history">
     <QList>
       <QItem class="flex-center">
-        <QItemLabel header>Année</QItemLabel>
+        <QItemLabel header>{{ t("header.year.label") }}</QItemLabel>
       </QItem>
       <QSeparator />
       <QItem class="item-options">

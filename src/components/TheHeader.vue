@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
 import { useDarkMode } from "@/composables/dark-mode.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRefreshData } from "@/composables/refresh-data.ts";
 import { version } from "@/config/env.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
 import { useProfileStore } from "@/stores/profile.ts";
 import { buttonColor } from "@/utils/colors.ts";
 
@@ -14,6 +16,8 @@ import MenuUser from "@/components/header/MenuUser.vue";
 import ToolbarCourses from "@/components/header/ToolbarCourses.vue";
 
 defineProps<{ disable?: boolean }>();
+
+const { t } = useI18n<I18nOptions>();
 
 const router = useRouter();
 const { profile, isImpersonating, stopImpersonating } = useProfileStore();
@@ -26,7 +30,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
   <QHeader id="header">
     <QBar v-if="isImpersonating" id="warning-impersonating">
       <div class="col text-body1">
-        Vous incarnez un intervenant ({{ profile.uid }})
+        {{ t("header.warning.impersonating", profile.uid) }}
       </div>
       <QBtn icon="sym_s_close" flat square @click="stopImpersonating()" />
     </QBar>
@@ -44,7 +48,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="router.replace({ name: 'home' })"
       >
-        <QTooltip>Accueil</QTooltip>
+        <QTooltip>{{ t("header.tooltip.home") }}</QTooltip>
       </QBtn>
       <QSeparator vertical inset color="white" />
       <QBtn
@@ -54,7 +58,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="router.replace({ name: 'teacher' })"
       >
-        <QTooltip>Mes informations</QTooltip>
+        <QTooltip>{{ t("header.tooltip.teacher") }}</QTooltip>
       </QBtn>
       <QSeparator vertical inset color="white" />
       <QBtn
@@ -64,7 +68,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="router.replace({ name: 'courses' })"
       >
-        <QTooltip>Enseignements</QTooltip>
+        <QTooltip>{{ t("header.tooltip.courses") }}</QTooltip>
       </QBtn>
       <Transition>
         <div
@@ -76,7 +80,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
       </Transition>
       <QSeparator vertical inset color="white" />
       <QBtn icon="sym_s_refresh" :disable flat square @click="refreshData()">
-        <QTooltip>Rafraîchir les données</QTooltip>
+        <QTooltip>{{ t("header.tooltip.refresh") }}</QTooltip>
       </QBtn>
       <QBtn
         icon="sym_s_dark_mode"
@@ -85,7 +89,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="toggleDarkMode()"
       >
-        <QTooltip>Mode sombre</QTooltip>
+        <QTooltip>{{ t("header.tooltip.dark_mode") }}</QTooltip>
       </QBtn>
       <MenuInfo />
       <MenuAdmin v-if="perm.toAdmin" />

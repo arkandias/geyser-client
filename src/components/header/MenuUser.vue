@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { useRefreshData } from "@/composables/refresh-data.ts";
 import { ROLE_OPTIONS, type Role } from "@/config/types/roles.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
 import { logout } from "@/services/keycloak.ts";
 import { useProfileStore } from "@/stores/profile.ts";
 import { formatUser } from "@/utils/format.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
+
+const { t } = useI18n<I18nOptions>();
 
 const { profile, roles, activeRole, setActiveRole } = useProfileStore();
 const { refreshData } = useRefreshData();
@@ -32,7 +36,7 @@ const onUpdate = async (value: Role) => {
 </script>
 
 <template>
-  <MenuBase label="Utilisateur" icon="sym_s_account_circle">
+  <MenuBase :label="t('header.user.label')" icon="sym_s_account_circle">
     <QList>
       <QItem class="flex-center text-no-wrap">
         <QItemLabel header>
@@ -55,7 +59,7 @@ const onUpdate = async (value: Role) => {
           <QIcon name="sym_s_logout" />
         </QItemSection>
         <QItemSection>
-          <QItemLabel>Déconnexion</QItemLabel>
+          <QItemLabel>{{ t("header.user.logout") }}</QItemLabel>
         </QItemSection>
       </QItem>
     </QList>

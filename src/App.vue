@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
 import { computed, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { PHASES, isPhase } from "@/config/types/phases.ts";
 import { ROLES } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
 import { GetCurrentPhaseDocument, GetYearsDocument } from "@/gql/graphql.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
 import { getClaims } from "@/services/keycloak.ts";
 import { setRoleHeader } from "@/services/urql.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
@@ -33,6 +35,8 @@ graphql(`
     }
   }
 `);
+
+const { t } = useI18n<I18nOptions>();
 
 const { fetchProfile, fetching, loaded, isActive, activeRole } =
   useProfileStore();
@@ -83,25 +87,25 @@ watch(
 
 const accessDeniedMessage = computed(() => {
   if (!claims) {
-    return "Vous n'êtes pas authentifié";
+    return t("auth.not_authenticated");
   }
   if (fetching.value) {
-    return "Chargement de votre profil...";
+    return t("auth.loading_profile");
   }
   if (!loaded.value) {
-    return "Votre profil n'a pas pu être chargé";
+    return t("auth.profile_load_failed");
   }
   if (!isActive.value) {
-    return "Votre profil n'est pas actif";
+    return t("auth.profile_inactive");
   }
   if (currentPhaseQueryResult.fetching.value) {
-    return "Chargement de la phase en cours...";
+    return t("auth.loading_phase");
   }
   if (
     activeRole.value !== ROLES.ADMIN &&
     currentPhase.value === PHASES.SHUTDOWN
   ) {
-    return "Geyser est actuellement fermé";
+    return t("auth.system_closed");
   }
   return "";
 });

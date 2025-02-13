@@ -6,6 +6,7 @@ import {
   type GetAssignmentsQuery,
   type GetAssignmentsQueryVariables,
 } from "@/gql/graphql.ts";
+import { i18n } from "@/services/i18n.ts";
 import { downloadCSV } from "@/utils/csv.ts";
 import { displayName, formatProgram, formatUser } from "@/utils/format.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
@@ -71,14 +72,16 @@ graphql(`
   }
 `);
 
+const { t } = i18n.global;
+
 const headers = [
-  "mention",
-  "parcours",
-  "enseignement",
-  "semestre",
-  "type",
-  "intervenant",
-  "email",
+  t("course.program"),
+  t("course.track"),
+  t("course.label"),
+  t("course.semester"),
+  t("course.type"),
+  t("role.teacher"),
+  t("teacher.email"),
 ];
 
 const formatAssignments = (assignments: GetAssignmentsQuery["assignments"]) =>
@@ -106,7 +109,7 @@ export const useDownloadAssignments = async (
   if (!assignments) {
     console.error("Error while fetching assignments", variables);
     notify(NotifyType.ERROR, {
-      message: "Erreur lors de la récupération des attributions",
+      message: t("download_assignments.error"),
     });
     return;
   }

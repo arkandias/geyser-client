@@ -4,6 +4,7 @@ export const REQUEST_TYPES = {
   SECONDARY: "secondary",
 } as const;
 
+// todo: remove
 export const REQUEST_TYPE_OPTIONS = [
   { value: REQUEST_TYPES.ASSIGNMENT, label: "Attribution" },
   { value: REQUEST_TYPES.PRIMARY, label: "Principale" },

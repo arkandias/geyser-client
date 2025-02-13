@@ -1,5 +1,9 @@
 import { Notify, type QNotifyCreateOptions } from "quasar";
 
+import { i18n } from "@/services/i18n.ts";
+
+const { t } = i18n.global;
+
 export enum NotifyType {
   DEFAULT = "DEFAULT",
   ERROR = "ERROR",
@@ -21,8 +25,7 @@ const defaultOptions = (type: NotifyType): QNotifyCreateOptions => {
       return {
         ...commonProps,
         color: "negative",
-        caption:
-          "Si le problème persiste, merci de contacter un administrateur",
+        caption: t("notify.error.default_caption"),
       };
     case NotifyType.SUCCESS:
       return {

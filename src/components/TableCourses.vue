@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, ref, toValue, watchEffect } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { useDownloadAssignments } from "@/composables/download-assignments.ts";
 import { usePermissions } from "@/composables/permissions.ts";
@@ -15,6 +16,7 @@ import {
   CourseRowFragmentDoc,
   ServiceDetailsFragmentDoc,
 } from "@/gql/graphql.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
 import { useYearsStore } from "@/stores/years.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
 import { formatProgram, formatUser, nf } from "@/utils/format.ts";
@@ -83,6 +85,8 @@ graphql(`
   }
 `);
 
+const { t } = useI18n<I18nOptions>();
+
 const { activeYear } = useYearsStore();
 const perm = usePermissions();
 
@@ -142,7 +146,7 @@ const getTeacherTotal = (row: CourseRow, requestType: RequestType) => {
 };
 
 const title = computed(() =>
-  teacher.value ? formatUser(teacher.value) : "Enseignements",
+  teacher.value ? formatUser(teacher.value) : t("course.label", 2),
 );
 
 // Row selection

@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { useAppSetting } from "@/composables/app-setting.ts";
 import { PHASES } from "@/config/types/phases.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
+
+const { t } = useI18n<I18nOptions>();
 
 const { currentPhase } = usePhaseStore();
 
@@ -14,13 +18,13 @@ const subtitle = useAppSetting(`phase-subtitle-${currentPhase.value}`, {
 const defaultSubtitle = computed(() => {
   switch (currentPhase.value) {
     case PHASES.REQUESTS:
-      return "Geyser est en phase de vœux";
+      return t("home.subtitle.requests");
     case PHASES.ASSIGNMENTS:
-      return "Les travaux de la commission sont en cours";
+      return t("home.subtitle.assignments");
     case PHASES.RESULTS:
-      return "Geyser est en phase de consultation";
+      return t("home.subtitle.results");
     case PHASES.SHUTDOWN:
-      return "Geyser est fermé";
+      return t("home.subtitle.shutdown");
     default:
       throw new Error(`Unknown phase`);
   }
@@ -33,45 +37,13 @@ const message = useAppSetting(`phase-message-${currentPhase.value}`, {
 const defaultMessage = computed(() => {
   switch (currentPhase.value) {
     case PHASES.REQUESTS:
-      return `
-      <p>
-        Vérifiez que votre service de base (ci-dessous) est correct. Dans le cas
-        contraire contactez un membre de la commission. Ajoutez ensuite vos
-        modifications de service éventuelles (délégation, décharge, congé,
-        etc.).
-        <b>
-          Le total indiqué doit correspondre au nombre d'heures équivalent TD
-          que la commission doit vous attribuer avec des enseignements
-          disponibles dans Geyser.
-        </b>
-      </p>
-      <p>
-        Vous pouvez ensuite faire des demandes principales et secondaires sur la
-        page Enseignements (icône <QIcon name="sym_s_menu_book" /> dans
-        l'en-tête). Merci de demander l’équivalent de votre service total en
-        demandes principales et en demandes secondaires.
-      </p>
-      <p>
-        Enfin, vous avez la possibilité de laisser un message à la commission
-        afin de porter à sa connaissance toute information que vous jugez utile
-        pour son travail. Ce message ne sera visible que par la commission et
-        vous-même. Pour modifier votre message, cliquez sur le bouton
-        <QBtn icon="sym_s_edit" color="primary" size="xs" flat square dense />
-        qui apparaît à côté du titre de la section correspondante.
-      </p>`;
+      return t("home.message.requests");
     case PHASES.ASSIGNMENTS:
-      return `
-      Les travaux de la commission sont en cours. Vous serez informé lorsqu'ils
-      seront terminés pour consulter les attributions. En attendant, vous pouvez
-      toujours consulter les demandes mais il n'est plus possible de les
-      modifier.`;
+      return t("home.message.assignments");
     case PHASES.RESULTS:
-      return `
-      Vous pouvez à présent consulter les attributions des enseignements de
-      cette année. Vous avez également toujours accès aux demandes et aux
-      attributions des années précédentes.`;
+      return t("home.message.results");
     case PHASES.SHUTDOWN:
-      return "";
+      return t("home.message.shutdown");
     default:
       throw new Error(`Unknown phase`);
   }

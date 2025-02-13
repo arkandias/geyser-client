@@ -4,6 +4,7 @@ import { computed, reactive, readonly, ref } from "vue";
 import { ROLES, type Role, isRole } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
 import { GetUserProfileDocument } from "@/gql/graphql.ts";
+import { i18n } from "@/services/i18n.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
@@ -20,6 +21,8 @@ graphql(`
     }
   }
 `);
+
+const { t } = i18n.global;
 
 type Profile = {
   uid: string;
@@ -76,12 +79,12 @@ const fetchProfile = async (uid: string) => {
     }
 
     notify(NotifyType.SUCCESS, {
-      message: "Profil trouvé",
+      message: t("profile.status.found"),
     });
     loaded.value = true;
   } else {
     notify(NotifyType.ERROR, {
-      message: "Profil non trouvé",
+      message: t("profile.status.not_found"),
     });
     loaded.value = false;
   }

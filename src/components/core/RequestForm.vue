@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRequestOperations } from "@/composables/request-operations.ts";
-import {
-  REQUEST_TYPES,
-  REQUEST_TYPE_OPTIONS,
-} from "@/config/types/request-types.ts";
+import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestFormDataFragmentDoc } from "@/gql/graphql.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
 import { useProfileStore } from "@/stores/profile.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
@@ -24,6 +23,8 @@ graphql(`
     hoursPerGroup: hoursEffective
   }
 `);
+
+const { t } = useI18n<I18nOptions>();
 
 const { profile } = useProfileStore();
 const perm = usePermissions();
@@ -67,14 +68,19 @@ const requestTypeInit = computed(() =>
 );
 const requestTypeOptions = computed(() => [
   ...(perm.toEditAssignments
-    ? REQUEST_TYPE_OPTIONS.filter(
-        (type) => type.value === REQUEST_TYPES.ASSIGNMENT,
-      )
+    ? [{ value: REQUEST_TYPES.ASSIGNMENT, label: t("request_type.assignment") }]
     : []),
   ...(perm.toSubmitRequests
-    ? REQUEST_TYPE_OPTIONS.filter(
-        (type) => type.value !== REQUEST_TYPES.ASSIGNMENT,
-      )
+    ? [
+        {
+          value: REQUEST_TYPES.PRIMARY,
+          label: t("request_type.primary"),
+        },
+        {
+          value: REQUEST_TYPES.SECONDARY,
+          label: t("request_type.secondary"),
+        },
+      ]
     : []),
 ]);
 watch(
@@ -104,22 +110,22 @@ watch(
 const submitForm = async (): Promise<void> => {
   if (uid.value === null) {
     notify(NotifyType.ERROR, {
-      message: "Formulaire non valide",
-      caption: "Sélectionnez un intervenant",
+      message: t("request_form.invalid.message"),
+      caption: t("request_form.invalid.caption.no_teacher"),
     });
     return;
   }
   if (hours.value === null || hours.value < 0) {
     notify(NotifyType.ERROR, {
-      message: "Formulaire non valide",
-      caption: "Sélectionnez un nombre d'heures positif ou nul",
+      message: t("request_form.invalid.message"),
+      caption: t("request_form.invalid.caption.negative_hours"),
     });
     return;
   }
   if (!requestType.value) {
     notify(NotifyType.ERROR, {
-      message: "Formulaire non valide",
-      caption: "Sélectionnez un type de demande",
+      message: t("request_form.invalid.message"),
+      caption: t("request_form.invalid.caption.no_type"),
     });
     return;
   }
@@ -178,7 +184,7 @@ const resetForm = (): void => {
       dense
     />
     <QBtn type="submit" icon="sym_s_check" color="primary" flat square dense>
-      <QTooltip>Valider la demande</QTooltip>
+      <QTooltip>{{ t("request_form.tooltip.submit") }}</QTooltip>
     </QBtn>
   </QForm>
 </template>

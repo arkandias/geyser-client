@@ -1,9 +1,6 @@
 import { type Client, useClientHandle } from "@urql/vue";
 
-import {
-  REQUEST_TYPE_OPTIONS,
-  isRequestType,
-} from "@/config/types/request-types.ts";
+import { isRequestType } from "@/config/types/request-types.ts";
 import { graphql } from "@/gql";
 import {
   DeleteRequestByIdDocument,
@@ -12,6 +9,7 @@ import {
   GetServiceFromCourseDocument,
   UpsertRequestDocument,
 } from "@/gql/graphql.ts";
+import { i18n } from "@/services/i18n.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
@@ -94,12 +92,7 @@ graphql(`
   }
 `);
 
-const getLabel = (requestType: string) => {
-  const option = REQUEST_TYPE_OPTIONS.find(
-    (option) => option.value === requestType,
-  );
-  return option?.label ?? "";
-};
+const { t } = i18n.global;
 
 const getService =
   (client: Client) => async (uid: string, courseId: number) => {
@@ -115,7 +108,7 @@ const getService =
     if (!course) {
       console.error(`No course found with id ${courseId.toString()}`);
       notify(NotifyType.ERROR, {
-        message: "Erreur lors de la récupération du cours",
+        message: t("request.error.course_not_found"),
       });
       return null;
     }
@@ -125,8 +118,8 @@ const getService =
         `No service found for teacher ${uid} and year ${course.year.toString()}`,
       );
       notify(NotifyType.ERROR, {
-        message: `Pas de service trouvé`,
-        caption: `Veuillez d'abord créer un service`,
+        message: t("request.error.service_not_found.title"),
+        caption: t("request.error.service_not_found.caption"),
       });
       return null;
     }
@@ -149,7 +142,7 @@ const getRequest =
     if (!requests) {
       console.error("Error while fetching current request");
       notify(NotifyType.ERROR, {
-        message: "Erreur lors de la récupération de la demande actuelle",
+        message: t("request.error.fetch"),
       });
       return null;
     }
@@ -183,7 +176,7 @@ const updateRequestWithServiceId =
     if (!isRequestType(requestType)) {
       console.error(`Invalid request type: ${requestType}`);
       notify(NotifyType.ERROR, {
-        message: "Type de requête invalide",
+        message: t("request.error.invalid_type"),
       });
       return;
     }
@@ -193,7 +186,9 @@ const updateRequestWithServiceId =
     }
     if (hours === current) {
       notify(NotifyType.DEFAULT, {
-        message: getLabel(requestType) + " déjà enregistrée",
+        message: t("request.success.already_recorded", {
+          type: t(`request.type.${requestType}`),
+        }),
       });
       return;
     }
@@ -205,10 +200,14 @@ const updateRequestWithServiceId =
       });
       if (data?.requests?.returning && !error) {
         notify(NotifyType.SUCCESS, {
-          message: getLabel(requestType) + " supprimée",
+          message: t("request.success.deleted", {
+            type: t(`request.type.${requestType}`),
+          }),
         });
       } else {
-        notify(NotifyType.ERROR, { message: "Échec de la suppression" });
+        notify(NotifyType.ERROR, {
+          message: t("request.error.delete"),
+        });
       }
     } else {
       const { data, error } = await client.mutation(UpsertRequestDocument, {
@@ -219,12 +218,18 @@ const updateRequestWithServiceId =
       });
       if (data?.request && !error) {
         notify(NotifyType.SUCCESS, {
-          message:
-            getLabel(requestType) + (current === 0 ? " créée" : " mise à jour"),
+          message: t(
+            current === 0
+              ? "request.success.created"
+              : "request.success.updated",
+            { type: t(`request.type.${requestType}`) },
+          ),
         });
       } else {
         notify(NotifyType.ERROR, {
-          message: `Échec de la ${current === 0 ? "création" : "mise à jour"}`,
+          message: t(
+            current === 0 ? "request.error.create" : "request.error.update",
+          ),
         });
       }
     }
@@ -236,10 +241,12 @@ const deleteRequestById = (client: Client) => async (id: number) => {
   });
   if (data?.request && !error) {
     notify(NotifyType.SUCCESS, {
-      message: getLabel(data.request.type) + " supprimée",
+      message: t("request.success.deleted", {
+        type: t(`request.${data.request.type}`),
+      }),
     });
   } else {
-    notify(NotifyType.ERROR, { message: "Échec de la suppression" });
+    notify(NotifyType.ERROR, { message: t("request.error.delete") });
   }
 };
 

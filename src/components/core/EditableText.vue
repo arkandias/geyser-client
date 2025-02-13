@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
+import type { I18nOptions } from "@/services/i18n.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 import { sanitize } from "@/utils/sanitize.ts";
 
@@ -15,6 +17,8 @@ const {
   defaultText?: string;
 }>();
 
+const { t } = useI18n<I18nOptions>();
+
 // Sanitize HTML to prevent XSS attacks
 const sanitizedText = computed(() => sanitize(text || defaultText));
 const editorText = ref("");
@@ -24,17 +28,24 @@ const onSave = async (): Promise<void> => {
     editorText.value = "";
   }
   if (editorText.value === text) {
-    notify(NotifyType.DEFAULT, { message: "Pas de changement à enregistrer" });
+    notify(NotifyType.DEFAULT, { message: t("editor.save.no_changes") });
   } else {
     const success = await setText(editorText.value);
     if (success) {
       notify(NotifyType.SUCCESS, {
-        message: "Texte " + (editorText.value ? "mis à jour" : " supprimé"),
+        message: t(
+          editorText.value
+            ? "editor.save.success.updated"
+            : "editor.save.success.deleted",
+        ),
       });
     } else {
       notify(NotifyType.ERROR, {
-        message:
-          "Échec de la " + (editorText.value ? "mise à jour" : "suppression"),
+        message: t(
+          editorText.value
+            ? "editor.save.error.update"
+            : "editor.save.error.delete",
+        ),
       });
     }
   }
@@ -79,8 +90,20 @@ const isOnlyWhitespace = (htmlString: string) => {
       </QCardSection>
       <QSeparator />
       <QCardActions align="right">
-        <QBtn label="Annuler" flat square dense @click="onAbort()" />
-        <QBtn label="Enregistrer" flat square dense @click="onSave()" />
+        <QBtn
+          :label="t('editor.button.cancel')"
+          flat
+          square
+          dense
+          @click="onAbort()"
+        />
+        <QBtn
+          :label="t('editor.button.save')"
+          flat
+          square
+          dense
+          @click="onSave()"
+        />
       </QCardActions>
     </QCard>
   </QDialog>
