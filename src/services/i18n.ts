@@ -1,6 +1,6 @@
 import { createI18n } from "vue-i18n";
 
-import frFR from "@/locales/fr-FR.json";
+import frFR from "@/locales/fr-FR.ts";
 
 export const AVAILABLE_LOCALES = ["fr-FR", "en-US"] as const;
 export type AvailableLocale = (typeof AVAILABLE_LOCALES)[number];
