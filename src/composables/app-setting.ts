@@ -1,5 +1,5 @@
-import { useQuery } from "@urql/vue";
-import { computed } from "vue";
+import { useClientHandle } from "@urql/vue";
+import { computed, ref } from "vue";
 
 import { graphql } from "@/gql";
 import { GetAppSettingDocument } from "@/gql/graphql.ts";
@@ -14,13 +14,19 @@ graphql(`
 `);
 
 export const useAppSetting = (key: string, options = { sanitize: false }) => {
-  const appSetting = computed(
-    () =>
-      useQuery({
-        query: GetAppSettingDocument,
-        variables: { key },
-      }).data.value?.appSetting?.value ?? "",
-  );
+  const appSetting = ref("");
+
+  void useClientHandle()
+    .client.query(
+      GetAppSettingDocument,
+      { key },
+      { requestPolicy: "network-only" },
+    )
+    .toPromise()
+    .then((result) => {
+      appSetting.value = result.data?.appSetting?.value ?? "";
+    });
+
   if (options.sanitize) {
     return computed(() => sanitize(appSetting.value));
   }
