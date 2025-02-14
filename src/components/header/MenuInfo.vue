@@ -2,18 +2,20 @@
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-import { useAppSetting } from "@/composables/app-setting.ts";
 import type { I18nOptions } from "@/services/i18n.ts";
+import { useCustomTextsStore } from "@/stores/custom-texts.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
 const { t } = useI18n<I18nOptions>();
 
+const { getValue } = useCustomTextsStore();
+
 const isContactOpen = ref(false);
 const isLicenceOpen = ref(false);
 const isLegalNoticeOpen = ref(false);
 
-const legalNotice = useAppSetting("legal-notice", { sanitize: true });
+const legalNotice = getValue("legal_notice");
 
 // Style
 const dialogHeaderClass = ["text-h6"];
@@ -59,13 +61,11 @@ const dialogBodyClass = ["text-justify"];
 
   <QDialog v-model="isContactOpen">
     <QCard square>
-      <QCardSection :class="dialogHeaderClass">{{
-        t("header.info.contact.label")
-      }}</QCardSection>
-      <QCardSection>
-        <p :class="dialogBodyClass">
-          {{ t("header.info.contact.message") }}
-        </p>
+      <QCardSection :class="dialogHeaderClass">
+        {{ t("header.info.contact.label") }}
+      </QCardSection>
+      <QCardSection :class="dialogBodyClass">
+        {{ t("header.info.contact.message") }}
       </QCardSection>
       <QCardActions align="right">
         <QBtn
@@ -84,9 +84,9 @@ const dialogBodyClass = ["text-justify"];
 
   <QDialog v-model="isLicenceOpen">
     <QCard square>
-      <QCardSection :class="dialogHeaderClass">{{
-        t("header.info.license.label")
-      }}</QCardSection>
+      <QCardSection :class="dialogHeaderClass">
+        {{ t("header.info.license.label") }}
+      </QCardSection>
       <QCardSection
         :class="dialogBodyClass"
         v-html="t('header.info.license.message')"
@@ -96,9 +96,9 @@ const dialogBodyClass = ["text-justify"];
 
   <QDialog v-model="isLegalNoticeOpen">
     <QCard square>
-      <QCardSection :class="dialogHeaderClass">{{
-        t("header.info.legal_notice.label")
-      }}</QCardSection>
+      <QCardSection :class="dialogHeaderClass">
+        {{ t("header.info.legal_notice.label") }}
+      </QCardSection>
       <QCardSection :class="dialogBodyClass" v-html="legalNotice" />
     </QCard>
   </QDialog>

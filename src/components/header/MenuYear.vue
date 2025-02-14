@@ -14,8 +14,8 @@ const { years, activeYear, selectYear } = useYearsStore();
 const options = computed(() =>
   years.value
     .map((year) => ({
-      value: year,
-      label: year.toString(),
+      value: year.value,
+      label: year.value.toString(),
     }))
     .sort((a, b) => b.value - a.value),
 );

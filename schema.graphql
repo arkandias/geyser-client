@@ -13,265 +13,6 @@ directive @cached(
   ttl: Int! = 60
 ) on QUERY
 
-"""Custom application configuration settings"""
-type AppSetting {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz!
-
-  """Setting identifier"""
-  key: String!
-
-  """Human-readable setting name for display purposes"""
-  label: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz!
-
-  """Setting value stored as text"""
-  value: String
-}
-
-"""
-aggregated selection of "app_setting"
-"""
-type AppSettingAggregate {
-  aggregate: AppSettingAggregateFields
-  nodes: [AppSetting!]!
-}
-
-"""
-aggregate fields of "app_setting"
-"""
-type AppSettingAggregateFields {
-  count(columns: [AppSettingSelectColumn!], distinct: Boolean): Int!
-  max: AppSettingMaxFields
-  min: AppSettingMinFields
-}
-
-"""
-Boolean expression to filter rows from the table "app_setting". All fields are combined with a logical 'AND'.
-"""
-input AppSettingBoolExp {
-  _and: [AppSettingBoolExp!]
-  _not: AppSettingBoolExp
-  _or: [AppSettingBoolExp!]
-  createdAt: TimestamptzComparisonExp
-  key: StringComparisonExp
-  label: StringComparisonExp
-  updatedAt: TimestamptzComparisonExp
-  value: StringComparisonExp
-}
-
-"""
-unique or primary key constraints on table "app_setting"
-"""
-enum AppSettingConstraint {
-  """
-  unique or primary key constraint on columns "key"
-  """
-  app_settings_pkey
-}
-
-"""
-input type for inserting data into table "app_setting"
-"""
-input AppSettingInsertInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
-  """Setting identifier"""
-  key: String
-
-  """Human-readable setting name for display purposes"""
-  label: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
-
-  """Setting value stored as text"""
-  value: String
-}
-
-"""aggregate max on columns"""
-type AppSettingMaxFields {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
-  """Setting identifier"""
-  key: String
-
-  """Human-readable setting name for display purposes"""
-  label: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
-
-  """Setting value stored as text"""
-  value: String
-}
-
-"""aggregate min on columns"""
-type AppSettingMinFields {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
-  """Setting identifier"""
-  key: String
-
-  """Human-readable setting name for display purposes"""
-  label: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
-
-  """Setting value stored as text"""
-  value: String
-}
-
-"""
-response of any mutation on the table "app_setting"
-"""
-type AppSettingMutationResponse {
-  """number of rows affected by the mutation"""
-  affectedRows: Int!
-
-  """data from the rows affected by the mutation"""
-  returning: [AppSetting!]!
-}
-
-"""
-on_conflict condition type for table "app_setting"
-"""
-input AppSettingOnConflict {
-  constraint: AppSettingConstraint!
-  updateColumns: [AppSettingUpdateColumn!]! = []
-  where: AppSettingBoolExp
-}
-
-"""Ordering options when selecting data from "app_setting"."""
-input AppSettingOrderBy {
-  createdAt: OrderBy
-  key: OrderBy
-  label: OrderBy
-  updatedAt: OrderBy
-  value: OrderBy
-}
-
-"""primary key columns input for table: app_setting"""
-input AppSettingPkColumnsInput {
-  """Setting identifier"""
-  key: String!
-}
-
-"""
-select columns of table "app_setting"
-"""
-enum AppSettingSelectColumn {
-  """column name"""
-  createdAt
-
-  """column name"""
-  key
-
-  """column name"""
-  label
-
-  """column name"""
-  updatedAt
-
-  """column name"""
-  value
-}
-
-"""
-input type for updating data in table "app_setting"
-"""
-input AppSettingSetInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
-  """Setting identifier"""
-  key: String
-
-  """Human-readable setting name for display purposes"""
-  label: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
-
-  """Setting value stored as text"""
-  value: String
-}
-
-"""
-Streaming cursor of the table "app_setting"
-"""
-input AppSettingStreamCursorInput {
-  """Stream column input with initial value"""
-  initialValue: AppSettingStreamCursorValueInput!
-
-  """cursor ordering"""
-  ordering: CursorOrdering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input AppSettingStreamCursorValueInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
-  """Setting identifier"""
-  key: String
-
-  """Human-readable setting name for display purposes"""
-  label: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
-
-  """Setting value stored as text"""
-  value: String
-}
-
-"""
-update columns of table "app_setting"
-"""
-enum AppSettingUpdateColumn {
-  """column name"""
-  createdAt
-
-  """column name"""
-  key
-
-  """column name"""
-  label
-
-  """column name"""
-  updatedAt
-
-  """column name"""
-  value
-}
-
-input AppSettingUpdates {
-  """sets the columns of the filtered rows to the given values"""
-  _set: AppSettingSetInput
-
-  """filter the rows which have to be updated"""
-  where: AppSettingBoolExp!
-}
-
 """
 Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
 """
@@ -11324,6 +11065,239 @@ input TrackVarianceOrderBy {
   programId: OrderBy
 }
 
+"""Custom application configuration settings"""
+type UiText {
+  """Timestamp when the record was created"""
+  createdAt: timestamptz!
+
+  """Setting identifier"""
+  key: String!
+
+  """
+  Timestamp when the record was last updated, automatically managed by trigger
+  """
+  updatedAt: timestamptz!
+
+  """Setting value stored as text"""
+  value: String!
+}
+
+"""
+aggregated selection of "ui_text"
+"""
+type UiTextAggregate {
+  aggregate: UiTextAggregateFields
+  nodes: [UiText!]!
+}
+
+"""
+aggregate fields of "ui_text"
+"""
+type UiTextAggregateFields {
+  count(columns: [UiTextSelectColumn!], distinct: Boolean): Int!
+  max: UiTextMaxFields
+  min: UiTextMinFields
+}
+
+"""
+Boolean expression to filter rows from the table "ui_text". All fields are combined with a logical 'AND'.
+"""
+input UiTextBoolExp {
+  _and: [UiTextBoolExp!]
+  _not: UiTextBoolExp
+  _or: [UiTextBoolExp!]
+  createdAt: TimestamptzComparisonExp
+  key: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+  value: StringComparisonExp
+}
+
+"""
+unique or primary key constraints on table "ui_text"
+"""
+enum UiTextConstraint {
+  """
+  unique or primary key constraint on columns "key"
+  """
+  app_settings_pkey
+}
+
+"""
+input type for inserting data into table "ui_text"
+"""
+input UiTextInsertInput {
+  """Timestamp when the record was created"""
+  createdAt: timestamptz
+
+  """Setting identifier"""
+  key: String
+
+  """
+  Timestamp when the record was last updated, automatically managed by trigger
+  """
+  updatedAt: timestamptz
+
+  """Setting value stored as text"""
+  value: String
+}
+
+"""aggregate max on columns"""
+type UiTextMaxFields {
+  """Timestamp when the record was created"""
+  createdAt: timestamptz
+
+  """Setting identifier"""
+  key: String
+
+  """
+  Timestamp when the record was last updated, automatically managed by trigger
+  """
+  updatedAt: timestamptz
+
+  """Setting value stored as text"""
+  value: String
+}
+
+"""aggregate min on columns"""
+type UiTextMinFields {
+  """Timestamp when the record was created"""
+  createdAt: timestamptz
+
+  """Setting identifier"""
+  key: String
+
+  """
+  Timestamp when the record was last updated, automatically managed by trigger
+  """
+  updatedAt: timestamptz
+
+  """Setting value stored as text"""
+  value: String
+}
+
+"""
+response of any mutation on the table "ui_text"
+"""
+type UiTextMutationResponse {
+  """number of rows affected by the mutation"""
+  affectedRows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [UiText!]!
+}
+
+"""
+on_conflict condition type for table "ui_text"
+"""
+input UiTextOnConflict {
+  constraint: UiTextConstraint!
+  updateColumns: [UiTextUpdateColumn!]! = []
+  where: UiTextBoolExp
+}
+
+"""Ordering options when selecting data from "ui_text"."""
+input UiTextOrderBy {
+  createdAt: OrderBy
+  key: OrderBy
+  updatedAt: OrderBy
+  value: OrderBy
+}
+
+"""primary key columns input for table: ui_text"""
+input UiTextPkColumnsInput {
+  """Setting identifier"""
+  key: String!
+}
+
+"""
+select columns of table "ui_text"
+"""
+enum UiTextSelectColumn {
+  """column name"""
+  createdAt
+
+  """column name"""
+  key
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "ui_text"
+"""
+input UiTextSetInput {
+  """Timestamp when the record was created"""
+  createdAt: timestamptz
+
+  """Setting identifier"""
+  key: String
+
+  """
+  Timestamp when the record was last updated, automatically managed by trigger
+  """
+  updatedAt: timestamptz
+
+  """Setting value stored as text"""
+  value: String
+}
+
+"""
+Streaming cursor of the table "ui_text"
+"""
+input UiTextStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: UiTextStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input UiTextStreamCursorValueInput {
+  """Timestamp when the record was created"""
+  createdAt: timestamptz
+
+  """Setting identifier"""
+  key: String
+
+  """
+  Timestamp when the record was last updated, automatically managed by trigger
+  """
+  updatedAt: timestamptz
+
+  """Setting value stored as text"""
+  value: String
+}
+
+"""
+update columns of table "ui_text"
+"""
+enum UiTextUpdateColumn {
+  """column name"""
+  createdAt
+
+  """column name"""
+  key
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  value
+}
+
+input UiTextUpdates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: UiTextSetInput
+
+  """filter the rows which have to be updated"""
+  where: UiTextBoolExp!
+}
+
 """
 Academic year definitions with current year designation and visibility settings
 """
@@ -11800,22 +11774,6 @@ input courseAggregateBoolExpCount {
 """mutation root"""
 type mutation_root {
   """
-  delete data from the table: "app_setting"
-  """
-  deleteAppSetting(
-    """filter the rows which have to be deleted"""
-    where: AppSettingBoolExp!
-  ): AppSettingMutationResponse
-
-  """
-  delete single row from the table: "app_setting"
-  """
-  deleteAppSettingByPk(
-    """Setting identifier"""
-    key: String!
-  ): AppSetting
-
-  """
   delete data from the table: "coordination"
   """
   deleteCoordination(
@@ -12088,6 +12046,22 @@ type mutation_root {
   ): Track
 
   """
+  delete data from the table: "ui_text"
+  """
+  deleteUiText(
+    """filter the rows which have to be deleted"""
+    where: UiTextBoolExp!
+  ): UiTextMutationResponse
+
+  """
+  delete single row from the table: "ui_text"
+  """
+  deleteUiTextByPk(
+    """Setting identifier"""
+    key: String!
+  ): UiText
+
+  """
   delete data from the table: "year"
   """
   deleteYear(
@@ -12102,28 +12076,6 @@ type mutation_root {
     """Academic year identifier (e.g., 2024 for 2024-2025 academic year)"""
     value: Int!
   ): Year
-
-  """
-  insert data into the table: "app_setting"
-  """
-  insertAppSetting(
-    """the rows to be inserted"""
-    objects: [AppSettingInsertInput!]!
-
-    """upsert condition"""
-    onConflict: AppSettingOnConflict
-  ): AppSettingMutationResponse
-
-  """
-  insert a single row into the table: "app_setting"
-  """
-  insertAppSettingOne(
-    """the row to be inserted"""
-    object: AppSettingInsertInput!
-
-    """upsert condition"""
-    onConflict: AppSettingOnConflict
-  ): AppSetting
 
   """
   insert data into the table: "coordination"
@@ -12500,6 +12452,28 @@ type mutation_root {
   ): Track
 
   """
+  insert data into the table: "ui_text"
+  """
+  insertUiText(
+    """the rows to be inserted"""
+    objects: [UiTextInsertInput!]!
+
+    """upsert condition"""
+    onConflict: UiTextOnConflict
+  ): UiTextMutationResponse
+
+  """
+  insert a single row into the table: "ui_text"
+  """
+  insertUiTextOne(
+    """the row to be inserted"""
+    object: UiTextInsertInput!
+
+    """upsert condition"""
+    onConflict: UiTextOnConflict
+  ): UiText
+
+  """
   insert data into the table: "year"
   """
   insertYear(
@@ -12520,34 +12494,6 @@ type mutation_root {
     """upsert condition"""
     onConflict: YearOnConflict
   ): Year
-
-  """
-  update data of the table: "app_setting"
-  """
-  updateAppSetting(
-    """sets the columns of the filtered rows to the given values"""
-    _set: AppSettingSetInput
-
-    """filter the rows which have to be updated"""
-    where: AppSettingBoolExp!
-  ): AppSettingMutationResponse
-
-  """
-  update single row of the table: "app_setting"
-  """
-  updateAppSettingByPk(
-    """sets the columns of the filtered rows to the given values"""
-    _set: AppSettingSetInput
-    pkColumns: AppSettingPkColumnsInput!
-  ): AppSetting
-
-  """
-  update multiples rows of table: "app_setting"
-  """
-  updateAppSettingMany(
-    """updates to execute, in order"""
-    updates: [AppSettingUpdates!]!
-  ): [AppSettingMutationResponse]
 
   """
   update data of the table: "coordination"
@@ -13104,6 +13050,34 @@ type mutation_root {
   ): [TrackMutationResponse]
 
   """
+  update data of the table: "ui_text"
+  """
+  updateUiText(
+    """sets the columns of the filtered rows to the given values"""
+    _set: UiTextSetInput
+
+    """filter the rows which have to be updated"""
+    where: UiTextBoolExp!
+  ): UiTextMutationResponse
+
+  """
+  update single row of the table: "ui_text"
+  """
+  updateUiTextByPk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: UiTextSetInput
+    pkColumns: UiTextPkColumnsInput!
+  ): UiText
+
+  """
+  update multiples rows of table: "ui_text"
+  """
+  updateUiTextMany(
+    """updates to execute, in order"""
+    updates: [UiTextUpdates!]!
+  ): [UiTextMutationResponse]
+
+  """
   update data of the table: "year"
   """
   updateYear(
@@ -13181,52 +13155,6 @@ input programAggregateBoolExpCount {
 }
 
 type query_root {
-  """
-  fetch data from the table: "app_setting"
-  """
-  appSetting(
-    """distinct select on columns"""
-    distinctOn: [AppSettingSelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [AppSettingOrderBy!]
-
-    """filter the rows returned"""
-    where: AppSettingBoolExp
-  ): [AppSetting!]!
-
-  """
-  fetch aggregated fields from the table: "app_setting"
-  """
-  appSettingAggregate(
-    """distinct select on columns"""
-    distinctOn: [AppSettingSelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [AppSettingOrderBy!]
-
-    """filter the rows returned"""
-    where: AppSettingBoolExp
-  ): AppSettingAggregate!
-
-  """fetch data from the table: "app_setting" using primary key columns"""
-  appSettingByPk(
-    """Setting identifier"""
-    key: String!
-  ): AppSetting
-
   """
   fetch data from the table: "coordination"
   """
@@ -14014,6 +13942,52 @@ type query_root {
   ): Track
 
   """
+  fetch data from the table: "ui_text"
+  """
+  uiText(
+    """distinct select on columns"""
+    distinctOn: [UiTextSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [UiTextOrderBy!]
+
+    """filter the rows returned"""
+    where: UiTextBoolExp
+  ): [UiText!]!
+
+  """
+  fetch aggregated fields from the table: "ui_text"
+  """
+  uiTextAggregate(
+    """distinct select on columns"""
+    distinctOn: [UiTextSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [UiTextOrderBy!]
+
+    """filter the rows returned"""
+    where: UiTextBoolExp
+  ): UiTextAggregate!
+
+  """fetch data from the table: "ui_text" using primary key columns"""
+  uiTextByPk(
+    """Setting identifier"""
+    key: String!
+  ): UiText
+
+  """
   fetch data from the table: "year"
   """
   year(
@@ -14089,66 +14063,6 @@ input serviceModificationAggregateBoolExpCount {
 }
 
 type subscription_root {
-  """
-  fetch data from the table: "app_setting"
-  """
-  appSetting(
-    """distinct select on columns"""
-    distinctOn: [AppSettingSelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [AppSettingOrderBy!]
-
-    """filter the rows returned"""
-    where: AppSettingBoolExp
-  ): [AppSetting!]!
-
-  """
-  fetch aggregated fields from the table: "app_setting"
-  """
-  appSettingAggregate(
-    """distinct select on columns"""
-    distinctOn: [AppSettingSelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [AppSettingOrderBy!]
-
-    """filter the rows returned"""
-    where: AppSettingBoolExp
-  ): AppSettingAggregate!
-
-  """fetch data from the table: "app_setting" using primary key columns"""
-  appSettingByPk(
-    """Setting identifier"""
-    key: String!
-  ): AppSetting
-
-  """
-  fetch data from the table in a streaming manner: "app_setting"
-  """
-  appSettingStream(
-    """maximum number of rows returned in a single batch"""
-    batchSize: Int!
-
-    """cursor to stream the results returned by the query"""
-    cursor: [AppSettingStreamCursorInput]!
-
-    """filter the rows returned"""
-    where: AppSettingBoolExp
-  ): [AppSetting!]!
-
   """
   fetch data from the table: "coordination"
   """
@@ -15172,6 +15086,66 @@ type subscription_root {
     """filter the rows returned"""
     where: TrackBoolExp
   ): [Track!]!
+
+  """
+  fetch data from the table: "ui_text"
+  """
+  uiText(
+    """distinct select on columns"""
+    distinctOn: [UiTextSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [UiTextOrderBy!]
+
+    """filter the rows returned"""
+    where: UiTextBoolExp
+  ): [UiText!]!
+
+  """
+  fetch aggregated fields from the table: "ui_text"
+  """
+  uiTextAggregate(
+    """distinct select on columns"""
+    distinctOn: [UiTextSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [UiTextOrderBy!]
+
+    """filter the rows returned"""
+    where: UiTextBoolExp
+  ): UiTextAggregate!
+
+  """fetch data from the table: "ui_text" using primary key columns"""
+  uiTextByPk(
+    """Setting identifier"""
+    key: String!
+  ): UiText
+
+  """
+  fetch data from the table in a streaming manner: "ui_text"
+  """
+  uiTextStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [UiTextStreamCursorInput]!
+
+    """filter the rows returned"""
+    where: UiTextBoolExp
+  ): [UiText!]!
 
   """
   fetch data from the table: "year"

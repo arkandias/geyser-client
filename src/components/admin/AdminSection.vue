@@ -1,19 +1,19 @@
 <script setup lang="ts">
 defineProps<{
-  title: string;
+  icon: string;
+  label: string;
 }>();
 defineSlots<{ default(): unknown }>();
 </script>
 
 <template>
-  <QCard flat square bordered class="q-my-md">
-    <QCardSection>
-      <div class="text-h6">{{ title }}</div>
-    </QCardSection>
-    <QCardSection>
-      <slot />
-    </QCardSection>
-  </QCard>
+  <QExpansionItem :icon :label header-class="text-primary">
+    <QCard flat square>
+      <QCardSection>
+        <slot />
+      </QCardSection>
+    </QCard>
+  </QExpansionItem>
 </template>
 
 <style scoped lang="scss"></style>

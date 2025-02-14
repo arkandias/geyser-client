@@ -8,6 +8,7 @@ import {
   CourseDescriptionFragmentDoc,
   UpdateDescriptionDocument,
 } from "@/gql/graphql.ts";
+import { sanitize } from "@/utils/sanitize.ts";
 
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 import EditableText from "@/components/core/EditableText.vue";
@@ -89,7 +90,7 @@ const setDescription = (text: string): Promise<boolean> =>
   >
     <EditableText
       v-model="editDescription"
-      :text="data.description ?? ''"
+      :text="sanitize(data.description ?? '')"
       :set-text="setDescription"
       default-text="Pas de description (contactez un responsable)"
     />

@@ -10,6 +10,7 @@ const options = {
     b: [],
     i: [],
     u: [],
+    strong: [],
     strike: [],
     sub: [],
     sup: [],

@@ -8,6 +8,7 @@ import {
   TeacherServiceMessageFragmentDoc,
   UpdateMessageDocument,
 } from "@/gql/graphql.ts";
+import { sanitize } from "@/utils/sanitize.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import EditableText from "@/components/core/EditableText.vue";
@@ -62,9 +63,8 @@ const editMessage = ref(false);
   >
     <EditableText
       v-model="editMessage"
-      :text="data.message ?? ''"
+      :text="sanitize(data.message ?? '')"
       :set-text="setMessage"
-      default-text=""
     />
   </DetailsSection>
 </template>

@@ -6,10 +6,15 @@ import { useI18n } from "vue-i18n";
 import { PHASES, isPhase } from "@/config/types/phases.ts";
 import { ROLES } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
-import { GetCurrentPhaseDocument, GetYearsDocument } from "@/gql/graphql.ts";
+import {
+  GetCurrentPhaseDocument,
+  GetCustomTextsDocument,
+  GetYearsDocument,
+} from "@/gql/graphql.ts";
 import type { I18nOptions } from "@/services/i18n.ts";
 import { getClaims } from "@/services/keycloak.ts";
 import { setRoleHeader } from "@/services/urql.ts";
+import { useCustomTextsStore } from "@/stores/custom-texts.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 import { useProfileStore } from "@/stores/profile.ts";
 import { useYearsStore } from "@/stores/years.ts";
@@ -34,6 +39,13 @@ graphql(`
       visible
     }
   }
+
+  query GetCustomTexts {
+    customTexts: uiText(orderBy: [{ key: ASC }]) {
+      key
+      value
+    }
+  }
 `);
 
 const { t } = useI18n<I18nOptions>();
@@ -41,7 +53,8 @@ const { t } = useI18n<I18nOptions>();
 const { fetchProfile, fetching, loaded, isActive, activeRole } =
   useProfileStore();
 const { currentPhase, setCurrentPhase } = usePhaseStore();
-const { setYears, setCurrentYear } = useYearsStore();
+const { setYears } = useYearsStore();
+const { setValue } = useCustomTextsStore();
 
 // User profile and active role
 const claims = getClaims();
@@ -79,8 +92,27 @@ const yearsQueryResult = useQuery({
 watch(
   yearsQueryResult.data,
   (value) => {
-    setYears(value?.years.map((year) => year.value) ?? []);
-    setCurrentYear(value?.years.find((year) => year.current)?.value ?? null);
+    setYears(
+      value?.years.map((year) => ({
+        ...year,
+        current: !!year.current,
+      })) ?? [],
+    );
+  },
+  { immediate: true },
+);
+
+// Custom texts
+const customTextsQueryResult = useQuery({
+  query: GetCustomTextsDocument,
+  variables: {},
+});
+watch(
+  customTextsQueryResult.data,
+  (value) => {
+    value?.customTexts.forEach(({ key, value }) => {
+      setValue(key, value);
+    });
   },
   { immediate: true },
 );

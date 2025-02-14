@@ -26,21 +26,21 @@ const tabs = [
       <QTab v-for="t in tabs" :key="t.name" :name="t.name" :label="t.label" />
     </QTabs>
 
-    <QTabPanels v-model="tab" animated>
+    <QTabPanels v-model="tab" keep-alive animated>
       <QTabPanel name="general">
         <AdminGeneral />
       </QTabPanel>
 
       <QTabPanel name="teachers">
-        <!--        <AdminTeachers />-->
+        <!-- <AdminTeachers />-->
       </QTabPanel>
 
       <QTabPanel name="courses">
-        <!--        <AdminCourses />-->
+        <!-- <AdminCourses />-->
       </QTabPanel>
 
       <QTabPanel name="coordinations">
-        <!--        <AdminCoordinations />-->
+        <!-- <AdminCoordinations />-->
       </QTabPanel>
     </QTabPanels>
   </QPage>

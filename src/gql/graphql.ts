@@ -17,207 +17,6 @@ export type Scalars = {
   timestamptz: { input: any; output: any; }
 };
 
-/** Custom application configuration settings */
-export type AppSetting = {
-  __typename?: 'AppSetting';
-  /** Timestamp when the record was created */
-  createdAt: Scalars['timestamptz']['output'];
-  /** Setting identifier */
-  key: Scalars['String']['output'];
-  /** Human-readable setting name for display purposes */
-  label?: Maybe<Scalars['String']['output']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt: Scalars['timestamptz']['output'];
-  /** Setting value stored as text */
-  value?: Maybe<Scalars['String']['output']>;
-};
-
-/** aggregated selection of "app_setting" */
-export type AppSettingAggregate = {
-  __typename?: 'AppSettingAggregate';
-  aggregate?: Maybe<AppSettingAggregateFields>;
-  nodes: Array<AppSetting>;
-};
-
-/** aggregate fields of "app_setting" */
-export type AppSettingAggregateFields = {
-  __typename?: 'AppSettingAggregateFields';
-  count: Scalars['Int']['output'];
-  max?: Maybe<AppSettingMaxFields>;
-  min?: Maybe<AppSettingMinFields>;
-};
-
-
-/** aggregate fields of "app_setting" */
-export type AppSettingAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<AppSettingSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-/** Boolean expression to filter rows from the table "app_setting". All fields are combined with a logical 'AND'. */
-export type AppSettingBoolExp = {
-  _and?: InputMaybe<Array<AppSettingBoolExp>>;
-  _not?: InputMaybe<AppSettingBoolExp>;
-  _or?: InputMaybe<Array<AppSettingBoolExp>>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  key?: InputMaybe<StringComparisonExp>;
-  label?: InputMaybe<StringComparisonExp>;
-  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
-  value?: InputMaybe<StringComparisonExp>;
-};
-
-/** unique or primary key constraints on table "app_setting" */
-export enum AppSettingConstraint {
-  /** unique or primary key constraint on columns "key" */
-  AppSettingsPkey = 'app_settings_pkey'
-}
-
-/** input type for inserting data into table "app_setting" */
-export type AppSettingInsertInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Setting identifier */
-  key?: InputMaybe<Scalars['String']['input']>;
-  /** Human-readable setting name for display purposes */
-  label?: InputMaybe<Scalars['String']['input']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Setting value stored as text */
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** aggregate max on columns */
-export type AppSettingMaxFields = {
-  __typename?: 'AppSettingMaxFields';
-  /** Timestamp when the record was created */
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  /** Setting identifier */
-  key?: Maybe<Scalars['String']['output']>;
-  /** Human-readable setting name for display purposes */
-  label?: Maybe<Scalars['String']['output']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
-  /** Setting value stored as text */
-  value?: Maybe<Scalars['String']['output']>;
-};
-
-/** aggregate min on columns */
-export type AppSettingMinFields = {
-  __typename?: 'AppSettingMinFields';
-  /** Timestamp when the record was created */
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  /** Setting identifier */
-  key?: Maybe<Scalars['String']['output']>;
-  /** Human-readable setting name for display purposes */
-  label?: Maybe<Scalars['String']['output']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
-  /** Setting value stored as text */
-  value?: Maybe<Scalars['String']['output']>;
-};
-
-/** response of any mutation on the table "app_setting" */
-export type AppSettingMutationResponse = {
-  __typename?: 'AppSettingMutationResponse';
-  /** number of rows affected by the mutation */
-  affectedRows: Scalars['Int']['output'];
-  /** data from the rows affected by the mutation */
-  returning: Array<AppSetting>;
-};
-
-/** on_conflict condition type for table "app_setting" */
-export type AppSettingOnConflict = {
-  constraint: AppSettingConstraint;
-  updateColumns?: Array<AppSettingUpdateColumn>;
-  where?: InputMaybe<AppSettingBoolExp>;
-};
-
-/** Ordering options when selecting data from "app_setting". */
-export type AppSettingOrderBy = {
-  createdAt?: InputMaybe<OrderBy>;
-  key?: InputMaybe<OrderBy>;
-  label?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-/** primary key columns input for table: app_setting */
-export type AppSettingPkColumnsInput = {
-  /** Setting identifier */
-  key: Scalars['String']['input'];
-};
-
-/** select columns of table "app_setting" */
-export enum AppSettingSelectColumn {
-  /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
-  Key = 'key',
-  /** column name */
-  Label = 'label',
-  /** column name */
-  UpdatedAt = 'updatedAt',
-  /** column name */
-  Value = 'value'
-}
-
-/** input type for updating data in table "app_setting" */
-export type AppSettingSetInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Setting identifier */
-  key?: InputMaybe<Scalars['String']['input']>;
-  /** Human-readable setting name for display purposes */
-  label?: InputMaybe<Scalars['String']['input']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Setting value stored as text */
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Streaming cursor of the table "app_setting" */
-export type AppSettingStreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: AppSettingStreamCursorValueInput;
-  /** cursor ordering */
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type AppSettingStreamCursorValueInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Setting identifier */
-  key?: InputMaybe<Scalars['String']['input']>;
-  /** Human-readable setting name for display purposes */
-  label?: InputMaybe<Scalars['String']['input']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Setting value stored as text */
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** update columns of table "app_setting" */
-export enum AppSettingUpdateColumn {
-  /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
-  Key = 'key',
-  /** column name */
-  Label = 'label',
-  /** column name */
-  UpdatedAt = 'updatedAt',
-  /** column name */
-  Value = 'value'
-}
-
-export type AppSettingUpdates = {
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<AppSettingSetInput>;
-  /** filter the rows which have to be updated */
-  where: AppSettingBoolExp;
-};
-
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
 export type BooleanComparisonExp = {
   _eq?: InputMaybe<Scalars['Boolean']['input']>;
@@ -8380,6 +8179,189 @@ export type TrackVarianceOrderBy = {
   programId?: InputMaybe<OrderBy>;
 };
 
+/** Custom application configuration settings */
+export type UiText = {
+  __typename?: 'UiText';
+  /** Timestamp when the record was created */
+  createdAt: Scalars['timestamptz']['output'];
+  /** Setting identifier */
+  key: Scalars['String']['output'];
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt: Scalars['timestamptz']['output'];
+  /** Setting value stored as text */
+  value: Scalars['String']['output'];
+};
+
+/** aggregated selection of "ui_text" */
+export type UiTextAggregate = {
+  __typename?: 'UiTextAggregate';
+  aggregate?: Maybe<UiTextAggregateFields>;
+  nodes: Array<UiText>;
+};
+
+/** aggregate fields of "ui_text" */
+export type UiTextAggregateFields = {
+  __typename?: 'UiTextAggregateFields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<UiTextMaxFields>;
+  min?: Maybe<UiTextMinFields>;
+};
+
+
+/** aggregate fields of "ui_text" */
+export type UiTextAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<UiTextSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "ui_text". All fields are combined with a logical 'AND'. */
+export type UiTextBoolExp = {
+  _and?: InputMaybe<Array<UiTextBoolExp>>;
+  _not?: InputMaybe<UiTextBoolExp>;
+  _or?: InputMaybe<Array<UiTextBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
+  key?: InputMaybe<StringComparisonExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
+  value?: InputMaybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "ui_text" */
+export enum UiTextConstraint {
+  /** unique or primary key constraint on columns "key" */
+  AppSettingsPkey = 'app_settings_pkey'
+}
+
+/** input type for inserting data into table "ui_text" */
+export type UiTextInsertInput = {
+  /** Timestamp when the record was created */
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Setting identifier */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Setting value stored as text */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type UiTextMaxFields = {
+  __typename?: 'UiTextMaxFields';
+  /** Timestamp when the record was created */
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** Setting identifier */
+  key?: Maybe<Scalars['String']['output']>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** Setting value stored as text */
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type UiTextMinFields = {
+  __typename?: 'UiTextMinFields';
+  /** Timestamp when the record was created */
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** Setting identifier */
+  key?: Maybe<Scalars['String']['output']>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** Setting value stored as text */
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "ui_text" */
+export type UiTextMutationResponse = {
+  __typename?: 'UiTextMutationResponse';
+  /** number of rows affected by the mutation */
+  affectedRows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<UiText>;
+};
+
+/** on_conflict condition type for table "ui_text" */
+export type UiTextOnConflict = {
+  constraint: UiTextConstraint;
+  updateColumns?: Array<UiTextUpdateColumn>;
+  where?: InputMaybe<UiTextBoolExp>;
+};
+
+/** Ordering options when selecting data from "ui_text". */
+export type UiTextOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
+  key?: InputMaybe<OrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
+  value?: InputMaybe<OrderBy>;
+};
+
+/** primary key columns input for table: ui_text */
+export type UiTextPkColumnsInput = {
+  /** Setting identifier */
+  key: Scalars['String']['input'];
+};
+
+/** select columns of table "ui_text" */
+export enum UiTextSelectColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Key = 'key',
+  /** column name */
+  UpdatedAt = 'updatedAt',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "ui_text" */
+export type UiTextSetInput = {
+  /** Timestamp when the record was created */
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Setting identifier */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Setting value stored as text */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "ui_text" */
+export type UiTextStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: UiTextStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type UiTextStreamCursorValueInput = {
+  /** Timestamp when the record was created */
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Setting identifier */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Setting value stored as text */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "ui_text" */
+export enum UiTextUpdateColumn {
+  /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
+  Key = 'key',
+  /** column name */
+  UpdatedAt = 'updatedAt',
+  /** column name */
+  Value = 'value'
+}
+
+export type UiTextUpdates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<UiTextSetInput>;
+  /** filter the rows which have to be updated */
+  where: UiTextBoolExp;
+};
+
 /** Academic year definitions with current year designation and visibility settings */
 export type Year = {
   __typename?: 'Year';
@@ -8759,10 +8741,6 @@ export type CourseAggregateBoolExpCount = {
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
-  /** delete data from the table: "app_setting" */
-  deleteAppSetting?: Maybe<AppSettingMutationResponse>;
-  /** delete single row from the table: "app_setting" */
-  deleteAppSettingByPk?: Maybe<AppSetting>;
   /** delete data from the table: "coordination" */
   deleteCoordination?: Maybe<CoordinationMutationResponse>;
   /** delete single row from the table: "coordination" */
@@ -8831,14 +8809,14 @@ export type Mutation_Root = {
   deleteTrack?: Maybe<TrackMutationResponse>;
   /** delete single row from the table: "track" */
   deleteTrackByPk?: Maybe<Track>;
+  /** delete data from the table: "ui_text" */
+  deleteUiText?: Maybe<UiTextMutationResponse>;
+  /** delete single row from the table: "ui_text" */
+  deleteUiTextByPk?: Maybe<UiText>;
   /** delete data from the table: "year" */
   deleteYear?: Maybe<YearMutationResponse>;
   /** delete single row from the table: "year" */
   deleteYearByPk?: Maybe<Year>;
-  /** insert data into the table: "app_setting" */
-  insertAppSetting?: Maybe<AppSettingMutationResponse>;
-  /** insert a single row into the table: "app_setting" */
-  insertAppSettingOne?: Maybe<AppSetting>;
   /** insert data into the table: "coordination" */
   insertCoordination?: Maybe<CoordinationMutationResponse>;
   /** insert a single row into the table: "coordination" */
@@ -8907,16 +8885,14 @@ export type Mutation_Root = {
   insertTrack?: Maybe<TrackMutationResponse>;
   /** insert a single row into the table: "track" */
   insertTrackOne?: Maybe<Track>;
+  /** insert data into the table: "ui_text" */
+  insertUiText?: Maybe<UiTextMutationResponse>;
+  /** insert a single row into the table: "ui_text" */
+  insertUiTextOne?: Maybe<UiText>;
   /** insert data into the table: "year" */
   insertYear?: Maybe<YearMutationResponse>;
   /** insert a single row into the table: "year" */
   insertYearOne?: Maybe<Year>;
-  /** update data of the table: "app_setting" */
-  updateAppSetting?: Maybe<AppSettingMutationResponse>;
-  /** update single row of the table: "app_setting" */
-  updateAppSettingByPk?: Maybe<AppSetting>;
-  /** update multiples rows of table: "app_setting" */
-  updateAppSettingMany?: Maybe<Array<Maybe<AppSettingMutationResponse>>>;
   /** update data of the table: "coordination" */
   updateCoordination?: Maybe<CoordinationMutationResponse>;
   /** update single row of the table: "coordination" */
@@ -9019,24 +8995,18 @@ export type Mutation_Root = {
   updateTrackByPk?: Maybe<Track>;
   /** update multiples rows of table: "track" */
   updateTrackMany?: Maybe<Array<Maybe<TrackMutationResponse>>>;
+  /** update data of the table: "ui_text" */
+  updateUiText?: Maybe<UiTextMutationResponse>;
+  /** update single row of the table: "ui_text" */
+  updateUiTextByPk?: Maybe<UiText>;
+  /** update multiples rows of table: "ui_text" */
+  updateUiTextMany?: Maybe<Array<Maybe<UiTextMutationResponse>>>;
   /** update data of the table: "year" */
   updateYear?: Maybe<YearMutationResponse>;
   /** update single row of the table: "year" */
   updateYearByPk?: Maybe<Year>;
   /** update multiples rows of table: "year" */
   updateYearMany?: Maybe<Array<Maybe<YearMutationResponse>>>;
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteAppSettingArgs = {
-  where: AppSettingBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteAppSettingByPkArgs = {
-  key: Scalars['String']['input'];
 };
 
 
@@ -9245,6 +9215,18 @@ export type Mutation_RootDeleteTrackByPkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDeleteUiTextArgs = {
+  where: UiTextBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteUiTextByPkArgs = {
+  key: Scalars['String']['input'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDeleteYearArgs = {
   where: YearBoolExp;
 };
@@ -9253,20 +9235,6 @@ export type Mutation_RootDeleteYearArgs = {
 /** mutation root */
 export type Mutation_RootDeleteYearByPkArgs = {
   value: Scalars['Int']['input'];
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertAppSettingArgs = {
-  objects: Array<AppSettingInsertInput>;
-  onConflict?: InputMaybe<AppSettingOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertAppSettingOneArgs = {
-  object: AppSettingInsertInput;
-  onConflict?: InputMaybe<AppSettingOnConflict>;
 };
 
 
@@ -9509,6 +9477,20 @@ export type Mutation_RootInsertTrackOneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsertUiTextArgs = {
+  objects: Array<UiTextInsertInput>;
+  onConflict?: InputMaybe<UiTextOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertUiTextOneArgs = {
+  object: UiTextInsertInput;
+  onConflict?: InputMaybe<UiTextOnConflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsertYearArgs = {
   objects: Array<YearInsertInput>;
   onConflict?: InputMaybe<YearOnConflict>;
@@ -9519,26 +9501,6 @@ export type Mutation_RootInsertYearArgs = {
 export type Mutation_RootInsertYearOneArgs = {
   object: YearInsertInput;
   onConflict?: InputMaybe<YearOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateAppSettingArgs = {
-  _set?: InputMaybe<AppSettingSetInput>;
-  where: AppSettingBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateAppSettingByPkArgs = {
-  _set?: InputMaybe<AppSettingSetInput>;
-  pkColumns: AppSettingPkColumnsInput;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateAppSettingManyArgs = {
-  updates: Array<AppSettingUpdates>;
 };
 
 
@@ -9909,6 +9871,26 @@ export type Mutation_RootUpdateTrackManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdateUiTextArgs = {
+  _set?: InputMaybe<UiTextSetInput>;
+  where: UiTextBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateUiTextByPkArgs = {
+  _set?: InputMaybe<UiTextSetInput>;
+  pkColumns: UiTextPkColumnsInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateUiTextManyArgs = {
+  updates: Array<UiTextUpdates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdateYearArgs = {
   _inc?: InputMaybe<YearIncInput>;
   _set?: InputMaybe<YearSetInput>;
@@ -9973,12 +9955,6 @@ export type ProgramAggregateBoolExpCount = {
 
 export type Query_Root = {
   __typename?: 'query_root';
-  /** fetch data from the table: "app_setting" */
-  appSetting: Array<AppSetting>;
-  /** fetch aggregated fields from the table: "app_setting" */
-  appSettingAggregate: AppSettingAggregate;
-  /** fetch data from the table: "app_setting" using primary key columns */
-  appSettingByPk?: Maybe<AppSetting>;
   /** fetch data from the table: "coordination" */
   coordination: Array<Coordination>;
   /** fetch aggregated fields from the table: "coordination" */
@@ -10081,35 +10057,18 @@ export type Query_Root = {
   trackAggregate: TrackAggregate;
   /** fetch data from the table: "track" using primary key columns */
   trackByPk?: Maybe<Track>;
+  /** fetch data from the table: "ui_text" */
+  uiText: Array<UiText>;
+  /** fetch aggregated fields from the table: "ui_text" */
+  uiTextAggregate: UiTextAggregate;
+  /** fetch data from the table: "ui_text" using primary key columns */
+  uiTextByPk?: Maybe<UiText>;
   /** fetch data from the table: "year" */
   year: Array<Year>;
   /** fetch aggregated fields from the table: "year" */
   yearAggregate: YearAggregate;
   /** fetch data from the table: "year" using primary key columns */
   yearByPk?: Maybe<Year>;
-};
-
-
-export type Query_RootAppSettingArgs = {
-  distinctOn?: InputMaybe<Array<AppSettingSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<AppSettingOrderBy>>;
-  where?: InputMaybe<AppSettingBoolExp>;
-};
-
-
-export type Query_RootAppSettingAggregateArgs = {
-  distinctOn?: InputMaybe<Array<AppSettingSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<AppSettingOrderBy>>;
-  where?: InputMaybe<AppSettingBoolExp>;
-};
-
-
-export type Query_RootAppSettingByPkArgs = {
-  key: Scalars['String']['input'];
 };
 
 
@@ -10504,6 +10463,29 @@ export type Query_RootTrackByPkArgs = {
 };
 
 
+export type Query_RootUiTextArgs = {
+  distinctOn?: InputMaybe<Array<UiTextSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<UiTextOrderBy>>;
+  where?: InputMaybe<UiTextBoolExp>;
+};
+
+
+export type Query_RootUiTextAggregateArgs = {
+  distinctOn?: InputMaybe<Array<UiTextSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<UiTextOrderBy>>;
+  where?: InputMaybe<UiTextBoolExp>;
+};
+
+
+export type Query_RootUiTextByPkArgs = {
+  key: Scalars['String']['input'];
+};
+
+
 export type Query_RootYearArgs = {
   distinctOn?: InputMaybe<Array<YearSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -10556,14 +10538,6 @@ export type ServiceModificationAggregateBoolExpCount = {
 
 export type Subscription_Root = {
   __typename?: 'subscription_root';
-  /** fetch data from the table: "app_setting" */
-  appSetting: Array<AppSetting>;
-  /** fetch aggregated fields from the table: "app_setting" */
-  appSettingAggregate: AppSettingAggregate;
-  /** fetch data from the table: "app_setting" using primary key columns */
-  appSettingByPk?: Maybe<AppSetting>;
-  /** fetch data from the table in a streaming manner: "app_setting" */
-  appSettingStream: Array<AppSetting>;
   /** fetch data from the table: "coordination" */
   coordination: Array<Coordination>;
   /** fetch aggregated fields from the table: "coordination" */
@@ -10700,6 +10674,14 @@ export type Subscription_Root = {
   trackByPk?: Maybe<Track>;
   /** fetch data from the table in a streaming manner: "track" */
   trackStream: Array<Track>;
+  /** fetch data from the table: "ui_text" */
+  uiText: Array<UiText>;
+  /** fetch aggregated fields from the table: "ui_text" */
+  uiTextAggregate: UiTextAggregate;
+  /** fetch data from the table: "ui_text" using primary key columns */
+  uiTextByPk?: Maybe<UiText>;
+  /** fetch data from the table in a streaming manner: "ui_text" */
+  uiTextStream: Array<UiText>;
   /** fetch data from the table: "year" */
   year: Array<Year>;
   /** fetch aggregated fields from the table: "year" */
@@ -10708,36 +10690,6 @@ export type Subscription_Root = {
   yearByPk?: Maybe<Year>;
   /** fetch data from the table in a streaming manner: "year" */
   yearStream: Array<Year>;
-};
-
-
-export type Subscription_RootAppSettingArgs = {
-  distinctOn?: InputMaybe<Array<AppSettingSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<AppSettingOrderBy>>;
-  where?: InputMaybe<AppSettingBoolExp>;
-};
-
-
-export type Subscription_RootAppSettingAggregateArgs = {
-  distinctOn?: InputMaybe<Array<AppSettingSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<AppSettingOrderBy>>;
-  where?: InputMaybe<AppSettingBoolExp>;
-};
-
-
-export type Subscription_RootAppSettingByPkArgs = {
-  key: Scalars['String']['input'];
-};
-
-
-export type Subscription_RootAppSettingStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<AppSettingStreamCursorInput>>;
-  where?: InputMaybe<AppSettingBoolExp>;
 };
 
 
@@ -11251,6 +11203,36 @@ export type Subscription_RootTrackStreamArgs = {
 };
 
 
+export type Subscription_RootUiTextArgs = {
+  distinctOn?: InputMaybe<Array<UiTextSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<UiTextOrderBy>>;
+  where?: InputMaybe<UiTextBoolExp>;
+};
+
+
+export type Subscription_RootUiTextAggregateArgs = {
+  distinctOn?: InputMaybe<Array<UiTextSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<UiTextOrderBy>>;
+  where?: InputMaybe<UiTextBoolExp>;
+};
+
+
+export type Subscription_RootUiTextByPkArgs = {
+  key: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootUiTextStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<UiTextStreamCursorInput>>;
+  where?: InputMaybe<UiTextBoolExp>;
+};
+
+
 export type Subscription_RootYearArgs = {
   distinctOn?: InputMaybe<Array<YearSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -11332,16 +11314,24 @@ export type GetYearsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetYearsQuery = { __typename?: 'query_root', years: Array<{ __typename?: 'Year', value: number, current?: boolean | null, visible: boolean }> };
 
+export type GetCustomTextsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCustomTextsQuery = { __typename?: 'query_root', customTexts: Array<{ __typename?: 'UiText', key: string, value: string }> };
+
 export type CourseRowFragment = { __typename?: 'Course', id: number, name: string, nameShort?: string | null, visible: boolean, semester: number, hoursPerGroup?: number | null, numberOfGroups?: number | null, totalHours?: number | null, program: { __typename?: 'Program', id: number, name: string, nameShort?: string | null, visible: boolean, degree: { __typename?: 'Degree', id: number, name: string, nameShort?: string | null, visible: boolean } }, track?: { __typename?: 'Track', id: number, name: string, nameShort?: string | null, visible: boolean } | null, courseType: { __typename?: 'CourseType', value: string, label: string, coefficient: number }, requests: Array<{ __typename?: 'Request', type: string, hours: number, isPriority?: boolean | null }> } & { ' $fragmentName'?: 'CourseRowFragment' };
 
 export type ServiceDetailsFragment = { __typename?: 'Service', teacher: { __typename?: 'Teacher', uid: string, firstname: string, lastname: string, alias?: string | null }, requests: Array<{ __typename?: 'Request', courseId: number, type: string, hours: number }> } & { ' $fragmentName'?: 'ServiceDetailsFragment' };
 
 export type ServiceRowsFragment = { __typename?: 'Service', hours: number, message?: string | null, teacher: { __typename?: 'Teacher', uid: string, firstname: string, lastname: string, alias?: string | null, visible: boolean }, totalModifications: { __typename?: 'ServiceModificationAggregate', aggregate?: { __typename?: 'ServiceModificationAggregateFields', sum?: { __typename?: 'ServiceModificationSumFields', hours?: number | null } | null } | null }, totalAssigned: { __typename?: 'RequestAggregate', aggregate?: { __typename?: 'RequestAggregateFields', sum?: { __typename?: 'RequestSumFields', hoursWeighted?: number | null } | null } | null }, totalPrimary: { __typename?: 'RequestAggregate', aggregate?: { __typename?: 'RequestAggregateFields', sum?: { __typename?: 'RequestSumFields', hoursWeighted?: number | null } | null } | null }, totalSecondary: { __typename?: 'RequestAggregate', aggregate?: { __typename?: 'RequestAggregateFields', sum?: { __typename?: 'RequestSumFields', hoursWeighted?: number | null } | null } | null } } & { ' $fragmentName'?: 'ServiceRowsFragment' };
 
-export type GetGeneralDataQueryVariables = Exact<{ [key: string]: never; }>;
+export type UpdateCustomTextMutationVariables = Exact<{
+  key: Scalars['String']['input'];
+  value?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
-export type GetGeneralDataQuery = { __typename?: 'query_root', phases: Array<{ __typename?: 'Phase', value: string, current?: boolean | null, description?: string | null }>, years: Array<{ __typename?: 'Year', value: number, comment?: string | null, current?: boolean | null, visible: boolean }>, appSettings: Array<{ __typename?: 'AppSetting', key: string, label?: string | null, value?: string | null }> };
+export type UpdateCustomTextMutation = { __typename?: 'mutation_root', updateCustomTextByPk?: { __typename?: 'UiText', key: string, value: string } | null };
 
 export type SetCurrentPhaseMutationVariables = Exact<{
   value: Scalars['String']['input'];
@@ -11349,6 +11339,11 @@ export type SetCurrentPhaseMutationVariables = Exact<{
 
 
 export type SetCurrentPhaseMutation = { __typename?: 'mutation_root', phases?: { __typename?: 'PhaseMutationResponse', returning: Array<{ __typename?: 'Phase', value: string }> } | null, enCours?: { __typename?: 'Phase', value: string } | null };
+
+export type GetGeneralDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGeneralDataQuery = { __typename?: 'query_root', years: Array<{ __typename?: 'Year', value: number, current?: boolean | null, visible: boolean }> };
 
 export type SetCurrentYearMutationVariables = Exact<{
   value: Scalars['Int']['input'];
@@ -11378,14 +11373,6 @@ export type DeleteYearMutationVariables = Exact<{
 
 
 export type DeleteYearMutation = { __typename?: 'mutation_root', deleteYearByPk?: { __typename?: 'Year', value: number } | null };
-
-export type UpdateAppSettingMutationVariables = Exact<{
-  key: Scalars['String']['input'];
-  value?: InputMaybe<Scalars['String']['input']>;
-}>;
-
-
-export type UpdateAppSettingMutation = { __typename?: 'mutation_root', updateAppSettingByPk?: { __typename?: 'AppSetting', key: string, value?: string | null } | null };
 
 export type PriorityChipDataFragment = { __typename?: 'Priority', seniority?: number | null, isPriority?: boolean | null, service: { __typename?: 'Service', teacher: { __typename?: 'Teacher', firstname: string, lastname: string, alias?: string | null } } } & { ' $fragmentName'?: 'PriorityChipDataFragment' };
 
@@ -11506,13 +11493,6 @@ export type TeacherServicePrioritiesFragment = { __typename?: 'Service', priorit
 export type TeacherServiceRequestsFragment = { __typename?: 'Service', assigned: { __typename?: 'RequestAggregate', aggregate?: { __typename?: 'RequestAggregateFields', sum?: { __typename?: 'RequestSumFields', hoursWeighted?: number | null } | null } | null }, primary: { __typename?: 'RequestAggregate', aggregate?: { __typename?: 'RequestAggregateFields', sum?: { __typename?: 'RequestSumFields', hoursWeighted?: number | null } | null } | null }, secondary: { __typename?: 'RequestAggregate', aggregate?: { __typename?: 'RequestAggregateFields', sum?: { __typename?: 'RequestSumFields', hoursWeighted?: number | null } | null } | null } } & { ' $fragmentName'?: 'TeacherServiceRequestsFragment' };
 
 export type TeacherTitleFragment = { __typename?: 'Teacher', firstname: string, lastname: string, alias?: string | null, positionByPosition?: { __typename?: 'Position', label: string } | null } & { ' $fragmentName'?: 'TeacherTitleFragment' };
-
-export type GetAppSettingQueryVariables = Exact<{
-  key: Scalars['String']['input'];
-}>;
-
-
-export type GetAppSettingQuery = { __typename?: 'query_root', appSetting?: { __typename?: 'AppSetting', value?: string | null } | null };
 
 export type GetAssignmentsQueryVariables = Exact<{
   year: Scalars['Int']['input'];
@@ -11664,13 +11644,14 @@ export const TeacherNoServiceFragmentDoc = {"kind":"Document","definitions":[{"k
 export const TeacherTitleFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TeacherTitle"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Teacher"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"firstname"}},{"kind":"Field","name":{"kind":"Name","value":"lastname"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}},{"kind":"Field","name":{"kind":"Name","value":"positionByPosition"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}}]} as unknown as DocumentNode<TeacherTitleFragment, unknown>;
 export const GetCurrentPhaseDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCurrentPhase"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"phases"},"name":{"kind":"Name","value":"phase"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"current"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"BooleanValue","value":true}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<GetCurrentPhaseQuery, GetCurrentPhaseQueryVariables>;
 export const GetYearsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetYears"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"years"},"name":{"kind":"Name","value":"year"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"EnumValue","value":"DESC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"current"}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}}]}}]} as unknown as DocumentNode<GetYearsQuery, GetYearsQueryVariables>;
-export const GetGeneralDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetGeneralData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"phases"},"name":{"kind":"Name","value":"phase"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"current"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"years"},"name":{"kind":"Name","value":"year"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"EnumValue","value":"DESC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"comment"}},{"kind":"Field","name":{"kind":"Name","value":"current"}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"appSettings"},"name":{"kind":"Name","value":"appSetting"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"label"},"value":{"kind":"EnumValue","value":"ASC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<GetGeneralDataQuery, GetGeneralDataQueryVariables>;
+export const GetCustomTextsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCustomTexts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"customTexts"},"name":{"kind":"Name","value":"uiText"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"key"},"value":{"kind":"EnumValue","value":"ASC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<GetCustomTextsQuery, GetCustomTextsQueryVariables>;
+export const UpdateCustomTextDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateCustomText"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"key"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"value"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"updateCustomTextByPk"},"name":{"kind":"Name","value":"insertUiTextOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"key"},"value":{"kind":"Variable","name":{"kind":"Name","value":"key"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"app_settings_pkey"}},{"kind":"ObjectField","name":{"kind":"Name","value":"updateColumns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"value"}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<UpdateCustomTextMutation, UpdateCustomTextMutationVariables>;
 export const SetCurrentPhaseDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetCurrentPhase"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"value"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"phases"},"name":{"kind":"Name","value":"updatePhase"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_neq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"current"},"value":{"kind":"NullValue"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"enCours"},"name":{"kind":"Name","value":"updatePhaseByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pkColumns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"current"},"value":{"kind":"BooleanValue","value":true}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<SetCurrentPhaseMutation, SetCurrentPhaseMutationVariables>;
+export const GetGeneralDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetGeneralData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"years"},"name":{"kind":"Name","value":"year"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"EnumValue","value":"DESC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"current"}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}}]}}]} as unknown as DocumentNode<GetGeneralDataQuery, GetGeneralDataQueryVariables>;
 export const SetCurrentYearDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetCurrentYear"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"value"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"years"},"name":{"kind":"Name","value":"updateYear"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_neq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"current"},"value":{"kind":"NullValue"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}},{"kind":"Field","alias":{"kind":"Name","value":"current"},"name":{"kind":"Name","value":"updateYearByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pkColumns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"current"},"value":{"kind":"BooleanValue","value":true}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<SetCurrentYearMutation, SetCurrentYearMutationVariables>;
 export const UpdateYearVisibilityDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateYearVisibility"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"value"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"visible"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateYearByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pkColumns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"visible"},"value":{"kind":"Variable","name":{"kind":"Name","value":"visible"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}}]}}]} as unknown as DocumentNode<UpdateYearVisibilityMutation, UpdateYearVisibilityMutationVariables>;
 export const CreateYearDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateYear"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"value"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insertYearOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"visible"},"value":{"kind":"BooleanValue","value":false}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<CreateYearMutation, CreateYearMutationVariables>;
 export const DeleteYearDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteYear"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"value"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteYearByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"value"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<DeleteYearMutation, DeleteYearMutationVariables>;
-export const UpdateAppSettingDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateAppSetting"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"key"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"value"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateAppSettingByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pkColumns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"key"},"value":{"kind":"Variable","name":{"kind":"Name","value":"key"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<UpdateAppSettingMutation, UpdateAppSettingMutationVariables>;
 export const GetActiveTeachersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetActiveTeachers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"teachers"},"name":{"kind":"Name","value":"teacher"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"active"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"BooleanValue","value":true}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"lastname"},"value":{"kind":"EnumValue","value":"ASC"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"firstname"},"value":{"kind":"EnumValue","value":"ASC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"firstname"}},{"kind":"Field","name":{"kind":"Name","value":"lastname"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]} as unknown as DocumentNode<GetActiveTeachersQuery, GetActiveTeachersQueryVariables>;
 export const UpdateDescriptionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateDescription"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"course"},"name":{"kind":"Name","value":"updateCourseByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pkColumns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateDescriptionMutation, UpdateDescriptionMutationVariables>;
 export const InsertServiceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertService"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"year"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uid"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"hours"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"service"},"name":{"kind":"Name","value":"insertServiceOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"year"},"value":{"kind":"Variable","name":{"kind":"Name","value":"year"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"uid"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uid"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"hours"},"value":{"kind":"Variable","name":{"kind":"Name","value":"hours"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<InsertServiceMutation, InsertServiceMutationVariables>;
@@ -11679,7 +11660,6 @@ export const UpsertServiceDocument = {"kind":"Document","definitions":[{"kind":"
 export const InsertModificationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertModification"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"modificationType"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"hours"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"serviceModification"},"name":{"kind":"Name","value":"insertServiceModificationOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"serviceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"modificationType"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"hours"},"value":{"kind":"Variable","name":{"kind":"Name","value":"hours"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<InsertModificationMutation, InsertModificationMutationVariables>;
 export const DeleteModificationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteModification"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"serviceModification"},"name":{"kind":"Name","value":"deleteServiceModificationByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<DeleteModificationMutation, DeleteModificationMutationVariables>;
 export const UpdateMessageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateMessage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"message"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"service"},"name":{"kind":"Name","value":"updateServiceByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pkColumns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"message"},"value":{"kind":"Variable","name":{"kind":"Name","value":"message"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateMessageMutation, UpdateMessageMutationVariables>;
-export const GetAppSettingDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAppSetting"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"key"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"appSetting"},"name":{"kind":"Name","value":"appSettingByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"key"},"value":{"kind":"Variable","name":{"kind":"Name","value":"key"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<GetAppSettingQuery, GetAppSettingQueryVariables>;
 export const GetAssignmentsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAssignments"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"year"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"RequestBoolExp"}},"defaultValue":{"kind":"ObjectValue","fields":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"assignments"},"name":{"kind":"Name","value":"request"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"service"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"year"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"year"}}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"assignment","block":false}}]}}]},{"kind":"Variable","name":{"kind":"Name","value":"where"}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"program"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"degree"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"program"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"track"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"semester"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"typeByType"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"label"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"service"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"teacher"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"lastname"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"service"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"teacher"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"firstname"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"course"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameShort"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameShort"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameShort"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameShort"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameShort"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameShort"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"semester"}},{"kind":"Field","name":{"kind":"Name","value":"typeByType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"service"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"teacher"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"firstname"}},{"kind":"Field","name":{"kind":"Name","value":"lastname"}},{"kind":"Field","name":{"kind":"Name","value":"alias"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetAssignmentsQuery, GetAssignmentsQueryVariables>;
 export const DummyMutationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DummyMutation"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"requests"},"name":{"kind":"Name","value":"insertRequest"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"objects"},"value":{"kind":"ListValue","values":[]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<DummyMutationMutation, DummyMutationMutationVariables>;
 export const GetServiceFromCourseDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetServiceFromCourse"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uid"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"course"},"name":{"kind":"Name","value":"courseByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","name":{"kind":"Name","value":"yearByYear"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"services"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"teacher"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"uid"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uid"}}}]}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetServiceFromCourseQuery, GetServiceFromCourseQueryVariables>;

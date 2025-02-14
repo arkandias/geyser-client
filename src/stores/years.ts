@@ -2,14 +2,19 @@ import { computed, readonly, ref } from "vue";
 
 import { useQueryParam } from "@/composables/query-param.ts";
 
-const years = ref<number[]>([]);
-const currentYear = ref<number | null>(null);
-
-const setYears = (values: number[]) => {
-  years.value = values;
+type Year = {
+  value: number;
+  current: boolean;
+  visible: boolean;
 };
-const setCurrentYear = (year: number | null) => {
-  currentYear.value = year;
+
+const years = ref<Year[]>([]);
+const currentYear = computed(
+  () => years.value.find((year) => year.current)?.value ?? null,
+);
+
+const setYears = (newYears: Year[]) => {
+  years.value = newYears;
 };
 
 export const useYearsStore = () => {
@@ -18,7 +23,7 @@ export const useYearsStore = () => {
     true,
   );
   const activeYear = computed<number | null>(() =>
-    selectedYear.value !== null && years.value.includes(selectedYear.value)
+    years.value.find((year) => year.value === selectedYear.value)
       ? selectedYear.value
       : currentYear.value,
   );
@@ -33,7 +38,6 @@ export const useYearsStore = () => {
     activeYear,
     isCurrentYearActive,
     setYears,
-    setCurrentYear,
     selectYear,
   };
 };

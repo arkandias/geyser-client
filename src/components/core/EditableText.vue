@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 import type { I18nOptions } from "@/services/i18n.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
-import { sanitize } from "@/utils/sanitize.ts";
 
 const showEditor = defineModel<boolean>();
 const {
@@ -19,8 +18,6 @@ const {
 
 const { t } = useI18n<I18nOptions>();
 
-// Sanitize HTML to prevent XSS attacks
-const sanitizedText = computed(() => sanitize(text || defaultText));
 const editorText = ref("");
 
 const onSave = async (): Promise<void> => {
@@ -108,7 +105,7 @@ const isOnlyWhitespace = (htmlString: string) => {
     </QCard>
   </QDialog>
   <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-  <div class="displayed-text" v-html="sanitizedText" />
+  <div class="displayed-text" v-html="text || defaultText" />
 </template>
 
 <style scoped lang="scss">

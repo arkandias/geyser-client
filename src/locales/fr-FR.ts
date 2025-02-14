@@ -156,7 +156,7 @@ export default {
     system_closed: "Geyser est actuellement fermé",
   },
   home: {
-    welcome: "Bienvenue",
+    title: "Bienvenue",
     subtitle: {
       requests: "Geyser est en phase de vœux",
       assignments: "Les travaux de la commission sont en cours",
@@ -200,6 +200,19 @@ export default {
       cette année. Vous avez également toujours accès aux demandes et aux
       attributions des années précédentes.`,
       shutdown: "",
+    },
+  },
+  admin: {
+    general: {
+      phase: {
+        section_label: "Phase en cours",
+      },
+      years: {
+        section_label: "Années",
+      },
+      custom_text: {
+        section_label: "Personnalisation de l'interface",
+      },
     },
   },
   editor: {
@@ -267,5 +280,22 @@ export default {
   },
   download_assignments: {
     error: "Erreur lors de la récupération des attributions",
+  },
+  custom_text_label: {
+    legal_notice: "Mentions légales",
+    home_title: "Titre de la page d'accueil",
+    home_subtitle_requests: "Sous-titre de la page d'accueil en phase de vœux",
+    home_subtitle_assignments:
+      "Sous-titre de la page d'accueil en phase de commission",
+    home_subtitle_results:
+      "Sous-titre de la page d'accueil en phase de consultation",
+    home_subtitle_shutdown:
+      "Sous-titre de la page d'accueil en phase de fermeture",
+    home_message_requests: "Message de la page d'accueil en phase de vœux",
+    home_message_assignments:
+      "Message de la page d'accueil en phase de commission",
+    home_message_results:
+      "Message de la page d'accueil en phase de consultation",
+    home_message_shutdown: "Message de la page d'accueil en phase de fermeture",
   },
 };
