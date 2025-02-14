@@ -69,6 +69,9 @@ const fetchProfile = async (uid: string) => {
         .filter((role) => isRole(role))
         .concat(ROLES.TEACHER),
     );
+    if (roles.value.includes(ROLES.ADMIN)) {
+      activeRole.value = ROLES.ADMIN;
+    }
 
     // Log invalid roles (if any)
     const invalidRoles = profile.roles
