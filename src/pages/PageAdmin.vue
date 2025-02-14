@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+import type { I18nOptions } from "@/services/i18n.ts";
 
 import AdminGeneral from "@/components/admin/AdminGeneral.vue";
+import AdminTeachers from "@/components/admin/AdminTeachers.vue";
+
+const { t } = useI18n<I18nOptions>();
 
 const tab = ref("general");
-
 const tabs = [
-  { name: "general", label: "Général" },
-  { name: "teachers", label: "Intervenants" },
-  { name: "courses", label: "Enseignements" },
-  { name: "coordinations", label: "Responsabilités" },
+  { name: "general", label: t("admin.general.section_label") },
+  { name: "teachers", label: t("admin.teachers.section_label") },
+  { name: "courses", label: t("admin.courses.section_label") },
 ];
 </script>
 
@@ -32,7 +36,7 @@ const tabs = [
       </QTabPanel>
 
       <QTabPanel name="teachers">
-        <!-- <AdminTeachers />-->
+        <AdminTeachers />
       </QTabPanel>
 
       <QTabPanel name="courses">

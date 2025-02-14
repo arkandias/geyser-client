@@ -204,15 +204,26 @@ export default {
   },
   admin: {
     general: {
-      phase: {
-        section_label: "Phase en cours",
-      },
-      years: {
-        section_label: "Années",
-      },
-      custom_text: {
-        section_label: "Personnalisation de l'interface",
-      },
+      section_label: "Paramètres généraux",
+      phase: "Phase en cours",
+      years: "Années",
+      new_year: "Nouvelle année",
+      visible: "Visible",
+      current: "En cours",
+      custom_text: "Personnalisation de l'interface",
+    },
+    teachers: {
+      section_label: "Intervenants",
+      position: "Fonctions",
+      teachers: "Intervenants",
+    },
+    courses: {
+      section_label: "Enseignements",
+      degree: "Cursus",
+      program: "Mentions",
+      track: "Parcours",
+      type: "Types d'enseignement",
+      courses: "Enseignement",
     },
   },
   editor: {
