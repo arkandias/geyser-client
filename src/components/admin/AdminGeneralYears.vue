@@ -14,14 +14,6 @@ import type { I18nOptions } from "@/services/i18n.ts";
 import { useYearsStore } from "@/stores/years.ts";
 
 graphql(`
-  query GetGeneralData {
-    years: year(orderBy: [{ value: DESC }]) {
-      value
-      current
-      visible
-    }
-  }
-
   mutation SetCurrentYear($value: Int!) {
     years: updateYear(
       where: { value: { _neq: $value } }
