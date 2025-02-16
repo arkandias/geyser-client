@@ -8,12 +8,15 @@ const { t } = useI18n<I18nOptions>();
 
 <template>
   <QList bordered>
-    <AdminSection icon="sym_s_groups" :label="t('admin.teachers.teachers')">
+    <AdminSection icon="sym_s_shield_person" :label="t('admin.roles.admin')">
     </AdminSection>
 
     <QSeparator />
 
-    <AdminSection icon="sym_s_work" :label="t('admin.teachers.positions')">
+    <AdminSection
+      icon="sym_s_local_police"
+      :label="t('admin.roles.commissioners')"
+    >
     </AdminSection>
   </QList>
 </template>

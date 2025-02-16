@@ -214,16 +214,36 @@ export default {
     },
     teachers: {
       section_label: "Intervenants",
-      position: "Fonctions",
       teachers: "Intervenants",
+      positions: "Fonctions",
+    },
+    services: {
+      section_label: "Services",
+      services: "Services",
+      service_modifications: "Modifications de service",
     },
     courses: {
       section_label: "Enseignements",
-      degree: "Cursus",
-      program: "Mentions",
-      track: "Parcours",
-      type: "Types d'enseignement",
-      courses: "Enseignement",
+      courses: "Enseignements",
+      degrees: "Cursus",
+      programs: "Mentions",
+      tracks: "Parcours",
+      types: "Types",
+    },
+    priorities: {
+      section_label: "Priorités",
+      priorities: "Priorités",
+    },
+    coordinations: {
+      section_label: "Responsabilités",
+      programs: "Mentions",
+      tracks: "Parcours",
+      courses: "Enseignements",
+    },
+    roles: {
+      section_label: "Rôles",
+      admin: "Administrateurs",
+      commissioners: "Commissaires",
     },
   },
   editor: {

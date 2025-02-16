@@ -80,17 +80,17 @@ const dialogBodyClass = ["text-justify"];
     </QCard>
   </QDialog>
 
-  <!-- eslint-disable vue/no-v-html vue/no-v-text-v-html-on-component -->
-
   <QDialog v-model="isLicenceOpen">
     <QCard square>
       <QCardSection :class="dialogHeaderClass">
         {{ t("header.info.license.label") }}
       </QCardSection>
+      <!-- eslint-disable vue/no-v-html vue/no-v-text-v-html-on-component -->
       <QCardSection
         :class="dialogBodyClass"
         v-html="t('header.info.license.message')"
       />
+      <!-- eslint-enable vue/no-v-html vue/no-v-text-v-html-on-component -->
     </QCard>
   </QDialog>
 
@@ -99,6 +99,7 @@ const dialogBodyClass = ["text-justify"];
       <QCardSection :class="dialogHeaderClass">
         {{ t("header.info.legal_notice.label") }}
       </QCardSection>
+      <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
       <QCardSection :class="dialogBodyClass" v-html="legalNotice" />
     </QCard>
   </QDialog>
