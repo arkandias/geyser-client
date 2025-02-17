@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref, toValue, watchEffect } from "vue";
+import { computed, reactive, ref, toValue } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { useDownloadAssignments } from "@/composables/download-assignments.ts";
@@ -341,15 +341,12 @@ const columns: Column<CourseRow>[] = [
     abbreviable: false,
   },
 ];
-const searchableColumns: string[] = columns
+const searchableColumns = columns
   .filter((col) => col.searchable)
   .map((col) => col.name);
-const visibleColumns = ref<string[]>([]);
-watchEffect(() => {
-  visibleColumns.value = columns
-    .filter((col) => toValue(col.visible))
-    .map((col) => col.name);
-});
+const visibleColumns = computed(() =>
+  columns.filter((col) => toValue(col.visible)).map((col) => col.name),
+);
 const isMenuColumnsOpen = ref(false);
 const isMenuColumnsTooltipVisible = ref(false);
 
@@ -388,10 +385,7 @@ const semestersOptions = computed(() =>
 );
 
 // Search
-const search = ref("");
-const clearSearch = () => {
-  search.value = "";
-};
+const search = ref<string | null>(null);
 
 // Filter attributes
 const filterObj = reactive({
@@ -399,7 +393,7 @@ const filterObj = reactive({
   programs,
   courseTypes,
   semesters,
-  search: computed(() => normalizeForSearch(search.value)),
+  search: computed(() => normalizeForSearch(search.value ?? "")),
   searchColumns: computed(() =>
     columns.filter((col) => searchableColumns.includes(col.name)),
   ),
@@ -626,9 +620,7 @@ const downloadTeacherAssignments = async () => {
           clearable
           square
           dense
-          @clear="clearSearch"
-        >
-        </QInput>
+        />
         <QToggle
           v-model="weightedHours"
           icon="sym_s_function"

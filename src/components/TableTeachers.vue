@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, toValue, watchEffect } from "vue";
+import { computed, ref, toValue } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { usePermissions } from "@/composables/permissions.ts";
@@ -189,25 +189,19 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
     searchable: false,
   },
 ];
-const searchableColumns: string[] = columns
+const searchableColumns = columns
   .filter((col) => col.searchable)
   .map((col) => col.name);
-const visibleColumns = ref<string[]>([]);
-watchEffect(() => {
-  visibleColumns.value = columns
-    .filter((col) => toValue(col.visible))
-    .map((col) => col.name);
-});
+const visibleColumns = computed(() =>
+  columns.filter((col) => toValue(col.visible)).map((col) => col.name),
+);
 const isMenuColumnsOpen = ref(false);
 const isMenuColumnsTooltipVisible = ref(false);
 
 // Search filter
-const search = ref("");
-const clearSearch = () => {
-  search.value = "";
-};
+const search = ref<string | null>(null);
 const filterObj = computed(() => ({
-  search: normalizeForSearch(search.value),
+  search: normalizeForSearch(search.value ?? ""),
   searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
 }));
 const filterMethod = (
@@ -257,9 +251,7 @@ const stickyHeader = ref(false);
           clearable
           square
           dense
-          @clear="clearSearch"
-        >
-        </QInput>
+        />
         <QToggle
           v-model="stickyHeader"
           icon="sym_s_scrollable_header"
