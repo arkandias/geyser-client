@@ -20,7 +20,13 @@ import type { I18nOptions } from "@/services/i18n.ts";
 import { useYearsStore } from "@/stores/years.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
 import { formatProgram, formatUser, nf } from "@/utils/format.ts";
-import { compare, normalizeForSearch, uniqueValue } from "@/utils/misc.ts";
+import {
+  compare,
+  compareAbbr,
+  getField,
+  normalizeForSearch,
+  uniqueValue,
+} from "@/utils/misc.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
 
@@ -174,7 +180,7 @@ const columns: Column<CourseRow>[] = [
     }),
     align: "left",
     sortable: true,
-    sort: compare("long"),
+    sort: compareAbbr,
     visible: true,
     searchable: true,
     abbreviable: true,
@@ -188,7 +194,7 @@ const columns: Column<CourseRow>[] = [
     }),
     align: "left",
     sortable: true,
-    sort: compare("long"),
+    sort: compareAbbr,
     visible: true,
     searchable: true,
     abbreviable: true,
@@ -202,7 +208,7 @@ const columns: Column<CourseRow>[] = [
     }),
     align: "left",
     sortable: true,
-    sort: compare("long"),
+    sort: compareAbbr,
     visible: true,
     searchable: true,
     abbreviable: true,
@@ -236,7 +242,6 @@ const columns: Column<CourseRow>[] = [
     field: (row) =>
       (row.hoursPerGroup ?? 0) *
       (weightedHours.value ? row.courseType.coefficient : 1),
-    format: (val: number) => nf.format(val),
     align: "left",
     sortable: true,
     visible: true,
@@ -262,7 +267,6 @@ const columns: Column<CourseRow>[] = [
       (getTeacherTotal(row, REQUEST_TYPES.ASSIGNMENT) ?? row.totalAssigned) *
       (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number | null) => (val === null ? "-" : nf.format(val)),
-    align: "left",
     sortable: true,
     visible: () => perm.toViewAssignments,
     searchable: false,
@@ -277,7 +281,6 @@ const columns: Column<CourseRow>[] = [
       ((row.totalHours ?? 0) - row.totalAssigned) *
       (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => (teacher.value ? "-" : nf.format(val)),
-    align: "left",
     sortable: true,
     visible: false,
     searchable: false,
@@ -291,7 +294,6 @@ const columns: Column<CourseRow>[] = [
       (getTeacherTotal(row, REQUEST_TYPES.PRIMARY) ?? row.totalPrimary) *
       (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => nf.format(val),
-    align: "left",
     sortable: true,
     visible: true,
     searchable: false,
@@ -306,7 +308,6 @@ const columns: Column<CourseRow>[] = [
       ((row.totalHours ?? 0) - row.totalPrimary) *
       (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => (teacher.value ? "-" : nf.format(val)),
-    align: "left",
     sortable: true,
     visible: false,
     searchable: false,
@@ -321,7 +322,6 @@ const columns: Column<CourseRow>[] = [
       ((row.totalHours ?? 0) - row.totalPriority) *
       (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => (teacher.value ? "-" : nf.format(val)),
-    align: "left",
     sortable: true,
     visible: false,
     searchable: false,
@@ -335,7 +335,6 @@ const columns: Column<CourseRow>[] = [
       (getTeacherTotal(row, REQUEST_TYPES.SECONDARY) ?? row.totalSecondary) *
       (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number) => nf.format(val),
-    align: "left",
     sortable: true,
     visible: true,
     searchable: false,
@@ -424,7 +423,7 @@ const filterMethod = (
           normalizeForSearch(
             isAbbreviable(col)
               ? col.field(row).long + " " + (col.field(row).short ?? "")
-              : String(col.field(row)),
+              : String(getField(row, col.field)),
           ).includes(terms.search),
         ),
   );
@@ -706,7 +705,11 @@ const downloadTeacherAssignments = async () => {
           assigned: isAssigned(scope.row),
         }"
       >
-        {{ scope.value?.short ?? scope.value?.long ?? scope.value }}
+        {{
+          scope.col.abbreviable
+            ? (scope.value?.short ?? scope.value.long)
+            : scope.value
+        }}
         <QTooltip v-if="scope.value?.short" :delay="TOOLTIP_DELAY">
           {{ scope.value.long }}
         </QTooltip>

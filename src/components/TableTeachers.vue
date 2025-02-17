@@ -14,7 +14,7 @@ import type { I18nOptions } from "@/services/i18n.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import { nf } from "@/utils/format.ts";
 import { modifiedService, totalHW } from "@/utils/hours.ts";
-import { normalizeForSearch } from "@/utils/misc.ts";
+import { getField, normalizeForSearch } from "@/utils/misc.ts";
 
 const { serviceRowFragments } = defineProps<{
   serviceRowFragments: FragmentType<typeof ServiceRowsFragmentDoc>[];
@@ -97,7 +97,6 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
     sortable: true,
     visible: true,
     searchable: true,
-    abbreviable: false,
   },
   {
     name: "lastname",
@@ -107,7 +106,6 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
     sortable: true,
     visible: true,
     searchable: true,
-    abbreviable: false,
   },
   {
     name: "alias",
@@ -117,7 +115,6 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
     sortable: true,
     visible: false,
     searchable: true,
-    abbreviable: false,
   },
   {
     name: "message",
@@ -128,7 +125,6 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
     sortable: true,
     visible: false,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "service",
@@ -136,11 +132,9 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
     tooltip: "Service à réaliser (en heures EQTD)",
     field: (row) => modifiedService(row),
     format: (val: number) => nf.format(val),
-    align: "left",
     sortable: true,
     visible: true,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "assignment",
@@ -148,11 +142,9 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
     tooltip: "Nombre d'heures EQTD attribuées",
     field: (row) => totalHW(row.totalAssigned),
     format: (val: number) => nf.format(val),
-    align: "left",
     sortable: true,
     visible: () => perm.toViewAssignments,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "diff_assignment",
@@ -161,11 +153,9 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
       "Différence entre le service et le nombre d'heures EQTD attribuées",
     field: (row) => modifiedService(row) - totalHW(row.totalAssigned),
     format: (val: number) => nf.format(val),
-    align: "left",
     sortable: true,
     visible: false,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "primary",
@@ -173,11 +163,9 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
     tooltip: "Nombre d'heures EQTD demandées en vœux principaux",
     field: (row) => totalHW(row.totalPrimary),
     format: (val: number) => nf.format(val),
-    align: "left",
     sortable: true,
     visible: true,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "diff_primary",
@@ -186,11 +174,9 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
       "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",
     field: (row) => modifiedService(row) - totalHW(row.totalPrimary),
     format: (val: number) => nf.format(val),
-    align: "left",
     sortable: true,
     visible: false,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "secondary",
@@ -198,11 +184,9 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
     tooltip: "Nombre d'heures EQTD demandées en vœux secondaires",
     field: (row) => totalHW(row.totalSecondary),
     format: (val: number) => nf.format(val),
-    align: "left",
     sortable: true,
     visible: true,
     searchable: false,
-    abbreviable: false,
   },
 ];
 const searchableColumns: string[] = columns
@@ -232,7 +216,9 @@ const filterMethod = (
 ): readonly ServiceRowsFragment[] =>
   rows.filter((row) =>
     terms.searchColumns.some((col) =>
-      normalizeForSearch(String(col.field(row))).includes(terms.search),
+      normalizeForSearch(String(getField(row, col.field))).includes(
+        terms.search,
+      ),
     ),
   );
 

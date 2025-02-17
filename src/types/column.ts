@@ -5,8 +5,8 @@ import type { ArrayElement } from "@/types/misc.ts";
 
 type ColumnBase = ArrayElement<NonNullable<QTableProps["columns"]>> & {
   tooltip?: string;
-  visible: MaybeRefOrGetter<boolean>;
-  searchable: boolean;
+  visible?: MaybeRefOrGetter<boolean>;
+  searchable?: boolean;
 };
 
 export type ColumnAbbreviable<T> = Omit<ColumnBase, "field"> & {
@@ -15,11 +15,11 @@ export type ColumnAbbreviable<T> = Omit<ColumnBase, "field"> & {
 };
 
 export type ColumnNonAbbreviable<T> = Omit<ColumnBase, "field"> & {
-  field: (row: T) => unknown;
-  abbreviable: false;
+  field: string | ((row: T) => unknown);
+  abbreviable?: false;
 };
 
 export type Column<T> = ColumnAbbreviable<T> | ColumnNonAbbreviable<T>;
 
 export const isAbbreviable = <T>(col: Column<T>): col is ColumnAbbreviable<T> =>
-  col.abbreviable;
+  col.abbreviable ?? false;

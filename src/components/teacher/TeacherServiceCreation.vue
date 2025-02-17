@@ -76,7 +76,7 @@ const submitServiceCreation = async (): Promise<void> => {
   <QCardSection class="text-center">
     <div class="text-subtitle1">Pas de service pour l'année en cours.</div>
     <br />
-    <QBtn outline square color="primary" @click="isServiceFormOpen = true">
+    <QBtn color="primary" outline square @click="isServiceFormOpen = true">
       Cliquez ici pour en créer un
     </QBtn>
     <QDialog v-model="isServiceFormOpen" persistent square>

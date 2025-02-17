@@ -1,3 +1,13 @@
+export const getField = <T extends Record<string, unknown>>(
+  row: T,
+  field: string | ((row: T) => unknown),
+) => {
+  if (typeof field === "string") {
+    return row[field];
+  }
+  return field(row);
+};
+
 export const normalizeForSearch = (str: string) =>
   str
     .normalize("NFD")
@@ -16,3 +26,12 @@ export const compare =
   <K extends string, T extends Record<K, string>>(name: K) =>
   (a: T, b: T) =>
     compareStrings(a[name].toLowerCase(), b[name].toLowerCase());
+
+export const compareAbbr = <T extends { short: string | null; long: string }>(
+  a: T,
+  b: T,
+) =>
+  compareStrings(
+    (a.short ?? b.long).toLowerCase(),
+    (b.short ?? b.long).toLowerCase(),
+  );

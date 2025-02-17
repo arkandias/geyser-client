@@ -5,6 +5,7 @@ const { t, n } = i18n.global;
 // todo: replace with i18n
 export const nf = new Intl.NumberFormat("fr-FR", {
   style: "decimal",
+  minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
 

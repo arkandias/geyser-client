@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 import type { I18nOptions } from "@/services/i18n.ts";
@@ -12,14 +11,13 @@ import AdminRoles from "@/components/admin/AdminRoles.vue";
 import AdminServices from "@/components/admin/AdminServices.vue";
 import AdminTeachers from "@/components/admin/AdminTeachers.vue";
 
-const props = defineProps<{
-  section: string;
+const { section = "general" } = defineProps<{
+  section?: string;
 }>();
 
 const { t } = useI18n<I18nOptions>();
 
-const tabName = computed(() => props.section || "general");
-const tabs = [
+const routeTabs = [
   {
     name: "general",
     label: t("admin.general.section_label"),
@@ -68,7 +66,7 @@ const tabs = [
       dense
     >
       <QRouteTab
-        v-for="tab in tabs"
+        v-for="tab in routeTabs"
         :key="tab.name"
         :name="tab.name"
         :label="tab.label"
@@ -77,7 +75,7 @@ const tabs = [
       />
     </QTabs>
 
-    <QTabPanels v-model="tabName" keep-alive animated>
+    <QTabPanels :model-value="section" keep-alive animated>
       <QTabPanel name="general">
         <AdminGeneral />
       </QTabPanel>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { graphql } from "@/gql";
@@ -38,8 +38,8 @@ graphql(`
     }
   }
 
-  mutation CreateYear($value: Int!) {
-    insertYearOne(object: { value: $value, visible: false }) {
+  mutation CreateYear($value: Int!, $visible: Boolean!) {
+    insertYearOne(object: { value: $value, visible: $visible }) {
       value
     }
   }
@@ -71,18 +71,22 @@ const updateYearVisibilityHandle = async (year: number, visible: boolean) => {
   });
 };
 
-const newYear = ref<number | null>(null);
-const createYearHandle = async () => {
-  if (!newYear.value) return;
-  await createYear.executeMutation({
-    value: newYear.value,
-  });
+const yearInsert = ref(false);
+const newYear = reactive<{ value: number; visible: boolean }>({
+  value: 0,
+  visible: true,
+});
+
+const insertYearHandle = async () => {
+  await createYear.executeMutation(newYear);
+  yearInsert.value = false;
 };
+
 const deleteYearHandle = async (value: number) => {
   if (
     confirm(
-      `Êtes-vous sûr de vouloir supprimer l'année ${value.toString()} ?
-Si des cours ou des services sont associés à cette année, vous ne pourrez pas la supprimer.`,
+      `Are you sure to delete year '${value.toString()}'?
+If courses or services are associated to this year, you won't be able to delete it.`,
     )
   ) {
     await deleteYear.executeMutation({ value });
@@ -91,29 +95,16 @@ Si des cours ou des services sont associés à cette année, vous ne pourrez pas
 </script>
 
 <template>
-  <div class="row items-center">
-    <QInput
-      v-model.number="newYear"
-      type="number"
-      filled
-      flat
-      square
-      dense
-      :placeholder="t('admin.general.new_year')"
-      class="col"
-    >
-      <template #append>
-        <QBtn
-          icon="sym_s_add_circle"
-          color="primary"
-          flat
-          square
-          dense
-          @click="createYearHandle()"
-        />
-      </template>
-    </QInput>
+  <div class="q-mb-md">
+    <QBtn
+      :label="t('admin.general.new_year')"
+      color="primary"
+      no-caps
+      outline
+      @click="yearInsert = true"
+    />
   </div>
+
   <QList bordered separator dense>
     <QItem v-for="year in years" :key="year.value" dense>
       <QItemSection avatar>
@@ -149,6 +140,37 @@ Si des cours ou des services sont associés à cette année, vous ne pourrez pas
       </QItemSection>
     </QItem>
   </QList>
+
+  <QDialog v-model="yearInsert" square>
+    <QCard flat square>
+      <QCardSection>
+        <div class="q-gutter-md">
+          <QInput
+            v-model.number="newYear.value"
+            :label="t('admin.general.new_year')"
+            type="number"
+            square
+            dense
+          />
+          <QToggle
+            v-model="newYear.visible"
+            :label="t('admin.general.visible')"
+            left-label
+          />
+        </div>
+      </QCardSection>
+      <QSeparator />
+      <QCardActions align="right">
+        <QBtn
+          :label="t('admin.general.create_new_year')"
+          color="positive"
+          flat
+          square
+          @click="insertYearHandle"
+        />
+      </QCardActions>
+    </QCard>
+  </QDialog>
 </template>
 
 <style scoped lang="scss"></style>

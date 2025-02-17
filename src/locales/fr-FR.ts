@@ -208,6 +208,7 @@ export default {
       phase: "Phase en cours",
       years: "Années",
       new_year: "Nouvelle année",
+      create_new_year: "Créer",
       visible: "Visible",
       current: "En cours",
       custom_text: "Personnalisation de l'interface",
