@@ -1,0 +1,316 @@
+<script setup lang="ts">
+import { useMutation } from "@urql/vue";
+import { computed, reactive, ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+import { type FragmentType, graphql, useFragment } from "@/gql";
+import {
+  type AdminPositionFragment,
+  AdminPositionFragmentDoc,
+  DeletePositionDocument,
+  InsertPositionDocument,
+  UpdatePositionDocument,
+} from "@/gql/graphql.ts";
+import type { I18nOptions } from "@/services/i18n.ts";
+import type { ColumnNonAbbreviable } from "@/types/column.ts";
+import { NotifyType, notify } from "@/utils/notify.ts";
+
+const { positionFragments } = defineProps<{
+  positionFragments: FragmentType<typeof AdminPositionFragmentDoc>[];
+}>();
+
+graphql(`
+  fragment AdminPosition on Position {
+    value
+    label
+    description
+    baseServiceHours
+  }
+
+  mutation InsertPosition(
+    $value: String!
+    $label: String!
+    $description: String
+    $baseServiceHours: Float
+  ) {
+    insertPositionOne(
+      object: {
+        value: $value
+        label: $label
+        description: $description
+        baseServiceHours: $baseServiceHours
+      }
+    ) {
+      value
+      label
+      description
+      baseServiceHours
+    }
+  }
+
+  mutation UpdatePosition(
+    $currentValue: String!
+    $value: String!
+    $label: String!
+    $description: String
+    $baseServiceHours: Float
+  ) {
+    updatePositionByPk(
+      pkColumns: { value: $currentValue }
+      _set: {
+        value: $value
+        label: $label
+        description: $description
+        baseServiceHours: $baseServiceHours
+      }
+    ) {
+      value
+      label
+      description
+      baseServiceHours
+    }
+  }
+
+  mutation DeletePosition($value: String!) {
+    deletePositionByPk(value: $value) {
+      value
+    }
+  }
+`);
+
+const { t } = useI18n<I18nOptions>();
+
+const insertPosition = useMutation(InsertPositionDocument);
+const updatePosition = useMutation(UpdatePositionDocument);
+const deletePosition = useMutation(DeletePositionDocument);
+
+const positionInsert = ref(false);
+const positionUpdate = ref(false);
+const positionEdit = computed({
+  get: () => positionInsert.value || positionUpdate.value,
+  set: (val) => {
+    if (!val) {
+      positionInsert.value = false;
+      positionUpdate.value = false;
+    }
+  },
+});
+
+const selectedValue = ref("");
+const position = reactive<{
+  value: string;
+  label: string;
+  description: string | null;
+  baseServiceHours: number | null;
+}>({
+  value: "",
+  label: "",
+  description: null,
+  baseServiceHours: null,
+});
+
+const validatePosition = () => {
+  if (!position.value) {
+    notify(NotifyType.ERROR, {
+      message: "Formulaire non valide",
+      caption: "Entrez une valeur",
+    });
+    return false;
+  }
+  if (!position.label) {
+    notify(NotifyType.ERROR, {
+      message: "Formulaire non valide",
+      caption: "Entrez un label",
+    });
+    return false;
+  }
+  return true;
+};
+
+const insertPositionHandle = async () => {
+  if (!validatePosition()) {
+    return;
+  }
+  const { data, error } = await insertPosition.executeMutation(position);
+  positionEdit.value = false;
+  if (data?.insertPositionOne?.value && !error) {
+    notify(NotifyType.SUCCESS, {
+      message: `Fonction ${String(data.insertPositionOne.value)} créée`,
+    });
+  }
+};
+
+const updatePositionHandle = async () => {
+  if (!validatePosition()) {
+    return;
+  }
+  const { data, error } = await updatePosition.executeMutation({
+    currentValue: selectedValue.value,
+    value: position.value,
+    label: position.label,
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+    description: position.description || null,
+    baseServiceHours: position.baseServiceHours,
+  });
+  positionEdit.value = false;
+  if (data?.updatePositionByPk?.value && !error) {
+    notify(NotifyType.SUCCESS, {
+      message: `Fonction ${String(data.updatePositionByPk.value)} mise à jour`,
+    });
+  }
+};
+
+const deletePositionHandle = async () => {
+  if (
+    confirm(
+      `Are you sure to delete position '${selectedValue.value}'?
+If teachers are associated to this position, you won't be able to delete it.`,
+    )
+  ) {
+    const { data, error } = await deletePosition.executeMutation({
+      value: selectedValue.value,
+    });
+    if (data?.deletePositionByPk?.value && !error) {
+      notify(NotifyType.SUCCESS, {
+        message: `Fonction ${String(data.deletePositionByPk.value)} supprimée`,
+      });
+    }
+    positionEdit.value = false;
+  }
+};
+
+const onInsertClick = () => {
+  Object.assign(position, {
+    value: "",
+    label: "",
+    description: null,
+    baseServiceHours: null,
+  });
+  positionInsert.value = true;
+};
+
+const onRowClick = (_: unknown, row: AdminPositionFragment) => {
+  selectedValue.value = row.value;
+  Object.assign(position, {
+    value: row.value,
+    label: row.label,
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+    description: row.description || null,
+    baseServiceHours: row.baseServiceHours,
+  });
+  positionUpdate.value = true;
+};
+
+const positions = computed(() =>
+  positionFragments.map((fragment) =>
+    useFragment(AdminPositionFragmentDoc, fragment),
+  ),
+);
+
+const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
+  {
+    name: "value",
+    label: "Value",
+    align: "left",
+    field: "value",
+    sortable: true,
+  },
+  {
+    name: "label",
+    label: "Label",
+    align: "left",
+    field: "label",
+    sortable: true,
+  },
+  {
+    name: "description",
+    label: "Description",
+    align: "left",
+    field: (row) => row.description ?? null,
+    sortable: true,
+    searchable: true,
+  },
+  {
+    name: "base_service_hours",
+    label: "S. base",
+    field: (row) => row.baseServiceHours ?? null,
+    format: (val: number | null) =>
+      val === null ? "" : String(val) + " " + t("unit.weighted_hours"),
+    sortable: true,
+    searchable: false,
+  },
+];
+</script>
+
+<template>
+  <div class="q-mb-md">
+    <QBtn
+      label="Nouvelle fonction"
+      color="primary"
+      no-caps
+      outline
+      @click="onInsertClick"
+    />
+  </div>
+
+  <QTable
+    :rows="positions"
+    :columns
+    :pagination="{ rowsPerPage: 100 }"
+    :rows-per-page-options="[0, 10, 20, 50, 100]"
+    row-key="value"
+    bordered
+    flat
+    dense
+    @row-click="onRowClick"
+  >
+  </QTable>
+
+  <QDialog v-model="positionEdit" square>
+    <QCard flat square>
+      <QCardSection>
+        <div class="q-gutter-md">
+          <QInput v-model="position.value" label="Valeur" square dense />
+          <QInput v-model="position.label" label="Label" square dense />
+          <QInput
+            v-model="position.description"
+            label="Description"
+            square
+            dense
+          />
+          <QInput
+            v-model.number="position.baseServiceHours"
+            type="number"
+            label="Service de base (htd)"
+            clearable
+            clear-icon="sym_s_close"
+            square
+            dense
+          />
+        </div>
+      </QCardSection>
+      <QSeparator />
+      <QCardActions align="right">
+        <QBtn
+          v-if="positionUpdate"
+          label="Supprimer"
+          color="negative"
+          flat
+          square
+          @click="deletePositionHandle"
+        />
+        <QBtn
+          :label="positionInsert ? 'Créer une fonction' : 'Mettre à jour'"
+          color="positive"
+          flat
+          square
+          @click="
+            positionInsert ? insertPositionHandle() : updatePositionHandle()
+          "
+        />
+      </QCardActions>
+    </QCard>
+  </QDialog>
+</template>
+
+<style scoped lang="scss"></style>
