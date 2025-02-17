@@ -204,27 +204,123 @@ export default {
   },
   admin: {
     general: {
-      section_label: "Paramètres généraux",
-      phase: "Phase en cours",
-      years: "Années",
-      new_year: "Nouvelle année",
-      create_new_year: "Créer",
-      visible: "Visible",
-      current: "En cours",
-      custom_text: "Personnalisation de l'interface",
+      title: "Paramètres généraux",
+      phase: { label: "Phase en cours" },
+      years: {
+        label: "Années",
+        visible: "Visible",
+        current: "En cours",
+        new_year_button: "Nouvelle année",
+        insert_year_button: "Créer",
+        confirm: {
+          delete: `Êtes-vous sûr de vouloir supprimer l'année {year} ?
+Si des cours ou des services sont associés à cette année, vous ne pourrez pas \
+la supprimer.`,
+        },
+      },
+      custom_texts: {
+        label: "Personnalisation de l'interface",
+        edit_button: "Éditer",
+      },
     },
     teachers: {
-      section_label: "Intervenants",
-      teachers: "Intervenants",
-      positions: "Fonctions",
+      title: "Intervenants",
+      teachers: {
+        label: "Intervenants",
+        new_teacher_button: "Nouvel intervenant",
+        table: {
+          uid: "UID",
+          firstname: "Prénom",
+          lastname: "Nom",
+          alias: "Alias",
+          position: "Fonction",
+          base_service_hours: "S. base",
+          visible: "V.",
+          active: "A.",
+        },
+        form: {
+          uid: "UID (email)",
+          firstname: "Prénom",
+          lastname: "Nom",
+          alias: "Alias",
+          position: "Fonction",
+          base_service_hours: "Service de base (htd)",
+          visible: "Visible",
+          active: "Actif",
+          insert: "Créer un intervenant",
+          update: "Mettre à jour",
+          delete: "Supprimer",
+          confirm: {
+            delete: `Êtes-vous sûr de vouloir supprimer l'intervenant {uid} ?
+Si des services, responsabilités ou rôles sont attribués à cet intervenant, \
+vous ne pourrez pas le supprimer.`,
+          },
+          valid: {
+            insert: "Intervenant {uid} créé",
+            update: "Intervenant {uid} mis à jour",
+            delete: "Intervenant {uid} supprimé",
+          },
+          invalid: {
+            message: "Formulaire non valide",
+            caption: {
+              uid_empty: "Entrez un UID (email)",
+              firstname_empty: "Entrez un prénom",
+              lastname_empty: "Entrez un nom",
+              base_service_hours_negative:
+                "Entrez un service de base positif ou nul (ou laissez vide)",
+            },
+          },
+        },
+      },
+      positions: {
+        label: "Fonctions",
+        new_position_button: "Nouvelle fonction",
+        table: {
+          value: "Clé",
+          label: "Label",
+          description: "Description",
+          base_service_hours: "S. base",
+        },
+        form: {
+          value: "Clé",
+          label: "Label",
+          description: "Description",
+          base_service_hours: "Service de base (htd)",
+          insert: "Créer une fonction",
+          update: "Mettre à jour",
+          delete: "Supprimer",
+          confirm: {
+            delete: `Êtes-vous sûr de vouloir supprimer la fonction {position} ?
+Si cette fonction est attribuée à des intervenants, vous ne pourrez pas la \
+supprimer.`,
+          },
+          valid: {
+            insert: "Fonction {position} créée",
+            update: "Fonction {position} mise à jour",
+            delete: "Fonction {position} supprimée",
+          },
+          invalid: {
+            message: "Formulaire non valide",
+            caption: {
+              value_empty: "Entrez une clé",
+              value_invalid_characters:
+                "Entrez une clé valide (caractères autorisés : " +
+                "lettres minuscules, chiffres et tirets bas)",
+              label_empty: "Entrez un label",
+              base_service_hours_negative:
+                "Entrez un service de base positif ou nul (ou laissez vide)",
+            },
+          },
+        },
+      },
     },
     services: {
-      section_label: "Services",
+      title: "Services",
       services: "Services",
       service_modifications: "Modifications de service",
     },
     courses: {
-      section_label: "Enseignements",
+      title: "Enseignements",
       courses: "Enseignements",
       degrees: "Cursus",
       programs: "Mentions",
@@ -232,17 +328,17 @@ export default {
       types: "Types",
     },
     priorities: {
-      section_label: "Priorités",
+      title: "Priorités",
       priorities: "Priorités",
     },
     coordinations: {
-      section_label: "Responsabilités",
+      title: "Responsabilités",
       programs: "Mentions",
       tracks: "Parcours",
       courses: "Enseignements",
     },
     roles: {
-      section_label: "Rôles",
+      title: "Rôles",
       admin: "Administrateurs",
       commissioners: "Commissaires",
     },

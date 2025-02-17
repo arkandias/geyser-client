@@ -112,15 +112,33 @@ const position = reactive<{
 const validatePosition = () => {
   if (!position.value) {
     notify(NotifyType.ERROR, {
-      message: "Formulaire non valide",
-      caption: "Entrez une valeur",
+      message: t("admin.teachers.positions.form.invalid.message"),
+      caption: t("admin.teachers.positions.form.invalid.caption.value_empty"),
+    });
+    return false;
+  }
+  if (!/^[a-z0-9_]*$/.test(position.value)) {
+    notify(NotifyType.ERROR, {
+      message: t("admin.teachers.positions.form.invalid.message"),
+      caption: t(
+        "admin.teachers.positions.form.invalid.caption.value_invalid_characters",
+      ),
     });
     return false;
   }
   if (!position.label) {
     notify(NotifyType.ERROR, {
-      message: "Formulaire non valide",
-      caption: "Entrez un label",
+      message: t("admin.teachers.positions.form.invalid.message"),
+      caption: t("admin.teachers.positions.form.invalid.caption.label_empty"),
+    });
+    return false;
+  }
+  if (position.baseServiceHours !== null && position.baseServiceHours < 0) {
+    notify(NotifyType.ERROR, {
+      message: t("admin.teachers.positions.form.invalid.message"),
+      caption: t(
+        "admin.teachers.positions.form.invalid.caption.base_service_hours_negative",
+      ),
     });
     return false;
   }
@@ -135,7 +153,9 @@ const insertPositionHandle = async () => {
   positionEdit.value = false;
   if (data?.insertPositionOne?.value && !error) {
     notify(NotifyType.SUCCESS, {
-      message: `Fonction ${String(data.insertPositionOne.value)} créée`,
+      message: t("admin.teachers.positions.form.valid.insert", {
+        position: String(data.insertPositionOne.value),
+      }),
     });
   }
 };
@@ -155,7 +175,9 @@ const updatePositionHandle = async () => {
   positionEdit.value = false;
   if (data?.updatePositionByPk?.value && !error) {
     notify(NotifyType.SUCCESS, {
-      message: `Fonction ${String(data.updatePositionByPk.value)} mise à jour`,
+      message: t("admin.teachers.positions.form.valid.update", {
+        position: String(data.updatePositionByPk.value),
+      }),
     });
   }
 };
@@ -163,8 +185,9 @@ const updatePositionHandle = async () => {
 const deletePositionHandle = async () => {
   if (
     confirm(
-      `Are you sure to delete position '${selectedValue.value}'?
-If teachers are associated to this position, you won't be able to delete it.`,
+      t("admin.teachers.positions.form.confirm.delete", {
+        position: selectedValue.value,
+      }),
     )
   ) {
     const { data, error } = await deletePosition.executeMutation({
@@ -172,7 +195,9 @@ If teachers are associated to this position, you won't be able to delete it.`,
     });
     if (data?.deletePositionByPk?.value && !error) {
       notify(NotifyType.SUCCESS, {
-        message: `Fonction ${String(data.deletePositionByPk.value)} supprimée`,
+        message: t("admin.teachers.positions.form.valid.delete", {
+          position: String(data.deletePositionByPk.value),
+        }),
       });
     }
     positionEdit.value = false;
@@ -189,7 +214,7 @@ const onInsertClick = () => {
   positionInsert.value = true;
 };
 
-const onRowClick = (_: unknown, row: AdminPositionFragment) => {
+const onRowClick = (_: Event, row: AdminPositionFragment) => {
   selectedValue.value = row.value;
   Object.assign(position, {
     value: row.value,
@@ -210,21 +235,21 @@ const positions = computed(() =>
 const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
   {
     name: "value",
-    label: "Value",
+    label: t("admin.teachers.positions.table.value"),
     align: "left",
     field: "value",
     sortable: true,
   },
   {
     name: "label",
-    label: "Label",
+    label: t("admin.teachers.positions.table.label"),
     align: "left",
     field: "label",
     sortable: true,
   },
   {
     name: "description",
-    label: "Description",
+    label: t("admin.teachers.positions.table.description"),
     align: "left",
     field: (row) => row.description ?? null,
     sortable: true,
@@ -232,7 +257,7 @@ const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
   },
   {
     name: "base_service_hours",
-    label: "S. base",
+    label: t("admin.teachers.positions.table.base_service_hours"),
     field: (row) => row.baseServiceHours ?? null,
     format: (val: number | null) =>
       val === null ? "" : String(val) + " " + t("unit.weighted_hours"),
@@ -245,7 +270,7 @@ const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
 <template>
   <div class="q-mb-md">
     <QBtn
-      label="Nouvelle fonction"
+      :label="t('admin.teachers.positions.new_position_button')"
       color="primary"
       no-caps
       outline
@@ -267,21 +292,34 @@ const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
   </QTable>
 
   <QDialog v-model="positionEdit" square>
-    <QCard flat square>
+    <QCard flat square class="admin-form">
+      <QCardSection v-if="positionUpdate" class="text-h6">
+        {{ selectedValue }}
+      </QCardSection>
       <QCardSection>
         <div class="q-gutter-md">
-          <QInput v-model="position.value" label="Valeur" square dense />
-          <QInput v-model="position.label" label="Label" square dense />
+          <QInput
+            v-model="position.value"
+            :label="t('admin.teachers.positions.form.value')"
+            square
+            dense
+          />
+          <QInput
+            v-model="position.label"
+            :label="t('admin.teachers.positions.form.label')"
+            square
+            dense
+          />
           <QInput
             v-model="position.description"
-            label="Description"
+            :label="t('admin.teachers.positions.form.description')"
             square
             dense
           />
           <QInput
             v-model.number="position.baseServiceHours"
             type="number"
-            label="Service de base (htd)"
+            :label="t('admin.teachers.positions.form.base_service_hours')"
             clearable
             clear-icon="sym_s_close"
             square
@@ -293,14 +331,18 @@ const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
       <QCardActions align="right">
         <QBtn
           v-if="positionUpdate"
-          label="Supprimer"
+          :label="t('admin.teachers.positions.form.delete')"
           color="negative"
           flat
           square
           @click="deletePositionHandle"
         />
         <QBtn
-          :label="positionInsert ? 'Créer une fonction' : 'Mettre à jour'"
+          :label="
+            positionInsert
+              ? t('admin.teachers.positions.form.insert')
+              : t('admin.teachers.positions.form.update')
+          "
           color="positive"
           flat
           square

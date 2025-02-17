@@ -13,13 +13,16 @@ const { t } = useI18n<I18nOptions>();
 
 <template>
   <QList bordered>
-    <AdminSection icon="sym_s_schedule" :label="t('admin.general.phase')">
+    <AdminSection icon="sym_s_schedule" :label="t('admin.general.phase.label')">
       <AdminGeneralPhase />
     </AdminSection>
 
     <QSeparator />
 
-    <AdminSection icon="sym_s_calendar_month" :label="t('admin.general.years')">
+    <AdminSection
+      icon="sym_s_calendar_month"
+      :label="t('admin.general.years.label')"
+    >
       <AdminGeneralYears />
     </AdminSection>
 
@@ -27,7 +30,7 @@ const { t } = useI18n<I18nOptions>();
 
     <AdminSection
       icon="sym_s_edit_note"
-      :label="t('admin.general.custom_text')"
+      :label="t('admin.general.custom_texts.label')"
     >
       <AdminGeneralCustomTexts />
     </AdminSection>

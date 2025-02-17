@@ -59,20 +59,19 @@ const updateCustomTextHandle = (key: string, value: string) =>
       dense-toggle
     >
       <QCard>
-        <QCardSection class="q-pa-md">
+        <QCardSection>
           <EditableText
             v-model="customTextsEdit[option.key]"
             :text="option.value"
             :set-text="(value) => updateCustomTextHandle(option.key, value)"
           />
         </QCardSection>
-        <QCardActions align="right" dense>
+        <QCardActions dense>
           <QBtn
-            icon="sym_s_edit"
+            :label="t('admin.general.custom_texts.edit_button')"
             color="primary"
-            size="sm"
-            flat
-            square
+            no-caps
+            outline
             dense
             @click="customTextsEdit[option.key] = true"
           />

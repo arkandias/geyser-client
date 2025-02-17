@@ -39,7 +39,10 @@ const { t } = useI18n<I18nOptions>();
 
 <template>
   <QList bordered>
-    <AdminSection icon="sym_s_groups" :label="t('admin.teachers.teachers')">
+    <AdminSection
+      icon="sym_s_groups"
+      :label="t('admin.teachers.teachers.label')"
+    >
       <AdminTeachersTeachers
         :teacher-fragments="teachers"
         :position-fragments="positions"
@@ -48,7 +51,10 @@ const { t } = useI18n<I18nOptions>();
 
     <QSeparator />
 
-    <AdminSection icon="sym_s_work" :label="t('admin.teachers.positions')">
+    <AdminSection
+      icon="sym_s_work"
+      :label="t('admin.teachers.positions.label')"
+    >
       <AdminTeachersPositions :position-fragments="positions" />
     </AdminSection>
   </QList>

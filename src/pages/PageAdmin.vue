@@ -20,37 +20,37 @@ const { t } = useI18n<I18nOptions>();
 const routeTabs = [
   {
     name: "general",
-    label: t("admin.general.section_label"),
+    label: t("admin.general.title"),
     to: "/admin/general",
   },
   {
     name: "teachers",
-    label: t("admin.teachers.section_label"),
+    label: t("admin.teachers.title"),
     to: "/admin/teachers",
   },
   {
     name: "services",
-    label: t("admin.services.section_label"),
+    label: t("admin.services.title"),
     to: "/admin/services",
   },
   {
     name: "courses",
-    label: t("admin.courses.section_label"),
+    label: t("admin.courses.title"),
     to: "/admin/courses",
   },
   {
     name: "priorities",
-    label: t("admin.priorities.section_label"),
+    label: t("admin.priorities.title"),
     to: "/admin/priorities",
   },
   {
     name: "coordinations",
-    label: t("admin.coordinations.section_label"),
+    label: t("admin.coordinations.title"),
     to: "/admin/coordinations",
   },
   {
     name: "roles",
-    label: t("admin.roles.section_label"),
+    label: t("admin.roles.title"),
     to: "/admin/roles",
   },
 ];
@@ -107,4 +107,8 @@ const routeTabs = [
   </QPage>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:global(.admin-form) {
+  min-width: $admin-form-min-width;
+}
+</style>

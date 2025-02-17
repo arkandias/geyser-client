@@ -89,6 +89,7 @@ const isOnlyWhitespace = (htmlString: string) => {
       <QCardActions align="right">
         <QBtn
           :label="t('editor.button.cancel')"
+          color="primary"
           flat
           square
           dense
@@ -96,6 +97,7 @@ const isOnlyWhitespace = (htmlString: string) => {
         />
         <QBtn
           :label="t('editor.button.save')"
+          color="primary"
           flat
           square
           dense

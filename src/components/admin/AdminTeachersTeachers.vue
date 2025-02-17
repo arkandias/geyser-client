@@ -155,22 +155,33 @@ const teacher = reactive<{
 const validateTeacher = () => {
   if (!teacher.uid) {
     notify(NotifyType.ERROR, {
-      message: "Formulaire non valide",
-      caption: "Entrez un UID (email)",
+      message: t("admin.teachers.teachers.form.invalid.message"),
+      caption: t("admin.teachers.teachers.form.invalid.caption.uid_empty"),
     });
     return false;
   }
   if (!teacher.firstname) {
     notify(NotifyType.ERROR, {
-      message: "Formulaire non valide",
-      caption: "Entrez un prénom",
+      message: t("admin.teachers.teachers.form.invalid.message"),
+      caption: t(
+        "admin.teachers.teachers.form.invalid.caption.firstname_empty",
+      ),
     });
     return false;
   }
   if (!teacher.lastname) {
     notify(NotifyType.ERROR, {
-      message: "Formulaire non valide",
-      caption: "Entrez un nom",
+      message: t("admin.teachers.teachers.form.invalid.message"),
+      caption: t("admin.teachers.teachers.form.invalid.caption.lastname_empty"),
+    });
+    return false;
+  }
+  if (teacher.baseServiceHours !== null && teacher.baseServiceHours < 0) {
+    notify(NotifyType.ERROR, {
+      message: t("admin.teachers.teachers.form.invalid.message"),
+      caption: t(
+        "admin.teachers.teachers.form.invalid.caption.base_service_hours_negative",
+      ),
     });
     return false;
   }
@@ -185,7 +196,9 @@ const insertTeacherHandle = async () => {
   teacherEdit.value = false;
   if (data?.insertTeacherOne?.uid && !error) {
     notify(NotifyType.SUCCESS, {
-      message: `Intervenant ${String(data.insertTeacherOne.uid)} créé`,
+      message: t("admin.teachers.teachers.form.valid.insert", {
+        uid: String(data.insertTeacherOne.uid),
+      }),
     });
   }
 };
@@ -210,7 +223,9 @@ const updateTeacherHandle = async () => {
   teacherEdit.value = false;
   if (data?.updateTeacherByPk?.uid && !error) {
     notify(NotifyType.SUCCESS, {
-      message: `Intervenant ${String(data.updateTeacherByPk.uid)} mis à jour`,
+      message: t("admin.teachers.teachers.form.valid.update", {
+        uid: String(data.updateTeacherByPk.uid),
+      }),
     });
   }
 };
@@ -218,8 +233,9 @@ const updateTeacherHandle = async () => {
 const deleteTeacherHandle = async () => {
   if (
     confirm(
-      `Are you sure to delete teacher '${selectedUid.value}'?
-If services, coordinations, or roles are associated to this teacher, you won't be able to delete it.`,
+      t("admin.teachers.teachers.form.confirm.delete", {
+        uid: selectedUid.value,
+      }),
     )
   ) {
     const { data, error } = await deleteTeacher.executeMutation({
@@ -227,7 +243,9 @@ If services, coordinations, or roles are associated to this teacher, you won't b
     });
     if (data?.deleteTeacherByPk?.uid && !error) {
       notify(NotifyType.SUCCESS, {
-        message: `Intervenant ${String(data.deleteTeacherByPk.uid)} supprimé`,
+        message: t("admin.teachers.teachers.form.valid.delete", {
+          uid: String(data.deleteTeacherByPk.uid),
+        }),
       });
     }
     teacherEdit.value = false;
@@ -248,7 +266,7 @@ const onInsertClick = () => {
   teacherInsert.value = true;
 };
 
-const onRowClick = (_: unknown, row: AdminTeacherFragment) => {
+const onRowClick = (_: Event, row: AdminTeacherFragment) => {
   selectedUid.value = row.uid;
   Object.assign(teacher, {
     uid: row.uid,
@@ -278,7 +296,7 @@ const positions = computed(() =>
 const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
   {
     name: "uid",
-    label: "UID",
+    label: t("admin.teachers.teachers.table.uid"),
     align: "left",
     field: "uid",
     sortable: true,
@@ -286,7 +304,7 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
   },
   {
     name: "firstname",
-    label: "Prénom",
+    label: t("admin.teachers.teachers.table.firstname"),
     align: "left",
     field: "firstname",
     sortable: true,
@@ -294,7 +312,7 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
   },
   {
     name: "lastname",
-    label: "Nom",
+    label: t("admin.teachers.teachers.table.lastname"),
     align: "left",
     field: "lastname",
     sortable: true,
@@ -302,7 +320,7 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
   },
   {
     name: "alias",
-    label: "Alias",
+    label: t("admin.teachers.teachers.table.alias"),
     align: "left",
     field: (row) => row.alias ?? null,
     sortable: true,
@@ -310,7 +328,7 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
   },
   {
     name: "position",
-    label: "Fonction",
+    label: t("admin.teachers.teachers.table.position"),
     align: "left",
     field: (row) => row.position ?? null,
     sortable: true,
@@ -318,7 +336,7 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
   },
   {
     name: "base_service_hours",
-    label: "S. base",
+    label: t("admin.teachers.teachers.table.base_service_hours"),
     field: (row) => row.baseServiceHours ?? null,
     format: (val: number | null) =>
       val === null ? "" : String(val) + " " + t("unit.weighted_hours"),
@@ -327,7 +345,7 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
   },
   {
     name: "visible",
-    label: "V.",
+    label: t("admin.teachers.teachers.table.visible"),
     field: "visible",
     format: (val: boolean) => (val ? "✓" : "✗"),
     sortable: true,
@@ -335,7 +353,7 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
   },
   {
     name: "active",
-    label: "A.",
+    label: t("admin.teachers.teachers.table.active"),
     field: "active",
     format: (val: boolean) => (val ? "✓" : "✗"),
     sortable: true,
@@ -347,7 +365,7 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
 <template>
   <div class="q-mb-md">
     <QBtn
-      label="Nouvel intervenant"
+      :label="t('admin.teachers.teachers.new_teacher_button')"
       color="primary"
       no-caps
       outline
@@ -370,14 +388,32 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
 
   <QDialog v-model="teacherEdit" square>
     <QCard flat square>
+      <QCardSection v-if="teacherUpdate" class="text-h6">
+        {{ selectedUid }}
+      </QCardSection>
       <QCardSection>
         <div class="q-gutter-md">
-          <QInput v-model="teacher.uid" label="UID (email)" square dense />
-          <QInput v-model="teacher.lastname" label="Nom" square dense />
-          <QInput v-model="teacher.firstname" label="Prénom" square dense />
+          <QInput
+            v-model="teacher.uid"
+            :label="t('admin.teachers.teachers.form.uid')"
+            square
+            dense
+          />
+          <QInput
+            v-model="teacher.firstname"
+            :label="t('admin.teachers.teachers.form.firstname')"
+            square
+            dense
+          />
+          <QInput
+            v-model="teacher.lastname"
+            :label="t('admin.teachers.teachers.form.lastname')"
+            square
+            dense
+          />
           <QInput
             v-model="teacher.alias"
-            label="Alias"
+            :label="t('admin.teachers.teachers.form.alias')"
             clearable
             clear-icon="sym_s_close"
             square
@@ -386,7 +422,7 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
           <QSelect
             v-model="teacher.position"
             :options="positions"
-            label="Fonction"
+            :label="t('admin.teachers.teachers.form.position')"
             clearable
             clear-icon="sym_s_close"
             square
@@ -398,15 +434,23 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
               <QInput
                 v-model.number="teacher.baseServiceHours"
                 type="number"
-                label="Service de base (htd)"
+                :label="t('admin.teachers.teachers.form.base_service_hours')"
                 clearable
                 clear-icon="sym_s_close"
                 square
                 dense
               />
             </div>
-            <QToggle v-model="teacher.visible" label="Visible" left-label />
-            <QToggle v-model="teacher.active" label="Actif" left-label />
+            <QToggle
+              v-model="teacher.visible"
+              :label="t('admin.teachers.teachers.form.visible')"
+              left-label
+            />
+            <QToggle
+              v-model="teacher.active"
+              :label="t('admin.teachers.teachers.form.active')"
+              left-label
+            />
           </div>
         </div>
       </QCardSection>
@@ -414,14 +458,18 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
       <QCardActions align="right">
         <QBtn
           v-if="teacherUpdate"
-          label="Supprimer"
+          :label="t('admin.teachers.teachers.form.delete')"
           color="negative"
           flat
           square
           @click="deleteTeacherHandle"
         />
         <QBtn
-          :label="teacherInsert ? 'Créer un intervenant' : 'Mettre à jour'"
+          :label="
+            teacherInsert
+              ? t('admin.teachers.teachers.form.insert')
+              : t('admin.teachers.teachers.form.update')
+          "
           color="positive"
           flat
           square

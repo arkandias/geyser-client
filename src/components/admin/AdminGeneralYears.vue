@@ -84,10 +84,7 @@ const insertYearHandle = async () => {
 
 const deleteYearHandle = async (value: number) => {
   if (
-    confirm(
-      `Are you sure to delete year '${value.toString()}'?
-If courses or services are associated to this year, you won't be able to delete it.`,
-    )
+    confirm(t("admin.general.years.confirm.delete", { year: value.toString() }))
   ) {
     await deleteYear.executeMutation({ value });
   }
@@ -97,7 +94,7 @@ If courses or services are associated to this year, you won't be able to delete 
 <template>
   <div class="q-mb-md">
     <QBtn
-      :label="t('admin.general.new_year')"
+      :label="t('admin.general.years.new_year_button')"
       color="primary"
       no-caps
       outline
@@ -123,7 +120,7 @@ If courses or services are associated to this year, you won't be able to delete 
       <QItemSection side>
         <QToggle
           v-model="year.visible"
-          :label="t('admin.general.visible')"
+          :label="t('admin.general.years.visible')"
           @update:model-value="
             (value) => updateYearVisibilityHandle(year.value, value)
           "
@@ -133,7 +130,7 @@ If courses or services are associated to this year, you won't be able to delete 
         <QRadio
           v-model="currentYear"
           :val="year.value"
-          :label="t('admin.general.current')"
+          :label="t('admin.general.years.current')"
           dense
           @update:model-value="setCurrentYearHandle"
         />
@@ -147,14 +144,14 @@ If courses or services are associated to this year, you won't be able to delete 
         <div class="q-gutter-md">
           <QInput
             v-model.number="newYear.value"
-            :label="t('admin.general.new_year')"
+            :label="t('admin.general.years.new_year_button')"
             type="number"
             square
             dense
           />
           <QToggle
             v-model="newYear.visible"
-            :label="t('admin.general.visible')"
+            :label="t('admin.general.years.visible')"
             left-label
           />
         </div>
@@ -162,7 +159,7 @@ If courses or services are associated to this year, you won't be able to delete 
       <QSeparator />
       <QCardActions align="right">
         <QBtn
-          :label="t('admin.general.create_new_year')"
+          :label="t('admin.general.years.insert_year_button')"
           color="positive"
           flat
           square
