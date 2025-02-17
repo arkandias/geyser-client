@@ -616,8 +616,8 @@ const downloadTeacherAssignments = async () => {
           :disable="!!service"
           color="primary"
           placeholder="Recherche"
-          clear-icon="sym_s_close"
           clearable
+          clear-icon="sym_s_close"
           square
           dense
         />

@@ -15,6 +15,8 @@ import type { I18nOptions } from "@/services/i18n.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
+import AdminButtons from "@/components/admin/AdminButtons.vue";
+
 const { positionFragments } = defineProps<{
   positionFragments: FragmentType<typeof AdminPositionFragmentDoc>[];
 }>();
@@ -204,7 +206,7 @@ const deletePositionHandle = async () => {
   }
 };
 
-const onInsertClick = () => {
+const onCreateClick = () => {
   Object.assign(position, {
     value: "",
     label: "",
@@ -212,6 +214,14 @@ const onInsertClick = () => {
     baseServiceHours: null,
   });
   positionInsert.value = true;
+};
+
+const onImportClick = () => {
+  void 0;
+};
+
+const onExportClick = () => {
+  void 0;
 };
 
 const onRowClick = (_: Event, row: AdminPositionFragment) => {
@@ -268,15 +278,7 @@ const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
 </script>
 
 <template>
-  <div class="q-mb-md">
-    <QBtn
-      :label="t('admin.teachers.positions.new_position_button')"
-      color="primary"
-      no-caps
-      outline
-      @click="onInsertClick"
-    />
-  </div>
+  <AdminButtons :on-create-click :on-import-click :on-export-click />
 
   <QTable
     :rows="positions"
@@ -313,6 +315,8 @@ const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
           <QInput
             v-model="position.description"
             :label="t('admin.teachers.positions.form.description')"
+            clearable
+            clear-icon="sym_s_close"
             square
             dense
           />

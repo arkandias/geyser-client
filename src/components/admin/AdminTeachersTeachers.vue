@@ -14,7 +14,10 @@ import {
 } from "@/gql/graphql.ts";
 import type { I18nOptions } from "@/services/i18n.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
+import { getField, normalizeForSearch } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
+
+import AdminButtons from "@/components/admin/AdminButtons.vue";
 
 const { teacherFragments, positionFragments } = defineProps<{
   teacherFragments: FragmentType<typeof AdminTeacherFragmentDoc>[];
@@ -252,7 +255,7 @@ const deleteTeacherHandle = async () => {
   }
 };
 
-const onInsertClick = () => {
+const onCreateClick = () => {
   Object.assign(teacher, {
     uid: "",
     firstname: "",
@@ -264,6 +267,14 @@ const onInsertClick = () => {
     active: true,
   });
   teacherInsert.value = true;
+};
+
+const onImportClick = () => {
+  void 0;
+};
+
+const onExportClick = () => {
+  void 0;
 };
 
 const onRowClick = (_: Event, row: AdminTeacherFragment) => {
@@ -360,34 +371,61 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
     searchable: false,
   },
 ];
+
+// Search filter
+const search = ref<string | null>(null);
+const searchableColumns = columns
+  .filter((col) => col.searchable)
+  .map((col) => col.name);
+const filterObj = computed(() => ({
+  search: normalizeForSearch(search.value ?? ""),
+  searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
+}));
+const filterMethod = (
+  rows: readonly AdminTeacherFragment[],
+  terms: typeof filterObj.value,
+): readonly AdminTeacherFragment[] =>
+  rows.filter((row) =>
+    terms.searchColumns.some((col) =>
+      normalizeForSearch(String(getField(row, col.field))).includes(
+        terms.search,
+      ),
+    ),
+  );
 </script>
 
 <template>
-  <div class="q-mb-md">
-    <QBtn
-      :label="t('admin.teachers.teachers.new_teacher_button')"
-      color="primary"
-      no-caps
-      outline
-      @click="onInsertClick"
-    />
-  </div>
+  <AdminButtons :on-create-click :on-import-click :on-export-click />
 
   <QTable
     :rows="teachers"
     :columns
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
+    :filter="filterObj"
+    :filter-method
     row-key="uid"
     bordered
     flat
     dense
     @row-click="onRowClick"
   >
+    <template #top>
+      <QInput
+        v-model="search"
+        color="primary"
+        placeholder="Recherche"
+        clearable
+        clear-icon="sym_s_close"
+        square
+        dense
+        style="width: 100%"
+      />
+    </template>
   </QTable>
 
   <QDialog v-model="teacherEdit" square>
-    <QCard flat square>
+    <QCard flat square class="admin-form">
       <QCardSection v-if="teacherUpdate" class="text-h6">
         {{ selectedUid }}
       </QCardSection>
@@ -439,6 +477,7 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
                 clear-icon="sym_s_close"
                 square
                 dense
+                style="width: 150px"
               />
             </div>
             <QToggle

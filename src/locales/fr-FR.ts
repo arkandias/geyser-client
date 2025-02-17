@@ -203,6 +203,11 @@ export default {
     },
   },
   admin: {
+    buttons: {
+      create: "Créer",
+      import: "Importer",
+      export: "Exporter",
+    },
     general: {
       title: "Paramètres généraux",
       phase: { label: "Phase en cours" },
@@ -227,9 +232,8 @@ la supprimer.`,
       title: "Intervenants",
       teachers: {
         label: "Intervenants",
-        new_teacher_button: "Nouvel intervenant",
         table: {
-          uid: "UID",
+          uid: "Email",
           firstname: "Prénom",
           lastname: "Nom",
           alias: "Alias",
@@ -239,7 +243,7 @@ la supprimer.`,
           active: "A.",
         },
         form: {
-          uid: "UID (email)",
+          uid: "Email",
           firstname: "Prénom",
           lastname: "Nom",
           alias: "Alias",
@@ -263,7 +267,7 @@ vous ne pourrez pas le supprimer.`,
           invalid: {
             message: "Formulaire non valide",
             caption: {
-              uid_empty: "Entrez un UID (email)",
+              uid_empty: "Entrez un email",
               firstname_empty: "Entrez un prénom",
               lastname_empty: "Entrez un nom",
               base_service_hours_negative:
