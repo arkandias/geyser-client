@@ -7,6 +7,7 @@ import { graphql } from "@/gql";
 import { GetAdminTeachersDocument } from "@/gql/graphql.ts";
 
 import AdminSection from "@/components/admin/AdminSection.vue";
+import AdminTeachersPositions from "@/components/admin/AdminTeachersPositions.vue";
 import AdminTeachersTeachers from "@/components/admin/AdminTeachersTeachers.vue";
 
 graphql(`
@@ -16,6 +17,7 @@ graphql(`
     }
     positions: position(orderBy: [{ label: ASC }]) {
       ...AdminTeacherPosition
+      ...AdminPosition
     }
   }
 `);
@@ -47,6 +49,7 @@ const { t } = useI18n<I18nOptions>();
     <QSeparator />
 
     <AdminSection icon="sym_s_work" :label="t('admin.teachers.positions')">
+      <AdminTeachersPositions :position-fragments="positions" />
     </AdminSection>
   </QList>
 </template>
