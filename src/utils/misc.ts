@@ -14,6 +14,15 @@ export const normalizeForSearch = (str: string) =>
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase();
 
+export const toSlug = (str: string) =>
+  str
+    .toLowerCase() // Convert to lowercase
+    .normalize("NFD") // Normalize diacritics
+    .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+    .replace(/[^a-z0-9_\s-]/g, "") // Remove non-alphanumeric chars (except underscore)
+    .replace(/[\s-]+/g, "_") // Replace spaces and hyphens with underscore
+    .trim(); // Remove leading/trailing spaces
+
 export const uniqueValue = <T extends { value: unknown }>(
   element: T,
   index: number,

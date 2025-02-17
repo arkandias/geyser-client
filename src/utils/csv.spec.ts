@@ -1,4 +1,3 @@
-import slugify from "slugify";
 import {
   type MockInstance,
   afterEach,
@@ -15,6 +14,7 @@ import {
   flattenSimpleObject,
   formatValue,
 } from "./csv.ts";
+import { toSlug } from "@/utils/misc.ts";
 
 describe("formatValue", () => {
   it("handles basic scalars", () => {
@@ -41,11 +41,11 @@ describe("formatValue", () => {
   });
 
   it("handles formatted numbers", () => {
-    expect(formatValue(1234.56789)).toBe('"1\u202F234,57"');
+    expect(formatValue(1234.56789)).toBe("1234.57");
   });
 
   it("handles formatted numbers with custom separator", () => {
-    expect(formatValue(1234.56789, ";")).toBe("1\u202F234,57");
+    expect(formatValue(1234.56789, ";")).toBe("1234.57");
   });
 });
 
@@ -135,7 +135,7 @@ describe("dataArrayToCSV", () => {
 
     const expected =
       "name,age,notes\n" +
-      '"John,Doe","1\u202F234,57","line1\nline2"\n' +
+      '"John,Doe",1234.57,"line1\nline2"\n' +
       '"Jane ""The Doctor"" Doe",25,"note,with,commas"';
 
     expect(dataArrayToCSV(data, headers)).toBe(expected);
@@ -154,7 +154,7 @@ describe("dataArrayToCSV", () => {
 
     const expected =
       "name;age;notes\n" +
-      'John,Doe;1\u202F234,57;"line1\nline2"\n' +
+      'John,Doe;1234.57;"line1\nline2"\n' +
       '"Jane ""The Doctor"" Doe";25;"note;with;semicolons"';
 
     expect(dataArrayToCSV(data, headers, ";")).toBe(expected);
@@ -234,7 +234,7 @@ describe("dataArrayToCSV", () => {
 
     const expected =
       "name,age,isActive,contact.email,contact.phone.home,contact.phone.isPreferred,contact.notes\n" +
-      '"John,Doe","1\u202F234,57",true,john@example.com,123-456,true,"line1\nline2"\n' +
+      '"John,Doe",1234.57,true,john@example.com,123-456,true,"line1\nline2"\n' +
       '"Jane ""The Doctor"" Doe",,false,"jane@example.com,alt@example.com",,false,"note,with,commas"';
 
     expect(dataArrayToCSV(data, headers)).toBe(expected);
@@ -295,7 +295,7 @@ describe("downloadCSV", () => {
     // Verify link setup
     expect(mockLink.style.display).toBe("none");
     expect(mockLink.href).toBe("mock-url");
-    expect(mockLink.download).toBe(slugify(filename) + ".csv");
+    expect(mockLink.download).toBe(toSlug(filename) + ".csv");
 
     // Verify DOM operations sequence
     expect(createElementSpy).toHaveBeenCalledWith("a");

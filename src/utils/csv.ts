@@ -1,8 +1,10 @@
-import slugify from "slugify";
+import { toSlug } from "@/utils/misc.ts";
 
-import { nf } from "@/utils/format.ts";
-
-// todo: CSV with periods
+export const nf = new Intl.NumberFormat("en-US", {
+  style: "decimal",
+  maximumFractionDigits: 2,
+  useGrouping: false,
+});
 
 type Scalar = string | number | boolean | null | undefined;
 type SimpleObject = { [key: string]: Scalar | SimpleObject };
@@ -53,7 +55,7 @@ const flatDataToRow = (
   obj: Record<string, Scalar>,
   headers: string[],
   sep = ",",
-) => headers.map((key) => formatValue(obj[key], sep)).join(sep);
+): string => headers.map((key) => formatValue(obj[key], sep)).join(sep);
 
 const dataToRow = (obj: SimpleObject, headers: string[], sep = ","): string =>
   flatDataToRow(flattenSimpleObject(obj), headers, sep);
@@ -82,13 +84,7 @@ export const downloadCSV = (
   const link = document.createElement("a");
   link.style.display = "none";
   link.href = url;
-  link.download =
-    slugify(filename, {
-      lower: true,
-      replacement: "_",
-      strict: true,
-      trim: true,
-    }) + ".csv";
+  link.download = toSlug(filename) + ".csv";
 
   document.body.appendChild(link);
   link.click();
