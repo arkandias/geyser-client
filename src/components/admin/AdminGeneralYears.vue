@@ -34,7 +34,6 @@ graphql(`
   mutation UpdateYearVisibility($value: Int!, $visible: Boolean!) {
     updateYearByPk(pkColumns: { value: $value }, _set: { visible: $visible }) {
       value
-      visible
     }
   }
 

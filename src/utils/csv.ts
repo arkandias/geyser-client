@@ -91,3 +91,31 @@ export const downloadCSV = (
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 };
+
+export const parseCSV = (text: string, sep = ",") => {
+  const lines = text.split("\n");
+  if (!lines[0]) {
+    throw new Error("Empty CSV");
+  }
+  const headers = lines[0].split(sep).map((h) => h.trim());
+
+  return lines
+    .slice(1)
+    .filter((line) => line.trim()) // filter out empty lines
+    .map((line, index) => {
+      const values = line.split(sep).map((v) => v.trim());
+
+      if (values.length !== headers.length) {
+        throw new Error(
+          `Line ${(index + 2).toString()} has ${values.length.toString()} values but should have ${headers.length.toString()} (same as headers)`,
+        );
+      }
+
+      const row: Record<string, string> = {};
+      headers.forEach((header, index) => {
+        row[header] = values[index] ?? "";
+      });
+
+      return row;
+    });
+};

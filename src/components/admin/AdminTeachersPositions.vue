@@ -9,6 +9,8 @@ import {
   AdminPositionFragmentDoc,
   DeletePositionDocument,
   InsertPositionDocument,
+  InsertPositionsDocument,
+  type InsertPositionsMutationVariables,
   UpdatePositionDocument,
 } from "@/gql/graphql.ts";
 import type { I18nOptions } from "@/services/i18n.ts";
@@ -16,6 +18,7 @@ import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 import AdminButtons from "@/components/admin/AdminButtons.vue";
+import AdminImport from "@/components/admin/AdminImport.vue";
 
 const { positionFragments } = defineProps<{
   positionFragments: FragmentType<typeof AdminPositionFragmentDoc>[];
@@ -44,9 +47,6 @@ graphql(`
       }
     ) {
       value
-      label
-      description
-      baseServiceHours
     }
   }
 
@@ -67,15 +67,20 @@ graphql(`
       }
     ) {
       value
-      label
-      description
-      baseServiceHours
     }
   }
 
   mutation DeletePosition($value: String!) {
     deletePositionByPk(value: $value) {
       value
+    }
+  }
+
+  mutation InsertPositions($objects: [PositionInsertInput!]!) {
+    insertPosition(objects: $objects) {
+      returning {
+        value
+      }
     }
   }
 `);
@@ -85,6 +90,7 @@ const { t } = useI18n<I18nOptions>();
 const insertPosition = useMutation(InsertPositionDocument);
 const updatePosition = useMutation(UpdatePositionDocument);
 const deletePosition = useMutation(DeletePositionDocument);
+const insertPositions = useMutation(InsertPositionsDocument);
 
 const positionInsert = ref(false);
 const positionUpdate = ref(false);
@@ -216,14 +222,6 @@ const onCreateClick = () => {
   positionInsert.value = true;
 };
 
-const onImportClick = () => {
-  void 0;
-};
-
-const onExportClick = () => {
-  void 0;
-};
-
 const onRowClick = (_: Event, row: AdminPositionFragment) => {
   selectedValue.value = row.value;
   Object.assign(position, {
@@ -275,10 +273,36 @@ const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
     searchable: false,
   },
 ];
+
+// Import
+const positionsImport = ref(false);
+const validateObjects = (row: Record<string, string>) => ({
+  value: row["value"]?.toString().trim() ?? "",
+  label: row["label"]?.toString().trim() ?? "",
+  description: row["description"] ?? null,
+  baseServiceHours: row["service"] ? parseFloat(row["service"]) : null,
+});
+const insertObjects = async (variables: InsertPositionsMutationVariables) => {
+  const { data, error } = await insertPositions.executeMutation(variables);
+  if (data?.insertPosition?.returning && !error) {
+    notify(NotifyType.SUCCESS, {
+      message: t(
+        "admin.teachers.positions.import.message",
+        data.insertPosition.returning.length,
+      ),
+    });
+  }
+};
+
+// Export
 </script>
 
 <template>
-  <AdminButtons :on-create-click :on-import-click :on-export-click />
+  <AdminButtons
+    :on-create-click
+    :on-import-click="() => (positionsImport = true)"
+    :on-export-click="() => void 0"
+  />
 
   <QTable
     :rows="positions"
@@ -357,6 +381,8 @@ const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
       </QCardActions>
     </QCard>
   </QDialog>
+
+  <AdminImport v-model="positionsImport" :validate-objects :insert-objects />
 </template>
 
 <style scoped lang="scss"></style>

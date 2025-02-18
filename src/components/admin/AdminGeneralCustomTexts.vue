@@ -17,7 +17,6 @@ graphql(`
       onConflict: { constraint: app_settings_pkey, updateColumns: [value] }
     ) {
       key
-      value
     }
   }
 `);

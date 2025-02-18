@@ -64,13 +64,6 @@ graphql(`
       }
     ) {
       uid
-      firstname
-      lastname
-      alias
-      position
-      baseServiceHours
-      visible
-      active
     }
   }
 
@@ -99,13 +92,6 @@ graphql(`
       }
     ) {
       uid
-      firstname
-      lastname
-      alias
-      position
-      baseServiceHours
-      visible
-      active
     }
   }
 

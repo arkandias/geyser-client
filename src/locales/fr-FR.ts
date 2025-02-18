@@ -208,6 +208,19 @@ export default {
       import: "Importer",
       export: "Exporter",
     },
+    import: {
+      title: "Importer",
+      file_picker_label: "Sélectionnez un fichier CSV",
+      import_button: "Importer",
+      invalid: {
+        message: "Échec de l'import",
+        caption: {
+          file_empty: "Fichier vide",
+          unreadable_file: "Fichier illisible",
+          unknown_error: "Erreur inconnue",
+        },
+      },
+    },
     general: {
       title: "Paramètres généraux",
       phase: { label: "Phase en cours" },
@@ -315,6 +328,10 @@ supprimer.`,
                 "Entrez un service de base positif ou nul (ou laissez vide)",
             },
           },
+        },
+        import: {
+          message:
+            "0 fonction créée | 1 fonction créée | {count} fonctions créées",
         },
       },
     },
