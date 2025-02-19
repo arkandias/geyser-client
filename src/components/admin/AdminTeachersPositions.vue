@@ -10,7 +10,6 @@ import {
   DeletePositionDocument,
   InsertPositionDocument,
   InsertPositionsDocument,
-  PositionConstraint,
   PositionUpdateColumn,
   UpdatePositionDocument,
 } from "@/gql/graphql.ts";
@@ -314,7 +313,7 @@ const insertObjects = async (objects: ParsedObject<typeof descriptorObj>[]) => {
 };
 
 // Export
-const headers = ["value", "label", "description", "baseServiceHours"];
+const headers = ["label", "description", "baseServiceHours"];
 const positionsExportHandle = () => {
   downloadCSV(`positions_${Date.now().toString()}`, positions.value, headers);
 };
