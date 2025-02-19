@@ -2,7 +2,6 @@
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-import type { I18nOptions } from "@/services/i18n.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import {
   type FieldDescriptor,
@@ -12,12 +11,13 @@ import {
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 const model = defineModel<boolean>();
+const overwrite = defineModel<boolean>("overwrite");
 const { descriptorObj, insertObjects } = defineProps<{
   descriptorObj: T;
   insertObjects: (objects: ParsedObject<T>[]) => Promise<void>;
 }>();
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 
 const selectedFile = ref<File | null>(null);
 const importing = ref(false);
@@ -105,19 +105,26 @@ const columns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
         />
       </QCardSection>
       <QCardSection>
-        <QFile
-          v-model="selectedFile"
-          accept=".csv"
-          :label="t('admin.import.file_picker_label')"
-          clearable
-          clear-icon="sym_s_close"
-          outlined
-          dense
-        >
-          <template #prepend>
-            <QIcon name="sym_s_attach_file" />
-          </template>
-        </QFile>
+        <div class="q-gutter-md">
+          <QFile
+            v-model="selectedFile"
+            accept=".csv"
+            :label="t('admin.import.file_picker_label')"
+            clearable
+            clear-icon="sym_s_close"
+            outlined
+            dense
+          >
+            <template #prepend>
+              <QIcon name="sym_s_attach_file" />
+            </template>
+          </QFile>
+          <QCheckbox
+            v-model="overwrite"
+            :label="t('admin.import.overwrite')"
+            dense
+          />
+        </div>
       </QCardSection>
       <QCardActions align="right">
         <QBtn

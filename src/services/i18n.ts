@@ -1,4 +1,4 @@
-import { createI18n } from "vue-i18n";
+import { type I18nOptions, createI18n } from "vue-i18n";
 
 import frFR from "@/locales/fr-FR.ts";
 
@@ -27,12 +27,12 @@ export const LOCALE_LABELS: Record<AvailableLocale, string> = {
   "fr-FR": "Français",
 } as const;
 
-export type I18nOptions = {
+type CustomI18nOptions = I18nOptions & {
   message: typeof frFR;
   number: typeof numberFormat;
 };
 
-export const i18n = createI18n<I18nOptions, AvailableLocale>({
+export const i18n = createI18n<CustomI18nOptions, AvailableLocale>({
   legacy: false,
   locale: DEFAULT_LOCALE,
   fallbackLocale: DEFAULT_LOCALE,
@@ -42,4 +42,5 @@ export const i18n = createI18n<I18nOptions, AvailableLocale>({
   numberFormats: {
     "fr-FR": numberFormat,
   },
+  warnHtmlMessage: false,
 });

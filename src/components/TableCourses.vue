@@ -16,7 +16,6 @@ import {
   CourseRowFragmentDoc,
   ServiceDetailsFragmentDoc,
 } from "@/gql/graphql.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import { useYearsStore } from "@/stores/years.ts";
 import { type Column, isAbbreviable } from "@/types/column.ts";
 import { formatProgram, formatUser, nf } from "@/utils/format.ts";
@@ -91,7 +90,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 
 const { activeYear } = useYearsStore();
 const perm = usePermissions();

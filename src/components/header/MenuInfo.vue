@@ -2,12 +2,11 @@
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 
-import type { I18nOptions } from "@/services/i18n.ts";
 import { useCustomTextsStore } from "@/stores/custom-texts.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 
 const { getValue } = useCustomTextsStore();
 

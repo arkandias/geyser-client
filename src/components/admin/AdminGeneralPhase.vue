@@ -5,7 +5,6 @@ import { useI18n } from "vue-i18n";
 import { PHASES } from "@/config/types/phases.ts";
 import { graphql } from "@/gql";
 import { SetCurrentPhaseDocument } from "@/gql/graphql.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 
 graphql(`
@@ -27,7 +26,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 const { currentPhase } = usePhaseStore();
 const setCurrentPhase = useMutation(SetCurrentPhaseDocument);
 

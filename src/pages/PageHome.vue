@@ -3,13 +3,12 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 import { PHASES } from "@/config/types/phases.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import { useCustomTextsStore } from "@/stores/custom-texts.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 
 const props = defineProps<{ statusMessage?: string }>();
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 const { currentPhase } = usePhaseStore();
 const { getValue } = useCustomTextsStore();
 

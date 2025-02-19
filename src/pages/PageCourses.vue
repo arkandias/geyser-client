@@ -12,7 +12,6 @@ import {
   GetServiceDetailsDocument,
   GetServiceRowsDocument,
 } from "@/gql/graphql.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import {
   hSplitterRatio,
   useLeftPanelStore,
@@ -73,7 +72,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 
 const { activeYear, isCurrentYearActive } = useYearsStore();
 const { profile } = useProfileStore();

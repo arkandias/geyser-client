@@ -2,15 +2,11 @@
 import { useI18n } from "vue-i18n";
 
 import { useLanguage } from "@/composables/language.ts";
-import {
-  AVAILABLE_LOCALES,
-  type I18nOptions,
-  LOCALE_LABELS,
-} from "@/services/i18n.ts";
+import { AVAILABLE_LOCALES, LOCALE_LABELS } from "@/services/i18n.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { t, locale } = useI18n<I18nOptions>();
+const { t, locale } = useI18n();
 const { setLang } = useLanguage();
 
 const localeOptions = AVAILABLE_LOCALES.map((locale) => ({

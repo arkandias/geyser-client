@@ -5,7 +5,6 @@ import { useI18n } from "vue-i18n";
 
 import { graphql } from "@/gql";
 import { GetActiveTeachersDocument } from "@/gql/graphql.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import { formatUser } from "@/utils/format.ts";
 import { normalizeForSearch } from "@/utils/misc.ts";
 
@@ -25,7 +24,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 
 const activeTeachersQueryResult = useQuery({
   query: GetActiveTeachersDocument,

@@ -3,14 +3,13 @@ import { useI18n } from "vue-i18n";
 
 import { useQueryParam } from "@/composables/query-param.ts";
 import { useService } from "@/composables/service.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import { useLeftPanelStore } from "@/stores/left-panel.ts";
 import { useProfileStore } from "@/stores/profile.ts";
 import { buttonColor } from "@/utils/colors.ts";
 
 import MenuYear from "@/components/header/MenuYear.vue";
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 
 const { profile } = useProfileStore();
 const { hasService } = useService();

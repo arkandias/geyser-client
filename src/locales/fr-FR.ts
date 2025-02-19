@@ -234,6 +234,7 @@ export default {
         },
       },
       file_picker_label: "Sélectionnez un fichier CSV",
+      overwrite: "Écraser les données en cas de conflit",
       import_button: "Importer",
       invalid: {
         message: "Échec de l'import",

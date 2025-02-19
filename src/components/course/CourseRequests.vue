@@ -6,7 +6,6 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CourseRequestsFragmentDoc } from "@/gql/graphql.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
@@ -33,7 +32,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 
 const perm = usePermissions();
 

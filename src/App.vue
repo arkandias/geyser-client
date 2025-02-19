@@ -11,7 +11,6 @@ import {
   GetCustomTextsDocument,
   GetYearsDocument,
 } from "@/gql/graphql.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import { getClaims } from "@/services/keycloak.ts";
 import { setRoleHeader } from "@/services/urql.ts";
 import { useCustomTextsStore } from "@/stores/custom-texts.ts";
@@ -48,7 +47,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 
 const { fetchProfile, fetching, loaded, isActive, activeRole } =
   useProfileStore();

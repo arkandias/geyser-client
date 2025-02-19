@@ -12,7 +12,6 @@ import {
   InsertTeacherDocument,
   UpdateTeacherDocument,
 } from "@/gql/graphql.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import { getField, normalizeForSearch } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
@@ -102,7 +101,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 
 const insertTeacher = useMutation(InsertTeacherDocument);
 const updateTeacher = useMutation(UpdateTeacherDocument);

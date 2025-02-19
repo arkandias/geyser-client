@@ -4,14 +4,13 @@ import { useI18n } from "vue-i18n";
 
 import { useRefreshData } from "@/composables/refresh-data.ts";
 import { ROLES, type Role } from "@/config/types/roles.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import { logout } from "@/services/keycloak.ts";
 import { useProfileStore } from "@/stores/profile.ts";
 import { formatUser } from "@/utils/format.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 
 const { profile, roles, activeRole, setActiveRole } = useProfileStore();
 const { refreshData } = useRefreshData();

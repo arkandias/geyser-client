@@ -8,7 +8,6 @@ import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestCardDataFragmentDoc } from "@/gql/graphql.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import { priorityColor } from "@/utils/colors.ts";
 import { formatUser } from "@/utils/format.ts";
 
@@ -39,7 +38,7 @@ graphql(`
   }
 `);
 
-const { t, n } = useI18n<I18nOptions>();
+const { t, n } = useI18n();
 
 const perm = usePermissions();
 const { updateRequestWithServiceId, deleteRequestById } =

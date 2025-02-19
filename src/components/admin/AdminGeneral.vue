@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 
-import type { I18nOptions } from "@/services/i18n.ts";
-
 import AdminGeneralCustomTexts from "@/components/admin/AdminGeneralCustomTexts.vue";
 import AdminGeneralPhase from "@/components/admin/AdminGeneralPhase.vue";
 import AdminGeneralYears from "@/components/admin/AdminGeneralYears.vue";
 import AdminSection from "@/components/admin/AdminSection.vue";
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 </script>
 
 <template>

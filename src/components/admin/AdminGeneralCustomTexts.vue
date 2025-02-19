@@ -5,7 +5,6 @@ import { useI18n } from "vue-i18n";
 
 import { graphql } from "@/gql";
 import { UpdateCustomTextDocument } from "@/gql/graphql.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import { useCustomTextsStore } from "@/stores/custom-texts.ts";
 
 import EditableText from "@/components/core/EditableText.vue";
@@ -21,7 +20,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 const { customTexts } = useCustomTextsStore();
 const updateCustomText = useMutation(UpdateCustomTextDocument);
 

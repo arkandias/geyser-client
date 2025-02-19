@@ -7,7 +7,6 @@ import { useRequestOperations } from "@/composables/request-operations.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestFormDataFragmentDoc } from "@/gql/graphql.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import { useProfileStore } from "@/stores/profile.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
@@ -24,7 +23,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 
 const { profile } = useProfileStore();
 const perm = usePermissions();

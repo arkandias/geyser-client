@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 
-import type { I18nOptions } from "@/services/i18n.ts";
-
 defineProps<{
   onCreateClick: () => void;
   onImportClick: () => void;
   onExportClick: () => void;
 }>();
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 </script>
 
 <template>

@@ -10,7 +10,6 @@ import {
   type ServiceRowsFragment,
   ServiceRowsFragmentDoc,
 } from "@/gql/graphql.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import { nf } from "@/utils/format.ts";
 import { modifiedService, totalHW } from "@/utils/hours.ts";
@@ -69,7 +68,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 
 const perm = usePermissions();
 

@@ -10,9 +10,10 @@ import {
   DeletePositionDocument,
   InsertPositionDocument,
   InsertPositionsDocument,
+  PositionConstraint,
+  PositionUpdateColumn,
   UpdatePositionDocument,
 } from "@/gql/graphql.ts";
-import type { I18nOptions } from "@/services/i18n.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
 import type { ParsedObject } from "@/utils/csv-import.ts";
@@ -78,8 +79,14 @@ graphql(`
     }
   }
 
-  mutation InsertPositions($objects: [PositionInsertInput!]!) {
-    insertPosition(objects: $objects) {
+  mutation InsertPositions(
+    $objects: [PositionInsertInput!]!
+    $updateColumns: [PositionUpdateColumn!]!
+  ) {
+    insertPosition(
+      objects: $objects
+      onConflict: { constraint: position_pkey, updateColumns: $updateColumns }
+    ) {
       returning {
         value
       }
@@ -87,7 +94,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n<I18nOptions>();
+const { t } = useI18n();
 
 const insertPosition = useMutation(InsertPositionDocument);
 const updatePosition = useMutation(UpdatePositionDocument);
@@ -278,6 +285,7 @@ const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
 
 // Import
 const positionsImport = ref(false);
+const overwrite = ref(false);
 const descriptorObj = {
   label: { type: "string" },
   description: { type: "string", nullable: true },
@@ -287,6 +295,13 @@ const insertObjects = async (objects: ParsedObject<typeof descriptorObj>[]) => {
   const { data, error } = await insertPositions.executeMutation({
     // add value field based on label field
     objects: objects.map((obj) => ({ value: toSlug(obj.label), ...obj })),
+    updateColumns: overwrite.value
+      ? [
+          PositionUpdateColumn.Label,
+          PositionUpdateColumn.Description,
+          PositionUpdateColumn.BaseServiceHours,
+        ]
+      : [],
   });
   if (data?.insertPosition?.returning && !error) {
     notify(NotifyType.SUCCESS, {
@@ -390,7 +405,12 @@ const positionsExportHandle = () => {
     </QCard>
   </QDialog>
 
-  <AdminImport v-model="positionsImport" :descriptor-obj :insert-objects />
+  <AdminImport
+    v-model="positionsImport"
+    v-model:overwrite="overwrite"
+    :descriptor-obj
+    :insert-objects
+  />
 </template>
 
 <style scoped lang="scss"></style>
