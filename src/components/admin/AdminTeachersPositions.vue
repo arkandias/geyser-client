@@ -53,16 +53,14 @@ graphql(`
   }
 
   mutation UpdatePosition(
-    $currentValue: String!
     $value: String!
     $label: String!
     $description: String
     $baseServiceHours: Float
   ) {
     updatePositionByPk(
-      pkColumns: { value: $currentValue }
+      pkColumns: { value: $value }
       _set: {
-        value: $value
         label: $label
         description: $description
         baseServiceHours: $baseServiceHours
@@ -112,7 +110,6 @@ const positionEdit = computed({
   },
 });
 
-const selectedValue = ref("");
 const position = reactive<{
   value: string;
   label: string;
@@ -181,7 +178,6 @@ const updatePositionHandle = async () => {
     return;
   }
   const { data, error } = await updatePosition.executeMutation({
-    currentValue: selectedValue.value,
     value: position.value,
     label: position.label,
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
@@ -202,12 +198,12 @@ const deletePositionHandle = async () => {
   if (
     confirm(
       t("admin.teachers.positions.form.confirm.delete", {
-        position: selectedValue.value,
+        position: position.value,
       }),
     )
   ) {
     const { data, error } = await deletePosition.executeMutation({
-      value: selectedValue.value,
+      value: position.value,
     });
     if (data?.deletePositionByPk?.value && !error) {
       notify(NotifyType.SUCCESS, {
@@ -231,7 +227,6 @@ const onCreateClick = () => {
 };
 
 const onRowClick = (_: Event, row: AdminPositionFragment) => {
-  selectedValue.value = row.value;
   Object.assign(position, {
     value: row.value,
     label: row.label,
@@ -284,17 +279,23 @@ const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
 
 // Import
 const positionsImport = ref(false);
-const overwrite = ref(false);
+const importOverwrite = ref(false);
+const positionImportHandle = () => {
+  positionsImport.value = true;
+  importOverwrite.value = false;
+};
+
 const descriptorObj = {
   label: { type: "string" },
   description: { type: "string", nullable: true },
   baseServiceHours: { type: "number", nullable: true },
 } as const;
+
 const insertObjects = async (objects: ParsedObject<typeof descriptorObj>[]) => {
   const { data, error } = await insertPositions.executeMutation({
     // add value field based on label field
     objects: objects.map((obj) => ({ value: toSlug(obj.label), ...obj })),
-    updateColumns: overwrite.value
+    updateColumns: importOverwrite.value
       ? [
           PositionUpdateColumn.Label,
           PositionUpdateColumn.Description,
@@ -322,7 +323,7 @@ const positionsExportHandle = () => {
 <template>
   <AdminButtons
     :on-create-click
-    :on-import-click="() => (positionsImport = true)"
+    :on-import-click="positionImportHandle"
     :on-export-click="positionsExportHandle"
   />
 
@@ -342,7 +343,7 @@ const positionsExportHandle = () => {
   <QDialog v-model="positionEdit" square>
     <QCard flat square class="admin-form">
       <QCardSection v-if="positionUpdate" class="text-h6">
-        {{ selectedValue }}
+        {{ position.label }}
       </QCardSection>
       <QCardSection>
         <div class="q-gutter-md">
@@ -406,7 +407,7 @@ const positionsExportHandle = () => {
 
   <AdminImport
     v-model="positionsImport"
-    v-model:overwrite="overwrite"
+    v-model:overwrite="importOverwrite"
     :descriptor-obj
     :insert-objects
   />
