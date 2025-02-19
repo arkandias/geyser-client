@@ -10,13 +10,13 @@ import {
   DeletePositionDocument,
   InsertPositionDocument,
   InsertPositionsDocument,
-  type InsertPositionsMutationVariables,
   UpdatePositionDocument,
 } from "@/gql/graphql.ts";
 import type { I18nOptions } from "@/services/i18n.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
-import type { FieldDescriptor } from "@/utils/csv-import.ts";
+import type { ParsedObject } from "@/utils/csv-import.ts";
+import { toSlug } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 import AdminButtons from "@/components/admin/AdminButtons.vue";
@@ -278,14 +278,16 @@ const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
 
 // Import
 const positionsImport = ref(false);
-const descriptorObj: Record<string, FieldDescriptor> = {
-  value: { type: "string" },
+const descriptorObj = {
   label: { type: "string" },
   description: { type: "string", nullable: true },
   baseServiceHours: { type: "number", nullable: true },
-};
-const insertObjects = async (variables: InsertPositionsMutationVariables) => {
-  const { data, error } = await insertPositions.executeMutation(variables);
+} as const;
+const insertObjects = async (objects: ParsedObject<typeof descriptorObj>[]) => {
+  const { data, error } = await insertPositions.executeMutation({
+    // add value field based on label field
+    objects: objects.map((obj) => ({ value: toSlug(obj.label), ...obj })),
+  });
   if (data?.insertPosition?.returning && !error) {
     notify(NotifyType.SUCCESS, {
       message: t(

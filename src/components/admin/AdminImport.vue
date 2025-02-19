@@ -14,7 +14,7 @@ import { NotifyType, notify } from "@/utils/notify.ts";
 const model = defineModel<boolean>();
 const { descriptorObj, insertObjects } = defineProps<{
   descriptorObj: T;
-  insertObjects: (variables: { objects: ParsedObject<T>[] }) => Promise<void>;
+  insertObjects: (objects: ParsedObject<T>[]) => Promise<void>;
 }>();
 
 const { t } = useI18n<I18nOptions>();
@@ -44,7 +44,7 @@ const importHandle = async () => {
 
     const objects = importCSV(text, descriptorObj);
 
-    await insertObjects({ objects });
+    await insertObjects(objects);
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.import.invalid.message"),

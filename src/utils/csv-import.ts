@@ -1,4 +1,4 @@
-import { type ParseConfig, parse } from "papaparse";
+import { parse } from "papaparse";
 
 export type FieldDescriptor = {
   type: "string" | "number" | "boolean";
@@ -71,8 +71,7 @@ export const parseField = <T extends FieldDescriptor>(
  */
 const transform =
   (descriptorObj: Record<string, FieldDescriptor>) =>
-  (value: string, field: string | number): ParseConfig["transform"] => {
-    console.log("TRANSFORM", value, field);
+  (value: string, field: string | number) => {
     const descriptor = descriptorObj[field];
     if (descriptor === undefined) {
       throw new Error(`Unknown field: ${String(field)}`);
