@@ -44,3 +44,40 @@ export const compareAbbr = <T extends { short: string | null; long: string }>(
     (a.short ?? b.long).toLowerCase(),
     (b.short ?? b.long).toLowerCase(),
   );
+
+export function getValueFromLabel(
+  label: string,
+  options: { value: string; label: string }[],
+  create: true,
+): string;
+export function getValueFromLabel(
+  label: string | null,
+  options: { value: string; label: string }[],
+  create: false,
+): string | null;
+export function getValueFromLabel(
+  label: string | null,
+  options: { value: string; label: string }[],
+  create: boolean,
+): typeof create extends true ? string : string | null {
+  if (label === null) {
+    return null;
+  }
+
+  const value = options.find((opt) => opt.label === label)?.value ?? null;
+  if (value !== null || !create) {
+    return value;
+  }
+
+  let slug = toSlug(label) || "0"; // do not allow empty value
+  if (options.find((opt) => opt.value === slug)) {
+    return slug;
+  }
+
+  let counter = 1;
+  while (options.find((opt) => opt.value === slug)) {
+    counter += 1;
+    slug = slug + counter.toString();
+  }
+  return slug;
+}

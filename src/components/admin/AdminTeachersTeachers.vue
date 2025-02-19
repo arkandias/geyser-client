@@ -17,7 +17,11 @@ import {
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
 import type { ParsedObject } from "@/utils/csv-import.ts";
-import { getField, normalizeForSearch } from "@/utils/misc.ts";
+import {
+  getField,
+  getValueFromLabel,
+  normalizeForSearch,
+} from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 import AdminButtons from "@/components/admin/AdminButtons.vue";
@@ -414,8 +418,7 @@ const insertObjects = async (
     // replace position label with corresponding value
     objects: objects.map((obj) => ({
       ...obj,
-      position:
-        positions.value.find((p) => p.label === obj.position)?.value ?? null,
+      position: getValueFromLabel(obj.position, positions.value, false),
     })),
     updateColumns: overwrite
       ? [

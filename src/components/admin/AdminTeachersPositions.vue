@@ -16,7 +16,7 @@ import {
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
 import type { ParsedObject } from "@/utils/csv-import.ts";
-import { toSlug } from "@/utils/misc.ts";
+import { getValueFromLabel } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 import AdminButtons from "@/components/admin/AdminButtons.vue";
@@ -149,9 +149,7 @@ const insertPositionHandle = async () => {
   const { data, error } = await insertPosition.executeMutation({
     ...position,
     // add value field based on label field
-    value:
-      positions.value.find((p) => p.label === position.label)?.value ??
-      toSlug(position.label),
+    value: getValueFromLabel(position.label, positions.value, true),
   });
   positionEdit.value = false;
   if (data?.insertPositionOne?.value && !error) {
@@ -278,9 +276,7 @@ const insertObjects = async (
     // add value field based on label field
     objects: objects.map((obj) => ({
       ...obj,
-      value:
-        positions.value.find((p) => p.label === obj.label)?.value ??
-        toSlug(position.label),
+      value: getValueFromLabel(obj.label, positions.value, true),
     })),
     updateColumns: overwrite
       ? [
