@@ -62,22 +62,22 @@ const archives = computed(() => {
     nestedArchives.parent,
     nestedArchives.parent?.parent,
     nestedArchives.parent?.parent?.parent,
-  ].filter((archive) => !!archive);
+  ].filter((a) => !!a);
 });
 </script>
 
 <template>
   <DetailsSection title="Archives">
     <DetailsSubsection
-      v-for="archive in archives"
-      :key="archive.year"
-      :title="archive.year.toString()"
+      v-for="a in archives"
+      :key="a.year"
+      :title="a.year.toString()"
     >
       <QCardSection class="row q-gutter-xs">
         <RequestCard
-          v-for="request in archive.requests"
-          :key="request.id"
-          :data-fragment="request"
+          v-for="r in a.requests"
+          :key="r.id"
+          :data-fragment="r"
           archive
         />
       </QCardSection>

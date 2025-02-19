@@ -73,9 +73,7 @@ const { t } = useI18n();
 const perm = usePermissions();
 
 const services = computed(() =>
-  serviceRowFragments.map((fragment) =>
-    useFragment(ServiceRowsFragmentDoc, fragment),
-  ),
+  serviceRowFragments.map((f) => useFragment(ServiceRowsFragmentDoc, f)),
 );
 
 // Row selection

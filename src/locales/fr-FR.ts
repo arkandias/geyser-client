@@ -299,7 +299,7 @@ la supprimer.`,
           update: "Mettre à jour",
           delete: "Supprimer",
           confirm: {
-            delete: `Êtes-vous sûr de vouloir supprimer l'intervenant {uid} ?
+            delete: `Êtes-vous sûr de vouloir supprimer l'intervenant « {uid} » ?
 Si des services, responsabilités ou rôles sont attribués à cet intervenant, \
 vous ne pourrez pas le supprimer.`,
           },
@@ -350,7 +350,7 @@ vous ne pourrez pas le supprimer.`,
           update: "Mettre à jour",
           delete: "Supprimer",
           confirm: {
-            delete: `Êtes-vous sûr de vouloir supprimer la fonction {position} ?
+            delete: `Êtes-vous sûr de vouloir supprimer la fonction « {position} » ?
 Si cette fonction est attribuée à des intervenants, vous ne pourrez pas la \
 supprimer.`,
           },

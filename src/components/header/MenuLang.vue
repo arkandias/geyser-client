@@ -9,9 +9,9 @@ import MenuBase from "@/components/header/MenuBase.vue";
 const { t, locale } = useI18n();
 const { setLang } = useLanguage();
 
-const localeOptions = AVAILABLE_LOCALES.map((locale) => ({
-  value: locale,
-  label: LOCALE_LABELS[locale],
+const localeOptions = AVAILABLE_LOCALES.map((l) => ({
+  value: l,
+  label: LOCALE_LABELS[l],
 }));
 </script>
 

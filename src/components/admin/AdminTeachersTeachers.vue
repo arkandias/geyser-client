@@ -34,7 +34,10 @@ graphql(`
     firstname
     lastname
     alias
-    position
+    position: positionByPosition {
+      value
+      label
+    }
     baseServiceHours
     visible
     active
@@ -131,8 +134,8 @@ const teacherInsert = ref(false);
 const teacherUpdate = ref(false);
 const teacherEdit = computed({
   get: () => teacherInsert.value || teacherUpdate.value,
-  set: (val) => {
-    if (!val) {
+  set: (newValue) => {
+    if (!newValue) {
       teacherInsert.value = false;
       teacherUpdate.value = false;
     }
@@ -281,7 +284,7 @@ const onRowClick = (_: Event, row: AdminTeacherFragment) => {
     firstname: row.firstname,
     lastname: row.lastname,
     alias: row.alias,
-    position: row.position,
+    position: row.position?.label,
     baseServiceHours: row.baseServiceHours,
     visible: row.visible,
     active: row.active,
@@ -290,15 +293,11 @@ const onRowClick = (_: Event, row: AdminTeacherFragment) => {
 };
 
 const teachers = computed(() =>
-  teacherFragments.map((fragment) =>
-    useFragment(AdminTeacherFragmentDoc, fragment),
-  ),
+  teacherFragments.map((f) => useFragment(AdminTeacherFragmentDoc, f)),
 );
 
 const positions = computed(() =>
-  positionFragments.map((fragment) =>
-    useFragment(AdminTeacherPositionFragmentDoc, fragment),
-  ),
+  positionFragments.map((f) => useFragment(AdminTeacherPositionFragmentDoc, f)),
 );
 
 const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
@@ -338,7 +337,7 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
     name: "position",
     label: t("admin.teachers.teachers.table.position"),
     align: "left",
-    field: (row) => row.position ?? null,
+    field: (row) => row.position?.label ?? null,
     sortable: true,
     searchable: false,
   },
@@ -412,7 +411,12 @@ const insertObjects = async (
   overwrite: boolean,
 ) => {
   const { data, error } = await insertTeachers.executeMutation({
-    objects,
+    // replace position label with corresponding value
+    objects: objects.map((obj) => ({
+      ...obj,
+      position:
+        positions.value.find((p) => p.label === obj.position)?.value ?? null,
+    })),
     updateColumns: overwrite
       ? [
           TeacherUpdateColumn.Firstname,
@@ -441,7 +445,7 @@ const headers = [
   "firstname",
   "lastname",
   "alias",
-  "position",
+  { key: "position.label", label: "position" },
   "baseServiceHours",
   "visible",
   "active",
@@ -526,6 +530,8 @@ const onExportClick = () => {
             :label="t('admin.teachers.teachers.form.position')"
             clearable
             clear-icon="sym_s_close"
+            emit-value
+            map-options
             square
             dense
             options-dense

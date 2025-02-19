@@ -72,10 +72,7 @@ type Coordinator = ArrayElement<CourseCoordinatorsFragment["coordinations"]>;
 
 const formatCoordinators = (coordinators: Coordinator[]) =>
   coordinators
-    .map(
-      ({ teacher, comment }) =>
-        formatUser(teacher) + (comment ? ` (${comment})` : ""),
-    )
+    .map((c) => formatUser(c.teacher) + (c.comment ? ` (${c.comment})` : ""))
     .join(", ");
 </script>
 

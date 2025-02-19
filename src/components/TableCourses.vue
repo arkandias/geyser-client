@@ -104,23 +104,23 @@ type CourseRow = Omit<CourseRowFragment, "requests"> & {
 };
 
 const courses = computed<CourseRow[]>(() =>
-  courseRowFragments.map((fragment) => {
-    const { requests, ...rest } = useFragment(CourseRowFragmentDoc, fragment);
+  courseRowFragments.map((f) => {
+    const { requests, ...rest } = useFragment(CourseRowFragmentDoc, f);
     const totals = requests.reduce(
-      (acc, request) => ({
+      (acc, req) => ({
         totalAssigned:
           acc.totalAssigned +
-          (request.type === REQUEST_TYPES.ASSIGNMENT ? request.hours : 0),
+          (req.type === REQUEST_TYPES.ASSIGNMENT ? req.hours : 0),
         totalPrimary:
           acc.totalAssigned +
-          (request.type === REQUEST_TYPES.PRIMARY ? request.hours : 0),
+          (req.type === REQUEST_TYPES.PRIMARY ? req.hours : 0),
         totalSecondary:
           acc.totalAssigned +
-          (request.type === REQUEST_TYPES.SECONDARY ? request.hours : 0),
+          (req.type === REQUEST_TYPES.SECONDARY ? req.hours : 0),
         totalPriority:
           acc.totalAssigned +
-          (request.type === REQUEST_TYPES.PRIMARY && request.isPriority
-            ? request.hours
+          (req.type === REQUEST_TYPES.PRIMARY && req.isPriority
+            ? req.hours
             : 0),
       }),
       {
@@ -143,8 +143,7 @@ const getTeacherTotal = (row: CourseRow, requestType: RequestType) => {
   if (requests.value) {
     return (
       requests.value.find(
-        (request) =>
-          request.courseId === row.id && request.type === requestType,
+        (r) => r.courseId === row.id && r.type === requestType,
       )?.hours ?? 0
     );
   }
@@ -355,9 +354,9 @@ const isMenuColumnsTooltipVisible = ref(false);
 const programs = ref<number[]>([]);
 const programsOptions = computed(() =>
   courses.value
-    .map((course) => ({
-      value: course.program.id,
-      label: formatProgram(course.program),
+    .map((c) => ({
+      value: c.program.id,
+      label: formatProgram(c.program),
     }))
     .filter(uniqueValue)
     .sort(compare("label")),
@@ -367,7 +366,7 @@ const programsOptions = computed(() =>
 const courseTypes = ref<string[]>([]);
 const courseTypesOptions = computed(() =>
   courses.value
-    .map((course) => course.courseType)
+    .map((c) => c.courseType)
     .filter(uniqueValue)
     .sort(compare("label")),
 );
@@ -376,9 +375,9 @@ const courseTypesOptions = computed(() =>
 const semesters = ref<number[]>([]);
 const semestersOptions = computed(() =>
   courses.value
-    .map((course) => ({
-      value: course.semester,
-      label: "S" + course.semester.toString(),
+    .map((c) => ({
+      value: c.semester,
+      label: "S" + c.semester.toString(),
     }))
     .filter(uniqueValue)
     .sort(compare("label")),
@@ -404,13 +403,11 @@ const filterMethod = (
 ): readonly CourseRow[] =>
   rows.filter((row) =>
     terms.teacherRequests
-      ? terms.teacherRequests.some((request) => request.courseId === row.id)
+      ? terms.teacherRequests.some((r) => r.courseId === row.id)
       : (terms.programs.length === 0 ||
-          terms.programs.some((program) => program === row.program.id)) &&
+          terms.programs.some((p) => p === row.program.id)) &&
         (terms.courseTypes.length === 0 ||
-          terms.courseTypes.some(
-            (courseType) => courseType === row.courseType.label,
-          )) &&
+          terms.courseTypes.some((ct) => ct === row.courseType.label)) &&
         (terms.semesters.length === 0 ||
           terms.semesters.includes(row.semester)) &&
         terms.searchColumns.some((col) =>
@@ -429,8 +426,7 @@ const stickyHeader = ref(false);
 // Styling options controllers
 const isAssigned = (row: CourseRowFragment) =>
   !!requests.value?.some(
-    (request) =>
-      request.courseId === row.id && request.type === REQUEST_TYPES.ASSIGNMENT,
+    (r) => r.courseId === row.id && r.type === REQUEST_TYPES.ASSIGNMENT,
   );
 const isVisible = (row: CourseRowFragment): boolean =>
   !!service.value ||

@@ -25,15 +25,13 @@ const { customTexts } = useCustomTextsStore();
 const updateCustomText = useMutation(UpdateCustomTextDocument);
 
 const customTextOptions = computed(() =>
-  customTexts.value.map((customText) => ({
-    ...customText,
-    label: t(`custom_text_label.${customText.key}`),
+  customTexts.value.map((text) => ({
+    ...text,
+    label: t(`custom_text_label.${text.key}`),
   })),
 );
 const customTextsEdit = reactive(
-  Object.fromEntries(
-    customTexts.value.map((customText) => [customText.key, false]),
-  ),
+  Object.fromEntries(customTexts.value.map((text) => [text.key, false])),
 );
 
 const updateCustomTextHandle = (key: string, value: string) =>
@@ -50,18 +48,18 @@ const updateCustomTextHandle = (key: string, value: string) =>
 <template>
   <QList bordered separator dense>
     <QExpansionItem
-      v-for="option in customTextOptions"
-      :key="option.key"
-      :label="option.label"
+      v-for="opt in customTextOptions"
+      :key="opt.key"
+      :label="opt.label"
       dense
       dense-toggle
     >
       <QCard>
         <QCardSection>
           <EditableText
-            v-model="customTextsEdit[option.key]"
-            :text="option.value"
-            :set-text="(value) => updateCustomTextHandle(option.key, value)"
+            v-model="customTextsEdit[opt.key]"
+            :text="opt.value"
+            :set-text="(value) => updateCustomTextHandle(opt.key, value)"
           />
         </QCardSection>
         <QCardActions dense>
@@ -71,7 +69,7 @@ const updateCustomTextHandle = (key: string, value: string) =>
             no-caps
             outline
             dense
-            @click="customTextsEdit[option.key] = true"
+            @click="customTextsEdit[opt.key] = true"
           />
         </QCardActions>
       </QCard>

@@ -40,12 +40,8 @@ export const dataArrayToCSV = (
   data: SimpleObject[],
   headers: Header[] = [],
 ): string => {
-  const headerKeys = headers.map((header) =>
-    typeof header === "string" ? header : header.key,
-  );
-  const headerLabels = headers.map((header) =>
-    typeof header === "string" ? header : header.label,
-  );
+  const keys = headers.map((h) => (typeof h === "string" ? h : h.key));
+  const labels = headers.map((h) => (typeof h === "string" ? h : h.label));
 
   const processedData = data.map((obj) => {
     const flatObj = flattenSimpleObject(obj);
@@ -54,23 +50,15 @@ export const dataArrayToCSV = (
       return flatObj;
     }
 
-    // check all header keys are present in flat object
-    const keys = Object.keys(flatObj);
-    headerKeys.forEach((key) => {
-      if (!keys.includes(key)) {
-        throw new Error(`Missing field: ${key}`);
-      }
-    });
-
     // transform keys using header labels and return entry
     return Object.fromEntries(
-      headerKeys.map((key, i) => [headerLabels[i], flatObj[key]]),
+      keys.map((key, i) => [labels[i], flatObj[key]]),
     ) as Record<string, Scalar>;
   });
 
   const config: UnparseConfig = {
     newline: "\n",
-    ...(headers.length ? { columns: headerLabels } : {}),
+    ...(headers.length ? { columns: labels } : {}),
   };
 
   return unparse(processedData, config);

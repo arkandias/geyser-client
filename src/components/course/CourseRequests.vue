@@ -47,15 +47,11 @@ const requestsByType = computed(() =>
     { value: REQUEST_TYPES.SECONDARY, label: t("request_type.secondary") },
   ]
     .filter(
-      (requestType) =>
-        requestType.value !== REQUEST_TYPES.ASSIGNMENT ||
-        perm.toViewAssignments,
+      (opt) => opt.value !== REQUEST_TYPES.ASSIGNMENT || perm.toViewAssignments,
     )
-    .map((option) => ({
-      ...option,
-      requests: data.value.requests.filter(
-        (request) => request.type === option.value,
-      ),
+    .map((opt) => ({
+      ...opt,
+      requests: data.value.requests.filter((r) => r.type === opt.value),
     })),
 );
 </script>
@@ -66,16 +62,12 @@ const requestsByType = computed(() =>
       <RequestForm :data-fragment="data" />
     </DetailsSubsection>
     <DetailsSubsection
-      v-for="option in requestsByType"
-      :key="option.value"
-      :title="option.label + 's'"
+      v-for="opt in requestsByType"
+      :key="opt.value"
+      :title="opt.label + 's'"
     >
       <QCardSection class="row q-gutter-xs">
-        <RequestCard
-          v-for="request in option.requests"
-          :key="request.id"
-          :data-fragment="request"
-        />
+        <RequestCard v-for="r in opt.requests" :key="r.id" :data-fragment="r" />
       </QCardSection>
     </DetailsSubsection>
   </DetailsSection>

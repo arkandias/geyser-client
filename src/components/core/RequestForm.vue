@@ -49,11 +49,11 @@ const groups = computed<number | null>({
       : Math.round(
           (hours.value / data.value.hoursPerGroup + Number.EPSILON) * 100,
         ) / 100,
-  set: (val) => {
+  set: (newValue) => {
     hours.value =
-      val === null || data.value.hoursPerGroup == null
+      newValue === null || data.value.hoursPerGroup == null
         ? null
-        : val * data.value.hoursPerGroup;
+        : newValue * data.value.hoursPerGroup;
   },
 });
 
@@ -144,7 +144,6 @@ const resetForm = (): void => {
 
 <template>
   <QForm
-    dense
     class="row q-gutter-md text-body2"
     @submit="submitForm"
     @reset="resetForm"
@@ -174,11 +173,11 @@ const resetForm = (): void => {
       dense
     />
     <QRadio
-      v-for="requestTypeOption in requestTypeOptions"
-      :key="requestTypeOption.value"
+      v-for="opt in requestTypeOptions"
+      :key="opt.value"
       v-model="requestType"
-      :val="requestTypeOption.value"
-      :label="requestTypeOption.label"
+      :val="opt.value"
+      :label="opt.label"
       color="primary"
       dense
     />

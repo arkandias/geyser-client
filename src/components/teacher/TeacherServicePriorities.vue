@@ -88,28 +88,20 @@ const formatPriorityExtra = (priority: Priority) =>
 <template>
   <DetailsSection title="Priorités">
     <TeacherList>
-      <QItem
-        v-for="priority in priorities"
-        :key="priority.id"
-        class="q-pa-none"
-      >
+      <QItem v-for="p in priorities" :key="p.id" class="q-pa-none">
         <QItemSection>
-          <QItemLabel overline>
-            {{ formatPriorityTS(priority) }}
-          </QItemLabel>
-          <QItemLabel>{{ formatPriority(priority) }}</QItemLabel>
-          <QItemLabel caption>
-            {{ formatPriorityExtra(priority) }}
-          </QItemLabel>
+          <QItemLabel overline>{{ formatPriorityTS(p) }}</QItemLabel>
+          <QItemLabel>{{ formatPriority(p) }}</QItemLabel>
+          <QItemLabel caption>{{ formatPriorityExtra(p) }}</QItemLabel>
         </QItemSection>
         <QItemSection avatar>
           <QAvatar
-            :color="priorityColor(priority.isPriority)"
+            :color="priorityColor(p.isPriority)"
             text-color="white"
             square
             size="md"
           >
-            {{ priority.seniority }}
+            {{ p.seniority }}
           </QAvatar>
         </QItemSection>
       </QItem>

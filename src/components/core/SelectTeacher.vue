@@ -42,10 +42,10 @@ type Option = {
 
 const options = ref<Option[]>([]);
 const optionsInit = computed(() =>
-  teachers.value.map((teacher) => ({
-    value: teacher.uid,
-    label: formatUser(teacher),
-    search: normalizeForSearch(formatUser(teacher)),
+  teachers.value.map((t) => ({
+    value: t.uid,
+    label: formatUser(t),
+    search: normalizeForSearch(formatUser(t)),
   })),
 );
 watch(
@@ -58,8 +58,8 @@ watch(
 
 const filter = (val: string, update: (x: () => void) => void) => {
   update(() => {
-    options.value = optionsInit.value.filter((teacher) =>
-      teacher.search.includes(normalizeForSearch(val)),
+    options.value = optionsInit.value.filter((t) =>
+      t.search.includes(normalizeForSearch(val)),
     );
   });
 };

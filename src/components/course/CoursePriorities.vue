@@ -33,11 +33,7 @@ const priorities = computed(
 <template>
   <DetailsSection title="Priorités">
     <QCardSection>
-      <PriorityChip
-        v-for="priority in priorities"
-        :key="priority.id"
-        :data-fragment="priority"
-      />
+      <PriorityChip v-for="p in priorities" :key="p.id" :data-fragment="p" />
     </QCardSection>
   </DetailsSection>
 </template>

@@ -182,12 +182,12 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
 <template>
   <DetailsSection title="Service">
     <form
-      id="editBaseService"
+      id="edit-base-service"
       @submit.prevent="submitBaseServiceForm"
       @reset="resetBaseServiceForm"
     />
     <form
-      id="addModification"
+      id="add-modification"
       @submit.prevent="submitModificationForm"
       @reset="resetModificationForm"
     />
@@ -197,7 +197,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
           Base
           <QBtn
             v-if="isBaseServiceFormOpen"
-            form="editBaseService"
+            form="edit-base-service"
             type="submit"
             icon="sym_s_check_circle"
             color="primary"
@@ -212,7 +212,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
           </QBtn>
           <QBtn
             v-else-if="perm.toEditAService(service.uid)"
-            form="editBaseService"
+            form="edit-base-service"
             icon="sym_s_edit"
             color="primary"
             size="sm"
@@ -234,7 +234,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             suffix="htd"
             square
             dense
-            form="editBaseService"
+            form="edit-base-service"
             class="inline-block"
           />
         </td>
@@ -245,7 +245,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
           Modifications
           <QBtn
             v-if="isModificationFormOpen"
-            form="addModification"
+            form="add-modification"
             type="submit"
             icon="sym_s_check_circle"
             color="primary"
@@ -273,7 +273,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
       <tr v-if="isModificationFormOpen">
         <td>
           <QBtn
-            form="addModification"
+            form="add-modification"
             type="reset"
             icon="sym_s_cancel"
             color="primary"
@@ -295,7 +295,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             square
             dense
             options-dense
-            form="addModification"
+            form="add-modification"
             class="inline-block"
           >
             <template #option="scope">
@@ -318,12 +318,12 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             suffix="htd"
             square
             dense
-            form="addModification"
+            form="add-modification"
             class="inline-block"
           />
         </td>
       </tr>
-      <tr v-for="modification in service.modifications" :key="modification.id">
+      <tr v-for="m in service.modifications" :key="m.id">
         <td>
           <QBtn
             v-if="perm.toEditAService(service.uid)"
@@ -333,15 +333,15 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             flat
             square
             dense
-            @click="handleModificationDeletion(modification.id)"
+            @click="handleModificationDeletion(m.id)"
           >
             <QTooltip :delay="TOOLTIP_DELAY">
               Supprimer la modification
             </QTooltip>
           </QBtn>
-          {{ modification.modificationType.label }}
+          {{ m.modificationType.label }}
         </td>
-        <td>{{ formatWH(modification.hours) }}</td>
+        <td>{{ formatWH(m.hours) }}</td>
       </tr>
       <tr>
         <td colspan="100%" style="border-bottom: 1px solid black" />

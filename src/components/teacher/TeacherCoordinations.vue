@@ -90,9 +90,7 @@ const coordinations = computed(() =>
     TeacherCoordinationsFragmentDoc,
     dataFragment,
   ).coordinations.filter(
-    (coordination) =>
-      coordination.course == null ||
-      coordination.course.year === activeYear.value,
+    (c) => c.course == null || c.course.year === activeYear.value,
   ),
 );
 
@@ -182,18 +180,14 @@ const downloadProgramAssignments = async (coordination: Coordination) => {
 <template>
   <DetailsSection title="Responsabilités">
     <TeacherList>
-      <QItem
-        v-for="coordination in coordinations"
-        :key="coordination.id"
-        class="q-pa-none"
-      >
+      <QItem v-for="c in coordinations" :key="c.id" class="q-pa-none">
         <QItemSection>
           <QItemLabel overline>
-            {{ formatCoordinationType(coordination) }}
+            {{ formatCoordinationType(c) }}
           </QItemLabel>
-          <QItemLabel>{{ formatCoordination(coordination) }}</QItemLabel>
+          <QItemLabel>{{ formatCoordination(c) }}</QItemLabel>
           <QItemLabel caption>
-            {{ formatCoordinationExtra(coordination) }}
+            {{ formatCoordinationExtra(c) }}
           </QItemLabel>
         </QItemSection>
         <QItemSection v-if="perm.toViewAssignments" avatar>
@@ -203,7 +197,7 @@ const downloadProgramAssignments = async (coordination: Coordination) => {
             size="md"
             flat
             square
-            @click="downloadProgramAssignments(coordination)"
+            @click="downloadProgramAssignments(c)"
           >
             <QTooltip :delay="TOOLTIP_DELAY">
               Télécharger les attributions

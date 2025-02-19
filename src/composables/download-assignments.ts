@@ -74,16 +74,14 @@ graphql(`
 const { t } = i18n.global;
 
 const formatAssignments = (assignments: GetAssignmentsQuery["assignments"]) =>
-  assignments.map((assignment) => ({
-    [t("course.program")]: formatProgram(assignment.course.program),
-    [t("course.track")]: assignment.course.track
-      ? displayName(assignment.course.track)
-      : null,
-    [t("course.label")]: assignment.course.name,
-    [t("course.semester")]: assignment.course.semester,
-    [t("course.type")]: assignment.course.typeByType.label,
-    [t("role.teacher")]: formatUser(assignment.service.teacher),
-    [t("teacher.email")]: assignment.service.teacher.uid,
+  assignments.map((a) => ({
+    [t("course.program")]: formatProgram(a.course.program),
+    [t("course.track")]: a.course.track ? displayName(a.course.track) : null,
+    [t("course.label")]: a.course.name,
+    [t("course.semester")]: a.course.semester,
+    [t("course.type")]: a.course.typeByType.label,
+    [t("role.teacher")]: formatUser(a.service.teacher),
+    [t("teacher.email")]: a.service.teacher.uid,
   }));
 
 const downloadAssignments =

@@ -28,23 +28,21 @@ const customTexts = ref<CustomTexts[]>(
   })),
 );
 const customTextsSanitized = computed(() =>
-  customTexts.value.map((customText) => ({
-    ...customText,
-    value: sanitize(customText.value ?? ""),
+  customTexts.value.map((text) => ({
+    ...text,
+    value: sanitize(text.value ?? ""),
   })),
 );
 
 const getValue = (key: string) =>
   computed(
     () =>
-      customTextsSanitized.value.find((customText) => customText.key === key)
-        ?.value ?? null,
+      customTextsSanitized.value.find((text) => text.key === key)?.value ??
+      null,
   );
 
 const setValue = (key: string, value: string) => {
-  const customText = customTexts.value.find(
-    (customText) => customText.key === key,
-  );
+  const customText = customTexts.value.find((text) => text.key === key);
   if (!customText) {
     console.warn(`Invalid custom text key: ${key}`);
     return;

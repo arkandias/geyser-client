@@ -109,8 +109,8 @@ const customTextsQueryResult = useQuery({
 watch(
   customTextsQueryResult.data,
   (value) => {
-    value?.customTexts.forEach(({ key, value }) => {
-      setValue(key, value);
+    value?.customTexts.forEach((text) => {
+      setValue(text.key, text.value);
     });
   },
   { immediate: true },

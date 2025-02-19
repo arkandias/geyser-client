@@ -64,10 +64,9 @@ const data = computed(() =>
   useFragment(CourseDescriptionFragmentDoc, dataFragment),
 );
 const coordinators = computed(() => [
-  ...data.value.coordinations.map((coordination) => coordination.uid),
-  ...data.value.program.coordinations.map((coordination) => coordination.uid),
-  ...(data.value.track?.coordinations.map((coordination) => coordination.uid) ??
-    []),
+  ...data.value.coordinations.map((c) => c.uid),
+  ...data.value.program.coordinations.map((c) => c.uid),
+  ...(data.value.track?.coordinations.map((c) => c.uid) ?? []),
 ]);
 
 // Description

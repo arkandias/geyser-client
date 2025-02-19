@@ -49,10 +49,7 @@ const importHandle = async () => {
       });
       return;
     }
-
-    const objects = importCSV(text, descriptorObj);
-
-    await insertObjects(objects, overwrite.value);
+    await insertObjects(importCSV(text, descriptorObj), overwrite.value);
   } catch (error) {
     console.error("Import error:", error);
     notify(NotifyType.ERROR, {

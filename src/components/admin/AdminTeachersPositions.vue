@@ -102,8 +102,8 @@ const positionInsert = ref(false);
 const positionUpdate = ref(false);
 const positionEdit = computed({
   get: () => positionInsert.value || positionUpdate.value,
-  set: (val) => {
-    if (!val) {
+  set: (newValue) => {
+    if (!newValue) {
       positionInsert.value = false;
       positionUpdate.value = false;
     }
@@ -123,22 +123,6 @@ const position = reactive<{
 });
 
 const validatePosition = () => {
-  if (!position.value) {
-    notify(NotifyType.ERROR, {
-      message: t("admin.teachers.positions.form.invalid.message"),
-      caption: t("admin.teachers.positions.form.invalid.caption.value_empty"),
-    });
-    return false;
-  }
-  if (!/^[a-z0-9_]*$/.test(position.value)) {
-    notify(NotifyType.ERROR, {
-      message: t("admin.teachers.positions.form.invalid.message"),
-      caption: t(
-        "admin.teachers.positions.form.invalid.caption.value_invalid_characters",
-      ),
-    });
-    return false;
-  }
   if (!position.label) {
     notify(NotifyType.ERROR, {
       message: t("admin.teachers.positions.form.invalid.message"),
@@ -162,7 +146,13 @@ const insertPositionHandle = async () => {
   if (!validatePosition()) {
     return;
   }
-  const { data, error } = await insertPosition.executeMutation(position);
+  const { data, error } = await insertPosition.executeMutation({
+    ...position,
+    // add value field based on label field
+    value:
+      positions.value.find((p) => p.label === position.label)?.value ??
+      toSlug(position.label),
+  });
   positionEdit.value = false;
   if (data?.insertPositionOne?.value && !error) {
     notify(NotifyType.SUCCESS, {
@@ -198,7 +188,7 @@ const deletePositionHandle = async () => {
   if (
     confirm(
       t("admin.teachers.positions.form.confirm.delete", {
-        position: position.value,
+        position: position.label,
       }),
     )
   ) {
@@ -238,19 +228,10 @@ const onRowClick = (_: Event, row: AdminPositionFragment) => {
 };
 
 const positions = computed(() =>
-  positionFragments.map((fragment) =>
-    useFragment(AdminPositionFragmentDoc, fragment),
-  ),
+  positionFragments.map((f) => useFragment(AdminPositionFragmentDoc, f)),
 );
 
 const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
-  {
-    name: "value",
-    label: t("admin.teachers.positions.table.value"),
-    align: "left",
-    field: "value",
-    sortable: true,
-  },
   {
     name: "label",
     label: t("admin.teachers.positions.table.label"),
@@ -295,7 +276,12 @@ const insertObjects = async (
 ) => {
   const { data, error } = await insertPositions.executeMutation({
     // add value field based on label field
-    objects: objects.map((obj) => ({ value: toSlug(obj.label), ...obj })),
+    objects: objects.map((obj) => ({
+      ...obj,
+      value:
+        positions.value.find((p) => p.label === obj.label)?.value ??
+        toSlug(position.label),
+    })),
     updateColumns: overwrite
       ? [
           PositionUpdateColumn.Label,
@@ -349,13 +335,13 @@ const onExportClick = () => {
         {{ position.label }}
       </QCardSection>
       <QCardSection>
-        <div class="q-gutter-md">
-          <QInput
-            v-model="position.value"
-            :label="t('admin.teachers.positions.form.value')"
-            square
-            dense
-          />
+        <QForm
+          id="edit-position"
+          class="q-gutter-md"
+          @submit="
+            positionInsert ? insertPositionHandle() : updatePositionHandle()
+          "
+        >
           <QInput
             v-model="position.label"
             :label="t('admin.teachers.positions.form.label')"
@@ -379,7 +365,7 @@ const onExportClick = () => {
             square
             dense
           />
-        </div>
+        </QForm>
       </QCardSection>
       <QSeparator />
       <QCardActions align="right">
@@ -392,6 +378,8 @@ const onExportClick = () => {
           @click="deletePositionHandle"
         />
         <QBtn
+          form="edit-position"
+          type="submit"
           :label="
             positionInsert
               ? t('admin.teachers.positions.form.insert')
@@ -400,9 +388,6 @@ const onExportClick = () => {
           color="positive"
           flat
           square
-          @click="
-            positionInsert ? insertPositionHandle() : updatePositionHandle()
-          "
         />
       </QCardActions>
     </QCard>
