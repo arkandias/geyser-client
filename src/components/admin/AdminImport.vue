@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends Record<string, FieldDescriptor>">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
@@ -11,15 +11,23 @@ import {
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 const model = defineModel<boolean>();
-const overwrite = defineModel<boolean>("overwrite");
 const { descriptorObj, insertObjects } = defineProps<{
   descriptorObj: T;
-  insertObjects: (objects: ParsedObject<T>[]) => Promise<void>;
+  insertObjects: (
+    objects: ParsedObject<T>[],
+    overwrite: boolean,
+  ) => Promise<void>;
 }>();
 
 const { t } = useI18n();
 
 const selectedFile = ref<File | null>(null);
+const overwrite = ref(false);
+watch(model, () => {
+  selectedFile.value = null;
+  overwrite.value = false;
+});
+
 const importing = ref(false);
 
 const importHandle = async () => {
@@ -44,14 +52,13 @@ const importHandle = async () => {
 
     const objects = importCSV(text, descriptorObj);
 
-    await insertObjects(objects);
+    await insertObjects(objects, overwrite.value);
   } catch (error) {
+    console.error("Import error:", error);
     notify(NotifyType.ERROR, {
       message: t("admin.import.invalid.message"),
       caption:
-        error instanceof Error
-          ? error.message
-          : t("admin.import.invalid.caption.unknown_error"),
+        error instanceof Error ? error.message : t("notify.error.unknown"),
     });
   } finally {
     importing.value = false;
@@ -98,6 +105,7 @@ const columns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
         <QTable
           :columns
           :rows="Object.entries(descriptorObj)"
+          :pagination="{ rowsPerPage: 0 }"
           hide-bottom
           bordered
           flat

@@ -9,7 +9,6 @@ import {
 import { i18n } from "@/services/i18n.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
 import { displayName, formatProgram, formatUser } from "@/utils/format.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
   query GetAssignments($year: Int!, $where: RequestBoolExp = {}) {
@@ -94,15 +93,11 @@ const downloadAssignments =
       .query(GetAssignmentsDocument, variables, {
         requestPolicy: "network-only",
       })
-      .then((result) => result.data?.assignments ?? null);
-    if (!assignments) {
-      console.error("Error while fetching assignments", variables);
-      notify(NotifyType.ERROR, {
-        message: t("download_assignments.error"),
-      });
-      return;
-    }
-    downloadCSV(filename, formatAssignments(assignments));
+      .then((result) => result.data?.assignments ?? []);
+    downloadCSV(filename, formatAssignments(assignments), [], {
+      success: t("download_assignments.error", assignments.length),
+      error: t("download_assignments.error"),
+    });
   };
 
 export const useDownloadAssignments = () => {

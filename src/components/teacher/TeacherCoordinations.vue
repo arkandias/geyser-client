@@ -163,7 +163,7 @@ const downloadProgramAssignments = async (coordination: Coordination) => {
       " " +
       displayName(coordination.course);
   } else {
-    console.error("Invalid coordination", coordination);
+    console.error("Invalid coordination:", coordination);
     notify(NotifyType.ERROR, {
       message: "Responsabilité non valide",
     });

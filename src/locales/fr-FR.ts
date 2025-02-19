@@ -43,8 +43,11 @@ export default {
   },
   notify: {
     error: {
-      default_caption:
-        "Si le problème persiste, merci de contacter un administrateur",
+      unknown: "Erreur inconnue",
+      caption: {
+        default:
+          "Si le problème persiste, merci de contacter un administrateur",
+      },
     },
   },
   header: {
@@ -241,8 +244,12 @@ export default {
         caption: {
           file_empty: "Fichier vide",
           unreadable_file: "Fichier illisible",
-          unknown_error: "Erreur inconnue",
         },
+      },
+    },
+    export: {
+      invalid: {
+        message: "Échec de l'export",
       },
     },
     general: {
@@ -312,6 +319,18 @@ vous ne pourrez pas le supprimer.`,
             },
           },
         },
+        import: {
+          valid: {
+            message:
+              "0 intervenant importé | 1 intervenant importé | {count} intervenants importés",
+          },
+        },
+        export: {
+          valid: {
+            message:
+              "0 intervenant exporté | 1 intervenant exporté | {count} intervenants exportés",
+          },
+        },
       },
       positions: {
         label: "Fonctions",
@@ -354,8 +373,16 @@ supprimer.`,
           },
         },
         import: {
-          message:
-            "0 fonction créée | 1 fonction créée | {count} fonctions créées",
+          valid: {
+            message:
+              "0 fonction importée | 1 fonction importée | {count} fonctions importées",
+          },
+        },
+        export: {
+          valid: {
+            message:
+              "0 fonction exportée | 1 fonction exportée | {count} fonctions exportées",
+          },
         },
       },
     },
@@ -452,7 +479,9 @@ supprimer.`,
     },
   },
   download_assignments: {
-    error: "Erreur lors de la récupération des attributions",
+    success:
+      "0 attribution téléchargée | 1 attribution téléchargée | {count} attributions téléchargées",
+    error: "Échec du téléchargement",
   },
   custom_text_label: {
     legal_notice: "Mentions légales",

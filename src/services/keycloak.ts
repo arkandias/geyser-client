@@ -44,7 +44,7 @@ export const initKeycloak = async () => {
       console.error("Authentication failed");
       return;
     }
-  } catch (error: unknown) {
+  } catch (error) {
     console.error("Authentication error:", error);
     return;
   }
@@ -63,7 +63,7 @@ export const refreshToken = async () => {
   try {
     const refreshed = await keycloak.updateToken(KEYCLOAK_TOKEN_MIN_VALIDITY);
     console.debug(refreshed ? "Token was refreshed" : "Token is still valid");
-  } catch (error: unknown) {
+  } catch (error) {
     console.error("Failed to refresh the token:", error);
     keycloak.clearToken();
   }

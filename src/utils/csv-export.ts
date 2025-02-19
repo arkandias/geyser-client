@@ -1,6 +1,8 @@
 import { type UnparseConfig, unparse } from "papaparse";
 
+import { i18n } from "@/services/i18n.ts";
 import { toSlug } from "@/utils/misc.ts";
+import { NotifyType, notify } from "@/utils/notify.ts";
 
 export type Header = string | { key: string; label: string };
 type Scalar = string | number | boolean | null | undefined;
@@ -82,19 +84,39 @@ export const downloadCSV = (
   filename: string,
   data: SimpleObject[],
   headers: Header[] = [],
+  message?: { success: string; error: string },
 ) => {
-  const BOM = "\uFEFF"; // Byte Order Mark
-  const csv = dataArrayToCSV(data, headers);
-  const blob = new Blob([BOM + csv], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
+  try {
+    const BOM = "\uFEFF"; // Byte Order Mark
+    const csv = dataArrayToCSV(data, headers);
+    const blob = new Blob([BOM + csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
 
-  const link = document.createElement("a");
-  link.style.display = "none";
-  link.href = url;
-  link.download = toSlug(filename) + ".csv";
+    const link = document.createElement("a");
+    link.style.display = "none";
+    link.href = url;
+    link.download = toSlug(filename) + ".csv";
 
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    if (message) {
+      notify(NotifyType.SUCCESS, {
+        message: message.success,
+      });
+    }
+  } catch (error) {
+    console.error("Export error:", error);
+    if (message) {
+      notify(NotifyType.ERROR, {
+        message: message.error,
+        caption:
+          error instanceof Error
+            ? error.message
+            : i18n.global.t("notify.error.unknown"),
+      });
+    }
+  }
 };

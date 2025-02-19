@@ -279,10 +279,8 @@ const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
 
 // Import
 const positionsImport = ref(false);
-const importOverwrite = ref(false);
-const positionImportHandle = () => {
+const onImportClick = () => {
   positionsImport.value = true;
-  importOverwrite.value = false;
 };
 
 const descriptorObj = {
@@ -291,11 +289,14 @@ const descriptorObj = {
   baseServiceHours: { type: "number", nullable: true },
 } as const;
 
-const insertObjects = async (objects: ParsedObject<typeof descriptorObj>[]) => {
+const insertObjects = async (
+  objects: ParsedObject<typeof descriptorObj>[],
+  overwrite: boolean,
+) => {
   const { data, error } = await insertPositions.executeMutation({
     // add value field based on label field
     objects: objects.map((obj) => ({ value: toSlug(obj.label), ...obj })),
-    updateColumns: importOverwrite.value
+    updateColumns: overwrite
       ? [
           PositionUpdateColumn.Label,
           PositionUpdateColumn.Description,
@@ -306,7 +307,7 @@ const insertObjects = async (objects: ParsedObject<typeof descriptorObj>[]) => {
   if (data?.insertPosition?.returning && !error) {
     notify(NotifyType.SUCCESS, {
       message: t(
-        "admin.teachers.positions.import.message",
+        "admin.teachers.positions.import.valid.message",
         data.insertPosition.returning.length,
       ),
     });
@@ -315,17 +316,19 @@ const insertObjects = async (objects: ParsedObject<typeof descriptorObj>[]) => {
 
 // Export
 const headers = ["label", "description", "baseServiceHours"];
-const positionsExportHandle = () => {
-  downloadCSV(`positions_${Date.now().toString()}`, positions.value, headers);
+const onExportClick = () => {
+  downloadCSV(`positions_${Date.now().toString()}`, positions.value, headers, {
+    success: t(
+      "admin.teachers.positions.export.valid.message",
+      positions.value.length,
+    ),
+    error: t("admin.export.invalid.message"),
+  });
 };
 </script>
 
 <template>
-  <AdminButtons
-    :on-create-click
-    :on-import-click="positionImportHandle"
-    :on-export-click="positionsExportHandle"
-  />
+  <AdminButtons :on-create-click :on-import-click :on-export-click />
 
   <QTable
     :rows="positions"
@@ -405,12 +408,7 @@ const positionsExportHandle = () => {
     </QCard>
   </QDialog>
 
-  <AdminImport
-    v-model="positionsImport"
-    v-model:overwrite="importOverwrite"
-    :descriptor-obj
-    :insert-objects
-  />
+  <AdminImport v-model="positionsImport" :descriptor-obj :insert-objects />
 </template>
 
 <style scoped lang="scss"></style>

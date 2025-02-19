@@ -10,13 +10,18 @@ import {
   AdminTeacherPositionFragmentDoc,
   DeleteTeacherDocument,
   InsertTeacherDocument,
+  InsertTeachersDocument,
+  TeacherUpdateColumn,
   UpdateTeacherDocument,
 } from "@/gql/graphql.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
+import { downloadCSV } from "@/utils/csv-export.ts";
+import type { ParsedObject } from "@/utils/csv-import.ts";
 import { getField, normalizeForSearch } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 import AdminButtons from "@/components/admin/AdminButtons.vue";
+import AdminImport from "@/components/admin/AdminImport.vue";
 
 const { teacherFragments, positionFragments } = defineProps<{
   teacherFragments: FragmentType<typeof AdminTeacherFragmentDoc>[];
@@ -99,6 +104,20 @@ graphql(`
       uid
     }
   }
+
+  mutation InsertTeachers(
+    $objects: [TeacherInsertInput!]!
+    $updateColumns: [TeacherUpdateColumn!]!
+  ) {
+    insertTeacher(
+      objects: $objects
+      onConflict: { constraint: teacher_pkey, updateColumns: $updateColumns }
+    ) {
+      returning {
+        uid
+      }
+    }
+  }
 `);
 
 const { t } = useI18n();
@@ -106,6 +125,7 @@ const { t } = useI18n();
 const insertTeacher = useMutation(InsertTeacherDocument);
 const updateTeacher = useMutation(UpdateTeacherDocument);
 const deleteTeacher = useMutation(DeleteTeacherDocument);
+const insertTeachers = useMutation(InsertTeachersDocument);
 
 const teacherInsert = ref(false);
 const teacherUpdate = ref(false);
@@ -254,14 +274,6 @@ const onCreateClick = () => {
   teacherInsert.value = true;
 };
 
-const onImportClick = () => {
-  void 0;
-};
-
-const onExportClick = () => {
-  void 0;
-};
-
 const onRowClick = (_: Event, row: AdminTeacherFragment) => {
   selectedUid.value = row.uid;
   Object.assign(teacher, {
@@ -377,6 +389,72 @@ const filterMethod = (
       ),
     ),
   );
+
+// Import
+const teachersImport = ref(false);
+const onImportClick = () => {
+  teachersImport.value = true;
+};
+
+const descriptorObj = {
+  uid: { type: "string" },
+  firstname: { type: "string" },
+  lastname: { type: "string" },
+  alias: { type: "string", nullable: true },
+  position: { type: "string", nullable: true },
+  baseServiceHours: { type: "number", nullable: true },
+  visible: { type: "boolean" },
+  active: { type: "boolean" },
+} as const;
+
+const insertObjects = async (
+  objects: ParsedObject<typeof descriptorObj>[],
+  overwrite: boolean,
+) => {
+  const { data, error } = await insertTeachers.executeMutation({
+    objects,
+    updateColumns: overwrite
+      ? [
+          TeacherUpdateColumn.Firstname,
+          TeacherUpdateColumn.Lastname,
+          TeacherUpdateColumn.Alias,
+          TeacherUpdateColumn.Position,
+          TeacherUpdateColumn.BaseServiceHours,
+          TeacherUpdateColumn.Visible,
+          TeacherUpdateColumn.Active,
+        ]
+      : [],
+  });
+  if (data?.insertTeacher?.returning && !error) {
+    notify(NotifyType.SUCCESS, {
+      message: t(
+        "admin.teachers.teachers.import.valid.message",
+        data.insertTeacher.returning.length,
+      ),
+    });
+  }
+};
+
+// Export
+const headers = [
+  "uid",
+  "firstname",
+  "lastname",
+  "alias",
+  "position",
+  "baseServiceHours",
+  "visible",
+  "active",
+];
+const onExportClick = () => {
+  downloadCSV(`teachers_${Date.now().toString()}`, teachers.value, headers, {
+    success: t(
+      "admin.teachers.teachers.export.valid.message",
+      teachers.value.length,
+    ),
+    error: t("admin.export.invalid.message"),
+  });
+};
 </script>
 
 <template>
@@ -502,6 +580,8 @@ const filterMethod = (
       </QCardActions>
     </QCard>
   </QDialog>
+
+  <AdminImport v-model="teachersImport" :descriptor-obj :insert-objects />
 </template>
 
 <style scoped lang="scss"></style>
