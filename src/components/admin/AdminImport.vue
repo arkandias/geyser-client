@@ -1,15 +1,20 @@
-<script setup lang="ts" generic="T">
+<script setup lang="ts" generic="T extends Record<string, FieldDescriptor>">
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 import type { I18nOptions } from "@/services/i18n.ts";
-import { parseCSV } from "@/utils/csv.ts";
+import type { ColumnNonAbbreviable } from "@/types/column.ts";
+import {
+  type FieldDescriptor,
+  type ParsedObject,
+  importCSV,
+} from "@/utils/csv-import.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 const model = defineModel<boolean>();
-const { validateObjects, insertObjects } = defineProps<{
-  validateObjects: (obj: Record<string, string>) => T;
-  insertObjects: (variables: { objects: T[] }) => Promise<void>;
+const { descriptorObj, insertObjects } = defineProps<{
+  descriptorObj: T;
+  insertObjects: (variables: { objects: ParsedObject<T>[] }) => Promise<void>;
 }>();
 
 const { t } = useI18n<I18nOptions>();
@@ -37,7 +42,8 @@ const importHandle = async () => {
       return;
     }
 
-    const objects = parseCSV(text).map(validateObjects);
+    const objects = importCSV(text, descriptorObj);
+
     await insertObjects({ objects });
   } catch (error) {
     notify(NotifyType.ERROR, {
@@ -53,6 +59,29 @@ const importHandle = async () => {
     model.value = false;
   }
 };
+
+const columns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
+  {
+    name: "key",
+    label: t("admin.import.table.columns.key"),
+    align: "left",
+    field: ([key]) => key,
+  },
+  {
+    name: "type",
+    label: t("admin.import.table.columns.type"),
+    align: "left",
+    field: ([_, descriptor]) => descriptor.type,
+    format: (val: string) => t("admin.import.table.values.type_" + val),
+  },
+  {
+    name: "non_nullable",
+    label: t("admin.import.table.columns.non_nullable"),
+    align: "center",
+    field: ([_, descriptor]) => !!descriptor.nullable,
+    format: (val: boolean) => (!val ? "✓" : "✗"),
+  },
+];
 </script>
 
 <template>
@@ -60,6 +89,20 @@ const importHandle = async () => {
     <QCard flat square class="admin-form">
       <QCardSection class="text-h6">
         {{ t("admin.import.title") }}
+      </QCardSection>
+      <QCardSection>
+        <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
+        <div v-html="t('admin.import.csv_instructions')" />
+      </QCardSection>
+      <QCardSection>
+        <QTable
+          :columns
+          :rows="Object.entries(descriptorObj)"
+          hide-bottom
+          bordered
+          flat
+          dense
+        />
       </QCardSection>
       <QCardSection>
         <QFile

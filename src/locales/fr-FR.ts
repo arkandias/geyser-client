@@ -73,64 +73,64 @@ export default {
       contact: {
         label: "Contact",
         message: `
-        Pour toute question, remarque, suggestion d'améliorations, signalement
-        d'erreurs ou de bugs éventuels, vous pouvez utiliser le bouton
-        ci-dessous.`,
+          Pour toute question, remarque, suggestion d'améliorations, signalement
+          d'erreurs ou de bugs éventuels, vous pouvez utiliser le bouton
+          ci-dessous.`,
         button: "Envoyer un message",
       },
       license: {
         label: "Licence",
         message: `
-        <p>
-          Geyser &mdash; Gestion des enseignements prévisionnels<br />
-          Copyright &copy; 2021-2025 Amaël Broustet, Julien Hauseux
-        </p>
-        <p>
-          Geyser est un logiciel libre distribué sous les termes de la licence
-          <a
-            href="https://www.gnu.org/licenses/agpl-3.0.html#license-text"
-            target="_blank"
-            rel="noopener noreferrer"
-            >GNU Affero GPL v3</a
-          >.
-        </p>
-        <p class="text-italic">
-          La licence publique générale GNU Affero (GNU AGPL) est une version
-          modifiée de la version 3 de la GNU GPL ordinaire. Elle a une seule
-          exigence supplémentaire : si vous exécutez un programme modifié sur un
-          serveur et laissez d'autres utilisateurs communiquer avec lui, votre
-          serveur doit aussi leur permettre de télécharger le code source
-          correspondant à la version modifiée en fonctionnement.
-        </p>
-        <p class="text-right">
-          Extrait de
-          <a
-            href="https://www.gnu.org/licenses/why-affero-gpl.fr.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            >https://www.gnu.org/licenses/why-affero-gpl.fr.html</a
-          >
-          le 03/03/2024.
-        </p>
-        Le code source de Geyser est disponible sur GitHub :
-        <ol>
-          <li>
+          <p>
+            Geyser &mdash; Gestion des enseignements prévisionnels<br />
+            Copyright &copy; 2021-2025 Amaël Broustet, Julien Hauseux
+          </p>
+          <p>
+            Geyser est un logiciel libre distribué sous les termes de la licence
             <a
-              href="https://github.com/arkandias/geyser"
+              href="https://www.gnu.org/licenses/agpl-3.0.html#license-text"
               target="_blank"
               rel="noopener noreferrer"
-              >https://github.com/arkandias/geyser</a
-            >
-          </li>
-          <li>
+              >GNU Affero GPL v3</a
+            >.
+          </p>
+          <p class="text-italic">
+            La licence publique générale GNU Affero (GNU AGPL) est une version
+            modifiée de la version 3 de la GNU GPL ordinaire. Elle a une seule
+            exigence supplémentaire : si vous exécutez un programme modifié sur un
+            serveur et laissez d'autres utilisateurs communiquer avec lui, votre
+            serveur doit aussi leur permettre de télécharger le code source
+            correspondant à la version modifiée en fonctionnement.
+          </p>
+          <p class="text-right">
+            Extrait de
             <a
-              href="https://github.com/arkandias/geyser-client"
+              href="https://www.gnu.org/licenses/why-affero-gpl.fr.html"
               target="_blank"
               rel="noopener noreferrer"
-              >https://github.com/arkandias/geyser-client</a
+              >https://www.gnu.org/licenses/why-affero-gpl.fr.html</a
             >
-          </li>
-        </ol>`,
+            le 03/03/2024.
+          </p>
+          Le code source de Geyser est disponible sur GitHub :
+          <ol>
+            <li>
+              <a
+                href="https://github.com/arkandias/geyser"
+                target="_blank"
+                rel="noopener noreferrer"
+                >https://github.com/arkandias/geyser</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/arkandias/geyser-client"
+                target="_blank"
+                rel="noopener noreferrer"
+                >https://github.com/arkandias/geyser-client</a
+              >
+            </li>
+          </ol>`,
       },
       legal_notice: {
         label: "Mentions légales",
@@ -165,40 +165,40 @@ export default {
     },
     message: {
       requests: `
-      <p>
-        Vérifiez que votre service de base (ci-dessous) est correct. Dans le cas
-        contraire contactez un membre de la commission. Ajoutez ensuite vos
-        modifications de service éventuelles (délégation, décharge, congé,
-        etc.).
-        <b>
-          Le total indiqué doit correspondre au nombre d'heures équivalent TD
-          que la commission doit vous attribuer avec des enseignements
-          disponibles dans Geyser.
-        </b>
-      </p>
-      <p>
-        Vous pouvez ensuite faire des demandes principales et secondaires sur la
-        page Enseignements (icône <QIcon name="sym_s_menu_book" /> dans
-        l'en-tête). Merci de demander l’équivalent de votre service total en
-        demandes principales et en demandes secondaires.
-      </p>
-      <p>
-        Enfin, vous avez la possibilité de laisser un message à la commission
-        afin de porter à sa connaissance toute information que vous jugez utile
-        pour son travail. Ce message ne sera visible que par la commission et
-        vous-même. Pour modifier votre message, cliquez sur le bouton
-        <QBtn icon="sym_s_edit" color="primary" size="xs" flat square dense />
-        qui apparaît à côté du titre de la section correspondante.
-      </p>`,
+        <p>
+          Vérifiez que votre service de base (ci-dessous) est correct. Dans le cas
+          contraire contactez un membre de la commission. Ajoutez ensuite vos
+          modifications de service éventuelles (délégation, décharge, congé,
+          etc.).
+          <b>
+            Le total indiqué doit correspondre au nombre d'heures équivalent TD
+            que la commission doit vous attribuer avec des enseignements
+            disponibles dans Geyser.
+          </b>
+        </p>
+        <p>
+          Vous pouvez ensuite faire des demandes principales et secondaires sur la
+          page Enseignements (icône <QIcon name="sym_s_menu_book" /> dans
+          l'en-tête). Merci de demander l’équivalent de votre service total en
+          demandes principales et en demandes secondaires.
+        </p>
+        <p>
+          Enfin, vous avez la possibilité de laisser un message à la commission
+          afin de porter à sa connaissance toute information que vous jugez utile
+          pour son travail. Ce message ne sera visible que par la commission et
+          vous-même. Pour modifier votre message, cliquez sur le bouton
+          <QBtn icon="sym_s_edit" color="primary" size="xs" flat square dense />
+          qui apparaît à côté du titre de la section correspondante.
+        </p>`,
       assignments: `
-      Les travaux de la commission sont en cours. Vous serez informé lorsqu'ils
-      seront terminés pour consulter les attributions. En attendant, vous pouvez
-      toujours consulter les demandes mais il n'est plus possible de les
-      modifier.`,
+        Les travaux de la commission sont en cours. Vous serez informé lorsqu'ils
+        seront terminés pour consulter les attributions. En attendant, vous pouvez
+        toujours consulter les demandes mais il n'est plus possible de les
+        modifier.`,
       results: `
-      Vous pouvez à présent consulter les attributions des enseignements de
-      cette année. Vous avez également toujours accès aux demandes et aux
-      attributions des années précédentes.`,
+        Vous pouvez à présent consulter les attributions des enseignements de
+        cette année. Vous avez également toujours accès aux demandes et aux
+        attributions des années précédentes.`,
       shutdown: "",
     },
   },
@@ -209,7 +209,30 @@ export default {
       export: "Exporter",
     },
     import: {
-      title: "Importer",
+      title: "Import depuis un fichier CSV",
+      csv_instructions: `
+        Pour être valide, le fichier CSV doit impérativement respecter les règles suivantes :
+        <ul>
+          <li>Le fichier doit contenir exactement les colonnes listées dans le tableau ci-dessous, toutes sont obligatoires.</li>
+          <li>Les noms des colonnes doivent être écrits exactement comme indiqué dans le tableau (en minuscules).</li>
+          <li>Les valeurs doivent être séparées par des virgules.</li>
+          <li>Les textes contenant des virgules doivent être entre guillemets doubles.</li>
+          <li>Si un texte contient lui-même des guillemets doubles, ceux-ci doivent être doublés (ex : "Il a dit : ""Bonjour""")</li>
+          <li>Les nombres doivent utiliser le point comme séparateur décimal et ne pas contenir d'espaces (ex : 1234.56).</li>
+          <li>Les valeurs booléennes doivent être écrites "true" ou "false" (en minuscules)</li>
+        </ul>`,
+      table: {
+        columns: {
+          key: "Nom",
+          type: "Type",
+          non_nullable: "Non vide",
+        },
+        values: {
+          type_string: "texte",
+          type_number: "nombre",
+          type_boolean: "booléen",
+        },
+      },
       file_picker_label: "Sélectionnez un fichier CSV",
       import_button: "Importer",
       invalid: {

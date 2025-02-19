@@ -1,4 +1,4 @@
-import { useQuery } from "@urql/vue";
+import { type Client, useClientHandle } from "@urql/vue";
 
 import { graphql } from "@/gql";
 import {
@@ -7,7 +7,7 @@ import {
   type GetAssignmentsQueryVariables,
 } from "@/gql/graphql.ts";
 import { i18n } from "@/services/i18n.ts";
-import { downloadCSV } from "@/utils/csv.ts";
+import { downloadCSV } from "@/utils/csv-export.ts";
 import { displayName, formatProgram, formatUser } from "@/utils/format.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
@@ -74,44 +74,38 @@ graphql(`
 
 const { t } = i18n.global;
 
-const headers = [
-  t("course.program"),
-  t("course.track"),
-  t("course.label"),
-  t("course.semester"),
-  t("course.type"),
-  t("role.teacher"),
-  t("teacher.email"),
-];
-
 const formatAssignments = (assignments: GetAssignmentsQuery["assignments"]) =>
   assignments.map((assignment) => ({
-    mention: formatProgram(assignment.course.program),
-    parcours: assignment.course.track
+    [t("course.program")]: formatProgram(assignment.course.program),
+    [t("course.track")]: assignment.course.track
       ? displayName(assignment.course.track)
       : null,
-    enseignement: assignment.course.name,
-    semestre: assignment.course.semester,
-    type: assignment.course.typeByType.label,
-    intervenant: formatUser(assignment.service.teacher),
-    email: assignment.service.teacher.uid,
+    [t("course.label")]: assignment.course.name,
+    [t("course.semester")]: assignment.course.semester,
+    [t("course.type")]: assignment.course.typeByType.label,
+    [t("role.teacher")]: formatUser(assignment.service.teacher),
+    [t("teacher.email")]: assignment.service.teacher.uid,
   }));
 
-export const useDownloadAssignments = async (
-  variables: GetAssignmentsQueryVariables,
-  filename: string,
-) => {
-  const assignments = await useQuery({
-    query: GetAssignmentsDocument,
-    variables,
-    context: { requestPolicy: "network-only" },
-  }).then((result) => result.data.value?.assignments ?? null);
-  if (!assignments) {
-    console.error("Error while fetching assignments", variables);
-    notify(NotifyType.ERROR, {
-      message: t("download_assignments.error"),
-    });
-    return;
-  }
-  downloadCSV(formatAssignments(assignments), headers, filename);
+const downloadAssignments =
+  (client: Client) =>
+  async (variables: GetAssignmentsQueryVariables, filename: string) => {
+    const assignments = await client
+      .query(GetAssignmentsDocument, variables, {
+        requestPolicy: "network-only",
+      })
+      .then((result) => result.data?.assignments ?? null);
+    if (!assignments) {
+      console.error("Error while fetching assignments", variables);
+      notify(NotifyType.ERROR, {
+        message: t("download_assignments.error"),
+      });
+      return;
+    }
+    downloadCSV(filename, formatAssignments(assignments));
+  };
+
+export const useDownloadAssignments = () => {
+  const client = useClientHandle().client;
+  return { downloadAssignments: downloadAssignments(client) };
 };

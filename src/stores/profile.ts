@@ -77,7 +77,7 @@ const fetchProfile = async (uid: string) => {
     const invalidRoles = profile.roles
       .map((role) => role.type)
       .filter((role) => !isRole(role));
-    if (invalidRoles.length > 0) {
+    if (invalidRoles.length) {
       console.error("Invalid roles:", invalidRoles);
     }
 

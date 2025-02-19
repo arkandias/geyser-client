@@ -83,6 +83,7 @@ graphql(`
 
 const { activeYear } = useYearsStore();
 const perm = usePermissions();
+const { downloadAssignments } = useDownloadAssignments();
 
 const coordinations = computed(() =>
   useFragment(
@@ -168,7 +169,7 @@ const downloadProgramAssignments = async (coordination: Coordination) => {
     });
     return;
   }
-  await useDownloadAssignments(
+  await downloadAssignments(
     {
       year: activeYear.value,
       where,

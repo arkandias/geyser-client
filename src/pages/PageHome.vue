@@ -28,7 +28,7 @@ const defaultSubtitle = computed(() => {
     case PHASES.SHUTDOWN:
       return t("home.subtitle.shutdown");
     default:
-      throw new Error(`Unknown phase`);
+      throw new Error(`Unknown phase: ${String(currentPhase.value)}`);
   }
 });
 
@@ -44,7 +44,7 @@ const defaultMessage = computed(() => {
     case PHASES.SHUTDOWN:
       return t("home.message.shutdown");
     default:
-      throw new Error(`Unknown phase`);
+      throw new Error(`Unknown phase: ${String(currentPhase.value)}`);
   }
 });
 

@@ -95,6 +95,7 @@ const { t } = useI18n<I18nOptions>();
 
 const { activeYear } = useYearsStore();
 const perm = usePermissions();
+const { downloadAssignments } = useDownloadAssignments();
 
 type CourseRow = Omit<CourseRowFragment, "requests"> & {
   totalAssigned: number;
@@ -443,7 +444,7 @@ const downloadTeacherAssignments = async () => {
   if (activeYear.value === null || !teacher.value) {
     return;
   }
-  await useDownloadAssignments(
+  await downloadAssignments(
     {
       year: activeYear.value,
       where: { service: { uid: { _eq: teacher.value.uid } } },
