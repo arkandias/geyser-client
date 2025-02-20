@@ -25,3 +25,9 @@ if (bypassAuth && !hasuraAdminSecret) {
     "VITE_HASURA_ADMIN_SECRET is required when using VITE_BYPASS_AUTH=true",
   );
 }
+
+if (bypassAuth && !hasuraUserId) {
+  throw new Error(
+    "VITE_HASURA_USER_ID is required when using VITE_BYPASS_AUTH=true",
+  );
+}
