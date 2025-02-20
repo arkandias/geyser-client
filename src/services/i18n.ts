@@ -27,7 +27,7 @@ export const LOCALE_LABELS: Record<AvailableLocale, string> = {
   "fr-FR": "Français",
 } as const;
 
-type CustomI18nOptions = I18nOptions & {
+export type CustomI18nOptions = I18nOptions & {
   message: typeof frFR;
   number: typeof numberFormat;
 };

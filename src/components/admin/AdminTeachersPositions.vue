@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
 import { computed, reactive, ref } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type AdminPositionFragment,
@@ -91,7 +91,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 
 const insertPosition = useMutation(InsertPositionDocument);
 const updatePosition = useMutation(UpdatePositionDocument);
@@ -127,15 +127,6 @@ const validatePosition = () => {
     notify(NotifyType.ERROR, {
       message: t("admin.teachers.positions.form.invalid.message"),
       caption: t("admin.teachers.positions.form.invalid.caption.label_empty"),
-    });
-    return false;
-  }
-  if (position.baseServiceHours !== null && position.baseServiceHours < 0) {
-    notify(NotifyType.ERROR, {
-      message: t("admin.teachers.positions.form.invalid.message"),
-      caption: t(
-        "admin.teachers.positions.form.invalid.caption.base_service_hours_negative",
-      ),
     });
     return false;
   }
@@ -332,7 +323,7 @@ const onExportClick = () => {
       </QCardSection>
       <QCardSection>
         <QForm
-          id="edit-position"
+          id="position-form"
           class="q-gutter-md"
           @submit="
             positionInsert ? insertPositionHandle() : updatePositionHandle()
@@ -347,8 +338,6 @@ const onExportClick = () => {
           <QInput
             v-model="position.description"
             :label="t('admin.teachers.positions.form.description')"
-            clearable
-            clear-icon="sym_s_close"
             square
             dense
           />
@@ -356,8 +345,6 @@ const onExportClick = () => {
             v-model.number="position.baseServiceHours"
             type="number"
             :label="t('admin.teachers.positions.form.base_service_hours')"
-            clearable
-            clear-icon="sym_s_close"
             square
             dense
           />
@@ -367,19 +354,19 @@ const onExportClick = () => {
       <QCardActions align="right">
         <QBtn
           v-if="positionUpdate"
-          :label="t('admin.teachers.positions.form.delete')"
+          :label="t('admin.buttons.delete')"
           color="negative"
           flat
           square
           @click="deletePositionHandle"
         />
         <QBtn
-          form="edit-position"
+          form="position-form"
           type="submit"
           :label="
             positionInsert
-              ? t('admin.teachers.positions.form.insert')
-              : t('admin.teachers.positions.form.update')
+              ? t('admin.buttons.create')
+              : t('admin.buttons.update')
           "
           color="positive"
           flat

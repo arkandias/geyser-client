@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
 import { computed, watch } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { PHASES, isPhase } from "@/config/types/phases.ts";
 import { ROLES } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
@@ -47,7 +47,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 
 const { fetchProfile, fetching, loaded, isActive, activeRole } =
   useProfileStore();

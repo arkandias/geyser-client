@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
+import DOMPurify from "dompurify";
 import { computed, ref } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
@@ -8,7 +9,6 @@ import {
   TeacherServiceMessageFragmentDoc,
   UpdateMessageDocument,
 } from "@/gql/graphql.ts";
-import { sanitize } from "@/utils/sanitize.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import EditableText from "@/components/core/EditableText.vue";
@@ -41,6 +41,9 @@ const data = computed(() =>
 );
 const updateMessage = useMutation(UpdateMessageDocument);
 
+const message = computed(() => DOMPurify.sanitize(data.value.message ?? ""));
+
+const editMessage = ref(false);
 const setMessage = computed(
   () => (message: string) =>
     updateMessage
@@ -50,8 +53,6 @@ const setMessage = computed(
       })
       .then((result) => !!result.data?.service?.id && !result.error),
 );
-
-const editMessage = ref(false);
 </script>
 
 <template>
@@ -63,7 +64,7 @@ const editMessage = ref(false);
   >
     <EditableText
       v-model="editMessage"
-      :text="sanitize(data.message ?? '')"
+      :text="message"
       :set-text="setMessage"
     />
   </DetailsSection>

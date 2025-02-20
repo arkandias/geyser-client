@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { PHASES } from "@/config/types/phases.ts";
 import { useCustomTextsStore } from "@/stores/custom-texts.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 
 const props = defineProps<{ statusMessage?: string }>();
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 const { currentPhase } = usePhaseStore();
 const { getValue } = useCustomTextsStore();
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
 import { computed, ref, watch } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { graphql } from "@/gql";
 import { GetActiveTeachersDocument } from "@/gql/graphql.ts";
 import { formatUser } from "@/utils/format.ts";
@@ -24,7 +24,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 
 const activeTeachersQueryResult = useQuery({
   query: GetActiveTeachersDocument,

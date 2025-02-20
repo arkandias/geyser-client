@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 
 import AdminCoordinations from "@/components/admin/AdminCoordinations.vue";
 import AdminCourses from "@/components/admin/AdminCourses.vue";
@@ -13,7 +13,7 @@ const { section = "general" } = defineProps<{
   section?: string;
 }>();
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 
 const routeTabs = [
   {

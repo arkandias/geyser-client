@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 
 import AdminSection from "@/components/admin/AdminSection.vue";
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 </script>
 
 <template>

@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed, reactive, ref } from "vue";
-import { useI18n } from "vue-i18n";
+import { computed, reactive, ref, watch } from "vue";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type AdminTeacherFragment,
   AdminTeacherFragmentDoc,
   AdminTeacherPositionFragmentDoc,
-  DeleteTeacherDocument,
-  InsertTeacherDocument,
+  DeleteTeachersDocument,
   InsertTeachersDocument,
   TeacherUpdateColumn,
-  UpdateTeacherDocument,
+  UpdateTeachersDocument,
 } from "@/gql/graphql.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
@@ -22,7 +21,7 @@ import {
   getValueFromLabel,
   normalizeForSearch,
 } from "@/utils/misc.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
+import { NotifyType, notify, notifyOperationResult } from "@/utils/notify.ts";
 
 import AdminButtons from "@/components/admin/AdminButtons.vue";
 import AdminImport from "@/components/admin/AdminImport.vue";
@@ -52,66 +51,6 @@ graphql(`
     label
   }
 
-  mutation InsertTeacher(
-    $uid: String!
-    $firstname: String!
-    $lastname: String!
-    $alias: String
-    $position: String
-    $baseServiceHours: Float
-    $visible: Boolean!
-    $active: Boolean!
-  ) {
-    insertTeacherOne(
-      object: {
-        uid: $uid
-        firstname: $firstname
-        lastname: $lastname
-        alias: $alias
-        position: $position
-        baseServiceHours: $baseServiceHours
-        visible: $visible
-        active: $active
-      }
-    ) {
-      uid
-    }
-  }
-
-  mutation UpdateTeacher(
-    $currentUid: String!
-    $uid: String!
-    $firstname: String!
-    $lastname: String!
-    $alias: String
-    $position: String
-    $baseServiceHours: Float
-    $visible: Boolean!
-    $active: Boolean!
-  ) {
-    updateTeacherByPk(
-      pkColumns: { uid: $currentUid }
-      _set: {
-        uid: $uid
-        firstname: $firstname
-        lastname: $lastname
-        alias: $alias
-        position: $position
-        baseServiceHours: $baseServiceHours
-        visible: $visible
-        active: $active
-      }
-    ) {
-      uid
-    }
-  }
-
-  mutation DeleteTeacher($uid: String!) {
-    deleteTeacherByPk(uid: $uid) {
-      uid
-    }
-  }
-
   mutation InsertTeachers(
     $objects: [TeacherInsertInput!]!
     $updateColumns: [TeacherUpdateColumn!]!
@@ -125,29 +64,63 @@ graphql(`
       }
     }
   }
+
+  mutation UpdateTeachers($uids: [String!]!, $changes: TeacherSetInput!) {
+    updateTeacher(where: { uid: { _in: $uids } }, _set: $changes) {
+      affectedRows
+      returning {
+        uid
+      }
+    }
+  }
+
+  mutation DeleteTeachers($uids: [String!]!) {
+    deleteTeacher(where: { uid: { _in: $uids } }) {
+      affectedRows
+      returning {
+        uid
+      }
+    }
+  }
 `);
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 
-const insertTeacher = useMutation(InsertTeacherDocument);
-const updateTeacher = useMutation(UpdateTeacherDocument);
-const deleteTeacher = useMutation(DeleteTeacherDocument);
 const insertTeachers = useMutation(InsertTeachersDocument);
+const updateTeachers = useMutation(UpdateTeachersDocument);
+const deleteTeachers = useMutation(DeleteTeachersDocument);
 
-const teacherInsert = ref(false);
-const teacherUpdate = ref(false);
-const teacherEdit = computed({
-  get: () => teacherInsert.value || teacherUpdate.value,
-  set: (newValue) => {
-    if (!newValue) {
-      teacherInsert.value = false;
-      teacherUpdate.value = false;
-    }
-  },
+const teachers = computed(() =>
+  teacherFragments.map((f) => useFragment(AdminTeacherFragmentDoc, f)),
+);
+const positions = computed(() =>
+  positionFragments.map((f) => useFragment(AdminTeacherPositionFragmentDoc, f)),
+);
+
+const selectedTeachers = ref<AdminTeacherFragment[]>([]);
+const selection = computed<boolean>(() => !!selectedTeachers.value.length);
+const singleSelection = computed<boolean>(
+  () => selectedTeachers.value.length === 1,
+);
+const multipleSelection = computed<boolean>(
+  () => selectedTeachers.value.length > 1,
+);
+
+const isFormOpen = ref(false);
+const formTitle = computed(() => {
+  switch (selectedTeachers.value.length) {
+    case 0:
+      return t("admin.teachers.teachers.form.title.new_teacher");
+    case 1:
+      return selectedTeachers.value[0]?.uid ?? "";
+    default:
+      return t("admin.teachers.teachers.form.title.teachers_selected", {
+        count: selectedTeachers.value.length,
+      });
+  }
 });
 
-const selectedUid = ref("");
-const teacher = reactive<{
+const formValues = reactive<{
   uid: string;
   firstname: string;
   lastname: string;
@@ -167,15 +140,65 @@ const teacher = reactive<{
   active: true,
 });
 
-const validateTeacher = () => {
-  if (!teacher.uid) {
+const formValidated = computed<typeof formValues>(() => ({
+  ...formValues,
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  alias: formValues.alias || null,
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  position: formValues.position || null,
+}));
+
+const selectedFields = ref<string[]>([]);
+const selectedFormValidated = computed<Partial<typeof formValidated.value>>(
+  () =>
+    Object.fromEntries(
+      Object.entries(formValidated.value).filter(([key]) =>
+        selectedFields.value.includes(key),
+      ),
+    ),
+);
+
+watch(isFormOpen, (value) => {
+  if (value) {
+    const row = selectedTeachers.value[0];
+    formValues.uid = row?.uid ?? "";
+    formValues.firstname = row?.firstname ?? "";
+    formValues.lastname = row?.lastname ?? "";
+    formValues.alias = row?.alias ?? null;
+    formValues.position = row?.position?.label ?? null;
+    formValues.baseServiceHours = row?.baseServiceHours ?? null;
+    formValues.visible = row?.visible ?? true;
+    formValues.active = row?.active ?? true;
+    selectedFields.value = [];
+  }
+});
+
+const openForm = (rows?: AdminTeacherFragment[]) => {
+  if (rows) {
+    selectedTeachers.value = rows;
+  }
+  isFormOpen.value = true;
+};
+
+const validateForm = () => {
+  if (!formValues.uid) {
     notify(NotifyType.ERROR, {
       message: t("admin.teachers.teachers.form.invalid.message"),
       caption: t("admin.teachers.teachers.form.invalid.caption.uid_empty"),
     });
     return false;
   }
-  if (!teacher.firstname) {
+  if (
+    !selection.value &&
+    teachers.value.some((t) => t.uid === formValues.uid)
+  ) {
+    notify(NotifyType.ERROR, {
+      message: t("admin.teachers.teachers.form.invalid.message"),
+      caption: t("admin.teachers.teachers.form.invalid.caption.uid_conflict"),
+    });
+    return false;
+  }
+  if (!formValues.firstname) {
     notify(NotifyType.ERROR, {
       message: t("admin.teachers.teachers.form.invalid.message"),
       caption: t(
@@ -184,125 +207,105 @@ const validateTeacher = () => {
     });
     return false;
   }
-  if (!teacher.lastname) {
+  if (!formValues.lastname) {
     notify(NotifyType.ERROR, {
       message: t("admin.teachers.teachers.form.invalid.message"),
       caption: t("admin.teachers.teachers.form.invalid.caption.lastname_empty"),
     });
     return false;
   }
-  if (teacher.baseServiceHours !== null && teacher.baseServiceHours < 0) {
-    notify(NotifyType.ERROR, {
-      message: t("admin.teachers.teachers.form.invalid.message"),
-      caption: t(
-        "admin.teachers.teachers.form.invalid.caption.base_service_hours_negative",
-      ),
-    });
-    return false;
-  }
   return true;
 };
 
-const insertTeacherHandle = async () => {
-  if (!validateTeacher()) {
+const insertTeachersHandle = async () => {
+  if (!validateForm()) {
     return;
   }
-  const { data, error } = await insertTeacher.executeMutation(teacher);
-  teacherEdit.value = false;
-  if (data?.insertTeacherOne?.uid && !error) {
-    notify(NotifyType.SUCCESS, {
-      message: t("admin.teachers.teachers.form.valid.insert", {
-        uid: String(data.insertTeacherOne.uid),
-      }),
-    });
-  }
-};
 
-const updateTeacherHandle = async () => {
-  if (!validateTeacher()) {
-    return;
-  }
-  const { data, error } = await updateTeacher.executeMutation({
-    currentUid: selectedUid.value,
-    uid: teacher.uid,
-    firstname: teacher.firstname,
-    lastname: teacher.lastname,
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    alias: teacher.alias || null,
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    position: teacher.position || null,
-    baseServiceHours: teacher.baseServiceHours,
-    visible: teacher.visible,
-    active: teacher.active,
+  const { data, error } = await insertTeachers.executeMutation({
+    objects: [formValues],
+    updateColumns: [],
   });
-  teacherEdit.value = false;
-  if (data?.updateTeacherByPk?.uid && !error) {
+
+  if (data?.insertTeacher?.returning[0]?.uid && !error) {
     notify(NotifyType.SUCCESS, {
-      message: t("admin.teachers.teachers.form.valid.update", {
-        uid: String(data.updateTeacherByPk.uid),
+      message: t("admin.teachers.teachers.form.valid.insert.single", {
+        uid: data.insertTeacher.returning[0].uid,
       }),
     });
   }
+
+  isFormOpen.value = false;
 };
 
-const deleteTeacherHandle = async () => {
+const updateTeachersHandle = async () => {
+  if (!validateForm()) {
+    return;
+  }
+
+  const { data, error } = await updateTeachers.executeMutation({
+    uids: selectedTeachers.value.map((t) => t.uid),
+    changes: singleSelection.value
+      ? formValidated.value
+      : selectedFormValidated.value,
+  });
+
+  if (error) {
+    return;
+  }
+
+  notifyOperationResult(data?.updateTeacher?.affectedRows, {
+    error: t("notify.error.unknown_error"),
+    none: t("admin.teachers.teachers.form.valid.update.none"),
+    single: t("admin.teachers.teachers.form.valid.update.single", {
+      uid: data?.updateTeacher?.returning[0]?.uid ?? "",
+    }),
+    multiple: t("admin.teachers.teachers.form.valid.update.multiple", {
+      count: data?.updateTeacher?.affectedRows,
+    }),
+  });
+
+  isFormOpen.value = false;
+};
+
+const deleteTeachersHandle = async () => {
   if (
-    confirm(
-      t("admin.teachers.teachers.form.confirm.delete", {
-        uid: selectedUid.value,
-      }),
+    !selection.value ||
+    !confirm(
+      singleSelection.value
+        ? t("admin.teachers.teachers.form.confirm.delete.single", {
+            uid: selectedTeachers.value[0]?.uid ?? "",
+          })
+        : t("admin.teachers.teachers.form.confirm.delete.multiple", {
+            count: selectedTeachers.value.length,
+          }),
     )
   ) {
-    const { data, error } = await deleteTeacher.executeMutation({
-      uid: selectedUid.value,
-    });
-    if (data?.deleteTeacherByPk?.uid && !error) {
-      notify(NotifyType.SUCCESS, {
-        message: t("admin.teachers.teachers.form.valid.delete", {
-          uid: String(data.deleteTeacherByPk.uid),
-        }),
-      });
-    }
-    teacherEdit.value = false;
+    return;
   }
-};
 
-const onCreateClick = () => {
-  Object.assign(teacher, {
-    uid: "",
-    firstname: "",
-    lastname: "",
-    alias: null,
-    position: null,
-    baseServiceHours: null,
-    visible: true,
-    active: true,
+  const { data, error } = await deleteTeachers.executeMutation({
+    uids: selectedTeachers.value.map((t) => t.uid),
   });
-  teacherInsert.value = true;
-};
 
-const onRowClick = (_: Event, row: AdminTeacherFragment) => {
-  selectedUid.value = row.uid;
-  Object.assign(teacher, {
-    uid: row.uid,
-    firstname: row.firstname,
-    lastname: row.lastname,
-    alias: row.alias,
-    position: row.position?.label,
-    baseServiceHours: row.baseServiceHours,
-    visible: row.visible,
-    active: row.active,
+  if (error) {
+    return;
+  }
+
+  notifyOperationResult(data?.deleteTeacher?.affectedRows, {
+    error: t("notify.error.unknown_error"),
+    none: t("admin.teachers.teachers.form.valid.delete.none"),
+    single: t("admin.teachers.teachers.form.valid.delete.single", {
+      uid: data?.deleteTeacher?.returning[0]?.uid ?? "",
+    }),
+    multiple: t("admin.teachers.teachers.form.valid.delete.multiple", {
+      count: data?.deleteTeacher?.affectedRows,
+    }),
   });
-  teacherUpdate.value = true;
+
+  selectedTeachers.value = [];
+  isFormOpen.value = false;
 };
-
-const teachers = computed(() =>
-  teacherFragments.map((f) => useFragment(AdminTeacherFragmentDoc, f)),
-);
-
-const positions = computed(() =>
-  positionFragments.map((f) => useFragment(AdminTeacherPositionFragmentDoc, f)),
-);
 
 const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
   {
@@ -394,9 +397,9 @@ const filterMethod = (
   );
 
 // Import
-const teachersImport = ref(false);
-const onImportClick = () => {
-  teachersImport.value = true;
+const isImportFormOpen = ref(false);
+const importTeachersHandle = () => {
+  isImportFormOpen.value = true;
 };
 
 const descriptorObj = {
@@ -453,21 +456,29 @@ const headers = [
   "visible",
   "active",
 ];
-const onExportClick = () => {
-  downloadCSV(`teachers_${Date.now().toString()}`, teachers.value, headers, {
-    success: t(
-      "admin.teachers.teachers.export.valid.message",
-      teachers.value.length,
-    ),
+const exportTeachersHandle = () => {
+  const data = selectedTeachers.value.length
+    ? selectedTeachers.value
+    : teachers.value;
+  downloadCSV(`teachers_${Date.now().toString()}`, data, headers, {
+    success: t("admin.teachers.teachers.export.valid.message", data.length),
     error: t("admin.export.invalid.message"),
   });
 };
 </script>
 
 <template>
-  <AdminButtons :on-create-click :on-import-click :on-export-click />
+  <AdminButtons
+    :on-create-click="() => openForm([])"
+    :on-edit-click="() => openForm()"
+    :on-delete-click="deleteTeachersHandle"
+    :on-import-click="importTeachersHandle"
+    :on-export-click="exportTeachersHandle"
+    :selection
+  />
 
   <QTable
+    v-model:selected="selectedTeachers"
     :rows="teachers"
     :columns
     :pagination="{ rowsPerPage: 100 }"
@@ -475,10 +486,10 @@ const onExportClick = () => {
     :filter="filterObj"
     :filter-method
     row-key="uid"
+    selection="multiple"
     bordered
     flat
     dense
-    @row-click="onRowClick"
   >
     <template #top>
       <QInput
@@ -494,43 +505,50 @@ const onExportClick = () => {
     </template>
   </QTable>
 
-  <QDialog v-model="teacherEdit" square>
+  <QDialog v-model="isFormOpen" square>
     <QCard flat square class="admin-form">
-      <QCardSection v-if="teacherUpdate" class="text-h6">
-        {{ selectedUid }}
+      <QCardSection v-if="isFormOpen" class="text-h6">
+        {{ formTitle }}
       </QCardSection>
       <QCardSection>
-        <div class="q-gutter-md">
+        <QForm
+          id="teacher-form"
+          class="q-gutter-md"
+          @submit="selection ? updateTeachersHandle() : insertTeachersHandle()"
+        >
           <QInput
-            v-model="teacher.uid"
+            v-if="!multipleSelection"
+            v-model="formValues.uid"
             :label="t('admin.teachers.teachers.form.uid')"
             square
             dense
           />
           <QInput
-            v-model="teacher.firstname"
+            v-if="!multipleSelection"
+            v-model="formValues.firstname"
             :label="t('admin.teachers.teachers.form.firstname')"
             square
             dense
           />
           <QInput
-            v-model="teacher.lastname"
+            v-if="!multipleSelection"
+            v-model="formValues.lastname"
             :label="t('admin.teachers.teachers.form.lastname')"
             square
             dense
           />
           <QInput
-            v-model="teacher.alias"
+            v-if="!multipleSelection"
+            v-model="formValues.alias"
             :label="t('admin.teachers.teachers.form.alias')"
-            clearable
-            clear-icon="sym_s_close"
             square
             dense
           />
           <QSelect
-            v-model="teacher.position"
+            v-model="formValues.position"
             :options="positions"
             :label="t('admin.teachers.teachers.form.position')"
+            :disable="multipleSelection && !selectedFields.includes('position')"
             clearable
             clear-icon="sym_s_close"
             emit-value
@@ -538,59 +556,80 @@ const onExportClick = () => {
             square
             dense
             options-dense
-          />
+          >
+            <template v-if="multipleSelection" #before>
+              <QCheckbox v-model="selectedFields" val="position" />
+            </template>
+          </QSelect>
           <div class="row">
             <div class="q-mr-md">
               <QInput
-                v-model.number="teacher.baseServiceHours"
+                v-model.number="formValues.baseServiceHours"
                 type="number"
                 :label="t('admin.teachers.teachers.form.base_service_hours')"
-                clearable
-                clear-icon="sym_s_close"
+                :disable="
+                  multipleSelection &&
+                  !selectedFields.includes('baseServiceHours')
+                "
                 square
                 dense
                 style="width: 150px"
+              >
+                <template v-if="multipleSelection" #before>
+                  <QCheckbox v-model="selectedFields" val="baseServiceHours" />
+                </template>
+              </QInput>
+            </div>
+            <div class="q-mr-md">
+              <QCheckbox
+                v-if="multipleSelection"
+                v-model="selectedFields"
+                val="visible"
+              />
+              <QToggle
+                v-model="formValues.visible"
+                :disable="
+                  multipleSelection && !selectedFields.includes('visible')
+                "
+                :label="t('admin.teachers.teachers.form.visible')"
+                left-label
               />
             </div>
-            <QToggle
-              v-model="teacher.visible"
-              :label="t('admin.teachers.teachers.form.visible')"
-              left-label
-            />
-            <QToggle
-              v-model="teacher.active"
-              :label="t('admin.teachers.teachers.form.active')"
-              left-label
-            />
+            <div class="q-mr-md">
+              <QCheckbox
+                v-if="multipleSelection"
+                v-model="selectedFields"
+                val="active"
+              />
+              <QToggle
+                v-model="formValues.active"
+                :disable="
+                  multipleSelection && !selectedFields.includes('active')
+                "
+                :label="t('admin.teachers.teachers.form.active')"
+                left-label
+              />
+            </div>
           </div>
-        </div>
+        </QForm>
       </QCardSection>
       <QSeparator />
       <QCardActions align="right">
         <QBtn
-          v-if="teacherUpdate"
-          :label="t('admin.teachers.teachers.form.delete')"
-          color="negative"
-          flat
-          square
-          @click="deleteTeacherHandle"
-        />
-        <QBtn
+          form="teacher-form"
+          type="submit"
           :label="
-            teacherInsert
-              ? t('admin.teachers.teachers.form.insert')
-              : t('admin.teachers.teachers.form.update')
+            selection ? t('admin.buttons.update') : t('admin.buttons.create')
           "
-          color="positive"
+          color="primary"
           flat
           square
-          @click="teacherInsert ? insertTeacherHandle() : updateTeacherHandle()"
         />
       </QCardActions>
     </QCard>
   </QDialog>
 
-  <AdminImport v-model="teachersImport" :descriptor-obj :insert-objects />
+  <AdminImport v-model="isImportFormOpen" :descriptor-obj :insert-objects />
 </template>
 
 <style scoped lang="scss"></style>

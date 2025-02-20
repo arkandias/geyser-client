@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
 import { reactive, ref } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { graphql } from "@/gql";
 import {
   CreateYearDocument,
@@ -49,7 +49,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 const { years, currentYear } = useYearsStore();
 const setCurrentYear = useMutation(SetCurrentYearDocument);
 const updateYearVisibility = useMutation(UpdateYearVisibilityDocument);

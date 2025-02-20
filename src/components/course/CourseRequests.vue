@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -32,7 +32,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 
 const perm = usePermissions();
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
+import DOMPurify from "dompurify";
 import { computed, ref } from "vue";
 
 import { usePermissions } from "@/composables/permissions.ts";
@@ -8,7 +9,6 @@ import {
   CourseDescriptionFragmentDoc,
   UpdateDescriptionDocument,
 } from "@/gql/graphql.ts";
-import { sanitize } from "@/utils/sanitize.ts";
 
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 import EditableText from "@/components/core/EditableText.vue";
@@ -63,15 +63,18 @@ const perm = usePermissions();
 const data = computed(() =>
   useFragment(CourseDescriptionFragmentDoc, dataFragment),
 );
+const updateDescription = useMutation(UpdateDescriptionDocument);
+
+const description = computed(() =>
+  DOMPurify.sanitize(data.value.description ?? ""),
+);
 const coordinators = computed(() => [
   ...data.value.coordinations.map((c) => c.uid),
   ...data.value.program.coordinations.map((c) => c.uid),
   ...(data.value.track?.coordinations.map((c) => c.uid) ?? []),
 ]);
 
-// Description
 const editDescription = ref(false);
-const updateDescription = useMutation(UpdateDescriptionDocument);
 const setDescription = (text: string): Promise<boolean> =>
   updateDescription
     .executeMutation({
@@ -89,7 +92,7 @@ const setDescription = (text: string): Promise<boolean> =>
   >
     <EditableText
       v-model="editDescription"
-      :text="sanitize(data.description ?? '')"
+      :text="description"
       :set-text="setDescription"
       default-text="Pas de description (contactez un responsable)"
     />

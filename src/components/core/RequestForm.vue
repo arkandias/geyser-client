@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRequestOperations } from "@/composables/request-operations.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
@@ -23,7 +23,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 
 const { profile } = useProfileStore();
 const perm = usePermissions();

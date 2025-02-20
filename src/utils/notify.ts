@@ -38,3 +38,22 @@ const defaultOptions = (type: NotifyType): QNotifyCreateOptions => {
 export const notify = (type: NotifyType, opts: QNotifyCreateOptions) => {
   Notify.create({ ...defaultOptions(type), ...opts });
 };
+
+export const notifyOperationResult = (
+  affectedRows: number | undefined,
+  message: { error: string; none: string; single: string; multiple: string },
+) => {
+  switch (affectedRows) {
+    case undefined:
+      notify(NotifyType.ERROR, { message: message.error });
+      break;
+    case 0:
+      notify(NotifyType.DEFAULT, { message: message.none });
+      break;
+    case 1:
+      notify(NotifyType.SUCCESS, { message: message.single });
+      break;
+    default:
+      notify(NotifyType.SUCCESS, { message: message.multiple });
+  }
+};

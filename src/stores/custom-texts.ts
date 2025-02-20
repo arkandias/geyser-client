@@ -1,7 +1,7 @@
+import DOMPurify from "dompurify";
 import { computed, ref } from "vue";
 
 import { PHASES } from "@/config/types/phases.ts";
-import { sanitize } from "@/utils/sanitize.ts";
 
 export const CUSTOM_TEXT_KEYS = [
   "home_title",
@@ -30,7 +30,7 @@ const customTexts = ref<CustomTexts[]>(
 const customTextsSanitized = computed(() =>
   customTexts.value.map((text) => ({
     ...text,
-    value: sanitize(text.value ?? ""),
+    value: DOMPurify.sanitize(text.value ?? ""),
   })),
 );
 

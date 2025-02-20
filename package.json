@@ -30,6 +30,7 @@
   "dependencies": {
     "@quasar/extras": "^1.16.17",
     "@urql/vue": "^1.4.2",
+    "dompurify": "^3.2.4",
     "dotenv": "^16.4.7",
     "graphql": "^16.10.0",
     "keycloak-js": "^26.1.2",

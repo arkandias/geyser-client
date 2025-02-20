@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref, toValue } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { useDownloadAssignments } from "@/composables/download-assignments.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
@@ -90,7 +90,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 
 const { activeYear } = useYearsStore();
 const perm = usePermissions();

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { graphql } from "@/gql";
 import { GetAdminTeachersDocument } from "@/gql/graphql.ts";
 
@@ -25,6 +25,7 @@ graphql(`
 const adminTeachersQueryResult = useQuery({
   query: GetAdminTeachersDocument,
   variables: {},
+  context: { additionalTypenames: ["Teacher", "Position"] },
 });
 
 const teachers = computed(
@@ -34,7 +35,7 @@ const positions = computed(
   () => adminTeachersQueryResult.data.value?.positions ?? [],
 );
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 </script>
 
 <template>

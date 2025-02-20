@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { useCustomTextsStore } from "@/stores/custom-texts.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 
 const { getValue } = useCustomTextsStore();
 

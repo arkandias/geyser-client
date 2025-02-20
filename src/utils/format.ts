@@ -16,7 +16,8 @@ type TeacherName = {
 };
 
 export const formatUser = (user: TeacherName) =>
-  user.alias ?? user.firstname + " " + user.lastname;
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  user.alias || user.firstname + " " + user.lastname;
 
 type DisplayName = {
   name: string;

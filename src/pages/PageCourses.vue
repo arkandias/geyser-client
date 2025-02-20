@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
 import { computed, reactive, watch } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useQueryParam } from "@/composables/query-param.ts";
 import { graphql } from "@/gql";
@@ -72,7 +72,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 
 const { activeYear, isCurrentYearActive } = useYearsStore();
 const { profile } = useProfileStore();

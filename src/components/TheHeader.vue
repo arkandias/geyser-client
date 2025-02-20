@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { useDarkMode } from "@/composables/dark-mode.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRefreshData } from "@/composables/refresh-data.ts";
@@ -16,7 +16,7 @@ import ToolbarCourses from "@/components/header/ToolbarCourses.vue";
 
 defineProps<{ disable?: boolean }>();
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 
 const router = useRouter();
 const { profile, isImpersonating, stopImpersonating } = useProfileStore();

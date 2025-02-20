@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { PHASES } from "@/config/types/phases.ts";
 import { graphql } from "@/gql";
 import { SetCurrentPhaseDocument } from "@/gql/graphql.ts";
@@ -26,7 +26,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 const { currentPhase } = usePhaseStore();
 const setCurrentPhase = useMutation(SetCurrentPhaseDocument);
 

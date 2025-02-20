@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 const showEditor = defineModel<boolean>();
@@ -15,7 +15,7 @@ const {
   defaultText?: string;
 }>();
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 
 const editorText = ref("");
 

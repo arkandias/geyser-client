@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { usePermissions } from "@/composables/permissions.ts";
 import { useRequestOperations } from "@/composables/request-operations.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
@@ -38,7 +38,7 @@ graphql(`
   }
 `);
 
-const { t, n } = useI18n();
+const { t, n } = useCustomI18n();
 
 const perm = usePermissions();
 const { updateRequestWithServiceId, deleteRequestById } =

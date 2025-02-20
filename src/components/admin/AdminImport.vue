@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T extends Record<string, FieldDescriptor>">
 import { ref, watch } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import type { ColumnNonAbbreviable } from "@/types/column.ts";
 import {
   type FieldDescriptor,
@@ -19,7 +19,7 @@ const { descriptorObj, insertObjects } = defineProps<{
   ) => Promise<void>;
 }>();
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 
 const selectedFile = ref<File | null>(null);
 const overwrite = ref(false);
@@ -110,7 +110,7 @@ const columns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
         />
       </QCardSection>
       <QCardSection>
-        <div class="q-gutter-md">
+        <div class="column q-gutter-md">
           <QFile
             v-model="selectedFile"
             accept=".csv"
@@ -134,7 +134,7 @@ const columns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
       <QCardActions align="right">
         <QBtn
           :loading="importing"
-          :label="t('admin.import.import_button')"
+          :label="t('admin.button.import')"
           color="primary"
           flat
           square

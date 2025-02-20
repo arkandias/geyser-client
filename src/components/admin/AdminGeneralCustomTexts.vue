@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
 import { computed, reactive } from "vue";
-import { useI18n } from "vue-i18n";
 
+import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { graphql } from "@/gql";
 import { UpdateCustomTextDocument } from "@/gql/graphql.ts";
 import { useCustomTextsStore } from "@/stores/custom-texts.ts";
@@ -20,7 +20,7 @@ graphql(`
   }
 `);
 
-const { t } = useI18n();
+const { t } = useCustomI18n();
 const { customTexts } = useCustomTextsStore();
 const updateCustomText = useMutation(UpdateCustomTextDocument);
 

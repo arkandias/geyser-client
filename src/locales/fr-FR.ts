@@ -17,7 +17,7 @@ export default {
   },
   course: {
     label: "Enseignement | Enseignements",
-    degree: "Cursus",
+    degree: "Diplôme",
     program: "Mention",
     track: "Parcours",
     semester: "Semestre",
@@ -208,6 +208,9 @@ export default {
   admin: {
     buttons: {
       create: "Créer",
+      edit: "Éditer",
+      update: "Mettre à jour",
+      delete: "Supprimer",
       import: "Importer",
       export: "Exporter",
     },
@@ -238,7 +241,6 @@ export default {
       },
       file_picker_label: "Sélectionnez un fichier CSV",
       overwrite: "Écraser les données en cas de conflit",
-      import_button: "Importer",
       invalid: {
         message: "Échec de l'import",
         caption: {
@@ -287,6 +289,10 @@ la supprimer.`,
           active: "A.",
         },
         form: {
+          title: {
+            new_teacher: "Nouvel intervenant",
+            teachers_selected: "{count} intervenants sélectionnés",
+          },
           uid: "Email",
           firstname: "Prénom",
           lastname: "Nom",
@@ -295,27 +301,40 @@ la supprimer.`,
           base_service_hours: "Service de base (htd)",
           visible: "Visible",
           active: "Actif",
-          insert: "Créer un intervenant",
-          update: "Mettre à jour",
-          delete: "Supprimer",
           confirm: {
-            delete: `Êtes-vous sûr de vouloir supprimer l'intervenant « {uid} » ?
+            delete: {
+              single: `Êtes-vous sûr de vouloir supprimer l'intervenant « {uid} » ?
 Si des services, responsabilités ou rôles sont attribués à cet intervenant, \
 vous ne pourrez pas le supprimer.`,
+              multiple: `Êtes-vous sûr de vouloir supprimer les {count} intervenants sélectionnés ?
+Si des services, responsabilités ou rôles sont attribués à ces intervenant, \
+vous ne pourrez pas les supprimer.`,
+            },
           },
           valid: {
-            insert: "Intervenant {uid} créé",
-            update: "Intervenant {uid} mis à jour",
-            delete: "Intervenant {uid} supprimé",
+            insert: {
+              none: "0 intervenant créé",
+              single: "Intervenant {uid} créé",
+              multiple: "{count} intervenants créés",
+            },
+            update: {
+              none: "0 intervenant mis à jour",
+              single: "Intervenant {uid} mis à jour",
+              multiple: "{count} intervenants mis à jour",
+            },
+            delete: {
+              none: "0 intervenant supprimé",
+              single: "Intervenant {uid} supprimé",
+              multiple: "{count} intervenants supprimés",
+            },
           },
           invalid: {
             message: "Formulaire non valide",
             caption: {
               uid_empty: "Entrez un email",
+              uid_conflict: "Un intervenant avec cet email existe déjà",
               firstname_empty: "Entrez un prénom",
               lastname_empty: "Entrez un nom",
-              base_service_hours_negative:
-                "Entrez un service de base positif ou nul (ou laissez vide)",
             },
           },
         },
@@ -346,9 +365,6 @@ vous ne pourrez pas le supprimer.`,
           label: "Label",
           description: "Description",
           base_service_hours: "Service de base (htd)",
-          insert: "Créer une fonction",
-          update: "Mettre à jour",
-          delete: "Supprimer",
           confirm: {
             delete: `Êtes-vous sûr de vouloir supprimer la fonction « {position} » ?
 Si cette fonction est attribuée à des intervenants, vous ne pourrez pas la \
@@ -367,8 +383,6 @@ supprimer.`,
                 "Entrez une clé valide (caractères autorisés : " +
                 "lettres minuscules, chiffres et tirets bas)",
               label_empty: "Entrez un label",
-              base_service_hours_negative:
-                "Entrez un service de base positif ou nul (ou laissez vide)",
             },
           },
         },
@@ -394,7 +408,7 @@ supprimer.`,
     courses: {
       title: "Enseignements",
       courses: "Enseignements",
-      degrees: "Cursus",
+      degrees: "Diplômes",
       programs: "Mentions",
       tracks: "Parcours",
       types: "Types",
