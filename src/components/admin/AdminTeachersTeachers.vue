@@ -59,6 +59,7 @@ graphql(`
       objects: $objects
       onConflict: { constraint: teacher_pkey, updateColumns: $updateColumns }
     ) {
+      affectedRows
       returning {
         uid
       }
@@ -234,6 +235,21 @@ const insertTeachersHandle = async () => {
       }),
     });
   }
+
+  if (error) {
+    return;
+  }
+
+  notifyOperationResult(data?.insertTeacher?.affectedRows, {
+    error: t("notify.error.unknown_error"),
+    none: t("admin.teachers.teachers.form.valid.insert.none"),
+    single: t("admin.teachers.teachers.form.valid.insert.single", {
+      uid: data?.insertTeacher?.returning[0]?.uid ?? "",
+    }),
+    multiple: t("admin.teachers.teachers.form.valid.insert.multiple", {
+      count: data?.insertTeacher?.affectedRows,
+    }),
+  });
 
   isFormOpen.value = false;
 };

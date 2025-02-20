@@ -34,21 +34,18 @@ graphql(`
     baseServiceHours
   }
 
-  mutation InsertPosition(
-    $value: String!
-    $label: String!
-    $description: String
-    $baseServiceHours: Float
+  mutation InsertPositions(
+    $objects: [PositionInsertInput!]!
+    $updateColumns: [PositionUpdateColumn!]!
   ) {
-    insertPositionOne(
-      object: {
-        value: $value
-        label: $label
-        description: $description
-        baseServiceHours: $baseServiceHours
-      }
+    insertPosition(
+      objects: $objects
+      onConflict: { constraint: position_pkey, updateColumns: $updateColumns }
     ) {
-      value
+      affectedRows
+      returning {
+        value
+      }
     }
   }
 
@@ -75,28 +72,13 @@ graphql(`
       value
     }
   }
-
-  mutation InsertPositions(
-    $objects: [PositionInsertInput!]!
-    $updateColumns: [PositionUpdateColumn!]!
-  ) {
-    insertPosition(
-      objects: $objects
-      onConflict: { constraint: position_pkey, updateColumns: $updateColumns }
-    ) {
-      returning {
-        value
-      }
-    }
-  }
 `);
 
 const { t } = useCustomI18n();
 
-const insertPosition = useMutation(InsertPositionDocument);
+const insertPositions = useMutation(InsertPositionsDocument);
 const updatePosition = useMutation(UpdatePositionDocument);
 const deletePosition = useMutation(DeletePositionDocument);
-const insertPositions = useMutation(InsertPositionsDocument);
 
 const positionInsert = ref(false);
 const positionUpdate = ref(false);
