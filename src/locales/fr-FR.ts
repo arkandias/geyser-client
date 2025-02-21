@@ -492,11 +492,6 @@ supprimer.`,
       deleted: "{type} supprimée",
     },
   },
-  download_assignments: {
-    success:
-      "0 attribution téléchargée | 1 attribution téléchargée | {count} attributions téléchargées",
-    error: "Échec du téléchargement",
-  },
   custom_text_label: {
     legal_notice: "Mentions légales",
     home_title: "Titre de la page d'accueil",

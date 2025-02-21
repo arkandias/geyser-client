@@ -143,7 +143,7 @@ John Doe,30,value`;
   });
 
   it("should throw error for malformed CSV input", () => {
-    const csv = "name\nJohn,extra,column"; // More columns than headers
+    const csv = "name\nJohn,extra,column"; // more columns than headers
     const descriptors = {
       name: { type: "string" },
     } as const;

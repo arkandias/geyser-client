@@ -1,12 +1,7 @@
 import { type UnparseConfig, unparse } from "papaparse";
 
-import { i18n } from "@/services/i18n.ts";
+import type { Header, Scalar, SimpleObject } from "@/types/csv-data.ts";
 import { toSlug } from "@/utils/misc.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
-
-export type Header = string | { key: string; label: string };
-type Scalar = string | number | boolean | null | undefined;
-type SimpleObject = { [key: string]: Scalar | SimpleObject };
 
 /**
  * Recursively flattens a nested object into a single-level object with
@@ -40,9 +35,6 @@ export const dataArrayToCSV = (
   data: SimpleObject[],
   headers: Header[] = [],
 ): string => {
-  const keys = headers.map((h) => (typeof h === "string" ? h : h.key));
-  const labels = headers.map((h) => (typeof h === "string" ? h : h.label));
-
   const processedData = data.map((obj) => {
     const flatObj = flattenSimpleObject(obj);
 
@@ -50,16 +42,21 @@ export const dataArrayToCSV = (
       return flatObj;
     }
 
-    // transform keys using header labels and return entry
+    // Transform keys using header labels and return entry
     return Object.fromEntries(
-      keys.map((key, i) => [labels[i], flatObj[key]]),
-    ) as Record<string, Scalar>;
+      headers.map((h) =>
+        typeof h === "string" ? [h, flatObj[h]] : [h.label, flatObj[h.key]],
+      ),
+    );
   });
 
   const config: UnparseConfig = {
     newline: "\n",
-    ...(headers.length ? { columns: labels } : {}),
   };
+
+  if (headers.length) {
+    config.columns = headers.map((h) => (typeof h === "string" ? h : h.label));
+  }
 
   return unparse(processedData, config);
 };
@@ -72,39 +69,19 @@ export const downloadCSV = (
   filename: string,
   data: SimpleObject[],
   headers: Header[] = [],
-  message?: { success: string; error: string },
-) => {
-  try {
-    const BOM = "\uFEFF"; // Byte Order Mark
-    const csv = dataArrayToCSV(data, headers);
-    const blob = new Blob([BOM + csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
+): void => {
+  const BOM = "\uFEFF"; // Byte Order Mark
+  const csv = dataArrayToCSV(data, headers);
+  const blob = new Blob([BOM + csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
 
-    const link = document.createElement("a");
-    link.style.display = "none";
-    link.href = url;
-    link.download = toSlug(filename) + ".csv";
+  const link = document.createElement("a");
+  link.style.display = "none";
+  link.href = url;
+  link.download = toSlug(filename) + ".csv";
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    if (message) {
-      notify(NotifyType.SUCCESS, {
-        message: message.success,
-      });
-    }
-  } catch (error) {
-    console.error("Export error:", error);
-    if (message) {
-      notify(NotifyType.ERROR, {
-        message: message.error,
-        caption:
-          error instanceof Error
-            ? error.message
-            : i18n.global.t("notify.error.unknown"),
-      });
-    }
-  }
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 };

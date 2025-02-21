@@ -13,9 +13,9 @@ import {
   TeacherUpdateColumn,
   UpdateTeachersDocument,
 } from "@/gql/graphql.ts";
-import type { ColumnNonAbbreviable } from "@/types/column.ts";
+import type { ColumnNonAbbreviable } from "@/types/columns.ts";
+import type { ParsedRow } from "@/types/csv-data.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
-import type { ParsedObject } from "@/utils/csv-import.ts";
 import {
   getField,
   getValueFromLabel,
@@ -181,6 +181,7 @@ const openForm = (rows?: AdminTeacherFragment[]) => {
   isFormOpen.value = true;
 };
 
+// TODO: must return the validated values (filtered with selectedFields)
 const validateForm = () => {
   if (!formValues.uid) {
     notify(NotifyType.ERROR, {
@@ -224,17 +225,9 @@ const insertTeachersHandle = async () => {
   }
 
   const { data, error } = await insertTeachers.executeMutation({
-    objects: [formValues],
+    objects: [formValidated.value],
     updateColumns: [],
   });
-
-  if (data?.insertTeacher?.returning[0]?.uid && !error) {
-    notify(NotifyType.SUCCESS, {
-      message: t("admin.teachers.teachers.form.valid.insert.single", {
-        uid: data.insertTeacher.returning[0].uid,
-      }),
-    });
-  }
 
   if (error) {
     return;
@@ -429,8 +422,8 @@ const descriptorObj = {
   active: { type: "boolean" },
 } as const;
 
-const insertObjects = async (
-  objects: ParsedObject<typeof descriptorObj>[],
+const importObjects = async (
+  objects: ParsedRow<typeof descriptorObj>[],
   overwrite: boolean,
 ) => {
   const { data, error } = await insertTeachers.executeMutation({
@@ -645,7 +638,7 @@ const exportTeachersHandle = () => {
     </QCard>
   </QDialog>
 
-  <AdminImport v-model="isImportFormOpen" :descriptor-obj :insert-objects />
+  <AdminImport v-model="isImportFormOpen" :descriptor-obj :import-objects />
 </template>
 
 <style scoped lang="scss"></style>

@@ -92,11 +92,9 @@ const downloadAssignments =
         requestPolicy: "network-only",
       })
       .then((result) => result.data?.assignments ?? []);
-    downloadCSV(filename, formatAssignments(assignments), [], {
-      success: t("download_assignments.error", assignments.length),
-      error: t("download_assignments.error"),
-    });
+    downloadCSV(filename, formatAssignments(assignments));
   };
+// TODO: notifications
 
 export const useDownloadAssignments = () => {
   const client = useClientHandle().client;

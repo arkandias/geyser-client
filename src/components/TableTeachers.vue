@@ -10,7 +10,7 @@ import {
   type ServiceRowsFragment,
   ServiceRowsFragmentDoc,
 } from "@/gql/graphql.ts";
-import type { ColumnNonAbbreviable } from "@/types/column.ts";
+import type { ColumnNonAbbreviable } from "@/types/columns.ts";
 import { nf } from "@/utils/format.ts";
 import { modifiedService, totalHW } from "@/utils/hours.ts";
 import { getField, normalizeForSearch } from "@/utils/misc.ts";

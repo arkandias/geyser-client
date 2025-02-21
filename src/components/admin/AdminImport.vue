@@ -1,22 +1,20 @@
-<script setup lang="ts" generic="T extends Record<string, FieldDescriptor>">
+<script setup lang="ts" generic="T extends RowDescriptor">
 import { ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import type { ColumnNonAbbreviable } from "@/types/column.ts";
-import {
-  type FieldDescriptor,
-  type ParsedObject,
-  importCSV,
-} from "@/utils/csv-import.ts";
+import type { ColumnNonAbbreviable } from "@/types/columns.ts";
+import type {
+  FieldDescriptor,
+  ParsedRow,
+  RowDescriptor,
+} from "@/types/csv-data.ts";
+import { importCSV } from "@/utils/csv-import.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 const model = defineModel<boolean>();
-const { descriptorObj, insertObjects } = defineProps<{
-  descriptorObj: T;
-  insertObjects: (
-    objects: ParsedObject<T>[],
-    overwrite: boolean,
-  ) => Promise<void>;
+const { rowDescriptor, importObjects } = defineProps<{
+  rowDescriptor: T;
+  importObjects: (objects: ParsedRow<T>[], overwrite: boolean) => Promise<void>;
 }>();
 
 const { t } = useCustomI18n();
@@ -49,7 +47,7 @@ const importHandle = async () => {
       });
       return;
     }
-    await insertObjects(importCSV(text, descriptorObj), overwrite.value);
+    await importObjects(importCSV(text, rowDescriptor), overwrite.value);
   } catch (error) {
     console.error("Import error:", error);
     notify(NotifyType.ERROR, {
@@ -101,7 +99,7 @@ const columns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
       <QCardSection>
         <QTable
           :columns
-          :rows="Object.entries(descriptorObj)"
+          :rows="Object.entries(rowDescriptor)"
           :pagination="{ rowsPerPage: 0 }"
           hide-bottom
           bordered

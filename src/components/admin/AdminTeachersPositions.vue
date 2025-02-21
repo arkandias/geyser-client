@@ -8,14 +8,13 @@ import {
   type AdminPositionFragment,
   AdminPositionFragmentDoc,
   DeletePositionDocument,
-  InsertPositionDocument,
   InsertPositionsDocument,
   PositionUpdateColumn,
   UpdatePositionDocument,
 } from "@/gql/graphql.ts";
-import type { ColumnNonAbbreviable } from "@/types/column.ts";
+import type { ColumnNonAbbreviable } from "@/types/columns.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
-import type { ParsedObject } from "@/utils/csv-import.ts";
+import type { ParsedRow } from "@/utils/csv-import.ts";
 import { getValueFromLabel } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
@@ -242,7 +241,7 @@ const descriptorObj = {
 } as const;
 
 const insertObjects = async (
-  objects: ParsedObject<typeof descriptorObj>[],
+  objects: ParsedRow<typeof descriptorObj>[],
   overwrite: boolean,
 ) => {
   const { data, error } = await insertPositions.executeMutation({

@@ -1,27 +1,11 @@
-import { parse } from "papaparse";
+import { type ParseConfig, parse } from "papaparse";
 
-export type FieldDescriptor = {
-  type: "string" | "number" | "boolean";
-  nullable?: boolean;
-};
-
-type ParsedField<T extends FieldDescriptor> = T["type"] extends "string"
-  ? T["nullable"] extends true
-    ? string | null
-    : string
-  : T["type"] extends "number"
-    ? T["nullable"] extends true
-      ? number | null
-      : number
-    : T["type"] extends "boolean"
-      ? T["nullable"] extends true
-        ? boolean | null
-        : boolean
-      : never;
-
-export type ParsedObject<T extends Record<string, FieldDescriptor>> = {
-  [K in keyof T]: ParsedField<T[K]>;
-};
+import type {
+  FieldDescriptor,
+  ParsedField,
+  ParsedRow,
+  RowDescriptor,
+} from "@/types/csv-data.ts";
 
 /**
  * Parses a string value into a strongly-typed field (string, number, or
@@ -70,9 +54,9 @@ export const parseField = <T extends FieldDescriptor>(
  * including the field name in the error.
  */
 const transform =
-  (descriptorObj: Record<string, FieldDescriptor>) =>
+  (rowDescriptor: RowDescriptor): ParseConfig["transform"] =>
   (value: string, field: string | number) => {
-    const descriptor = descriptorObj[field];
+    const descriptor = rowDescriptor[field];
     if (descriptor === undefined) {
       throw new Error(`Unknown field: ${String(field)}`);
     }
@@ -87,13 +71,13 @@ const transform =
   };
 
 /**
- * Parses CSV text into typed objects based on field descriptors.
+ * Parses a CSV text using a row descriptor and returns an array of typed rows.
  */
-export const importCSV = <T extends Record<string, FieldDescriptor>>(
+export const importCSV = <T extends RowDescriptor>(
   text: string,
   descriptorObj: T,
-): ParsedObject<T>[] => {
-  const parseResult = parse(text, {
+): ParsedRow<T>[] => {
+  const parseResult = parse<ParsedRow<T>>(text, {
     delimiter: ",",
     header: true,
     skipEmptyLines: true,
@@ -112,5 +96,5 @@ export const importCSV = <T extends Record<string, FieldDescriptor>>(
     throw new Error(`Missing required headers: ${missingHeaders.join(", ")}`);
   }
 
-  return parseResult.data as ParsedObject<T>[];
+  return parseResult.data;
 };

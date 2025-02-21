@@ -17,7 +17,7 @@ import {
   ServiceDetailsFragmentDoc,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/years.ts";
-import { type Column, isAbbreviable } from "@/types/column.ts";
+import { type Column, isAbbreviable } from "@/types/columns.ts";
 import { formatProgram, formatUser, nf } from "@/utils/format.ts";
 import {
   compare,
