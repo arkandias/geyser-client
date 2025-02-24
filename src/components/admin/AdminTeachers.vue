@@ -7,7 +7,6 @@ import { graphql } from "@/gql";
 import { GetAdminTeachersDocument } from "@/gql/graphql.ts";
 
 import AdminSection from "@/components/admin/AdminSection.vue";
-import AdminTeachersPositions from "@/components/admin/AdminTeachersPositions.vue";
 import AdminTeachersTeachers from "@/components/admin/AdminTeachersTeachers.vue";
 
 graphql(`
@@ -56,7 +55,7 @@ const { t } = useCustomI18n();
       icon="sym_s_work"
       :label="t('admin.teachers.positions.label')"
     >
-      <AdminTeachersPositions :position-fragments="positions" />
+      <!--      <AdminTeachersPositions :position-fragments="positions" />-->
     </AdminSection>
   </QList>
 </template>

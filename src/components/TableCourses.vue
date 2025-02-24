@@ -341,7 +341,7 @@ const columns: Column<CourseRow>[] = [
   },
 ];
 const searchableColumns = columns
-  .filter((col) => col.searchable)
+  .filter((col) => toValue(col.searchable))
   .map((col) => col.name);
 const visibleColumns = computed(() =>
   columns.filter((col) => toValue(col.visible)).map((col) => col.name),

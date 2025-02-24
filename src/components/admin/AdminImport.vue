@@ -12,9 +12,9 @@ import { importCSV } from "@/utils/csv-import.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 const model = defineModel<boolean>();
-const { rowDescriptor, importObjects } = defineProps<{
+const { rowDescriptor, importRows } = defineProps<{
   rowDescriptor: T;
-  importObjects: (objects: ParsedRow<T>[], overwrite: boolean) => Promise<void>;
+  importRows: (rows: ParsedRow<T>[], overwrite: boolean) => Promise<void>;
 }>();
 
 const { t } = useCustomI18n();
@@ -47,7 +47,7 @@ const importHandle = async () => {
       });
       return;
     }
-    await importObjects(importCSV(text, rowDescriptor), overwrite.value);
+    await importRows(importCSV(text, rowDescriptor), overwrite.value);
   } catch (error) {
     console.error("Import error:", error);
     notify(NotifyType.ERROR, {

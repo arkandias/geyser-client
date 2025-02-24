@@ -1,3 +1,5 @@
+import type { Scalar, SimpleObject } from "@/types/csv-data.ts";
+
 export const getField = <T extends Record<string, unknown>>(
   row: T,
   field: string | ((row: T) => unknown),
@@ -81,3 +83,20 @@ export function getValueFromLabel(
   }
   return slug;
 }
+const flattenSimpleObjectEntries = <T extends Scalar>(
+  fields: string | SimpleObject<string>,
+  obj: T | SimpleObject<T> | undefined,
+): [string, T | SimpleObject<T> | undefined][] =>
+  typeof fields === "string"
+    ? [[fields, obj]]
+    : Object.entries(fields).flatMap(([key, value]) =>
+        flattenSimpleObjectEntries<T>(
+          value,
+          typeof obj === "object" && obj !== null ? obj[key] : undefined,
+        ),
+      );
+
+export const flattenSimpleObject = <T extends Scalar>(
+  fields: SimpleObject<string>,
+  obj: SimpleObject<T>,
+) => Object.fromEntries(flattenSimpleObjectEntries<T>(fields, obj));

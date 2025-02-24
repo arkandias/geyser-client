@@ -279,6 +279,7 @@ la supprimer.`,
       teachers: {
         label: "Intervenants",
         table: {
+          search: "Recherche",
           uid: "Email",
           firstname: "Prénom",
           lastname: "Nom",
@@ -290,8 +291,9 @@ la supprimer.`,
         },
         form: {
           title: {
-            new_teacher: "Nouvel intervenant",
-            teachers_selected: "{count} intervenants sélectionnés",
+            none: "Nouvel intervenant",
+            single: "{label}",
+            multiple: "{count} intervenants sélectionnés",
           },
           uid: "Email",
           firstname: "Prénom",
@@ -301,33 +303,6 @@ la supprimer.`,
           base_service_hours: "Service de base (htd)",
           visible: "Visible",
           active: "Actif",
-          confirm: {
-            delete: {
-              single: `Êtes-vous sûr de vouloir supprimer l'intervenant « {uid} » ?
-Si des services, responsabilités ou rôles sont attribués à cet intervenant, \
-vous ne pourrez pas le supprimer.`,
-              multiple: `Êtes-vous sûr de vouloir supprimer les {count} intervenants sélectionnés ?
-Si des services, responsabilités ou rôles sont attribués à ces intervenant, \
-vous ne pourrez pas les supprimer.`,
-            },
-          },
-          valid: {
-            insert: {
-              none: "0 intervenant créé",
-              single: "Intervenant {uid} créé",
-              multiple: "{count} intervenants créés",
-            },
-            update: {
-              none: "0 intervenant mis à jour",
-              single: "Intervenant {uid} mis à jour",
-              multiple: "{count} intervenants mis à jour",
-            },
-            delete: {
-              none: "0 intervenant supprimé",
-              single: "Intervenant {uid} supprimé",
-              multiple: "{count} intervenants supprimés",
-            },
-          },
           invalid: {
             message: "Formulaire non valide",
             caption: {
@@ -338,17 +313,35 @@ vous ne pourrez pas les supprimer.`,
             },
           },
         },
-        import: {
-          valid: {
-            message:
-              "0 intervenant importé | 1 intervenant importé | {count} intervenants importés",
+        insert: {
+          valid:
+            "Pas d'intervenant créé | Intervenant {uid} créé | {count} intervenants créés",
+        },
+        update: {
+          valid:
+            "Pas d'intervenant mis à jour | Intervenant mis à jour | {count} intervenants mis à jour",
+        },
+        delete: {
+          valid:
+            "Pas d'intervenant supprimé | Intervenant supprimé | {count} intervenants supprimés",
+          confirm: {
+            single: `Êtes-vous sûr de vouloir supprimer l'intervenant « {id} » ?
+Si des services, responsabilités ou rôles sont attribués à cet intervenant, \
+vous ne pourrez pas le supprimer.`,
+            multiple: `Êtes-vous sûr de vouloir supprimer les {count} intervenants sélectionnés ?
+Si des services, responsabilités ou rôles sont attribués à ces intervenant, \
+vous ne pourrez pas les supprimer.`,
           },
         },
+        import: {
+          invalid: { message: "Erreur durant l'import" },
+          valid:
+            "0 intervenant importé | 1 intervenant importé | {count} intervenants importés",
+        },
         export: {
-          valid: {
-            message:
-              "0 intervenant exporté | 1 intervenant exporté | {count} intervenants exportés",
-          },
+          invalid: { message: "Erreur durant l'export" },
+          valid:
+            "0 intervenant exporté | 1 intervenant exporté | {count} intervenants exportés",
         },
       },
       positions: {
@@ -509,4 +502,4 @@ supprimer.`,
       "Message de la page d'accueil en phase de consultation",
     home_message_shutdown: "Message de la page d'accueil en phase de fermeture",
   },
-};
+} as const;

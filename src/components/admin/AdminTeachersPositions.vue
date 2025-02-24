@@ -18,7 +18,6 @@ import type { ParsedRow } from "@/utils/csv-import.ts";
 import { getValueFromLabel } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
-import AdminButtons from "@/components/admin/AdminButtons.vue";
 import AdminImport from "@/components/admin/AdminImport.vue";
 
 const { positionFragments } = defineProps<{

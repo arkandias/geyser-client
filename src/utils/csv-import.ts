@@ -75,21 +75,21 @@ const transform =
  */
 export const importCSV = <T extends RowDescriptor>(
   text: string,
-  descriptorObj: T,
+  rowDescriptor: T,
 ): ParsedRow<T>[] => {
   const parseResult = parse<ParsedRow<T>>(text, {
     delimiter: ",",
     header: true,
     skipEmptyLines: true,
-    transform: transform(descriptorObj),
+    transform: transform(rowDescriptor),
   });
 
   if (parseResult.errors.length) {
-    const errorMessages = parseResult.errors.map((e) => e.message).join("; ");
-    throw new Error(`Parse error: ${errorMessages}`);
+    const errorMessages = parseResult.errors.map((e) => e.message).join("\n  ");
+    throw new Error(`Parse error:\n  ${errorMessages}`);
   }
 
-  const missingHeaders = Object.keys(descriptorObj).filter(
+  const missingHeaders = Object.keys(rowDescriptor).filter(
     (key) => !parseResult.meta.fields?.includes(key),
   );
   if (missingHeaders.length) {

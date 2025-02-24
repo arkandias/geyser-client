@@ -6,7 +6,7 @@ import type { ArrayElement } from "@/types/misc.ts";
 type ColumnBase = ArrayElement<NonNullable<QTableProps["columns"]>> & {
   tooltip?: string;
   visible?: MaybeRefOrGetter<boolean>;
-  searchable?: boolean;
+  searchable?: MaybeRefOrGetter<boolean>;
 };
 
 export type ColumnAbbreviable<T> = Omit<ColumnBase, "field"> & {

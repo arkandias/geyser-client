@@ -4,110 +4,89 @@
   generic="
     T extends RowDescriptor,
     Id extends Scalar,
-    IdKey extends string,
-    DataObj extends SimpleObject,
-    UpdateColumn
+    DataObj extends SimpleObject<Scalar>
   "
 >
-import type { CombinedError } from "@urql/vue";
-import { type Ref, computed, ref, shallowReactive, toRaw, watch } from "vue";
+import { type Ref, computed, ref, toValue, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
 import type {
-  Header,
+  FieldDescriptor,
+  GetObjectFn,
   ParsedRow,
   RowDescriptor,
   Scalar,
   SimpleObject,
 } from "@/types/csv-data.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
+import { importCSV } from "@/utils/csv-import.ts";
 import { getField, normalizeForSearch } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
-import AdminButtons from "@/components/admin/AdminButtons.vue";
-import AdminImport from "@/components/admin/AdminImport.vue";
+type Row = ParsedRow<T>;
 
-type Row = ParsedRow<T> & Record<IdKey, Id>;
-type OperationResult<T extends string> = Promise<{
-  data?: Partial<
-    Record<T, { affectedRows: number; returning: Record<IdKey, Id>[] } | null>
-  > | null;
-  error?: CombinedError | undefined;
-}>;
-
+const formValues = defineModel<Row>("formValues", { required: true });
+const selectedFields = defineModel<string[]>("selectedFields", {
+  required: true,
+});
 const {
-  rowDescriptor,
-  idKey,
-  columns,
-  rows,
-  initForm,
-  getFormTitle,
-  validateRow,
-  insertData,
-  updateRows,
-  deleteRows,
+  name,
   messagePrefix,
-  overwrittenColumnsOnImport,
-  exportName,
-  exportHeaders,
+  rowDescriptor,
+  rows,
+  columns,
+  getId,
+  getLabel,
+  getObject,
+  initForm,
+  insertData,
+  updateData,
+  deleteData,
 } = defineProps<{
-  rowDescriptor: T;
-  idKey: IdKey;
-  columns: ColumnNonAbbreviable<Row>[];
-  rows: Row[];
-  initForm: (selectedRows?: Row[]) => Row;
-  getFormTitle: (selectedRows?: Row[]) => string;
-  validateRow: {
-    (row: Row, selectedFields: string[]): Partial<DataObj> | null;
-    (row: Row, selectedFields?: null): DataObj | null;
-  };
-  insertData: (variables: {
-    objects: DataObj[];
-    updateColumns: UpdateColumn[];
-  }) => OperationResult<"insertObjects">;
-  updateRows: (variables: {
-    ids: Id[];
-    changes: Partial<DataObj>;
-  }) => OperationResult<"updateObjects">;
-  deleteRows: (variables: { ids: Id[] }) => OperationResult<"deleteObjects">;
+  name: string;
   messagePrefix: string;
-  // rowToCSV, rowFromCSV
-  overwrittenColumnsOnImport: UpdateColumn[];
-  exportName?: string;
-  exportHeaders?: Header[];
-  // use i18n
-  insertNotify: (returning?: { id: Id }[] | null) => void;
-  updateNotify: (returning?: { id: Id }[] | null) => void;
-  deleteNotify: (returning?: { id: Id }[] | null) => void;
-  confirmDeletion: (rows: Row[]) => boolean;
-  importNotify: (returning: Id[] | null) => void;
-  exportNotify: (exported: number, error?: unknown) => void;
+  rowDescriptor: T;
+  rows: Row[];
+  columns: ColumnNonAbbreviable<Row>[];
+  getId: (row: Row) => Id;
+  getLabel: (row: Row) => Record<string, string>;
+  getObject: GetObjectFn<Row, DataObj>;
+  initForm: (selectedRows?: Row[]) => Row;
+  insertData: (
+    objects: DataObj[],
+    overwrite?: boolean,
+  ) => Promise<number | null>;
+  updateData: (ids: Id[], changes: Partial<DataObj>) => Promise<number | null>;
+  deleteData: (ids: Id[]) => Promise<number | null>;
 }>();
-defineSlots<{ default(): unknown }>();
+defineSlots<{ form(slotProps: { multipleSelection: boolean }): unknown }>();
 
 const { t } = useCustomI18n();
 
+// ===== Data Table =====
 const selectedRows: Ref<Row[]> = ref([]);
-const formTitle = computed(() => getFormTitle(selectedRows.value));
+const selection = computed(() => !!selectedRows.value.length);
+const multipleSelection = computed<boolean>(
+  () => selectedRows.value.length > 1,
+);
+
+// ===== Data Form =====
 const isFormOpen = ref(false);
-const formValues = shallowReactive<Row>(initForm());
-const selectedFields = ref<string[]>([]);
-
-// TODO: v-models?
-const selection = computed<boolean>(() => !!selectedRows.value.length);
-// const singleSelection = computed<boolean>(
-//   () => selectedRows.value.length === 1,
-// );
-// const multipleSelection = computed<boolean>(
-//   () => selectedRows.value.length > 1,
-// );
-
-watch(isFormOpen, (value) => {
-  if (value) {
-    const rows = toRaw(selectedRows.value);
-    Object.assign(formValues, initForm(rows));
-    selectedFields.value = [];
+const formTitle = computed(() => {
+  switch (selectedRows.value.length) {
+    case 0:
+      return t(messagePrefix + ".form.title.none");
+    case 1:
+      return t(
+        messagePrefix + ".form.title.single",
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        getLabel(selectedRows.value[0]!),
+      );
+    default:
+      return t(messagePrefix + ".form.title.multiple", {
+        count: selectedRows.value.length,
+      });
   }
 });
 
@@ -118,54 +97,64 @@ const openForm = (rows?: Row[]) => {
   isFormOpen.value = true;
 };
 
-const notifyOperationResult = (
-  operation: "insert" | "update" | "delete" | "import" | "export",
-  affectedRows: number | null,
-) => {
-  const message = messagePrefix + ".data." + operation;
+watch(isFormOpen, (value) => {
+  if (value) {
+    Object.assign(formValues.value, initForm(selectedRows.value));
+    selectedFields.value = [];
+  }
+});
+
+// ===== Data Operations =====
+const insertDataHandle = async () => {
+  let dataObj: DataObj;
+  try {
+    dataObj = getObject(formValues.value);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    notify(NotifyType.ERROR, {
+      message: t(messagePrefix + ".data.form.invalid"),
+      caption: message,
+    });
+    return;
+  }
+  const affectedRows = await insertData([dataObj], false);
   if (affectedRows === null) {
-    notify(NotifyType.ERROR, { message: t(message + ".invalid") });
+    notify(NotifyType.ERROR, {
+      message: t(messagePrefix + ".form.invalid.insert"),
+    });
+    return;
   }
   notify(NotifyType.SUCCESS, {
-    message: t(message + ".valid", { count: affectedRows }),
+    message: t(messagePrefix + ".insert.valid", affectedRows),
   });
-};
-
-const insertDataHandle = async () => {
-  const dataObj = validateRow(formValues);
-  if (!dataObj) {
-    return;
-  }
-  const { data, error } = await insertData({
-    objects: [dataObj],
-    updateColumns: [],
-  });
-  if (error) {
-    return;
-  }
-  notifyOperationResult(
-    "insert",
-    data?.insertObjects?.returning.length ?? null,
-  );
   isFormOpen.value = false;
 };
 
 const updateDataHandle = async () => {
-  const dataObj = validateRow(formValues, selectedFields.value);
-  if (!dataObj) {
+  let dataObj: Partial<DataObj>;
+  try {
+    dataObj = getObject(formValues.value, selectedFields.value);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    notify(NotifyType.ERROR, {
+      message: t(messagePrefix + ".form.invalid.message"),
+      caption: message,
+    });
     return;
   }
-  const { data, error } = await updateRows({
-    ids: selectedRows.value.map((row) => row[idKey]),
-    changes: dataObj,
-  });
-  if (error) {
-    return;
-  }
-  notifyOperationResult(
-    "update",
-    data?.updateObjects?.returning.length ?? null,
+  const affectedRows = await updateData(
+    selectedRows.value.map((row) => getId(row)),
+    dataObj,
   );
+  if (affectedRows === null) {
+    notify(NotifyType.ERROR, {
+      message: t(messagePrefix + ".form.invalid.update"),
+    });
+    return;
+  }
+  notify(NotifyType.SUCCESS, {
+    message: t(messagePrefix + ".update.valid", affectedRows),
+  });
   isFormOpen.value = false;
 };
 
@@ -173,31 +162,42 @@ const deleteDataHandle = async () => {
   if (
     !selection.value ||
     !confirm(
-      t(messagePrefix + ".data.delete.confirm", {
-        count: selectedRows.value.length,
-      }),
+      selectedRows.value.length === 1
+        ? t(messagePrefix + ".delete.confirm.single", {
+            // TODO: should be label
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            id: getId(selectedRows.value[0]!),
+          })
+        : t(
+            messagePrefix + ".delete.confirm.multiple",
+            selectedRows.value.length,
+          ),
     )
   ) {
     return;
   }
-  const { data, error } = await deleteRows({
-    ids: selectedRows.value.map((row) => row[idKey]),
-  });
-  if (error) {
+  const affectedRows = await deleteData(
+    selectedRows.value.map((row) => getId(row)),
+  );
+  if (affectedRows === null) {
+    notify(NotifyType.ERROR, {
+      message: t(messagePrefix + ".data.delete.invalid"),
+    });
     return;
   }
-  notifyOperationResult(
-    "delete",
-    data?.deleteObjects?.returning.length ?? null,
-  );
+  notify(NotifyType.SUCCESS, {
+    message: t(messagePrefix + ".delete.valid", {
+      count: affectedRows,
+    }),
+  });
   selectedRows.value = [];
   isFormOpen.value = false;
 };
 
-// Search filter
+// ===== Search & Filtering =====
 const search = ref<string | null>(null);
 const searchableColumns = columns
-  .filter((col) => col.searchable)
+  .filter((col) => toValue(col.searchable))
   .map((col) => col.name);
 const filterObj = computed(() => ({
   search: normalizeForSearch(search.value ?? ""),
@@ -215,42 +215,97 @@ const filterMethod = (
     ),
   );
 
-// Import
-const isImportFormOpen = ref(false);
-const importObjects = async (rows: Row[], overwrite: boolean) => {
-  const objects = rows.map((row, index) => {
-    const obj = validateRow(row);
-    if (!obj) {
-      throw new Error(`Invalid row at index ${index.toString()}`);
-    }
-    return obj;
-  });
-  const { data, error } = await insertData({
-    objects,
-    updateColumns: overwrite ? overwrittenColumnsOnImport : [],
-  });
-  if (error) {
-    return;
+// ===== Data Import =====
+const isImportDialogOpen = ref(false);
+const selectedFile = ref<File | null>(null);
+const overwrite = ref(false);
+const importing = ref(false);
+
+watch(isImportDialogOpen, (value) => {
+  if (value) {
+    selectedFile.value = null;
+    overwrite.value = false;
   }
-  notifyOperationResult(
-    "import",
-    data?.insertObjects?.returning.length ?? null,
-  );
+});
+
+const columnsImport: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
+  {
+    name: "key",
+    label: t("admin.import.table.columns.key"),
+    align: "left",
+    field: ([key]) => key,
+  },
+  {
+    name: "type",
+    label: t("admin.import.table.columns.type"),
+    align: "left",
+    field: ([_, descriptor]) => descriptor.type,
+    format: (val: string) => t("admin.import.table.values.type_" + val),
+  },
+  {
+    name: "non_nullable",
+    label: t("admin.import.table.columns.non_nullable"),
+    align: "center",
+    field: ([_, descriptor]) => !!descriptor.nullable,
+    format: (val: boolean) => (!val ? "✓" : "✗"),
+  },
+];
+
+const importRowsHandle = async () => {
+  try {
+    if (!selectedFile.value) {
+      throw new Error(t(messagePrefix + ".import.invalid.caption.file_empty"));
+    }
+    importing.value = true;
+    const text = await selectedFile.value.text();
+    const importedRows = importCSV(text, rowDescriptor);
+    const objects = importedRows.map((row, index) => {
+      try {
+        return getObject(row);
+      } catch (error) {
+        throw new Error(
+          t("admin.import.invalid.caption", {
+            index,
+            error_message:
+              error instanceof Error ? error.message : "Unknown error",
+          }),
+        );
+      }
+    });
+    const affectedRows = await insertData(objects, overwrite.value);
+    if (affectedRows === null) {
+      throw new Error();
+    }
+    notify(NotifyType.SUCCESS, {
+      message: t(messagePrefix + ".import.valid", affectedRows),
+    });
+  } catch (error) {
+    notify(NotifyType.ERROR, {
+      message: t(messagePrefix + ".import.invalid.message"),
+      caption: error instanceof Error ? error.message : "Unknown error",
+    });
+  } finally {
+    importing.value = false;
+    isImportDialogOpen.value = false;
+  }
 };
 
-// Export
+// ===== Data Export =====
 const exportDataHandle = () => {
   try {
     downloadCSV(
-      `${exportName ?? "export"}_${Date.now().toString()}`,
+      `${name}_${Date.now().toString()}`,
       selectedRows.value.length ? selectedRows.value : rows,
-      exportHeaders,
     );
-    notifyOperationResult("export", selectedRows.value.length || rows.length);
+    notify(NotifyType.SUCCESS, {
+      message: t(
+        messagePrefix + ".export.valid",
+        selectedRows.value.length || rows.length,
+      ),
+    });
   } catch (error) {
-    console.error("Export error:", error);
     notify(NotifyType.ERROR, {
-      message: t(messagePrefix + ".data.export.invalid"),
+      message: t(messagePrefix + ".export.invalid.message"),
       caption: error instanceof Error ? error.message : "Unknown error",
     });
   }
@@ -258,18 +313,57 @@ const exportDataHandle = () => {
 </script>
 
 <template>
-  <AdminButtons
-    :on-create-click="() => openForm([])"
-    :on-edit-click="() => openForm()"
-    :on-delete-click="deleteDataHandle"
-    :on-import-click="() => (isImportFormOpen = true)"
-    :on-export-click="exportDataHandle"
-    :selection
-  />
+  <div class="q-mb-md">
+    <div class="q-gutter-md row">
+      <QBtn
+        :label="t('admin.buttons.create')"
+        icon="sym_s_add"
+        color="primary"
+        no-caps
+        outline
+        @click="openForm([])"
+      />
+      <QBtn
+        :label="t('admin.buttons.edit')"
+        icon="sym_s_edit"
+        color="primary"
+        :disable="!selection"
+        no-caps
+        outline
+        @click="openForm()"
+      />
+      <QBtn
+        :label="t('admin.buttons.delete')"
+        icon="sym_s_delete"
+        color="primary"
+        :disable="!selection"
+        no-caps
+        outline
+        @click="deleteDataHandle()"
+      />
+      <QSpace />
+      <QBtn
+        :label="t('admin.buttons.import')"
+        icon="sym_s_upload"
+        color="primary"
+        no-caps
+        outline
+        @click="isImportDialogOpen = true"
+      />
+      <QBtn
+        :label="t('admin.buttons.export')"
+        icon="sym_s_download"
+        color="primary"
+        no-caps
+        outline
+        @click="exportDataHandle()"
+      />
+    </div>
+  </div>
 
   <QTable
     v-model:selected="selectedRows"
-    :rows="rows"
+    :rows
     :columns
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
@@ -283,9 +377,10 @@ const exportDataHandle = () => {
   >
     <template #top>
       <QInput
+        v-if="searchableColumns.length"
         v-model="search"
         color="primary"
-        placeholder="Recherche"
+        :placeholder="t(messagePrefix + '.table.search')"
         clearable
         clear-icon="sym_s_close"
         square
@@ -302,17 +397,17 @@ const exportDataHandle = () => {
       </QCardSection>
       <QCardSection>
         <QForm
-          id="teacher-form"
+          :id="`${name}-form`"
           class="q-gutter-md"
           @submit="selection ? updateDataHandle() : insertDataHandle()"
         >
-          <slot />
+          <slot name="form" :multiple-selection />
         </QForm>
       </QCardSection>
       <QSeparator />
       <QCardActions align="right">
         <QBtn
-          form="teacher-form"
+          :form="`${name}-form`"
           type="submit"
           :label="
             selection ? t('admin.buttons.update') : t('admin.buttons.create')
@@ -325,7 +420,60 @@ const exportDataHandle = () => {
     </QCard>
   </QDialog>
 
-  <AdminImport v-model="isImportFormOpen" :row-descriptor :import-objects />
+  <QDialog v-model="isImportDialogOpen" square>
+    <QCard flat square class="admin-form">
+      <QCardSection class="text-h6">
+        {{ t("admin.import.title") }}
+      </QCardSection>
+      <QCardSection>
+        <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
+        <div v-html="t('admin.import.csv_instructions')" />
+      </QCardSection>
+      <QCardSection>
+        <QTable
+          :columns="columnsImport"
+          :rows="Object.entries(rowDescriptor)"
+          :pagination="{ rowsPerPage: 0 }"
+          hide-bottom
+          bordered
+          flat
+          dense
+        />
+      </QCardSection>
+      <QCardSection>
+        <div class="column q-gutter-md">
+          <QFile
+            v-model="selectedFile"
+            accept=".csv"
+            :label="t('admin.import.file_picker_label')"
+            clearable
+            clear-icon="sym_s_close"
+            outlined
+            dense
+          >
+            <template #prepend>
+              <QIcon name="sym_s_attach_file" />
+            </template>
+          </QFile>
+          <QCheckbox
+            v-model="overwrite"
+            :label="t('admin.import.overwrite')"
+            dense
+          />
+        </div>
+      </QCardSection>
+      <QCardActions align="right">
+        <QBtn
+          :loading="importing"
+          :label="t('admin.buttons.import')"
+          color="primary"
+          flat
+          square
+          @click="importRowsHandle()"
+        />
+      </QCardActions>
+    </QCard>
+  </QDialog>
 </template>
 
 <style scoped lang="scss"></style>

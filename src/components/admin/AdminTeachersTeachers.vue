@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed, reactive, ref, watch } from "vue";
+import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  type AdminTeacherFragment,
   AdminTeacherFragmentDoc,
   AdminTeacherPositionFragmentDoc,
   DeleteTeachersDocument,
@@ -15,21 +14,39 @@ import {
 } from "@/gql/graphql.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
 import type { ParsedRow } from "@/types/csv-data.ts";
-import { downloadCSV } from "@/utils/csv-export.ts";
-import {
-  getField,
-  getValueFromLabel,
-  normalizeForSearch,
-} from "@/utils/misc.ts";
-import { NotifyType, notify, notifyOperationResult } from "@/utils/notify.ts";
 
-import AdminButtons from "@/components/admin/AdminButtons.vue";
-import AdminImport from "@/components/admin/AdminImport.vue";
+import AdminData from "@/components/admin/AdminData.vue";
 
 const { teacherFragments, positionFragments } = defineProps<{
   teacherFragments: FragmentType<typeof AdminTeacherFragmentDoc>[];
   positionFragments: FragmentType<typeof AdminTeacherPositionFragmentDoc>[];
 }>();
+
+const { t } = useCustomI18n();
+
+const rowDescriptor = {
+  uid: { type: "string" },
+  firstname: { type: "string" },
+  lastname: { type: "string" },
+  alias: { type: "string", nullable: true },
+  position: { type: "string", nullable: true },
+  baseServiceHours: { type: "number", nullable: true },
+  visible: { type: "boolean" },
+  active: { type: "boolean" },
+} as const;
+
+type Row = ParsedRow<typeof rowDescriptor>;
+type Id = string;
+type DataObj = {
+  uid: string;
+  firstname: string;
+  lastname: string;
+  alias: string | null;
+  position: string | null;
+  baseServiceHours: number | null;
+  visible: boolean;
+  active: boolean;
+};
 
 graphql(`
   fragment AdminTeacher on Teacher {
@@ -38,7 +55,6 @@ graphql(`
     lastname
     alias
     position: positionByPosition {
-      value
       label
     }
     baseServiceHours
@@ -66,8 +82,8 @@ graphql(`
     }
   }
 
-  mutation UpdateTeachers($uids: [String!]!, $changes: TeacherSetInput!) {
-    updateTeacher(where: { uid: { _in: $uids } }, _set: $changes) {
+  mutation UpdateTeachers($ids: [String!]!, $changes: TeacherSetInput!) {
+    updateTeacher(where: { uid: { _in: $ids } }, _set: $changes) {
       affectedRows
       returning {
         uid
@@ -75,8 +91,8 @@ graphql(`
     }
   }
 
-  mutation DeleteTeachers($uids: [String!]!) {
-    deleteTeacher(where: { uid: { _in: $uids } }) {
+  mutation DeleteTeachers($ids: [String!]!) {
+    deleteTeacher(where: { uid: { _in: $ids } }) {
       affectedRows
       returning {
         uid
@@ -85,238 +101,44 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
-
 const insertTeachers = useMutation(InsertTeachersDocument);
 const updateTeachers = useMutation(UpdateTeachersDocument);
 const deleteTeachers = useMutation(DeleteTeachersDocument);
 
 const teachers = computed(() =>
-  teacherFragments.map((f) => useFragment(AdminTeacherFragmentDoc, f)),
+  teacherFragments.map((f) => {
+    const fragment = useFragment(AdminTeacherFragmentDoc, f);
+    return {
+      uid: fragment.uid,
+      firstname: fragment.firstname,
+      lastname: fragment.lastname,
+      alias: fragment.alias ?? null,
+      position: fragment.position?.label ?? null,
+      baseServiceHours: fragment.baseServiceHours ?? null,
+      visible: fragment.visible,
+      active: fragment.active,
+    };
+  }),
 );
+
 const positions = computed(() =>
   positionFragments.map((f) => useFragment(AdminTeacherPositionFragmentDoc, f)),
 );
 
-const selectedTeachers = ref<AdminTeacherFragment[]>([]);
-const selection = computed<boolean>(() => !!selectedTeachers.value.length);
-const singleSelection = computed<boolean>(
-  () => selectedTeachers.value.length === 1,
-);
-const multipleSelection = computed<boolean>(
-  () => selectedTeachers.value.length > 1,
-);
-
-const isFormOpen = ref(false);
-const formTitle = computed(() => {
-  switch (selectedTeachers.value.length) {
-    case 0:
-      return t("admin.teachers.teachers.form.title.new_teacher");
-    case 1:
-      return selectedTeachers.value[0]?.uid ?? "";
-    default:
-      return t("admin.teachers.teachers.form.title.teachers_selected", {
-        count: selectedTeachers.value.length,
-      });
-  }
+const initForm = (selectedRows?: Row[]): Row => ({
+  uid: selectedRows?.[0]?.uid ?? "",
+  firstname: selectedRows?.[0]?.firstname ?? "",
+  lastname: selectedRows?.[0]?.lastname ?? "",
+  alias: selectedRows?.[0]?.alias ?? null,
+  position: selectedRows?.[0]?.position ?? null,
+  baseServiceHours: selectedRows?.[0]?.baseServiceHours ?? null,
+  visible: selectedRows?.[0]?.visible ?? true,
+  active: selectedRows?.[0]?.active ?? true,
 });
-
-const formValues = reactive<{
-  uid: string;
-  firstname: string;
-  lastname: string;
-  alias: string | null;
-  position: string | null;
-  baseServiceHours: number | null;
-  visible: boolean;
-  active: boolean;
-}>({
-  uid: "",
-  firstname: "",
-  lastname: "",
-  alias: null,
-  position: null,
-  baseServiceHours: null,
-  visible: true,
-  active: true,
-});
-
-const formValidated = computed<typeof formValues>(() => ({
-  ...formValues,
-  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-  alias: formValues.alias || null,
-  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-  position: formValues.position || null,
-}));
-
+const formValues = ref(initForm());
 const selectedFields = ref<string[]>([]);
-const selectedFormValidated = computed<Partial<typeof formValidated.value>>(
-  () =>
-    Object.fromEntries(
-      Object.entries(formValidated.value).filter(([key]) =>
-        selectedFields.value.includes(key),
-      ),
-    ),
-);
 
-watch(isFormOpen, (value) => {
-  if (value) {
-    const row = selectedTeachers.value[0];
-    formValues.uid = row?.uid ?? "";
-    formValues.firstname = row?.firstname ?? "";
-    formValues.lastname = row?.lastname ?? "";
-    formValues.alias = row?.alias ?? null;
-    formValues.position = row?.position?.label ?? null;
-    formValues.baseServiceHours = row?.baseServiceHours ?? null;
-    formValues.visible = row?.visible ?? true;
-    formValues.active = row?.active ?? true;
-    selectedFields.value = [];
-  }
-});
-
-const openForm = (rows?: AdminTeacherFragment[]) => {
-  if (rows) {
-    selectedTeachers.value = rows;
-  }
-  isFormOpen.value = true;
-};
-
-// TODO: must return the validated values (filtered with selectedFields)
-const validateForm = () => {
-  if (!formValues.uid) {
-    notify(NotifyType.ERROR, {
-      message: t("admin.teachers.teachers.form.invalid.message"),
-      caption: t("admin.teachers.teachers.form.invalid.caption.uid_empty"),
-    });
-    return false;
-  }
-  if (
-    !selection.value &&
-    teachers.value.some((t) => t.uid === formValues.uid)
-  ) {
-    notify(NotifyType.ERROR, {
-      message: t("admin.teachers.teachers.form.invalid.message"),
-      caption: t("admin.teachers.teachers.form.invalid.caption.uid_conflict"),
-    });
-    return false;
-  }
-  if (!formValues.firstname) {
-    notify(NotifyType.ERROR, {
-      message: t("admin.teachers.teachers.form.invalid.message"),
-      caption: t(
-        "admin.teachers.teachers.form.invalid.caption.firstname_empty",
-      ),
-    });
-    return false;
-  }
-  if (!formValues.lastname) {
-    notify(NotifyType.ERROR, {
-      message: t("admin.teachers.teachers.form.invalid.message"),
-      caption: t("admin.teachers.teachers.form.invalid.caption.lastname_empty"),
-    });
-    return false;
-  }
-  return true;
-};
-
-const insertTeachersHandle = async () => {
-  if (!validateForm()) {
-    return;
-  }
-
-  const { data, error } = await insertTeachers.executeMutation({
-    objects: [formValidated.value],
-    updateColumns: [],
-  });
-
-  if (error) {
-    return;
-  }
-
-  notifyOperationResult(data?.insertTeacher?.affectedRows, {
-    error: t("notify.error.unknown_error"),
-    none: t("admin.teachers.teachers.form.valid.insert.none"),
-    single: t("admin.teachers.teachers.form.valid.insert.single", {
-      uid: data?.insertTeacher?.returning[0]?.uid ?? "",
-    }),
-    multiple: t("admin.teachers.teachers.form.valid.insert.multiple", {
-      count: data?.insertTeacher?.affectedRows,
-    }),
-  });
-
-  isFormOpen.value = false;
-};
-
-const updateTeachersHandle = async () => {
-  if (!validateForm()) {
-    return;
-  }
-
-  const { data, error } = await updateTeachers.executeMutation({
-    uids: selectedTeachers.value.map((t) => t.uid),
-    changes: singleSelection.value
-      ? formValidated.value
-      : selectedFormValidated.value,
-  });
-
-  if (error) {
-    return;
-  }
-
-  notifyOperationResult(data?.updateTeacher?.affectedRows, {
-    error: t("notify.error.unknown_error"),
-    none: t("admin.teachers.teachers.form.valid.update.none"),
-    single: t("admin.teachers.teachers.form.valid.update.single", {
-      uid: data?.updateTeacher?.returning[0]?.uid ?? "",
-    }),
-    multiple: t("admin.teachers.teachers.form.valid.update.multiple", {
-      count: data?.updateTeacher?.affectedRows,
-    }),
-  });
-
-  isFormOpen.value = false;
-};
-
-const deleteTeachersHandle = async () => {
-  if (
-    !selection.value ||
-    !confirm(
-      singleSelection.value
-        ? t("admin.teachers.teachers.form.confirm.delete.single", {
-            uid: selectedTeachers.value[0]?.uid ?? "",
-          })
-        : t("admin.teachers.teachers.form.confirm.delete.multiple", {
-            count: selectedTeachers.value.length,
-          }),
-    )
-  ) {
-    return;
-  }
-
-  const { data, error } = await deleteTeachers.executeMutation({
-    uids: selectedTeachers.value.map((t) => t.uid),
-  });
-
-  if (error) {
-    return;
-  }
-
-  notifyOperationResult(data?.deleteTeacher?.affectedRows, {
-    error: t("notify.error.unknown_error"),
-    none: t("admin.teachers.teachers.form.valid.delete.none"),
-    single: t("admin.teachers.teachers.form.valid.delete.single", {
-      uid: data?.deleteTeacher?.returning[0]?.uid ?? "",
-    }),
-    multiple: t("admin.teachers.teachers.form.valid.delete.multiple", {
-      count: data?.deleteTeacher?.affectedRows,
-    }),
-  });
-
-  selectedTeachers.value = [];
-  isFormOpen.value = false;
-};
-
-const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
+const columns: ColumnNonAbbreviable<Row>[] = [
   {
     name: "uid",
     label: t("admin.teachers.teachers.table.uid"),
@@ -353,7 +175,7 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
     name: "position",
     label: t("admin.teachers.teachers.table.position"),
     align: "left",
-    field: (row) => row.position?.label ?? null,
+    field: (row) => row.position ?? null,
     sortable: true,
     searchable: false,
   },
@@ -384,261 +206,176 @@ const columns: ColumnNonAbbreviable<AdminTeacherFragment>[] = [
   },
 ];
 
-// Search filter
-const search = ref<string | null>(null);
-const searchableColumns = columns
-  .filter((col) => col.searchable)
-  .map((col) => col.name);
-const filterObj = computed(() => ({
-  search: normalizeForSearch(search.value ?? ""),
-  searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
-}));
-const filterMethod = (
-  rows: readonly AdminTeacherFragment[],
-  terms: typeof filterObj.value,
-): readonly AdminTeacherFragment[] =>
-  rows.filter((row) =>
-    terms.searchColumns.some((col) =>
-      normalizeForSearch(String(getField(row, col.field))).includes(
-        terms.search,
-      ),
-    ),
-  );
+const getId = (row: Row): Id => row.uid;
+const getLabel = (row: Row): string => row.uid;
+function getObject(row: Row): DataObj;
+function getObject(row: Row, fields: string[]): Partial<DataObj>;
+function getObject(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
+  const dataObj: DataObj = {
+    uid: row.uid,
+    firstname: row.firstname,
+    lastname: row.lastname,
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+    alias: row.alias || null,
+    position:
+      positions.value.find((p) => p.label === row.position)?.value ?? null,
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+    baseServiceHours: row.baseServiceHours || null,
+    visible: row.visible,
+    active: row.active,
+  };
 
-// Import
-const isImportFormOpen = ref(false);
-const importTeachersHandle = () => {
-  isImportFormOpen.value = true;
-};
-
-const descriptorObj = {
-  uid: { type: "string" },
-  firstname: { type: "string" },
-  lastname: { type: "string" },
-  alias: { type: "string", nullable: true },
-  position: { type: "string", nullable: true },
-  baseServiceHours: { type: "number", nullable: true },
-  visible: { type: "boolean" },
-  active: { type: "boolean" },
-} as const;
-
-const importObjects = async (
-  objects: ParsedRow<typeof descriptorObj>[],
-  overwrite: boolean,
-) => {
-  const { data, error } = await insertTeachers.executeMutation({
-    // replace position label with corresponding value
-    objects: objects.map((obj) => ({
-      ...obj,
-      position: getValueFromLabel(obj.position, positions.value, false),
-    })),
-    updateColumns: overwrite
-      ? [
-          TeacherUpdateColumn.Firstname,
-          TeacherUpdateColumn.Lastname,
-          TeacherUpdateColumn.Alias,
-          TeacherUpdateColumn.Position,
-          TeacherUpdateColumn.BaseServiceHours,
-          TeacherUpdateColumn.Visible,
-          TeacherUpdateColumn.Active,
-        ]
-      : [],
-  });
-  if (data?.insertTeacher?.returning && !error) {
-    notify(NotifyType.SUCCESS, {
-      message: t(
-        "admin.teachers.teachers.import.valid.message",
-        data.insertTeacher.returning.length,
-      ),
-    });
+  if (fields) {
+    return Object.fromEntries(
+      Object.entries(dataObj).filter(([key]) => fields.includes(key)),
+    ) as Partial<DataObj>;
   }
-};
 
-// Export
-const headers = [
-  "uid",
-  "firstname",
-  "lastname",
-  "alias",
-  { key: "position.label", label: "position" },
-  "baseServiceHours",
-  "visible",
-  "active",
-];
-const exportTeachersHandle = () => {
-  const data = selectedTeachers.value.length
-    ? selectedTeachers.value
-    : teachers.value;
-  downloadCSV(`teachers_${Date.now().toString()}`, data, headers, {
-    success: t("admin.teachers.teachers.export.valid.message", data.length),
-    error: t("admin.export.invalid.message"),
-  });
-};
+  return dataObj;
+}
+
+const insertData = (objects: DataObj[], overwrite?: boolean) =>
+  insertTeachers
+    .executeMutation({
+      objects,
+      updateColumns: overwrite
+        ? [
+            TeacherUpdateColumn.Firstname,
+            TeacherUpdateColumn.Lastname,
+            TeacherUpdateColumn.Alias,
+            TeacherUpdateColumn.Position,
+            TeacherUpdateColumn.BaseServiceHours,
+            TeacherUpdateColumn.Visible,
+            TeacherUpdateColumn.Active,
+          ]
+        : [],
+    })
+    .then((result) => result.data?.insertTeacher?.affectedRows ?? null);
+
+const updateData = (ids: Id[], changes: Partial<DataObj>) =>
+  updateTeachers
+    .executeMutation({
+      ids,
+      changes,
+    })
+    .then((result) => result.data?.updateTeacher?.affectedRows ?? null);
+
+const deleteData = (ids: Id[]) =>
+  deleteTeachers
+    .executeMutation({
+      ids,
+    })
+    .then((result) => result.data?.deleteTeacher?.affectedRows ?? null);
 </script>
 
 <template>
-  <AdminButtons
-    :on-create-click="() => openForm([])"
-    :on-edit-click="() => openForm()"
-    :on-delete-click="deleteTeachersHandle"
-    :on-import-click="importTeachersHandle"
-    :on-export-click="exportTeachersHandle"
-    :selection
-  />
-
-  <QTable
-    v-model:selected="selectedTeachers"
-    :rows="teachers"
+  <AdminData
+    v-model:form-values="formValues"
+    v-model:selected-fields="selectedFields"
+    name="teachers"
+    message-prefix="admin.teachers.teachers"
+    :row-descriptor
     :columns
-    :pagination="{ rowsPerPage: 100 }"
-    :rows-per-page-options="[0, 10, 20, 50, 100]"
-    :filter="filterObj"
-    :filter-method
-    row-key="uid"
-    selection="multiple"
-    bordered
-    flat
-    dense
+    :rows="teachers"
+    :get-id
+    :get-label
+    :get-object
+    :init-form
+    :insert-data
+    :update-data
+    :delete-data
   >
-    <template #top>
+    <template #form="{ multipleSelection }">
       <QInput
-        v-model="search"
-        color="primary"
-        placeholder="Recherche"
+        v-if="!multipleSelection"
+        v-model="formValues.uid"
+        :label="t('admin.teachers.teachers.form.uid')"
+        square
+        dense
+      />
+      <QInput
+        v-if="!multipleSelection"
+        v-model="formValues.firstname"
+        :label="t('admin.teachers.teachers.form.firstname')"
+        square
+        dense
+      />
+      <QInput
+        v-if="!multipleSelection"
+        v-model="formValues.lastname"
+        :label="t('admin.teachers.teachers.form.lastname')"
+        square
+        dense
+      />
+      <QInput
+        v-if="!multipleSelection"
+        v-model="formValues.alias"
+        :label="t('admin.teachers.teachers.form.alias')"
+        square
+        dense
+      />
+      <QSelect
+        v-model="formValues.position"
+        :options="positions.map((p) => p.label)"
+        :label="t('admin.teachers.teachers.form.position')"
+        :disable="multipleSelection && !selectedFields.includes('position')"
         clearable
         clear-icon="sym_s_close"
         square
         dense
-        style="width: 100%"
-      />
-    </template>
-  </QTable>
-
-  <QDialog v-model="isFormOpen" square>
-    <QCard flat square class="admin-form">
-      <QCardSection v-if="isFormOpen" class="text-h6">
-        {{ formTitle }}
-      </QCardSection>
-      <QCardSection>
-        <QForm
-          id="teacher-form"
-          class="q-gutter-md"
-          @submit="selection ? updateTeachersHandle() : insertTeachersHandle()"
-        >
+        options-dense
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="position" />
+        </template>
+      </QSelect>
+      <div class="row">
+        <div class="q-mr-md">
           <QInput
-            v-if="!multipleSelection"
-            v-model="formValues.uid"
-            :label="t('admin.teachers.teachers.form.uid')"
+            v-model.number="formValues.baseServiceHours"
+            type="number"
+            :label="t('admin.teachers.teachers.form.base_service_hours')"
+            :disable="
+              multipleSelection && !selectedFields.includes('baseServiceHours')
+            "
             square
             dense
-          />
-          <QInput
-            v-if="!multipleSelection"
-            v-model="formValues.firstname"
-            :label="t('admin.teachers.teachers.form.firstname')"
-            square
-            dense
-          />
-          <QInput
-            v-if="!multipleSelection"
-            v-model="formValues.lastname"
-            :label="t('admin.teachers.teachers.form.lastname')"
-            square
-            dense
-          />
-          <QInput
-            v-if="!multipleSelection"
-            v-model="formValues.alias"
-            :label="t('admin.teachers.teachers.form.alias')"
-            square
-            dense
-          />
-          <QSelect
-            v-model="formValues.position"
-            :options="positions"
-            :label="t('admin.teachers.teachers.form.position')"
-            :disable="multipleSelection && !selectedFields.includes('position')"
-            clearable
-            clear-icon="sym_s_close"
-            emit-value
-            map-options
-            square
-            dense
-            options-dense
+            style="width: 150px"
           >
             <template v-if="multipleSelection" #before>
-              <QCheckbox v-model="selectedFields" val="position" />
+              <QCheckbox v-model="selectedFields" val="baseServiceHours" />
             </template>
-          </QSelect>
-          <div class="row">
-            <div class="q-mr-md">
-              <QInput
-                v-model.number="formValues.baseServiceHours"
-                type="number"
-                :label="t('admin.teachers.teachers.form.base_service_hours')"
-                :disable="
-                  multipleSelection &&
-                  !selectedFields.includes('baseServiceHours')
-                "
-                square
-                dense
-                style="width: 150px"
-              >
-                <template v-if="multipleSelection" #before>
-                  <QCheckbox v-model="selectedFields" val="baseServiceHours" />
-                </template>
-              </QInput>
-            </div>
-            <div class="q-mr-md">
-              <QCheckbox
-                v-if="multipleSelection"
-                v-model="selectedFields"
-                val="visible"
-              />
-              <QToggle
-                v-model="formValues.visible"
-                :disable="
-                  multipleSelection && !selectedFields.includes('visible')
-                "
-                :label="t('admin.teachers.teachers.form.visible')"
-                left-label
-              />
-            </div>
-            <div class="q-mr-md">
-              <QCheckbox
-                v-if="multipleSelection"
-                v-model="selectedFields"
-                val="active"
-              />
-              <QToggle
-                v-model="formValues.active"
-                :disable="
-                  multipleSelection && !selectedFields.includes('active')
-                "
-                :label="t('admin.teachers.teachers.form.active')"
-                left-label
-              />
-            </div>
-          </div>
-        </QForm>
-      </QCardSection>
-      <QSeparator />
-      <QCardActions align="right">
-        <QBtn
-          form="teacher-form"
-          type="submit"
-          :label="
-            selection ? t('admin.buttons.update') : t('admin.buttons.create')
-          "
-          color="primary"
-          flat
-          square
-        />
-      </QCardActions>
-    </QCard>
-  </QDialog>
-
-  <AdminImport v-model="isImportFormOpen" :descriptor-obj :import-objects />
+          </QInput>
+        </div>
+        <div class="q-mr-md">
+          <QCheckbox
+            v-if="multipleSelection"
+            v-model="selectedFields"
+            val="visible"
+          />
+          <QToggle
+            v-model="formValues.visible"
+            :disable="multipleSelection && !selectedFields.includes('visible')"
+            :label="t('admin.teachers.teachers.form.visible')"
+            left-label
+          />
+        </div>
+        <div class="q-mr-md">
+          <QCheckbox
+            v-if="multipleSelection"
+            v-model="selectedFields"
+            val="active"
+          />
+          <QToggle
+            v-model="formValues.active"
+            :disable="multipleSelection && !selectedFields.includes('active')"
+            :label="t('admin.teachers.teachers.form.active')"
+            left-label
+          />
+        </div>
+      </div>
+    </template>
+  </AdminData>
 </template>
 
 <style scoped lang="scss"></style>
