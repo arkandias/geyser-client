@@ -136,14 +136,11 @@ la supprimer.`,
           base_service_hours: "Service de base (htd)",
           visible: "Visible",
           active: "Actif",
-          invalid: {
-            message: "Formulaire non valide",
-            caption: {
-              uid_empty: "Entrez un email",
-              uid_conflict: "Un intervenant avec cet email existe déjà",
-              firstname_empty: "Entrez un prénom",
-              lastname_empty: "Entrez un nom",
-            },
+          error: {
+            uid_empty: "Entrez un email",
+            uid_conflict: "Un intervenant avec cet email existe déjà",
+            firstname_empty: "Entrez un prénom",
+            lastname_empty: "Entrez un nom",
           },
         },
         data: {

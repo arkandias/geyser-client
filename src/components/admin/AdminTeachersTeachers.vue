@@ -9,6 +9,7 @@ import {
   AdminTeacherPositionFragmentDoc,
   DeleteTeachersDocument,
   InsertTeachersDocument,
+  TeacherConstraint,
   TeacherUpdateColumn,
   UpdateTeachersDocument,
 } from "@/gql/graphql.ts";
@@ -69,12 +70,9 @@ graphql(`
 
   mutation InsertTeachers(
     $objects: [TeacherInsertInput!]!
-    $updateColumns: [TeacherUpdateColumn!]!
+    $onConflict: TeacherOnConflict
   ) {
-    insertTeacher(
-      objects: $objects
-      onConflict: { constraint: teacher_pkey, updateColumns: $updateColumns }
-    ) {
+    insertTeacher(objects: $objects, onConflict: $onConflict) {
       affectedRows
       returning {
         uid
@@ -82,8 +80,8 @@ graphql(`
     }
   }
 
-  mutation UpdateTeachers($ids: [String!]!, $changes: TeacherSetInput!) {
-    updateTeacher(where: { uid: { _in: $ids } }, _set: $changes) {
+  mutation UpdateTeachers($uids: [String!]!, $changes: TeacherSetInput!) {
+    updateTeacher(where: { uid: { _in: $uids } }, _set: $changes) {
       affectedRows
       returning {
         uid
@@ -91,8 +89,8 @@ graphql(`
     }
   }
 
-  mutation DeleteTeachers($ids: [String!]!) {
-    deleteTeacher(where: { uid: { _in: $ids } }) {
+  mutation DeleteTeachers($uids: [String!]!) {
+    deleteTeacher(where: { uid: { _in: $uids } }) {
       affectedRows
       returning {
         uid
@@ -211,7 +209,16 @@ const getLabel = (row: Row): string => row.uid;
 function getObject(row: Row): DataObj;
 function getObject(row: Row, fields: string[]): Partial<DataObj>;
 function getObject(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
-  // TODO: validation with notifications
+  if (!row.uid) {
+    throw new Error(t("admin.teachers.teachers.form.error.uid_empty"));
+  }
+  if (!row.firstname) {
+    throw new Error(t("admin.teachers.teachers.form.error.firstname_empty"));
+  }
+  if (!row.lastname) {
+    throw new Error(t("admin.teachers.teachers.form.error.lastname_empty"));
+  }
+
   const dataObj: DataObj = {
     uid: row.uid,
     firstname: row.firstname,
@@ -238,17 +245,20 @@ const insertData = (objects: DataObj[], overwrite?: boolean) =>
   insertTeachers
     .executeMutation({
       objects,
-      updateColumns: overwrite
-        ? [
-            TeacherUpdateColumn.Firstname,
-            TeacherUpdateColumn.Lastname,
-            TeacherUpdateColumn.Alias,
-            TeacherUpdateColumn.Position,
-            TeacherUpdateColumn.BaseServiceHours,
-            TeacherUpdateColumn.Visible,
-            TeacherUpdateColumn.Active,
-          ]
-        : [],
+      onConflict: {
+        constraint: TeacherConstraint.TeacherPkey,
+        updateColumns: overwrite
+          ? [
+              TeacherUpdateColumn.Firstname,
+              TeacherUpdateColumn.Lastname,
+              TeacherUpdateColumn.Alias,
+              TeacherUpdateColumn.Position,
+              TeacherUpdateColumn.BaseServiceHours,
+              TeacherUpdateColumn.Visible,
+              TeacherUpdateColumn.Active,
+            ]
+          : [],
+      },
     })
     .then((result) => ({
       data: result.data
@@ -259,20 +269,34 @@ const insertData = (objects: DataObj[], overwrite?: boolean) =>
       error: result.error ?? null,
     }));
 
-const updateData = (ids: Id[], changes: Partial<DataObj>) =>
+const updateData = (uids: Id[], changes: Partial<DataObj>) =>
   updateTeachers
     .executeMutation({
-      ids,
+      uids,
       changes,
     })
-    .then((result) => result.data?.updateTeacher?.affectedRows ?? null);
+    .then((result) => ({
+      data: result.data
+        ? {
+            returning: result.data.updateTeacher?.returning ?? null,
+          }
+        : null,
+      error: result.error ?? null,
+    }));
 
-const deleteData = (ids: Id[]) =>
+const deleteData = (uids: Id[]) =>
   deleteTeachers
     .executeMutation({
-      ids,
+      uids,
     })
-    .then((result) => result.data?.deleteTeacher?.affectedRows ?? null);
+    .then((result) => ({
+      data: result.data
+        ? {
+            returning: result.data.deleteTeacher?.returning ?? null,
+          }
+        : null,
+      error: result.error ?? null,
+    }));
 </script>
 
 <template>

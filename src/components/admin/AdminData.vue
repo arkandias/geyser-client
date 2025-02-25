@@ -131,8 +131,6 @@ const insertDataHandle = async () => {
       caption: errorMessage(error),
     });
     return;
-  } finally {
-    isFormOpen.value = false;
   }
 
   const { data, error } = await insertData([dataObj], false);
@@ -157,20 +155,22 @@ const insertDataHandle = async () => {
       message: t("admin.data.error.no_return_data"),
     });
   }
+
+  isFormOpen.value = false;
 };
 
 const updateDataHandle = async () => {
   let dataObj: Partial<DataObj>;
   try {
-    dataObj = getObject(formValues.value, selectedFields.value);
+    dataObj = multipleSelection.value
+      ? getObject(formValues.value, selectedFields.value)
+      : getObject(formValues.value);
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.invalid_form"),
       caption: errorMessage(error),
     });
     return;
-  } finally {
-    isFormOpen.value = false;
   }
 
   const { data, error } = await updateData(
@@ -198,6 +198,8 @@ const updateDataHandle = async () => {
       message: t("admin.data.error.no_return_data"),
     });
   }
+
+  isFormOpen.value = false;
 };
 
 const deleteDataHandle = async () => {
@@ -242,6 +244,8 @@ const deleteDataHandle = async () => {
       message: t("admin.data.error.no_return_data"),
     });
   }
+
+  selectedRows.value = [];
 };
 
 // ===== Search & Filtering =====
@@ -359,7 +363,7 @@ const importRowsHandle = async () => {
 
     if (data?.returning) {
       notify(NotifyType.SUCCESS, {
-        message: t(messagePrefix + ".success.import", {
+        message: t(messagePrefix + ".data.success.import", {
           count: data.returning.length,
           [idKey]: data.returning[0]?.[idKey],
         }),
@@ -369,6 +373,8 @@ const importRowsHandle = async () => {
         message: t("admin.data.error.no_return_data"),
       });
     }
+
+    isImportDialogOpen.value = false;
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.import_failed"),
@@ -376,7 +382,6 @@ const importRowsHandle = async () => {
     });
   } finally {
     importing.value = false;
-    isImportDialogOpen.value = false;
   }
 };
 
@@ -389,7 +394,7 @@ const exportDataHandle = () => {
     );
     notify(NotifyType.SUCCESS, {
       message: t(
-        messagePrefix + ".success.export",
+        messagePrefix + ".data.success.export",
         selectedRows.value.length || rows.length,
       ),
     });
