@@ -2627,6 +2627,11 @@ unique or primary key constraints on table "course_type"
 """
 enum CourseTypeConstraint {
   """
+  unique or primary key constraint on columns "label"
+  """
+  course_type_label_key
+
+  """
   unique or primary key constraint on columns "value"
   """
   course_type_pkey
@@ -4141,6 +4146,11 @@ input PositionBoolExp {
 unique or primary key constraints on table "position"
 """
 enum PositionConstraint {
+  """
+  unique or primary key constraint on columns "label"
+  """
+  position_label_key
+
   """
   unique or primary key constraint on columns "value"
   """
@@ -8768,6 +8778,11 @@ input ServiceModificationTypeBoolExp {
 unique or primary key constraints on table "service_modification_type"
 """
 enum ServiceModificationTypeConstraint {
+  """
+  unique or primary key constraint on columns "label"
+  """
+  service_modificatio_type_label_key
+
   """
   unique or primary key constraint on columns "value"
   """

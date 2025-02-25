@@ -56,17 +56,31 @@ export default {
     },
     general: {
       title: "Paramètres généraux",
-      phase: { label: "Phase en cours" },
+      phase: {
+        label: "Phase en cours",
+      },
       years: {
         label: "Années",
+        year: "Année",
         visible: "Visible",
         current: "En cours",
-        new_year_button: "Nouvelle année",
-        insert_year_button: "Créer",
+        button: {
+          create: "Créer",
+          update: "Mettre à jour",
+        },
         confirm: {
           delete: `Êtes-vous sûr de vouloir supprimer l'année {year} ?
 Si des cours ou des services sont associés à cette année, vous ne pourrez pas \
 la supprimer.`,
+        },
+        error: {
+          empty_value: "Entrez une valeur pour l'année",
+          empty_visibility: "Sélectionnez la visibilité de l'année",
+        },
+        success: {
+          insert: "Année {value} créée",
+          update: "Année {value} mise à jour",
+          delete: "Année {value} supprimée",
         },
       },
       custom_texts: {

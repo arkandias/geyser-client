@@ -220,8 +220,7 @@ function getObject(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
     alias: row.alias || null,
     position:
       positions.value.find((p) => p.label === row.position)?.value ?? null,
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    baseServiceHours: row.baseServiceHours || null,
+    baseServiceHours: row.baseServiceHours,
     visible: row.visible,
     active: row.active,
   };

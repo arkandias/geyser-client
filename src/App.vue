@@ -65,6 +65,7 @@ const currentPhaseQueryResult = useQuery({
   query: GetCurrentPhaseDocument,
   variables: {},
   pause: () => !isActive.value,
+  context: { additionalTypenames: ["Phase"] },
 });
 watch(
   currentPhaseQueryResult.data,
@@ -87,6 +88,7 @@ const yearsQueryResult = useQuery({
   query: GetYearsDocument,
   variables: {},
   pause: () => !isActive.value,
+  context: { additionalTypenames: ["Year"] },
 });
 watch(
   yearsQueryResult.data,
@@ -105,6 +107,7 @@ watch(
 const customTextsQueryResult = useQuery({
   query: GetCustomTextsDocument,
   variables: {},
+  context: { additionalTypenames: ["UiText"] },
 });
 watch(
   customTextsQueryResult.data,
