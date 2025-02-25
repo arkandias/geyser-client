@@ -35,10 +35,10 @@ watch(
 </script>
 
 <template>
-  <MenuBase :label="t('header.year.label')" icon="sym_s_history">
+  <MenuBase :label="t('header.courses.year')" icon="sym_s_history">
     <QList>
       <QItem class="flex-center">
-        <QItemLabel header>{{ t("header.year.label") }}</QItemLabel>
+        <QItemLabel header>{{ t("header.courses.year") }}</QItemLabel>
       </QItem>
       <QSeparator />
       <QItem class="item-options">

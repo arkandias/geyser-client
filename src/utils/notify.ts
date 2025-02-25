@@ -25,7 +25,7 @@ const defaultOptions = (type: NotifyType): QNotifyCreateOptions => {
       return {
         ...commonProps,
         color: "negative",
-        caption: t("notify.error.caption.default"),
+        caption: t("notification.error.caption.default"),
       };
     case NotifyType.SUCCESS:
       return {

@@ -3,10 +3,12 @@
   lang="ts"
   generic="
     T extends RowDescriptor,
+    IdKey extends string,
     Id extends Scalar,
     DataObj extends SimpleObject<Scalar>
   "
 >
+import type { CombinedError } from "@urql/vue";
 import { type Ref, computed, ref, toValue, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
@@ -25,6 +27,12 @@ import { getField, normalizeForSearch } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 type Row = ParsedRow<T>;
+type OperationResult = {
+  data: {
+    returning: Record<IdKey, Id>[] | null;
+  } | null;
+  error: CombinedError | null;
+};
 
 const formValues = defineModel<Row>("formValues", { required: true });
 const selectedFields = defineModel<string[]>("selectedFields", {
@@ -36,6 +44,7 @@ const {
   rowDescriptor,
   rows,
   columns,
+  idKey,
   getId,
   getLabel,
   getObject,
@@ -49,16 +58,20 @@ const {
   rowDescriptor: T;
   rows: Row[];
   columns: ColumnNonAbbreviable<Row>[];
+  idKey: IdKey;
   getId: (row: Row) => Id;
-  getLabel: (row: Row) => Record<string, string>;
+  getLabel: (row: Row) => string;
   getObject: GetObjectFn<Row, DataObj>;
   initForm: (selectedRows?: Row[]) => Row;
   insertData: (
     objects: DataObj[],
     overwrite?: boolean,
-  ) => Promise<number | null>;
-  updateData: (ids: Id[], changes: Partial<DataObj>) => Promise<number | null>;
-  deleteData: (ids: Id[]) => Promise<number | null>;
+  ) => Promise<OperationResult>;
+  updateData: (
+    ids: Id[],
+    changes: Partial<DataObj>,
+  ) => Promise<OperationResult>;
+  deleteData: (ids: Id[]) => Promise<OperationResult>;
 }>();
 defineSlots<{ form(slotProps: { multipleSelection: boolean }): unknown }>();
 
@@ -81,7 +94,7 @@ const formTitle = computed(() => {
       return t(
         messagePrefix + ".form.title.single",
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        getLabel(selectedRows.value[0]!),
+        { label: getLabel(selectedRows.value[0]!) },
       );
     default:
       return t(messagePrefix + ".form.title.multiple", {
@@ -105,29 +118,45 @@ watch(isFormOpen, (value) => {
 });
 
 // ===== Data Operations =====
+const errorMessage = (error: unknown) =>
+  error instanceof Error ? error.message : t("notification.error.unknown");
+
 const insertDataHandle = async () => {
   let dataObj: DataObj;
   try {
     dataObj = getObject(formValues.value);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
     notify(NotifyType.ERROR, {
-      message: t(messagePrefix + ".data.form.invalid"),
-      caption: message,
+      message: t("admin.data.error.invalid_form"),
+      caption: errorMessage(error),
+    });
+    return;
+  } finally {
+    isFormOpen.value = false;
+  }
+
+  const { data, error } = await insertData([dataObj], false);
+  if (error) {
+    console.error(error);
+    notify(NotifyType.ERROR, {
+      message: t("admin.data.error.insert_failed"),
+      caption: errorMessage(error),
     });
     return;
   }
-  const affectedRows = await insertData([dataObj], false);
-  if (affectedRows === null) {
-    notify(NotifyType.ERROR, {
-      message: t(messagePrefix + ".form.invalid.insert"),
+
+  if (data?.returning) {
+    notify(NotifyType.SUCCESS, {
+      message: t(messagePrefix + ".data.success.insert", {
+        count: data.returning.length,
+        [idKey]: data.returning[0]?.[idKey],
+      }),
     });
-    return;
+  } else {
+    notify(NotifyType.DEFAULT, {
+      message: t("admin.data.error.no_return_data"),
+    });
   }
-  notify(NotifyType.SUCCESS, {
-    message: t(messagePrefix + ".insert.valid", affectedRows),
-  });
-  isFormOpen.value = false;
 };
 
 const updateDataHandle = async () => {
@@ -135,27 +164,40 @@ const updateDataHandle = async () => {
   try {
     dataObj = getObject(formValues.value, selectedFields.value);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
     notify(NotifyType.ERROR, {
-      message: t(messagePrefix + ".form.invalid.message"),
-      caption: message,
+      message: t("admin.data.error.invalid_form"),
+      caption: errorMessage(error),
     });
     return;
+  } finally {
+    isFormOpen.value = false;
   }
-  const affectedRows = await updateData(
+
+  const { data, error } = await updateData(
     selectedRows.value.map((row) => getId(row)),
     dataObj,
   );
-  if (affectedRows === null) {
+  if (error) {
+    console.error(error);
     notify(NotifyType.ERROR, {
-      message: t(messagePrefix + ".form.invalid.update"),
+      message: t("admin.data.error.update_failed"),
+      caption: errorMessage(error),
     });
     return;
   }
-  notify(NotifyType.SUCCESS, {
-    message: t(messagePrefix + ".update.valid", affectedRows),
-  });
-  isFormOpen.value = false;
+
+  if (data?.returning) {
+    notify(NotifyType.SUCCESS, {
+      message: t(messagePrefix + ".data.success.update", {
+        count: data.returning.length,
+        [idKey]: data.returning[0]?.[idKey],
+      }),
+    });
+  } else {
+    notify(NotifyType.DEFAULT, {
+      message: t("admin.data.error.no_return_data"),
+    });
+  }
 };
 
 const deleteDataHandle = async () => {
@@ -163,35 +205,43 @@ const deleteDataHandle = async () => {
     !selection.value ||
     !confirm(
       selectedRows.value.length === 1
-        ? t(messagePrefix + ".delete.confirm.single", {
-            // TODO: should be label
+        ? t(messagePrefix + ".data.confirm.delete.single", {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            id: getId(selectedRows.value[0]!),
+            label: getLabel(selectedRows.value[0]!),
           })
         : t(
-            messagePrefix + ".delete.confirm.multiple",
+            messagePrefix + ".data.confirm.delete.multiple",
             selectedRows.value.length,
           ),
     )
   ) {
     return;
   }
-  const affectedRows = await deleteData(
+
+  const { data, error } = await deleteData(
     selectedRows.value.map((row) => getId(row)),
   );
-  if (affectedRows === null) {
+  if (error) {
+    console.error(error);
     notify(NotifyType.ERROR, {
-      message: t(messagePrefix + ".data.delete.invalid"),
+      message: t("admin.data.error.delete_failed"),
+      caption: errorMessage(error),
     });
     return;
   }
-  notify(NotifyType.SUCCESS, {
-    message: t(messagePrefix + ".delete.valid", {
-      count: affectedRows,
-    }),
-  });
-  selectedRows.value = [];
-  isFormOpen.value = false;
+
+  if (data?.returning) {
+    notify(NotifyType.SUCCESS, {
+      message: t(messagePrefix + ".data.success.delete", {
+        count: data.returning.length,
+        [idKey]: data.returning[0]?.[idKey],
+      }),
+    });
+  } else {
+    notify(NotifyType.DEFAULT, {
+      message: t("admin.data.error.no_return_data"),
+    });
+  }
 };
 
 // ===== Search & Filtering =====
@@ -228,23 +278,23 @@ watch(isImportDialogOpen, (value) => {
   }
 });
 
-const columnsImport: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
+const importColumns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
   {
     name: "key",
-    label: t("admin.import.table.columns.key"),
+    label: t("admin.data.import.table.columns.key"),
     align: "left",
     field: ([key]) => key,
   },
   {
     name: "type",
-    label: t("admin.import.table.columns.type"),
+    label: t("admin.data.import.table.columns.type"),
     align: "left",
     field: ([_, descriptor]) => descriptor.type,
-    format: (val: string) => t("admin.import.table.values.type_" + val),
+    format: (val: string) => t("admin.data.import.table.type." + val),
   },
   {
     name: "non_nullable",
-    label: t("admin.import.table.columns.non_nullable"),
+    label: t("admin.data.import.table.columns.non_nullable"),
     align: "center",
     field: ([_, descriptor]) => !!descriptor.nullable,
     format: (val: boolean) => (!val ? "✓" : "✗"),
@@ -252,37 +302,77 @@ const columnsImport: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
 ];
 
 const importRowsHandle = async () => {
+  if (!selectedFile.value) {
+    notify(NotifyType.ERROR, {
+      message: t("admin.data.error.import_failed"),
+      caption: t("admin.data.error.empty_file"),
+    });
+    return;
+  }
+
+  importing.value = true;
+
   try {
-    if (!selectedFile.value) {
-      throw new Error(t(messagePrefix + ".import.invalid.caption.file_empty"));
+    let text: string;
+    try {
+      text = await selectedFile.value.text();
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        t("admin.data.error.unreadable_file", { reason: errorMessage(error) }),
+      );
     }
-    importing.value = true;
-    const text = await selectedFile.value.text();
-    const importedRows = importCSV(text, rowDescriptor);
+
+    let importedRows: ParsedRow<T>[];
+    try {
+      importedRows = importCSV(text, rowDescriptor);
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        t("admin.data.error.parsing_error", { reason: errorMessage(error) }),
+      );
+    }
+
     const objects = importedRows.map((row, index) => {
       try {
         return getObject(row);
       } catch (error) {
+        console.error(t("admin.data.error.invalid_row", { index }), error);
         throw new Error(
-          t("admin.import.invalid.caption", {
+          t("admin.data.error.invalid_row", {
             index,
-            error_message:
-              error instanceof Error ? error.message : "Unknown error",
+            reason: errorMessage(error),
           }),
         );
       }
     });
-    const affectedRows = await insertData(objects, overwrite.value);
-    if (affectedRows === null) {
-      throw new Error();
+
+    const { data, error } = await insertData(objects, overwrite.value);
+    if (error) {
+      console.error(error);
+      throw new Error(
+        t("admin.data.error.insert_error", {
+          reason: error.message,
+        }),
+      );
     }
-    notify(NotifyType.SUCCESS, {
-      message: t(messagePrefix + ".import.valid", affectedRows),
-    });
+
+    if (data?.returning) {
+      notify(NotifyType.SUCCESS, {
+        message: t(messagePrefix + ".success.import", {
+          count: data.returning.length,
+          [idKey]: data.returning[0]?.[idKey],
+        }),
+      });
+    } else {
+      notify(NotifyType.DEFAULT, {
+        message: t("admin.data.error.no_return_data"),
+      });
+    }
   } catch (error) {
     notify(NotifyType.ERROR, {
-      message: t(messagePrefix + ".import.invalid.message"),
-      caption: error instanceof Error ? error.message : "Unknown error",
+      message: t("admin.data.error.import_failed"),
+      caption: errorMessage(error),
     });
   } finally {
     importing.value = false;
@@ -299,14 +389,14 @@ const exportDataHandle = () => {
     );
     notify(NotifyType.SUCCESS, {
       message: t(
-        messagePrefix + ".export.valid",
+        messagePrefix + ".success.export",
         selectedRows.value.length || rows.length,
       ),
     });
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t(messagePrefix + ".export.invalid.message"),
-      caption: error instanceof Error ? error.message : "Unknown error",
+      caption: errorMessage(error),
     });
   }
 };
@@ -316,7 +406,7 @@ const exportDataHandle = () => {
   <div class="q-mb-md">
     <div class="q-gutter-md row">
       <QBtn
-        :label="t('admin.buttons.create')"
+        :label="t('admin.data.button.create')"
         icon="sym_s_add"
         color="primary"
         no-caps
@@ -324,7 +414,7 @@ const exportDataHandle = () => {
         @click="openForm([])"
       />
       <QBtn
-        :label="t('admin.buttons.edit')"
+        :label="t('admin.data.button.edit')"
         icon="sym_s_edit"
         color="primary"
         :disable="!selection"
@@ -333,7 +423,7 @@ const exportDataHandle = () => {
         @click="openForm()"
       />
       <QBtn
-        :label="t('admin.buttons.delete')"
+        :label="t('admin.data.button.delete')"
         icon="sym_s_delete"
         color="primary"
         :disable="!selection"
@@ -343,7 +433,7 @@ const exportDataHandle = () => {
       />
       <QSpace />
       <QBtn
-        :label="t('admin.buttons.import')"
+        :label="t('admin.data.button.import')"
         icon="sym_s_upload"
         color="primary"
         no-caps
@@ -351,7 +441,7 @@ const exportDataHandle = () => {
         @click="isImportDialogOpen = true"
       />
       <QBtn
-        :label="t('admin.buttons.export')"
+        :label="t('admin.data.button.export')"
         icon="sym_s_download"
         color="primary"
         no-caps
@@ -410,7 +500,9 @@ const exportDataHandle = () => {
           :form="`${name}-form`"
           type="submit"
           :label="
-            selection ? t('admin.buttons.update') : t('admin.buttons.create')
+            selection
+              ? t('admin.data.button.update')
+              : t('admin.data.button.create')
           "
           color="primary"
           flat
@@ -423,15 +515,13 @@ const exportDataHandle = () => {
   <QDialog v-model="isImportDialogOpen" square>
     <QCard flat square class="admin-form">
       <QCardSection class="text-h6">
-        {{ t("admin.import.title") }}
+        {{ t("admin.data.import.title") }}
       </QCardSection>
-      <QCardSection>
-        <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-        <div v-html="t('admin.import.csv_instructions')" />
-      </QCardSection>
+      <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
+      <QCardSection v-html="t('admin.data.import.csv_instructions')" />
       <QCardSection>
         <QTable
-          :columns="columnsImport"
+          :columns="importColumns"
           :rows="Object.entries(rowDescriptor)"
           :pagination="{ rowsPerPage: 0 }"
           hide-bottom
@@ -445,7 +535,7 @@ const exportDataHandle = () => {
           <QFile
             v-model="selectedFile"
             accept=".csv"
-            :label="t('admin.import.file_picker_label')"
+            :label="t('admin.data.import.file_picker_label')"
             clearable
             clear-icon="sym_s_close"
             outlined
@@ -457,7 +547,7 @@ const exportDataHandle = () => {
           </QFile>
           <QCheckbox
             v-model="overwrite"
-            :label="t('admin.import.overwrite')"
+            :label="t('admin.data.import.overwrite')"
             dense
           />
         </div>
@@ -465,7 +555,7 @@ const exportDataHandle = () => {
       <QCardActions align="right">
         <QBtn
           :loading="importing"
-          :label="t('admin.buttons.import')"
+          :label="t('admin.data.button.import')"
           color="primary"
           flat
           square

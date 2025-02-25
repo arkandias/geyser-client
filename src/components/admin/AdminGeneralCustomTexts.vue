@@ -27,7 +27,7 @@ const updateCustomText = useMutation(UpdateCustomTextDocument);
 const customTextOptions = computed(() =>
   customTexts.value.map((text) => ({
     ...text,
-    label: t(`custom_text_label.${text.key}`),
+    label: t(`admin.general.custom_texts.${text.key}`),
   })),
 );
 const customTextsEdit = reactive(

@@ -47,7 +47,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="router.replace({ name: 'home' })"
       >
-        <QTooltip>{{ t("header.tooltip.home") }}</QTooltip>
+        <QTooltip>{{ t("header.home.label") }}</QTooltip>
       </QBtn>
       <QSeparator vertical inset color="white" />
       <QBtn
@@ -57,7 +57,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="router.replace({ name: 'teacher' })"
       >
-        <QTooltip>{{ t("header.tooltip.teacher") }}</QTooltip>
+        <QTooltip>{{ t("header.teacher.label") }}</QTooltip>
       </QBtn>
       <QSeparator vertical inset color="white" />
       <QBtn
@@ -67,7 +67,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="router.replace({ name: 'courses' })"
       >
-        <QTooltip>{{ t("header.tooltip.courses") }}</QTooltip>
+        <QTooltip>{{ t("header.courses.label") }}</QTooltip>
       </QBtn>
       <Transition>
         <div
@@ -85,11 +85,11 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="router.replace({ name: 'admin' })"
       >
-        <QTooltip>{{ t("header.tooltip.admin") }}</QTooltip>
+        <QTooltip>{{ t("header.admin.label") }}</QTooltip>
       </QBtn>
       <QSeparator v-if="perm.toAdmin" vertical inset color="white" />
       <QBtn icon="sym_s_refresh" :disable flat square @click="refreshData()">
-        <QTooltip>{{ t("header.tooltip.refresh_data") }}</QTooltip>
+        <QTooltip>{{ t("header.refresh_data.label") }}</QTooltip>
       </QBtn>
       <QBtn
         icon="sym_s_dark_mode"
@@ -98,7 +98,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="toggleDarkMode()"
       >
-        <QTooltip>{{ t("header.tooltip.dark_mode") }}</QTooltip>
+        <QTooltip>{{ t("header.dark_mode.label") }}</QTooltip>
       </QBtn>
       <MenuLang />
       <MenuInfo />

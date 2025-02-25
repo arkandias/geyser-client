@@ -118,25 +118,25 @@ watch(
 
 const accessDeniedMessage = computed(() => {
   if (!claims) {
-    return t("auth.not_authenticated");
+    return t("home.auth.not_authenticated");
   }
   if (fetching.value) {
-    return t("auth.loading_profile");
+    return t("home.auth.loading_profile");
   }
   if (!loaded.value) {
-    return t("auth.profile_load_failed");
+    return t("home.auth.profile_load_failed");
   }
   if (!isActive.value) {
-    return t("auth.profile_inactive");
+    return t("home.auth.profile_inactive");
   }
   if (currentPhaseQueryResult.fetching.value) {
-    return t("auth.loading_phase");
+    return t("home.auth.loading_phase");
   }
   if (
     activeRole.value !== ROLES.ADMIN &&
     currentPhase.value === PHASES.SHUTDOWN
   ) {
-    return t("auth.system_closed");
+    return t("home.auth.system_closed");
   }
   return "";
 });

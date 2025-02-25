@@ -31,8 +31,8 @@ const importing = ref(false);
 const importHandle = async () => {
   if (!selectedFile.value) {
     notify(NotifyType.ERROR, {
-      message: t("admin.import.invalid.message"),
-      caption: t("admin.import.invalid.caption.file_empty"),
+      message: t("admin.data.import.invalid.message"),
+      caption: t("admin.data.import.invalid.caption.file_empty"),
     });
   }
 
@@ -42,8 +42,8 @@ const importHandle = async () => {
     const text = await selectedFile.value?.text();
     if (text === undefined) {
       notify(NotifyType.ERROR, {
-        message: t("admin.import.invalid.message"),
-        caption: t("admin.import.invalid.caption.unreadable_file"),
+        message: t("admin.data.import.invalid.message"),
+        caption: t("admin.data.import.invalid.caption.unreadable_file"),
       });
       return;
     }
@@ -51,9 +51,11 @@ const importHandle = async () => {
   } catch (error) {
     console.error("Import error:", error);
     notify(NotifyType.ERROR, {
-      message: t("admin.import.invalid.message"),
+      message: t("admin.data.import.invalid.message"),
       caption:
-        error instanceof Error ? error.message : t("notify.error.unknown"),
+        error instanceof Error
+          ? error.message
+          : t("notification.error.unknown"),
     });
   } finally {
     importing.value = false;
@@ -65,20 +67,20 @@ const importHandle = async () => {
 const columns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
   {
     name: "key",
-    label: t("admin.import.table.columns.key"),
+    label: t("admin.data.import.table.columns.key"),
     align: "left",
     field: ([key]) => key,
   },
   {
     name: "type",
-    label: t("admin.import.table.columns.type"),
+    label: t("admin.data.import.table.columns.type"),
     align: "left",
     field: ([_, descriptor]) => descriptor.type,
-    format: (val: string) => t("admin.import.table.values.type_" + val),
+    format: (val: string) => t("admin.data.import.table.values.type_" + val),
   },
   {
     name: "non_nullable",
-    label: t("admin.import.table.columns.non_nullable"),
+    label: t("admin.data.import.table.columns.non_nullable"),
     align: "center",
     field: ([_, descriptor]) => !!descriptor.nullable,
     format: (val: boolean) => (!val ? "✓" : "✗"),
@@ -90,11 +92,11 @@ const columns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
   <QDialog v-model="model" square>
     <QCard flat square class="admin-form">
       <QCardSection class="text-h6">
-        {{ t("admin.import.title") }}
+        {{ t("admin.data.import.title") }}
       </QCardSection>
       <QCardSection>
         <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-        <div v-html="t('admin.import.csv_instructions')" />
+        <div v-html="t('admin.data.import.csv_instructions')" />
       </QCardSection>
       <QCardSection>
         <QTable
@@ -112,7 +114,7 @@ const columns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
           <QFile
             v-model="selectedFile"
             accept=".csv"
-            :label="t('admin.import.file_picker_label')"
+            :label="t('admin.data.import.file_picker_label')"
             clearable
             clear-icon="sym_s_close"
             outlined
@@ -124,7 +126,7 @@ const columns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
           </QFile>
           <QCheckbox
             v-model="overwrite"
-            :label="t('admin.import.overwrite')"
+            :label="t('admin.data.import.overwrite')"
             dense
           />
         </div>
@@ -132,7 +134,7 @@ const columns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
       <QCardActions align="right">
         <QBtn
           :loading="importing"
-          :label="t('admin.button.import')"
+          :label="t('admin.data.button.import')"
           color="primary"
           flat
           square

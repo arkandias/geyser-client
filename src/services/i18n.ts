@@ -1,6 +1,6 @@
 import { type I18nOptions, createI18n } from "vue-i18n";
 
-import frFR from "@/locales/fr-FR.ts";
+import frFR from "@/locales/fr";
 
 const numberFormat = {
   decimal: {

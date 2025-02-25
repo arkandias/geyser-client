@@ -211,6 +211,7 @@ const getLabel = (row: Row): string => row.uid;
 function getObject(row: Row): DataObj;
 function getObject(row: Row, fields: string[]): Partial<DataObj>;
 function getObject(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
+  // TODO: validation with notifications
   const dataObj: DataObj = {
     uid: row.uid,
     firstname: row.firstname,
@@ -250,7 +251,14 @@ const insertData = (objects: DataObj[], overwrite?: boolean) =>
           ]
         : [],
     })
-    .then((result) => result.data?.insertTeacher?.affectedRows ?? null);
+    .then((result) => ({
+      data: result.data
+        ? {
+            returning: result.data.insertTeacher?.returning ?? null,
+          }
+        : null,
+      error: result.error ?? null,
+    }));
 
 const updateData = (ids: Id[], changes: Partial<DataObj>) =>
   updateTeachers
@@ -277,6 +285,7 @@ const deleteData = (ids: Id[]) =>
     :row-descriptor
     :columns
     :rows="teachers"
+    id-key="uid"
     :get-id
     :get-label
     :get-object

@@ -101,7 +101,7 @@ export const useDownloadAssignments = () => {
     } catch (error) {
       console.error("Export error:", error);
       notify(NotifyType.ERROR, {
-        message: t("admin.export.invalid.message"), // TODO: replace with download
+        message: t("admin.data.export.invalid.message"), // TODO: replace with download
         caption: error instanceof Error ? error.message : "Unknown error",
       });
     }

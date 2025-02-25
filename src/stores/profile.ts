@@ -82,12 +82,12 @@ const fetchProfile = async (uid: string) => {
     }
 
     notify(NotifyType.SUCCESS, {
-      message: t("profile.status.found"),
+      message: t("notification.profile.found"),
     });
     loaded.value = true;
   } else {
     notify(NotifyType.ERROR, {
-      message: t("profile.status.not_found"),
+      message: t("notification.profile.not_found"),
     });
     loaded.value = false;
   }

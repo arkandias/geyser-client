@@ -275,7 +275,7 @@ const onExportClick = () => {
       "admin.teachers.positions.export.valid.message",
       positions.value.length,
     ),
-    error: t("admin.export.invalid.message"),
+    error: t("admin.data.export.invalid.message"),
   });
 };
 </script>
@@ -334,7 +334,7 @@ const onExportClick = () => {
       <QCardActions align="right">
         <QBtn
           v-if="positionUpdate"
-          :label="t('admin.buttons.delete')"
+          :label="t('admin.data.button.delete')"
           color="negative"
           flat
           square
@@ -345,8 +345,8 @@ const onExportClick = () => {
           type="submit"
           :label="
             positionInsert
-              ? t('admin.buttons.create')
-              : t('admin.buttons.update')
+              ? t('admin.data.button.create')
+              : t('admin.data.button.update')
           "
           color="positive"
           flat
