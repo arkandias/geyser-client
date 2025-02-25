@@ -6,6 +6,7 @@ import { PHASES } from "@/config/types/phases.ts";
 import { graphql } from "@/gql";
 import { SetCurrentPhaseDocument } from "@/gql/graphql.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
+import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
   mutation SetCurrentPhase($value: String!) {
@@ -38,9 +39,17 @@ const phaseOptions = [
 ];
 
 const setCurrentPhaseHandle = async (phase: string): Promise<void> => {
-  await setCurrentPhase.executeMutation({
+  const { error } = await setCurrentPhase.executeMutation({
     value: phase,
   });
+  if (error) {
+    console.error(error);
+    throw new Error(
+      t("admin.data.error.insert_error", {
+        reason: error.message,
+      }),
+    );
+  }
 };
 </script>
 

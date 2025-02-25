@@ -64,7 +64,8 @@ const updateCustomTextHandle = (key: string, value: string) =>
         </QCardSection>
         <QCardActions dense>
           <QBtn
-            :label="t('admin.general.custom_texts.edit_button')"
+            :label="t('admin.general.custom_texts.button.edit')"
+            icon="sym_s_edit"
             color="primary"
             no-caps
             outline

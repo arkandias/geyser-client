@@ -85,7 +85,9 @@ la supprimer.`,
       },
       custom_texts: {
         label: "Personnalisation de l'interface",
-        edit_button: "Éditer",
+        button: {
+          edit: "Éditer",
+        },
         legal_notice: "Mentions légales",
         home_title: "Titre de la page d'accueil",
         home_subtitle_requests:
