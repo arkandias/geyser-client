@@ -5,12 +5,12 @@ import { computed, ref } from "vue";
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  AdminPositionFragmentDoc,
-  DeletePositionsDocument,
-  InsertPositionsDocument,
-  PositionConstraint,
-  PositionUpdateColumn,
-  UpdatePositionsDocument,
+  AdminServiceModificationTypeFragmentDoc,
+  DeleteServiceModificationTypesDocument,
+  InsertServiceModificationTypesDocument,
+  ServiceModificationTypeConstraint,
+  ServiceModificationTypeUpdateColumn,
+  UpdateServiceModificationTypesDocument,
 } from "@/gql/graphql.ts";
 import type { ParsedRow } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
@@ -18,8 +18,10 @@ import { toSlug } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
-const { positionFragments } = defineProps<{
-  positionFragments: FragmentType<typeof AdminPositionFragmentDoc>[];
+const { serviceModificationTypeFragments } = defineProps<{
+  serviceModificationTypeFragments: FragmentType<
+    typeof AdminServiceModificationTypeFragmentDoc
+  >[];
 }>();
 
 const { t } = useCustomI18n();
@@ -27,7 +29,6 @@ const { t } = useCustomI18n();
 const rowDescriptor = {
   label: { type: "string" },
   description: { type: "string", nullable: true },
-  baseServiceHours: { type: "number", nullable: true },
 } as const;
 
 type Row = ParsedRow<typeof rowDescriptor>;
@@ -36,38 +37,42 @@ type DataObj = {
   value: string;
   label: string;
   description: string | null;
-  baseServiceHours: number | null;
 };
 
 graphql(`
-  fragment AdminPosition on Position {
+  fragment AdminServiceModificationType on ServiceModificationType {
     value
     label
     description
-    baseServiceHours
   }
 
-  mutation InsertPositions(
-    $objects: [PositionInsertInput!]!
-    $onConflict: PositionOnConflict
+  mutation InsertServiceModificationTypes(
+    $objects: [ServiceModificationTypeInsertInput!]!
+    $onConflict: ServiceModificationTypeOnConflict
   ) {
-    insertPosition(objects: $objects, onConflict: $onConflict) {
+    insertServiceModificationType(objects: $objects, onConflict: $onConflict) {
       returning {
         value
       }
     }
   }
 
-  mutation UpdatePositions($values: [String!]!, $changes: PositionSetInput!) {
-    updatePosition(where: { value: { _in: $values } }, _set: $changes) {
+  mutation UpdateServiceModificationTypes(
+    $values: [String!]!
+    $changes: ServiceModificationTypeSetInput!
+  ) {
+    updateServiceModificationType(
+      where: { value: { _in: $values } }
+      _set: $changes
+    ) {
       returning {
         value
       }
     }
   }
 
-  mutation DeletePositions($values: [String!]!) {
-    deletePosition(where: { value: { _in: $values } }) {
+  mutation DeleteServiceModificationTypes($values: [String!]!) {
+    deleteServiceModificationType(where: { value: { _in: $values } }) {
       returning {
         value
       }
@@ -75,26 +80,32 @@ graphql(`
   }
 `);
 
-const insertPositions = useMutation(InsertPositionsDocument);
-const updatePositions = useMutation(UpdatePositionsDocument);
-const deletePositions = useMutation(DeletePositionsDocument);
+const insertServiceModificationTypes = useMutation(
+  InsertServiceModificationTypesDocument,
+);
+const updateServiceModificationTypes = useMutation(
+  UpdateServiceModificationTypesDocument,
+);
+const deleteServiceModificationTypes = useMutation(
+  DeleteServiceModificationTypesDocument,
+);
 
-const positions = computed(() =>
-  positionFragments.map((f) => useFragment(AdminPositionFragmentDoc, f)),
+const serviceModificationTypes = computed(() =>
+  serviceModificationTypeFragments.map((f) =>
+    useFragment(AdminServiceModificationTypeFragmentDoc, f),
+  ),
 );
 
 const rows = computed<Row[]>(() =>
-  positions.value.map((p) => ({
+  serviceModificationTypes.value.map((p) => ({
     label: p.label,
     description: p.description ?? null,
-    baseServiceHours: p.baseServiceHours ?? null,
   })),
 );
 
 const initForm = (selectedRows?: Row[]): Row => ({
   label: selectedRows?.[0]?.label ?? "",
   description: selectedRows?.[0]?.description ?? "",
-  baseServiceHours: selectedRows?.[0]?.baseServiceHours ?? null,
 });
 const formValues = ref(initForm());
 const selectedFields = ref<string[]>([]);
@@ -102,7 +113,7 @@ const selectedFields = ref<string[]>([]);
 const columns: ColumnNonAbbreviable<Row>[] = [
   {
     name: "label",
-    label: t("admin.teachers.positions.table.label"),
+    label: t("admin.teachers.service_modification_types.table.label"),
     align: "left",
     field: "label",
     sortable: true,
@@ -110,37 +121,29 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   },
   {
     name: "description",
-    label: t("admin.teachers.positions.table.description"),
+    label: t("admin.teachers.service_modification_types.table.description"),
     align: "left",
     field: (row) => row.description ?? null,
     sortable: true,
     searchable: true,
   },
-  {
-    name: "base_service_hours",
-    label: t("admin.teachers.positions.table.base_service_hours"),
-    field: (row) => row.baseServiceHours ?? null,
-    format: (val: number | null) =>
-      val === null ? "" : String(val) + " " + t("unit.weighted_hours"),
-    sortable: true,
-    searchable: false,
-  },
 ];
 
 const getId = (row: Row): string => {
   const value =
-    positions.value.find((p) => p.label === row.label)?.value ?? null;
+    serviceModificationTypes.value.find((p) => p.label === row.label)?.value ??
+    null;
   if (value !== null) {
     return value;
   }
 
   let slug = toSlug(row.label) || "default_slug"; // do not allow empty value
-  if (positions.value.find((p) => p.value === slug)) {
+  if (serviceModificationTypes.value.find((p) => p.value === slug)) {
     return slug;
   }
 
   let counter = 1;
-  while (positions.value.find((p) => p.value === slug)) {
+  while (serviceModificationTypes.value.find((p) => p.value === slug)) {
     counter += 1;
     slug = slug + counter.toString();
   }
@@ -152,14 +155,15 @@ function getObject(row: Row): DataObj;
 function getObject(row: Row, fields: string[]): Partial<DataObj>;
 function getObject(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
   if (!row.label) {
-    throw new Error(t("admin.teachers.positions.form.error.uid_empty"));
+    throw new Error(
+      t("admin.teachers.service_modification_types.form.error.uid_empty"),
+    );
   }
 
   const dataObj: DataObj = {
     value: getId(row),
     label: row.label,
     description: row.description,
-    baseServiceHours: row.baseServiceHours,
   };
 
   if (fields) {
@@ -172,17 +176,17 @@ function getObject(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
 }
 
 const insertData = (objects: DataObj[], overwrite?: boolean) =>
-  insertPositions
+  insertServiceModificationTypes
     .executeMutation({
       objects,
       onConflict: {
-        constraint: PositionConstraint.PositionPkey,
+        constraint:
+          ServiceModificationTypeConstraint.ServiceModificationTypePkey,
         updateColumns: overwrite
           ? [
-              PositionUpdateColumn.Value,
-              PositionUpdateColumn.Label,
-              PositionUpdateColumn.Description,
-              PositionUpdateColumn.BaseServiceHours,
+              ServiceModificationTypeUpdateColumn.Value,
+              ServiceModificationTypeUpdateColumn.Label,
+              ServiceModificationTypeUpdateColumn.Description,
             ]
           : [],
       },
@@ -190,14 +194,15 @@ const insertData = (objects: DataObj[], overwrite?: boolean) =>
     .then((result) => ({
       data: result.data
         ? {
-            returning: result.data.insertPosition?.returning ?? null,
+            returning:
+              result.data.insertServiceModificationType?.returning ?? null,
           }
         : null,
       error: result.error ?? null,
     }));
 
 const updateData = (values: Id[], changes: Partial<DataObj>) =>
-  updatePositions
+  updateServiceModificationTypes
     .executeMutation({
       values,
       changes,
@@ -205,21 +210,23 @@ const updateData = (values: Id[], changes: Partial<DataObj>) =>
     .then((result) => ({
       data: result.data
         ? {
-            returning: result.data.updatePosition?.returning ?? null,
+            returning:
+              result.data.updateServiceModificationType?.returning ?? null,
           }
         : null,
       error: result.error ?? null,
     }));
 
 const deleteData = (values: Id[]) =>
-  deletePositions
+  deleteServiceModificationTypes
     .executeMutation({
       values,
     })
     .then((result) => ({
       data: result.data
         ? {
-            returning: result.data.deletePosition?.returning ?? null,
+            returning:
+              result.data.deleteServiceModificationType?.returning ?? null,
           }
         : null,
       error: result.error ?? null,
@@ -230,8 +237,8 @@ const deleteData = (values: Id[]) =>
   <AdminData
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
-    name="positions"
-    message-prefix="admin.teachers.positions"
+    name="service_modification_types"
+    message-prefix="admin.teachers.service_modification_types"
     :row-descriptor
     :columns
     :rows
@@ -247,25 +254,10 @@ const deleteData = (values: Id[]) =>
       <QInput
         v-if="!multipleSelection"
         v-model="formValues.label"
-        :label="t('admin.teachers.positions.form.label')"
+        :label="t('admin.teachers.service_modification_types.form.label')"
         square
         dense
       />
-      <QInput
-        v-model.number="formValues.baseServiceHours"
-        type="number"
-        :label="t('admin.teachers.positions.form.base_service_hours')"
-        :disable="
-          multipleSelection && !selectedFields.includes('baseServiceHours')
-        "
-        square
-        dense
-        style="width: 150px"
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="baseServiceHours" />
-        </template>
-      </QInput>
     </template>
   </AdminData>
 </template>

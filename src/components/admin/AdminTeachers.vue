@@ -8,6 +8,7 @@ import { GetAdminTeachersDocument } from "@/gql/graphql.ts";
 
 import AdminSection from "@/components/admin/AdminSection.vue";
 import AdminTeachersPositions from "@/components/admin/AdminTeachersPositions.vue";
+import AdminTeachersServiceModificationTypes from "@/components/admin/AdminTeachersServiceModificationTypes.vue";
 import AdminTeachersTeachers from "@/components/admin/AdminTeachersTeachers.vue";
 
 graphql(`
@@ -18,6 +19,11 @@ graphql(`
     positions: position(orderBy: [{ label: ASC }]) {
       ...AdminTeacherPosition
       ...AdminPosition
+    }
+    serviceModificationTypes: serviceModificationType(
+      orderBy: [{ label: ASC }]
+    ) {
+      ...AdminServiceModificationType
     }
   }
 `);
@@ -33,6 +39,9 @@ const teachers = computed(
 );
 const positions = computed(
   () => adminTeachersQueryResult.data.value?.positions ?? [],
+);
+const serviceModificationTypes = computed(
+  () => adminTeachersQueryResult.data.value?.serviceModificationTypes ?? [],
 );
 
 const { t } = useCustomI18n();
@@ -79,8 +88,11 @@ const { t } = useCustomI18n();
 
     <AdminSection
       icon="sym_s_format_list_bulleted"
-      :label="t('admin.services.service_modification_types')"
+      :label="t('admin.teachers.service_modification_types.label')"
     >
+      <AdminTeachersServiceModificationTypes
+        :service-modification-type-fragments="serviceModificationTypes"
+      />
     </AdminSection>
   </QList>
 </template>

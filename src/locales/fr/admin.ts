@@ -218,12 +218,52 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
           },
         },
       },
+      service_modification_types: {
+        label: "Types de modification de service",
+        table: {
+          label: "Label",
+          description: "Description",
+        },
+        form: {
+          title: {
+            none: "Nouveau type de modification",
+            single: "{label}",
+            multiple: "{count} types de modification sélectionnés",
+          },
+          label: "Label",
+          description: "Description",
+          error: {
+            label_empty: "Entrez un label",
+          },
+        },
+        data: {
+          success: {
+            insert:
+              "Aucun type de modification créé | Type de modification créé | {count} types de modification créés",
+            update:
+              "Aucun type de modification mis à jour | Type de modification mise à jour | {count} types de modification mis à jour",
+            delete:
+              "Aucun type de modification supprimé | Type de modification supprimé | {count} Types de modification supprimés",
+            import:
+              "0 type de modification importé | 1 type de modification importé | {count} types de modification importés",
+            export:
+              "0 type de modification exporté | 1 type de modification exporté | {count} types de modification exportés",
+          },
+          confirm: {
+            delete: {
+              single: `Êtes-vous sûr de vouloir supprimer le type de modification « {label} » ?
+Si ce type est attribué à des modifications, vous ne pourrez pas le supprimer.`,
+              multiple: `Êtes-vous sûr de vouloir supprimer les {count} types de modification sélectionnés ?
+Si ces types sont attribués à des modifications, vous ne pourrez pas les supprimer.`,
+            },
+          },
+        },
+      },
     },
     services: {
       title: "Services",
       services: "Services",
       service_modifications: "Modifications de service",
-      service_modification_types: "Types de modification de service",
     },
     courses: {
       title: "Enseignements",
