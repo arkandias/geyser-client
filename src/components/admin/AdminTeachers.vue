@@ -41,6 +41,15 @@ const { t } = useCustomI18n();
 <template>
   <QList bordered>
     <AdminSection
+      icon="sym_s_work"
+      :label="t('admin.teachers.positions.label')"
+    >
+      <AdminTeachersPositions :position-fragments="positions" />
+    </AdminSection>
+
+    <QSeparator />
+
+    <AdminSection
       icon="sym_s_groups"
       :label="t('admin.teachers.teachers.label')"
     >
@@ -53,10 +62,25 @@ const { t } = useCustomI18n();
     <QSeparator />
 
     <AdminSection
-      icon="sym_s_work"
-      :label="t('admin.teachers.positions.label')"
+      icon="sym_s_assignment_ind"
+      :label="t('admin.services.services')"
     >
-      <AdminTeachersPositions :position-fragments="positions" />
+    </AdminSection>
+
+    <QSeparator />
+
+    <AdminSection
+      icon="sym_s_assignment_returned"
+      :label="t('admin.services.service_modifications')"
+    >
+    </AdminSection>
+
+    <QSeparator />
+
+    <AdminSection
+      icon="sym_s_format_list_bulleted"
+      :label="t('admin.services.service_modification_types')"
+    >
     </AdminSection>
   </QList>
 </template>

@@ -8,11 +8,6 @@ const { t } = useCustomI18n();
 
 <template>
   <QList bordered>
-    <AdminSection icon="sym_s_menu_book" :label="t('admin.courses.courses')">
-    </AdminSection>
-
-    <QSeparator />
-
     <AdminSection icon="sym_s_school" :label="t('admin.courses.degrees')">
     </AdminSection>
 
@@ -27,6 +22,11 @@ const { t } = useCustomI18n();
     <QSeparator />
 
     <AdminSection icon="sym_s_alt_route" :label="t('admin.courses.tracks')">
+    </AdminSection>
+
+    <QSeparator />
+
+    <AdminSection icon="sym_s_menu_book" :label="t('admin.courses.courses')">
     </AdminSection>
 
     <QSeparator />

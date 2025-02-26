@@ -81,7 +81,7 @@ Si des cours ou des services sont associés à cette année, vous ne pourrez pas
 la supprimer.`,
         },
         error: {
-          set_current: "Échec de la mise à jour de l'année en cours: {reason}",
+          set_current: "Échec de la mise à jour de l'année en cours",
           empty_value: "Entrez une valeur pour l'année",
           empty_visibility: "Sélectionnez la visibilité de l'année",
         },

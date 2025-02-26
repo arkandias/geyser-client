@@ -68,11 +68,10 @@ const setCurrentYearHandle = async (year: number): Promise<void> => {
   });
   if (error) {
     console.error(error);
-    throw new Error(
-      t("admin.general.years.error.set_current", {
-        reason: error.message,
-      }),
-    );
+    notify(NotifyType.ERROR, {
+      message: t("admin.general.years.error.set_current"),
+      caption: error.message,
+    });
   }
   notify(NotifyType.SUCCESS, {
     message: t("admin.general.years.success.set_current"),
@@ -92,13 +91,16 @@ const insertYearHandle = async () => {
     value: formValue.value,
     visible: false,
   });
+
+  isFormOpen.value = false;
+
   if (error) {
     console.error(error);
-    throw new Error(
-      t("admin.data.error.insert_error", {
-        reason: error.message,
-      }),
-    );
+    notify(NotifyType.ERROR, {
+      message: t("admin.data.error.insert_failed"),
+      caption: error.message,
+    });
+    return;
   }
 
   if (data?.insertYearOne?.value !== undefined) {
@@ -112,8 +114,6 @@ const insertYearHandle = async () => {
       message: t("admin.data.error.no_return_data"),
     });
   }
-
-  isFormOpen.value = false;
 };
 
 const updateYearHandle = async (
@@ -127,13 +127,16 @@ const updateYearHandle = async (
     value,
     changes,
   });
+
+  isFormOpen.value = false;
+
   if (error) {
     console.error(error);
-    throw new Error(
-      t("admin.data.error.update_error", {
-        reason: error.message,
-      }),
-    );
+    notify(NotifyType.ERROR, {
+      message: t("admin.data.error.update_failed"),
+      caption: error.message,
+    });
+    return;
   }
 
   if (data?.updateYearByPk?.value !== undefined) {
@@ -163,8 +166,6 @@ const updateYearValueHandle = async () => {
   }
 
   await updateYearHandle(selectedYear.value, { value: formValue.value });
-
-  isFormOpen.value = false;
 };
 
 const updateYearVisibilityHandle = async (value: number, visible: boolean) => {
@@ -183,11 +184,11 @@ const deleteYearHandle = async (value: number) => {
   const { data, error } = await deleteYear.executeMutation({ value });
   if (error) {
     console.error(error);
-    throw new Error(
-      t("admin.data.error.delete_error", {
-        reason: error.message,
-      }),
-    );
+    notify(NotifyType.ERROR, {
+      message: t("admin.data.error.delete_failed"),
+      caption: error.message,
+    });
+    return;
   }
 
   if (data?.deleteYearByPk?.value !== undefined) {
