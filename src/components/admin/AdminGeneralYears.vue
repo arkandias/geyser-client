@@ -232,6 +232,9 @@ const onEditClick = (year: number) => {
   <QList bordered separator dense>
     <QItem v-for="year in years" :key="year.value" dense>
       <QItemSection avatar>
+        <QBtn icon="sym_s_settings" color="primary" flat square dense />
+      </QItemSection>
+      <QItemSection avatar>
         <QBtn
           icon="sym_s_edit"
           color="primary"

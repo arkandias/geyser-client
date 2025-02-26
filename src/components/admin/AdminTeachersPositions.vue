@@ -75,13 +75,12 @@ graphql(`
   }
 `);
 
-const insertPositions = useMutation(InsertPositionsDocument);
-const updatePositions = useMutation(UpdatePositionsDocument);
-const deletePositions = useMutation(DeletePositionsDocument);
-
 const positions = computed(() =>
   positionFragments.map((f) => useFragment(AdminPositionFragmentDoc, f)),
 );
+const insertPositions = useMutation(InsertPositionsDocument);
+const updatePositions = useMutation(UpdatePositionsDocument);
+const deletePositions = useMutation(DeletePositionsDocument);
 
 const rows = computed<Row[]>(() =>
   positions.value.map((p) => ({
@@ -127,7 +126,7 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   },
 ];
 
-const getId = (row: Row): string => {
+const getId = (row: Row): Id => {
   const value =
     positions.value.find((p) => p.label === row.label)?.value ?? null;
   if (value !== null) {

@@ -96,17 +96,15 @@ graphql(`
   }
 `);
 
-const insertTeachers = useMutation(InsertTeachersDocument);
-const updateTeachers = useMutation(UpdateTeachersDocument);
-const deleteTeachers = useMutation(DeleteTeachersDocument);
-
 const teachers = computed(() =>
   teacherFragments.map((f) => useFragment(AdminTeacherFragmentDoc, f)),
 );
-
 const positions = computed(() =>
   positionFragments.map((f) => useFragment(AdminTeacherPositionFragmentDoc, f)),
 );
+const insertTeachers = useMutation(InsertTeachersDocument);
+const updateTeachers = useMutation(UpdateTeachersDocument);
+const deleteTeachers = useMutation(DeleteTeachersDocument);
 
 const rows = computed<Row[]>(() =>
   teachers.value.map((t) => ({

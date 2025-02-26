@@ -13,6 +13,7 @@ export const CUSTOM_TEXT_KEYS = [
   `home_message_${PHASES.ASSIGNMENTS}`,
   `home_message_${PHASES.RESULTS}`,
   `home_message_${PHASES.SHUTDOWN}`,
+  "contact",
   "legal_notice",
 ] as const;
 

@@ -80,6 +80,11 @@ graphql(`
   }
 `);
 
+const serviceModificationTypes = computed(() =>
+  serviceModificationTypeFragments.map((f) =>
+    useFragment(AdminServiceModificationTypeFragmentDoc, f),
+  ),
+);
 const insertServiceModificationTypes = useMutation(
   InsertServiceModificationTypesDocument,
 );
@@ -88,12 +93,6 @@ const updateServiceModificationTypes = useMutation(
 );
 const deleteServiceModificationTypes = useMutation(
   DeleteServiceModificationTypesDocument,
-);
-
-const serviceModificationTypes = computed(() =>
-  serviceModificationTypeFragments.map((f) =>
-    useFragment(AdminServiceModificationTypeFragmentDoc, f),
-  ),
 );
 
 const rows = computed<Row[]>(() =>
@@ -129,7 +128,7 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   },
 ];
 
-const getId = (row: Row): string => {
+const getId = (row: Row): Id => {
   const value =
     serviceModificationTypes.value.find((p) => p.label === row.label)?.value ??
     null;

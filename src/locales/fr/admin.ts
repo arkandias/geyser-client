@@ -97,6 +97,7 @@ la supprimer.`,
         button: {
           edit: "Éditer",
         },
+        contact: "Contact",
         legal_notice: "Mentions légales",
         home_title: "Titre de la page d'accueil",
         home_subtitle_requests:
@@ -141,7 +142,7 @@ la supprimer.`,
           lastname: "Nom",
           alias: "Alias",
           position: "Fonction",
-          base_service_hours: "Service de base (htd)",
+          base_service_hours: "Service de base (@:unit.weighted_hours)",
           visible: "Visible",
           active: "Actif",
           error: {
@@ -190,7 +191,7 @@ vous ne pourrez pas les supprimer.`,
           },
           label: "Label",
           description: "Description",
-          base_service_hours: "Service de base (htd)",
+          base_service_hours: "Service de base (@:unit.weighted_hours)",
           error: {
             label_empty: "Entrez un label",
           },
@@ -214,6 +215,51 @@ vous ne pourrez pas les supprimer.`,
 Si cette fonction est attribuée à des intervenants, vous ne pourrez pas la supprimer.`,
               multiple: `Êtes-vous sûr de vouloir supprimer les {count} fonctions sélectionnées ?
 Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les supprimer.`,
+            },
+          },
+        },
+      },
+      services: {
+        label: "Services",
+        table: {
+          year: "Année",
+          uid: "Intervenant",
+          hours: "Heures",
+        },
+        form: {
+          title: {
+            none: "Nouveau service",
+            single: "{label}",
+            multiple: "{count} services sélectionnés",
+          },
+          year: "Année",
+          uid: "Intervenant",
+          hours: "Heures (@:unit.weighted_hours)",
+          error: {
+            year_empty: "Entrez une année",
+            uid_empty: "Entrez un intervenant",
+            hours_empty: "Entrez un nombre d'heures",
+          },
+        },
+        data: {
+          success: {
+            insert:
+              "Aucun service créé | Service créé | {count} services créée",
+            update:
+              "Aucun service mis à jour | Service mis à jour | {count} services mis à jour",
+            delete:
+              "Aucun service supprimé | Service supprimé | {count} services supprimés",
+            import:
+              "0 service importé | 1 service importé | {count} services importés",
+            export:
+              "0 service exporté | 1 service exporté | {count} services exportés",
+          },
+          confirm: {
+            delete: {
+              single: `Êtes-vous sûr de vouloir supprimer le service « {label} » ?
+Si des modifications ou des demandes sont rattachés à ce service, vous ne pourrez pas le supprimer.`,
+              multiple: `Êtes-vous sûr de vouloir supprimer les {count} services sélectionnés ?
+Si des modifications ou des demandes sont rattachés à ces services, vous ne pourrez pas les supprimer.`,
             },
           },
         },
@@ -259,11 +305,6 @@ Si ces types sont attribués à des modifications, vous ne pourrez pas les suppr
           },
         },
       },
-    },
-    services: {
-      title: "Services",
-      services: "Services",
-      service_modifications: "Modifications de service",
     },
     courses: {
       title: "Enseignements",
