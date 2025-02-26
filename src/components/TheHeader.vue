@@ -92,8 +92,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         <QTooltip>{{ t("header.refresh_data.label") }}</QTooltip>
       </QBtn>
       <QBtn
-        icon="sym_s_dark_mode"
-        :color="buttonColor(isDarkModeActive)"
+        :icon="isDarkModeActive ? 'sym_s_dark_mode' : 'sym_s_light_mode'"
         flat
         square
         @click="toggleDarkMode()"

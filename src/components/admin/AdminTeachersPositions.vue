@@ -1,28 +1,43 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed, reactive, ref } from "vue";
+import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  type AdminPositionFragment,
   AdminPositionFragmentDoc,
-  DeletePositionDocument,
+  DeletePositionsDocument,
   InsertPositionsDocument,
+  PositionConstraint,
   PositionUpdateColumn,
-  UpdatePositionDocument,
+  UpdatePositionsDocument,
 } from "@/gql/graphql.ts";
+import type { ParsedRow } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
-import { downloadCSV } from "@/utils/csv-export.ts";
-import type { ParsedRow } from "@/utils/csv-import.ts";
-import { getValueFromLabel } from "@/utils/misc.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
+import { toSlug } from "@/utils/misc.ts";
 
-import AdminImport from "@/components/admin/AdminImport.vue";
+import AdminData from "@/components/admin/AdminData.vue";
 
 const { positionFragments } = defineProps<{
   positionFragments: FragmentType<typeof AdminPositionFragmentDoc>[];
 }>();
+
+const { t } = useCustomI18n();
+
+const rowDescriptor = {
+  label: { type: "string" },
+  description: { type: "string", nullable: true },
+  baseServiceHours: { type: "number", nullable: true },
+} as const;
+
+type Row = ParsedRow<typeof rowDescriptor>;
+type Id = string;
+type DataObj = {
+  value: string;
+  label: string;
+  description: string | null;
+  baseServiceHours: number | null;
+};
 
 graphql(`
   fragment AdminPosition on Position {
@@ -34,179 +49,64 @@ graphql(`
 
   mutation InsertPositions(
     $objects: [PositionInsertInput!]!
-    $updateColumns: [PositionUpdateColumn!]!
+    $onConflict: PositionOnConflict
   ) {
-    insertPosition(
-      objects: $objects
-      onConflict: { constraint: position_pkey, updateColumns: $updateColumns }
-    ) {
-      affectedRows
+    insertPosition(objects: $objects, onConflict: $onConflict) {
       returning {
         value
       }
     }
   }
 
-  mutation UpdatePosition(
-    $value: String!
-    $label: String!
-    $description: String
-    $baseServiceHours: Float
-  ) {
-    updatePositionByPk(
-      pkColumns: { value: $value }
-      _set: {
-        label: $label
-        description: $description
-        baseServiceHours: $baseServiceHours
+  mutation UpdatePositions($values: [String!]!, $changes: PositionSetInput!) {
+    updatePosition(where: { value: { _in: $values } }, _set: $changes) {
+      returning {
+        value
       }
-    ) {
-      value
     }
   }
 
-  mutation DeletePosition($value: String!) {
-    deletePositionByPk(value: $value) {
-      value
+  mutation DeletePositions($values: [String!]!) {
+    deletePosition(where: { value: { _in: $values } }) {
+      returning {
+        value
+      }
     }
   }
 `);
 
-const { t } = useCustomI18n();
-
 const insertPositions = useMutation(InsertPositionsDocument);
-const updatePosition = useMutation(UpdatePositionDocument);
-const deletePosition = useMutation(DeletePositionDocument);
-
-const positionInsert = ref(false);
-const positionUpdate = ref(false);
-const positionEdit = computed({
-  get: () => positionInsert.value || positionUpdate.value,
-  set: (newValue) => {
-    if (!newValue) {
-      positionInsert.value = false;
-      positionUpdate.value = false;
-    }
-  },
-});
-
-const position = reactive<{
-  value: string;
-  label: string;
-  description: string | null;
-  baseServiceHours: number | null;
-}>({
-  value: "",
-  label: "",
-  description: null,
-  baseServiceHours: null,
-});
-
-const validatePosition = () => {
-  if (!position.label) {
-    notify(NotifyType.ERROR, {
-      message: t("admin.teachers.positions.form.invalid.message"),
-      caption: t("admin.teachers.positions.form.invalid.caption.label_empty"),
-    });
-    return false;
-  }
-  return true;
-};
-
-const insertPositionHandle = async () => {
-  if (!validatePosition()) {
-    return;
-  }
-  const { data, error } = await insertPosition.executeMutation({
-    ...position,
-    // add value field based on label field
-    value: getValueFromLabel(position.label, positions.value, true),
-  });
-  positionEdit.value = false;
-  if (data?.insertPositionOne?.value && !error) {
-    notify(NotifyType.SUCCESS, {
-      message: t("admin.teachers.positions.form.valid.insert", {
-        position: String(data.insertPositionOne.value),
-      }),
-    });
-  }
-};
-
-const updatePositionHandle = async () => {
-  if (!validatePosition()) {
-    return;
-  }
-  const { data, error } = await updatePosition.executeMutation({
-    value: position.value,
-    label: position.label,
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    description: position.description || null,
-    baseServiceHours: position.baseServiceHours,
-  });
-  positionEdit.value = false;
-  if (data?.updatePositionByPk?.value && !error) {
-    notify(NotifyType.SUCCESS, {
-      message: t("admin.teachers.positions.form.valid.update", {
-        position: String(data.updatePositionByPk.value),
-      }),
-    });
-  }
-};
-
-const deletePositionHandle = async () => {
-  if (
-    confirm(
-      t("admin.teachers.positions.form.confirm.delete", {
-        position: position.label,
-      }),
-    )
-  ) {
-    const { data, error } = await deletePosition.executeMutation({
-      value: position.value,
-    });
-    if (data?.deletePositionByPk?.value && !error) {
-      notify(NotifyType.SUCCESS, {
-        message: t("admin.teachers.positions.form.valid.delete", {
-          position: String(data.deletePositionByPk.value),
-        }),
-      });
-    }
-    positionEdit.value = false;
-  }
-};
-
-const onCreateClick = () => {
-  Object.assign(position, {
-    value: "",
-    label: "",
-    description: null,
-    baseServiceHours: null,
-  });
-  positionInsert.value = true;
-};
-
-const onRowClick = (_: Event, row: AdminPositionFragment) => {
-  Object.assign(position, {
-    value: row.value,
-    label: row.label,
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    description: row.description || null,
-    baseServiceHours: row.baseServiceHours,
-  });
-  positionUpdate.value = true;
-};
+const updatePosition = useMutation(UpdatePositionsDocument);
+const deletePosition = useMutation(DeletePositionsDocument);
 
 const positions = computed(() =>
   positionFragments.map((f) => useFragment(AdminPositionFragmentDoc, f)),
 );
 
-const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
+const rows = computed<Row[]>(() =>
+  positions.value.map((p) => ({
+    label: p.label,
+    description: p.description ?? null,
+    baseServiceHours: p.baseServiceHours ?? null,
+  })),
+);
+
+const initForm = (selectedRows?: Row[]): Row => ({
+  label: selectedRows?.[0]?.label ?? "",
+  description: selectedRows?.[0]?.description ?? "",
+  baseServiceHours: selectedRows?.[0]?.baseServiceHours ?? null,
+});
+const formValues = ref(initForm());
+const selectedFields = ref<string[]>([]);
+
+const columns: ColumnNonAbbreviable<Row>[] = [
   {
     name: "label",
     label: t("admin.teachers.positions.table.label"),
     align: "left",
     field: "label",
     sortable: true,
+    searchable: true,
   },
   {
     name: "description",
@@ -227,136 +127,147 @@ const columns: ColumnNonAbbreviable<AdminPositionFragment>[] = [
   },
 ];
 
-// Import
-const positionsImport = ref(false);
-const onImportClick = () => {
-  positionsImport.value = true;
-};
-
-const descriptorObj = {
-  label: { type: "string" },
-  description: { type: "string", nullable: true },
-  baseServiceHours: { type: "number", nullable: true },
-} as const;
-
-const insertObjects = async (
-  objects: ParsedRow<typeof descriptorObj>[],
-  overwrite: boolean,
-) => {
-  const { data, error } = await insertPositions.executeMutation({
-    // add value field based on label field
-    objects: objects.map((obj) => ({
-      ...obj,
-      value: getValueFromLabel(obj.label, positions.value, true),
-    })),
-    updateColumns: overwrite
-      ? [
-          PositionUpdateColumn.Label,
-          PositionUpdateColumn.Description,
-          PositionUpdateColumn.BaseServiceHours,
-        ]
-      : [],
-  });
-  if (data?.insertPosition?.returning && !error) {
-    notify(NotifyType.SUCCESS, {
-      message: t(
-        "admin.teachers.positions.import.valid.message",
-        data.insertPosition.returning.length,
-      ),
-    });
+const getId = (row: Row): string => {
+  const value =
+    positions.value.find((p) => p.label === row.label)?.value ?? null;
+  if (value !== null) {
+    return value;
   }
-};
 
-// Export
-const headers = ["label", "description", "baseServiceHours"];
-const onExportClick = () => {
-  downloadCSV(`positions_${Date.now().toString()}`, positions.value, headers, {
-    success: t(
-      "admin.teachers.positions.export.valid.message",
-      positions.value.length,
-    ),
-    error: t("admin.data.export.invalid.message"),
-  });
+  let slug = toSlug(row.label) || "default_slug"; // do not allow empty value
+  if (positions.value.find((p) => p.value === slug)) {
+    return slug;
+  }
+
+  let counter = 1;
+  while (positions.value.find((p) => p.value === slug)) {
+    counter += 1;
+    slug = slug + counter.toString();
+  }
+  return slug;
 };
+const getLabel = (row: Row): string => row.label;
+
+function getObject(row: Row): DataObj;
+function getObject(row: Row, fields: string[]): Partial<DataObj>;
+function getObject(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
+  if (!row.label) {
+    throw new Error(t("admin.teachers.positions.form.error.uid_empty"));
+  }
+
+  const dataObj: DataObj = {
+    value: getId(row),
+    label: row.label,
+    description: row.description,
+    baseServiceHours: row.baseServiceHours,
+  };
+
+  if (fields) {
+    return Object.fromEntries(
+      Object.entries(dataObj).filter(([key]) => fields.includes(key)),
+    ) as Partial<DataObj>;
+  }
+
+  return dataObj;
+}
+
+const insertData = (objects: DataObj[], overwrite?: boolean) =>
+  insertPositions
+    .executeMutation({
+      objects,
+      onConflict: {
+        constraint: PositionConstraint.PositionPkey,
+        updateColumns: overwrite
+          ? [
+              PositionUpdateColumn.Value,
+              PositionUpdateColumn.Label,
+              PositionUpdateColumn.Description,
+              PositionUpdateColumn.BaseServiceHours,
+            ]
+          : [],
+      },
+    })
+    .then((result) => ({
+      data: result.data
+        ? {
+            returning: result.data.insertPosition?.returning ?? null,
+          }
+        : null,
+      error: result.error ?? null,
+    }));
+
+const updateData = (values: Id[], changes: Partial<DataObj>) =>
+  updatePosition
+    .executeMutation({
+      values,
+      changes,
+    })
+    .then((result) => ({
+      data: result.data
+        ? {
+            returning: result.data.updatePosition?.returning ?? null,
+          }
+        : null,
+      error: result.error ?? null,
+    }));
+
+const deleteData = (values: Id[]) =>
+  deletePosition
+    .executeMutation({
+      values,
+    })
+    .then((result) => ({
+      data: result.data
+        ? {
+            returning: result.data.deletePosition?.returning ?? null,
+          }
+        : null,
+      error: result.error ?? null,
+    }));
 </script>
 
 <template>
-  <AdminButtons :on-create-click :on-import-click :on-export-click />
-
-  <QTable
-    :rows="positions"
+  <AdminData
+    v-model:form-values="formValues"
+    v-model:selected-fields="selectedFields"
+    name="positions"
+    message-prefix="admin.teachers.positions"
+    :row-descriptor
     :columns
-    :pagination="{ rowsPerPage: 100 }"
-    :rows-per-page-options="[0, 10, 20, 50, 100]"
-    row-key="value"
-    bordered
-    flat
-    dense
-    @row-click="onRowClick"
+    :rows
+    :get-id
+    :get-label
+    :get-object
+    :init-form
+    :insert-data
+    :update-data
+    :delete-data
   >
-  </QTable>
-
-  <QDialog v-model="positionEdit" square>
-    <QCard flat square class="admin-form">
-      <QCardSection v-if="positionUpdate" class="text-h6">
-        {{ position.label }}
-      </QCardSection>
-      <QCardSection>
-        <QForm
-          id="position-form"
-          class="q-gutter-md"
-          @submit="
-            positionInsert ? insertPositionHandle() : updatePositionHandle()
-          "
-        >
-          <QInput
-            v-model="position.label"
-            :label="t('admin.teachers.positions.form.label')"
-            square
-            dense
-          />
-          <QInput
-            v-model="position.description"
-            :label="t('admin.teachers.positions.form.description')"
-            square
-            dense
-          />
-          <QInput
-            v-model.number="position.baseServiceHours"
-            type="number"
-            :label="t('admin.teachers.positions.form.base_service_hours')"
-            square
-            dense
-          />
-        </QForm>
-      </QCardSection>
-      <QSeparator />
-      <QCardActions align="right">
-        <QBtn
-          v-if="positionUpdate"
-          :label="t('admin.data.button.delete')"
-          color="negative"
-          flat
-          square
-          @click="deletePositionHandle"
-        />
-        <QBtn
-          form="position-form"
-          type="submit"
-          :label="
-            positionInsert
-              ? t('admin.data.button.create')
-              : t('admin.data.button.update')
-          "
-          color="positive"
-          flat
-          square
-        />
-      </QCardActions>
-    </QCard>
-  </QDialog>
-
-  <AdminImport v-model="positionsImport" :descriptor-obj :insert-objects />
+    <template #form="{ multipleSelection }">
+      <QInput
+        v-if="!multipleSelection"
+        v-model="formValues.label"
+        :label="t('admin.teachers.positions.form.label')"
+        square
+        dense
+      />
+      <QInput
+        v-model.number="formValues.baseServiceHours"
+        type="number"
+        :label="t('admin.teachers.positions.form.base_service_hours')"
+        :disable="
+          multipleSelection && !selectedFields.includes('baseServiceHours')
+        "
+        square
+        dense
+        style="width: 150px"
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="baseServiceHours" />
+        </template>
+      </QInput>
+    </template>
+  </AdminData>
 </template>
 
 <style scoped lang="scss"></style>

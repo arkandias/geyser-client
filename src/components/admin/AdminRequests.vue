@@ -8,9 +8,14 @@ const { t } = useCustomI18n();
 
 <template>
   <QList bordered>
+    <AdminSection icon="sym_s_assignment" :label="t('admin.requests.requests')">
+    </AdminSection>
+
+    <QSeparator />
+
     <AdminSection
-      icon="sym_s_priority"
-      :label="t('admin.priorities.priorities')"
+      icon="sym_s_assignment_late"
+      :label="t('admin.requests.priorities')"
     >
     </AdminSection>
   </QList>

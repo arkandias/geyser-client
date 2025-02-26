@@ -21,6 +21,14 @@ const { t } = useCustomI18n();
       :label="t('admin.services.service_modifications')"
     >
     </AdminSection>
+
+    <QSeparator />
+
+    <AdminSection
+      icon="sym_s_format_list_bulleted"
+      :label="t('admin.services.service_modification_types')"
+    >
+    </AdminSection>
   </QList>
 </template>
 

@@ -9,6 +9,7 @@ export default {
         import: "Importer",
         export: "Exporter",
       },
+      search: "Rechercher...",
       error: {
         invalid_form: "Formulaire non valide",
         insert_failed: "Échec de la création",
@@ -58,6 +59,12 @@ export default {
       title: "Paramètres généraux",
       phase: {
         label: "Phase en cours",
+        error: {
+          set_current: "Échec de la mise à jour de la phase en cours: {reason}",
+        },
+        success: {
+          set_current: "Phase en cours mise à jour",
+        },
       },
       years: {
         label: "Années",
@@ -74,10 +81,12 @@ Si des cours ou des services sont associés à cette année, vous ne pourrez pas
 la supprimer.`,
         },
         error: {
+          set_current: "Échec de la mise à jour de l'année en cours: {reason}",
           empty_value: "Entrez une valeur pour l'année",
           empty_visibility: "Sélectionnez la visibilité de l'année",
         },
         success: {
+          set_current: "Année en cours mise à jour",
           insert: "Année {value} créée",
           update: "Année {value} mise à jour",
           delete: "Année {value} supprimée",
@@ -112,7 +121,6 @@ la supprimer.`,
       teachers: {
         label: "Intervenants",
         table: {
-          search: "Recherche",
           uid: "Email",
           firstname: "Prénom",
           lastname: "Nom",
@@ -138,7 +146,6 @@ la supprimer.`,
           active: "Actif",
           error: {
             uid_empty: "Entrez un email",
-            uid_conflict: "Un intervenant avec cet email existe déjà",
             firstname_empty: "Entrez un prénom",
             lastname_empty: "Entrez un nom",
           },
@@ -146,15 +153,15 @@ la supprimer.`,
         data: {
           success: {
             insert:
-              "0 intervenant créé | Intervenant {uid} créé | {count} intervenants créés",
+              "Aucun intervenant créé | Intervenant créé | {count} intervenants créés",
             update:
-              "0 intervenant mis à jour | Intervenant mis à jour | {count} intervenants mis à jour",
+              "Aucun intervenant mis à jour | Intervenant mis à jour | {count} intervenants mis à jour",
             delete:
-              "0 intervenant supprimé | Intervenant supprimé | {count} intervenants supprimés",
+              "Aucun intervenant supprimé | Intervenant supprimé | {count} intervenants supprimés",
             import:
-              "0 intervenant importé | Intervenant {uid} importé | {count} intervenants importés",
+              "0 intervenant importé | 1 intervenant importé | {count} intervenants importés",
             export:
-              "0 intervenant exporté | Intervenant {uid} exporté | {count} intervenants exportés",
+              "0 intervenant exporté | 1 intervenant exporté | {count} intervenants exportés",
           },
           confirm: {
             delete: {
@@ -170,49 +177,44 @@ vous ne pourrez pas les supprimer.`,
       },
       positions: {
         label: "Fonctions",
-        new_position_button: "Nouvelle fonction",
         table: {
-          value: "Clé",
           label: "Label",
           description: "Description",
           base_service_hours: "S. base",
         },
         form: {
-          value: "Clé",
+          title: {
+            none: "Nouvelle fonction",
+            single: "{label}",
+            multiple: "{count} fonctions sélectionnées",
+          },
           label: "Label",
           description: "Description",
           base_service_hours: "Service de base (htd)",
-          confirm: {
-            delete: `Êtes-vous sûr de vouloir supprimer la fonction « {position} » ?
-Si cette fonction est attribuée à des intervenants, vous ne pourrez pas la \
-supprimer.`,
-          },
-          valid: {
-            insert: "Fonction {position} créée",
-            update: "Fonction {position} mise à jour",
-            delete: "Fonction {position} supprimée",
-          },
-          invalid: {
-            message: "Formulaire non valide",
-            caption: {
-              value_empty: "Entrez une clé",
-              value_invalid_characters:
-                "Entrez une clé valide (caractères autorisés : " +
-                "lettres minuscules, chiffres et tirets bas)",
-              label_empty: "Entrez un label",
-            },
+          error: {
+            label_empty: "Entrez un label",
           },
         },
-        import: {
-          valid: {
-            message:
+        data: {
+          success: {
+            insert:
+              "Aucune fonction créée | Fonction créée | {count} fonctions créées",
+            update:
+              "Aucune fonction mise à jour | Fonction mise à jour | {count} fonctions mises à jour",
+            delete:
+              "Aucune fonction supprimée | Fonction supprimée | {count} fonctions supprimées",
+            import:
               "0 fonction importée | 1 fonction importée | {count} fonctions importées",
-          },
-        },
-        export: {
-          valid: {
-            message:
+            export:
               "0 fonction exportée | 1 fonction exportée | {count} fonctions exportées",
+          },
+          confirm: {
+            delete: {
+              single: `Êtes-vous sûr de vouloir supprimer la fonction « {label} » ?
+Si cette fonction est attribuée à des intervenants, vous ne pourrez pas la supprimer.`,
+              multiple: `Êtes-vous sûr de vouloir supprimer les {count} fonctions sélectionnées ?
+Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les supprimer.`,
+            },
           },
         },
       },
@@ -221,6 +223,7 @@ supprimer.`,
       title: "Services",
       services: "Services",
       service_modifications: "Modifications de service",
+      service_modification_types: "Types de modification de service",
     },
     courses: {
       title: "Enseignements",
@@ -228,10 +231,11 @@ supprimer.`,
       degrees: "Diplômes",
       programs: "Mentions",
       tracks: "Parcours",
-      types: "Types",
+      types: "Types d'enseignement",
     },
-    priorities: {
-      title: "Priorités",
+    requests: {
+      title: "Demandes",
+      requests: "Demandes",
       priorities: "Priorités",
     },
     coordinations: {

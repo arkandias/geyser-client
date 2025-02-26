@@ -4,7 +4,7 @@ import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import AdminCoordinations from "@/components/admin/AdminCoordinations.vue";
 import AdminCourses from "@/components/admin/AdminCourses.vue";
 import AdminGeneral from "@/components/admin/AdminGeneral.vue";
-import AdminPriorities from "@/components/admin/AdminPriorities.vue";
+import AdminRequests from "@/components/admin/AdminRequests.vue";
 import AdminRoles from "@/components/admin/AdminRoles.vue";
 import AdminServices from "@/components/admin/AdminServices.vue";
 import AdminTeachers from "@/components/admin/AdminTeachers.vue";
@@ -37,9 +37,9 @@ const routeTabs = [
     to: "/admin/courses",
   },
   {
-    name: "priorities",
-    label: t("admin.priorities.title"),
-    to: "/admin/priorities",
+    name: "requests",
+    label: t("admin.requests.title"),
+    to: "/admin/requests",
   },
   {
     name: "coordinations",
@@ -90,8 +90,8 @@ const routeTabs = [
         <AdminCourses />
       </QTabPanel>
 
-      <QTabPanel name="priorities">
-        <AdminPriorities />
+      <QTabPanel name="requests">
+        <AdminRequests />
       </QTabPanel>
 
       <QTabPanel name="coordinations">

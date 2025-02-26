@@ -63,8 +63,19 @@ const updateYear = useMutation(UpdateYearDocument);
 const deleteYear = useMutation(DeleteYearDocument);
 
 const setCurrentYearHandle = async (year: number): Promise<void> => {
-  await setCurrentYear.executeMutation({
+  const { error } = await setCurrentYear.executeMutation({
     value: year,
+  });
+  if (error) {
+    console.error(error);
+    throw new Error(
+      t("admin.general.years.error.set_current", {
+        reason: error.message,
+      }),
+    );
+  }
+  notify(NotifyType.SUCCESS, {
+    message: t("admin.general.years.success.set_current"),
   });
 };
 
@@ -257,6 +268,7 @@ const onEditClick = (year: number) => {
           v-model="currentYear"
           :val="year.value"
           :label="t('admin.general.years.current')"
+          :disable="!year.visible"
           dense
           @update:model-value="setCurrentYearHandle"
         />

@@ -3,7 +3,6 @@
   lang="ts"
   generic="
     T extends RowDescriptor,
-    IdKey extends string,
     Id extends Scalar,
     DataObj extends SimpleObject<Scalar>
   "
@@ -12,7 +11,6 @@ import type { CombinedError } from "@urql/vue";
 import { type Ref, computed, ref, toValue, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import type { ColumnNonAbbreviable } from "@/types/columns.ts";
 import type {
   FieldDescriptor,
   GetObjectFn,
@@ -20,7 +18,8 @@ import type {
   RowDescriptor,
   Scalar,
   SimpleObject,
-} from "@/types/csv-data.ts";
+} from "@/types/admin-data.ts";
+import type { ColumnNonAbbreviable } from "@/types/columns.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
 import { importCSV } from "@/utils/csv-import.ts";
 import { getField, normalizeForSearch } from "@/utils/misc.ts";
@@ -29,7 +28,7 @@ import { NotifyType, notify } from "@/utils/notify.ts";
 type Row = ParsedRow<T>;
 type OperationResult = {
   data: {
-    returning: Record<IdKey, Id>[] | null;
+    returning: SimpleObject<Scalar>[] | null;
   } | null;
   error: CombinedError | null;
 };
@@ -44,7 +43,6 @@ const {
   rowDescriptor,
   rows,
   columns,
-  idKey,
   getId,
   getLabel,
   getObject,
@@ -58,7 +56,6 @@ const {
   rowDescriptor: T;
   rows: Row[];
   columns: ColumnNonAbbreviable<Row>[];
-  idKey: IdKey;
   getId: (row: Row) => Id;
   getLabel: (row: Row) => string;
   getObject: GetObjectFn<Row, DataObj>;
@@ -145,10 +142,7 @@ const insertDataHandle = async () => {
 
   if (data?.returning) {
     notify(NotifyType.SUCCESS, {
-      message: t(messagePrefix + ".data.success.insert", {
-        count: data.returning.length,
-        [idKey]: data.returning[0]?.[idKey],
-      }),
+      message: t(messagePrefix + ".data.success.insert", data.returning.length),
     });
   } else {
     notify(NotifyType.DEFAULT, {
@@ -188,10 +182,7 @@ const updateDataHandle = async () => {
 
   if (data?.returning) {
     notify(NotifyType.SUCCESS, {
-      message: t(messagePrefix + ".data.success.update", {
-        count: data.returning.length,
-        [idKey]: data.returning[0]?.[idKey],
-      }),
+      message: t(messagePrefix + ".data.success.update", data.returning.length),
     });
   } else {
     notify(NotifyType.DEFAULT, {
@@ -234,10 +225,7 @@ const deleteDataHandle = async () => {
 
   if (data?.returning) {
     notify(NotifyType.SUCCESS, {
-      message: t(messagePrefix + ".data.success.delete", {
-        count: data.returning.length,
-        [idKey]: data.returning[0]?.[idKey],
-      }),
+      message: t(messagePrefix + ".data.success.delete", data.returning.length),
     });
   } else {
     notify(NotifyType.DEFAULT, {
@@ -363,10 +351,10 @@ const importRowsHandle = async () => {
 
     if (data?.returning) {
       notify(NotifyType.SUCCESS, {
-        message: t(messagePrefix + ".data.success.import", {
-          count: data.returning.length,
-          [idKey]: data.returning[0]?.[idKey],
-        }),
+        message: t(
+          messagePrefix + ".data.success.import",
+          data.returning.length,
+        ),
       });
     } else {
       notify(NotifyType.DEFAULT, {
@@ -464,7 +452,7 @@ const exportDataHandle = () => {
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"
     :filter-method
-    row-key="uid"
+    :row-key="getId"
     selection="multiple"
     bordered
     flat
@@ -475,7 +463,7 @@ const exportDataHandle = () => {
         v-if="searchableColumns.length"
         v-model="search"
         color="primary"
-        :placeholder="t(messagePrefix + '.table.search')"
+        :placeholder="t('admin.data.search')"
         clearable
         clear-icon="sym_s_close"
         square
@@ -510,6 +498,7 @@ const exportDataHandle = () => {
               : t('admin.data.button.create')
           "
           color="primary"
+          :disable="multipleSelection && !selectedFields.length"
           flat
           square
         />

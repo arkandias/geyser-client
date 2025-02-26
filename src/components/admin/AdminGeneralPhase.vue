@@ -45,11 +45,14 @@ const setCurrentPhaseHandle = async (phase: string): Promise<void> => {
   if (error) {
     console.error(error);
     throw new Error(
-      t("admin.data.error.insert_error", {
+      t("admin.general.phase.error.set_current", {
         reason: error.message,
       }),
     );
   }
+  notify(NotifyType.SUCCESS, {
+    message: t("admin.general.phase.success.set_current"),
+  });
 };
 </script>
 

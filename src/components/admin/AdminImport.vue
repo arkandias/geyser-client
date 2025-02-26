@@ -2,12 +2,12 @@
 import { ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import type { ColumnNonAbbreviable } from "@/types/columns.ts";
 import type {
   FieldDescriptor,
   ParsedRow,
   RowDescriptor,
-} from "@/types/csv-data.ts";
+} from "@/types/admin-data.ts";
+import type { ColumnNonAbbreviable } from "@/types/columns.ts";
 import { importCSV } from "@/utils/csv-import.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 

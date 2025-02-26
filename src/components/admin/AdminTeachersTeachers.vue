@@ -13,8 +13,8 @@ import {
   TeacherUpdateColumn,
   UpdateTeachersDocument,
 } from "@/gql/graphql.ts";
+import type { ParsedRow } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
-import type { ParsedRow } from "@/types/csv-data.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -73,7 +73,6 @@ graphql(`
     $onConflict: TeacherOnConflict
   ) {
     insertTeacher(objects: $objects, onConflict: $onConflict) {
-      affectedRows
       returning {
         uid
       }
@@ -82,7 +81,6 @@ graphql(`
 
   mutation UpdateTeachers($uids: [String!]!, $changes: TeacherSetInput!) {
     updateTeacher(where: { uid: { _in: $uids } }, _set: $changes) {
-      affectedRows
       returning {
         uid
       }
@@ -91,7 +89,6 @@ graphql(`
 
   mutation DeleteTeachers($uids: [String!]!) {
     deleteTeacher(where: { uid: { _in: $uids } }) {
-      affectedRows
       returning {
         uid
       }
@@ -104,23 +101,24 @@ const updateTeachers = useMutation(UpdateTeachersDocument);
 const deleteTeachers = useMutation(DeleteTeachersDocument);
 
 const teachers = computed(() =>
-  teacherFragments.map((f) => {
-    const fragment = useFragment(AdminTeacherFragmentDoc, f);
-    return {
-      uid: fragment.uid,
-      firstname: fragment.firstname,
-      lastname: fragment.lastname,
-      alias: fragment.alias ?? null,
-      position: fragment.position?.label ?? null,
-      baseServiceHours: fragment.baseServiceHours ?? null,
-      visible: fragment.visible,
-      active: fragment.active,
-    };
-  }),
+  teacherFragments.map((f) => useFragment(AdminTeacherFragmentDoc, f)),
 );
 
 const positions = computed(() =>
   positionFragments.map((f) => useFragment(AdminTeacherPositionFragmentDoc, f)),
+);
+
+const rows = computed<Row[]>(() =>
+  teachers.value.map((t) => ({
+    uid: t.uid,
+    firstname: t.firstname,
+    lastname: t.lastname,
+    alias: t.alias ?? null,
+    position: t.position?.label ?? null,
+    baseServiceHours: t.baseServiceHours ?? null,
+    visible: t.visible,
+    active: t.active,
+  })),
 );
 
 const initForm = (selectedRows?: Row[]): Row => ({
@@ -307,8 +305,7 @@ const deleteData = (uids: Id[]) =>
     message-prefix="admin.teachers.teachers"
     :row-descriptor
     :columns
-    :rows="teachers"
-    id-key="uid"
+    :rows
     :get-id
     :get-label
     :get-object
