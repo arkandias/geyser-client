@@ -7,6 +7,7 @@ import { usePermissions } from "@/composables/permissions.ts";
 import { useRefreshData } from "@/composables/refresh-data.ts";
 import { version } from "@/config/env.ts";
 import { useProfileStore } from "@/stores/profile.ts";
+import { buttonColor } from "@/utils/colors.ts";
 
 import MenuInfo from "@/components/header/MenuInfo.vue";
 import MenuLang from "@/components/header/MenuLang.vue";
@@ -41,6 +42,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
       <QSpace />
       <QBtn
         icon="sym_s_home"
+        :color="buttonColor(router.currentRoute.value.name === 'home')"
         :disable
         flat
         square
@@ -51,6 +53,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
       <QSeparator vertical inset color="white" />
       <QBtn
         icon="sym_s_badge"
+        :color="buttonColor(router.currentRoute.value.name === 'teacher')"
         :disable
         flat
         square
@@ -61,6 +64,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
       <QSeparator vertical inset color="white" />
       <QBtn
         icon="sym_s_menu_book"
+        :color="buttonColor(router.currentRoute.value.name === 'courses')"
         :disable
         flat
         square
@@ -80,6 +84,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
       <QBtn
         v-if="perm.toAdmin"
         icon="sym_s_settings"
+        :color="buttonColor(router.currentRoute.value.name === 'admin')"
         flat
         square
         @click="router.replace({ name: 'admin' })"
