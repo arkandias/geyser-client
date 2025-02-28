@@ -190,7 +190,6 @@ const deleteYearHandle = async (value: number) => {
     });
     return;
   }
-
   if (data?.deleteYearByPk?.value !== undefined) {
     notify(NotifyType.SUCCESS, {
       message: t("admin.general.years.success.delete", {

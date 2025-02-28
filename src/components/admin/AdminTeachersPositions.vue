@@ -14,6 +14,7 @@ import {
 } from "@/gql/graphql.ts";
 import type { ParsedRow } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
+import { initForm } from "@/utils/admin-data.ts";
 import { toSlug } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
@@ -25,10 +26,13 @@ const { positionFragments } = defineProps<{
 const { t } = useCustomI18n();
 
 const rowDescriptor = {
+  value: { type: "string" },
   label: { type: "string" },
   description: { type: "string", nullable: true },
   baseServiceHours: { type: "number", nullable: true },
 } as const;
+
+const exportFields = ["value", "label", "description", "baseServiceHours"];
 
 type Row = ParsedRow<typeof rowDescriptor>;
 type Id = string;
@@ -84,21 +88,29 @@ const deletePositions = useMutation(DeletePositionsDocument);
 
 const rows = computed<Row[]>(() =>
   positions.value.map((p) => ({
+    value: p.value,
     label: p.label,
     description: p.description ?? null,
     baseServiceHours: p.baseServiceHours ?? null,
   })),
 );
 
-const initForm = (selectedRows?: Row[]): Row => ({
-  label: selectedRows?.[0]?.label ?? "",
-  description: selectedRows?.[0]?.description ?? "",
-  baseServiceHours: selectedRows?.[0]?.baseServiceHours ?? null,
-});
-const formValues = ref(initForm());
+const formValues = ref<Row>(initForm(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
+const updateValue = (value: unknown) => {
+  formValues.value.value = toSlug(String(value));
+};
+
 const columns: ColumnNonAbbreviable<Row>[] = [
+  {
+    name: "value",
+    label: t("admin.teachers.positions.table.label"),
+    align: "left",
+    field: "label",
+    sortable: true,
+    searchable: true,
+  },
   {
     name: "label",
     label: t("admin.teachers.positions.table.label"),
@@ -126,36 +138,17 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   },
 ];
 
-const getId = (row: Row): Id => {
-  const value =
-    positions.value.find((p) => p.label === row.label)?.value ?? null;
-  if (value !== null) {
-    return value;
-  }
-
-  let slug = toSlug(row.label) || "default_slug"; // do not allow empty value
-  if (positions.value.find((p) => p.value === slug)) {
-    return slug;
-  }
-
-  let counter = 1;
-  while (positions.value.find((p) => p.value === slug)) {
-    counter += 1;
-    slug = slug + counter.toString();
-  }
-  return slug;
-};
 const getLabel = (row: Row): string => row.label;
 
-function getObject(row: Row): DataObj;
-function getObject(row: Row, fields: string[]): Partial<DataObj>;
-function getObject(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
+function getData(row: Row): DataObj;
+function getData(row: Row, fields: string[]): Partial<DataObj>;
+function getData(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
   if (!row.label) {
     throw new Error(t("admin.teachers.positions.form.error.uid_empty"));
   }
 
   const dataObj: DataObj = {
-    value: getId(row),
+    value: row.value,
     label: row.label,
     description: row.description,
     baseServiceHours: row.baseServiceHours,
@@ -231,25 +224,44 @@ const deleteData = (values: Id[]) =>
     v-model:selected-fields="selectedFields"
     name="positions"
     message-prefix="admin.teachers.positions"
+    id-key="value"
     :row-descriptor
     :columns
     :rows
-    :get-id
     :get-label
-    :get-object
-    :init-form
+    :get-data
     :insert-data
     :update-data
     :delete-data
+    :export-fields
   >
     <template #form="{ multipleSelection }">
+      <QInput
+        v-if="!multipleSelection"
+        v-model="formValues.value"
+        :label="t('admin.teachers.positions.form.value')"
+        square
+        dense
+      />
       <QInput
         v-if="!multipleSelection"
         v-model="formValues.label"
         :label="t('admin.teachers.positions.form.label')"
         square
         dense
+        @update:model-value="updateValue"
       />
+      <QInput
+        v-model="formValues.description"
+        :label="t('admin.teachers.positions.form.description')"
+        :disable="multipleSelection && !selectedFields.includes('description')"
+        square
+        dense
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="description" />
+        </template>
+      </QInput>
       <QInput
         v-model.number="formValues.baseServiceHours"
         type="number"
@@ -259,7 +271,6 @@ const deleteData = (values: Id[]) =>
         "
         square
         dense
-        style="width: 150px"
       >
         <template v-if="multipleSelection" #before>
           <QCheckbox v-model="selectedFields" val="baseServiceHours" />

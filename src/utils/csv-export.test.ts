@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { flattenSimpleObject } from "./csv-export.ts";
+import { flattenSimpleObject, processSimpleObject } from "./csv-export.ts";
 import type { Scalar } from "@/types/admin-data.ts";
 
 describe("flattenSimpleObject", () => {
@@ -15,7 +15,7 @@ describe("flattenSimpleObject", () => {
       age: 30,
       isActive: true,
     };
-    expect(flattenSimpleObject(fields, obj)).toEqual({
+    expect(flattenSimpleObject(obj, fields)).toEqual({
       userName: "John Doe",
       userAge: 30,
       userIsActive: true,
@@ -61,7 +61,7 @@ describe("flattenSimpleObject", () => {
         },
       },
     };
-    expect(flattenSimpleObject<Scalar>(fields, obj)).toEqual({
+    expect(flattenSimpleObject<Scalar>(obj, fields)).toEqual({
       givenName: "Alice",
       familyName: "Johnson",
       userAge: 30,
@@ -86,7 +86,7 @@ describe("flattenSimpleObject", () => {
       age: undefined,
       // address is missing
     };
-    expect(flattenSimpleObject(fields, obj)).toEqual({
+    expect(flattenSimpleObject(obj, fields)).toEqual({
       userName: "Bob",
       age: undefined,
       streetAddress: undefined,
@@ -107,8 +107,40 @@ describe("flattenSimpleObject", () => {
     const obj = {
       data: null,
     };
-    expect(flattenSimpleObject(fields, obj)).toEqual({
+    expect(flattenSimpleObject(obj, fields)).toEqual({
       storedValue: undefined,
+    });
+  });
+});
+
+describe("processSimpleObject", () => {
+  it("returns the original object when fields is null", () => {
+    const obj = { name: "Test", age: 25 };
+    expect(processSimpleObject(obj, null)).toEqual(obj);
+  });
+
+  it("returns the original object when fields is undefined", () => {
+    const obj = { name: "Test", age: 25 };
+    expect(processSimpleObject(obj, undefined)).toEqual(obj);
+  });
+
+  it("filters properties based on array of field names", () => {
+    const obj = { name: "Test", age: 25, email: "test@example.com" };
+    expect(processSimpleObject(obj, ["name", "email"])).toEqual({
+      name: "Test",
+      email: "test@example.com",
+    });
+  });
+
+  it("flattens object when fields is an object mapping", () => {
+    const obj = { user: { name: "Test", age: 25 } };
+    const fields = { user: { name: "userName", age: "userAge" } };
+
+    const result = processSimpleObject(obj, fields);
+
+    expect(result).toEqual({
+      userName: "Test",
+      userAge: 25,
     });
   });
 });

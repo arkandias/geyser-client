@@ -179,6 +179,7 @@ vous ne pourrez pas les supprimer.`,
       positions: {
         label: "Fonctions",
         table: {
+          value: "Valeur",
           label: "Label",
           description: "Description",
           base_service_hours: "S. base",
@@ -189,6 +190,7 @@ vous ne pourrez pas les supprimer.`,
             single: "{label}",
             multiple: "{count} fonctions sélectionnées",
           },
+          value: "Valeur",
           label: "Label",
           description: "Description",
           base_service_hours: "Service de base (@:unit.weighted_hours)",
@@ -225,6 +227,7 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
           year: "Année",
           uid: "Intervenant",
           hours: "Heures",
+          message: "Message",
         },
         form: {
           title: {
@@ -235,10 +238,10 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
           year: "Année",
           uid: "Intervenant",
           hours: "Heures (@:unit.weighted_hours)",
+          message: "Message",
           error: {
             year_empty: "Entrez une année",
             uid_empty: "Entrez un intervenant",
-            hours_empty: "Entrez un nombre d'heures",
           },
         },
         data: {

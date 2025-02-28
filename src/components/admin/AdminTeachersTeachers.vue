@@ -37,7 +37,8 @@ const rowDescriptor = {
 } as const;
 
 type Row = ParsedRow<typeof rowDescriptor>;
-type Id = string;
+type IdKey = "uid";
+type Id = Row[IdKey];
 type DataObj = {
   uid: string;
   firstname: string;
@@ -119,17 +120,17 @@ const rows = computed<Row[]>(() =>
   })),
 );
 
-const initForm = (selectedRows?: Row[]): Row => ({
-  uid: selectedRows?.[0]?.uid ?? "",
-  firstname: selectedRows?.[0]?.firstname ?? "",
-  lastname: selectedRows?.[0]?.lastname ?? "",
-  alias: selectedRows?.[0]?.alias ?? null,
-  position: selectedRows?.[0]?.position ?? null,
-  baseServiceHours: selectedRows?.[0]?.baseServiceHours ?? null,
-  visible: selectedRows?.[0]?.visible ?? true,
-  active: selectedRows?.[0]?.active ?? true,
-});
-const formValues = ref(initForm());
+const initValues: Row = {
+  uid: "",
+  firstname: "",
+  lastname: "",
+  alias: null,
+  position: null,
+  baseServiceHours: null,
+  visible: true,
+  active: true,
+};
+const formValues = ref(initValues);
 const selectedFields = ref<string[]>([]);
 
 const columns: ColumnNonAbbreviable<Row>[] = [
@@ -200,8 +201,8 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   },
 ];
 
-const getId = (row: Row): Id => row.uid;
 const getLabel = (row: Row): string => row.uid;
+
 function getObject(row: Row): DataObj;
 function getObject(row: Row, fields: string[]): Partial<DataObj>;
 function getObject(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
@@ -301,13 +302,13 @@ const deleteData = (uids: Id[]) =>
     v-model:selected-fields="selectedFields"
     name="teachers"
     message-prefix="admin.teachers.teachers"
+    id-key="uid"
     :row-descriptor
-    :columns
     :rows
-    :get-id
+    :columns
+    :init-values
     :get-label
     :get-object
-    :init-form
     :insert-data
     :update-data
     :delete-data

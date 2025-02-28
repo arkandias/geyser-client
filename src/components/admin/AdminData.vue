@@ -3,7 +3,7 @@
   lang="ts"
   generic="
     T extends RowDescriptor,
-    Id extends Scalar,
+    IdKey extends string & keyof T,
     DataObj extends SimpleObject<Scalar>
   "
 >
@@ -13,19 +13,21 @@ import { type Ref, computed, ref, toValue, watch } from "vue";
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import type {
   FieldDescriptor,
-  GetObjectFn,
+  GetDataFn,
   ParsedRow,
   RowDescriptor,
   Scalar,
   SimpleObject,
 } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
+import { initForm } from "@/utils/admin-data.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
 import { importCSV } from "@/utils/csv-import.ts";
 import { getField, normalizeForSearch } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 type Row = ParsedRow<T>;
+type Id = Row[IdKey];
 type OperationResult = {
   data: {
     returning: SimpleObject<Scalar>[] | null;
@@ -41,25 +43,24 @@ const {
   name,
   messagePrefix,
   rowDescriptor,
+  idKey,
   rows,
   columns,
-  getId,
   getLabel,
-  getObject,
-  initForm,
+  getData,
   insertData,
   updateData,
   deleteData,
+  exportFields,
 } = defineProps<{
   name: string;
   messagePrefix: string;
   rowDescriptor: T;
+  idKey: IdKey;
   rows: Row[];
   columns: ColumnNonAbbreviable<Row>[];
-  getId: (row: Row) => Id;
   getLabel: (row: Row) => string;
-  getObject: GetObjectFn<Row, DataObj>;
-  initForm: (selectedRows?: Row[]) => Row;
+  getData: GetDataFn<Row, DataObj>;
   insertData: (
     objects: DataObj[],
     overwrite?: boolean,
@@ -69,6 +70,7 @@ const {
     changes: Partial<DataObj>,
   ) => Promise<OperationResult>;
   deleteData: (ids: Id[]) => Promise<OperationResult>;
+  exportFields: SimpleObject<string> | string[] | null;
 }>();
 defineSlots<{ form(slotProps: { multipleSelection: boolean }): unknown }>();
 
@@ -88,11 +90,10 @@ const formTitle = computed(() => {
     case 0:
       return t(messagePrefix + ".form.title.none");
     case 1:
-      return t(
-        messagePrefix + ".form.title.single",
+      return t(messagePrefix + ".form.title.single", {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        { label: getLabel(selectedRows.value[0]!) },
-      );
+        label: getLabel(selectedRows.value[0]!),
+      });
     default:
       return t(messagePrefix + ".form.title.multiple", {
         count: selectedRows.value.length,
@@ -104,15 +105,10 @@ const openForm = (rows?: Row[]) => {
   if (rows) {
     selectedRows.value = rows;
   }
+  formValues.value = initForm(rowDescriptor, selectedRows.value);
+  selectedFields.value = [];
   isFormOpen.value = true;
 };
-
-watch(isFormOpen, (value) => {
-  if (value) {
-    Object.assign(formValues.value, initForm(selectedRows.value));
-    selectedFields.value = [];
-  }
-});
 
 // ===== Data Operations =====
 const errorMessage = (error: unknown) =>
@@ -121,7 +117,7 @@ const errorMessage = (error: unknown) =>
 const insertDataHandle = async () => {
   let dataObj: DataObj;
   try {
-    dataObj = getObject(formValues.value);
+    dataObj = getData(formValues.value);
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.invalid_form"),
@@ -139,7 +135,6 @@ const insertDataHandle = async () => {
     });
     return;
   }
-
   if (data?.returning) {
     notify(NotifyType.SUCCESS, {
       message: t(messagePrefix + ".data.success.insert", data.returning.length),
@@ -157,8 +152,8 @@ const updateDataHandle = async () => {
   let dataObj: Partial<DataObj>;
   try {
     dataObj = multipleSelection.value
-      ? getObject(formValues.value, selectedFields.value)
-      : getObject(formValues.value);
+      ? getData(formValues.value, selectedFields.value)
+      : getData(formValues.value);
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.invalid_form"),
@@ -168,7 +163,7 @@ const updateDataHandle = async () => {
   }
 
   const { data, error } = await updateData(
-    selectedRows.value.map((row) => getId(row)),
+    selectedRows.value.map((row) => row[idKey]),
     dataObj,
   );
   if (error) {
@@ -179,7 +174,6 @@ const updateDataHandle = async () => {
     });
     return;
   }
-
   if (data?.returning) {
     notify(NotifyType.SUCCESS, {
       message: t(messagePrefix + ".data.success.update", data.returning.length),
@@ -212,7 +206,7 @@ const deleteDataHandle = async () => {
   }
 
   const { data, error } = await deleteData(
-    selectedRows.value.map((row) => getId(row)),
+    selectedRows.value.map((row) => row[idKey]),
   );
   if (error) {
     console.error(error);
@@ -222,7 +216,6 @@ const deleteDataHandle = async () => {
     });
     return;
   }
-
   if (data?.returning) {
     notify(NotifyType.SUCCESS, {
       message: t(messagePrefix + ".data.success.delete", data.returning.length),
@@ -327,7 +320,7 @@ const importRowsHandle = async () => {
 
     const objects = importedRows.map((row, index) => {
       try {
-        return getObject(row);
+        return getData(row);
       } catch (error) {
         console.error(t("admin.data.error.invalid_row", { index }), error);
         throw new Error(
@@ -348,7 +341,6 @@ const importRowsHandle = async () => {
         }),
       );
     }
-
     if (data?.returning) {
       notify(NotifyType.SUCCESS, {
         message: t(
@@ -379,6 +371,7 @@ const exportDataHandle = () => {
     downloadCSV(
       `${name}_${Date.now().toString()}`,
       selectedRows.value.length ? selectedRows.value : rows,
+      exportFields,
     );
     notify(NotifyType.SUCCESS, {
       message: t(
@@ -452,7 +445,7 @@ const exportDataHandle = () => {
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"
     :filter-method
-    :row-key="getId"
+    :row-key="idKey"
     selection="multiple"
     bordered
     flat
