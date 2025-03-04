@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { type ComponentPublicInstance, computed, ref } from "vue";
+import {
+  type ComponentPublicInstance,
+  type ShallowRef,
+  computed,
+  ref,
+  shallowRef,
+} from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import {
@@ -70,26 +76,26 @@ type EditableTextInstance = {
   onDelete: () => Promise<void>;
 };
 
-const editableTextRefs = ref(
-  Object.fromEntries(CUSTOM_TEXT_KEYS.map((key) => [key, null])) as Record<
-    CustomTextKey,
-    EditableTextInstance | null
-  >,
-);
+const editableTextRefs = Object.fromEntries(
+  CUSTOM_TEXT_KEYS.map((key) => [
+    key,
+    shallowRef<EditableTextInstance | null>(null),
+  ]),
+) as Record<CustomTextKey, ShallowRef<EditableTextInstance | null>>;
 
 const setRef = (key: string, el: Element | ComponentPublicInstance | null) => {
   if (isCustomTextKey(key)) {
     if (el && "onDelete" in el) {
-      editableTextRefs.value[key] = el as EditableTextInstance;
+      editableTextRefs[key].value = el as EditableTextInstance;
     } else if (el === null) {
-      editableTextRefs.value[key] = null;
+      editableTextRefs[key].value = null;
     }
   }
 };
 
 const callOnDelete = async (key: string) => {
   if (isCustomTextKey(key)) {
-    await editableTextRefs.value[key]?.onDelete();
+    await editableTextRefs[key].value?.onDelete();
   }
 };
 </script>
