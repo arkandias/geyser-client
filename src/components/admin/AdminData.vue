@@ -1,9 +1,14 @@
 <script
   setup
   lang="ts"
-  generic="T extends RowDescriptor, IdKey extends string & keyof T"
+  generic="
+    T extends RowDescriptor,
+    IdKey extends string & keyof T,
+    Constraint,
+    UpdateColumn
+  "
 >
-import type { CombinedError } from "@urql/vue";
+import type { AnyVariables, UseMutationResponse } from "@urql/vue";
 import { type Ref, computed, ref, toValue, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
@@ -12,8 +17,6 @@ import type {
   NullableParsedRow,
   ParsedRow,
   RowDescriptor,
-  Scalar,
-  SimpleObject,
   VisibleParsedRow,
 } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
@@ -27,12 +30,13 @@ type Row = ParsedRow<T>;
 type Id = Row[IdKey];
 type FormData = NullableParsedRow<T>;
 type OperationData = VisibleParsedRow<T>;
-type OperationResult = {
-  data: {
-    returning: SimpleObject<Scalar>[] | null;
-  } | null;
-  error: CombinedError | null;
-};
+type OperationResult<N extends string> = Partial<
+  Record<N, { returning: { id: Id }[] } | null>
+>;
+type MutationHandle<Name extends string, Variables extends AnyVariables> = Pick<
+  UseMutationResponse<OperationResult<Name>, Variables>,
+  "executeMutation"
+>;
 
 const formValues = defineModel<FormData>("formValues", { required: true });
 const selectedFields = defineModel<string[] | null>("selectedFields", {
@@ -45,34 +49,47 @@ const {
   idKey,
   rows,
   columns,
-  getLabel = (row: FormData) => String(row["label"]),
+  formatRow,
   validateOperationData,
   insertData,
   upsertData,
   updateData,
   deleteData,
+  constraint,
+  updateColumns,
 } = defineProps<{
   name: string;
   messagePrefix: string;
   rowDescriptor: T;
   idKey: IdKey;
-  rows: FormData[];
-  columns: ColumnNonAbbreviable<FormData>[];
-  getLabel?: (row: FormData) => string;
+  rows: Row[];
+  columns: ColumnNonAbbreviable<Row>[];
+  formatRow: (row: Row) => string;
   validateOperationData: (
     operationData: Partial<OperationData>,
     checkConflicts: boolean,
   ) => void;
-  insertData: (objects: OperationData[]) => Promise<OperationResult>;
-  upsertData: (
-    objects: OperationData[],
-    overwrite: boolean,
-  ) => Promise<OperationResult>;
-  updateData: (
-    ids: Id[],
-    changes: Partial<OperationData>,
-  ) => Promise<OperationResult>;
-  deleteData: (ids: Id[]) => Promise<OperationResult>;
+  insertData: MutationHandle<"insertData", { objects: OperationData[] }>;
+  upsertData: MutationHandle<
+    "upsertData",
+    {
+      objects: OperationData[];
+      onConflict: {
+        constraint: Constraint;
+        updateColumns: UpdateColumn[];
+      };
+    }
+  >;
+  updateData: MutationHandle<
+    "updateData",
+    {
+      ids: Id[];
+      changes: Partial<OperationData>;
+    }
+  >;
+  deleteData: MutationHandle<"deleteData", { ids: Id[] }>;
+  constraint: Constraint;
+  updateColumns: UpdateColumn[];
 }>();
 defineSlots<{ form(slotProps: { multipleSelection: boolean }): unknown }>();
 
@@ -94,7 +111,7 @@ const formTitle = computed(() => {
     case 1:
       return t(messagePrefix + ".form.title.single", {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        label: getLabel(selectedRows.value[0]!),
+        label: formatRow(selectedRows.value[0]!),
       });
     default:
       return t(messagePrefix + ".form.title.multiple", {
@@ -185,7 +202,9 @@ const insertDataHandle = async () => {
     return;
   }
 
-  const { data, error } = await insertData([object]);
+  const { data, error } = await insertData.executeMutation({
+    objects: [object],
+  });
   if (error) {
     console.error(error);
     notify(NotifyType.ERROR, {
@@ -194,9 +213,12 @@ const insertDataHandle = async () => {
     });
     return;
   }
-  if (data?.returning) {
+  if (data?.insertData?.returning) {
     notify(NotifyType.SUCCESS, {
-      message: t(messagePrefix + ".data.success.insert", data.returning.length),
+      message: t(
+        messagePrefix + ".data.success.insert",
+        data.insertData.returning.length,
+      ),
     });
   } else {
     notify(NotifyType.DEFAULT, {
@@ -223,10 +245,10 @@ const updateDataHandle = async () => {
     return;
   }
 
-  const { data, error } = await updateData(
-    selectedRows.value.map((row) => row[idKey]),
+  const { data, error } = await updateData.executeMutation({
+    ids: selectedRows.value.map((row) => row[idKey]),
     changes,
-  );
+  });
   if (error) {
     console.error(error);
     notify(NotifyType.ERROR, {
@@ -235,9 +257,12 @@ const updateDataHandle = async () => {
     });
     return;
   }
-  if (data?.returning) {
+  if (data?.updateData?.returning) {
     notify(NotifyType.SUCCESS, {
-      message: t(messagePrefix + ".data.success.update", data.returning.length),
+      message: t(
+        messagePrefix + ".data.success.update",
+        data.updateData.returning.length,
+      ),
     });
   } else {
     notify(NotifyType.DEFAULT, {
@@ -256,7 +281,7 @@ const deleteDataHandle = async () => {
       selectedRows.value.length === 1
         ? t(messagePrefix + ".data.confirm.delete.single", {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            label: getLabel(selectedRows.value[0]!),
+            label: formatRow(selectedRows.value[0]!),
           })
         : t(
             messagePrefix + ".data.confirm.delete.multiple",
@@ -267,9 +292,9 @@ const deleteDataHandle = async () => {
     return;
   }
 
-  const { data, error } = await deleteData(
-    selectedRows.value.map((row) => row[idKey]),
-  );
+  const { data, error } = await deleteData.executeMutation({
+    ids: selectedRows.value.map((row) => row[idKey]),
+  });
   if (error) {
     console.error(error);
     notify(NotifyType.ERROR, {
@@ -278,9 +303,12 @@ const deleteDataHandle = async () => {
     });
     return;
   }
-  if (data?.returning) {
+  if (data?.deleteData?.returning) {
     notify(NotifyType.SUCCESS, {
-      message: t(messagePrefix + ".data.success.delete", data.returning.length),
+      message: t(
+        messagePrefix + ".data.success.delete",
+        data.deleteData.returning.length,
+      ),
     });
   } else {
     notify(NotifyType.DEFAULT, {
@@ -301,9 +329,9 @@ const filterObj = computed(() => ({
   searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
 }));
 const filterMethod = (
-  rows: readonly FormData[],
+  rows: readonly Row[],
   terms: typeof filterObj.value,
-): readonly FormData[] =>
+): readonly Row[] =>
   rows.filter((row) =>
     terms.searchColumns.some((col) =>
       normalizeForSearch(String(getField(row, col.field))).includes(
@@ -398,7 +426,13 @@ const importRowsHandle = async () => {
       }
     });
 
-    const { data, error } = await upsertData(importedRows, overwrite.value);
+    const { data, error } = await upsertData.executeMutation({
+      objects: importedRows,
+      onConflict: {
+        constraint,
+        updateColumns: overwrite.value ? updateColumns : [],
+      },
+    });
     if (error) {
       console.error(error);
       throw new Error(
@@ -407,11 +441,11 @@ const importRowsHandle = async () => {
         }),
       );
     }
-    if (data?.returning) {
+    if (data?.upsertData?.returning) {
       notify(NotifyType.SUCCESS, {
         message: t(
           messagePrefix + ".data.success.import",
-          data.returning.length,
+          data.upsertData.returning.length,
         ),
       });
     } else {
@@ -507,8 +541,8 @@ const exportDataHandle = () => {
 
   <QTable
     v-model:selected="selectedRows"
-    :rows
     :columns
+    :rows
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"

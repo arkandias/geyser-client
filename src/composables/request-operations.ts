@@ -56,7 +56,7 @@ graphql(`
         hours: $hours
       }
       onConflict: {
-        constraint: requestServiceIdCourseIdTypeKey
+        constraint: request_service_id_course_id_type_key
         updateColumns: [hours]
       }
     ) {

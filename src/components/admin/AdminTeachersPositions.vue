@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type CombinedError, useMutation } from "@urql/vue";
+import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
@@ -16,8 +16,6 @@ import {
 import type {
   NullableParsedRow,
   ParsedRow,
-  Scalar,
-  SimpleObject,
   VisibleParsedRow,
 } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
@@ -41,17 +39,9 @@ const rowDescriptor = {
 const idKey = "id";
 
 type T = typeof rowDescriptor;
-type IdKey = typeof idKey;
 type Row = ParsedRow<T>;
-type Id = Row[IdKey];
 type FormData = NullableParsedRow<T>;
 type OperationData = VisibleParsedRow<T>;
-type OperationResult = {
-  data: {
-    returning: SimpleObject<Scalar>[] | null;
-  } | null;
-  error: CombinedError | null;
-};
 
 graphql(`
   fragment AdminPosition on Position {
@@ -62,7 +52,7 @@ graphql(`
   }
 
   mutation InsertPositions($objects: [PositionInsertInput!]!) {
-    insertPosition(objects: $objects) {
+    insertData: insertPosition(objects: $objects) {
       returning {
         id
       }
@@ -73,7 +63,7 @@ graphql(`
     $objects: [PositionInsertInput!]!
     $onConflict: PositionOnConflict!
   ) {
-    insertPosition(objects: $objects, onConflict: $onConflict) {
+    upsertData: insertPosition(objects: $objects, onConflict: $onConflict) {
       returning {
         id
       }
@@ -81,7 +71,7 @@ graphql(`
   }
 
   mutation UpdatePositions($ids: [Int!]!, $changes: PositionSetInput!) {
-    updatePosition(where: { id: { _in: $ids } }, _set: $changes) {
+    updateData: updatePosition(where: { id: { _in: $ids } }, _set: $changes) {
       returning {
         id
       }
@@ -89,7 +79,7 @@ graphql(`
   }
 
   mutation DeletePositions($ids: [Int!]!) {
-    deletePosition(where: { id: { _in: $ids } }) {
+    deleteData: deletePosition(where: { id: { _in: $ids } }) {
       returning {
         id
       }
@@ -104,6 +94,12 @@ const insertPositions = useMutation(InsertPositionsDocument);
 const upsertPositions = useMutation(UpsertPositionsDocument);
 const updatePositions = useMutation(UpdatePositionsDocument);
 const deletePositions = useMutation(DeletePositionsDocument);
+
+const constraint = PositionConstraint.PositionLabelKey;
+const updateColumns = [
+  PositionUpdateColumn.Description,
+  PositionUpdateColumn.BaseServiceHours,
+];
 
 const rows = computed<Row[]>(() =>
   positions.value.map((p) => ({
@@ -121,7 +117,7 @@ const updateBaseServiceHours = (value: string | number | null) => {
   formValues.value.baseServiceHours = inputToNumber(value);
 };
 
-const columns: ColumnNonAbbreviable<FormData>[] = [
+const columns: ColumnNonAbbreviable<Row>[] = [
   {
     name: "label",
     label: t("admin.teachers.positions.table.columns.label"),
@@ -148,6 +144,8 @@ const columns: ColumnNonAbbreviable<FormData>[] = [
   },
 ];
 
+const formatRow = (row: Row) => row.label;
+
 const validateOperationData = (
   operationData: Partial<OperationData>,
   checkConflicts: boolean,
@@ -167,66 +165,6 @@ const validateOperationData = (
     }
   }
 };
-
-const insertData = (objects: OperationData[]): Promise<OperationResult> =>
-  insertPositions.executeMutation({ objects }).then((result) => ({
-    data: result.data
-      ? { returning: result.data.insertPosition?.returning ?? null }
-      : null,
-    error: result.error ?? null,
-  }));
-
-const upsertData = (
-  objects: OperationData[],
-  overwrite: boolean,
-): Promise<OperationResult> =>
-  upsertPositions
-    .executeMutation({
-      objects,
-      onConflict: {
-        constraint: PositionConstraint.PositionLabelKey,
-        updateColumns: overwrite
-          ? [
-              PositionUpdateColumn.Description,
-              PositionUpdateColumn.BaseServiceHours,
-            ]
-          : [],
-      },
-    })
-    .then((result) => ({
-      data: result.data
-        ? { returning: result.data.insertPosition?.returning ?? null }
-        : null,
-      error: result.error ?? null,
-    }));
-
-const updateData = (
-  ids: Id[],
-  changes: Partial<OperationData>,
-): Promise<OperationResult> =>
-  updatePositions
-    .executeMutation({
-      ids,
-      changes,
-    })
-    .then((result) => ({
-      data: result.data
-        ? { returning: result.data.updatePosition?.returning ?? null }
-        : null,
-      error: result.error ?? null,
-    }));
-
-const deleteData = (ids: Id[]): Promise<OperationResult> =>
-  deletePositions
-    .executeMutation({
-      ids,
-    })
-    .then((result) => ({
-      data: result.data
-        ? { returning: result.data.deletePosition?.returning ?? null }
-        : null,
-      error: result.error ?? null,
-    }));
 </script>
 
 <template>
@@ -239,11 +177,14 @@ const deleteData = (ids: Id[]): Promise<OperationResult> =>
     :row-descriptor
     :columns
     :rows
+    :format-row
     :validate-operation-data
-    :insert-data
-    :upsert-data
-    :update-data
-    :delete-data
+    :insert-data="insertPositions"
+    :upsert-data="upsertPositions"
+    :update-data="updatePositions"
+    :delete-data="deletePositions"
+    :constraint
+    :update-columns
   >
     <template #form="{ multipleSelection }">
       <QInput

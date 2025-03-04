@@ -125,14 +125,16 @@ la supprimer.`,
       teachers: {
         label: "Intervenants",
         table: {
-          uid: "Email",
-          firstname: "Prénom",
-          lastname: "Nom",
-          alias: "Alias",
-          position: "Fonction",
-          baseServiceHours: "S. base",
-          visible: "V.",
-          active: "A.",
+          columns: {
+            uid: "Email",
+            firstname: "Prénom",
+            lastname: "Nom",
+            alias: "Alias",
+            position: "Fonction",
+            baseServiceHours: "S. base (@:unit.weightedHours)",
+            visible: "V.",
+            active: "A.",
+          },
         },
         form: {
           title: {
@@ -140,18 +142,18 @@ la supprimer.`,
             single: "{label}",
             multiple: "{count} intervenants sélectionnés",
           },
-          uid: "Email",
-          firstname: "Prénom",
-          lastname: "Nom",
-          alias: "Alias",
-          position: "Fonction",
-          baseServiceHours: "Service de base (@:unit.weightedHours)",
-          visible: "Visible",
-          active: "Actif",
+          fields: {
+            uid: "Email",
+            firstname: "Prénom",
+            lastname: "Nom",
+            alias: "Alias",
+            position: "Fonction",
+            baseServiceHours: "Service de base",
+            visible: "Visible",
+            active: "Actif",
+          },
           error: {
-            uidEmpty: "Entrez un email",
-            firstnameEmpty: "Entrez un prénom",
-            lastnameEmpty: "Entrez un nom",
+            conflictLabel: "Cet email existe déjà",
           },
         },
         data: {
@@ -282,8 +284,10 @@ Si des modifications ou des demandes sont rattachés à ces services, vous ne po
       serviceModificationTypes: {
         label: "Types de modification de service",
         table: {
-          label: "Label",
-          description: "Description",
+          columns: {
+            label: "Label",
+            description: "Description",
+          },
         },
         form: {
           title: {
@@ -291,10 +295,12 @@ Si des modifications ou des demandes sont rattachés à ces services, vous ne po
             single: "{label}",
             multiple: "{count} types de modification sélectionnés",
           },
-          label: "Label",
-          description: "Description",
+          fields: {
+            label: "Label",
+            description: "Description",
+          },
           error: {
-            labelEmpty: "Entrez un label",
+            conflictLabel: "Ce label existe déjà",
           },
         },
         data: {

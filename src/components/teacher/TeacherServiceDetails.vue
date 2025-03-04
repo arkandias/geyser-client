@@ -56,7 +56,7 @@ graphql(`
   mutation UpsertService($year: Int!, $uid: String!, $hours: Float!) {
     service: insertServiceOne(
       object: { year: $year, uid: $uid, hours: $hours }
-      onConflict: { constraint: serviceYearUidKey, updateColumns: [hours] }
+      onConflict: { constraint: service_year_uid_key, updateColumns: [hours] }
     ) {
       id
     }

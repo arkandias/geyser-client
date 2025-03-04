@@ -27,7 +27,7 @@ graphql(`
   mutation UpdateCustomText($key: String!, $value: String) {
     updateCustomTextByPk: insertUiTextOne(
       object: { key: $key, value: $value }
-      onConflict: { constraint: uiTextPkey, updateColumns: [value] }
+      onConflict: { constraint: ui_text_pkey, updateColumns: [value] }
     ) {
       key
     }

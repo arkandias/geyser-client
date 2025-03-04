@@ -61,10 +61,10 @@ const { t } = useCustomI18n();
       icon="sym_s_groups"
       :label="t('admin.teachers.teachers.label')"
     >
-      <!--      <AdminTeachersTeachers-->
-      <!--        :teacher-fragments="teachers"-->
-      <!--        :position-fragments="positions"-->
-      <!--      />-->
+      <AdminTeachersTeachers
+        :teacher-fragments="teachers"
+        :position-fragments="positions"
+      />
     </AdminSection>
 
     <QSeparator />
@@ -102,9 +102,9 @@ const { t } = useCustomI18n();
       icon="sym_s_format_list_bulleted"
       :label="t('admin.teachers.serviceModificationTypes.label')"
     >
-      <!--      <AdminTeachersServiceModificationTypes-->
-      <!--        :service-modification-type-fragments="serviceModificationTypes"-->
-      <!--      />-->
+      <AdminTeachersServiceModificationTypes
+        :service-modification-type-fragments="serviceModificationTypes"
+      />
     </AdminSection>
   </QList>
 </template>

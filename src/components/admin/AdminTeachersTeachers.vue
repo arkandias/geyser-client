@@ -12,9 +12,16 @@ import {
   TeacherConstraint,
   TeacherUpdateColumn,
   UpdateTeachersDocument,
+  UpsertTeachersDocument,
 } from "@/gql/graphql.ts";
-import type { NullableParsedRow } from "@/types/admin-data.ts";
+import type {
+  NullableParsedRow,
+  ParsedRow,
+  VisibleParsedRow,
+} from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
+import { initForm, inputToNumber } from "@/utils/admin-data.ts";
+import { nf } from "@/utils/format.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -35,20 +42,12 @@ const rowDescriptor = {
   visible: { type: "boolean" },
   active: { type: "boolean" },
 } as const;
+const idKey = "uid";
 
-type Row = NullableParsedRow<typeof rowDescriptor>;
-type IdKey = "uid";
-type Id = Row[IdKey];
-type DataObj = {
-  uid: string;
-  firstname: string;
-  lastname: string;
-  alias: string | null;
-  position: string | null;
-  baseServiceHours: number | null;
-  visible: boolean;
-  active: boolean;
-};
+type T = typeof rowDescriptor;
+type Row = ParsedRow<T>;
+type FormData = NullableParsedRow<T>;
+type OperationData = VisibleParsedRow<T>;
 
 graphql(`
   fragment AdminTeacher on Teacher {
@@ -56,7 +55,7 @@ graphql(`
     firstname
     lastname
     alias
-    position: position {
+    position {
       label
     }
     baseServiceHours
@@ -69,11 +68,19 @@ graphql(`
     label
   }
 
-  mutation InsertTeachers(
+  mutation InsertTeachers($objects: [TeacherInsertInput!]!) {
+    insertData: insertTeacher(objects: $objects) {
+      returning {
+        uid
+      }
+    }
+  }
+
+  mutation UpsertTeachers(
     $objects: [TeacherInsertInput!]!
     $onConflict: TeacherOnConflict
   ) {
-    insertTeacher(objects: $objects, onConflict: $onConflict) {
+    upsertData: insertTeacher(objects: $objects, onConflict: $onConflict) {
       returning {
         uid
       }
@@ -81,7 +88,7 @@ graphql(`
   }
 
   mutation UpdateTeachers($uids: [String!]!, $changes: TeacherSetInput!) {
-    updateTeacher(where: { uid: { _in: $uids } }, _set: $changes) {
+    updateData: updateTeacher(where: { uid: { _in: $uids } }, _set: $changes) {
       returning {
         uid
       }
@@ -89,7 +96,7 @@ graphql(`
   }
 
   mutation DeleteTeachers($uids: [String!]!) {
-    deleteTeacher(where: { uid: { _in: $uids } }) {
+    deleteData: deleteTeacher(where: { uid: { _in: $uids } }) {
       returning {
         uid
       }
@@ -104,8 +111,20 @@ const positions = computed(() =>
   positionFragments.map((f) => useFragment(AdminTeacherPositionFragmentDoc, f)),
 );
 const insertTeachers = useMutation(InsertTeachersDocument);
+const upsertTeachers = useMutation(UpsertTeachersDocument);
 const updateTeachers = useMutation(UpdateTeachersDocument);
 const deleteTeachers = useMutation(DeleteTeachersDocument);
+
+const constraint = TeacherConstraint.TeacherPkey;
+const updateColumns = [
+  TeacherUpdateColumn.Firstname,
+  TeacherUpdateColumn.Lastname,
+  TeacherUpdateColumn.Alias,
+  TeacherUpdateColumn.PositionId,
+  TeacherUpdateColumn.BaseServiceHours,
+  TeacherUpdateColumn.Visible,
+  TeacherUpdateColumn.Active,
+];
 
 const rows = computed<Row[]>(() =>
   teachers.value.map((t) => ({
@@ -120,23 +139,17 @@ const rows = computed<Row[]>(() =>
   })),
 );
 
-const initValues: Row = {
-  uid: "",
-  firstname: "",
-  lastname: "",
-  alias: null,
-  position: null,
-  baseServiceHours: null,
-  visible: true,
-  active: true,
-};
-const formValues = ref(initValues);
+const formValues = ref<FormData>(initForm(rowDescriptor));
 const selectedFields = ref<string[]>([]);
+
+const updateBaseServiceHours = (value: string | number | null) => {
+  formValues.value.baseServiceHours = inputToNumber(value);
+};
 
 const columns: ColumnNonAbbreviable<Row>[] = [
   {
     name: "uid",
-    label: t("admin.teachers.teachers.table.uid"),
+    label: t("admin.teachers.teachers.table.columns.uid"),
     align: "left",
     field: "uid",
     sortable: true,
@@ -144,7 +157,7 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   },
   {
     name: "firstname",
-    label: t("admin.teachers.teachers.table.firstname"),
+    label: t("admin.teachers.teachers.table.columns.firstname"),
     align: "left",
     field: "firstname",
     sortable: true,
@@ -152,7 +165,7 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   },
   {
     name: "lastname",
-    label: t("admin.teachers.teachers.table.lastname"),
+    label: t("admin.teachers.teachers.table.columns.lastname"),
     align: "left",
     field: "lastname",
     sortable: true,
@@ -160,32 +173,31 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   },
   {
     name: "alias",
-    label: t("admin.teachers.teachers.table.alias"),
+    label: t("admin.teachers.teachers.table.columns.alias"),
     align: "left",
-    field: (row) => row.alias ?? null,
+    field: "alias",
     sortable: true,
     searchable: true,
   },
   {
     name: "position",
-    label: t("admin.teachers.teachers.table.position"),
+    label: t("admin.teachers.teachers.table.columns.position"),
     align: "left",
-    field: (row) => row.position ?? null,
+    field: "position",
     sortable: true,
     searchable: false,
   },
   {
     name: "baseServiceHours",
-    label: t("admin.teachers.teachers.table.baseServiceHours"),
-    field: (row) => row.baseServiceHours ?? null,
-    format: (val: number | null) =>
-      val === null ? "" : String(val) + " " + t("unit.weightedHours"),
+    label: t("admin.teachers.teachers.table.columns.baseServiceHours"),
+    field: "baseServiceHours",
+    format: (val: number | null) => (val === null ? null : nf.format(val)),
     sortable: true,
     searchable: false,
   },
   {
     name: "visible",
-    label: t("admin.teachers.teachers.table.visible"),
+    label: t("admin.teachers.teachers.table.columns.visible"),
     field: "visible",
     format: (val: boolean) => (val ? "✓" : "✗"),
     sortable: true,
@@ -193,7 +205,7 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   },
   {
     name: "active",
-    label: t("admin.teachers.teachers.table.active"),
+    label: t("admin.teachers.teachers.table.columns.active"),
     field: "active",
     format: (val: boolean) => (val ? "✓" : "✗"),
     sortable: true,
