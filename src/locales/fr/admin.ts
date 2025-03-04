@@ -12,6 +12,8 @@ export default {
       search: "Rechercher...",
       error: {
         invalid_form: "Formulaire non valide",
+        empty_field: "{field} requis",
+        not_a_number: "{field} n'est pas un nombre valide",
         insert_failed: "Échec de la création",
         update_failed: "Échec de la mise à jour",
         delete_failed: "Échec de la suppression",
@@ -180,10 +182,12 @@ vous ne pourrez pas les supprimer.`,
       positions: {
         label: "Fonctions",
         table: {
-          value: "Valeur",
-          label: "Label",
-          description: "Description",
-          base_service_hours: "S. base",
+          columns: {
+            value: "Valeur",
+            label: "Label",
+            description: "Description",
+            baseServiceHours: "S. base (@:unit.weighted_hours)",
+          },
         },
         form: {
           title: {
@@ -191,15 +195,16 @@ vous ne pourrez pas les supprimer.`,
             single: "{label}",
             multiple: "{count} fonctions sélectionnées",
           },
-          value: "Valeur",
-          label: "Label",
-          description: "Description",
-          base_service_hours: "Service de base (@:unit.weighted_hours)",
+          fields: {
+            value: "Valeur",
+            label: "Label",
+            description: "Description",
+            baseServiceHours: "Service de base",
+          },
           error: {
-            value_empty: "Entrez une valeur",
-            label_empty: "Entrez un label",
-            base_service_hours_nan: "Entrez un nombre d'heures valide",
-            conflict_label: "Le label existe déjà",
+            conflictLabel: "Ce label existe déjà",
+            baseServiceHoursNegative:
+              "Entrez un nombre d'heures positif ou nul",
           },
         },
         data: {
@@ -270,6 +275,9 @@ Si des modifications ou des demandes sont rattachés à ces services, vous ne po
             },
           },
         },
+      },
+      service_modifications: {
+        label: "Modifications de service",
       },
       service_modification_types: {
         label: "Types de modification de service",

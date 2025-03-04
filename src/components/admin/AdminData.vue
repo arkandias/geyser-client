@@ -1,23 +1,20 @@
 <script
   setup
   lang="ts"
-  generic="
-    T extends RowDescriptor,
-    IdKey extends string & keyof T,
-    DataObj extends SimpleObject<Scalar>
-  "
+  generic="T extends RowDescriptor, IdKey extends string & keyof T"
 >
 import type { CombinedError } from "@urql/vue";
 import { type Ref, computed, ref, toValue, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import type {
-  GetDataFn,
+  FieldDescriptor,
+  NullableParsedRow,
   ParsedRow,
-  PrimitiveTypeName,
   RowDescriptor,
   Scalar,
   SimpleObject,
+  VisibleParsedRow,
 } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
 import { initForm } from "@/utils/admin-data.ts";
@@ -27,8 +24,9 @@ import { getField, normalizeForSearch } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 type Row = ParsedRow<T>;
-type Id = NonNullable<Row[IdKey]>;
-type RowWithId = Row & Record<IdKey, Id>;
+type Id = Row[IdKey];
+type FormData = NullableParsedRow<T>;
+type OperationData = VisibleParsedRow<T>;
 type OperationResult = {
   data: {
     returning: SimpleObject<Scalar>[] | null;
@@ -36,9 +34,9 @@ type OperationResult = {
   error: CombinedError | null;
 };
 
-const formValues = defineModel<Row>("formValues", { required: true });
-const selectedFields = defineModel<string[]>("selectedFields", {
-  required: true,
+const formValues = defineModel<FormData>("formValues", { required: true });
+const selectedFields = defineModel<string[] | null>("selectedFields", {
+  default: null,
 });
 const {
   name,
@@ -47,42 +45,41 @@ const {
   idKey,
   rows,
   columns,
-  getLabel = (row: Row) => String(row["label"]),
-  getData,
+  getLabel = (row: FormData) => String(row["label"]),
+  validateOperationData,
   insertData,
   upsertData,
   updateData,
   deleteData,
-  exportFields = null,
-  nullableFields = [],
 } = defineProps<{
   name: string;
   messagePrefix: string;
   rowDescriptor: T;
   idKey: IdKey;
-  rows: Row[];
-  columns: ColumnNonAbbreviable<Row>[];
-  getLabel?: (row: Row) => string;
-  getData: GetDataFn<Row, DataObj>;
-  insertData: (objects: DataObj[]) => Promise<OperationResult>;
+  rows: FormData[];
+  columns: ColumnNonAbbreviable<FormData>[];
+  getLabel?: (row: FormData) => string;
+  validateOperationData: (
+    operationData: Partial<OperationData>,
+    checkConflicts: boolean,
+  ) => void;
+  insertData: (objects: OperationData[]) => Promise<OperationResult>;
   upsertData: (
-    objects: DataObj[],
+    objects: OperationData[],
     overwrite: boolean,
   ) => Promise<OperationResult>;
   updateData: (
     ids: Id[],
-    changes: Partial<DataObj>,
+    changes: Partial<OperationData>,
   ) => Promise<OperationResult>;
   deleteData: (ids: Id[]) => Promise<OperationResult>;
-  exportFields?: string[] | null;
-  nullableFields?: string[];
 }>();
 defineSlots<{ form(slotProps: { multipleSelection: boolean }): unknown }>();
 
 const { t } = useCustomI18n();
 
 // ===== Data Table =====
-const selectedRows: Ref<RowWithId[]> = ref([]);
+const selectedRows: Ref<Row[]> = ref([]);
 const selection = computed(() => !!selectedRows.value.length);
 const multipleSelection = computed<boolean>(
   () => selectedRows.value.length > 1,
@@ -106,12 +103,14 @@ const formTitle = computed(() => {
   }
 });
 
-const openForm = (rows?: RowWithId[]) => {
+const openForm = (rows?: Row[]) => {
   if (rows) {
     selectedRows.value = rows;
   }
   formValues.value = initForm(rowDescriptor, selectedRows.value);
-  selectedFields.value = [];
+  if (selectedFields.value) {
+    selectedFields.value = [];
+  }
   isFormOpen.value = true;
 };
 
@@ -119,10 +118,61 @@ const openForm = (rows?: RowWithId[]) => {
 const errorMessage = (error: unknown) =>
   error instanceof Error ? error.message : t("notification.error.unknown");
 
+function validateFormData(): OperationData;
+function validateFormData(fields: (keyof T)[]): Partial<OperationData>;
+function validateFormData(
+  fields?: (keyof T)[],
+): OperationData | Partial<OperationData> {
+  const operationData: Partial<OperationData> = {};
+
+  Object.entries(rowDescriptor).forEach(([key, fieldDescriptor]) => {
+    if (fieldDescriptor.hidden) {
+      return;
+    }
+
+    if (fields && !fields.includes(key)) {
+      return;
+    }
+
+    let value = formValues.value[key];
+
+    if (fieldDescriptor.type === "string") {
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+      value = value || null;
+    }
+
+    if (!fieldDescriptor.nullable && value == null) {
+      throw new Error(
+        t("admin.data.error.empty_field", {
+          field: t(messagePrefix + ".form.fields." + key),
+        }),
+      );
+    }
+
+    if (fieldDescriptor.type === "number") {
+      throw new Error(
+        t("admin.data.error.not_a_number", {
+          field: t(messagePrefix + ".form.fields." + key),
+        }),
+      );
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    operationData[key as keyof OperationData] = value!;
+  });
+
+  if (!fields) {
+    return operationData as OperationData;
+  }
+
+  return operationData;
+}
+
 const insertDataHandle = async () => {
-  let dataObj: DataObj;
+  let object: OperationData;
   try {
-    dataObj = getData(formValues.value, true);
+    object = validateFormData();
+    validateOperationData(object, true);
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.invalid_form"),
@@ -131,7 +181,7 @@ const insertDataHandle = async () => {
     return;
   }
 
-  const { data, error } = await insertData([dataObj]);
+  const { data, error } = await insertData([object]);
   if (error) {
     console.error(error);
     notify(NotifyType.ERROR, {
@@ -154,11 +204,13 @@ const insertDataHandle = async () => {
 };
 
 const updateDataHandle = async () => {
-  let dataObj: Partial<DataObj>;
+  let changes: Partial<OperationData>;
   try {
-    dataObj = multipleSelection.value
-      ? getData(formValues.value, false, selectedFields.value)
-      : getData(formValues.value, false);
+    changes =
+      multipleSelection.value && selectedFields.value
+        ? validateFormData(selectedFields.value)
+        : validateFormData();
+    validateOperationData(changes, false);
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.invalid_form"),
@@ -169,7 +221,7 @@ const updateDataHandle = async () => {
 
   const { data, error } = await updateData(
     selectedRows.value.map((row) => row[idKey]),
-    dataObj,
+    changes,
   );
   if (error) {
     console.error(error);
@@ -244,9 +296,9 @@ const filterObj = computed(() => ({
   searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
 }));
 const filterMethod = (
-  rows: readonly Row[],
+  rows: readonly FormData[],
   terms: typeof filterObj.value,
-): readonly Row[] =>
+): readonly FormData[] =>
   rows.filter((row) =>
     terms.searchColumns.some((col) =>
       normalizeForSearch(String(getField(row, col.field))).includes(
@@ -268,7 +320,7 @@ watch(isImportDialogOpen, (value) => {
   }
 });
 
-const importColumns: ColumnNonAbbreviable<[string, PrimitiveTypeName]>[] = [
+const importColumns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
   {
     name: "key",
     label: t("admin.data.import.table.columns.key"),
@@ -279,20 +331,20 @@ const importColumns: ColumnNonAbbreviable<[string, PrimitiveTypeName]>[] = [
     name: "type",
     label: t("admin.data.import.table.columns.type"),
     align: "left",
-    field: ([_, typename]) => typename,
+    field: ([_, fieldDescriptor]) => fieldDescriptor.type,
     format: (val: string) => t("admin.data.import.table.type." + val),
   },
   {
     name: "non_nullable",
     label: t("admin.data.import.table.columns.non_nullable"),
     align: "center",
-    field: ([key]) => !nullableFields.includes(key),
+    field: ([_, fieldDescriptor]) => !fieldDescriptor.nullable,
     format: (val: boolean) => (val ? "✓" : "✗"),
   },
 ];
 
 const importRows = Object.entries(rowDescriptor).filter(
-  ([key]) => exportFields?.includes(key) ?? true,
+  ([_, fieldDescriptor]) => !fieldDescriptor.hidden,
 );
 
 const importRowsHandle = async () => {
@@ -317,7 +369,7 @@ const importRowsHandle = async () => {
       );
     }
 
-    let importedRows: ParsedRow<T>[];
+    let importedRows: OperationData[];
     try {
       importedRows = importCSV(text, rowDescriptor);
     } catch (error) {
@@ -327,9 +379,9 @@ const importRowsHandle = async () => {
       );
     }
 
-    const objects = importedRows.map((row, index) => {
+    importedRows.forEach((row, index) => {
       try {
-        return getData(row, false);
+        validateOperationData(row, false);
       } catch (error) {
         console.error(t("admin.data.error.invalid_row", { index }), error);
         throw new Error(
@@ -341,7 +393,7 @@ const importRowsHandle = async () => {
       }
     });
 
-    const { data, error } = await upsertData(objects, overwrite.value);
+    const { data, error } = await upsertData(importedRows, overwrite.value);
     if (error) {
       console.error(error);
       throw new Error(
@@ -380,7 +432,9 @@ const exportDataHandle = () => {
     downloadCSV(
       `${name}_${Date.now().toString()}`,
       selectedRows.value.length ? selectedRows.value : rows,
-      exportFields,
+      Object.entries(rowDescriptor)
+        .filter(([_, fieldDescriptor]) => !fieldDescriptor.hidden)
+        .map(([key]) => key),
     );
     notify(NotifyType.SUCCESS, {
       message: t(
@@ -412,7 +466,7 @@ const exportDataHandle = () => {
         :label="t('admin.data.button.edit')"
         icon="sym_s_edit"
         color="primary"
-        :disable="!selection"
+        :disable="!selection || (multipleSelection && !selectedFields)"
         no-caps
         outline
         @click="openForm()"
@@ -500,7 +554,7 @@ const exportDataHandle = () => {
               : t('admin.data.button.create')
           "
           color="primary"
-          :disable="multipleSelection && !selectedFields.length"
+          :disable="multipleSelection && !selectedFields?.length"
           flat
           square
         />

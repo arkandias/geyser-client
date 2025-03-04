@@ -1,10 +1,10 @@
 import { type ParseConfig, parse } from "papaparse";
 
 import type {
-  ParsedRow,
-  PrimitiveTypeMap,
-  PrimitiveTypeName,
+  FieldDescriptor,
+  ParsedField,
   RowDescriptor,
+  VisibleParsedRow,
 } from "@/types/admin-data.ts";
 
 /**
@@ -12,32 +12,35 @@ import type {
  * boolean) based on the field descriptor. Handles nullable fields and trims
  * whitespace. Throws if value cannot be parsed into the specified type.
  */
-export const parseField = <T extends PrimitiveTypeName>(
+export const parseField = <T extends FieldDescriptor>(
   str: string,
-  typename: T,
-): PrimitiveTypeMap<T> => {
+  fieldDescriptor: T,
+): ParsedField<T> => {
   const trimmed = str.trim();
   if (!trimmed) {
-    return null as PrimitiveTypeMap<T>;
+    if (fieldDescriptor.nullable) {
+      return null as ParsedField<T>;
+    }
+    throw new Error(`Non-nullable field '${str}' is empty`);
   }
-  switch (typename) {
+  switch (fieldDescriptor.type) {
     case "string":
-      return trimmed as PrimitiveTypeMap<T>;
+      return trimmed as ParsedField<T>;
     case "number": {
-      return Number(trimmed) as PrimitiveTypeMap<T>;
+      return Number(trimmed) as ParsedField<T>;
     }
     case "boolean": {
       switch (trimmed) {
         case "true":
-          return true as PrimitiveTypeMap<T>;
+          return true as ParsedField<T>;
         case "false":
-          return false as PrimitiveTypeMap<T>;
+          return false as ParsedField<T>;
         default:
           throw new Error("Boolean fields must be 'true' or 'false'");
       }
     }
     default:
-      throw new Error(`Invalid type: ${typename as string}`);
+      throw new Error(`Invalid type: ${fieldDescriptor.type as string}`);
   }
 };
 
@@ -50,8 +53,8 @@ const transform =
   (rowDescriptor: RowDescriptor): ParseConfig["transform"] =>
   (value: string, field: string | number) => {
     const descriptor = rowDescriptor[field];
-    if (descriptor === undefined) {
-      throw new Error(`Unknown field: ${String(field)}`);
+    if (descriptor === undefined || descriptor.hidden) {
+      throw new Error(`Unexpected field: ${String(field)}`);
     }
     try {
       return parseField(value, descriptor);
@@ -69,8 +72,8 @@ const transform =
 export const importCSV = <T extends RowDescriptor>(
   text: string,
   rowDescriptor: T,
-): ParsedRow<T>[] => {
-  const parseResult = parse<ParsedRow<T>>(text, {
+): VisibleParsedRow<T>[] => {
+  const parseResult = parse<VisibleParsedRow<T>>(text, {
     delimiter: ",",
     header: true,
     skipEmptyLines: true,
@@ -82,12 +85,12 @@ export const importCSV = <T extends RowDescriptor>(
     throw new Error(`Parse error:\n  ${errorMessages}`);
   }
 
-  // const missingHeaders = Object.keys(rowDescriptor).filter(
-  //   (key) => !parseResult.meta.fields?.includes(key),
-  // );
-  // if (missingHeaders.length) {
-  //   throw new Error(`Missing required headers: ${missingHeaders.join(", ")}`);
-  // }
+  const missingHeaders = Object.keys(rowDescriptor).filter(
+    (key) => !parseResult.meta.fields?.includes(key),
+  );
+  if (missingHeaders.length) {
+    throw new Error(`Missing required headers: ${missingHeaders.join(", ")}`);
+  }
 
   return parseResult.data;
 };

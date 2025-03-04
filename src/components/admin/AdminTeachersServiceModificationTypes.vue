@@ -12,7 +12,7 @@ import {
   ServiceModificationTypeUpdateColumn,
   UpdateServiceModificationTypesDocument,
 } from "@/gql/graphql.ts";
-import type { ParsedRow } from "@/types/admin-data.ts";
+import type { NullableParsedRow } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
 import { initForm } from "@/utils/admin-data.ts";
 import { toSlug } from "@/utils/misc.ts";
@@ -35,7 +35,7 @@ const rowDescriptor = {
 
 const exportFields = ["value", "label", "description"];
 
-type Row = ParsedRow<typeof rowDescriptor>;
+type Row = NullableParsedRow<typeof rowDescriptor>;
 type IdKey = "value";
 type Id = Row[IdKey];
 type DataObj = {

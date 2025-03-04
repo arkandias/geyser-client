@@ -1,21 +1,26 @@
-import type { ParsedRow, RowDescriptor } from "@/types/admin-data.ts";
+import type {
+  NullableParsedRow,
+  ParsedRow,
+  RowDescriptor,
+} from "@/types/admin-data.ts";
+
+export const inputToNumber = (input: string | number | null) =>
+  typeof input === "string" ? (input === "" ? null : Number(input)) : input;
 
 export const nullRow = <T extends RowDescriptor>(
   rowDescriptor: T,
-): ParsedRow<T> =>
+): NullableParsedRow<T> =>
   Object.fromEntries(
     Object.keys(rowDescriptor).map((key) => [key, null]),
-  ) as ParsedRow<T>;
+  ) as NullableParsedRow<T>;
 
 export const initForm = <T extends RowDescriptor>(
   rowDescriptor: T,
   selectedRows?: ParsedRow<T>[],
-): ParsedRow<T> =>
-  selectedRows?.[0]
+): NullableParsedRow<T> =>
+  selectedRows?.length === 1
     ? {
-        ...selectedRows[0],
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        ...selectedRows[0]!,
       }
     : nullRow(rowDescriptor);
-
-export const inputToNumber = (input: string | number | null) =>
-  typeof input === "string" ? (input === "" ? null : Number(input)) : input;

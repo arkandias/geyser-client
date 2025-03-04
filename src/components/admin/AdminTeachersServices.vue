@@ -14,7 +14,7 @@ import {
   UpdateServicesDocument,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/years.ts";
-import type { ParsedRow } from "@/types/admin-data.ts";
+import type { NullableParsedRow } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
 import { initForm } from "@/utils/admin-data.ts";
 import { formatUser } from "@/utils/format.ts";
@@ -39,7 +39,7 @@ const rowDescriptor = {
 
 const exportFields = ["year", "uid", "hours", "message"];
 
-type Row = ParsedRow<typeof rowDescriptor>;
+type Row = NullableParsedRow<typeof rowDescriptor>;
 type IdKey = "id";
 type Id = Row[IdKey];
 type DataObj = {
