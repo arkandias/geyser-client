@@ -25,8 +25,8 @@ const { dataFragment } = defineProps<{
 
 graphql(`
   query GetModificationTypes {
-    modificationTypes: serviceModificationType(orderBy: { value: ASC }) {
-      value
+    modificationTypes: serviceModificationType(orderBy: { label: ASC }) {
+      id
       label
       description
     }
@@ -44,9 +44,9 @@ graphql(`
         }
       }
     }
-    modifications(orderBy: [{ typeByType: { label: ASC } }, { hours: ASC }]) {
+    modifications(orderBy: [{ type: { label: ASC } }, { hours: ASC }]) {
       id
-      modificationType: typeByType {
+      modificationType: type {
         label
       }
       hours
@@ -64,11 +64,15 @@ graphql(`
 
   mutation InsertModification(
     $serviceId: Int!
-    $modificationType: String!
+    $modificationTypeId: Int!
     $hours: Float!
   ) {
     serviceModification: insertServiceModificationOne(
-      object: { serviceId: $serviceId, type: $modificationType, hours: $hours }
+      object: {
+        serviceId: $serviceId
+        typeId: $modificationTypeId
+        hours: $hours
+      }
     ) {
       id
     }
@@ -134,15 +138,15 @@ const modificationTypesOptions = computed(
   () => modificationTypesQueryResult.data.value?.modificationTypes ?? [],
 );
 const isModificationFormOpen = ref(false);
-const modificationType = ref<string | null>(null);
+const modificationTypeId = ref<number | null>(null);
 const modificationHours = ref(0);
 const resetModificationForm = (): void => {
   isModificationFormOpen.value = false;
-  modificationType.value = null;
+  modificationTypeId.value = null;
   modificationHours.value = 0;
 };
 const submitModificationForm = async (): Promise<void> => {
-  if (!modificationType.value) {
+  if (!modificationTypeId.value) {
     notify(NotifyType.ERROR, {
       message: "Formulaire non valide",
       caption: "Sélectionnez un type de modification de service",
@@ -158,7 +162,7 @@ const submitModificationForm = async (): Promise<void> => {
   }
   const result = await insertModification.executeMutation({
     serviceId: service.value.id,
-    modificationType: modificationType.value,
+    modificationTypeId: modificationTypeId.value,
     hours: modificationHours.value,
   });
   if (result.data?.serviceModification && !result.error) {
@@ -287,9 +291,10 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             </QTooltip>
           </QBtn>
           <QSelect
-            v-model="modificationType"
+            v-model="modificationTypeId"
             :options="modificationTypesOptions"
             label="Type"
+            option-value="id"
             emit-value
             map-options
             square

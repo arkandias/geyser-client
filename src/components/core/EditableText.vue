@@ -19,7 +19,7 @@ const { t } = useCustomI18n();
 
 const editorText = ref("");
 
-const onSave = async (): Promise<void> => {
+const onSave = async () => {
   if (isOnlyWhitespace(editorText.value)) {
     editorText.value = "";
   }
@@ -48,9 +48,14 @@ const onSave = async (): Promise<void> => {
   showEditor.value = false;
 };
 
-const onAbort = (): void => {
+const onAbort = () => {
   editorText.value = text;
   showEditor.value = false;
+};
+
+const onDelete = async () => {
+  editorText.value = "";
+  await onSave();
 };
 
 watch(() => text, onAbort, { immediate: true });
@@ -76,6 +81,8 @@ const isOnlyWhitespace = (htmlString: string) => {
   // Check if remaining content is only whitespace
   return /^\s*$/.test(textOnly);
 };
+
+defineExpose({ onDelete });
 </script>
 
 <template>

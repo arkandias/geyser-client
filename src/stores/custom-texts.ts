@@ -1,58 +1,45 @@
 import DOMPurify from "dompurify";
 import { computed, ref } from "vue";
 
-import { PHASES } from "@/config/types/phases.ts";
+import {
+  CUSTOM_TEXT_KEYS,
+  type CustomTextKey,
+  isCustomTextKey,
+} from "@/config/types/custom-text-keys.ts";
 
-export const CUSTOM_TEXT_KEYS = [
-  "home_title",
-  `home_subtitle_${PHASES.REQUESTS}`,
-  `home_subtitle_${PHASES.ASSIGNMENTS}`,
-  `home_subtitle_${PHASES.RESULTS}`,
-  `home_subtitle_${PHASES.SHUTDOWN}`,
-  `home_message_${PHASES.REQUESTS}`,
-  `home_message_${PHASES.ASSIGNMENTS}`,
-  `home_message_${PHASES.RESULTS}`,
-  `home_message_${PHASES.SHUTDOWN}`,
-  "contact",
-  "legal_notice",
-] as const;
-
-type CustomTexts = {
-  key: (typeof CUSTOM_TEXT_KEYS)[number];
-  value: string | null;
-};
-
-const customTexts = ref<CustomTexts[]>(
-  CUSTOM_TEXT_KEYS.map((key) => ({
-    key,
-    value: null,
-  })),
+const customTexts = ref(
+  CUSTOM_TEXT_KEYS.reduce(
+    (obj, key) => ({ ...obj, [key]: null }),
+    {} as Record<CustomTextKey, string | null>,
+  ),
 );
+
 const customTextsSanitized = computed(() =>
-  customTexts.value.map((text) => ({
-    ...text,
-    value: DOMPurify.sanitize(text.value ?? ""),
-  })),
+  CUSTOM_TEXT_KEYS.reduce(
+    (obj, key) => ({
+      ...obj,
+      [key]: DOMPurify.sanitize(customTexts.value[key] ?? ""),
+    }),
+    {} as Record<CustomTextKey, string>,
+  ),
 );
 
-const getValue = (key: string) =>
-  computed(
-    () =>
-      customTextsSanitized.value.find((text) => text.key === key)?.value ??
-      null,
-  );
+const setCustomTexts = (newCustomTexts: { key: string; value: string }[]) => {
+  CUSTOM_TEXT_KEYS.forEach((key) => {
+    customTexts.value[key] =
+      newCustomTexts.find((text) => text.key === key)?.value ?? null;
+  });
 
-const setValue = (key: string, value: string) => {
-  const customText = customTexts.value.find((text) => text.key === key);
-  if (!customText) {
-    console.warn(`Invalid custom text key: ${key}`);
-    return;
+  // Log invalid keys (if any)
+  const invalidKeys = newCustomTexts
+    .map(({ key }) => key)
+    .filter((key) => !isCustomTextKey(key));
+  if (invalidKeys.length) {
+    console.error(`Invalid custom text keys: ${invalidKeys.join(", ")}`);
   }
-  customText.value = value;
 };
 
 export const useCustomTextsStore = () => ({
   customTexts: customTextsSanitized,
-  getValue,
-  setValue,
+  setCustomTexts,
 });

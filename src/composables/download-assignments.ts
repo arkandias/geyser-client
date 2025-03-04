@@ -26,7 +26,7 @@ graphql(`
         { course: { track: { name: ASC } } }
         { course: { semester: ASC } }
         { course: { name: ASC } }
-        { course: { typeByType: { label: ASC } } }
+        { course: { type: { label: ASC } } }
         { service: { teacher: { lastname: ASC } } }
         { service: { teacher: { firstname: ASC } } }
       ]
@@ -55,7 +55,7 @@ graphql(`
           }
         }
         semester
-        typeByType {
+        type {
           label
         }
       }
@@ -90,7 +90,7 @@ export const useDownloadAssignments = () => {
       [t("course.track")]: a.course.track ? displayName(a.course.track) : null,
       [t("course.label")]: a.course.name,
       [t("course.semester")]: a.course.semester,
-      [t("course.type")]: a.course.typeByType.label,
+      [t("course.type")]: a.course.type.label,
       [t("role.teacher")]: formatUser(a.service.teacher),
       [t("teacher.email")]: a.service.teacher.uid,
     }));

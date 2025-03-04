@@ -40,7 +40,7 @@ graphql(`
         { track: { name: ASC } }
         { semester: ASC }
         { name: ASC }
-        { type: ASC }
+        { type: { label: ASC } }
       ]
     ) {
       ...CourseRow

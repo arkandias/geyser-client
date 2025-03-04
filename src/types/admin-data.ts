@@ -5,11 +5,11 @@ export type SimpleObject<T extends Scalar> = {
 
 export type PrimitiveTypeName = "string" | "number" | "boolean";
 export type PrimitiveTypeMap<T extends PrimitiveTypeName> = T extends "string"
-  ? string
+  ? string | null
   : T extends "number"
-    ? number
+    ? number | null
     : T extends "boolean"
-      ? boolean
+      ? boolean | null
       : never;
 
 export type FieldDescriptor = {
@@ -21,19 +21,19 @@ export type ParsedField<T extends FieldDescriptor> = T["nullable"] extends true
   ? PrimitiveTypeMap<T["type"]> | null
   : PrimitiveTypeMap<T["type"]>;
 
-export type RowDescriptor = Record<string, FieldDescriptor>;
+export type RowDescriptor = Record<string, PrimitiveTypeName>;
 
 export type ParsedRow<T extends RowDescriptor> = {
-  -readonly [K in keyof T]: ParsedField<T[K]>;
+  -readonly [K in keyof T]: PrimitiveTypeMap<T[K]>;
 };
 
-export type Header = { key: string; descriptor: FieldDescriptor };
+export type Header = { key: string; typename: PrimitiveTypeName };
 
 export type RowFromHeaders<T extends readonly Header[]> = ParsedRow<{
-  [K in T[number]["key"]]: Extract<T[number], { key: K }>["descriptor"];
+  [K in T[number]["key"]]: Extract<T[number], { key: K }>["typename"];
 }>;
 
 export type GetDataFn<Row, DataObject> = {
-  (row: Row): DataObject;
-  (row: Row, fields: string[]): Partial<DataObject>;
+  (row: Row, checkConflicts: boolean): DataObject;
+  (row: Row, checkConflicts: boolean, fields: string[]): Partial<DataObject>;
 };

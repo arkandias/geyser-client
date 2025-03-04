@@ -13,7 +13,7 @@ defineSlots<{ default(): unknown }>();
 graphql(`
   fragment CourseExpansion on Course {
     name
-    courseType: typeByType {
+    courseType: type {
       label
     }
     semester

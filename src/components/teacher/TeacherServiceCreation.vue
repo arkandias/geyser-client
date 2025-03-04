@@ -18,7 +18,7 @@ const { year, uid, dataFragment } = defineProps<{
 graphql(`
   fragment TeacherNoService on Teacher {
     baseServiceHours
-    positionByPosition {
+    position {
       baseServiceHours
     }
   }
@@ -43,12 +43,12 @@ const baseServiceHours = ref(
   // eslint-disable-next-line vue/no-ref-object-reactivity-loss
   data.value.baseServiceHours ??
     // eslint-disable-next-line vue/no-ref-object-reactivity-loss
-    data.value.positionByPosition?.baseServiceHours ??
+    data.value.position?.baseServiceHours ??
     0,
 );
 const resetServiceCreation = (): void => {
   isServiceFormOpen.value = false;
-  baseServiceHours.value = data.value.positionByPosition?.baseServiceHours ?? 0;
+  baseServiceHours.value = data.value.position?.baseServiceHours ?? 0;
 };
 const submitServiceCreation = async (): Promise<void> => {
   if (baseServiceHours.value < 0) {

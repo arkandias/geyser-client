@@ -56,11 +56,13 @@ const fetching = ref(false);
 
 const fetchProfile = async (uid: string) => {
   fetching.value = true;
+
   const profile = await useQuery({
     query: GetUserProfileDocument,
     variables: { uid },
     context: { requestPolicy: "network-only" },
   }).then((result) => result.data.value?.profile ?? null);
+
   if (profile) {
     setProfile(profile);
     setRoles(
@@ -69,6 +71,7 @@ const fetchProfile = async (uid: string) => {
         .filter((role) => isRole(role))
         .concat(ROLES.TEACHER),
     );
+
     if (roles.value.includes(ROLES.ADMIN)) {
       activeRole.value = ROLES.ADMIN;
     }
@@ -91,6 +94,7 @@ const fetchProfile = async (uid: string) => {
     });
     loaded.value = false;
   }
+
   fetching.value = false;
 };
 

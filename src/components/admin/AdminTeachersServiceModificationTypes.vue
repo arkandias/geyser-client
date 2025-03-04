@@ -46,7 +46,7 @@ type DataObj = {
 
 graphql(`
   fragment AdminServiceModificationType on ServiceModificationType {
-    value
+    id
     label
     description
   }
@@ -57,29 +57,29 @@ graphql(`
   ) {
     insertServiceModificationType(objects: $objects, onConflict: $onConflict) {
       returning {
-        value
+        id
       }
     }
   }
 
   mutation UpdateServiceModificationTypes(
-    $values: [String!]!
+    $ids: [Int!]!
     $changes: ServiceModificationTypeSetInput!
   ) {
     updateServiceModificationType(
-      where: { value: { _in: $values } }
+      where: { id: { _in: $ids } }
       _set: $changes
     ) {
       returning {
-        value
+        id
       }
     }
   }
 
-  mutation DeleteServiceModificationTypes($values: [String!]!) {
-    deleteServiceModificationType(where: { value: { _in: $values } }) {
+  mutation DeleteServiceModificationTypes($ids: [Int!]!) {
+    deleteServiceModificationType(where: { id: { _in: $ids } }) {
       returning {
-        value
+        id
       }
     }
   }
@@ -102,7 +102,7 @@ const deleteServiceModificationTypes = useMutation(
 
 const rows = computed<Row[]>(() =>
   serviceModificationTypes.value.map((smt) => ({
-    value: smt.value,
+    id: smt.id,
     label: smt.label,
     description: smt.description ?? null,
   })),

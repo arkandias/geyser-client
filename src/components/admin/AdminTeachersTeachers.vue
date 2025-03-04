@@ -56,7 +56,7 @@ graphql(`
     firstname
     lastname
     alias
-    position: positionByPosition {
+    position: position {
       label
     }
     baseServiceHours
@@ -65,7 +65,7 @@ graphql(`
   }
 
   fragment AdminTeacherPosition on Position {
-    value
+    id
     label
   }
 

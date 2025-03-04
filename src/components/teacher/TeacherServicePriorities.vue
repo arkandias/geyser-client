@@ -22,7 +22,7 @@ graphql(`
     priorities(
       orderBy: [
         { course: { semester: ASC } }
-        { course: { typeByType: { label: ASC } } }
+        { course: { type: { label: ASC } } }
         { course: { programId: ASC } }
         { course: { trackId: ASC } }
         { course: { name: ASC } }
@@ -33,7 +33,7 @@ graphql(`
         name
         nameShort
         semester
-        typeByType {
+        type {
           label
         }
         program {
@@ -72,9 +72,7 @@ const priorities = computed(
 type Priority = ArrayElement<TeacherServicePrioritiesFragment["priorities"]>;
 
 const formatPriorityTS = (priority: Priority) =>
-  priority.course.typeByType.label +
-  " au S" +
-  priority.course.semester.toString();
+  priority.course.type.label + " au S" + priority.course.semester.toString();
 
 const formatPriority = (priority: Priority) => displayName(priority.course);
 

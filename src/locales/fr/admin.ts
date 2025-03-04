@@ -96,6 +96,7 @@ la supprimer.`,
         label: "Personnalisation de l'interface",
         button: {
           edit: "Éditer",
+          delete: "Supprimer",
         },
         contact: "Contact",
         legal_notice: "Mentions légales",
@@ -195,7 +196,10 @@ vous ne pourrez pas les supprimer.`,
           description: "Description",
           base_service_hours: "Service de base (@:unit.weighted_hours)",
           error: {
+            value_empty: "Entrez une valeur",
             label_empty: "Entrez un label",
+            base_service_hours_nan: "Entrez un nombre d'heures valide",
+            conflict_label: "Le label existe déjà",
           },
         },
         data: {

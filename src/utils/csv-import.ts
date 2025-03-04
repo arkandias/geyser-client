@@ -1,9 +1,9 @@
 import { type ParseConfig, parse } from "papaparse";
 
 import type {
-  FieldDescriptor,
-  ParsedField,
   ParsedRow,
+  PrimitiveTypeMap,
+  PrimitiveTypeName,
   RowDescriptor,
 } from "@/types/admin-data.ts";
 
@@ -12,39 +12,32 @@ import type {
  * boolean) based on the field descriptor. Handles nullable fields and trims
  * whitespace. Throws if value cannot be parsed into the specified type.
  */
-export const parseField = <T extends FieldDescriptor>(
+export const parseField = <T extends PrimitiveTypeName>(
   str: string,
-  descriptor: T,
-): ParsedField<T> => {
+  typename: T,
+): PrimitiveTypeMap<T> => {
   const trimmed = str.trim();
   if (!trimmed) {
-    if (descriptor.nullable) {
-      return null as ParsedField<T>;
-    }
-    throw new Error(`Non-nullable field is empty`);
+    return null as PrimitiveTypeMap<T>;
   }
-  switch (descriptor.type) {
+  switch (typename) {
     case "string":
-      return trimmed as ParsedField<T>;
+      return trimmed as PrimitiveTypeMap<T>;
     case "number": {
-      const num = Number(trimmed);
-      if (Number.isNaN(num)) {
-        throw new Error(`Not a number`);
-      }
-      return num as ParsedField<T>;
+      return Number(trimmed) as PrimitiveTypeMap<T>;
     }
     case "boolean": {
       switch (trimmed) {
         case "true":
-          return true as ParsedField<T>;
+          return true as PrimitiveTypeMap<T>;
         case "false":
-          return false as ParsedField<T>;
+          return false as PrimitiveTypeMap<T>;
         default:
           throw new Error("Boolean fields must be 'true' or 'false'");
       }
     }
     default:
-      throw new Error(`Invalid type: ${descriptor.type as string}`);
+      throw new Error(`Invalid type: ${typename as string}`);
   }
 };
 
@@ -89,12 +82,12 @@ export const importCSV = <T extends RowDescriptor>(
     throw new Error(`Parse error:\n  ${errorMessages}`);
   }
 
-  const missingHeaders = Object.keys(rowDescriptor).filter(
-    (key) => !parseResult.meta.fields?.includes(key),
-  );
-  if (missingHeaders.length) {
-    throw new Error(`Missing required headers: ${missingHeaders.join(", ")}`);
-  }
+  // const missingHeaders = Object.keys(rowDescriptor).filter(
+  //   (key) => !parseResult.meta.fields?.includes(key),
+  // );
+  // if (missingHeaders.length) {
+  //   throw new Error(`Missing required headers: ${missingHeaders.join(", ")}`);
+  // }
 
   return parseResult.data;
 };

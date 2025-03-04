@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref, toValue } from "vue";
+import { computed, ref, toValue } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { useDownloadAssignments } from "@/composables/download-assignments.ts";
@@ -59,8 +59,8 @@ graphql(`
       nameShort
       visible
     }
-    courseType: typeByType {
-      value
+    courseType: type {
+      id
       label
       coefficient
     }
@@ -69,6 +69,7 @@ graphql(`
     numberOfGroups: groupsEffective
     totalHours: totalHoursEffective
     requests {
+      id
       type
       hours
       isPriority
@@ -358,7 +359,7 @@ const programsOptions = computed(() =>
       value: c.program.id,
       label: formatProgram(c.program),
     }))
-    .filter(uniqueValue)
+    .filter(uniqueValue("value"))
     .sort(compare("label")),
 );
 
@@ -367,7 +368,7 @@ const courseTypes = ref<string[]>([]);
 const courseTypesOptions = computed(() =>
   courses.value
     .map((c) => c.courseType)
-    .filter(uniqueValue)
+    .filter(uniqueValue("id"))
     .sort(compare("label")),
 );
 
@@ -379,7 +380,7 @@ const semestersOptions = computed(() =>
       value: c.semester,
       label: "S" + c.semester.toString(),
     }))
-    .filter(uniqueValue)
+    .filter(uniqueValue("value"))
     .sort(compare("label")),
 );
 
@@ -387,19 +388,17 @@ const semestersOptions = computed(() =>
 const search = ref<string | null>(null);
 
 // Filter attributes
-const filterObj = reactive({
-  teacherRequests: requests,
-  programs,
-  courseTypes,
-  semesters,
-  search: computed(() => normalizeForSearch(search.value ?? "")),
-  searchColumns: computed(() =>
-    columns.filter((col) => searchableColumns.includes(col.name)),
-  ),
-});
+const filterObj = computed(() => ({
+  teacherRequests: requests.value,
+  programs: programs.value,
+  courseTypes: courseTypes.value,
+  semesters: semesters.value,
+  search: normalizeForSearch(search.value ?? ""),
+  searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
+}));
 const filterMethod = (
   rows: readonly CourseRow[],
-  terms: typeof filterObj,
+  terms: typeof filterObj.value,
 ): readonly CourseRow[] =>
   rows.filter((row) =>
     terms.teacherRequests

@@ -14,7 +14,7 @@ graphql(`
     firstname
     lastname
     alias
-    positionByPosition {
+    position {
       label
     }
   }
@@ -29,8 +29,8 @@ const teacher = computed(() =>
   <QCard flat square class="text-center">
     <QCardSection>
       <div class="text-h5">{{ formatUser(teacher) }}</div>
-      <div v-if="teacher.positionByPosition" class="text-body1 text-italic">
-        {{ teacher.positionByPosition.label }}
+      <div v-if="teacher.position" class="text-body1 text-italic">
+        {{ teacher.position.label }}
       </div>
     </QCardSection>
   </QCard>

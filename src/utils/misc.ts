@@ -23,11 +23,10 @@ export const toSlug = (str: string) =>
     .replace(/[\s-]+/g, "_") // Replace spaces and hyphens with underscore
     .trim(); // Remove leading/trailing spaces
 
-export const uniqueValue = <T extends { value: unknown }>(
-  element: T,
-  index: number,
-  array: T[],
-) => array.findIndex((el) => el.value === element.value) === index;
+export const uniqueValue =
+  <K extends string, T extends Record<K, unknown>>(value: K) =>
+  (element: T, index: number, array: T[]) =>
+    array.findIndex((el) => el[value] === element[value]) === index;
 
 const compareStrings = (a: string, b: string) => (a < b ? -1 : b < a ? 1 : 0);
 

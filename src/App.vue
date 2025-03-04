@@ -3,7 +3,7 @@ import { useQuery } from "@urql/vue";
 import { computed, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import { PHASES, isPhase } from "@/config/types/phases.ts";
+import { PHASES } from "@/config/types/phases.ts";
 import { ROLES } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
 import {
@@ -53,7 +53,7 @@ const { fetchProfile, fetching, loaded, isActive, activeRole } =
   useProfileStore();
 const { currentPhase, setCurrentPhase } = usePhaseStore();
 const { setYears } = useYearsStore();
-const { setValue } = useCustomTextsStore();
+const { setCustomTexts } = useCustomTextsStore();
 
 // User profile and active role
 const claims = getClaims();
@@ -74,11 +74,7 @@ watch(
       // not fetched yet
       return;
     }
-    if (isPhase(value.phases[0].value)) {
-      setCurrentPhase(value.phases[0].value);
-      return;
-    }
-    console.error(`Invalid current phase: ${value.phases[0].value}`);
+    setCurrentPhase(value.phases[0].value);
   },
   { immediate: true },
 );
@@ -93,11 +89,15 @@ const yearsQueryResult = useQuery({
 watch(
   yearsQueryResult.data,
   (value) => {
+    if (value?.years === undefined) {
+      // not fetched yet
+      return;
+    }
     setYears(
-      value?.years.map((year) => ({
+      value.years.map((year) => ({
         ...year,
         current: !!year.current,
-      })) ?? [],
+      })),
     );
   },
   { immediate: true },
@@ -112,34 +112,36 @@ const customTextsQueryResult = useQuery({
 watch(
   customTextsQueryResult.data,
   (value) => {
-    value?.customTexts.forEach((text) => {
-      setValue(text.key, text.value);
-    });
+    if (value?.customTexts === undefined) {
+      // not fetched yet
+      return;
+    }
+    setCustomTexts(value.customTexts);
   },
   { immediate: true },
 );
 
 const accessDeniedMessage = computed(() => {
   if (!claims) {
-    return t("home.auth.not_authenticated");
+    return t("home.alert.no_auth");
   }
   if (fetching.value) {
-    return t("home.auth.loading_profile");
+    return t("home.alert.loading_profile");
   }
   if (!loaded.value) {
-    return t("home.auth.profile_load_failed");
+    return t("home.alert.profile_not_loaded");
   }
   if (!isActive.value) {
-    return t("home.auth.profile_inactive");
+    return t("home.alert.profile_not_active");
   }
   if (currentPhaseQueryResult.fetching.value) {
-    return t("home.auth.loading_phase");
+    return t("home.alert.loading_phase");
   }
   if (
-    activeRole.value !== ROLES.ADMIN &&
-    currentPhase.value === PHASES.SHUTDOWN
+    currentPhase.value === PHASES.SHUTDOWN &&
+    activeRole.value !== ROLES.ADMIN
   ) {
-    return t("home.auth.system_closed");
+    return t("home.alert.shutdown");
   }
   return "";
 });
@@ -157,7 +159,7 @@ const devClass = {
     <TheHeader :disable="!accessGranted" />
     <QPageContainer>
       <RouterView v-if="accessGranted" />
-      <PageHome v-else :message="accessDeniedMessage" />
+      <PageHome v-else :alert="accessDeniedMessage" />
     </QPageContainer>
   </QLayout>
 </template>

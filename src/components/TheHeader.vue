@@ -46,7 +46,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         :disable
         flat
         square
-        @click="router.replace({ name: 'home' })"
+        @click="router.push({ name: 'home' })"
       >
         <QTooltip>{{ t("header.home.label") }}</QTooltip>
       </QBtn>
@@ -57,7 +57,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         :disable
         flat
         square
-        @click="router.replace({ name: 'teacher' })"
+        @click="router.push({ name: 'teacher' })"
       >
         <QTooltip>{{ t("header.teacher.label") }}</QTooltip>
       </QBtn>
@@ -68,7 +68,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         :disable
         flat
         square
-        @click="router.replace({ name: 'courses' })"
+        @click="router.push({ name: 'courses' })"
       >
         <QTooltip>{{ t("header.courses.label") }}</QTooltip>
       </QBtn>
@@ -87,7 +87,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         :color="buttonColor(router.currentRoute.value.name === 'admin')"
         flat
         square
-        @click="router.replace({ name: 'admin' })"
+        @click="router.push({ path: '/admin/general' })"
       >
         <QTooltip>{{ t("header.admin.label") }}</QTooltip>
       </QBtn>

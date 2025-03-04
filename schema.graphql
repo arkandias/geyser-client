@@ -1001,10 +1001,8 @@ type Course {
   """Computed study year (1-3) based on semester"""
   cycleYear: Int!
 
-  """Detailed course description and objectives"""
+  """Course description"""
   description: String
-  ensIdImport: String
-  formationIdImport: String
 
   """Standard number of student groups"""
   groups: Int!
@@ -1032,7 +1030,6 @@ type Course {
 
   """Abbreviated course name"""
   nameShort: String
-  nomImport: String
 
   """An object relationship"""
   parent: Course
@@ -1137,11 +1134,11 @@ type Course {
   """Optional track specialization for this course"""
   trackId: Int
 
-  """Course delivery type affecting workload calculation"""
-  type: String!
-
   """An object relationship"""
-  typeByType: CourseType!
+  type: CourseType!
+
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Int!
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -1264,6 +1261,9 @@ type CourseAvgFields {
   """Optional track specialization for this course"""
   trackId: Float
 
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Float
+
   """Academic year when the course is offered"""
   year: Float
 }
@@ -1313,6 +1313,9 @@ input CourseAvgOrderBy {
   """Optional track specialization for this course"""
   trackId: OrderBy
 
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: OrderBy
+
   """Academic year when the course is offered"""
   year: OrderBy
 }
@@ -1331,8 +1334,6 @@ input CourseBoolExp {
   createdAt: TimestamptzComparisonExp
   cycleYear: IntComparisonExp
   description: StringComparisonExp
-  ensIdImport: StringComparisonExp
-  formationIdImport: StringComparisonExp
   groups: IntComparisonExp
   groupsAdjusted: IntComparisonExp
   groupsEffective: IntComparisonExp
@@ -1342,7 +1343,6 @@ input CourseBoolExp {
   id: IntComparisonExp
   name: StringComparisonExp
   nameShort: StringComparisonExp
-  nomImport: StringComparisonExp
   parent: CourseBoolExp
   parentId: IntComparisonExp
   priorities: PriorityBoolExp
@@ -1356,8 +1356,8 @@ input CourseBoolExp {
   totalHoursEffective: FloatComparisonExp
   track: TrackBoolExp
   trackId: IntComparisonExp
-  type: StringComparisonExp
-  typeByType: CourseTypeBoolExp
+  type: CourseTypeBoolExp
+  typeId: IntComparisonExp
   updatedAt: TimestamptzComparisonExp
   visible: BooleanComparisonExp
   year: IntComparisonExp
@@ -1369,19 +1369,14 @@ unique or primary key constraints on table "course"
 """
 enum CourseConstraint {
   """
-  unique or primary key constraint on columns "ens_id_import"
-  """
-  course_ens_id_import_key
-
-  """
   unique or primary key constraint on columns "id"
   """
   course_pkey
 
   """
-  unique or primary key constraint on columns "track_id", "semester", "type", "program_id", "name", "year"
+  unique or primary key constraint on columns "track_id", "semester", "program_id", "name", "year", "type_id"
   """
-  course_year_program_id_track_id_name_semester_type_key
+  course_year_program_id_track_id_name_semester_type_id_key
 }
 
 """
@@ -1420,6 +1415,9 @@ input CourseIncInput {
   """Optional track specialization for this course"""
   trackId: Int
 
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Int
+
   """Academic year when the course is offered"""
   year: Int
 }
@@ -1434,10 +1432,8 @@ input CourseInsertInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Detailed course description and objectives"""
+  """Course description"""
   description: String
-  ensIdImport: String
-  formationIdImport: String
 
   """Standard number of student groups"""
   groups: Int
@@ -1459,7 +1455,6 @@ input CourseInsertInput {
 
   """Abbreviated course name"""
   nameShort: String
-  nomImport: String
   parent: CourseObjRelInsertInput
 
   """Reference to previous year's version of this course"""
@@ -1482,10 +1477,10 @@ input CourseInsertInput {
 
   """Optional track specialization for this course"""
   trackId: Int
+  type: CourseTypeObjRelInsertInput
 
-  """Course delivery type affecting workload calculation"""
-  type: String
-  typeByType: CourseTypeObjRelInsertInput
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Int
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -1508,10 +1503,8 @@ type CourseMaxFields {
   """Computed study year (1-3) based on semester"""
   cycleYear: Int
 
-  """Detailed course description and objectives"""
+  """Course description"""
   description: String
-  ensIdImport: String
-  formationIdImport: String
 
   """Standard number of student groups"""
   groups: Int
@@ -1539,7 +1532,6 @@ type CourseMaxFields {
 
   """Abbreviated course name"""
   nameShort: String
-  nomImport: String
 
   """Reference to previous year's version of this course"""
   parentId: Int
@@ -1563,8 +1555,8 @@ type CourseMaxFields {
   """Optional track specialization for this course"""
   trackId: Int
 
-  """Course delivery type affecting workload calculation"""
-  type: String
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Int
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -1585,10 +1577,8 @@ input CourseMaxOrderBy {
   """Computed study year (1-3) based on semester"""
   cycleYear: OrderBy
 
-  """Detailed course description and objectives"""
+  """Course description"""
   description: OrderBy
-  ensIdImport: OrderBy
-  formationIdImport: OrderBy
 
   """Standard number of student groups"""
   groups: OrderBy
@@ -1616,7 +1606,6 @@ input CourseMaxOrderBy {
 
   """Abbreviated course name"""
   nameShort: OrderBy
-  nomImport: OrderBy
 
   """Reference to previous year's version of this course"""
   parentId: OrderBy
@@ -1635,8 +1624,8 @@ input CourseMaxOrderBy {
   """Optional track specialization for this course"""
   trackId: OrderBy
 
-  """Course delivery type affecting workload calculation"""
-  type: OrderBy
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: OrderBy
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -1655,10 +1644,8 @@ type CourseMinFields {
   """Computed study year (1-3) based on semester"""
   cycleYear: Int
 
-  """Detailed course description and objectives"""
+  """Course description"""
   description: String
-  ensIdImport: String
-  formationIdImport: String
 
   """Standard number of student groups"""
   groups: Int
@@ -1686,7 +1673,6 @@ type CourseMinFields {
 
   """Abbreviated course name"""
   nameShort: String
-  nomImport: String
 
   """Reference to previous year's version of this course"""
   parentId: Int
@@ -1710,8 +1696,8 @@ type CourseMinFields {
   """Optional track specialization for this course"""
   trackId: Int
 
-  """Course delivery type affecting workload calculation"""
-  type: String
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Int
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -1732,10 +1718,8 @@ input CourseMinOrderBy {
   """Computed study year (1-3) based on semester"""
   cycleYear: OrderBy
 
-  """Detailed course description and objectives"""
+  """Course description"""
   description: OrderBy
-  ensIdImport: OrderBy
-  formationIdImport: OrderBy
 
   """Standard number of student groups"""
   groups: OrderBy
@@ -1763,7 +1747,6 @@ input CourseMinOrderBy {
 
   """Abbreviated course name"""
   nameShort: OrderBy
-  nomImport: OrderBy
 
   """Reference to previous year's version of this course"""
   parentId: OrderBy
@@ -1782,8 +1765,8 @@ input CourseMinOrderBy {
   """Optional track specialization for this course"""
   trackId: OrderBy
 
-  """Course delivery type affecting workload calculation"""
-  type: OrderBy
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: OrderBy
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -1831,8 +1814,6 @@ input CourseOrderBy {
   createdAt: OrderBy
   cycleYear: OrderBy
   description: OrderBy
-  ensIdImport: OrderBy
-  formationIdImport: OrderBy
   groups: OrderBy
   groupsAdjusted: OrderBy
   groupsEffective: OrderBy
@@ -1842,7 +1823,6 @@ input CourseOrderBy {
   id: OrderBy
   name: OrderBy
   nameShort: OrderBy
-  nomImport: OrderBy
   parent: CourseOrderBy
   parentId: OrderBy
   prioritiesAggregate: PriorityAggregateOrderBy
@@ -1854,8 +1834,8 @@ input CourseOrderBy {
   totalHoursEffective: OrderBy
   track: TrackOrderBy
   trackId: OrderBy
-  type: OrderBy
-  typeByType: CourseTypeOrderBy
+  type: CourseTypeOrderBy
+  typeId: OrderBy
   updatedAt: OrderBy
   visible: OrderBy
   year: OrderBy
@@ -1880,12 +1860,6 @@ enum CourseSelectColumn {
 
   """column name"""
   description
-
-  """column name"""
-  ensIdImport
-
-  """column name"""
-  formationIdImport
 
   """column name"""
   groups
@@ -1915,9 +1889,6 @@ enum CourseSelectColumn {
   nameShort
 
   """column name"""
-  nomImport
-
-  """column name"""
   parentId
 
   """column name"""
@@ -1933,7 +1904,7 @@ enum CourseSelectColumn {
   trackId
 
   """column name"""
-  type
+  typeId
 
   """column name"""
   updatedAt
@@ -1968,10 +1939,8 @@ input CourseSetInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Detailed course description and objectives"""
+  """Course description"""
   description: String
-  ensIdImport: String
-  formationIdImport: String
 
   """Standard number of student groups"""
   groups: Int
@@ -1993,7 +1962,6 @@ input CourseSetInput {
 
   """Abbreviated course name"""
   nameShort: String
-  nomImport: String
 
   """Reference to previous year's version of this course"""
   parentId: Int
@@ -2012,8 +1980,8 @@ input CourseSetInput {
   """Optional track specialization for this course"""
   trackId: Int
 
-  """Course delivery type affecting workload calculation"""
-  type: String
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Int
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -2075,6 +2043,9 @@ type CourseStddevFields {
   """Optional track specialization for this course"""
   trackId: Float
 
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Float
+
   """Academic year when the course is offered"""
   year: Float
 }
@@ -2123,6 +2094,9 @@ input CourseStddevOrderBy {
 
   """Optional track specialization for this course"""
   trackId: OrderBy
+
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: OrderBy
 
   """Academic year when the course is offered"""
   year: OrderBy
@@ -2176,6 +2150,9 @@ type CourseStddevPopFields {
   """Optional track specialization for this course"""
   trackId: Float
 
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Float
+
   """Academic year when the course is offered"""
   year: Float
 }
@@ -2224,6 +2201,9 @@ input CourseStddevPopOrderBy {
 
   """Optional track specialization for this course"""
   trackId: OrderBy
+
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: OrderBy
 
   """Academic year when the course is offered"""
   year: OrderBy
@@ -2277,6 +2257,9 @@ type CourseStddevSampFields {
   """Optional track specialization for this course"""
   trackId: Float
 
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Float
+
   """Academic year when the course is offered"""
   year: Float
 }
@@ -2326,6 +2309,9 @@ input CourseStddevSampOrderBy {
   """Optional track specialization for this course"""
   trackId: OrderBy
 
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: OrderBy
+
   """Academic year when the course is offered"""
   year: OrderBy
 }
@@ -2349,10 +2335,8 @@ input CourseStreamCursorValueInput {
   """Computed study year (1-3) based on semester"""
   cycleYear: Int
 
-  """Detailed course description and objectives"""
+  """Course description"""
   description: String
-  ensIdImport: String
-  formationIdImport: String
 
   """Standard number of student groups"""
   groups: Int
@@ -2380,7 +2364,6 @@ input CourseStreamCursorValueInput {
 
   """Abbreviated course name"""
   nameShort: String
-  nomImport: String
 
   """Reference to previous year's version of this course"""
   parentId: Int
@@ -2399,8 +2382,8 @@ input CourseStreamCursorValueInput {
   """Optional track specialization for this course"""
   trackId: Int
 
-  """Course delivery type affecting workload calculation"""
-  type: String
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Int
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -2462,6 +2445,9 @@ type CourseSumFields {
   """Optional track specialization for this course"""
   trackId: Int
 
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Int
+
   """Academic year when the course is offered"""
   year: Int
 }
@@ -2511,6 +2497,9 @@ input CourseSumOrderBy {
   """Optional track specialization for this course"""
   trackId: OrderBy
 
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: OrderBy
+
   """Academic year when the course is offered"""
   year: OrderBy
 }
@@ -2559,19 +2548,19 @@ type CourseType {
   """Timestamp when the record was created"""
   createdAt: timestamptz!
 
-  """Detailed description of the course type and its characteristics"""
+  """Description of the course type and its characteristics"""
   description: String
 
-  """Human-readable type name for display"""
+  """Unique course type identifier"""
+  id: Int!
+
+  """Human-readable type name for display purposes, unique"""
   label: String!
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz!
-
-  """Course type identifier (e.g., lecture, tutorial)"""
-  value: String!
 }
 
 """
@@ -2603,6 +2592,9 @@ type CourseTypeAggregateFields {
 type CourseTypeAvgFields {
   """Workload multiplier for service hour calculations"""
   coefficient: Float
+
+  """Unique course type identifier"""
+  id: Float
 }
 
 """
@@ -2617,9 +2609,9 @@ input CourseTypeBoolExp {
   coursesAggregate: CourseAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   description: StringComparisonExp
+  id: IntComparisonExp
   label: StringComparisonExp
   updatedAt: TimestamptzComparisonExp
-  value: StringComparisonExp
 }
 
 """
@@ -2632,7 +2624,7 @@ enum CourseTypeConstraint {
   course_type_label_key
 
   """
-  unique or primary key constraint on columns "value"
+  unique or primary key constraint on columns "id"
   """
   course_type_pkey
 }
@@ -2643,6 +2635,9 @@ input type for incrementing numeric columns in table "course_type"
 input CourseTypeIncInput {
   """Workload multiplier for service hour calculations"""
   coefficient: Float
+
+  """Unique course type identifier"""
+  id: Int
 }
 
 """
@@ -2656,19 +2651,19 @@ input CourseTypeInsertInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Detailed description of the course type and its characteristics"""
+  """Description of the course type and its characteristics"""
   description: String
 
-  """Human-readable type name for display"""
+  """Unique course type identifier"""
+  id: Int
+
+  """Human-readable type name for display purposes, unique"""
   label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
-
-  """Course type identifier (e.g., lecture, tutorial)"""
-  value: String
 }
 
 """aggregate max on columns"""
@@ -2679,19 +2674,19 @@ type CourseTypeMaxFields {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Detailed description of the course type and its characteristics"""
+  """Description of the course type and its characteristics"""
   description: String
 
-  """Human-readable type name for display"""
+  """Unique course type identifier"""
+  id: Int
+
+  """Human-readable type name for display purposes, unique"""
   label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
-
-  """Course type identifier (e.g., lecture, tutorial)"""
-  value: String
 }
 
 """aggregate min on columns"""
@@ -2702,19 +2697,19 @@ type CourseTypeMinFields {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Detailed description of the course type and its characteristics"""
+  """Description of the course type and its characteristics"""
   description: String
 
-  """Human-readable type name for display"""
+  """Unique course type identifier"""
+  id: Int
+
+  """Human-readable type name for display purposes, unique"""
   label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
-
-  """Course type identifier (e.g., lecture, tutorial)"""
-  value: String
 }
 
 """
@@ -2753,15 +2748,15 @@ input CourseTypeOrderBy {
   coursesAggregate: CourseAggregateOrderBy
   createdAt: OrderBy
   description: OrderBy
+  id: OrderBy
   label: OrderBy
   updatedAt: OrderBy
-  value: OrderBy
 }
 
 """primary key columns input for table: course_type"""
 input CourseTypePkColumnsInput {
-  """Course type identifier (e.g., lecture, tutorial)"""
-  value: String!
+  """Unique course type identifier"""
+  id: Int!
 }
 
 """
@@ -2778,13 +2773,13 @@ enum CourseTypeSelectColumn {
   description
 
   """column name"""
+  id
+
+  """column name"""
   label
 
   """column name"""
   updatedAt
-
-  """column name"""
-  value
 }
 
 """
@@ -2797,37 +2792,46 @@ input CourseTypeSetInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Detailed description of the course type and its characteristics"""
+  """Description of the course type and its characteristics"""
   description: String
 
-  """Human-readable type name for display"""
+  """Unique course type identifier"""
+  id: Int
+
+  """Human-readable type name for display purposes, unique"""
   label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
-
-  """Course type identifier (e.g., lecture, tutorial)"""
-  value: String
 }
 
 """aggregate stddev on columns"""
 type CourseTypeStddevFields {
   """Workload multiplier for service hour calculations"""
   coefficient: Float
+
+  """Unique course type identifier"""
+  id: Float
 }
 
 """aggregate stddevPop on columns"""
 type CourseTypeStddevPopFields {
   """Workload multiplier for service hour calculations"""
   coefficient: Float
+
+  """Unique course type identifier"""
+  id: Float
 }
 
 """aggregate stddevSamp on columns"""
 type CourseTypeStddevSampFields {
   """Workload multiplier for service hour calculations"""
   coefficient: Float
+
+  """Unique course type identifier"""
+  id: Float
 }
 
 """
@@ -2849,25 +2853,28 @@ input CourseTypeStreamCursorValueInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Detailed description of the course type and its characteristics"""
+  """Description of the course type and its characteristics"""
   description: String
 
-  """Human-readable type name for display"""
+  """Unique course type identifier"""
+  id: Int
+
+  """Human-readable type name for display purposes, unique"""
   label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
-
-  """Course type identifier (e.g., lecture, tutorial)"""
-  value: String
 }
 
 """aggregate sum on columns"""
 type CourseTypeSumFields {
   """Workload multiplier for service hour calculations"""
   coefficient: Float
+
+  """Unique course type identifier"""
+  id: Int
 }
 
 """
@@ -2884,13 +2891,13 @@ enum CourseTypeUpdateColumn {
   description
 
   """column name"""
+  id
+
+  """column name"""
   label
 
   """column name"""
   updatedAt
-
-  """column name"""
-  value
 }
 
 input CourseTypeUpdates {
@@ -2908,18 +2915,27 @@ input CourseTypeUpdates {
 type CourseTypeVarPopFields {
   """Workload multiplier for service hour calculations"""
   coefficient: Float
+
+  """Unique course type identifier"""
+  id: Float
 }
 
 """aggregate varSamp on columns"""
 type CourseTypeVarSampFields {
   """Workload multiplier for service hour calculations"""
   coefficient: Float
+
+  """Unique course type identifier"""
+  id: Float
 }
 
 """aggregate variance on columns"""
 type CourseTypeVarianceFields {
   """Workload multiplier for service hour calculations"""
   coefficient: Float
+
+  """Unique course type identifier"""
+  id: Float
 }
 
 """
@@ -2931,12 +2947,6 @@ enum CourseUpdateColumn {
 
   """column name"""
   description
-
-  """column name"""
-  ensIdImport
-
-  """column name"""
-  formationIdImport
 
   """column name"""
   groups
@@ -2960,9 +2970,6 @@ enum CourseUpdateColumn {
   nameShort
 
   """column name"""
-  nomImport
-
-  """column name"""
   parentId
 
   """column name"""
@@ -2978,7 +2985,7 @@ enum CourseUpdateColumn {
   trackId
 
   """column name"""
-  type
+  typeId
 
   """column name"""
   updatedAt
@@ -3049,6 +3056,9 @@ type CourseVarPopFields {
   """Optional track specialization for this course"""
   trackId: Float
 
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Float
+
   """Academic year when the course is offered"""
   year: Float
 }
@@ -3097,6 +3107,9 @@ input CourseVarPopOrderBy {
 
   """Optional track specialization for this course"""
   trackId: OrderBy
+
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: OrderBy
 
   """Academic year when the course is offered"""
   year: OrderBy
@@ -3150,6 +3163,9 @@ type CourseVarSampFields {
   """Optional track specialization for this course"""
   trackId: Float
 
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Float
+
   """Academic year when the course is offered"""
   year: Float
 }
@@ -3198,6 +3214,9 @@ input CourseVarSampOrderBy {
 
   """Optional track specialization for this course"""
   trackId: OrderBy
+
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: OrderBy
 
   """Academic year when the course is offered"""
   year: OrderBy
@@ -3251,6 +3270,9 @@ type CourseVarianceFields {
   """Optional track specialization for this course"""
   trackId: Float
 
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: Float
+
   """Academic year when the course is offered"""
   year: Float
 }
@@ -3299,6 +3321,9 @@ input CourseVarianceOrderBy {
 
   """Optional track specialization for this course"""
   trackId: OrderBy
+
+  """Reference to course delivery type affecting workload calculation"""
+  typeId: OrderBy
 
   """Academic year when the course is offered"""
   year: OrderBy
@@ -4044,7 +4069,10 @@ type Position {
   """Optional description of the position"""
   description: String
 
-  """Human-readable position name for display purposes"""
+  """Unique position identifier"""
+  id: Int!
+
+  """Human-readable position name for display purposes, unique"""
   label: String!
 
   """An array relationship"""
@@ -4087,9 +4115,6 @@ type Position {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz!
-
-  """Position identifier (e.g., professor, lecturer)"""
-  value: String!
 }
 
 """
@@ -4123,6 +4148,9 @@ type PositionAvgFields {
   Default annual teaching hours required for this position, can be overridden per teacher
   """
   baseServiceHours: Float
+
+  """Unique position identifier"""
+  id: Float
 }
 
 """
@@ -4135,11 +4163,11 @@ input PositionBoolExp {
   baseServiceHours: FloatComparisonExp
   createdAt: TimestamptzComparisonExp
   description: StringComparisonExp
+  id: IntComparisonExp
   label: StringComparisonExp
   teachers: TeacherBoolExp
   teachersAggregate: TeacherAggregateBoolExp
   updatedAt: TimestamptzComparisonExp
-  value: StringComparisonExp
 }
 
 """
@@ -4152,7 +4180,7 @@ enum PositionConstraint {
   position_label_key
 
   """
-  unique or primary key constraint on columns "value"
+  unique or primary key constraint on columns "id"
   """
   position_pkey
 }
@@ -4165,6 +4193,9 @@ input PositionIncInput {
   Default annual teaching hours required for this position, can be overridden per teacher
   """
   baseServiceHours: Float
+
+  """Unique position identifier"""
+  id: Int
 }
 
 """
@@ -4182,7 +4213,10 @@ input PositionInsertInput {
   """Optional description of the position"""
   description: String
 
-  """Human-readable position name for display purposes"""
+  """Unique position identifier"""
+  id: Int
+
+  """Human-readable position name for display purposes, unique"""
   label: String
   teachers: TeacherArrRelInsertInput
 
@@ -4190,9 +4224,6 @@ input PositionInsertInput {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
-
-  """Position identifier (e.g., professor, lecturer)"""
-  value: String
 }
 
 """aggregate max on columns"""
@@ -4208,16 +4239,16 @@ type PositionMaxFields {
   """Optional description of the position"""
   description: String
 
-  """Human-readable position name for display purposes"""
+  """Unique position identifier"""
+  id: Int
+
+  """Human-readable position name for display purposes, unique"""
   label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
-
-  """Position identifier (e.g., professor, lecturer)"""
-  value: String
 }
 
 """aggregate min on columns"""
@@ -4233,16 +4264,16 @@ type PositionMinFields {
   """Optional description of the position"""
   description: String
 
-  """Human-readable position name for display purposes"""
+  """Unique position identifier"""
+  id: Int
+
+  """Human-readable position name for display purposes, unique"""
   label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
-
-  """Position identifier (e.g., professor, lecturer)"""
-  value: String
 }
 
 """
@@ -4280,16 +4311,16 @@ input PositionOrderBy {
   baseServiceHours: OrderBy
   createdAt: OrderBy
   description: OrderBy
+  id: OrderBy
   label: OrderBy
   teachersAggregate: TeacherAggregateOrderBy
   updatedAt: OrderBy
-  value: OrderBy
 }
 
 """primary key columns input for table: position"""
 input PositionPkColumnsInput {
-  """Position identifier (e.g., professor, lecturer)"""
-  value: String!
+  """Unique position identifier"""
+  id: Int!
 }
 
 """
@@ -4306,13 +4337,13 @@ enum PositionSelectColumn {
   description
 
   """column name"""
+  id
+
+  """column name"""
   label
 
   """column name"""
   updatedAt
-
-  """column name"""
-  value
 }
 
 """
@@ -4330,16 +4361,16 @@ input PositionSetInput {
   """Optional description of the position"""
   description: String
 
-  """Human-readable position name for display purposes"""
+  """Unique position identifier"""
+  id: Int
+
+  """Human-readable position name for display purposes, unique"""
   label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
-
-  """Position identifier (e.g., professor, lecturer)"""
-  value: String
 }
 
 """aggregate stddev on columns"""
@@ -4348,6 +4379,9 @@ type PositionStddevFields {
   Default annual teaching hours required for this position, can be overridden per teacher
   """
   baseServiceHours: Float
+
+  """Unique position identifier"""
+  id: Float
 }
 
 """aggregate stddevPop on columns"""
@@ -4356,6 +4390,9 @@ type PositionStddevPopFields {
   Default annual teaching hours required for this position, can be overridden per teacher
   """
   baseServiceHours: Float
+
+  """Unique position identifier"""
+  id: Float
 }
 
 """aggregate stddevSamp on columns"""
@@ -4364,6 +4401,9 @@ type PositionStddevSampFields {
   Default annual teaching hours required for this position, can be overridden per teacher
   """
   baseServiceHours: Float
+
+  """Unique position identifier"""
+  id: Float
 }
 
 """
@@ -4390,16 +4430,16 @@ input PositionStreamCursorValueInput {
   """Optional description of the position"""
   description: String
 
-  """Human-readable position name for display purposes"""
+  """Unique position identifier"""
+  id: Int
+
+  """Human-readable position name for display purposes, unique"""
   label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
-
-  """Position identifier (e.g., professor, lecturer)"""
-  value: String
 }
 
 """aggregate sum on columns"""
@@ -4408,6 +4448,9 @@ type PositionSumFields {
   Default annual teaching hours required for this position, can be overridden per teacher
   """
   baseServiceHours: Float
+
+  """Unique position identifier"""
+  id: Int
 }
 
 """
@@ -4424,13 +4467,13 @@ enum PositionUpdateColumn {
   description
 
   """column name"""
+  id
+
+  """column name"""
   label
 
   """column name"""
   updatedAt
-
-  """column name"""
-  value
 }
 
 input PositionUpdates {
@@ -4450,6 +4493,9 @@ type PositionVarPopFields {
   Default annual teaching hours required for this position, can be overridden per teacher
   """
   baseServiceHours: Float
+
+  """Unique position identifier"""
+  id: Float
 }
 
 """aggregate varSamp on columns"""
@@ -4458,6 +4504,9 @@ type PositionVarSampFields {
   Default annual teaching hours required for this position, can be overridden per teacher
   """
   baseServiceHours: Float
+
+  """Unique position identifier"""
+  id: Float
 }
 
 """aggregate variance on columns"""
@@ -4466,6 +4515,9 @@ type PositionVarianceFields {
   Default annual teaching hours required for this position, can be overridden per teacher
   """
   baseServiceHours: Float
+
+  """Unique position identifier"""
+  id: Float
 }
 
 """Teacher course assignment history and priority status"""
@@ -5265,7 +5317,6 @@ type Program {
 
   """Abbreviated program name"""
   nameShort: String
-  nomImport: String
 
   """An array relationship"""
   tracks(
@@ -5407,7 +5458,6 @@ input ProgramBoolExp {
   id: IntComparisonExp
   name: StringComparisonExp
   nameShort: StringComparisonExp
-  nomImport: StringComparisonExp
   tracks: TrackBoolExp
   tracksAggregate: TrackAggregateBoolExp
   updatedAt: TimestamptzComparisonExp
@@ -5462,7 +5512,6 @@ input ProgramInsertInput {
 
   """Abbreviated program name"""
   nameShort: String
-  nomImport: String
   tracks: TrackArrRelInsertInput
 
   """
@@ -5490,7 +5539,6 @@ type ProgramMaxFields {
 
   """Abbreviated program name"""
   nameShort: String
-  nomImport: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -5516,7 +5564,6 @@ input ProgramMaxOrderBy {
 
   """Abbreviated program name"""
   nameShort: OrderBy
-  nomImport: OrderBy
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -5540,7 +5587,6 @@ type ProgramMinFields {
 
   """Abbreviated program name"""
   nameShort: String
-  nomImport: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -5566,7 +5612,6 @@ input ProgramMinOrderBy {
 
   """Abbreviated program name"""
   nameShort: OrderBy
-  nomImport: OrderBy
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -5614,7 +5659,6 @@ input ProgramOrderBy {
   id: OrderBy
   name: OrderBy
   nameShort: OrderBy
-  nomImport: OrderBy
   tracksAggregate: TrackAggregateOrderBy
   updatedAt: OrderBy
   visible: OrderBy
@@ -5644,9 +5688,6 @@ enum ProgramSelectColumn {
 
   """column name"""
   nameShort
-
-  """column name"""
-  nomImport
 
   """column name"""
   updatedAt
@@ -5689,7 +5730,6 @@ input ProgramSetInput {
 
   """Abbreviated program name"""
   nameShort: String
-  nomImport: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -5787,7 +5827,6 @@ input ProgramStreamCursorValueInput {
 
   """Abbreviated program name"""
   nameShort: String
-  nomImport: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -5836,9 +5875,6 @@ enum ProgramUpdateColumn {
 
   """column name"""
   nameShort
-
-  """column name"""
-  nomImport
 
   """column name"""
   updatedAt
@@ -6545,7 +6581,7 @@ type RequestType {
   """Timestamp when the record was created"""
   createdAt: timestamptz!
 
-  """Detailed description of the request type and its purpose"""
+  """Description of the request type and its purpose"""
   description: String
 
   """An array relationship"""
@@ -6642,7 +6678,7 @@ input RequestTypeInsertInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Detailed description of the request type and its purpose"""
+  """Description of the request type and its purpose"""
   description: String
   requests: RequestArrRelInsertInput
 
@@ -6660,7 +6696,7 @@ type RequestTypeMaxFields {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Detailed description of the request type and its purpose"""
+  """Description of the request type and its purpose"""
   description: String
 
   """
@@ -6677,7 +6713,7 @@ type RequestTypeMinFields {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Detailed description of the request type and its purpose"""
+  """Description of the request type and its purpose"""
   description: String
 
   """
@@ -6758,7 +6794,7 @@ input RequestTypeSetInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Detailed description of the request type and its purpose"""
+  """Description of the request type and its purpose"""
   description: String
 
   """
@@ -6786,7 +6822,7 @@ input RequestTypeStreamCursorValueInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Detailed description of the request type and its purpose"""
+  """Description of the request type and its purpose"""
   description: String
 
   """
@@ -7414,7 +7450,7 @@ type RoleType {
   """Timestamp when the record was created"""
   createdAt: timestamptz!
 
-  """Description of role privileges and responsibilities"""
+  """Description of the role privileges and responsibilities"""
   description: String
 
   """An array relationship"""
@@ -7511,7 +7547,7 @@ input RoleTypeInsertInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Description of role privileges and responsibilities"""
+  """Description of the role privileges and responsibilities"""
   description: String
   roles: RoleArrRelInsertInput
 
@@ -7529,7 +7565,7 @@ type RoleTypeMaxFields {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Description of role privileges and responsibilities"""
+  """Description of the role privileges and responsibilities"""
   description: String
 
   """
@@ -7546,7 +7582,7 @@ type RoleTypeMinFields {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Description of role privileges and responsibilities"""
+  """Description of the role privileges and responsibilities"""
   description: String
 
   """
@@ -7627,7 +7663,7 @@ input RoleTypeSetInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Description of role privileges and responsibilities"""
+  """Description of the role privileges and responsibilities"""
   description: String
 
   """
@@ -7655,7 +7691,7 @@ input RoleTypeStreamCursorValueInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Description of role privileges and responsibilities"""
+  """Description of the role privileges and responsibilities"""
   description: String
 
   """
@@ -8203,11 +8239,11 @@ type ServiceModification {
   """Reference to affected service record"""
   serviceId: Int!
 
-  """Type of service modification being applied"""
-  type: String!
-
   """An object relationship"""
-  typeByType: ServiceModificationType!
+  type: ServiceModificationType!
+
+  """Reference to service modification type"""
+  typeId: Int!
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -8281,6 +8317,9 @@ type ServiceModificationAvgFields {
 
   """Reference to affected service record"""
   serviceId: Float
+
+  """Reference to service modification type"""
+  typeId: Float
 }
 
 """
@@ -8295,6 +8334,9 @@ input ServiceModificationAvgOrderBy {
 
   """Reference to affected service record"""
   serviceId: OrderBy
+
+  """Reference to service modification type"""
+  typeId: OrderBy
 }
 
 """
@@ -8309,8 +8351,8 @@ input ServiceModificationBoolExp {
   id: IntComparisonExp
   service: ServiceBoolExp
   serviceId: IntComparisonExp
-  type: StringComparisonExp
-  typeByType: ServiceModificationTypeBoolExp
+  type: ServiceModificationTypeBoolExp
+  typeId: IntComparisonExp
   updatedAt: TimestamptzComparisonExp
 }
 
@@ -8336,6 +8378,9 @@ input ServiceModificationIncInput {
 
   """Reference to affected service record"""
   serviceId: Int
+
+  """Reference to service modification type"""
+  typeId: Int
 }
 
 """
@@ -8354,10 +8399,10 @@ input ServiceModificationInsertInput {
 
   """Reference to affected service record"""
   serviceId: Int
+  type: ServiceModificationTypeObjRelInsertInput
 
-  """Type of service modification being applied"""
-  type: String
-  typeByType: ServiceModificationTypeObjRelInsertInput
+  """Reference to service modification type"""
+  typeId: Int
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -8379,8 +8424,8 @@ type ServiceModificationMaxFields {
   """Reference to affected service record"""
   serviceId: Int
 
-  """Type of service modification being applied"""
-  type: String
+  """Reference to service modification type"""
+  typeId: Int
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -8404,8 +8449,8 @@ input ServiceModificationMaxOrderBy {
   """Reference to affected service record"""
   serviceId: OrderBy
 
-  """Type of service modification being applied"""
-  type: OrderBy
+  """Reference to service modification type"""
+  typeId: OrderBy
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -8427,8 +8472,8 @@ type ServiceModificationMinFields {
   """Reference to affected service record"""
   serviceId: Int
 
-  """Type of service modification being applied"""
-  type: String
+  """Reference to service modification type"""
+  typeId: Int
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -8452,8 +8497,8 @@ input ServiceModificationMinOrderBy {
   """Reference to affected service record"""
   serviceId: OrderBy
 
-  """Type of service modification being applied"""
-  type: OrderBy
+  """Reference to service modification type"""
+  typeId: OrderBy
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -8488,8 +8533,8 @@ input ServiceModificationOrderBy {
   id: OrderBy
   service: ServiceOrderBy
   serviceId: OrderBy
-  type: OrderBy
-  typeByType: ServiceModificationTypeOrderBy
+  type: ServiceModificationTypeOrderBy
+  typeId: OrderBy
   updatedAt: OrderBy
 }
 
@@ -8516,7 +8561,7 @@ enum ServiceModificationSelectColumn {
   serviceId
 
   """column name"""
-  type
+  typeId
 
   """column name"""
   updatedAt
@@ -8538,8 +8583,8 @@ input ServiceModificationSetInput {
   """Reference to affected service record"""
   serviceId: Int
 
-  """Type of service modification being applied"""
-  type: String
+  """Reference to service modification type"""
+  typeId: Int
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -8557,6 +8602,9 @@ type ServiceModificationStddevFields {
 
   """Reference to affected service record"""
   serviceId: Float
+
+  """Reference to service modification type"""
+  typeId: Float
 }
 
 """
@@ -8571,6 +8619,9 @@ input ServiceModificationStddevOrderBy {
 
   """Reference to affected service record"""
   serviceId: OrderBy
+
+  """Reference to service modification type"""
+  typeId: OrderBy
 }
 
 """aggregate stddevPop on columns"""
@@ -8583,6 +8634,9 @@ type ServiceModificationStddevPopFields {
 
   """Reference to affected service record"""
   serviceId: Float
+
+  """Reference to service modification type"""
+  typeId: Float
 }
 
 """
@@ -8597,6 +8651,9 @@ input ServiceModificationStddevPopOrderBy {
 
   """Reference to affected service record"""
   serviceId: OrderBy
+
+  """Reference to service modification type"""
+  typeId: OrderBy
 }
 
 """aggregate stddevSamp on columns"""
@@ -8609,6 +8666,9 @@ type ServiceModificationStddevSampFields {
 
   """Reference to affected service record"""
   serviceId: Float
+
+  """Reference to service modification type"""
+  typeId: Float
 }
 
 """
@@ -8623,6 +8683,9 @@ input ServiceModificationStddevSampOrderBy {
 
   """Reference to affected service record"""
   serviceId: OrderBy
+
+  """Reference to service modification type"""
+  typeId: OrderBy
 }
 
 """
@@ -8650,8 +8713,8 @@ input ServiceModificationStreamCursorValueInput {
   """Reference to affected service record"""
   serviceId: Int
 
-  """Type of service modification being applied"""
-  type: String
+  """Reference to service modification type"""
+  typeId: Int
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -8669,6 +8732,9 @@ type ServiceModificationSumFields {
 
   """Reference to affected service record"""
   serviceId: Int
+
+  """Reference to service modification type"""
+  typeId: Int
 }
 
 """
@@ -8683,6 +8749,9 @@ input ServiceModificationSumOrderBy {
 
   """Reference to affected service record"""
   serviceId: OrderBy
+
+  """Reference to service modification type"""
+  typeId: OrderBy
 }
 
 """Categories of service hour modifications"""
@@ -8693,11 +8762,14 @@ type ServiceModificationType {
   """Detailed explanation of the modification type and its application"""
   description: String
 
-  """Human-readable name for the modification type"""
+  """Unique modification type identifier"""
+  id: Int!
+
+  """Human-readable type name for display purposes, unique"""
   label: String!
 
   """An aggregate relationship"""
-  modificationsServiceAggregate(
+  serviceModificationsAggregate(
     """distinct select on columns"""
     distinctOn: [ServiceModificationSelectColumn!]
 
@@ -8715,7 +8787,7 @@ type ServiceModificationType {
   ): ServiceModificationAggregate!
 
   """An array relationship"""
-  modifications_service(
+  service_modifications(
     """distinct select on columns"""
     distinctOn: [ServiceModificationSelectColumn!]
 
@@ -8736,9 +8808,6 @@ type ServiceModificationType {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz!
-
-  """Modification type identifier"""
-  value: String!
 }
 
 """
@@ -8753,9 +8822,23 @@ type ServiceModificationTypeAggregate {
 aggregate fields of "service_modification_type"
 """
 type ServiceModificationTypeAggregateFields {
+  avg: ServiceModificationTypeAvgFields
   count(columns: [ServiceModificationTypeSelectColumn!], distinct: Boolean): Int!
   max: ServiceModificationTypeMaxFields
   min: ServiceModificationTypeMinFields
+  stddev: ServiceModificationTypeStddevFields
+  stddevPop: ServiceModificationTypeStddevPopFields
+  stddevSamp: ServiceModificationTypeStddevSampFields
+  sum: ServiceModificationTypeSumFields
+  varPop: ServiceModificationTypeVarPopFields
+  varSamp: ServiceModificationTypeVarSampFields
+  variance: ServiceModificationTypeVarianceFields
+}
+
+"""aggregate avg on columns"""
+type ServiceModificationTypeAvgFields {
+  """Unique modification type identifier"""
+  id: Float
 }
 
 """
@@ -8767,11 +8850,11 @@ input ServiceModificationTypeBoolExp {
   _or: [ServiceModificationTypeBoolExp!]
   createdAt: TimestamptzComparisonExp
   description: StringComparisonExp
+  id: IntComparisonExp
   label: StringComparisonExp
-  modifications_service: ServiceModificationBoolExp
-  modifications_serviceAggregate: ServiceModificationAggregateBoolExp
+  service_modifications: ServiceModificationBoolExp
+  service_modificationsAggregate: ServiceModificationAggregateBoolExp
   updatedAt: TimestamptzComparisonExp
-  value: StringComparisonExp
 }
 
 """
@@ -8781,12 +8864,20 @@ enum ServiceModificationTypeConstraint {
   """
   unique or primary key constraint on columns "label"
   """
-  service_modificatio_type_label_key
+  service_modification_type_label_key
 
   """
-  unique or primary key constraint on columns "value"
+  unique or primary key constraint on columns "id"
   """
   service_modification_type_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "service_modification_type"
+"""
+input ServiceModificationTypeIncInput {
+  """Unique modification type identifier"""
+  id: Int
 }
 
 """
@@ -8799,17 +8890,17 @@ input ServiceModificationTypeInsertInput {
   """Detailed explanation of the modification type and its application"""
   description: String
 
-  """Human-readable name for the modification type"""
+  """Unique modification type identifier"""
+  id: Int
+
+  """Human-readable type name for display purposes, unique"""
   label: String
-  modifications_service: ServiceModificationArrRelInsertInput
+  service_modifications: ServiceModificationArrRelInsertInput
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
-
-  """Modification type identifier"""
-  value: String
 }
 
 """aggregate max on columns"""
@@ -8820,16 +8911,16 @@ type ServiceModificationTypeMaxFields {
   """Detailed explanation of the modification type and its application"""
   description: String
 
-  """Human-readable name for the modification type"""
+  """Unique modification type identifier"""
+  id: Int
+
+  """Human-readable type name for display purposes, unique"""
   label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
-
-  """Modification type identifier"""
-  value: String
 }
 
 """aggregate min on columns"""
@@ -8840,16 +8931,16 @@ type ServiceModificationTypeMinFields {
   """Detailed explanation of the modification type and its application"""
   description: String
 
-  """Human-readable name for the modification type"""
+  """Unique modification type identifier"""
+  id: Int
+
+  """Human-readable type name for display purposes, unique"""
   label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
-
-  """Modification type identifier"""
-  value: String
 }
 
 """
@@ -8886,16 +8977,16 @@ input ServiceModificationTypeOnConflict {
 input ServiceModificationTypeOrderBy {
   createdAt: OrderBy
   description: OrderBy
+  id: OrderBy
   label: OrderBy
-  modifications_serviceAggregate: ServiceModificationAggregateOrderBy
+  service_modificationsAggregate: ServiceModificationAggregateOrderBy
   updatedAt: OrderBy
-  value: OrderBy
 }
 
 """primary key columns input for table: service_modification_type"""
 input ServiceModificationTypePkColumnsInput {
-  """Modification type identifier"""
-  value: String!
+  """Unique modification type identifier"""
+  id: Int!
 }
 
 """
@@ -8909,13 +9000,13 @@ enum ServiceModificationTypeSelectColumn {
   description
 
   """column name"""
+  id
+
+  """column name"""
   label
 
   """column name"""
   updatedAt
-
-  """column name"""
-  value
 }
 
 """
@@ -8928,16 +9019,34 @@ input ServiceModificationTypeSetInput {
   """Detailed explanation of the modification type and its application"""
   description: String
 
-  """Human-readable name for the modification type"""
+  """Unique modification type identifier"""
+  id: Int
+
+  """Human-readable type name for display purposes, unique"""
   label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+}
 
-  """Modification type identifier"""
-  value: String
+"""aggregate stddev on columns"""
+type ServiceModificationTypeStddevFields {
+  """Unique modification type identifier"""
+  id: Float
+}
+
+"""aggregate stddevPop on columns"""
+type ServiceModificationTypeStddevPopFields {
+  """Unique modification type identifier"""
+  id: Float
+}
+
+"""aggregate stddevSamp on columns"""
+type ServiceModificationTypeStddevSampFields {
+  """Unique modification type identifier"""
+  id: Float
 }
 
 """
@@ -8959,16 +9068,22 @@ input ServiceModificationTypeStreamCursorValueInput {
   """Detailed explanation of the modification type and its application"""
   description: String
 
-  """Human-readable name for the modification type"""
+  """Unique modification type identifier"""
+  id: Int
+
+  """Human-readable type name for display purposes, unique"""
   label: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+}
 
-  """Modification type identifier"""
-  value: String
+"""aggregate sum on columns"""
+type ServiceModificationTypeSumFields {
+  """Unique modification type identifier"""
+  id: Int
 }
 
 """
@@ -8982,21 +9097,42 @@ enum ServiceModificationTypeUpdateColumn {
   description
 
   """column name"""
+  id
+
+  """column name"""
   label
 
   """column name"""
   updatedAt
-
-  """column name"""
-  value
 }
 
 input ServiceModificationTypeUpdates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: ServiceModificationTypeIncInput
+
   """sets the columns of the filtered rows to the given values"""
   _set: ServiceModificationTypeSetInput
 
   """filter the rows which have to be updated"""
   where: ServiceModificationTypeBoolExp!
+}
+
+"""aggregate varPop on columns"""
+type ServiceModificationTypeVarPopFields {
+  """Unique modification type identifier"""
+  id: Float
+}
+
+"""aggregate varSamp on columns"""
+type ServiceModificationTypeVarSampFields {
+  """Unique modification type identifier"""
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type ServiceModificationTypeVarianceFields {
+  """Unique modification type identifier"""
+  id: Float
 }
 
 """
@@ -9016,7 +9152,7 @@ enum ServiceModificationUpdateColumn {
   serviceId
 
   """column name"""
-  type
+  typeId
 
   """column name"""
   updatedAt
@@ -9043,6 +9179,9 @@ type ServiceModificationVarPopFields {
 
   """Reference to affected service record"""
   serviceId: Float
+
+  """Reference to service modification type"""
+  typeId: Float
 }
 
 """
@@ -9057,6 +9196,9 @@ input ServiceModificationVarPopOrderBy {
 
   """Reference to affected service record"""
   serviceId: OrderBy
+
+  """Reference to service modification type"""
+  typeId: OrderBy
 }
 
 """aggregate varSamp on columns"""
@@ -9069,6 +9211,9 @@ type ServiceModificationVarSampFields {
 
   """Reference to affected service record"""
   serviceId: Float
+
+  """Reference to service modification type"""
+  typeId: Float
 }
 
 """
@@ -9083,6 +9228,9 @@ input ServiceModificationVarSampOrderBy {
 
   """Reference to affected service record"""
   serviceId: OrderBy
+
+  """Reference to service modification type"""
+  typeId: OrderBy
 }
 
 """aggregate variance on columns"""
@@ -9095,6 +9243,9 @@ type ServiceModificationVarianceFields {
 
   """Reference to affected service record"""
   serviceId: Float
+
+  """Reference to service modification type"""
+  typeId: Float
 }
 
 """
@@ -9109,6 +9260,9 @@ input ServiceModificationVarianceOrderBy {
 
   """Reference to affected service record"""
   serviceId: OrderBy
+
+  """Reference to service modification type"""
+  typeId: OrderBy
 }
 
 """
@@ -9586,11 +9740,11 @@ type Teacher {
   """Teacher's last name"""
   lastname: String!
 
-  """Reference to teacher's position, determines default service hours"""
-  position: String
-
   """An object relationship"""
-  positionByPosition: Position
+  position: Position
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: Int
 
   """An array relationship"""
   roles(
@@ -9740,6 +9894,9 @@ type TeacherAvgFields {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: Float
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: Float
 }
 
 """
@@ -9750,6 +9907,9 @@ input TeacherAvgOrderBy {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: OrderBy
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: OrderBy
 }
 
 """
@@ -9767,8 +9927,8 @@ input TeacherBoolExp {
   createdAt: TimestamptzComparisonExp
   firstname: StringComparisonExp
   lastname: StringComparisonExp
-  position: StringComparisonExp
-  positionByPosition: PositionBoolExp
+  position: PositionBoolExp
+  positionId: IntComparisonExp
   roles: RoleBoolExp
   rolesAggregate: RoleAggregateBoolExp
   services: ServiceBoolExp
@@ -9796,6 +9956,9 @@ input TeacherIncInput {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: Float
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: Int
 }
 
 """
@@ -9824,10 +9987,10 @@ input TeacherInsertInput {
 
   """Teacher's last name"""
   lastname: String
+  position: PositionObjRelInsertInput
 
   """Reference to teacher's position, determines default service hours"""
-  position: String
-  positionByPosition: PositionObjRelInsertInput
+  positionId: Int
   roles: RoleArrRelInsertInput
   services: ServiceArrRelInsertInput
 
@@ -9863,7 +10026,7 @@ type TeacherMaxFields {
   lastname: String
 
   """Reference to teacher's position, determines default service hours"""
-  position: String
+  positionId: Int
 
   """Teacher's email address (primary key)."""
   uid: String
@@ -9896,7 +10059,7 @@ input TeacherMaxOrderBy {
   lastname: OrderBy
 
   """Reference to teacher's position, determines default service hours"""
-  position: OrderBy
+  positionId: OrderBy
 
   """Teacher's email address (primary key)."""
   uid: OrderBy
@@ -9927,7 +10090,7 @@ type TeacherMinFields {
   lastname: String
 
   """Reference to teacher's position, determines default service hours"""
-  position: String
+  positionId: Int
 
   """Teacher's email address (primary key)."""
   uid: String
@@ -9960,7 +10123,7 @@ input TeacherMinOrderBy {
   lastname: OrderBy
 
   """Reference to teacher's position, determines default service hours"""
-  position: OrderBy
+  positionId: OrderBy
 
   """Teacher's email address (primary key)."""
   uid: OrderBy
@@ -10010,8 +10173,8 @@ input TeacherOrderBy {
   createdAt: OrderBy
   firstname: OrderBy
   lastname: OrderBy
-  position: OrderBy
-  positionByPosition: PositionOrderBy
+  position: PositionOrderBy
+  positionId: OrderBy
   rolesAggregate: RoleAggregateOrderBy
   servicesAggregate: ServiceAggregateOrderBy
   uid: OrderBy
@@ -10048,7 +10211,7 @@ enum TeacherSelectColumn {
   lastname
 
   """column name"""
-  position
+  positionId
 
   """column name"""
   uid
@@ -10109,7 +10272,7 @@ input TeacherSetInput {
   lastname: String
 
   """Reference to teacher's position, determines default service hours"""
-  position: String
+  positionId: Int
 
   """Teacher's email address (primary key)."""
   uid: String
@@ -10129,6 +10292,9 @@ type TeacherStddevFields {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: Float
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: Float
 }
 
 """
@@ -10139,6 +10305,9 @@ input TeacherStddevOrderBy {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: OrderBy
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: OrderBy
 }
 
 """aggregate stddevPop on columns"""
@@ -10147,6 +10316,9 @@ type TeacherStddevPopFields {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: Float
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: Float
 }
 
 """
@@ -10157,6 +10329,9 @@ input TeacherStddevPopOrderBy {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: OrderBy
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: OrderBy
 }
 
 """aggregate stddevSamp on columns"""
@@ -10165,6 +10340,9 @@ type TeacherStddevSampFields {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: Float
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: Float
 }
 
 """
@@ -10175,6 +10353,9 @@ input TeacherStddevSampOrderBy {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: OrderBy
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: OrderBy
 }
 
 """
@@ -10213,7 +10394,7 @@ input TeacherStreamCursorValueInput {
   lastname: String
 
   """Reference to teacher's position, determines default service hours"""
-  position: String
+  positionId: Int
 
   """Teacher's email address (primary key)."""
   uid: String
@@ -10233,6 +10414,9 @@ type TeacherSumFields {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: Float
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: Int
 }
 
 """
@@ -10243,6 +10427,9 @@ input TeacherSumOrderBy {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: OrderBy
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: OrderBy
 }
 
 """
@@ -10268,7 +10455,7 @@ enum TeacherUpdateColumn {
   lastname
 
   """column name"""
-  position
+  positionId
 
   """column name"""
   uid
@@ -10297,6 +10484,9 @@ type TeacherVarPopFields {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: Float
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: Float
 }
 
 """
@@ -10307,6 +10497,9 @@ input TeacherVarPopOrderBy {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: OrderBy
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: OrderBy
 }
 
 """aggregate varSamp on columns"""
@@ -10315,6 +10508,9 @@ type TeacherVarSampFields {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: Float
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: Float
 }
 
 """
@@ -10325,6 +10521,9 @@ input TeacherVarSampOrderBy {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: OrderBy
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: OrderBy
 }
 
 """aggregate variance on columns"""
@@ -10333,6 +10532,9 @@ type TeacherVarianceFields {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: Float
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: Float
 }
 
 """
@@ -10343,6 +10545,9 @@ input TeacherVarianceOrderBy {
   Individual override for annual teaching hours, takes precedence over position's base hours
   """
   baseServiceHours: OrderBy
+
+  """Reference to teacher's position, determines default service hours"""
+  positionId: OrderBy
 }
 
 """
@@ -10447,7 +10652,6 @@ type Track {
 
   """Abbreviated track name"""
   nameShort: String
-  nomImport: String
 
   """An object relationship"""
   program: Program!
@@ -10557,7 +10761,6 @@ input TrackBoolExp {
   id: IntComparisonExp
   name: StringComparisonExp
   nameShort: StringComparisonExp
-  nomImport: StringComparisonExp
   program: ProgramBoolExp
   programId: IntComparisonExp
   updatedAt: TimestamptzComparisonExp
@@ -10610,7 +10813,6 @@ input TrackInsertInput {
 
   """Abbreviated track name"""
   nameShort: String
-  nomImport: String
   program: ProgramObjRelInsertInput
 
   """Parent program for this track"""
@@ -10640,7 +10842,6 @@ type TrackMaxFields {
 
   """Abbreviated track name"""
   nameShort: String
-  nomImport: String
 
   """Parent program for this track"""
   programId: Int
@@ -10668,7 +10869,6 @@ input TrackMaxOrderBy {
 
   """Abbreviated track name"""
   nameShort: OrderBy
-  nomImport: OrderBy
 
   """Parent program for this track"""
   programId: OrderBy
@@ -10694,7 +10894,6 @@ type TrackMinFields {
 
   """Abbreviated track name"""
   nameShort: String
-  nomImport: String
 
   """Parent program for this track"""
   programId: Int
@@ -10722,7 +10921,6 @@ input TrackMinOrderBy {
 
   """Abbreviated track name"""
   nameShort: OrderBy
-  nomImport: OrderBy
 
   """Parent program for this track"""
   programId: OrderBy
@@ -10771,7 +10969,6 @@ input TrackOrderBy {
   id: OrderBy
   name: OrderBy
   nameShort: OrderBy
-  nomImport: OrderBy
   program: ProgramOrderBy
   programId: OrderBy
   updatedAt: OrderBy
@@ -10799,9 +10996,6 @@ enum TrackSelectColumn {
 
   """column name"""
   nameShort
-
-  """column name"""
-  nomImport
 
   """column name"""
   programId
@@ -10846,7 +11040,6 @@ input TrackSetInput {
 
   """Abbreviated track name"""
   nameShort: String
-  nomImport: String
 
   """Parent program for this track"""
   programId: Int
@@ -10946,7 +11139,6 @@ input TrackStreamCursorValueInput {
 
   """Abbreviated track name"""
   nameShort: String
-  nomImport: String
 
   """Parent program for this track"""
   programId: Int
@@ -10995,9 +11187,6 @@ enum TrackUpdateColumn {
 
   """column name"""
   nameShort
-
-  """column name"""
-  nomImport
 
   """column name"""
   programId
@@ -11080,12 +11269,12 @@ input TrackVarianceOrderBy {
   programId: OrderBy
 }
 
-"""Custom application configuration settings"""
+"""Custom texts for the UI"""
 type UiText {
   """Timestamp when the record was created"""
   createdAt: timestamptz!
 
-  """Setting identifier"""
+  """Text identifier"""
   key: String!
 
   """
@@ -11093,7 +11282,7 @@ type UiText {
   """
   updatedAt: timestamptz!
 
-  """Setting value stored as text"""
+  """Text content"""
   value: String!
 }
 
@@ -11134,7 +11323,7 @@ enum UiTextConstraint {
   """
   unique or primary key constraint on columns "key"
   """
-  app_settings_pkey
+  ui_text_pkey
 }
 
 """
@@ -11144,7 +11333,7 @@ input UiTextInsertInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Setting identifier"""
+  """Text identifier"""
   key: String
 
   """
@@ -11152,7 +11341,7 @@ input UiTextInsertInput {
   """
   updatedAt: timestamptz
 
-  """Setting value stored as text"""
+  """Text content"""
   value: String
 }
 
@@ -11161,7 +11350,7 @@ type UiTextMaxFields {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Setting identifier"""
+  """Text identifier"""
   key: String
 
   """
@@ -11169,7 +11358,7 @@ type UiTextMaxFields {
   """
   updatedAt: timestamptz
 
-  """Setting value stored as text"""
+  """Text content"""
   value: String
 }
 
@@ -11178,7 +11367,7 @@ type UiTextMinFields {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Setting identifier"""
+  """Text identifier"""
   key: String
 
   """
@@ -11186,7 +11375,7 @@ type UiTextMinFields {
   """
   updatedAt: timestamptz
 
-  """Setting value stored as text"""
+  """Text content"""
   value: String
 }
 
@@ -11220,7 +11409,7 @@ input UiTextOrderBy {
 
 """primary key columns input for table: ui_text"""
 input UiTextPkColumnsInput {
-  """Setting identifier"""
+  """Text identifier"""
   key: String!
 }
 
@@ -11248,7 +11437,7 @@ input UiTextSetInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Setting identifier"""
+  """Text identifier"""
   key: String
 
   """
@@ -11256,7 +11445,7 @@ input UiTextSetInput {
   """
   updatedAt: timestamptz
 
-  """Setting value stored as text"""
+  """Text content"""
   value: String
 }
 
@@ -11276,7 +11465,7 @@ input UiTextStreamCursorValueInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Setting identifier"""
+  """Text identifier"""
   key: String
 
   """
@@ -11284,7 +11473,7 @@ input UiTextStreamCursorValueInput {
   """
   updatedAt: timestamptz
 
-  """Setting value stored as text"""
+  """Text content"""
   value: String
 }
 
@@ -11832,8 +12021,8 @@ type mutation_root {
   delete single row from the table: "course_type"
   """
   deleteCourseTypeByPk(
-    """Course type identifier (e.g., lecture, tutorial)"""
-    value: String!
+    """Unique course type identifier"""
+    id: Int!
   ): CourseType
 
   """
@@ -11880,8 +12069,8 @@ type mutation_root {
   delete single row from the table: "position"
   """
   deletePositionByPk(
-    """Position identifier (e.g., professor, lecturer)"""
-    value: String!
+    """Unique position identifier"""
+    id: Int!
   ): Position
 
   """
@@ -12024,8 +12213,8 @@ type mutation_root {
   delete single row from the table: "service_modification_type"
   """
   deleteServiceModificationTypeByPk(
-    """Modification type identifier"""
-    value: String!
+    """Unique modification type identifier"""
+    id: Int!
   ): ServiceModificationType
 
   """
@@ -12072,7 +12261,7 @@ type mutation_root {
   delete single row from the table: "ui_text"
   """
   deleteUiTextByPk(
-    """Setting identifier"""
+    """Text identifier"""
     key: String!
   ): UiText
 
@@ -12972,6 +13161,9 @@ type mutation_root {
   update data of the table: "service_modification_type"
   """
   updateServiceModificationType(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: ServiceModificationTypeIncInput
+
     """sets the columns of the filtered rows to the given values"""
     _set: ServiceModificationTypeSetInput
 
@@ -12983,6 +13175,9 @@ type mutation_root {
   update single row of the table: "service_modification_type"
   """
   updateServiceModificationTypeByPk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: ServiceModificationTypeIncInput
+
     """sets the columns of the filtered rows to the given values"""
     _set: ServiceModificationTypeSetInput
     pkColumns: ServiceModificationTypePkColumnsInput!
@@ -13304,8 +13499,8 @@ type query_root {
 
   """fetch data from the table: "course_type" using primary key columns"""
   courseTypeByPk(
-    """Course type identifier (e.g., lecture, tutorial)"""
-    value: String!
+    """Unique course type identifier"""
+    id: Int!
   ): CourseType
 
   """
@@ -13442,8 +13637,8 @@ type query_root {
 
   """fetch data from the table: "position" using primary key columns"""
   positionByPk(
-    """Position identifier (e.g., professor, lecturer)"""
-    value: String!
+    """Unique position identifier"""
+    id: Int!
   ): Position
 
   """
@@ -13860,8 +14055,8 @@ type query_root {
   fetch data from the table: "service_modification_type" using primary key columns
   """
   serviceModificationTypeByPk(
-    """Modification type identifier"""
-    value: String!
+    """Unique modification type identifier"""
+    id: Int!
   ): ServiceModificationType
 
   """
@@ -13998,7 +14193,7 @@ type query_root {
 
   """fetch data from the table: "ui_text" using primary key columns"""
   uiTextByPk(
-    """Setting identifier"""
+    """Text identifier"""
     key: String!
   ): UiText
 
@@ -14240,8 +14435,8 @@ type subscription_root {
 
   """fetch data from the table: "course_type" using primary key columns"""
   courseTypeByPk(
-    """Course type identifier (e.g., lecture, tutorial)"""
-    value: String!
+    """Unique course type identifier"""
+    id: Int!
   ): CourseType
 
   """
@@ -14420,8 +14615,8 @@ type subscription_root {
 
   """fetch data from the table: "position" using primary key columns"""
   positionByPk(
-    """Position identifier (e.g., professor, lecturer)"""
-    value: String!
+    """Unique position identifier"""
+    id: Int!
   ): Position
 
   """
@@ -14950,8 +15145,8 @@ type subscription_root {
   fetch data from the table: "service_modification_type" using primary key columns
   """
   serviceModificationTypeByPk(
-    """Modification type identifier"""
-    value: String!
+    """Unique modification type identifier"""
+    id: Int!
   ): ServiceModificationType
 
   """
@@ -15144,7 +15339,7 @@ type subscription_root {
 
   """fetch data from the table: "ui_text" using primary key columns"""
   uiTextByPk(
-    """Setting identifier"""
+    """Text identifier"""
     key: String!
   ): UiText
 

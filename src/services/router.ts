@@ -4,10 +4,14 @@ import {
   createWebHistory,
 } from "vue-router";
 
+import { i18n } from "@/services/i18n.ts";
+
 import PageAdmin from "@/pages/PageAdmin.vue";
 import PageCourses from "@/pages/PageCourses.vue";
 import PageHome from "@/pages/PageHome.vue";
 import PageTeacher from "@/pages/PageTeacher.vue";
+
+const { t } = i18n.global;
 
 const routes: RouteRecordRaw[] = [
   {
@@ -35,7 +39,7 @@ const routes: RouteRecordRaw[] = [
     path: "/:pathMatch(.*)*",
     name: "not-found",
     component: PageHome,
-    props: { message: "Page non trouvée" },
+    props: { alert: t("home.alert.page_not_found") },
   },
 ];
 

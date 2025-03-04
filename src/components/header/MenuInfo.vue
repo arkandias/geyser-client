@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { useCustomTextsStore } from "@/stores/custom-texts.ts";
@@ -7,99 +7,63 @@ import { useCustomTextsStore } from "@/stores/custom-texts.ts";
 import MenuBase from "@/components/header/MenuBase.vue";
 
 const { t } = useCustomI18n();
+const { customTexts } = useCustomTextsStore();
 
-const { getValue } = useCustomTextsStore();
+const sections = ["contact", "legal_notice", "license"] as const;
 
-const isContactOpen = ref(false);
-const isLicenceOpen = ref(false);
-const isLegalNoticeOpen = ref(false);
+const isDialogOpen = ref({
+  contact: false,
+  legal_notice: false,
+  license: false,
+});
 
-const legalNotice = getValue("legal_notice");
+const labels = {
+  contact: t(`header.info.contact.label`),
+  legal_notice: t(`header.info.legal_notice.label`),
+  license: t(`header.info.license.label`),
+};
 
-// Style
-const dialogHeaderClass = ["text-h6"];
-const dialogBodyClass = ["text-justify"];
+const icons = {
+  contact: "sym_s_contact_support",
+  legal_notice: "sym_s_balance",
+  license: "sym_s_license",
+};
+
+const messages = computed(() => ({
+  contact: customTexts.value.contact || t("header.info.contact.message"),
+  legal_notice:
+    customTexts.value.legal_notice || t("header.info.legal_notice.message"),
+  license: t("header.info.license.message"),
+}));
 </script>
 
 <template>
   <MenuBase :label="t('header.info.label')" icon="sym_s_info">
     <QList>
-      <QItem v-close-popup clickable @click="isContactOpen = true">
-        <QItemSection side>
-          <QIcon name="sym_s_contact_support" />
-        </QItemSection>
-        <QItemSection>
-          <QItemLabel>{{ t("header.info.contact.label") }}</QItemLabel>
-        </QItemSection>
-      </QItem>
-      <QItem v-close-popup clickable @click="isLicenceOpen = true">
-        <QItemSection side>
-          <QIcon name="sym_s_license" />
-        </QItemSection>
-        <QItemSection>
-          <QItemLabel>{{ t("header.info.license.label") }}</QItemLabel>
-        </QItemSection>
-      </QItem>
       <QItem
+        v-for="s in sections"
+        :key="s"
         v-close-popup
         clickable
-        :disable="!legalNotice"
-        @click="isLegalNoticeOpen = true"
+        @click="isDialogOpen[s] = true"
       >
         <QItemSection side>
-          <QIcon name="sym_s_balance" />
+          <QIcon :name="icons[s]" />
         </QItemSection>
         <QItemSection>
-          <QItemLabel>{{ t("header.info.legal_notice.label") }}</QItemLabel>
+          {{ labels[s] }}
         </QItemSection>
       </QItem>
     </QList>
   </MenuBase>
 
-  <!-- TODO: refactor QDialog -->
-
-  <QDialog v-model="isContactOpen">
+  <QDialog v-for="s in sections" :key="s" v-model="isDialogOpen[s]">
     <QCard square>
-      <QCardSection :class="dialogHeaderClass">
-        {{ t("header.info.contact.label") }}
-      </QCardSection>
-      <QCardSection :class="dialogBodyClass">
-        {{ t("header.info.contact.message") }}
-      </QCardSection>
-      <QCardActions align="right">
-        <QBtn
-          :label="t('header.info.contact.button')"
-          icon="sym_s_mail"
-          flat
-          square
-          dense
-          href="mailto:julien.hauseux@univ-lille.fr"
-        />
-      </QCardActions>
-    </QCard>
-  </QDialog>
-
-  <QDialog v-model="isLicenceOpen">
-    <QCard square>
-      <QCardSection :class="dialogHeaderClass">
-        {{ t("header.info.license.label") }}
-      </QCardSection>
-      <!-- eslint-disable vue/no-v-html vue/no-v-text-v-html-on-component -->
-      <QCardSection
-        :class="dialogBodyClass"
-        v-html="t('header.info.license.message')"
-      />
-      <!-- eslint-enable vue/no-v-html vue/no-v-text-v-html-on-component -->
-    </QCard>
-  </QDialog>
-
-  <QDialog v-model="isLegalNoticeOpen">
-    <QCard square>
-      <QCardSection :class="dialogHeaderClass">
-        {{ t("header.info.legal_notice.label") }}
+      <QCardSection class="text-h6">
+        {{ labels[s] }}
       </QCardSection>
       <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-      <QCardSection :class="dialogBodyClass" v-html="legalNotice" />
+      <QCardSection class="text-justify q-pt-none" v-html="messages[s]" />
     </QCard>
   </QDialog>
 </template>

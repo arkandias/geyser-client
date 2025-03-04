@@ -11,11 +11,11 @@ import {
   PositionConstraint,
   PositionUpdateColumn,
   UpdatePositionsDocument,
+  UpsertPositionsDocument,
 } from "@/gql/graphql.ts";
 import type { ParsedRow } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
-import { initForm } from "@/utils/admin-data.ts";
-import { toSlug } from "@/utils/misc.ts";
+import { initForm, inputToNumber } from "@/utils/admin-data.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -26,54 +26,57 @@ const { positionFragments } = defineProps<{
 const { t } = useCustomI18n();
 
 const rowDescriptor = {
-  value: { type: "string" },
-  label: { type: "string" },
-  description: { type: "string", nullable: true },
-  baseServiceHours: { type: "number", nullable: true },
+  id: "number",
+  label: "string",
+  description: "string",
+  baseServiceHours: "number",
 } as const;
-
-const exportFields = ["value", "label", "description", "baseServiceHours"];
+const exportFields = ["label", "description", "baseServiceHours"];
+const nullableFields = ["description", "baseServiceHours"];
 
 type Row = ParsedRow<typeof rowDescriptor>;
-type Id = string;
-type DataObj = {
-  value: string;
-  label: string;
-  description: string | null;
-  baseServiceHours: number | null;
-};
+type Id = number;
+type DataObj = Pick<Row, "label" | "description" | "baseServiceHours">;
 
 graphql(`
   fragment AdminPosition on Position {
-    value
+    id
     label
     description
     baseServiceHours
   }
 
-  mutation InsertPositions(
+  mutation InsertPositions($objects: [PositionInsertInput!]!) {
+    insertPosition(objects: $objects) {
+      returning {
+        id
+      }
+    }
+  }
+
+  mutation UpsertPositions(
     $objects: [PositionInsertInput!]!
-    $onConflict: PositionOnConflict
+    $onConflict: PositionOnConflict!
   ) {
     insertPosition(objects: $objects, onConflict: $onConflict) {
       returning {
-        value
+        id
       }
     }
   }
 
-  mutation UpdatePositions($values: [String!]!, $changes: PositionSetInput!) {
-    updatePosition(where: { value: { _in: $values } }, _set: $changes) {
+  mutation UpdatePositions($ids: [Int!]!, $changes: PositionSetInput!) {
+    updatePosition(where: { id: { _in: $ids } }, _set: $changes) {
       returning {
-        value
+        id
       }
     }
   }
 
-  mutation DeletePositions($values: [String!]!) {
-    deletePosition(where: { value: { _in: $values } }) {
+  mutation DeletePositions($ids: [Int!]!) {
+    deletePosition(where: { id: { _in: $ids } }) {
       returning {
-        value
+        id
       }
     }
   }
@@ -83,12 +86,13 @@ const positions = computed(() =>
   positionFragments.map((f) => useFragment(AdminPositionFragmentDoc, f)),
 );
 const insertPositions = useMutation(InsertPositionsDocument);
+const upsertPositions = useMutation(UpsertPositionsDocument);
 const updatePositions = useMutation(UpdatePositionsDocument);
 const deletePositions = useMutation(DeletePositionsDocument);
 
 const rows = computed<Row[]>(() =>
   positions.value.map((p) => ({
-    value: p.value,
+    id: p.id,
     label: p.label,
     description: p.description ?? null,
     baseServiceHours: p.baseServiceHours ?? null,
@@ -98,19 +102,11 @@ const rows = computed<Row[]>(() =>
 const formValues = ref<Row>(initForm(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
-const updateValue = (value: unknown) => {
-  formValues.value.value = toSlug(String(value));
+const updateBaseServiceHours = (value: string | number | null) => {
+  formValues.value.baseServiceHours = inputToNumber(value);
 };
 
 const columns: ColumnNonAbbreviable<Row>[] = [
-  {
-    name: "value",
-    label: t("admin.teachers.positions.table.label"),
-    align: "left",
-    field: "label",
-    sortable: true,
-    searchable: true,
-  },
   {
     name: "label",
     label: t("admin.teachers.positions.table.label"),
@@ -138,17 +134,43 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   },
 ];
 
-const getLabel = (row: Row): string => row.label;
-
-function getData(row: Row): DataObj;
-function getData(row: Row, fields: string[]): Partial<DataObj>;
-function getData(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
+function getData(row: Row, checkConflicts: boolean): DataObj;
+function getData(
+  row: Row,
+  checkConflicts: boolean,
+  fields: string[],
+): Partial<DataObj>;
+function getData(
+  row: Row,
+  checkConflicts: boolean,
+  fields?: string[],
+): DataObj | Partial<DataObj> {
   if (!row.label) {
-    throw new Error(t("admin.teachers.positions.form.error.uid_empty"));
+    throw new Error(t("admin.teachers.positions.form.error.label_empty"));
+  }
+  if (row.description === "") {
+    row.description = null;
+  }
+  if (row.baseServiceHours !== null) {
+    if (!Number.isFinite(row.baseServiceHours)) {
+      throw new Error(
+        t("admin.teachers.positions.form.error.base_service_hours_nan"),
+      );
+    }
+    if (row.baseServiceHours < 0) {
+      throw new Error(
+        t("admin.teachers.positions.form.error.base_service_hours_negative"),
+      );
+    }
+  }
+
+  if (checkConflicts) {
+    if (positions.value.find((p) => p.label === row.label)) {
+      throw new Error(t("admin.teachers.positions.form.error.conflict_label"));
+    }
   }
 
   const dataObj: DataObj = {
-    value: row.value,
     label: row.label,
     description: row.description,
     baseServiceHours: row.baseServiceHours,
@@ -163,16 +185,22 @@ function getData(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
   return dataObj;
 }
 
-const insertData = (objects: DataObj[], overwrite?: boolean) =>
-  insertPositions
+const insertData = (objects: DataObj[]) =>
+  insertPositions.executeMutation({ objects }).then((result) => ({
+    data: result.data
+      ? { returning: result.data.insertPosition?.returning ?? null }
+      : null,
+    error: result.error ?? null,
+  }));
+
+const upsertData = (objects: DataObj[], overwrite: boolean) =>
+  upsertPositions
     .executeMutation({
       objects,
       onConflict: {
-        constraint: PositionConstraint.PositionPkey,
+        constraint: PositionConstraint.PositionLabelKey,
         updateColumns: overwrite
           ? [
-              PositionUpdateColumn.Value,
-              PositionUpdateColumn.Label,
               PositionUpdateColumn.Description,
               PositionUpdateColumn.BaseServiceHours,
             ]
@@ -181,38 +209,32 @@ const insertData = (objects: DataObj[], overwrite?: boolean) =>
     })
     .then((result) => ({
       data: result.data
-        ? {
-            returning: result.data.insertPosition?.returning ?? null,
-          }
+        ? { returning: result.data.insertPosition?.returning ?? null }
         : null,
       error: result.error ?? null,
     }));
 
-const updateData = (values: Id[], changes: Partial<DataObj>) =>
+const updateData = (ids: Id[], changes: Partial<DataObj>) =>
   updatePositions
     .executeMutation({
-      values,
+      ids,
       changes,
     })
     .then((result) => ({
       data: result.data
-        ? {
-            returning: result.data.updatePosition?.returning ?? null,
-          }
+        ? { returning: result.data.updatePosition?.returning ?? null }
         : null,
       error: result.error ?? null,
     }));
 
-const deleteData = (values: Id[]) =>
+const deleteData = (ids: Id[]) =>
   deletePositions
     .executeMutation({
-      values,
+      ids,
     })
     .then((result) => ({
       data: result.data
-        ? {
-            returning: result.data.deletePosition?.returning ?? null,
-          }
+        ? { returning: result.data.deletePosition?.returning ?? null }
         : null,
       error: result.error ?? null,
     }));
@@ -224,32 +246,25 @@ const deleteData = (values: Id[]) =>
     v-model:selected-fields="selectedFields"
     name="positions"
     message-prefix="admin.teachers.positions"
-    id-key="value"
+    id-key="id"
     :row-descriptor
     :columns
     :rows
-    :get-label
     :get-data
     :insert-data
+    :upsert-data
     :update-data
     :delete-data
     :export-fields
+    :nullable-fields
   >
     <template #form="{ multipleSelection }">
-      <QInput
-        v-if="!multipleSelection"
-        v-model="formValues.value"
-        :label="t('admin.teachers.positions.form.value')"
-        square
-        dense
-      />
       <QInput
         v-if="!multipleSelection"
         v-model="formValues.label"
         :label="t('admin.teachers.positions.form.label')"
         square
         dense
-        @update:model-value="updateValue"
       />
       <QInput
         v-model="formValues.description"
@@ -263,7 +278,7 @@ const deleteData = (values: Id[]) =>
         </template>
       </QInput>
       <QInput
-        v-model.number="formValues.baseServiceHours"
+        :model-value="formValues.baseServiceHours"
         type="number"
         :label="t('admin.teachers.positions.form.base_service_hours')"
         :disable="
@@ -271,6 +286,7 @@ const deleteData = (values: Id[]) =>
         "
         square
         dense
+        @update:model-value="updateBaseServiceHours"
       >
         <template v-if="multipleSelection" #before>
           <QCheckbox v-model="selectedFields" val="baseServiceHours" />

@@ -12,9 +12,9 @@ import { type Ref, computed, ref, toValue, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import type {
-  FieldDescriptor,
   GetDataFn,
   ParsedRow,
+  PrimitiveTypeName,
   RowDescriptor,
   Scalar,
   SimpleObject,
@@ -27,7 +27,8 @@ import { getField, normalizeForSearch } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 type Row = ParsedRow<T>;
-type Id = Row[IdKey];
+type Id = NonNullable<Row[IdKey]>;
+type RowWithId = Row & Record<IdKey, Id>;
 type OperationResult = {
   data: {
     returning: SimpleObject<Scalar>[] | null;
@@ -46,12 +47,14 @@ const {
   idKey,
   rows,
   columns,
-  getLabel,
+  getLabel = (row: Row) => String(row["label"]),
   getData,
   insertData,
+  upsertData,
   updateData,
   deleteData,
-  exportFields,
+  exportFields = null,
+  nullableFields = [],
 } = defineProps<{
   name: string;
   messagePrefix: string;
@@ -59,25 +62,27 @@ const {
   idKey: IdKey;
   rows: Row[];
   columns: ColumnNonAbbreviable<Row>[];
-  getLabel: (row: Row) => string;
+  getLabel?: (row: Row) => string;
   getData: GetDataFn<Row, DataObj>;
-  insertData: (
+  insertData: (objects: DataObj[]) => Promise<OperationResult>;
+  upsertData: (
     objects: DataObj[],
-    overwrite?: boolean,
+    overwrite: boolean,
   ) => Promise<OperationResult>;
   updateData: (
     ids: Id[],
     changes: Partial<DataObj>,
   ) => Promise<OperationResult>;
   deleteData: (ids: Id[]) => Promise<OperationResult>;
-  exportFields: SimpleObject<string> | string[] | null;
+  exportFields?: string[] | null;
+  nullableFields?: string[];
 }>();
 defineSlots<{ form(slotProps: { multipleSelection: boolean }): unknown }>();
 
 const { t } = useCustomI18n();
 
 // ===== Data Table =====
-const selectedRows: Ref<Row[]> = ref([]);
+const selectedRows: Ref<RowWithId[]> = ref([]);
 const selection = computed(() => !!selectedRows.value.length);
 const multipleSelection = computed<boolean>(
   () => selectedRows.value.length > 1,
@@ -101,7 +106,7 @@ const formTitle = computed(() => {
   }
 });
 
-const openForm = (rows?: Row[]) => {
+const openForm = (rows?: RowWithId[]) => {
   if (rows) {
     selectedRows.value = rows;
   }
@@ -117,7 +122,7 @@ const errorMessage = (error: unknown) =>
 const insertDataHandle = async () => {
   let dataObj: DataObj;
   try {
-    dataObj = getData(formValues.value);
+    dataObj = getData(formValues.value, true);
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.invalid_form"),
@@ -126,7 +131,7 @@ const insertDataHandle = async () => {
     return;
   }
 
-  const { data, error } = await insertData([dataObj], false);
+  const { data, error } = await insertData([dataObj]);
   if (error) {
     console.error(error);
     notify(NotifyType.ERROR, {
@@ -152,8 +157,8 @@ const updateDataHandle = async () => {
   let dataObj: Partial<DataObj>;
   try {
     dataObj = multipleSelection.value
-      ? getData(formValues.value, selectedFields.value)
-      : getData(formValues.value);
+      ? getData(formValues.value, false, selectedFields.value)
+      : getData(formValues.value, false);
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.invalid_form"),
@@ -263,7 +268,7 @@ watch(isImportDialogOpen, (value) => {
   }
 });
 
-const importColumns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
+const importColumns: ColumnNonAbbreviable<[string, PrimitiveTypeName]>[] = [
   {
     name: "key",
     label: t("admin.data.import.table.columns.key"),
@@ -274,17 +279,21 @@ const importColumns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
     name: "type",
     label: t("admin.data.import.table.columns.type"),
     align: "left",
-    field: ([_, descriptor]) => descriptor.type,
+    field: ([_, typename]) => typename,
     format: (val: string) => t("admin.data.import.table.type." + val),
   },
   {
     name: "non_nullable",
     label: t("admin.data.import.table.columns.non_nullable"),
     align: "center",
-    field: ([_, descriptor]) => !!descriptor.nullable,
-    format: (val: boolean) => (!val ? "✓" : "✗"),
+    field: ([key]) => !nullableFields.includes(key),
+    format: (val: boolean) => (val ? "✓" : "✗"),
   },
 ];
+
+const importRows = Object.entries(rowDescriptor).filter(
+  ([key]) => exportFields?.includes(key) ?? true,
+);
 
 const importRowsHandle = async () => {
   if (!selectedFile.value) {
@@ -320,7 +329,7 @@ const importRowsHandle = async () => {
 
     const objects = importedRows.map((row, index) => {
       try {
-        return getData(row);
+        return getData(row, false);
       } catch (error) {
         console.error(t("admin.data.error.invalid_row", { index }), error);
         throw new Error(
@@ -332,7 +341,7 @@ const importRowsHandle = async () => {
       }
     });
 
-    const { data, error } = await insertData(objects, overwrite.value);
+    const { data, error } = await upsertData(objects, overwrite.value);
     if (error) {
       console.error(error);
       throw new Error(
@@ -509,7 +518,7 @@ const exportDataHandle = () => {
       <QCardSection>
         <QTable
           :columns="importColumns"
-          :rows="Object.entries(rowDescriptor)"
+          :rows="importRows"
           :pagination="{ rowsPerPage: 0 }"
           hide-bottom
           bordered
