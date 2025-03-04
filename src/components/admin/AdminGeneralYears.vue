@@ -69,20 +69,20 @@ const setCurrentYearHandle = async (year: number): Promise<void> => {
   if (error) {
     console.error(error);
     notify(NotifyType.ERROR, {
-      message: t("admin.general.years.error.set_current"),
+      message: t("admin.general.years.error.setCurrent"),
       caption: error.message,
     });
   }
   notify(NotifyType.SUCCESS, {
-    message: t("admin.general.years.success.set_current"),
+    message: t("admin.general.years.success.setCurrent"),
   });
 };
 
 const insertYearHandle = async () => {
   if (formValue.value === null) {
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.invalid_form"),
-      caption: t("admin.general.years.error.empty_value"),
+      message: t("admin.data.error.invalidForm"),
+      caption: t("admin.general.years.error.emptyValue"),
     });
     return;
   }
@@ -97,7 +97,7 @@ const insertYearHandle = async () => {
   if (error) {
     console.error(error);
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.insert_failed"),
+      message: t("admin.data.error.insertFailed"),
       caption: error.message,
     });
     return;
@@ -111,7 +111,7 @@ const insertYearHandle = async () => {
     });
   } else {
     notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.no_return_data"),
+      message: t("admin.data.error.noReturnData"),
     });
   }
 };
@@ -133,7 +133,7 @@ const updateYearHandle = async (
   if (error) {
     console.error(error);
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.update_failed"),
+      message: t("admin.data.error.updateFailed"),
       caption: error.message,
     });
     return;
@@ -147,7 +147,7 @@ const updateYearHandle = async (
     });
   } else {
     notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.no_return_data"),
+      message: t("admin.data.error.noReturnData"),
     });
   }
 };
@@ -159,8 +159,8 @@ const updateYearValueHandle = async () => {
 
   if (formValue.value === null) {
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.invalid_form"),
-      caption: t("admin.general.years.error.empty_value"),
+      message: t("admin.data.error.invalidForm"),
+      caption: t("admin.general.years.error.emptyValue"),
     });
     return;
   }
@@ -185,7 +185,7 @@ const deleteYearHandle = async (value: number) => {
   if (error) {
     console.error(error);
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.delete_failed"),
+      message: t("admin.data.error.deleteFailed"),
       caption: error.message,
     });
     return;
@@ -198,7 +198,7 @@ const deleteYearHandle = async (value: number) => {
     });
   } else {
     notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.no_return_data"),
+      message: t("admin.data.error.noReturnData"),
     });
   }
 };

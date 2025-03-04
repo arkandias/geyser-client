@@ -2,6 +2,7 @@
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { capPhase } from "@/config/types/phases.ts";
 import { useCustomTextsStore } from "@/stores/custom-texts.ts";
 import { usePhaseStore } from "@/stores/phase.ts";
 
@@ -11,15 +12,15 @@ const { t } = useCustomI18n();
 const { currentPhase } = usePhaseStore();
 const { customTexts } = useCustomTextsStore();
 
-const title = computed(() => customTexts.value.home_title || t("home.title"));
+const title = computed(() => customTexts.value.homeTitle || t("home.title"));
 const subtitle = computed(
   () =>
-    customTexts.value[`home_subtitle_${currentPhase.value}`] ||
+    customTexts.value[`homeSubtitle${capPhase(currentPhase.value)}`] ||
     t(`home.subtitle.${currentPhase.value}`),
 );
 const message = computed(
   () =>
-    customTexts.value[`home_message_${currentPhase.value}`] ||
+    customTexts.value[`homeMessage${capPhase(currentPhase.value)}`] ||
     t(`home.message.${currentPhase.value}`),
 );
 </script>

@@ -143,15 +143,19 @@ function validateFormData(
 
     if (!fieldDescriptor.nullable && value == null) {
       throw new Error(
-        t("admin.data.error.empty_field", {
+        t("admin.data.error.emptyField", {
           field: t(messagePrefix + ".form.fields." + key),
         }),
       );
     }
 
-    if (fieldDescriptor.type === "number") {
+    if (
+      fieldDescriptor.type === "number" &&
+      value != null &&
+      !Number.isFinite(value)
+    ) {
       throw new Error(
-        t("admin.data.error.not_a_number", {
+        t("admin.data.error.notANumber", {
           field: t(messagePrefix + ".form.fields." + key),
         }),
       );
@@ -175,7 +179,7 @@ const insertDataHandle = async () => {
     validateOperationData(object, true);
   } catch (error) {
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.invalid_form"),
+      message: t("admin.data.error.invalidForm"),
       caption: errorMessage(error),
     });
     return;
@@ -185,7 +189,7 @@ const insertDataHandle = async () => {
   if (error) {
     console.error(error);
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.insert_failed"),
+      message: t("admin.data.error.insertFailed"),
       caption: errorMessage(error),
     });
     return;
@@ -196,7 +200,7 @@ const insertDataHandle = async () => {
     });
   } else {
     notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.no_return_data"),
+      message: t("admin.data.error.noReturnData"),
     });
   }
 
@@ -213,7 +217,7 @@ const updateDataHandle = async () => {
     validateOperationData(changes, false);
   } catch (error) {
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.invalid_form"),
+      message: t("admin.data.error.invalidForm"),
       caption: errorMessage(error),
     });
     return;
@@ -226,7 +230,7 @@ const updateDataHandle = async () => {
   if (error) {
     console.error(error);
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.update_failed"),
+      message: t("admin.data.error.updateFailed"),
       caption: errorMessage(error),
     });
     return;
@@ -237,11 +241,12 @@ const updateDataHandle = async () => {
     });
   } else {
     notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.no_return_data"),
+      message: t("admin.data.error.noReturnData"),
     });
   }
 
   isFormOpen.value = false;
+  selectedRows.value = [];
 };
 
 const deleteDataHandle = async () => {
@@ -268,7 +273,7 @@ const deleteDataHandle = async () => {
   if (error) {
     console.error(error);
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.delete_failed"),
+      message: t("admin.data.error.deleteFailed"),
       caption: errorMessage(error),
     });
     return;
@@ -279,7 +284,7 @@ const deleteDataHandle = async () => {
     });
   } else {
     notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.no_return_data"),
+      message: t("admin.data.error.noReturnData"),
     });
   }
 
@@ -335,8 +340,8 @@ const importColumns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
     format: (val: string) => t("admin.data.import.table.type." + val),
   },
   {
-    name: "non_nullable",
-    label: t("admin.data.import.table.columns.non_nullable"),
+    name: "nonNullable",
+    label: t("admin.data.import.table.columns.nonNullable"),
     align: "center",
     field: ([_, fieldDescriptor]) => !fieldDescriptor.nullable,
     format: (val: boolean) => (val ? "✓" : "✗"),
@@ -350,8 +355,8 @@ const importRows = Object.entries(rowDescriptor).filter(
 const importRowsHandle = async () => {
   if (!selectedFile.value) {
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.import_failed"),
-      caption: t("admin.data.error.empty_file"),
+      message: t("admin.data.error.importFailed"),
+      caption: t("admin.data.error.emptyFile"),
     });
     return;
   }
@@ -365,7 +370,7 @@ const importRowsHandle = async () => {
     } catch (error) {
       console.error(error);
       throw new Error(
-        t("admin.data.error.unreadable_file", { reason: errorMessage(error) }),
+        t("admin.data.error.unreadableFile", { reason: errorMessage(error) }),
       );
     }
 
@@ -375,7 +380,7 @@ const importRowsHandle = async () => {
     } catch (error) {
       console.error(error);
       throw new Error(
-        t("admin.data.error.parsing_error", { reason: errorMessage(error) }),
+        t("admin.data.error.parsingError", { reason: errorMessage(error) }),
       );
     }
 
@@ -383,9 +388,9 @@ const importRowsHandle = async () => {
       try {
         validateOperationData(row, false);
       } catch (error) {
-        console.error(t("admin.data.error.invalid_row", { index }), error);
+        console.error(t("admin.data.error.invalidRow", { index }), error);
         throw new Error(
-          t("admin.data.error.invalid_row", {
+          t("admin.data.error.invalidRow", {
             index,
             reason: errorMessage(error),
           }),
@@ -397,7 +402,7 @@ const importRowsHandle = async () => {
     if (error) {
       console.error(error);
       throw new Error(
-        t("admin.data.error.insert_error", {
+        t("admin.data.error.insertError", {
           reason: error.message,
         }),
       );
@@ -411,14 +416,14 @@ const importRowsHandle = async () => {
       });
     } else {
       notify(NotifyType.DEFAULT, {
-        message: t("admin.data.error.no_return_data"),
+        message: t("admin.data.error.noReturnData"),
       });
     }
 
     isImportDialogOpen.value = false;
   } catch (error) {
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.import_failed"),
+      message: t("admin.data.error.importFailed"),
       caption: errorMessage(error),
     });
   } finally {
@@ -568,7 +573,7 @@ const exportDataHandle = () => {
         {{ t("admin.data.import.title") }}
       </QCardSection>
       <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-      <QCardSection v-html="t('admin.data.import.csv_instructions')" />
+      <QCardSection v-html="t('admin.data.import.csvInstructions')" />
       <QCardSection>
         <QTable
           :columns="importColumns"
@@ -585,7 +590,7 @@ const exportDataHandle = () => {
           <QFile
             v-model="selectedFile"
             accept=".csv"
-            :label="t('admin.data.import.file_picker_label')"
+            :label="t('admin.data.import.filePickerLabel')"
             clearable
             clear-icon="sym_s_close"
             outlined

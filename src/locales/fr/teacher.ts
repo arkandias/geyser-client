@@ -6,7 +6,7 @@ export default {
     alias: "Alias",
     position: "Fonction",
     service: "Service",
-    base_service_hours: "Service de base",
+    baseServiceHours: "Service de base",
     visible: "Visible",
     active: "Actif",
     email: "Courriel",

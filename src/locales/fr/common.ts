@@ -5,7 +5,7 @@ export default {
     results: "Consultation",
     shutdown: "Fermeture",
   },
-  request_type: {
+  requestType: {
     primary: "Principale",
     secondary: "Secondaire",
     assignment: "Attribution",
@@ -18,7 +18,7 @@ export default {
   notification: {
     profile: {
       found: "Profil trouvé",
-      not_found: "Profil non trouvé",
+      notFound: "Profil non trouvé",
     },
     error: {
       unknown: "Erreur inconnue",
@@ -30,6 +30,6 @@ export default {
   },
   unit: {
     hours: "h",
-    weighted_hours: "htd",
+    weightedHours: "htd",
   },
 } as const;

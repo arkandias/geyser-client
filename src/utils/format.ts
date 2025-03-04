@@ -35,4 +35,4 @@ export const formatProgram = (program: Program) =>
   displayName(program.degree) + " " + displayName(program);
 
 export const formatWH = (hours: number) =>
-  n(hours) + "\u00A0" + t("unit.weighted_hours");
+  n(hours) + "\u00A0" + t("unit.weightedHours");

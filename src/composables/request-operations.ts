@@ -56,7 +56,7 @@ graphql(`
         hours: $hours
       }
       onConflict: {
-        constraint: request_service_id_course_id_type_key
+        constraint: requestServiceIdCourseIdTypeKey
         updateColumns: [hours]
       }
     ) {
@@ -108,7 +108,7 @@ const getService =
     if (!course) {
       console.error(`No course found with id ${courseId.toString()}`);
       notify(NotifyType.ERROR, {
-        message: t("request.error.course_not_found"),
+        message: t("request.error.courseNotFound"),
       });
       return null;
     }
@@ -118,8 +118,8 @@ const getService =
         `No service found for teacher ${uid} and year ${course.year.toString()}`,
       );
       notify(NotifyType.ERROR, {
-        message: t("request.error.service_not_found.title"),
-        caption: t("request.error.service_not_found.caption"),
+        message: t("request.error.serviceNotFound.title"),
+        caption: t("request.error.serviceNotFound.caption"),
       });
       return null;
     }
@@ -176,7 +176,7 @@ const updateRequestWithServiceId =
     if (!isRequestType(requestType)) {
       console.error(`Invalid request type: ${requestType}`);
       notify(NotifyType.ERROR, {
-        message: t("request.error.invalid_type"),
+        message: t("request.error.invalidType"),
       });
       return;
     }
@@ -186,7 +186,7 @@ const updateRequestWithServiceId =
     }
     if (hours === current) {
       notify(NotifyType.DEFAULT, {
-        message: t("request.success.already_recorded", {
+        message: t("request.success.alreadyRecorded", {
           type: t(`request.type.${requestType}`),
         }),
       });

@@ -1,17 +1,19 @@
-import { PHASES } from "@/config/types/phases.ts";
+import { PHASES, capPhase } from "@/config/types/phases.ts";
 
 export default {
-  custom_text_default: {
-    home_title: "@:home.title",
-    [`home_subtitle_${PHASES.REQUESTS}`]: "@:home.subtitle.requests",
-    [`home_subtitle_${PHASES.ASSIGNMENTS}`]: "@:home.subtitle.assignments",
-    [`home_subtitle_${PHASES.RESULTS}`]: "@:home.subtitle.results",
-    [`home_subtitle_${PHASES.SHUTDOWN}`]: "@:home.subtitle.shutdown",
-    [`home_message_${PHASES.REQUESTS}`]: "@:home.message.requests",
-    [`home_message_${PHASES.ASSIGNMENTS}`]: "@:home.message.assignments",
-    [`home_message_${PHASES.RESULTS}`]: "@:home.message.results",
-    [`home_message_${PHASES.SHUTDOWN}`]: "@:home.message.shutdown",
+  customTextDefault: {
+    homeTitle: "@:home.title",
+    [`homeSubtitle${capPhase(PHASES.REQUESTS)}`]: "@:home.subtitle.requests",
+    [`homeSubtitle${capPhase(PHASES.ASSIGNMENTS)}`]:
+      "@:home.subtitle.assignments",
+    [`homeSubtitle${capPhase(PHASES.RESULTS)}`]: "@:home.subtitle.results",
+    [`homeSubtitle${capPhase(PHASES.SHUTDOWN)}`]: "@:home.subtitle.shutdown",
+    [`homeMessage${capPhase(PHASES.REQUESTS)}`]: "@:home.message.requests",
+    [`homeMessage${capPhase(PHASES.ASSIGNMENTS)}`]:
+      "@:home.message.assignments",
+    [`homeMessage${capPhase(PHASES.RESULTS)}`]: "@:home.message.results",
+    [`homeMessage${capPhase(PHASES.SHUTDOWN)}`]: "@:home.message.shutdown",
     contact: "@:header.info.contact.message",
-    legal_notice: "@:header.info.legal_notice.message",
+    legalNotice: "@:header.info.legalNotice.message",
   },
 } as const;

@@ -139,7 +139,7 @@ const columns: ColumnNonAbbreviable<FormData>[] = [
     searchable: true,
   },
   {
-    name: "base_service_hours",
+    name: "baseServiceHours",
     label: t("admin.teachers.positions.table.columns.baseServiceHours"),
     field: "baseServiceHours",
     format: (val: number | null) => (val === null ? null : nf.format(val)),
@@ -271,7 +271,7 @@ const deleteData = (ids: Id[]): Promise<OperationResult> =>
         :disable="
           multipleSelection && !selectedFields.includes('baseServiceHours')
         "
-        :suffix="t('unit.weighted_hours')"
+        :suffix="t('unit.weightedHours')"
         square
         dense
         @update:model-value="updateBaseServiceHours"

@@ -1,14 +1,14 @@
 import admin from "@/locales/fr/admin.ts";
 import common from "@/locales/fr/common.ts";
 import courses from "@/locales/fr/courses.ts";
-import custom_text_default from "@/locales/fr/custom-text-default.ts";
+import customTextDefault from "@/locales/fr/custom-text-default.ts";
 import header from "@/locales/fr/header.ts";
 import home from "@/locales/fr/home.ts";
 import teacher from "@/locales/fr/teacher.ts";
 
 export default {
   ...common,
-  ...custom_text_default,
+  ...customTextDefault,
   ...header,
   ...home,
   ...courses,
@@ -20,7 +20,7 @@ export default {
       cancel: "Annuler",
     },
     save: {
-      no_changes: "Pas de changement à enregistrer",
+      noChanges: "Pas de changement à enregistrer",
       success: {
         updated: "Texte mis à jour",
         deleted: "Texte supprimé",
@@ -31,7 +31,7 @@ export default {
       },
     },
   },
-  request_card: {
+  requestCard: {
     group: "groupe | groupes",
     hour: "heure | heures",
     tooltip: {
@@ -39,13 +39,13 @@ export default {
       remove: "Supprimer la demande",
     },
   },
-  request_form: {
+  requestForm: {
     invalid: {
       message: "Formulaire non valide",
       caption: {
-        no_teacher: "Sélectionnez un intervenant",
-        negative_hours: "Sélectionnez un nombre d'heures positif ou nul",
-        no_type: "Sélectionnez un type de demande",
+        noTeacher: "Sélectionnez un intervenant",
+        negativeHours: "Sélectionnez un nombre d'heures positif ou nul",
+        noType: "Sélectionnez un type de demande",
       },
     },
     tooltip: {
@@ -59,19 +59,19 @@ export default {
       secondary: "Demande secondaire",
     },
     error: {
-      course_not_found: "Erreur lors de la récupération du cours",
-      service_not_found: {
+      courseNotFound: "Erreur lors de la récupération du cours",
+      serviceNotFound: {
         title: "Pas de service trouvé",
         caption: "Veuillez d'abord créer un service",
       },
       fetch: "Erreur lors de la récupération de la demande actuelle",
-      invalid_type: "Type de requête invalide",
+      invalidType: "Type de requête invalide",
       create: "Échec de la création",
       update: "Échec de la mise à jour",
       delete: "Échec de la suppression",
     },
     success: {
-      already_recorded: "{type} déjà enregistrée",
+      alreadyRecorded: "{type} déjà enregistrée",
       created: "{type} créée",
       updated: "{type} mise à jour",
       deleted: "{type} supprimée",

@@ -24,7 +24,7 @@ const onSave = async () => {
     editorText.value = "";
   }
   if (editorText.value === text) {
-    notify(NotifyType.DEFAULT, { message: t("editor.save.no_changes") });
+    notify(NotifyType.DEFAULT, { message: t("editor.save.noChanges") });
   } else {
     const success = await setText(editorText.value);
     if (success) {

@@ -26,7 +26,7 @@ const { isLeftPanelOpen, toggleLeftPanel } = useLeftPanelStore();
     square
     @click="toggleLeftPanel()"
   >
-    <QTooltip>{{ t("header.courses.teachers_filter") }}</QTooltip>
+    <QTooltip>{{ t("header.courses.teachersFilter") }}</QTooltip>
   </QBtn>
   <QBtn
     icon="sym_s_assignment"
@@ -36,7 +36,7 @@ const { isLeftPanelOpen, toggleLeftPanel } = useLeftPanelStore();
     square
     @click="toggleUid(profile.uid)"
   >
-    <QTooltip>{{ t("header.courses.my_requests") }}</QTooltip>
+    <QTooltip>{{ t("header.courses.myRequests") }}</QTooltip>
   </QBtn>
 </template>
 

@@ -67,17 +67,17 @@ const requestTypeInit = computed(() =>
 );
 const requestTypeOptions = computed(() => [
   ...(perm.toEditAssignments
-    ? [{ value: REQUEST_TYPES.ASSIGNMENT, label: t("request_type.assignment") }]
+    ? [{ value: REQUEST_TYPES.ASSIGNMENT, label: t("requestType.assignment") }]
     : []),
   ...(perm.toSubmitRequests
     ? [
         {
           value: REQUEST_TYPES.PRIMARY,
-          label: t("request_type.primary"),
+          label: t("requestType.primary"),
         },
         {
           value: REQUEST_TYPES.SECONDARY,
-          label: t("request_type.secondary"),
+          label: t("requestType.secondary"),
         },
       ]
     : []),
@@ -109,22 +109,22 @@ watch(
 const submitForm = async (): Promise<void> => {
   if (uid.value === null) {
     notify(NotifyType.ERROR, {
-      message: t("request_form.invalid.message"),
-      caption: t("request_form.invalid.caption.no_teacher"),
+      message: t("requestForm.invalid.message"),
+      caption: t("requestForm.invalid.caption.noTeacher"),
     });
     return;
   }
   if (hours.value === null || hours.value < 0) {
     notify(NotifyType.ERROR, {
-      message: t("request_form.invalid.message"),
-      caption: t("request_form.invalid.caption.negative_hours"),
+      message: t("requestForm.invalid.message"),
+      caption: t("requestForm.invalid.caption.negativeHours"),
     });
     return;
   }
   if (!requestType.value) {
     notify(NotifyType.ERROR, {
-      message: t("request_form.invalid.message"),
-      caption: t("request_form.invalid.caption.no_type"),
+      message: t("requestForm.invalid.message"),
+      caption: t("requestForm.invalid.caption.noType"),
     });
     return;
   }
@@ -182,7 +182,7 @@ const resetForm = (): void => {
       dense
     />
     <QBtn type="submit" icon="sym_s_check" color="primary" flat square dense>
-      <QTooltip>{{ t("request_form.tooltip.submit") }}</QTooltip>
+      <QTooltip>{{ t("requestForm.tooltip.submit") }}</QTooltip>
     </QBtn>
   </QForm>
 </template>

@@ -85,9 +85,11 @@ export const importCSV = <T extends RowDescriptor>(
     throw new Error(`Parse error:\n  ${errorMessages}`);
   }
 
-  const missingHeaders = Object.keys(rowDescriptor).filter(
-    (key) => !parseResult.meta.fields?.includes(key),
-  );
+  const missingHeaders = Object.entries(rowDescriptor)
+    .filter(
+      ([key, { hidden }]) => !hidden && !parseResult.meta.fields?.includes(key),
+    )
+    .map(([key]) => key);
   if (missingHeaders.length) {
     throw new Error(`Missing required headers: ${missingHeaders.join(", ")}`);
   }

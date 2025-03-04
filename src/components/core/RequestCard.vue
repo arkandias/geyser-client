@@ -100,10 +100,10 @@ const displayActions = computed(
     </QCardSection>
     <QCardSection class="q-pa-xs text-caption">
       {{ n(groups, "decimal") }}
-      {{ t("request_card.group", Math.ceil(groups)) }}
+      {{ t("requestCard.group", Math.ceil(groups)) }}
       <br />
       {{ n(data.hours, "decimal") }}
-      {{ t("request_card.hour", Math.ceil(data.hours)) }}
+      {{ t("requestCard.hour", Math.ceil(data.hours)) }}
     </QCardSection>
     <QSeparator v-if="!archive && displayActions(data.type)" />
     <QCardActions
@@ -126,7 +126,7 @@ const displayActions = computed(
           anchor="bottom middle"
           self="top middle"
         >
-          {{ t("request_card.tooltip.assign") }}
+          {{ t("requestCard.tooltip.assign") }}
         </QTooltip>
       </QBtn>
       <QBtn
@@ -144,7 +144,7 @@ const displayActions = computed(
           anchor="bottom middle"
           self="top middle"
         >
-          {{ t("request_card.tooltip.remove") }}
+          {{ t("requestCard.tooltip.remove") }}
         </QTooltip>
       </QBtn>
     </QCardActions>

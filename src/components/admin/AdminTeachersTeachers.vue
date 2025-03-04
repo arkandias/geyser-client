@@ -175,11 +175,11 @@ const columns: ColumnNonAbbreviable<Row>[] = [
     searchable: false,
   },
   {
-    name: "base_service_hours",
-    label: t("admin.teachers.teachers.table.base_service_hours"),
+    name: "baseServiceHours",
+    label: t("admin.teachers.teachers.table.baseServiceHours"),
     field: (row) => row.baseServiceHours ?? null,
     format: (val: number | null) =>
-      val === null ? "" : String(val) + " " + t("unit.weighted_hours"),
+      val === null ? "" : String(val) + " " + t("unit.weightedHours"),
     sortable: true,
     searchable: false,
   },
@@ -207,13 +207,13 @@ function getObject(row: Row): DataObj;
 function getObject(row: Row, fields: string[]): Partial<DataObj>;
 function getObject(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
   if (!row.uid) {
-    throw new Error(t("admin.teachers.teachers.form.error.uid_empty"));
+    throw new Error(t("admin.teachers.teachers.form.error.uidEmpty"));
   }
   if (!row.firstname) {
-    throw new Error(t("admin.teachers.teachers.form.error.firstname_empty"));
+    throw new Error(t("admin.teachers.teachers.form.error.firstnameEmpty"));
   }
   if (!row.lastname) {
-    throw new Error(t("admin.teachers.teachers.form.error.lastname_empty"));
+    throw new Error(t("admin.teachers.teachers.form.error.lastnameEmpty"));
   }
 
   const dataObj: DataObj = {
@@ -362,7 +362,7 @@ const deleteData = (uids: Id[]) =>
           <QInput
             v-model.number="formValues.baseServiceHours"
             type="number"
-            :label="t('admin.teachers.teachers.form.base_service_hours')"
+            :label="t('admin.teachers.teachers.form.baseServiceHours')"
             :disable="
               multipleSelection && !selectedFields.includes('baseServiceHours')
             "

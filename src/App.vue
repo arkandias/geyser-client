@@ -123,19 +123,19 @@ watch(
 
 const accessDeniedMessage = computed(() => {
   if (!claims) {
-    return t("home.alert.no_auth");
+    return t("home.alert.noAuth");
   }
   if (fetching.value) {
-    return t("home.alert.loading_profile");
+    return t("home.alert.loadingProfile");
   }
   if (!loaded.value) {
-    return t("home.alert.profile_not_loaded");
+    return t("home.alert.profileNotLoaded");
   }
   if (!isActive.value) {
-    return t("home.alert.profile_not_active");
+    return t("home.alert.profileNotActive");
   }
   if (currentPhaseQueryResult.fetching.value) {
-    return t("home.alert.loading_phase");
+    return t("home.alert.loadingPhase");
   }
   if (
     currentPhase.value === PHASES.SHUTDOWN &&

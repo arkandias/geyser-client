@@ -126,7 +126,7 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   },
   {
     name: "label",
-    label: t("admin.teachers.service_modification_types.table.label"),
+    label: t("admin.teachers.serviceModificationTypes.table.label"),
     align: "left",
     field: "label",
     sortable: true,
@@ -134,7 +134,7 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   },
   {
     name: "description",
-    label: t("admin.teachers.service_modification_types.table.description"),
+    label: t("admin.teachers.serviceModificationTypes.table.description"),
     align: "left",
     field: (row) => row.description ?? null,
     sortable: true,
@@ -149,7 +149,7 @@ function getData(row: Row, fields: string[]): Partial<DataObj>;
 function getData(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
   if (!row.label) {
     throw new Error(
-      t("admin.teachers.service_modification_types.form.error.uid_empty"),
+      t("admin.teachers.serviceModificationTypes.form.error.uidEmpty"),
     );
   }
 
@@ -230,8 +230,8 @@ const deleteData = (values: Id[]) =>
   <AdminData
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
-    name="service_modification_types"
-    message-prefix="admin.teachers.service_modification_types"
+    name="serviceModificationTypes"
+    message-prefix="admin.teachers.serviceModificationTypes"
     id-key="value"
     :row-descriptor
     :rows
@@ -254,7 +254,7 @@ const deleteData = (values: Id[]) =>
       <QInput
         v-if="!multipleSelection"
         v-model="formValues.label"
-        :label="t('admin.teachers.service_modification_types.form.label')"
+        :label="t('admin.teachers.serviceModificationTypes.form.label')"
         square
         dense
         @update:model-value="updateValue"

@@ -13,8 +13,8 @@ export default {
     courses: {
       label: "Enseignements",
       year: "Année",
-      teachers_filter: "Filtre intervenants",
-      my_requests: "Mes demandes",
+      teachersFilter: "Filtre intervenants",
+      myRequests: "Mes demandes",
     },
     admin: {
       label: "Administration",
@@ -22,10 +22,10 @@ export default {
     lang: {
       label: "Langue",
     },
-    refresh_data: {
+    refreshData: {
       label: "Rafraîchir les données",
     },
-    dark_mode: {
+    darkMode: {
       label: "Mode sombre",
     },
     info: {
@@ -41,7 +41,7 @@ export default {
             >
           </div>`,
       },
-      legal_notice: {
+      legalNotice: {
         label: "Mentions légales",
         message: `
           <p>

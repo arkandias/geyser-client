@@ -146,7 +146,7 @@ const columns: ColumnNonAbbreviable<Row>[] = [
     label: t("admin.teachers.services.table.hours"),
     field: (row) => row.hours,
     format: (val: number | null) =>
-      val === null ? "" : String(val) + " " + t("unit.weighted_hours"),
+      val === null ? "" : String(val) + " " + t("unit.weightedHours"),
     sortable: true,
     searchable: false,
   },
@@ -169,10 +169,10 @@ function getData(row: Row): DataObj;
 function getData(row: Row, fields: string[]): Partial<DataObj>;
 function getData(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
   if (!row.year) {
-    throw new Error(t("admin.teachers.services.form.error.year_empty"));
+    throw new Error(t("admin.teachers.services.form.error.yearEmpty"));
   }
   if (!row.uid) {
-    throw new Error(t("admin.teachers.services.form.error.year_empty"));
+    throw new Error(t("admin.teachers.services.form.error.yearEmpty"));
   }
 
   const dataObj: DataObj = {

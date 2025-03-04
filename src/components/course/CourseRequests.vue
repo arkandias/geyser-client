@@ -42,9 +42,9 @@ const data = computed(() =>
 
 const requestsByType = computed(() =>
   [
-    { value: REQUEST_TYPES.ASSIGNMENT, label: t("request_type.assignment") },
-    { value: REQUEST_TYPES.PRIMARY, label: t("request_type.primary") },
-    { value: REQUEST_TYPES.SECONDARY, label: t("request_type.secondary") },
+    { value: REQUEST_TYPES.ASSIGNMENT, label: t("requestType.assignment") },
+    { value: REQUEST_TYPES.PRIMARY, label: t("requestType.primary") },
+    { value: REQUEST_TYPES.SECONDARY, label: t("requestType.secondary") },
   ]
     .filter(
       (opt) => opt.value !== REQUEST_TYPES.ASSIGNMENT || perm.toViewAssignments,

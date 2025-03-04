@@ -90,7 +90,7 @@ const fetchProfile = async (uid: string) => {
     loaded.value = true;
   } else {
     notify(NotifyType.ERROR, {
-      message: t("notification.profile.not_found"),
+      message: t("notification.profile.notFound"),
     });
     loaded.value = false;
   }

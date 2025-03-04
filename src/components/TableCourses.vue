@@ -273,7 +273,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: false,
   },
   {
-    name: "diff_assigned",
+    name: "diffAssigned",
     label: "ΔA",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
@@ -300,7 +300,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: false,
   },
   {
-    name: "diff_primary",
+    name: "diffPrimary",
     label: "ΔV1",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
@@ -314,7 +314,7 @@ const columns: Column<CourseRow>[] = [
     abbreviable: false,
   },
   {
-    name: "diff_primary_priority",
+    name: "diffPrimaryPriority",
     label: "ΔV1 Prio",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",

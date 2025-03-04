@@ -11,26 +11,26 @@ export default {
       },
       search: "Rechercher...",
       error: {
-        invalid_form: "Formulaire non valide",
-        empty_field: "{field} requis",
-        not_a_number: "{field} n'est pas un nombre valide",
-        insert_failed: "Échec de la création",
-        update_failed: "Échec de la mise à jour",
-        delete_failed: "Échec de la suppression",
-        import_failed: "Échec de l'import",
-        export_failed: "Échec de l'export",
-        insert_error: "Erreur durant l'insertion des données: {reason}",
-        update_error: "Erreur durant la mise à jour des données: {reason}",
-        delete_error: "Erreur durant la suppression des données: {reason}",
-        no_return_data: "Pas de réponse",
-        empty_file: "Fichier vide",
-        unreadable_file: "Fichier illisible: {reason}",
-        parsing_error: "Erreur durant l'extraction des données: {reason}",
-        invalid_row: "Ligne {index} invalide: {reason}",
+        invalidForm: "Formulaire non valide",
+        emptyField: "{field} requis",
+        notANumber: "{field} n'est pas un nombre valide",
+        insertFailed: "Échec de la création",
+        updateFailed: "Échec de la mise à jour",
+        deleteFailed: "Échec de la suppression",
+        importFailed: "Échec de l'import",
+        exportFailed: "Échec de l'export",
+        insertError: "Erreur durant l'insertion des données: {reason}",
+        updateError: "Erreur durant la mise à jour des données: {reason}",
+        deleteError: "Erreur durant la suppression des données: {reason}",
+        noReturnData: "Pas de réponse",
+        emptyFile: "Fichier vide",
+        unreadableFile: "Fichier illisible: {reason}",
+        parsingError: "Erreur durant l'extraction des données: {reason}",
+        invalidRow: "Ligne {index} invalide: {reason}",
       },
       import: {
         title: "Import depuis un fichier CSV",
-        csv_instructions: `
+        csvInstructions: `
         Pour être valide, le fichier CSV doit impérativement respecter les règles suivantes :
         <ul>
           <li>Le fichier doit contenir exactement les colonnes listées dans le tableau ci-dessous, toutes sont obligatoires.</li>
@@ -45,7 +45,7 @@ export default {
           columns: {
             key: "Nom",
             type: "Type",
-            non_nullable: "Non vide",
+            nonNullable: "Non vide",
           },
           type: {
             string: "texte",
@@ -53,7 +53,7 @@ export default {
             boolean: "booléen",
           },
         },
-        file_picker_label: "Sélectionnez un fichier CSV",
+        filePickerLabel: "Sélectionnez un fichier CSV",
         overwrite: "Écraser les données en cas de conflit",
       },
     },
@@ -62,10 +62,10 @@ export default {
       phase: {
         label: "Phase en cours",
         error: {
-          set_current: "Échec de la mise à jour de la phase en cours: {reason}",
+          setCurrent: "Échec de la mise à jour de la phase en cours: {reason}",
         },
         success: {
-          set_current: "Phase en cours mise à jour",
+          setCurrent: "Phase en cours mise à jour",
         },
       },
       years: {
@@ -83,40 +83,40 @@ Si des cours ou des services sont associés à cette année, vous ne pourrez pas
 la supprimer.`,
         },
         error: {
-          set_current: "Échec de la mise à jour de l'année en cours",
-          empty_value: "Entrez une valeur pour l'année",
-          empty_visibility: "Sélectionnez la visibilité de l'année",
+          setCurrent: "Échec de la mise à jour de l'année en cours",
+          emptyValue: "Entrez une valeur pour l'année",
+          emptyVisibility: "Sélectionnez la visibilité de l'année",
         },
         success: {
-          set_current: "Année en cours mise à jour",
+          setCurrent: "Année en cours mise à jour",
           insert: "Année {value} créée",
           update: "Année {value} mise à jour",
           delete: "Année {value} supprimée",
         },
       },
-      custom_texts: {
+      customTexts: {
         label: "Personnalisation de l'interface",
         button: {
           edit: "Éditer",
           delete: "Supprimer",
         },
         contact: "Contact",
-        legal_notice: "Mentions légales",
-        home_title: "Titre de la page d'accueil",
-        home_subtitle_requests:
+        legalNotice: "Mentions légales",
+        homeTitle: "Titre de la page d'accueil",
+        homeSubtitleRequests:
           "Sous-titre de la page d'accueil en phase de vœux",
-        home_subtitle_assignments:
+        homeSubtitleAssignments:
           "Sous-titre de la page d'accueil en phase de commission",
-        home_subtitle_results:
+        homeSubtitleResults:
           "Sous-titre de la page d'accueil en phase de consultation",
-        home_subtitle_shutdown:
+        homeSubtitleShutdown:
           "Sous-titre de la page d'accueil en phase de fermeture",
-        home_message_requests: "Message de la page d'accueil en phase de vœux",
-        home_message_assignments:
+        homeMessageRequests: "Message de la page d'accueil en phase de vœux",
+        homeMessageAssignments:
           "Message de la page d'accueil en phase de commission",
-        home_message_results:
+        homeMessageResults:
           "Message de la page d'accueil en phase de consultation",
-        home_message_shutdown:
+        homeMessageShutdown:
           "Message de la page d'accueil en phase de fermeture",
       },
     },
@@ -130,7 +130,7 @@ la supprimer.`,
           lastname: "Nom",
           alias: "Alias",
           position: "Fonction",
-          base_service_hours: "S. base",
+          baseServiceHours: "S. base",
           visible: "V.",
           active: "A.",
         },
@@ -145,13 +145,13 @@ la supprimer.`,
           lastname: "Nom",
           alias: "Alias",
           position: "Fonction",
-          base_service_hours: "Service de base (@:unit.weighted_hours)",
+          baseServiceHours: "Service de base (@:unit.weightedHours)",
           visible: "Visible",
           active: "Actif",
           error: {
-            uid_empty: "Entrez un email",
-            firstname_empty: "Entrez un prénom",
-            lastname_empty: "Entrez un nom",
+            uidEmpty: "Entrez un email",
+            firstnameEmpty: "Entrez un prénom",
+            lastnameEmpty: "Entrez un nom",
           },
         },
         data: {
@@ -186,7 +186,7 @@ vous ne pourrez pas les supprimer.`,
             value: "Valeur",
             label: "Label",
             description: "Description",
-            baseServiceHours: "S. base (@:unit.weighted_hours)",
+            baseServiceHours: "S. base (@:unit.weightedHours)",
           },
         },
         form: {
@@ -246,11 +246,11 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
           },
           year: "Année",
           uid: "Intervenant",
-          hours: "Heures (@:unit.weighted_hours)",
+          hours: "Heures (@:unit.weightedHours)",
           message: "Message",
           error: {
-            year_empty: "Entrez une année",
-            uid_empty: "Entrez un intervenant",
+            yearEmpty: "Entrez une année",
+            uidEmpty: "Entrez un intervenant",
           },
         },
         data: {
@@ -276,10 +276,10 @@ Si des modifications ou des demandes sont rattachés à ces services, vous ne po
           },
         },
       },
-      service_modifications: {
+      serviceModifications: {
         label: "Modifications de service",
       },
-      service_modification_types: {
+      serviceModificationTypes: {
         label: "Types de modification de service",
         table: {
           label: "Label",
@@ -294,7 +294,7 @@ Si des modifications ou des demandes sont rattachés à ces services, vous ne po
           label: "Label",
           description: "Description",
           error: {
-            label_empty: "Entrez un label",
+            labelEmpty: "Entrez un label",
           },
         },
         data: {

@@ -1,17 +1,17 @@
-import { PHASES } from "@/config/types/phases.ts";
+import { PHASES, capPhase } from "@/config/types/phases.ts";
 
 export const CUSTOM_TEXT_KEYS = [
-  "home_title",
-  `home_subtitle_${PHASES.REQUESTS}`,
-  `home_subtitle_${PHASES.ASSIGNMENTS}`,
-  `home_subtitle_${PHASES.RESULTS}`,
-  `home_subtitle_${PHASES.SHUTDOWN}`,
-  `home_message_${PHASES.REQUESTS}`,
-  `home_message_${PHASES.ASSIGNMENTS}`,
-  `home_message_${PHASES.RESULTS}`,
-  `home_message_${PHASES.SHUTDOWN}`,
+  "homeTitle",
+  `homeSubtitle${capPhase(PHASES.REQUESTS)}`,
+  `homeSubtitle${capPhase(PHASES.ASSIGNMENTS)}`,
+  `homeSubtitle${capPhase(PHASES.RESULTS)}`,
+  `homeSubtitle${capPhase(PHASES.SHUTDOWN)}`,
+  `homeMessage${capPhase(PHASES.REQUESTS)}`,
+  `homeMessage${capPhase(PHASES.ASSIGNMENTS)}`,
+  `homeMessage${capPhase(PHASES.RESULTS)}`,
+  `homeMessage${capPhase(PHASES.SHUTDOWN)}`,
   "contact",
-  "legal_notice",
+  "legalNotice",
 ] as const;
 
 export type CustomTextKey = (typeof CUSTOM_TEXT_KEYS)[number];

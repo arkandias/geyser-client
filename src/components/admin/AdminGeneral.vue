@@ -28,7 +28,7 @@ const { t } = useCustomI18n();
 
     <AdminSection
       icon="sym_s_edit_note"
-      :label="t('admin.general.custom_texts.label')"
+      :label="t('admin.general.customTexts.label')"
     >
       <AdminGeneralCustomTexts />
     </AdminSection>

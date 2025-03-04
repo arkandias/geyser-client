@@ -9,30 +9,30 @@ import MenuBase from "@/components/header/MenuBase.vue";
 const { t } = useCustomI18n();
 const { customTexts } = useCustomTextsStore();
 
-const sections = ["contact", "legal_notice", "license"] as const;
+const sections = ["contact", "legalNotice", "license"] as const;
 
 const isDialogOpen = ref({
   contact: false,
-  legal_notice: false,
+  legalNotice: false,
   license: false,
 });
 
 const labels = {
   contact: t(`header.info.contact.label`),
-  legal_notice: t(`header.info.legal_notice.label`),
+  legalNotice: t(`header.info.legalNotice.label`),
   license: t(`header.info.license.label`),
 };
 
 const icons = {
   contact: "sym_s_contact_support",
-  legal_notice: "sym_s_balance",
+  legalNotice: "sym_s_balance",
   license: "sym_s_license",
 };
 
 const messages = computed(() => ({
   contact: customTexts.value.contact || t("header.info.contact.message"),
-  legal_notice:
-    customTexts.value.legal_notice || t("header.info.legal_notice.message"),
+  legalNotice:
+    customTexts.value.legalNotice || t("header.info.legalNotice.message"),
   license: t("header.info.license.message"),
 }));
 </script>

@@ -93,7 +93,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
       </QBtn>
       <QSeparator v-if="perm.toAdmin" vertical inset color="white" />
       <QBtn icon="sym_s_refresh" :disable flat square @click="refreshData()">
-        <QTooltip>{{ t("header.refresh_data.label") }}</QTooltip>
+        <QTooltip>{{ t("header.refreshData.label") }}</QTooltip>
       </QBtn>
       <QBtn
         :icon="isDarkModeActive ? 'sym_s_dark_mode' : 'sym_s_light_mode'"
@@ -101,7 +101,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="toggleDarkMode()"
       >
-        <QTooltip>{{ t("header.dark_mode.label") }}</QTooltip>
+        <QTooltip>{{ t("header.darkMode.label") }}</QTooltip>
       </QBtn>
       <MenuLang />
       <MenuInfo />

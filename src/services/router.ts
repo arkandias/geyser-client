@@ -39,7 +39,7 @@ const routes: RouteRecordRaw[] = [
     path: "/:pathMatch(.*)*",
     name: "not-found",
     component: PageHome,
-    props: { alert: t("home.alert.page_not_found") },
+    props: { alert: t("home.alert.pageNotFound") },
   },
 ];
 

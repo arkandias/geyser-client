@@ -27,7 +27,7 @@ graphql(`
   mutation UpdateCustomText($key: String!, $value: String) {
     updateCustomTextByPk: insertUiTextOne(
       object: { key: $key, value: $value }
-      onConflict: { constraint: ui_text_pkey, updateColumns: [value] }
+      onConflict: { constraint: uiTextPkey, updateColumns: [value] }
     ) {
       key
     }
@@ -49,7 +49,7 @@ const customTextOptions = computed(() =>
   Object.entries(customTexts.value).map(([key, value]) => ({
     key,
     value,
-    label: t(`admin.general.custom_texts.${key}`),
+    label: t(`admin.general.customTexts.${key}`),
   })),
 );
 const customTextsEdit = ref(
@@ -116,12 +116,12 @@ const callOnDelete = async (key: string) => {
             v-model="customTextsEdit[opt.key]"
             :text="opt.value"
             :set-text="(value) => updateCustomTextHandle(opt.key, value)"
-            :default-text="t(`custom_text_default.${opt.key}`)"
+            :default-text="t(`customTextDefault.${opt.key}`)"
           />
         </QCardSection>
         <QCardActions dense>
           <QBtn
-            :label="t('admin.general.custom_texts.button.edit')"
+            :label="t('admin.general.customTexts.button.edit')"
             icon="sym_s_edit"
             color="primary"
             no-caps
@@ -130,7 +130,7 @@ const callOnDelete = async (key: string) => {
             @click="customTextsEdit[opt.key] = true"
           />
           <QBtn
-            :label="t('admin.general.custom_texts.button.delete')"
+            :label="t('admin.general.customTexts.button.delete')"
             icon="sym_s_delete"
             color="primary"
             :disable="!opt.value"

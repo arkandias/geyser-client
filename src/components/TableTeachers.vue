@@ -144,7 +144,7 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
     searchable: false,
   },
   {
-    name: "diff_assignment",
+    name: "diffAssignment",
     label: "\u0394A",
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD attribuées",
@@ -165,7 +165,7 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
     searchable: false,
   },
   {
-    name: "diff_primary",
+    name: "diffPrimary",
     label: "\u0394V1",
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",

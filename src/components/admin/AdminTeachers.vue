@@ -92,7 +92,7 @@ const { t } = useCustomI18n();
 
     <AdminSection
       icon="sym_s_assignment_returned"
-      :label="t('admin.teachers.service_modifications.label')"
+      :label="t('admin.teachers.serviceModifications.label')"
     >
     </AdminSection>
 
@@ -100,7 +100,7 @@ const { t } = useCustomI18n();
 
     <AdminSection
       icon="sym_s_format_list_bulleted"
-      :label="t('admin.teachers.service_modification_types.label')"
+      :label="t('admin.teachers.serviceModificationTypes.label')"
     >
       <!--      <AdminTeachersServiceModificationTypes-->
       <!--        :service-modification-type-fragments="serviceModificationTypes"-->
