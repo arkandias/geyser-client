@@ -97,14 +97,14 @@ importers:
         specifier: ^10.0.2
         version: 10.0.2(eslint@9.21.0(jiti@2.4.2))
       eslint-plugin-vue:
-        specifier: ^9.32.0
-        version: 9.32.0(eslint@9.21.0(jiti@2.4.2))
+        specifier: ^9.33.0
+        version: 9.33.0(eslint@9.21.0(jiti@2.4.2))
       globals:
         specifier: ^16.0.0
         version: 16.0.0
       happy-dom:
-        specifier: ^17.2.0
-        version: 17.2.0
+        specifier: ^17.2.2
+        version: 17.2.2
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
@@ -125,7 +125,7 @@ importers:
         version: 6.2.0(@types/node@22.13.9)(jiti@2.4.2)(sass-embedded@1.85.1)(sass@1.83.1)(yaml@2.7.0)
       vitest:
         specifier: ^3.0.7
-        version: 3.0.7(@types/node@22.13.9)(happy-dom@17.2.0)(jiti@2.4.2)(sass-embedded@1.85.1)(sass@1.83.1)(yaml@2.7.0)
+        version: 3.0.7(@types/node@22.13.9)(happy-dom@17.2.2)(jiti@2.4.2)(sass-embedded@1.85.1)(sass@1.83.1)(yaml@2.7.0)
       vue-tsc:
         specifier: ^2.2.8
         version: 2.2.8(typescript@5.8.2)
@@ -1517,8 +1517,8 @@ packages:
     peerDependencies:
       eslint: '>=7.0.0'
 
-  eslint-plugin-vue@9.32.0:
-    resolution: {integrity: sha512-b/Y05HYmnB/32wqVcjxjHZzNpwxj1onBOvqW89W+V+XNG1dRuaFbNd3vT9CLbr2LXjEoq+3vn8DanWf7XU22Ug==}
+  eslint-plugin-vue@9.33.0:
+    resolution: {integrity: sha512-174lJKuNsuDIlLpjeXc5E2Tss8P44uIimAfGD0b90k0NoirJqpG7stLuU9Vp/9ioTOrQdWVREc4mRd1BD+CvGw==}
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.2.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
@@ -1740,8 +1740,8 @@ packages:
     resolution: {integrity: sha512-AjqGKbDGUFRKIRCP9tCKiIGHyriz2oHEbPIbEtcSLSs4YjReZOIPQQWek4+6hjw62H9QShXHyaGivGiYVLeYFQ==}
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
 
-  happy-dom@17.2.0:
-    resolution: {integrity: sha512-f58x3QKE+2OTgPzf7vrQyYKJzRBjNuh6jejTEDgHfcOpF67MSUTtYw3HLHNiQHvcr5iGmncX5Ia8sigLKYLUgg==}
+  happy-dom@17.2.2:
+    resolution: {integrity: sha512-3I1/CrNi780sdOhuhUnFtgTWhloSc3quSZwsylI41jycx8o97M6Y4aQAu0phSexGusT7+59BxATh4L4xiY0HcA==}
     engines: {node: '>=18.0.0'}
 
   has-flag@4.0.0:
@@ -4478,7 +4478,7 @@ snapshots:
     dependencies:
       eslint: 9.21.0(jiti@2.4.2)
 
-  eslint-plugin-vue@9.32.0(eslint@9.21.0(jiti@2.4.2)):
+  eslint-plugin-vue@9.33.0(eslint@9.21.0(jiti@2.4.2)):
     dependencies:
       '@eslint-community/eslint-utils': 4.4.1(eslint@9.21.0(jiti@2.4.2))
       eslint: 9.21.0(jiti@2.4.2)
@@ -4749,7 +4749,7 @@ snapshots:
 
   graphql@16.10.0: {}
 
-  happy-dom@17.2.0:
+  happy-dom@17.2.2:
     dependencies:
       webidl-conversions: 7.0.0
       whatwg-mimetype: 3.0.0
@@ -5639,7 +5639,7 @@ snapshots:
       sass-embedded: 1.85.1
       yaml: 2.7.0
 
-  vitest@3.0.7(@types/node@22.13.9)(happy-dom@17.2.0)(jiti@2.4.2)(sass-embedded@1.85.1)(sass@1.83.1)(yaml@2.7.0):
+  vitest@3.0.7(@types/node@22.13.9)(happy-dom@17.2.2)(jiti@2.4.2)(sass-embedded@1.85.1)(sass@1.83.1)(yaml@2.7.0):
     dependencies:
       '@vitest/expect': 3.0.7
       '@vitest/mocker': 3.0.7(vite@6.2.0(@types/node@22.13.9)(jiti@2.4.2)(sass-embedded@1.85.1)(sass@1.83.1)(yaml@2.7.0))
@@ -5663,7 +5663,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 22.13.9
-      happy-dom: 17.2.0
+      happy-dom: 17.2.2
     transitivePeerDependencies:
       - jiti
       - less
