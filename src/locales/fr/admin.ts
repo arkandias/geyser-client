@@ -238,10 +238,12 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
       services: {
         label: "Services",
         table: {
-          year: "Année",
-          uid: "Intervenant",
-          hours: "Heures",
-          message: "Message",
+          columns: {
+            year: "Année",
+            uid: "Intervenant",
+            hours: "Heures (@:unit.weightedHours)",
+            message: "Message",
+          },
         },
         form: {
           title: {
@@ -249,19 +251,22 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
             single: "{label}",
             multiple: "{count} services sélectionnés",
           },
-          year: "Année",
-          uid: "Intervenant",
-          hours: "Heures (@:unit.weightedHours)",
-          message: "Message",
+          fields: {
+            year: "Année",
+            uid: "Intervenant",
+            hours: "Heures",
+            message: "Message",
+          },
           error: {
-            yearEmpty: "Entrez une année",
-            uidEmpty: "Entrez un intervenant",
+            conflictYearUid:
+              "Un service existe déjà pour cet intervenant et cette année",
+            hoursNegative: "Entrez un nombre d'heures positif ou nul",
           },
         },
         data: {
           success: {
             insert:
-              "Aucun service créé | Service créé | {count} services créée",
+              "Aucun service créé | Service créé | {count} services créés",
             update:
               "Aucun service mis à jour | Service mis à jour | {count} services mis à jour",
             delete:
@@ -282,7 +287,54 @@ Si des modifications ou des demandes sont rattachés à ces services, vous ne po
         },
       },
       serviceModifications: {
-        label: "Modifications de service",
+        label: "Modifications de services",
+        table: {
+          columns: {
+            year: "Année",
+            uid: "Intervenant",
+            type: "Type",
+            hours: "Heures (@:unit.weightedHours)",
+          },
+        },
+        form: {
+          title: {
+            none: "Nouvelle modification de service",
+            single: "{label}",
+            multiple: "{count} modifications de service sélectionnées",
+          },
+          fields: {
+            year: "Année",
+            uid: "Intervenant",
+            type: "Type",
+            hours: "Heures",
+          },
+          error: {
+            serviceNotFound:
+              "Il n'existe pas de service pour cet intervenant et cette année",
+            typeNotFound:
+              "Il n'existe pas de modification de service avec ce label",
+          },
+        },
+        data: {
+          success: {
+            insert:
+              "Aucune modification de service créée | Modification de service créée | {count} modifications de service créées",
+            update:
+              "Aucune modification de service mise à jour | Modification de service mise à jour | {count} modifications de service mises à jour",
+            delete:
+              "Aucune modification de service supprimée | Modification de service supprimée | {count} modifications de service supprimées",
+            import:
+              "0 modification de service importée | 1 modification de service importée | {count} modifications de service importées",
+            export:
+              "0 modification de service exportée | 1 modification de service exportée | {count} modifications de service exportées",
+          },
+          confirm: {
+            delete: {
+              single: `Êtes-vous sûr de vouloir supprimer la modification de service « {label} » ?`,
+              multiple: `Êtes-vous sûr de vouloir supprimer les {count} modifications de service sélectionnées ?`,
+            },
+          },
+        },
       },
       serviceModificationTypes: {
         label: "Types de modification de service",
@@ -311,7 +363,7 @@ Si des modifications ou des demandes sont rattachés à ces services, vous ne po
             insert:
               "Aucun type de modification créé | Type de modification créé | {count} types de modification créés",
             update:
-              "Aucun type de modification mis à jour | Type de modification mise à jour | {count} types de modification mis à jour",
+              "Aucun type de modification mis à jour | Type de modification mis à jour | {count} types de modification mis à jour",
             delete:
               "Aucun type de modification supprimé | Type de modification supprimé | {count} Types de modification supprimés",
             import:

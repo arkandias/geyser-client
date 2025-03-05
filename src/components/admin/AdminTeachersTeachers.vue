@@ -231,7 +231,7 @@ function validateImportRow(
 
   if (importRow.uid !== undefined) {
     object.uid = importRow.uid;
-    if (checkConflicts && teachers.value.find((t) => t.uid === importRow.uid)) {
+    if (checkConflicts && teachers.value.find((t) => t.uid === object.uid)) {
       throw new Error(t("admin.teachers.teachers.form.error.conflictEmail"));
     }
   }
@@ -276,6 +276,15 @@ function validateImportRow(
 
   return object;
 }
+
+const selectedPositions = ref<string[]>([]);
+const filteredTeachers = computed(() =>
+  selectedPositions.value.length
+    ? teachers.value.filter((t) =>
+        selectedPositions.value.includes(t.position?.label ?? ""),
+      )
+    : teachers.value,
+);
 </script>
 
 <template>
@@ -287,7 +296,7 @@ function validateImportRow(
     :id-key
     :row-descriptor
     :columns
-    :rows="teachers"
+    :rows="filteredTeachers"
     :format-row
     :init-form
     :validate-import-row
@@ -298,6 +307,34 @@ function validateImportRow(
     :constraint
     :update-columns
   >
+    <template #search>
+      <QSelect
+        v-model="selectedPositions"
+        :options="positions.map((p) => p.label)"
+        color="primary"
+        :label="t('admin.teachers.teachers.table.columns.position')"
+        multiple
+        use-chips
+        square
+        dense
+        options-dense
+        style="width: 100%"
+      >
+        <!-- this slot to use dense QChip -->
+        <template #selected-item="scope">
+          <QChip
+            :tabindex="scope.tabindex"
+            class="q-ma-none"
+            color="grey3"
+            removable
+            dense
+            @remove="scope.removeAtIndex(scope.index)"
+          >
+            {{ scope.opt }}
+          </QChip>
+        </template>
+      </QSelect>
+    </template>
     <template #form="{ multipleSelection }">
       <QInput
         v-if="!multipleSelection"

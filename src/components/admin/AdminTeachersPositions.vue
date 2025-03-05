@@ -159,7 +159,7 @@ function validateImportRow(
     object.label = importRow.label;
     if (
       checkConflicts &&
-      positions.value.find((p) => p.label === importRow.label)
+      positions.value.find((p) => p.label === object.label)
     ) {
       throw new Error(t("admin.teachers.positions.form.error.conflictLabel"));
     }

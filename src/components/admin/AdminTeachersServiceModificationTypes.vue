@@ -166,7 +166,7 @@ function validateImportRow(
     object.label = importRow.label;
     if (
       checkConflicts &&
-      serviceModificationTypes.value.find((p) => p.label === importRow.label)
+      serviceModificationTypes.value.find((p) => p.label === object.label)
     ) {
       throw new Error(
         t("admin.teachers.serviceModificationTypes.form.error.conflictLabel"),

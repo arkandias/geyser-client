@@ -98,7 +98,10 @@ const {
   constraint: Constraint;
   updateColumns: UpdateColumn[];
 }>();
-defineSlots<{ form(slotProps: { multipleSelection: boolean }): unknown }>();
+defineSlots<{
+  form(slotProps: { multipleSelection: boolean }): unknown;
+  search(): unknown;
+}>();
 
 const { t } = useCustomI18n();
 
@@ -568,6 +571,7 @@ const exportDataHandle = () => {
         dense
         style="width: 100%"
       />
+      <slot name="search" />
     </template>
   </QTable>
 

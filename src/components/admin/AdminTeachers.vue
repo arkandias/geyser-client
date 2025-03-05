@@ -9,6 +9,7 @@ import { GetAdminTeachersDocument } from "@/gql/graphql.ts";
 import AdminSection from "@/components/admin/AdminSection.vue";
 import AdminTeachersPositions from "@/components/admin/AdminTeachersPositions.vue";
 import AdminTeachersServiceModificationTypes from "@/components/admin/AdminTeachersServiceModificationTypes.vue";
+import AdminTeachersServiceModifications from "@/components/admin/AdminTeachersServiceModifications.vue";
 import AdminTeachersServices from "@/components/admin/AdminTeachersServices.vue";
 import AdminTeachersTeachers from "@/components/admin/AdminTeachersTeachers.vue";
 
@@ -17,18 +18,26 @@ graphql(`
     teachers: teacher(orderBy: [{ uid: ASC }]) {
       ...AdminTeacher
       ...AdminServiceTeacher
+      ...AdminServiceModificationTeacher
     }
     positions: position(orderBy: [{ label: ASC }]) {
-      ...AdminTeacherPosition
       ...AdminPosition
+      ...AdminTeacherPosition
     }
     services: service(orderBy: [{ year: DESC }, { uid: ASC }]) {
       ...AdminService
+      ...AdminServiceModificationService
+    }
+    serviceModifications: serviceModification(
+      orderBy: [{ service: { year: DESC } }, { service: { uid: ASC } }]
+    ) {
+      ...AdminServiceModification
     }
     serviceModificationTypes: serviceModificationType(
       orderBy: [{ label: ASC }]
     ) {
       ...AdminServiceModificationType
+      ...AdminServiceModificationServiceModificationType
     }
   }
 `);
@@ -47,6 +56,9 @@ const positions = computed(
 );
 const services = computed(
   () => adminTeachersQueryResult.data.value?.services ?? [],
+);
+const serviceModifications = computed(
+  () => adminTeachersQueryResult.data.value?.serviceModifications ?? [],
 );
 const serviceModificationTypes = computed(
   () => adminTeachersQueryResult.data.value?.serviceModificationTypes ?? [],
@@ -82,10 +94,10 @@ const { t } = useCustomI18n();
       icon="sym_s_assignment_ind"
       :label="t('admin.teachers.services.label')"
     >
-      <!--      <AdminTeachersServices-->
-      <!--        :service-fragments="services"-->
-      <!--        :teacher-fragments="teachers"-->
-      <!--      />-->
+      <AdminTeachersServices
+        :service-fragments="services"
+        :teacher-fragments="teachers"
+      />
     </AdminSection>
 
     <QSeparator />
@@ -94,6 +106,12 @@ const { t } = useCustomI18n();
       icon="sym_s_assignment_returned"
       :label="t('admin.teachers.serviceModifications.label')"
     >
+      <AdminTeachersServiceModifications
+        :service-fragments="services"
+        :service-modification-fragments="serviceModifications"
+        :service-modification-type-fragments="serviceModificationTypes"
+        :teacher-fragments="teachers"
+      />
     </AdminSection>
 
     <QSeparator />
