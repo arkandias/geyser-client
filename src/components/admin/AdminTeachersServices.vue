@@ -215,7 +215,7 @@ function validateImportRow(
     object.message = importRow.message;
   }
 
-  return importRow;
+  return object;
 }
 
 const selectedYears = ref<number[]>([]);
@@ -324,6 +324,8 @@ const filteredServices = computed(() =>
         :options="teachers.map((t) => ({ value: t.uid, label: formatUser(t) }))"
         :label="t('admin.teachers.services.form.fields.uid')"
         :disable="multipleSelection && !selectedFields.includes('uid')"
+        emit-value
+        map-options
         clearable
         clear-icon="sym_s_close"
         square

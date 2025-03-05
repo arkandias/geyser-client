@@ -178,7 +178,7 @@ function validateImportRow(
     }
   }
 
-  return importRow;
+  return object;
 }
 </script>
 

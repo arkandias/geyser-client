@@ -286,7 +286,7 @@ function validateImportRow(
     object.hours = importRow.hours;
   }
 
-  return importRow;
+  return object;
 }
 
 const selectedYears = ref<number[]>([]);
@@ -426,6 +426,8 @@ const filteredServiceModifications = computed(() =>
         :options="teachers.map((t) => ({ value: t.uid, label: formatUser(t) }))"
         :label="t('admin.teachers.serviceModifications.form.fields.uid')"
         :disable="multipleSelection && !selectedFields.includes('uid')"
+        emit-value
+        map-options
         clearable
         clear-icon="sym_s_close"
         square
@@ -435,14 +437,18 @@ const filteredServiceModifications = computed(() =>
       <QSelect
         v-model="formValues.type"
         :options="serviceModificationTypes.map((smt) => smt.label)"
-        :label="t('admin.teachers.serviceModifications.form.fields.uid')"
-        :disable="multipleSelection && !selectedFields.includes('uid')"
+        :label="t('admin.teachers.serviceModifications.form.fields.type')"
+        :disable="multipleSelection && !selectedFields.includes('type')"
         clearable
         clear-icon="sym_s_close"
         square
         dense
         options-dense
-      />
+      >
+        <template #before>
+          <QCheckbox v-model="selectedFields" val="type" />
+        </template>
+      </QSelect>
       <QInput
         :model-value="formValues.hours"
         type="number"
