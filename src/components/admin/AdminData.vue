@@ -11,7 +11,7 @@
   "
 >
 import type { AnyVariables, UseMutationResponse } from "@urql/vue";
-import { type Ref, computed, ref, toValue, watch } from "vue";
+import { type Ref, computed, ref, toValue, useSlots, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import type {
@@ -100,9 +100,10 @@ const {
 }>();
 defineSlots<{
   form(slotProps: { multipleSelection: boolean }): unknown;
-  search(): unknown;
+  filters(): unknown;
 }>();
 
+const slots = useSlots();
 const { t } = useCustomI18n();
 
 // ===== Data Table =====
@@ -217,14 +218,12 @@ const insertDataHandle = async () => {
     objects: [object],
   });
   if (error) {
-    console.error(error);
+    console.error("Insertion failed", error);
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.insertFailed"),
       caption: errorMessage(error),
     });
-    return;
-  }
-  if (data?.insertData?.returning) {
+  } else if (data?.insertData?.returning) {
     notify(NotifyType.SUCCESS, {
       message: t(
         messagePrefix + ".data.success.insert",
@@ -262,14 +261,12 @@ const updateDataHandle = async () => {
     changes,
   });
   if (error) {
-    console.error(error);
+    console.error("Update failed", error);
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.updateFailed"),
       caption: errorMessage(error),
     });
-    return;
-  }
-  if (data?.updateData?.returning) {
+  } else if (data?.updateData?.returning) {
     notify(NotifyType.SUCCESS, {
       message: t(
         messagePrefix + ".data.success.update",
@@ -308,14 +305,12 @@ const deleteDataHandle = async () => {
     ids: selectedRows.value.map((row) => row[idKey]),
   });
   if (error) {
-    console.error(error);
+    console.error("Deletion failed", error);
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.deleteFailed"),
       caption: errorMessage(error),
     });
-    return;
-  }
-  if (data?.deleteData?.returning) {
+  } else if (data?.deleteData?.returning) {
     notify(NotifyType.SUCCESS, {
       message: t(
         messagePrefix + ".data.success.delete",
@@ -332,6 +327,8 @@ const deleteDataHandle = async () => {
 };
 
 // ===== Search & Filtering =====
+const hasFilters = computed(() => !!slots["filters"]);
+const filters = ref(false);
 const search = ref<string | null>(null);
 const searchableColumns = columns
   .filter((col) => toValue(col.searchable))
@@ -404,7 +401,6 @@ const importRowsHandle = async () => {
     try {
       text = await selectedFile.value.text();
     } catch (error) {
-      console.error(error);
       throw new Error(
         t("admin.data.error.unreadableFile", { reason: errorMessage(error) }),
       );
@@ -414,7 +410,6 @@ const importRowsHandle = async () => {
     try {
       importRows = importCSV(text, rowDescriptor);
     } catch (error) {
-      console.error(error);
       throw new Error(
         t("admin.data.error.parsingError", { reason: errorMessage(error) }),
       );
@@ -424,7 +419,6 @@ const importRowsHandle = async () => {
       try {
         return validateImportRow(row, false);
       } catch (error) {
-        console.error(t("admin.data.error.invalidRow", { index }), error);
         throw new Error(
           t("admin.data.error.invalidRow", {
             index,
@@ -442,14 +436,12 @@ const importRowsHandle = async () => {
       },
     });
     if (error) {
-      console.error(error);
       throw new Error(
         t("admin.data.error.insertError", {
           reason: error.message,
         }),
       );
-    }
-    if (data?.upsertData?.returning) {
+    } else if (data?.upsertData?.returning) {
       notify(NotifyType.SUCCESS, {
         message: t(
           messagePrefix + ".data.success.import",
@@ -464,6 +456,7 @@ const importRowsHandle = async () => {
 
     isImportDialogOpen.value = false;
   } catch (error) {
+    console.error("Import failed", error);
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.importFailed"),
       caption: errorMessage(error),
@@ -569,9 +562,19 @@ const exportDataHandle = () => {
         clear-icon="sym_s_close"
         square
         dense
-        style="width: 100%"
+        :style="hasFilters ? 'width: calc(100% - 50px)' : 'width: 100%'"
       />
-      <slot name="search" />
+      <QSpace />
+      <QBtn
+        v-if="hasFilters"
+        icon="sym_s_filter_list"
+        :color="filters ? 'primary' : 'grey'"
+        flat
+        round
+        dense
+        @click="filters = !filters"
+      />
+      <slot v-if="filters" name="filters" />
     </template>
   </QTable>
 
@@ -589,7 +592,6 @@ const exportDataHandle = () => {
           <slot name="form" :multiple-selection />
         </QForm>
       </QCardSection>
-      <QSeparator />
       <QCardActions align="right">
         <QBtn
           :form="`${name}-form`"

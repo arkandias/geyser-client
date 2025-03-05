@@ -168,7 +168,7 @@ const columns: ColumnNonAbbreviable<Row>[] = [
 ];
 
 const formatRow = (row: Row): string =>
-  `(${row.year.toString()}, ${getUser(row.uid)})`;
+  `${row.year.toString()} — ${getUser(row.uid)}`;
 
 const initForm = (rows: Row[]): FormValues =>
   rows.length === 1 ? { ...rows[0] } : nullRow(rowDescriptor);
@@ -249,7 +249,7 @@ const filteredServices = computed(() =>
     :constraint
     :update-columns
   >
-    <template #search>
+    <template #filters>
       <QSelect
         v-model="selectedYears"
         :options="years.map((y) => y.value)"
@@ -312,8 +312,6 @@ const filteredServices = computed(() =>
         :options="years.map((y) => y.value)"
         :label="t('admin.teachers.services.form.fields.year')"
         :disable="multipleSelection && !selectedFields.includes('year')"
-        clearable
-        clear-icon="sym_s_close"
         square
         dense
         options-dense
@@ -326,8 +324,6 @@ const filteredServices = computed(() =>
         :disable="multipleSelection && !selectedFields.includes('uid')"
         emit-value
         map-options
-        clearable
-        clear-icon="sym_s_close"
         square
         dense
         options-dense

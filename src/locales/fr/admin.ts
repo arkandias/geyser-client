@@ -62,7 +62,7 @@ export default {
       phase: {
         label: "Phase en cours",
         error: {
-          setCurrent: "Échec de la mise à jour de la phase en cours: {reason}",
+          setCurrent: "Échec de la mise à jour de la phase en cours",
         },
         success: {
           setCurrent: "Phase en cours mise à jour",
@@ -132,8 +132,8 @@ la supprimer.`,
             alias: "Alias",
             position: "Fonction",
             baseServiceHours: "S. base (@:unit.weightedHours)",
-            visible: "V.",
-            active: "A.",
+            visible: "Visible",
+            active: "Actif",
           },
         },
         form: {
@@ -309,6 +309,10 @@ Si des modifications ou des demandes sont rattachés à ces services, vous ne po
             hours: "Heures",
           },
           error: {
+            updateYearWithoutUid:
+              "Vous ne pouvez pas modifier l'année sans sélectionner un intervenant",
+            updateUidWithoutYear:
+              "Vous ne pouvez pas modifier l'intervenant sans sélectionner une année",
             serviceNotFound:
               "Il n'existe pas de service pour cet intervenant et cette année",
             typeNotFound:

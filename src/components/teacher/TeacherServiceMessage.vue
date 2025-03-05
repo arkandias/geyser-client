@@ -51,7 +51,10 @@ const setMessage = computed(
         serviceId: data.value.id,
         message: message || null,
       })
-      .then((result) => !!result.data?.service?.id && !result.error),
+      .then((result) => ({
+        returnId: result.data?.service?.id,
+        error: result.error,
+      })),
 );
 </script>
 

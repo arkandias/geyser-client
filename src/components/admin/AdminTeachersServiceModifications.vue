@@ -234,7 +234,7 @@ const columns: ColumnNonAbbreviable<Row>[] = [
 ];
 
 const formatRow = (row: Row): string =>
-  `(${row.service.year.toString()}, ${getUser(row.service.uid)}, ${row.type.label})`;
+  `${row.service.year.toString()} — ${getUser(row.service.uid)} — ${row.type.label}`;
 
 const initForm = (rows: Row[]): FormValues =>
   rows.length === 1
@@ -260,7 +260,21 @@ function validateImportRow(
 ): Partial<InsertInput> {
   const object: Partial<InsertInput> = {};
 
-  if (importRow.year !== undefined && importRow.uid !== undefined) {
+  if (importRow.year !== undefined || importRow.uid !== undefined) {
+    if (importRow.uid === undefined) {
+      throw new Error(
+        t(
+          "admin.teachers.serviceModifications.form.error.updateYearWithoutUid",
+        ),
+      );
+    }
+    if (importRow.year === undefined) {
+      throw new Error(
+        t(
+          "admin.teachers.serviceModifications.form.error.updateUidWithoutYear",
+        ),
+      );
+    }
     object.serviceId = services.value.find(
       (s) => s.year === importRow.year && s.uid === importRow.uid,
     )?.id;
@@ -325,7 +339,7 @@ const filteredServiceModifications = computed(() =>
     :constraint
     :update-columns
   >
-    <template #search>
+    <template #filters>
       <QSelect
         v-model="selectedYears"
         :options="years.map((y) => y.value)"
@@ -414,8 +428,6 @@ const filteredServiceModifications = computed(() =>
         :options="years.map((y) => y.value)"
         :label="t('admin.teachers.serviceModifications.form.fields.year')"
         :disable="multipleSelection && !selectedFields.includes('year')"
-        clearable
-        clear-icon="sym_s_close"
         square
         dense
         options-dense
@@ -428,8 +440,6 @@ const filteredServiceModifications = computed(() =>
         :disable="multipleSelection && !selectedFields.includes('uid')"
         emit-value
         map-options
-        clearable
-        clear-icon="sym_s_close"
         square
         dense
         options-dense
@@ -439,13 +449,11 @@ const filteredServiceModifications = computed(() =>
         :options="serviceModificationTypes.map((smt) => smt.label)"
         :label="t('admin.teachers.serviceModifications.form.fields.type')"
         :disable="multipleSelection && !selectedFields.includes('type')"
-        clearable
-        clear-icon="sym_s_close"
         square
         dense
         options-dense
       >
-        <template #before>
+        <template v-if="multipleSelection" #before>
           <QCheckbox v-model="selectedFields" val="type" />
         </template>
       </QSelect>

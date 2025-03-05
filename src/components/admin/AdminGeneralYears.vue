@@ -67,15 +67,15 @@ const setCurrentYearHandle = async (year: number): Promise<void> => {
     value: year,
   });
   if (error) {
-    console.error(error);
     notify(NotifyType.ERROR, {
       message: t("admin.general.years.error.setCurrent"),
       caption: error.message,
     });
+  } else {
+    notify(NotifyType.SUCCESS, {
+      message: t("admin.general.years.success.setCurrent"),
+    });
   }
-  notify(NotifyType.SUCCESS, {
-    message: t("admin.general.years.success.setCurrent"),
-  });
 };
 
 const insertYearHandle = async () => {
@@ -95,23 +95,19 @@ const insertYearHandle = async () => {
   isFormOpen.value = false;
 
   if (error) {
-    console.error(error);
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.insertFailed"),
       caption: error.message,
     });
-    return;
-  }
-
-  if (data?.insertYearOne?.value !== undefined) {
+  } else if (data?.insertYearOne?.value === undefined) {
+    notify(NotifyType.DEFAULT, {
+      message: t("admin.data.error.noReturnData"),
+    });
+  } else {
     notify(NotifyType.SUCCESS, {
       message: t("admin.general.years.success.insert", {
         value: data.insertYearOne.value,
       }),
-    });
-  } else {
-    notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.noReturnData"),
     });
   }
 };
@@ -131,23 +127,19 @@ const updateYearHandle = async (
   isFormOpen.value = false;
 
   if (error) {
-    console.error(error);
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.updateFailed"),
       caption: error.message,
     });
-    return;
-  }
-
-  if (data?.updateYearByPk?.value !== undefined) {
+  } else if (data?.updateYearByPk?.value === undefined) {
+    notify(NotifyType.DEFAULT, {
+      message: t("admin.data.error.noReturnData"),
+    });
+  } else {
     notify(NotifyType.SUCCESS, {
       message: t("admin.general.years.success.update", {
         value: data.updateYearByPk.value,
       }),
-    });
-  } else {
-    notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.noReturnData"),
     });
   }
 };
@@ -183,22 +175,19 @@ const deleteYearHandle = async (value: number) => {
 
   const { data, error } = await deleteYear.executeMutation({ value });
   if (error) {
-    console.error(error);
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.deleteFailed"),
       caption: error.message,
     });
-    return;
-  }
-  if (data?.deleteYearByPk?.value !== undefined) {
+  } else if (data?.deleteYearByPk?.value === undefined) {
+    notify(NotifyType.DEFAULT, {
+      message: t("admin.data.error.noReturnData"),
+    });
+  } else {
     notify(NotifyType.SUCCESS, {
       message: t("admin.general.years.success.delete", {
         value: data.deleteYearByPk.value,
       }),
-    });
-  } else {
-    notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.noReturnData"),
     });
   }
 };

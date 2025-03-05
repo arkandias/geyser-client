@@ -96,26 +96,24 @@ const { t } = i18n.global;
 
 const getService =
   (client: Client) => async (uid: string, courseId: number) => {
-    const course = await client
-      .query(
-        GetServiceFromCourseDocument,
-        { uid, courseId },
-        { requestPolicy: "network-only" },
-      )
-      .toPromise()
-      .then((result) => result.data?.course ?? null);
+    const { data, error } = await client.query(
+      GetServiceFromCourseDocument,
+      { uid, courseId },
+      { requestPolicy: "network-only" },
+    );
 
-    if (!course) {
+    if (!data?.course || error) {
       console.error(`No course found with id ${courseId.toString()}`);
       notify(NotifyType.ERROR, {
         message: t("request.error.courseNotFound"),
+        caption: error?.message,
       });
       return null;
     }
 
-    if (!course.yearByYear.services[0]) {
+    if (!data.course.yearByYear.services[0]) {
       console.error(
-        `No service found for teacher ${uid} and year ${course.year.toString()}`,
+        `No service found for teacher ${uid} and year ${data.course.year.toString()}`,
       );
       notify(NotifyType.ERROR, {
         message: t("request.error.serviceNotFound.title"),
@@ -124,30 +122,28 @@ const getService =
       return null;
     }
 
-    return course.yearByYear.services[0].id;
+    return data.course.yearByYear.services[0].id;
   };
 
 const getRequest =
   (client: Client) =>
   async (serviceId: number, courseId: number, requestType: string) => {
-    const requests = await client
-      .query(
-        GetRequestDocument,
-        { serviceId, courseId, requestType },
-        { requestPolicy: "network-only" },
-      )
-      .toPromise()
-      .then((result) => result.data?.requests ?? null);
+    const { data, error } = await client.query(
+      GetRequestDocument,
+      { serviceId, courseId, requestType },
+      { requestPolicy: "network-only" },
+    );
 
-    if (!requests) {
+    if (!data?.requests || error) {
       console.error("Error while fetching current request");
       notify(NotifyType.ERROR, {
         message: t("request.error.fetch"),
+        caption: error?.message,
       });
       return null;
     }
 
-    return requests[0]?.hours ?? 0;
+    return data.requests[0]?.hours ?? 0;
   };
 
 const updateRequest =
@@ -207,6 +203,7 @@ const updateRequestWithServiceId =
       } else {
         notify(NotifyType.ERROR, {
           message: t("request.error.delete"),
+          caption: error?.message,
         });
       }
     } else {
@@ -230,6 +227,7 @@ const updateRequestWithServiceId =
           message: t(
             current === 0 ? "request.error.create" : "request.error.update",
           ),
+          caption: error?.message,
         });
       }
     }
@@ -246,7 +244,10 @@ const deleteRequestById = (client: Client) => async (id: number) => {
       }),
     });
   } else {
-    notify(NotifyType.ERROR, { message: t("request.error.delete") });
+    notify(NotifyType.ERROR, {
+      message: t("request.error.delete"),
+      caption: error?.message,
+    });
   }
 };
 

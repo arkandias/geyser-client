@@ -75,13 +75,16 @@ const coordinators = computed(() => [
 ]);
 
 const editDescription = ref(false);
-const setDescription = (text: string): Promise<boolean> =>
+const setDescription = (text: string) =>
   updateDescription
     .executeMutation({
       courseId: data.value.courseId,
       description: text || null,
     })
-    .then((result) => !!result.data?.course?.id && !result.error);
+    .then((result) => ({
+      returnId: result.data?.course?.id,
+      error: result.error,
+    }));
 </script>
 
 <template>

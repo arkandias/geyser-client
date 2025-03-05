@@ -307,7 +307,7 @@ const filteredTeachers = computed(() =>
     :constraint
     :update-columns
   >
-    <template #search>
+    <template #filters>
       <QSelect
         v-model="selectedPositions"
         :options="positions.map((p) => p.label)"

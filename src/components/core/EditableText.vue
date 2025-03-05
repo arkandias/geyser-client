@@ -1,8 +1,14 @@
 <script setup lang="ts">
+import type { CombinedError } from "@urql/vue";
 import { ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
+
+type SetTextReturn = {
+  returnId: string | number | null | undefined;
+  error: CombinedError | undefined;
+};
 
 const showEditor = defineModel<boolean>();
 const {
@@ -11,7 +17,7 @@ const {
   defaultText = "",
 } = defineProps<{
   text: string;
-  setText: (text: string) => Promise<boolean>;
+  setText: (text: string) => Promise<SetTextReturn>;
   defaultText?: string;
 }>();
 
@@ -26,8 +32,8 @@ const onSave = async () => {
   if (editorText.value === text) {
     notify(NotifyType.DEFAULT, { message: t("editor.save.noChanges") });
   } else {
-    const success = await setText(editorText.value);
-    if (success) {
+    const { returnId, error } = await setText(editorText.value);
+    if (!!returnId && !error) {
       notify(NotifyType.SUCCESS, {
         message: t(
           editorText.value
@@ -42,6 +48,7 @@ const onSave = async () => {
             ? "editor.save.error.update"
             : "editor.save.error.delete",
         ),
+        caption: error?.message,
       });
     }
   }

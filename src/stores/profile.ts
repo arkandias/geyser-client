@@ -57,16 +57,16 @@ const fetching = ref(false);
 const fetchProfile = async (uid: string) => {
   fetching.value = true;
 
-  const profile = await useQuery({
+  const { data, error } = await useQuery({
     query: GetUserProfileDocument,
     variables: { uid },
     context: { requestPolicy: "network-only" },
-  }).then((result) => result.data.value?.profile ?? null);
+  });
 
-  if (profile) {
+  if (data.value?.profile && !error.value) {
     setProfile(profile);
     setRoles(
-      profile.roles
+      data.value.profile.roles
         .map((role) => role.type)
         .filter((role) => isRole(role))
         .concat(ROLES.TEACHER),
@@ -77,7 +77,7 @@ const fetchProfile = async (uid: string) => {
     }
 
     // Log invalid roles (if any)
-    const invalidRoles = profile.roles
+    const invalidRoles = data.value.profile.roles
       .map((role) => role.type)
       .filter((role) => !isRole(role));
     if (invalidRoles.length) {
@@ -91,6 +91,7 @@ const fetchProfile = async (uid: string) => {
   } else {
     notify(NotifyType.ERROR, {
       message: t("notification.profile.notFound"),
+      caption: error.value?.message,
     });
     loaded.value = false;
   }

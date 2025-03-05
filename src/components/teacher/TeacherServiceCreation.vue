@@ -58,15 +58,18 @@ const submitServiceCreation = async (): Promise<void> => {
     });
     return;
   }
-  const result = await insertService.executeMutation({
+  const { data, error } = await insertService.executeMutation({
     year,
     uid,
     hours: baseServiceHours.value,
   });
-  if (result.data?.service && !result.error) {
+  if (data?.service && !error) {
     notify(NotifyType.SUCCESS, { message: "Service créé" });
   } else {
-    notify(NotifyType.ERROR, { message: "Échec de la création" });
+    notify(NotifyType.ERROR, {
+      message: "Échec de la création",
+      caption: error?.message,
+    });
   }
   resetServiceCreation();
 };

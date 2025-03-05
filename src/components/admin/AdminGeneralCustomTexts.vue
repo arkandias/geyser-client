@@ -60,16 +60,16 @@ const customTextsEdit = ref(
 
 const updateCustomTextHandle = (key: string, value: string) =>
   value
-    ? updateCustomText
-        .executeMutation({ key, value })
-        .then(
-          (result) => !!result.data?.updateCustomTextByPk?.key && !result.error,
-        )
+    ? updateCustomText.executeMutation({ key, value }).then((result) => ({
+        returnId: result.data?.updateCustomTextByPk?.key,
+        error: result.error,
+      }))
     : deleteCustomText
         .executeMutation({ key })
-        .then(
-          (result) => !!result.data?.deleteCustomTextByPk?.key && !result.error,
-        );
+        .then((result) => ({
+          returnId: result.data?.deleteCustomTextByPk?.key,
+          error: result.error,
+        }));
 
 // For deletion, use EditableText's exposed method
 type EditableTextInstance = {

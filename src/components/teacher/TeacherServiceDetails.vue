@@ -119,15 +119,18 @@ const submitBaseServiceForm = async (): Promise<void> => {
   if (baseServiceHours.value === service.value.hours) {
     notify(NotifyType.DEFAULT, { message: "Pas de changement à enregistrer" });
   } else {
-    const result = await upsertService.executeMutation({
+    const { data, error } = await upsertService.executeMutation({
       year: service.value.year,
       uid: service.value.uid,
       hours: baseServiceHours.value,
     });
-    if (result.data?.service && !result.error) {
+    if (data?.service && !error) {
       notify(NotifyType.SUCCESS, { message: "Service de base modifié" });
     } else {
-      notify(NotifyType.ERROR, { message: "Échec de la modification" });
+      notify(NotifyType.ERROR, {
+        message: "Échec de la modification",
+        caption: error?.message,
+      });
     }
   }
   resetBaseServiceForm();
@@ -160,25 +163,31 @@ const submitModificationForm = async (): Promise<void> => {
     });
     return;
   }
-  const result = await insertModification.executeMutation({
+  const { data, error } = await insertModification.executeMutation({
     serviceId: service.value.id,
     modificationTypeId: modificationTypeId.value,
     hours: modificationHours.value,
   });
-  if (result.data?.serviceModification && !result.error) {
+  if (data?.serviceModification && !error) {
     notify(NotifyType.SUCCESS, { message: "Modification ajoutée" });
   } else {
-    notify(NotifyType.ERROR, { message: "Échec de l'ajout" });
+    notify(NotifyType.ERROR, {
+      message: "Échec de l'ajout",
+      caption: error?.message,
+    });
   }
   resetModificationForm();
 };
 
 const handleModificationDeletion = async (id: number): Promise<void> => {
-  const result = await deleteModification.executeMutation({ id });
-  if (result.data?.serviceModification && !result.error) {
+  const { data, error } = await deleteModification.executeMutation({ id });
+  if (data?.serviceModification && !error) {
     notify(NotifyType.SUCCESS, { message: "Modification supprimée" });
   } else {
-    notify(NotifyType.ERROR, { message: "Échec de la suppresssion" });
+    notify(NotifyType.ERROR, {
+      message: "Échec de la suppression",
+      caption: error?.message,
+    });
   }
 };
 </script>
