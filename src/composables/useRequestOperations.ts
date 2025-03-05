@@ -103,7 +103,6 @@ const getService =
     );
 
     if (!data?.course || error) {
-      console.error(`No course found with id ${courseId.toString()}`);
       notify(NotifyType.ERROR, {
         message: t("request.error.courseNotFound"),
         caption: error?.message,
@@ -112,9 +111,6 @@ const getService =
     }
 
     if (!data.course.yearByYear.services[0]) {
-      console.error(
-        `No service found for teacher ${uid} and year ${data.course.year.toString()}`,
-      );
       notify(NotifyType.ERROR, {
         message: t("request.error.serviceNotFound.title"),
         caption: t("request.error.serviceNotFound.caption"),
@@ -133,16 +129,13 @@ const getRequest =
       { serviceId, courseId, requestType },
       { requestPolicy: "network-only" },
     );
-
     if (!data?.requests || error) {
-      console.error("Error while fetching current request");
       notify(NotifyType.ERROR, {
         message: t("request.error.fetch"),
         caption: error?.message,
       });
       return null;
     }
-
     return data.requests[0]?.hours ?? 0;
   };
 
@@ -171,9 +164,6 @@ const updateRequestWithServiceId =
   ) => {
     if (!isRequestType(requestType)) {
       console.error(`Invalid request type: ${requestType}`);
-      notify(NotifyType.ERROR, {
-        message: t("request.error.invalidType"),
-      });
       return;
     }
     const current = await getRequest(client)(serviceId, courseId, requestType);
