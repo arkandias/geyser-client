@@ -256,7 +256,6 @@ function validateImportRow(
 ): Partial<InsertInput>;
 function validateImportRow(
   importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
 ): Partial<InsertInput> {
   const object: Partial<InsertInput> = {};
 

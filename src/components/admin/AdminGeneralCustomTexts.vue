@@ -64,12 +64,10 @@ const updateCustomTextHandle = (key: string, value: string) =>
         returnId: result.data?.updateCustomTextByPk?.key,
         error: result.error,
       }))
-    : deleteCustomText
-        .executeMutation({ key })
-        .then((result) => ({
-          returnId: result.data?.deleteCustomTextByPk?.key,
-          error: result.error,
-        }));
+    : deleteCustomText.executeMutation({ key }).then((result) => ({
+        returnId: result.data?.deleteCustomTextByPk?.key,
+        error: result.error,
+      }));
 
 // For deletion, use EditableText's exposed method
 type EditableTextInstance = {

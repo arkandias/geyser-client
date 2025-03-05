@@ -126,7 +126,7 @@ John Doe,30,value`;
     } as const;
 
     expect(() => importCSV(csv, descriptors)).toThrow(
-      "Unknown field: unknownField",
+      "Unexpected field: unknownField",
     );
   });
 

@@ -21,13 +21,17 @@ export const parseField = <T extends FieldDescriptor>(
     if (fieldDescriptor.nullable) {
       return null as ParsedField<T>;
     }
-    throw new Error(`Non-nullable field '${str}' is empty`);
+    throw new Error(`Non-nullable field is empty`);
   }
   switch (fieldDescriptor.type) {
     case "string":
       return trimmed as ParsedField<T>;
     case "number": {
-      return Number(trimmed) as ParsedField<T>;
+      const num = Number(trimmed);
+      if (!Number.isFinite(num)) {
+        throw new Error("Not a number");
+      }
+      return num as ParsedField<T>;
     }
     case "boolean": {
       switch (trimmed) {
