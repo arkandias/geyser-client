@@ -3,8 +3,8 @@ import { computed, reactive } from "vue";
 
 import { graphql } from "@/gql";
 import { GetServiceFromTeacherDocument } from "@/gql/graphql.ts";
-import { useProfileStore } from "@/stores/profile.ts";
-import { useYearsStore } from "@/stores/years.ts";
+import { useProfileStore } from "@/stores/useProfileStore.ts";
+import { useYearsStore } from "@/stores/useYearsStore.ts";
 
 graphql(`
   query GetServiceFromTeacher($year: Int!, $uid: String!) {

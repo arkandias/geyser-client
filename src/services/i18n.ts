@@ -1,5 +1,7 @@
 import { type I18nOptions, createI18n } from "vue-i18n";
 
+import { DEFAULT_LOCALE } from "@/config/constants.ts";
+import type { AvailableLocale } from "@/config/types/locales.ts";
 import frFR from "@/locales/fr";
 
 const numberFormat = {
@@ -7,24 +9,6 @@ const numberFormat = {
     style: "decimal",
     maximumFractionDigits: 2,
   },
-} as const;
-
-export const AVAILABLE_LOCALES = ["fr-FR"] as const;
-export type AvailableLocale = (typeof AVAILABLE_LOCALES)[number];
-
-export const isAvailableLocale = (
-  locale: unknown,
-): locale is AvailableLocale => {
-  return (
-    typeof locale === "string" &&
-    AVAILABLE_LOCALES.includes(locale as AvailableLocale)
-  );
-};
-
-export const DEFAULT_LOCALE: AvailableLocale = "fr-FR";
-
-export const LOCALE_LABELS: Record<AvailableLocale, string> = {
-  "fr-FR": "Français",
 } as const;
 
 export type CustomI18nOptions = I18nOptions & {

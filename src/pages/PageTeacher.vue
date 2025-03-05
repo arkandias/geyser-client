@@ -2,11 +2,11 @@
 import { useQuery } from "@urql/vue";
 import { computed, reactive } from "vue";
 
-import { useQueryParam } from "@/composables/query-param.ts";
+import { useQueryParam } from "@/composables/useQueryParam.ts";
 import { graphql } from "@/gql";
 import { GetTeacherDetailsDocument } from "@/gql/graphql.ts";
-import { useProfileStore } from "@/stores/profile.ts";
-import { useYearsStore } from "@/stores/years.ts";
+import { useProfileStore } from "@/stores/useProfileStore.ts";
+import { useYearsStore } from "@/stores/useYearsStore.ts";
 
 import TeacherCoordinations from "@/components/teacher/TeacherCoordinations.vue";
 import TeacherService from "@/components/teacher/TeacherService.vue";

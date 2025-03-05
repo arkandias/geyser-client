@@ -400,10 +400,10 @@ Si ces types sont attribués à des modifications, vous ne pourrez pas les suppr
       priorities: "Priorités",
     },
     coordinations: {
-      title: "Responsabilités",
-      programs: "Mentions",
-      tracks: "Parcours",
-      courses: "Enseignements",
+      title: "Responsables",
+      programs: "Responsables de mention",
+      tracks: "Responsables de parcours",
+      courses: "Responsables d'enseignement",
     },
     roles: {
       title: "Rôles",

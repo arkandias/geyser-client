@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import { useCustomTextsStore } from "@/stores/custom-texts.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 

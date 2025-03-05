@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import { useDarkMode } from "@/composables/dark-mode.ts";
-import { usePermissions } from "@/composables/permissions.ts";
-import { useRefreshData } from "@/composables/refresh-data.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useDarkMode } from "@/composables/useDarkMode.ts";
+import { usePermissions } from "@/composables/usePermissions.ts";
+import { useRefreshData } from "@/composables/useRefreshData.ts";
 import { version } from "@/config/env.ts";
-import { useProfileStore } from "@/stores/profile.ts";
+import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { buttonColor } from "@/utils/colors.ts";
 
 import MenuInfo from "@/components/header/MenuInfo.vue";

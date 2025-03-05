@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { useDownloadAssignments } from "@/composables/download-assignments.ts";
-import { usePermissions } from "@/composables/permissions.ts";
+import { useDownloadAssignments } from "@/composables/useDownloadAssignments.ts";
+import { usePermissions } from "@/composables/usePermissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
@@ -10,10 +10,9 @@ import {
   type TeacherCoordinationsFragment,
   TeacherCoordinationsFragmentDoc,
 } from "@/gql/graphql.ts";
-import { useYearsStore } from "@/stores/years.ts";
+import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type { ArrayElement } from "@/types/misc.ts";
 import { displayName, formatProgram } from "@/utils/format.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import TeacherList from "@/components/teacher/TeacherList.vue";
@@ -129,6 +128,7 @@ const downloadProgramAssignments = async (coordination: Coordination) => {
   if (activeYear.value === null) {
     return;
   }
+
   let where: RequestBoolExp;
   let filename: string;
   if (coordination.program) {
@@ -162,11 +162,9 @@ const downloadProgramAssignments = async (coordination: Coordination) => {
       displayName(coordination.course);
   } else {
     console.error("Invalid coordination:", coordination);
-    notify(NotifyType.ERROR, {
-      message: "Responsabilité non valide",
-    });
     return;
   }
+
   await downloadAssignments(
     {
       year: activeYear.value,

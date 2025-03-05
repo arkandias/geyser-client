@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { PHASES } from "@/config/types/phases.ts";
 import { graphql } from "@/gql";
 import { SetCurrentPhaseDocument } from "@/gql/graphql.ts";
-import { usePhaseStore } from "@/stores/phase.ts";
+import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`

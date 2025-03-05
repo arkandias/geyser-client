@@ -2,7 +2,7 @@
 import { useQuery } from "@urql/vue";
 import { computed, ref, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { graphql } from "@/gql";
 import { GetActiveTeachersDocument } from "@/gql/graphql.ts";
 import { formatUser } from "@/utils/format.ts";

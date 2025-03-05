@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, toValue } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import { usePermissions } from "@/composables/permissions.ts";
-import { useQueryParam } from "@/composables/query-param.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { usePermissions } from "@/composables/usePermissions.ts";
+import { useQueryParam } from "@/composables/useQueryParam.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {

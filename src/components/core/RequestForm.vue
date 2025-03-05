@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import { usePermissions } from "@/composables/permissions.ts";
-import { useRequestOperations } from "@/composables/request-operations.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { usePermissions } from "@/composables/usePermissions.ts";
+import { useRequestOperations } from "@/composables/useRequestOperations.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestFormDataFragmentDoc } from "@/gql/graphql.ts";
-import { useProfileStore } from "@/stores/profile.ts";
+import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 import SelectTeacher from "@/components/core/SelectTeacher.vue";

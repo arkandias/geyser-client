@@ -1,15 +1,16 @@
-import { PHASES, capPhase } from "@/config/types/phases.ts";
+import { PHASES } from "@/config/types/phases.ts";
+import { capitalize } from "@/utils/misc.ts";
 
 export const CUSTOM_TEXT_KEYS = [
   "homeTitle",
-  `homeSubtitle${capPhase(PHASES.REQUESTS)}`,
-  `homeSubtitle${capPhase(PHASES.ASSIGNMENTS)}`,
-  `homeSubtitle${capPhase(PHASES.RESULTS)}`,
-  `homeSubtitle${capPhase(PHASES.SHUTDOWN)}`,
-  `homeMessage${capPhase(PHASES.REQUESTS)}`,
-  `homeMessage${capPhase(PHASES.ASSIGNMENTS)}`,
-  `homeMessage${capPhase(PHASES.RESULTS)}`,
-  `homeMessage${capPhase(PHASES.SHUTDOWN)}`,
+  `homeSubtitle${capitalize(PHASES.REQUESTS)}`,
+  `homeSubtitle${capitalize(PHASES.ASSIGNMENTS)}`,
+  `homeSubtitle${capitalize(PHASES.RESULTS)}`,
+  `homeSubtitle${capitalize(PHASES.SHUTDOWN)}`,
+  `homeMessage${capitalize(PHASES.REQUESTS)}`,
+  `homeMessage${capitalize(PHASES.ASSIGNMENTS)}`,
+  `homeMessage${capitalize(PHASES.RESULTS)}`,
+  `homeMessage${capitalize(PHASES.SHUTDOWN)}`,
   "contact",
   "legalNotice",
 ] as const;

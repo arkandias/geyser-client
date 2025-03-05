@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 
 import AdminCoordinations from "@/components/admin/AdminCoordinations.vue";
 import AdminCourses from "@/components/admin/AdminCourses.vue";

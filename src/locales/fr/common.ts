@@ -22,10 +22,7 @@ export default {
     },
     error: {
       unknown: "Erreur inconnue",
-      caption: {
-        default:
-          "Si le problème persiste, merci de contacter un administrateur",
-      },
+      downloadFailed: "Le téléchargement a échoué",
     },
   },
   unit: {

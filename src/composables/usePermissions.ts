@@ -2,9 +2,9 @@ import { computed, readonly } from "vue";
 
 import { PHASES } from "@/config/types/phases.ts";
 import { ROLES } from "@/config/types/roles.ts";
-import { usePhaseStore } from "@/stores/phase.ts";
-import { useProfileStore } from "@/stores/profile.ts";
-import { useYearsStore } from "@/stores/years.ts";
+import { usePhaseStore } from "@/stores/usePhaseStore.ts";
+import { useProfileStore } from "@/stores/useProfileStore.ts";
+import { useYearsStore } from "@/stores/useYearsStore.ts";
 
 export const usePermissions = () => {
   const { isCurrentYearActive } = useYearsStore();

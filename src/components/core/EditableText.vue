@@ -2,7 +2,7 @@
 import type { CombinedError } from "@urql/vue";
 import { ref, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 type SetTextReturn = {

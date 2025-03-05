@@ -1,6 +1,6 @@
 import { useClientHandle } from "@urql/vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { graphql } from "@/gql";
 import {
   GetAssignmentsDocument,
@@ -97,11 +97,9 @@ export const useDownloadAssignments = () => {
 
     try {
       downloadCSV(filename, formattedAssignments);
-      // TODO: notifications
     } catch (error) {
-      console.error("Export error:", error);
       notify(NotifyType.ERROR, {
-        message: t("admin.data.export.invalid.message"), // TODO: replace with download
+        message: t("notification.error.downloadFailed"),
         caption: error instanceof Error ? error.message : "Unknown error",
       });
     }

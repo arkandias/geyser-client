@@ -2,7 +2,7 @@
 import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type AdminServiceModificationFragment,
@@ -17,7 +17,7 @@ import {
   UpdateServiceModificationsDocument,
   UpsertServiceModificationsDocument,
 } from "@/gql/graphql.ts";
-import { useYearsStore } from "@/stores/years.ts";
+import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
 import { inputToNumber, nullRow } from "@/utils/admin-data.ts";

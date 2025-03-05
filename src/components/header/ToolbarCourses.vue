@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import { useQueryParam } from "@/composables/query-param.ts";
-import { useService } from "@/composables/service.ts";
-import { useLeftPanelStore } from "@/stores/left-panel.ts";
-import { useProfileStore } from "@/stores/profile.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useQueryParam } from "@/composables/useQueryParam.ts";
+import { useService } from "@/composables/useService.ts";
+import { useLeftPanelStore } from "@/stores/useLeftPanelStore.ts";
+import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { buttonColor } from "@/utils/colors.ts";
 
 import MenuYear from "@/components/header/MenuYear.vue";

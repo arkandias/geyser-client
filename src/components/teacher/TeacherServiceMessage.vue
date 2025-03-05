@@ -3,7 +3,7 @@ import { useMutation } from "@urql/vue";
 import DOMPurify from "dompurify";
 import { computed, ref } from "vue";
 
-import { usePermissions } from "@/composables/permissions.ts";
+import { usePermissions } from "@/composables/usePermissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   TeacherServiceMessageFragmentDoc,

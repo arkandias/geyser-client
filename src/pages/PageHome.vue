@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import { capPhase } from "@/config/types/phases.ts";
-import { useCustomTextsStore } from "@/stores/custom-texts.ts";
-import { usePhaseStore } from "@/stores/phase.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
+import { usePhaseStore } from "@/stores/usePhaseStore.ts";
+import { capitalize } from "@/utils/misc.ts";
 
 defineProps<{ alert?: string }>();
 
@@ -15,12 +15,12 @@ const { customTexts } = useCustomTextsStore();
 const title = computed(() => customTexts.value.homeTitle || t("home.title"));
 const subtitle = computed(
   () =>
-    customTexts.value[`homeSubtitle${capPhase(currentPhase.value)}`] ||
+    customTexts.value[`homeSubtitle${capitalize(currentPhase.value)}`] ||
     t(`home.subtitle.${currentPhase.value}`),
 );
 const message = computed(
   () =>
-    customTexts.value[`homeMessage${capPhase(currentPhase.value)}`] ||
+    customTexts.value[`homeMessage${capitalize(currentPhase.value)}`] ||
     t(`home.message.${currentPhase.value}`),
 );
 </script>

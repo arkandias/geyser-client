@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import { useRefreshData } from "@/composables/refresh-data.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useRefreshData } from "@/composables/useRefreshData.ts";
 import { ROLES, type Role } from "@/config/types/roles.ts";
 import { logout } from "@/services/keycloak.ts";
-import { useProfileStore } from "@/stores/profile.ts";
+import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { formatUser } from "@/utils/format.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";

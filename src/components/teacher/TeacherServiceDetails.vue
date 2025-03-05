@@ -2,7 +2,7 @@
 import { useMutation, useQuery } from "@urql/vue";
 import { computed, ref } from "vue";
 
-import { usePermissions } from "@/composables/permissions.ts";
+import { usePermissions } from "@/composables/usePermissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {

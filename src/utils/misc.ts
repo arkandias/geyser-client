@@ -43,3 +43,6 @@ export const compareAbbr = <T extends { short: string | null; long: string }>(
     (a.short ?? b.long).toLowerCase(),
     (b.short ?? b.long).toLowerCase(),
   );
+
+export const capitalize = <T extends string>(str: T): Capitalize<T> =>
+  (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<T>;

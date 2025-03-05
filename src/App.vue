@@ -2,7 +2,7 @@
 import { useQuery } from "@urql/vue";
 import { computed, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { PHASES } from "@/config/types/phases.ts";
 import { ROLES } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
@@ -13,10 +13,10 @@ import {
 } from "@/gql/graphql.ts";
 import { getClaims } from "@/services/keycloak.ts";
 import { setRoleHeader } from "@/services/urql.ts";
-import { useCustomTextsStore } from "@/stores/custom-texts.ts";
-import { usePhaseStore } from "@/stores/phase.ts";
-import { useProfileStore } from "@/stores/profile.ts";
-import { useYearsStore } from "@/stores/years.ts";
+import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
+import { usePhaseStore } from "@/stores/usePhaseStore.ts";
+import { useProfileStore } from "@/stores/useProfileStore.ts";
+import { useYearsStore } from "@/stores/useYearsStore.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
 import PageHome from "@/pages/PageHome.vue";

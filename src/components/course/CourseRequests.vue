@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import { usePermissions } from "@/composables/permissions.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { usePermissions } from "@/composables/usePermissions.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CourseRequestsFragmentDoc } from "@/gql/graphql.ts";

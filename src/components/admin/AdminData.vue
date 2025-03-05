@@ -13,7 +13,7 @@
 import type { AnyVariables, UseMutationResponse } from "@urql/vue";
 import { type Ref, computed, ref, toValue, useSlots, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import type {
   FieldDescriptor,
   NullableParsedRow,
@@ -218,7 +218,6 @@ const insertDataHandle = async () => {
     objects: [object],
   });
   if (error) {
-    console.error("Insertion failed", error);
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.insertFailed"),
       caption: errorMessage(error),
@@ -261,7 +260,6 @@ const updateDataHandle = async () => {
     changes,
   });
   if (error) {
-    console.error("Update failed", error);
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.updateFailed"),
       caption: errorMessage(error),
@@ -305,7 +303,6 @@ const deleteDataHandle = async () => {
     ids: selectedRows.value.map((row) => row[idKey]),
   });
   if (error) {
-    console.error("Deletion failed", error);
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.deleteFailed"),
       caption: errorMessage(error),
@@ -453,10 +450,8 @@ const importRowsHandle = async () => {
         message: t("admin.data.error.noReturnData"),
       });
     }
-
     isImportDialogOpen.value = false;
   } catch (error) {
-    console.error("Import failed", error);
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.importFailed"),
       caption: errorMessage(error),

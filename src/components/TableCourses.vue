@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, toValue } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import { useDownloadAssignments } from "@/composables/download-assignments.ts";
-import { usePermissions } from "@/composables/permissions.ts";
-import { useQueryParam } from "@/composables/query-param.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useDownloadAssignments } from "@/composables/useDownloadAssignments.ts";
+import { usePermissions } from "@/composables/usePermissions.ts";
+import { useQueryParam } from "@/composables/useQueryParam.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import {
   REQUEST_TYPES,
@@ -16,7 +16,7 @@ import {
   CourseRowFragmentDoc,
   ServiceDetailsFragmentDoc,
 } from "@/gql/graphql.ts";
-import { useYearsStore } from "@/stores/years.ts";
+import { useYearsStore } from "@/stores/useYearsStore.ts";
 import { type Column, isAbbreviable } from "@/types/columns.ts";
 import { formatProgram, formatUser, nf } from "@/utils/format.ts";
 import {

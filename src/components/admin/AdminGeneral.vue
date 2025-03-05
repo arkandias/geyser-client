@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 
 import AdminGeneralCustomTexts from "@/components/admin/AdminGeneralCustomTexts.vue";
 import AdminGeneralPhase from "@/components/admin/AdminGeneralPhase.vue";

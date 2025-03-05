@@ -2,7 +2,7 @@
 import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type AdminTeacherFragment,

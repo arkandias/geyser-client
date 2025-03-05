@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
-import { useYearsStore } from "@/stores/years.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useYearsStore } from "@/stores/useYearsStore.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 

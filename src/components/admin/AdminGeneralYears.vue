@@ -2,7 +2,7 @@
 import { useMutation } from "@urql/vue";
 import { ref } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { graphql } from "@/gql";
 import {
   DeleteYearDocument,
@@ -10,7 +10,7 @@ import {
   SetCurrentYearDocument,
   UpdateYearDocument,
 } from "@/gql/graphql.ts";
-import { useYearsStore } from "@/stores/years.ts";
+import { useYearsStore } from "@/stores/useYearsStore.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`

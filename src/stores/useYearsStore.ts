@@ -1,6 +1,6 @@
 import { computed, readonly, ref } from "vue";
 
-import { useQueryParam } from "@/composables/query-param.ts";
+import { useQueryParam } from "@/composables/useQueryParam.ts";
 
 type Year = {
   value: number;

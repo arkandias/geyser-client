@@ -1,3 +1,7 @@
+import type { AvailableLocale } from "@/config/types/locales.ts";
+
+export const DEFAULT_LOCALE: AvailableLocale = "fr-FR";
+
 export const HASURA_CLAIMS_NAMESPACE = "https://hasura.io/jwt/claims";
 export const HASURA_DEFAULT_USER_ID = "admin";
 

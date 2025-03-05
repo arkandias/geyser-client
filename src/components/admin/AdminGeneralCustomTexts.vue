@@ -8,7 +8,7 @@ import {
   shallowRef,
 } from "vue";
 
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import {
   CUSTOM_TEXT_KEYS,
   type CustomTextKey,
@@ -19,7 +19,7 @@ import {
   DeleteCustomTextDocument,
   UpdateCustomTextDocument,
 } from "@/gql/graphql.ts";
-import { useCustomTextsStore } from "@/stores/custom-texts.ts";
+import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 
 import EditableText from "@/components/core/EditableText.vue";
 

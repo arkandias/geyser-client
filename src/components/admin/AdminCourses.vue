@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCustomI18n } from "@/composables/custom-i18n.ts";
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 
 import AdminSection from "@/components/admin/AdminSection.vue";
 
