@@ -395,7 +395,7 @@ Si ces types sont attribués à des modifications, vous ne pourrez pas les suppr
       types: "Types d'enseignement",
     },
     requests: {
-      title: "Demandes",
+      title: "Demandes et priorités",
       requests: "Demandes",
       priorities: "Priorités",
     },

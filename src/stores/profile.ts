@@ -64,7 +64,7 @@ const fetchProfile = async (uid: string) => {
   });
 
   if (data.value?.profile && !error.value) {
-    setProfile(profile);
+    setProfile(data.value.profile);
     setRoles(
       data.value.profile.roles
         .map((role) => role.type)
