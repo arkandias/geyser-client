@@ -5,6 +5,7 @@ import { computed, ref } from "vue";
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
+  type AdminServiceModificationTypeFragment,
   AdminServiceModificationTypeFragmentDoc,
   DeleteServiceModificationTypesDocument,
   InsertServiceModificationTypesDocument,
@@ -13,13 +14,9 @@ import {
   UpdateServiceModificationTypesDocument,
   UpsertServiceModificationTypesDocument,
 } from "@/gql/graphql.ts";
-import type {
-  NullableParsedRow,
-  ParsedRow,
-  VisibleParsedRow,
-} from "@/types/admin-data.ts";
+import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
-import { initForm } from "@/utils/admin-data.ts";
+import { nullRow } from "@/utils/admin-data.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -31,17 +28,20 @@ const { serviceModificationTypeFragments } = defineProps<{
 
 const { t } = useCustomI18n();
 
+const idKey = "id";
 const rowDescriptor = {
-  id: { type: "number", hidden: true },
   label: { type: "string" },
   description: { type: "string", nullable: true },
 } as const;
-const idKey = "id";
 
+type Row = AdminServiceModificationTypeFragment;
 type T = typeof rowDescriptor;
-type Row = ParsedRow<T>;
-type FormData = NullableParsedRow<T>;
-type OperationData = VisibleParsedRow<T>;
+type FormValues = NullableParsedRow<T>;
+type ImportRow = ParsedRow<T>;
+type InsertInput = {
+  label?: string | null;
+  description?: string | null;
+};
 
 graphql(`
   fragment AdminServiceModificationType on ServiceModificationType {
@@ -102,27 +102,24 @@ const serviceModificationTypes = computed(() =>
     useFragment(AdminServiceModificationTypeFragmentDoc, f),
   ),
 );
-const insertData = useMutation(InsertServiceModificationTypesDocument);
-const upsertData = useMutation(UpsertServiceModificationTypesDocument);
-const updateData = useMutation(UpdateServiceModificationTypesDocument);
-const deleteData = useMutation(DeleteServiceModificationTypesDocument);
+const insertServiceModificationTypes = useMutation(
+  InsertServiceModificationTypesDocument,
+);
+const upsertServiceModificationTypes = useMutation(
+  UpsertServiceModificationTypesDocument,
+);
+const updateServiceModificationTypes = useMutation(
+  UpdateServiceModificationTypesDocument,
+);
+const deleteServiceModificationTypes = useMutation(
+  DeleteServiceModificationTypesDocument,
+);
 
 const constraint =
   ServiceModificationTypeConstraint.ServiceModificationTypeLabelKey;
-const updateColumns = [
-  ServiceModificationTypeUpdateColumn.Label,
-  ServiceModificationTypeUpdateColumn.Description,
-];
+const updateColumns = [ServiceModificationTypeUpdateColumn.Description];
 
-const rows = computed<Row[]>(() =>
-  serviceModificationTypes.value.map((smt) => ({
-    id: smt.id,
-    label: smt.label,
-    description: smt.description ?? null,
-  })),
-);
-
-const formValues = ref<FormData>(initForm(rowDescriptor));
+const formValues = ref<FormValues>(nullRow(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
 const columns: ColumnNonAbbreviable<Row>[] = [
@@ -148,22 +145,41 @@ const columns: ColumnNonAbbreviable<Row>[] = [
 
 const formatRow = (row: Row) => row.label;
 
-const validateOperationData = (
-  operationData: Partial<OperationData>,
+const initForm = (rows: Row[]): FormValues =>
+  rows.length === 1 ? { ...rows[0] } : nullRow(rowDescriptor);
+
+function validateImportRow(
+  importRow: ImportRow,
   checkConflicts: boolean,
-) => {
-  if (checkConflicts) {
+): InsertInput;
+function validateImportRow(
+  importRow: Partial<ImportRow>,
+  checkConflicts: boolean,
+): Partial<InsertInput>;
+function validateImportRow(
+  importRow: Partial<ImportRow>,
+  checkConflicts: boolean,
+): Partial<InsertInput> {
+  const object: Partial<InsertInput> = {};
+
+  if (importRow.label !== undefined) {
+    object.label = importRow.label;
     if (
-      serviceModificationTypes.value.find(
-        (smt) => smt.label === operationData.label,
-      )
+      checkConflicts &&
+      serviceModificationTypes.value.find((p) => p.label === importRow.label)
     ) {
       throw new Error(
         t("admin.teachers.serviceModificationTypes.form.error.conflictLabel"),
       );
     }
   }
-};
+
+  if (importRow.description !== undefined) {
+    object.description = importRow.description;
+  }
+
+  return importRow;
+}
 </script>
 
 <template>
@@ -175,13 +191,14 @@ const validateOperationData = (
     :id-key
     :row-descriptor
     :columns
-    :rows
+    :rows="serviceModificationTypes"
     :format-row
-    :validate-operation-data
-    :insert-data
-    :upsert-data
-    :update-data
-    :delete-data
+    :init-form
+    :validate-import-row
+    :insert-data="insertServiceModificationTypes"
+    :upsert-data="upsertServiceModificationTypes"
+    :update-data="updateServiceModificationTypes"
+    :delete-data="deleteServiceModificationTypes"
     :constraint
     :update-columns
   >
@@ -189,13 +206,16 @@ const validateOperationData = (
       <QInput
         v-if="!multipleSelection"
         v-model="formValues.label"
-        :label="t('admin.teachers.serviceModificationTypes.form.label')"
+        :label="t('admin.teachers.serviceModificationTypes.form.fields.label')"
         square
         dense
       />
       <QInput
         v-model="formValues.description"
-        :label="t('admin.teachers.serviceModificationTypes.form.description')"
+        :label="
+          t('admin.teachers.serviceModificationTypes.form.fields.description')
+        "
+        :disable="multipleSelection && !selectedFields.includes('description')"
         square
         dense
       >

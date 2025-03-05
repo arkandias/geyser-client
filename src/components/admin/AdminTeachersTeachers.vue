@@ -5,6 +5,7 @@ import { computed, ref } from "vue";
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
+  type AdminTeacherFragment,
   AdminTeacherFragmentDoc,
   AdminTeacherPositionFragmentDoc,
   DeleteTeachersDocument,
@@ -14,13 +15,9 @@ import {
   UpdateTeachersDocument,
   UpsertTeachersDocument,
 } from "@/gql/graphql.ts";
-import type {
-  NullableParsedRow,
-  ParsedRow,
-  VisibleParsedRow,
-} from "@/types/admin-data.ts";
+import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
-import { initForm, inputToNumber } from "@/utils/admin-data.ts";
+import { inputToNumber, nullRow } from "@/utils/admin-data.ts";
 import { nf } from "@/utils/format.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
@@ -32,6 +29,7 @@ const { teacherFragments, positionFragments } = defineProps<{
 
 const { t } = useCustomI18n();
 
+const idKey = "uid";
 const rowDescriptor = {
   uid: { type: "string" },
   firstname: { type: "string" },
@@ -42,12 +40,21 @@ const rowDescriptor = {
   visible: { type: "boolean" },
   active: { type: "boolean" },
 } as const;
-const idKey = "uid";
 
+type Row = AdminTeacherFragment;
 type T = typeof rowDescriptor;
-type Row = ParsedRow<T>;
-type FormData = NullableParsedRow<T>;
-type OperationData = VisibleParsedRow<T>;
+type FormValues = NullableParsedRow<T>;
+type ImportRow = ParsedRow<T>;
+type InsertInput = {
+  uid?: string | null;
+  firstname?: string | null;
+  lastname?: string | null;
+  alias?: string | null;
+  positionId?: number | null;
+  baseServiceHours?: number | null;
+  visible?: boolean | null;
+  active?: boolean | null;
+};
 
 graphql(`
   fragment AdminTeacher on Teacher {
@@ -56,6 +63,7 @@ graphql(`
     lastname
     alias
     position {
+      id
       label
     }
     baseServiceHours
@@ -87,16 +95,16 @@ graphql(`
     }
   }
 
-  mutation UpdateTeachers($uids: [String!]!, $changes: TeacherSetInput!) {
-    updateData: updateTeacher(where: { uid: { _in: $uids } }, _set: $changes) {
+  mutation UpdateTeachers($ids: [String!]!, $changes: TeacherSetInput!) {
+    updateData: updateTeacher(where: { uid: { _in: $ids } }, _set: $changes) {
       returning {
         uid
       }
     }
   }
 
-  mutation DeleteTeachers($uids: [String!]!) {
-    deleteData: deleteTeacher(where: { uid: { _in: $uids } }) {
+  mutation DeleteTeachers($ids: [String!]!) {
+    deleteData: deleteTeacher(where: { uid: { _in: $ids } }) {
       returning {
         uid
       }
@@ -126,20 +134,7 @@ const updateColumns = [
   TeacherUpdateColumn.Active,
 ];
 
-const rows = computed<Row[]>(() =>
-  teachers.value.map((t) => ({
-    uid: t.uid,
-    firstname: t.firstname,
-    lastname: t.lastname,
-    alias: t.alias ?? null,
-    position: t.position?.label ?? null,
-    baseServiceHours: t.baseServiceHours ?? null,
-    visible: t.visible,
-    active: t.active,
-  })),
-);
-
-const formValues = ref<FormData>(initForm(rowDescriptor));
+const formValues = ref<FormValues>(nullRow(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
 const updateBaseServiceHours = (value: string | number | null) => {
@@ -183,7 +178,7 @@ const columns: ColumnNonAbbreviable<Row>[] = [
     name: "position",
     label: t("admin.teachers.teachers.table.columns.position"),
     align: "left",
-    field: "position",
+    field: (row) => row.position?.label,
     sortable: true,
     searchable: false,
   },
@@ -213,99 +208,74 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   },
 ];
 
-const getLabel = (row: Row): string => row.uid;
+const formatRow = (row: Row) => row.uid;
 
-function getObject(row: Row): DataObj;
-function getObject(row: Row, fields: string[]): Partial<DataObj>;
-function getObject(row: Row, fields?: string[]): DataObj | Partial<DataObj> {
-  if (!row.uid) {
-    throw new Error(t("admin.teachers.teachers.form.error.uidEmpty"));
-  }
-  if (!row.firstname) {
-    throw new Error(t("admin.teachers.teachers.form.error.firstnameEmpty"));
-  }
-  if (!row.lastname) {
-    throw new Error(t("admin.teachers.teachers.form.error.lastnameEmpty"));
-  }
+const initForm = (rows: Row[]): FormValues =>
+  rows.length === 1
+    ? { ...rows[0], position: rows[0]?.position?.label ?? null }
+    : nullRow(rowDescriptor);
 
-  const dataObj: DataObj = {
-    uid: row.uid,
-    firstname: row.firstname,
-    lastname: row.lastname,
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    alias: row.alias || null,
-    position:
-      positions.value.find((p) => p.label === row.position)?.value ?? null,
-    baseServiceHours: row.baseServiceHours,
-    visible: row.visible,
-    active: row.active,
-  };
+function validateImportRow(
+  importRow: ImportRow,
+  checkConflicts: boolean,
+): InsertInput;
+function validateImportRow(
+  importRow: Partial<ImportRow>,
+  checkConflicts: boolean,
+): Partial<InsertInput>;
+function validateImportRow(
+  importRow: Partial<ImportRow>,
+  checkConflicts: boolean,
+): Partial<InsertInput> {
+  const object: Partial<InsertInput> = {};
 
-  if (fields) {
-    return Object.fromEntries(
-      Object.entries(dataObj).filter(([key]) => fields.includes(key)),
-    ) as Partial<DataObj>;
+  if (importRow.uid !== undefined) {
+    object.uid = importRow.uid;
+    if (checkConflicts && teachers.value.find((t) => t.uid === importRow.uid)) {
+      throw new Error(t("admin.teachers.teachers.form.error.conflictEmail"));
+    }
   }
 
-  return dataObj;
+  if (importRow.firstname !== undefined) {
+    object.firstname = importRow.firstname;
+  }
+
+  if (importRow.lastname !== undefined) {
+    object.lastname = importRow.lastname;
+  }
+
+  if (importRow.alias !== undefined) {
+    object.alias = importRow.alias;
+  }
+
+  if (importRow.position !== undefined) {
+    object.positionId = importRow.position
+      ? positions.value.find((p) => p.label === importRow.position)?.id
+      : null;
+    if (object.positionId === undefined) {
+      throw new Error(t("admin.teachers.teachers.form.error.positionNotFound"));
+    }
+  }
+
+  if (importRow.baseServiceHours !== undefined) {
+    object.baseServiceHours = importRow.baseServiceHours;
+    if (object.baseServiceHours !== null && object.baseServiceHours < 0) {
+      throw new Error(
+        t("admin.teachers.teachers.form.error.baseServiceHoursNegative"),
+      );
+    }
+  }
+
+  if (importRow.visible !== undefined) {
+    object.visible = importRow.visible;
+  }
+
+  if (importRow.active !== undefined) {
+    object.active = importRow.active;
+  }
+
+  return object;
 }
-
-const insertData = (objects: DataObj[], overwrite?: boolean) =>
-  insertTeachers
-    .executeMutation({
-      objects,
-      onConflict: {
-        constraint: TeacherConstraint.TeacherPkey,
-        updateColumns: overwrite
-          ? [
-              TeacherUpdateColumn.Firstname,
-              TeacherUpdateColumn.Lastname,
-              TeacherUpdateColumn.Alias,
-              TeacherUpdateColumn.Position,
-              TeacherUpdateColumn.BaseServiceHours,
-              TeacherUpdateColumn.Visible,
-              TeacherUpdateColumn.Active,
-            ]
-          : [],
-      },
-    })
-    .then((result) => ({
-      data: result.data
-        ? {
-            returning: result.data.insertTeacher?.returning ?? null,
-          }
-        : null,
-      error: result.error ?? null,
-    }));
-
-const updateData = (uids: Id[], changes: Partial<DataObj>) =>
-  updateTeachers
-    .executeMutation({
-      uids,
-      changes,
-    })
-    .then((result) => ({
-      data: result.data
-        ? {
-            returning: result.data.updateTeacher?.returning ?? null,
-          }
-        : null,
-      error: result.error ?? null,
-    }));
-
-const deleteData = (uids: Id[]) =>
-  deleteTeachers
-    .executeMutation({
-      uids,
-    })
-    .then((result) => ({
-      data: result.data
-        ? {
-            returning: result.data.deleteTeacher?.returning ?? null,
-          }
-        : null,
-      error: result.error ?? null,
-    }));
 </script>
 
 <template>
@@ -314,50 +284,53 @@ const deleteData = (uids: Id[]) =>
     v-model:selected-fields="selectedFields"
     name="teachers"
     message-prefix="admin.teachers.teachers"
-    id-key="uid"
+    :id-key
     :row-descriptor
-    :rows
     :columns
-    :init-values
-    :get-label
-    :get-object
-    :insert-data
-    :update-data
-    :delete-data
+    :rows="teachers"
+    :format-row
+    :init-form
+    :validate-import-row
+    :insert-data="insertTeachers"
+    :upsert-data="upsertTeachers"
+    :update-data="updateTeachers"
+    :delete-data="deleteTeachers"
+    :constraint
+    :update-columns
   >
     <template #form="{ multipleSelection }">
       <QInput
         v-if="!multipleSelection"
         v-model="formValues.uid"
-        :label="t('admin.teachers.teachers.form.uid')"
+        :label="t('admin.teachers.teachers.form.fields.uid')"
         square
         dense
       />
       <QInput
         v-if="!multipleSelection"
         v-model="formValues.firstname"
-        :label="t('admin.teachers.teachers.form.firstname')"
+        :label="t('admin.teachers.teachers.form.fields.firstname')"
         square
         dense
       />
       <QInput
         v-if="!multipleSelection"
         v-model="formValues.lastname"
-        :label="t('admin.teachers.teachers.form.lastname')"
+        :label="t('admin.teachers.teachers.form.fields.lastname')"
         square
         dense
       />
       <QInput
         v-if="!multipleSelection"
         v-model="formValues.alias"
-        :label="t('admin.teachers.teachers.form.alias')"
+        :label="t('admin.teachers.teachers.form.fields.alias')"
         square
         dense
       />
       <QSelect
         v-model="formValues.position"
         :options="positions.map((p) => p.label)"
-        :label="t('admin.teachers.teachers.form.position')"
+        :label="t('admin.teachers.teachers.form.fields.position')"
         :disable="multipleSelection && !selectedFields.includes('position')"
         clearable
         clear-icon="sym_s_close"
@@ -372,15 +345,17 @@ const deleteData = (uids: Id[]) =>
       <div class="row">
         <div class="q-mr-md">
           <QInput
-            v-model.number="formValues.baseServiceHours"
+            :model-value="formValues.baseServiceHours"
             type="number"
-            :label="t('admin.teachers.teachers.form.baseServiceHours')"
+            :label="t('admin.teachers.teachers.form.fields.baseServiceHours')"
             :disable="
               multipleSelection && !selectedFields.includes('baseServiceHours')
             "
+            :suffix="t('unit.weightedHours')"
             square
             dense
             style="width: 150px"
+            @update:model-value="updateBaseServiceHours"
           >
             <template v-if="multipleSelection" #before>
               <QCheckbox v-model="selectedFields" val="baseServiceHours" />
@@ -396,7 +371,7 @@ const deleteData = (uids: Id[]) =>
           <QToggle
             v-model="formValues.visible"
             :disable="multipleSelection && !selectedFields.includes('visible')"
-            :label="t('admin.teachers.teachers.form.visible')"
+            :label="t('admin.teachers.teachers.form.fields.visible')"
             left-label
           />
         </div>
@@ -409,7 +384,7 @@ const deleteData = (uids: Id[]) =>
           <QToggle
             v-model="formValues.active"
             :disable="multipleSelection && !selectedFields.includes('active')"
-            :label="t('admin.teachers.teachers.form.active')"
+            :label="t('admin.teachers.teachers.form.fields.active')"
             left-label
           />
         </div>

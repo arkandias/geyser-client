@@ -2,8 +2,10 @@
   setup
   lang="ts"
   generic="
+    Row extends SimpleObject<Scalar>,
+    IdKey extends string & keyof Row,
     T extends RowDescriptor,
-    IdKey extends string & keyof T,
+    InsertInput,
     Constraint,
     UpdateColumn
   "
@@ -17,40 +19,47 @@ import type {
   NullableParsedRow,
   ParsedRow,
   RowDescriptor,
-  VisibleParsedRow,
+  Scalar,
+  SimpleObject,
 } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
-import { initForm } from "@/utils/admin-data.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
 import { importCSV } from "@/utils/csv-import.ts";
 import { getField, normalizeForSearch } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
-type Row = ParsedRow<T>;
 type Id = Row[IdKey];
-type FormData = NullableParsedRow<T>;
-type OperationData = VisibleParsedRow<T>;
+type FormValues = NullableParsedRow<T>;
+type ImportRow = ParsedRow<T>;
+type ValidateImportRow = {
+  (importRow: ImportRow, checkConflicts: boolean): InsertInput;
+  (
+    importRow: Partial<ImportRow>,
+    checkConflicts: boolean,
+  ): Partial<InsertInput>;
+};
 type OperationResult<N extends string> = Partial<
-  Record<N, { returning: { id: Id }[] } | null>
+  Record<N, { returning: Record<IdKey, Id>[] } | null>
 >;
 type MutationHandle<Name extends string, Variables extends AnyVariables> = Pick<
   UseMutationResponse<OperationResult<Name>, Variables>,
   "executeMutation"
 >;
 
-const formValues = defineModel<FormData>("formValues", { required: true });
+const formValues = defineModel<FormValues>("formValues", { required: true });
 const selectedFields = defineModel<string[] | null>("selectedFields", {
   default: null,
 });
 const {
   name,
   messagePrefix,
-  rowDescriptor,
   idKey,
-  rows,
+  rowDescriptor,
   columns,
+  rows,
   formatRow,
-  validateOperationData,
+  initForm,
+  validateImportRow,
   insertData,
   upsertData,
   updateData,
@@ -60,20 +69,18 @@ const {
 } = defineProps<{
   name: string;
   messagePrefix: string;
-  rowDescriptor: T;
   idKey: IdKey;
-  rows: Row[];
+  rowDescriptor: T;
   columns: ColumnNonAbbreviable<Row>[];
+  rows: Row[];
   formatRow: (row: Row) => string;
-  validateOperationData: (
-    operationData: Partial<OperationData>,
-    checkConflicts: boolean,
-  ) => void;
-  insertData: MutationHandle<"insertData", { objects: OperationData[] }>;
+  initForm: (rows: Row[]) => FormValues;
+  validateImportRow: ValidateImportRow;
+  insertData: MutationHandle<"insertData", { objects: InsertInput[] }>;
   upsertData: MutationHandle<
     "upsertData",
     {
-      objects: OperationData[];
+      objects: InsertInput[];
       onConflict: {
         constraint: Constraint;
         updateColumns: UpdateColumn[];
@@ -84,7 +91,7 @@ const {
     "updateData",
     {
       ids: Id[];
-      changes: Partial<OperationData>;
+      changes: Partial<InsertInput>;
     }
   >;
   deleteData: MutationHandle<"deleteData", { ids: Id[] }>;
@@ -124,7 +131,7 @@ const openForm = (rows?: Row[]) => {
   if (rows) {
     selectedRows.value = rows;
   }
-  formValues.value = initForm(rowDescriptor, selectedRows.value);
+  formValues.value = initForm(selectedRows.value);
   if (selectedFields.value) {
     selectedFields.value = [];
   }
@@ -135,18 +142,20 @@ const openForm = (rows?: Row[]) => {
 const errorMessage = (error: unknown) =>
   error instanceof Error ? error.message : t("notification.error.unknown");
 
-function validateFormData(): OperationData;
-function validateFormData(fields: (keyof T)[]): Partial<OperationData>;
-function validateFormData(
-  fields?: (keyof T)[],
-): OperationData | Partial<OperationData> {
-  const operationData: Partial<OperationData> = {};
+function setImportRowValue<K extends keyof ImportRow>(
+  row: Partial<ImportRow>,
+  key: K,
+  value: ImportRow[K],
+) {
+  row[key] = value;
+}
+
+function validateForm(): ImportRow;
+function validateForm(fields: (keyof T)[]): Partial<ImportRow>;
+function validateForm(fields?: (keyof T)[]): ImportRow | Partial<ImportRow> {
+  const importRow: Partial<ImportRow> = {};
 
   Object.entries(rowDescriptor).forEach(([key, fieldDescriptor]) => {
-    if (fieldDescriptor.hidden) {
-      return;
-    }
-
     if (fields && !fields.includes(key)) {
       return;
     }
@@ -179,21 +188,20 @@ function validateFormData(
     }
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    operationData[key as keyof OperationData] = value!;
+    setImportRowValue(importRow, key, value!);
   });
 
   if (!fields) {
-    return operationData as OperationData;
+    return importRow as ImportRow;
   }
 
-  return operationData;
+  return importRow;
 }
 
 const insertDataHandle = async () => {
-  let object: OperationData;
+  let object: InsertInput;
   try {
-    object = validateFormData();
-    validateOperationData(object, true);
+    object = validateImportRow(validateForm(), true);
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.invalidForm"),
@@ -230,13 +238,14 @@ const insertDataHandle = async () => {
 };
 
 const updateDataHandle = async () => {
-  let changes: Partial<OperationData>;
+  let changes: Partial<InsertInput>;
   try {
-    changes =
+    changes = validateImportRow(
       multipleSelection.value && selectedFields.value
-        ? validateFormData(selectedFields.value)
-        : validateFormData();
-    validateOperationData(changes, false);
+        ? validateForm(selectedFields.value)
+        : validateForm(),
+      false,
+    );
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.invalidForm"),
@@ -376,10 +385,6 @@ const importColumns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
   },
 ];
 
-const importRows = Object.entries(rowDescriptor).filter(
-  ([_, fieldDescriptor]) => !fieldDescriptor.hidden,
-);
-
 const importRowsHandle = async () => {
   if (!selectedFile.value) {
     notify(NotifyType.ERROR, {
@@ -402,9 +407,9 @@ const importRowsHandle = async () => {
       );
     }
 
-    let importedRows: OperationData[];
+    let importRows: ImportRow[];
     try {
-      importedRows = importCSV(text, rowDescriptor);
+      importRows = importCSV(text, rowDescriptor);
     } catch (error) {
       console.error(error);
       throw new Error(
@@ -412,9 +417,9 @@ const importRowsHandle = async () => {
       );
     }
 
-    importedRows.forEach((row, index) => {
+    const objects = importRows.map((row, index) => {
       try {
-        validateOperationData(row, false);
+        return validateImportRow(row, false);
       } catch (error) {
         console.error(t("admin.data.error.invalidRow", { index }), error);
         throw new Error(
@@ -427,7 +432,7 @@ const importRowsHandle = async () => {
     });
 
     const { data, error } = await upsertData.executeMutation({
-      objects: importedRows,
+      objects,
       onConflict: {
         constraint,
         updateColumns: overwrite.value ? updateColumns : [],
@@ -471,9 +476,7 @@ const exportDataHandle = () => {
     downloadCSV(
       `${name}_${Date.now().toString()}`,
       selectedRows.value.length ? selectedRows.value : rows,
-      Object.entries(rowDescriptor)
-        .filter(([_, fieldDescriptor]) => !fieldDescriptor.hidden)
-        .map(([key]) => key),
+      Object.keys(rowDescriptor),
     );
     notify(NotifyType.SUCCESS, {
       message: t(
@@ -611,7 +614,7 @@ const exportDataHandle = () => {
       <QCardSection>
         <QTable
           :columns="importColumns"
-          :rows="importRows"
+          :rows="Object.entries(rowDescriptor)"
           :pagination="{ rowsPerPage: 0 }"
           hide-bottom
           bordered

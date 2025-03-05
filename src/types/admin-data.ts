@@ -15,7 +15,6 @@ export type PrimitiveTypeMap<T extends PrimitiveTypeName> = T extends "string"
 export type FieldDescriptor = {
   type: PrimitiveTypeName;
   nullable?: boolean;
-  hidden?: boolean;
 };
 
 export type ParsedField<T extends FieldDescriptor> = T["nullable"] extends true
@@ -29,13 +28,5 @@ export type ParsedRow<T extends RowDescriptor> = {
 };
 
 export type NullableParsedRow<T extends RowDescriptor> = {
-  -readonly [K in keyof T]: ParsedField<T[K]> | null;
+  -readonly [K in keyof T]?: ParsedField<T[K]> | null | undefined;
 };
-
-export type VisibleRowDescriptor<T extends RowDescriptor> = {
-  [K in keyof T as T[K]["hidden"] extends true ? never : K]: T[K];
-};
-
-export type VisibleParsedRow<T extends RowDescriptor> = ParsedRow<
-  VisibleRowDescriptor<T>
->;

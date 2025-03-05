@@ -3,8 +3,8 @@ import { type ParseConfig, parse } from "papaparse";
 import type {
   FieldDescriptor,
   ParsedField,
+  ParsedRow,
   RowDescriptor,
-  VisibleParsedRow,
 } from "@/types/admin-data.ts";
 
 /**
@@ -53,7 +53,7 @@ const transform =
   (rowDescriptor: RowDescriptor): ParseConfig["transform"] =>
   (value: string, field: string | number) => {
     const descriptor = rowDescriptor[field];
-    if (descriptor === undefined || descriptor.hidden) {
+    if (!descriptor) {
       throw new Error(`Unexpected field: ${String(field)}`);
     }
     try {
@@ -72,8 +72,8 @@ const transform =
 export const importCSV = <T extends RowDescriptor>(
   text: string,
   rowDescriptor: T,
-): VisibleParsedRow<T>[] => {
-  const parseResult = parse<VisibleParsedRow<T>>(text, {
+): ParsedRow<T>[] => {
+  const parseResult = parse<ParsedRow<T>>(text, {
     delimiter: ",",
     header: true,
     skipEmptyLines: true,
@@ -85,11 +85,9 @@ export const importCSV = <T extends RowDescriptor>(
     throw new Error(`Parse error:\n  ${errorMessages}`);
   }
 
-  const missingHeaders = Object.entries(rowDescriptor)
-    .filter(
-      ([key, { hidden }]) => !hidden && !parseResult.meta.fields?.includes(key),
-    )
-    .map(([key]) => key);
+  const missingHeaders = Object.keys(rowDescriptor).filter(
+    (key) => !parseResult.meta.fields?.includes(key),
+  );
   if (missingHeaders.length) {
     throw new Error(`Missing required headers: ${missingHeaders.join(", ")}`);
   }

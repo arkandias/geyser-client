@@ -153,7 +153,10 @@ la supprimer.`,
             active: "Actif",
           },
           error: {
-            conflictLabel: "Cet email existe déjà",
+            conflictEmail: "Cet email existe déjà",
+            positionNotFound: "Il n'existe pas de fonction avec ce label",
+            baseServiceHoursNegative:
+              "Entrez un nombre d'heures positif ou nul",
           },
         },
         data: {

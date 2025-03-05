@@ -5,6 +5,7 @@ import { computed, ref } from "vue";
 import { useCustomI18n } from "@/composables/custom-i18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
+  type AdminPositionFragment,
   AdminPositionFragmentDoc,
   DeletePositionsDocument,
   InsertPositionsDocument,
@@ -13,13 +14,9 @@ import {
   UpdatePositionsDocument,
   UpsertPositionsDocument,
 } from "@/gql/graphql.ts";
-import type {
-  NullableParsedRow,
-  ParsedRow,
-  VisibleParsedRow,
-} from "@/types/admin-data.ts";
+import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { ColumnNonAbbreviable } from "@/types/columns.ts";
-import { initForm, inputToNumber } from "@/utils/admin-data.ts";
+import { inputToNumber, nullRow } from "@/utils/admin-data.ts";
 import { nf } from "@/utils/format.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
@@ -30,18 +27,22 @@ const { positionFragments } = defineProps<{
 
 const { t } = useCustomI18n();
 
+const idKey = "id";
 const rowDescriptor = {
-  id: { type: "number", hidden: true },
   label: { type: "string" },
   description: { type: "string", nullable: true },
   baseServiceHours: { type: "number", nullable: true },
 } as const;
-const idKey = "id";
 
+type Row = AdminPositionFragment;
 type T = typeof rowDescriptor;
-type Row = ParsedRow<T>;
-type FormData = NullableParsedRow<T>;
-type OperationData = VisibleParsedRow<T>;
+type FormValues = NullableParsedRow<T>;
+type ImportRow = ParsedRow<T>;
+type InsertInput = {
+  label?: string | null;
+  description?: string | null;
+  baseServiceHours?: number | null;
+};
 
 graphql(`
   fragment AdminPosition on Position {
@@ -101,16 +102,7 @@ const updateColumns = [
   PositionUpdateColumn.BaseServiceHours,
 ];
 
-const rows = computed<Row[]>(() =>
-  positions.value.map((p) => ({
-    id: p.id,
-    label: p.label,
-    description: p.description ?? null,
-    baseServiceHours: p.baseServiceHours ?? null,
-  })),
-);
-
-const formValues = ref<FormData>(initForm(rowDescriptor));
+const formValues = ref<FormValues>(nullRow(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
 const updateBaseServiceHours = (value: string | number | null) => {
@@ -146,25 +138,48 @@ const columns: ColumnNonAbbreviable<Row>[] = [
 
 const formatRow = (row: Row) => row.label;
 
-const validateOperationData = (
-  operationData: Partial<OperationData>,
-  checkConflicts: boolean,
-) => {
-  if (
-    operationData.baseServiceHours != null &&
-    operationData.baseServiceHours < 0
-  ) {
-    throw new Error(
-      t("admin.teachers.positions.form.error.baseServiceHoursNegative"),
-    );
-  }
+const initForm = (rows: Row[]): FormValues =>
+  rows.length === 1 ? { ...rows[0] } : nullRow(rowDescriptor);
 
-  if (checkConflicts) {
-    if (positions.value.find((p) => p.label === operationData.label)) {
+function validateImportRow(
+  importRow: ImportRow,
+  checkConflicts: boolean,
+): InsertInput;
+function validateImportRow(
+  importRow: Partial<ImportRow>,
+  checkConflicts: boolean,
+): Partial<InsertInput>;
+function validateImportRow(
+  importRow: Partial<ImportRow>,
+  checkConflicts: boolean,
+): Partial<InsertInput> {
+  const object: Partial<InsertInput> = {};
+
+  if (importRow.label !== undefined) {
+    object.label = importRow.label;
+    if (
+      checkConflicts &&
+      positions.value.find((p) => p.label === importRow.label)
+    ) {
       throw new Error(t("admin.teachers.positions.form.error.conflictLabel"));
     }
   }
-};
+
+  if (importRow.description !== undefined) {
+    object.description = importRow.description;
+  }
+
+  if (importRow.baseServiceHours !== undefined) {
+    object.baseServiceHours = importRow.baseServiceHours;
+    if (object.baseServiceHours !== null && object.baseServiceHours < 0) {
+      throw new Error(
+        t("admin.teachers.positions.form.error.baseServiceHoursNegative"),
+      );
+    }
+  }
+
+  return importRow;
+}
 </script>
 
 <template>
@@ -176,9 +191,10 @@ const validateOperationData = (
     :id-key
     :row-descriptor
     :columns
-    :rows
+    :rows="positions"
     :format-row
-    :validate-operation-data
+    :init-form
+    :validate-import-row
     :insert-data="insertPositions"
     :upsert-data="upsertPositions"
     :update-data="updatePositions"
