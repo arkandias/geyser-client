@@ -7,7 +7,6 @@ import {
   CourseCoordinatorsFragmentDoc,
 } from "@/gql/graphql.ts";
 import type { ArrayElement } from "@/types/misc.ts";
-import { formatUser } from "@/utils/format.ts";
 
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 
@@ -21,9 +20,7 @@ graphql(`
       orderBy: [{ teacher: { lastname: ASC } }, { teacher: { firstname: ASC } }]
     ) {
       teacher {
-        firstname
-        lastname
-        alias
+        displayname
       }
       comment
     }
@@ -35,9 +32,7 @@ graphql(`
         ]
       ) {
         teacher {
-          firstname
-          lastname
-          alias
+          displayname
         }
         comment
       }
@@ -50,9 +45,7 @@ graphql(`
         ]
       ) {
         teacher {
-          firstname
-          lastname
-          alias
+          displayname
         }
         comment
       }
@@ -72,7 +65,10 @@ type Coordinator = ArrayElement<CourseCoordinatorsFragment["coordinations"]>;
 
 const formatCoordinators = (coordinators: Coordinator[]) =>
   coordinators
-    .map((c) => formatUser(c.teacher) + (c.comment ? ` (${c.comment})` : ""))
+    .map(
+      (c) =>
+        (c.teacher.displayname ?? "") + (c.comment ? ` (${c.comment})` : ""),
+    )
     .join(", ");
 </script>
 

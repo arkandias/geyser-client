@@ -24,9 +24,7 @@ graphql(`
   fragment ServiceRows on Service {
     teacher {
       uid
-      firstname
-      lastname
-      alias
+      displayname
       visible
     }
     hours
@@ -90,30 +88,12 @@ const onRowClick = async (_: Event, row: ServiceRowsFragment) => {
 // Columns definition
 const columns: Column<ServiceRowsFragment>[] = [
   {
-    name: "firstname",
-    label: "Prénom",
+    name: "teacher",
+    label: "Intervenant",
     align: "left",
-    field: (row) => row.teacher.firstname,
+    field: (row) => row.teacher.displayname,
     sortable: true,
     visible: true,
-    searchable: true,
-  },
-  {
-    name: "lastname",
-    label: "Nom",
-    align: "left",
-    field: (row) => row.teacher.lastname,
-    sortable: true,
-    visible: true,
-    searchable: true,
-  },
-  {
-    name: "alias",
-    label: "Alias",
-    align: "left",
-    field: (row) => row.teacher.alias,
-    sortable: true,
-    visible: false,
     searchable: true,
   },
   {
@@ -245,7 +225,7 @@ const tableRowClassFn = (row: ServiceRowsFragment) =>
     @row-click="onRowClick"
   >
     <template #top>
-      <div class="q-table__title">{{ t("teacher.label", 2) }}</div>
+      <div class="q-table__title">{{ t("services.label", 2) }}</div>
       <QSpace />
       <div class="row q-gutter-md">
         <QInput

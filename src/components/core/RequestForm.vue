@@ -1,16 +1,17 @@
 <script setup lang="ts">
+import { useClientHandle } from "@urql/vue";
 import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { useRequestOperations } from "@/composables/useRequestOperations.ts";
+import { useService } from "@/composables/useService.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestFormDataFragmentDoc } from "@/gql/graphql.ts";
-import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
-import SelectTeacher from "@/components/core/SelectTeacher.vue";
+import SelectService from "@/components/core/SelectService.vue";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof RequestFormDataFragmentDoc>;
@@ -25,9 +26,10 @@ graphql(`
 
 const { t } = useCustomI18n();
 
-const { profile } = useProfileStore();
+const { serviceId: myServiceId } = useService();
 const perm = usePermissions();
-const { updateRequest } = useRequestOperations();
+const client = useClientHandle().client;
+const { updateRequest } = useRequestOperations(client);
 
 const data = computed(() =>
   useFragment(RequestFormDataFragmentDoc, dataFragment),
@@ -90,24 +92,24 @@ watch(
   { immediate: true },
 );
 
-const displayTeacherSelection = computed(
+const displayServiceSelection = computed(
   () => perm.toSubmitRequestsForOthers || perm.toEditAssignments,
 );
 
-const uid = ref<string | null>(null);
-const uidInit = computed(() =>
-  displayTeacherSelection.value ? null : profile.uid,
+const serviceId = ref<number | null>(null);
+const serviceIdInit = computed(() =>
+  displayServiceSelection.value ? null : myServiceId.value,
 );
 watch(
-  uidInit,
+  serviceIdInit,
   (value) => {
-    uid.value = value;
+    serviceId.value = value;
   },
   { immediate: true },
 );
 
 const submitForm = async (): Promise<void> => {
-  if (uid.value === null) {
+  if (serviceId.value === null) {
     notify(NotifyType.ERROR, {
       message: t("requestForm.invalid.message"),
       caption: t("requestForm.invalid.caption.noTeacher"),
@@ -129,14 +131,14 @@ const submitForm = async (): Promise<void> => {
     return;
   }
   await updateRequest(
-    uid.value,
+    serviceId.value,
     data.value.courseId,
     requestType.value,
     hours.value,
   );
 };
 const resetForm = (): void => {
-  uid.value = uidInit.value;
+  serviceId.value = serviceIdInit.value;
   hours.value = data.value.hoursPerGroup ?? null;
   requestType.value = requestTypeInit.value;
 };
@@ -148,9 +150,9 @@ const resetForm = (): void => {
     @submit="submitForm"
     @reset="resetForm"
   >
-    <SelectTeacher
-      v-if="displayTeacherSelection"
-      v-model="uid"
+    <SelectService
+      v-if="displayServiceSelection"
+      v-model="serviceId"
       dense
       options-dense
     />

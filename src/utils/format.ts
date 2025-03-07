@@ -9,16 +9,6 @@ export const nf = new Intl.NumberFormat("fr-FR", {
   maximumFractionDigits: 2,
 });
 
-type TeacherName = {
-  firstname: string;
-  lastname: string;
-  alias?: string | null;
-};
-
-export const formatUser = (user: TeacherName) =>
-  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-  user.alias || user.firstname + " " + user.lastname;
-
 export const formatProgram = (program: {
   name?: string | null | undefined;
   degree: { name?: string | null | undefined };

@@ -9,7 +9,7 @@ import {
   AdminServiceModificationFragmentDoc,
   AdminServiceModificationServiceFragmentDoc,
   AdminServiceModificationServiceModificationTypeFragmentDoc,
-  AdminServiceTeacherFragmentDoc,
+  AdminServiceModificationTeacherFragmentDoc,
   DeleteServiceModificationsDocument,
   InsertServiceModificationsDocument,
   ServiceModificationConstraint,
@@ -21,7 +21,7 @@ import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
 import { inputToNumber, nullRow } from "@/utils/admin-data.ts";
-import { formatUser, nf } from "@/utils/format.ts";
+import { nf } from "@/utils/format.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -40,7 +40,9 @@ const {
   serviceModificationTypeFragments: FragmentType<
     typeof AdminServiceModificationServiceModificationTypeFragmentDoc
   >[];
-  teacherFragments: FragmentType<typeof AdminServiceTeacherFragmentDoc>[];
+  teacherFragments: FragmentType<
+    typeof AdminServiceModificationTeacherFragmentDoc
+  >[];
 }>();
 
 const { t } = useCustomI18n();
@@ -92,9 +94,7 @@ graphql(`
 
   fragment AdminServiceModificationTeacher on Teacher {
     uid
-    firstname
-    lastname
-    alias
+    displayname
   }
 
   mutation InsertServiceModifications(
@@ -160,7 +160,9 @@ const serviceModificationTypes = computed(() =>
   ),
 );
 const teachers = computed(() =>
-  teacherFragments.map((f) => useFragment(AdminServiceTeacherFragmentDoc, f)),
+  teacherFragments.map((f) =>
+    useFragment(AdminServiceModificationTeacherFragmentDoc, f),
+  ),
 );
 const insertServiceModifications = useMutation(
   InsertServiceModificationsDocument,
@@ -184,13 +186,13 @@ const updateColumns = [
 const formValues = ref<FormValues>(nullRow(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
-const getUser = (uid: string) => {
-  const teacher = teachers.value.find((t) => t.uid === uid);
-  if (teacher) {
-    return formatUser(teacher);
-  }
-  return uid;
-};
+const teacherOptions = computed(() =>
+  teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
+);
+
+const getName = computed(
+  () => (uid: string) => teachers.value.find((t) => t.uid === uid)?.displayname,
+);
 
 const updateHours = (value: string | number | null) => {
   formValues.value.hours = inputToNumber(value);
@@ -210,7 +212,7 @@ const columns: Column<Row>[] = [
     label: t("admin.teachers.serviceModifications.table.columns.uid"),
     align: "left",
     field: (row) => row.service.uid,
-    format: (val: string) => getUser(val),
+    format: (val: string) => getName.value(val),
     sortable: true,
     searchable: true,
   },
@@ -219,7 +221,6 @@ const columns: Column<Row>[] = [
     label: t("admin.teachers.serviceModifications.table.columns.type"),
     align: "left",
     field: (row) => row.type.label,
-    format: (val: string) => getUser(val),
     sortable: true,
     searchable: true,
   },
@@ -234,7 +235,7 @@ const columns: Column<Row>[] = [
 ];
 
 const formatRow = (row: Row): string =>
-  `${row.service.year} — ${getUser(row.service.uid)} — ${row.type.label}`;
+  `${row.service.year} — ${getName.value(row.service.uid)} — ${row.type.label}`;
 
 const initForm = (rows: Row[]): FormValues =>
   rows.length === 1
@@ -367,7 +368,7 @@ const filteredServiceModifications = computed(() =>
       </QSelect>
       <QSelect
         v-model="selectedUids"
-        :options="teachers.map((t) => ({ value: t.uid, label: formatUser(t) }))"
+        :options="teacherOptions"
         color="primary"
         :label="t('admin.teachers.serviceModifications.table.columns.uid')"
         emit-value
@@ -434,7 +435,7 @@ const filteredServiceModifications = computed(() =>
       <QSelect
         v-if="!multipleSelection"
         v-model="formValues.uid"
-        :options="teachers.map((t) => ({ value: t.uid, label: formatUser(t) }))"
+        :options="teacherOptions"
         :label="t('admin.teachers.serviceModifications.form.fields.uid')"
         :disable="multipleSelection && !selectedFields.includes('uid')"
         emit-value

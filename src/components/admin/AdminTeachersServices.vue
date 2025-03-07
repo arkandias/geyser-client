@@ -19,7 +19,7 @@ import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
 import { inputToNumber, nullRow } from "@/utils/admin-data.ts";
-import { formatUser, nf } from "@/utils/format.ts";
+import { nf } from "@/utils/format.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -61,9 +61,7 @@ graphql(`
 
   fragment AdminServiceTeacher on Teacher {
     uid
-    firstname
-    lastname
-    alias
+    displayname
   }
 
   mutation InsertServices($objects: [ServiceInsertInput!]!) {
@@ -119,13 +117,13 @@ const updateColumns = [ServiceUpdateColumn.Hours, ServiceUpdateColumn.Message];
 const formValues = ref<FormValues>(nullRow(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
-const getUser = (uid: string) => {
-  const teacher = teachers.value.find((t) => t.uid === uid);
-  if (teacher) {
-    return formatUser(teacher);
-  }
-  return uid;
-};
+const teacherOptions = computed(() =>
+  teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
+);
+
+const getName = computed(
+  () => (uid: string) => teachers.value.find((t) => t.uid === uid)?.displayname,
+);
 
 const updateHours = (value: string | number | null) => {
   formValues.value.hours = inputToNumber(value);
@@ -145,7 +143,7 @@ const columns: Column<Row>[] = [
     label: t("admin.teachers.services.table.columns.uid"),
     align: "left",
     field: "uid",
-    format: (val: string) => getUser(val),
+    format: (val: string) => getName.value(val),
     sortable: true,
     searchable: true,
   },
@@ -167,7 +165,8 @@ const columns: Column<Row>[] = [
   },
 ];
 
-const formatRow = (row: Row): string => `${row.year} — ${getUser(row.uid)}`;
+const formatRow = (row: Row): string =>
+  `${row.year} — ${getName.value(row.uid)}`;
 
 const initForm = (rows: Row[]): FormValues =>
   rows.length === 1 ? { ...rows[0] } : nullRow(rowDescriptor);
@@ -277,7 +276,7 @@ const filteredServices = computed(() =>
       </QSelect>
       <QSelect
         v-model="selectedUids"
-        :options="teachers.map((t) => ({ value: t.uid, label: formatUser(t) }))"
+        :options="teacherOptions"
         color="primary"
         :label="t('admin.teachers.services.table.columns.uid')"
         emit-value
@@ -318,7 +317,7 @@ const filteredServices = computed(() =>
       <QSelect
         v-if="!multipleSelection"
         v-model="formValues.uid"
-        :options="teachers.map((t) => ({ value: t.uid, label: formatUser(t) }))"
+        :options="teacherOptions"
         :label="t('admin.teachers.services.form.fields.uid')"
         :disable="multipleSelection && !selectedFields.includes('uid')"
         emit-value

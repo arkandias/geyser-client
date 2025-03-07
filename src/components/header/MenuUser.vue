@@ -6,13 +6,12 @@ import { useRefreshData } from "@/composables/useRefreshData.ts";
 import { ROLES, type Role } from "@/config/types/roles.ts";
 import { logout } from "@/services/keycloak.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
-import { formatUser } from "@/utils/format.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
 const { t } = useCustomI18n();
 
-const { profile, roles, activeRole, setActiveRole } = useProfileStore();
+const { displayname, roles, activeRole, setActiveRole } = useProfileStore();
 const { refreshData } = useRefreshData();
 
 const model = ref<Role | null>(null);
@@ -43,7 +42,7 @@ const onUpdate = async (value: Role) => {
     <QList>
       <QItem class="flex-center text-no-wrap">
         <QItemLabel header>
-          {{ formatUser(profile) }}
+          {{ displayname }}
         </QItemLabel>
       </QItem>
       <QSeparator />

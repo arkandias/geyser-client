@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useClientHandle } from "@urql/vue";
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -9,7 +10,6 @@ import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { RequestCardDataFragmentDoc } from "@/gql/graphql.ts";
 import { priorityColor } from "@/utils/colors.ts";
-import { formatUser } from "@/utils/format.ts";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof RequestCardDataFragmentDoc>;
@@ -22,10 +22,7 @@ graphql(`
     service {
       id
       teacher {
-        uid
-        firstname
-        lastname
-        alias
+        displayname
       }
     }
     course {
@@ -41,15 +38,15 @@ graphql(`
 const { t, n } = useCustomI18n();
 
 const perm = usePermissions();
-const { updateRequestWithServiceId, deleteRequestById } =
-  useRequestOperations();
+const client = useClientHandle().client;
+const { updateRequest, deleteRequestById } = useRequestOperations(client);
 
 const data = computed(() =>
   useFragment(RequestCardDataFragmentDoc, dataFragment),
 );
 
 const assign = async (): Promise<void> => {
-  await updateRequestWithServiceId(
+  await updateRequest(
     data.value.service.id,
     data.value.course.id,
     REQUEST_TYPES.ASSIGNMENT,
@@ -93,9 +90,9 @@ const displayActions = computed(
         :color="priorityColor(data.isPriority)"
         rounded
       />
-      {{ formatUser(data.service.teacher) }}
+      {{ data.service.teacher.displayname }}
       <QTooltip :delay="TOOLTIP_DELAY" anchor="top middle" self="bottom middle">
-        {{ formatUser(data.service.teacher) }}
+        {{ data.service.teacher.displayname }}
       </QTooltip>
     </QCardSection>
     <QCardSection class="q-pa-xs text-caption">

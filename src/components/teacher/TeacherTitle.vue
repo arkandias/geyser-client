@@ -3,7 +3,6 @@ import { computed } from "vue";
 
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { TeacherTitleFragmentDoc } from "@/gql/graphql.ts";
-import { formatUser } from "@/utils/format.ts";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof TeacherTitleFragmentDoc>;
@@ -11,9 +10,7 @@ const { dataFragment } = defineProps<{
 
 graphql(`
   fragment TeacherTitle on Teacher {
-    firstname
-    lastname
-    alias
+    displayname
     position {
       label
     }
@@ -28,7 +25,7 @@ const teacher = computed(() =>
 <template>
   <QCard flat square class="text-center">
     <QCardSection>
-      <div class="text-h5">{{ formatUser(teacher) }}</div>
+      <div class="text-h5">{{ teacher.displayname }}</div>
       <div v-if="teacher.position" class="text-body1 text-italic">
         {{ teacher.position.label }}
       </div>

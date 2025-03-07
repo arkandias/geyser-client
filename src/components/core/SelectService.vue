@@ -1,51 +1,50 @@
 <script setup lang="ts">
 import { useQuery } from "@urql/vue";
-import { computed, ref, watch } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { graphql } from "@/gql";
-import { GetActiveTeachersDocument } from "@/gql/graphql.ts";
-import { formatUser } from "@/utils/format.ts";
+import { GetServicesDocument } from "@/gql/graphql.ts";
+import { useYearsStore } from "@/stores/useYearsStore.ts";
 import { normalizeForSearch } from "@/utils/misc.ts";
 
-const uid = defineModel<string | null>();
+const id = defineModel<number | null>();
 
 graphql(`
-  query GetActiveTeachers {
-    teachers: teacher(
-      where: { active: { _eq: true } }
-      orderBy: [{ lastname: ASC }, { firstname: ASC }]
+  query GetServices($year: Int!) {
+    services: service(
+      where: { year: { _eq: $year } }
+      orderBy: [{ teacher: { lastname: ASC } }, { teacher: { firstname: ASC } }]
     ) {
-      uid
-      firstname
-      lastname
-      alias
+      id
+      teacher {
+        displayname
+      }
     }
   }
 `);
 
 const { t } = useCustomI18n();
+const { activeYear } = useYearsStore();
 
-const activeTeachersQueryResult = useQuery({
-  query: GetActiveTeachersDocument,
-  variables: {},
+const servicesQueryResult = useQuery({
+  query: GetServicesDocument,
+  variables: reactive({ year: activeYear }),
 });
-const teachers = computed(
-  () => activeTeachersQueryResult.data.value?.teachers ?? [],
-);
+const services = computed(() => servicesQueryResult.data.value?.services ?? []);
 
 type Option = {
-  value: string;
+  value: number;
   label: string;
   search: string;
 };
 
 const options = ref<Option[]>([]);
 const optionsInit = computed(() =>
-  teachers.value.map((t) => ({
-    value: t.uid,
-    label: formatUser(t),
-    search: normalizeForSearch(formatUser(t)),
+  services.value.map((s) => ({
+    value: s.id,
+    label: s.teacher.displayname ?? "",
+    search: normalizeForSearch(s.teacher.displayname ?? ""),
   })),
 );
 watch(
@@ -67,7 +66,7 @@ const filter = (val: string, update: (x: () => void) => void) => {
 
 <template>
   <QSelect
-    v-model="uid"
+    v-model="id"
     :options
     :label="t('role.teacher')"
     color="primary"

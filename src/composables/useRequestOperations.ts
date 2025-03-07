@@ -1,4 +1,4 @@
-import { type Client, useClientHandle } from "@urql/vue";
+import type { Client } from "@urql/vue";
 
 import { isRequestType } from "@/config/types/request-types.ts";
 import { graphql } from "@/gql";
@@ -6,27 +6,12 @@ import {
   DeleteRequestByIdDocument,
   DeleteRequestDocument,
   GetRequestDocument,
-  GetServiceFromCourseDocument,
   UpsertRequestDocument,
 } from "@/gql/graphql.ts";
 import { i18n } from "@/services/i18n.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
-  query GetServiceFromCourse($uid: String!, $courseId: Int!) {
-    course: courseByPk(id: $courseId) {
-      year
-      yearByYear {
-        services(
-          where: { teacher: { uid: { _eq: $uid } } }
-          limit: 1 # unique
-        ) {
-          id
-        }
-      }
-    }
-  }
-
   query GetRequest($serviceId: Int!, $courseId: Int!, $requestType: String!) {
     requests: request(
       where: {
@@ -94,33 +79,6 @@ graphql(`
 
 const { t } = i18n.global;
 
-const getService =
-  (client: Client) => async (uid: string, courseId: number) => {
-    const { data, error } = await client.query(
-      GetServiceFromCourseDocument,
-      { uid, courseId },
-      { requestPolicy: "network-only" },
-    );
-
-    if (!data?.course || error) {
-      notify(NotifyType.ERROR, {
-        message: t("request.error.courseNotFound"),
-        caption: error?.message,
-      });
-      return null;
-    }
-
-    if (!data.course.yearByYear.services[0]) {
-      notify(NotifyType.ERROR, {
-        message: t("request.error.serviceNotFound.title"),
-        caption: t("request.error.serviceNotFound.caption"),
-      });
-      return null;
-    }
-
-    return data.course.yearByYear.services[0].id;
-  };
-
 const getRequest =
   (client: Client) =>
   async (serviceId: number, courseId: number, requestType: string) => {
@@ -140,21 +98,6 @@ const getRequest =
   };
 
 const updateRequest =
-  (client: Client) =>
-  async (uid: string, courseId: number, requestType: string, hours: number) => {
-    const serviceId = await getService(client)(uid, courseId);
-    if (serviceId === null) {
-      return;
-    }
-    return updateRequestWithServiceId(client)(
-      serviceId,
-      courseId,
-      requestType,
-      hours,
-    );
-  };
-
-const updateRequestWithServiceId =
   (client: Client) =>
   async (
     serviceId: number,
@@ -241,11 +184,7 @@ const deleteRequestById = (client: Client) => async (id: number) => {
   }
 };
 
-export const useRequestOperations = () => {
-  const client = useClientHandle().client;
-  return {
-    updateRequest: updateRequest(client),
-    updateRequestWithServiceId: updateRequestWithServiceId(client),
-    deleteRequestById: deleteRequestById(client),
-  };
-};
+export const useRequestOperations = (client: Client) => ({
+  updateRequest: updateRequest(client),
+  deleteRequestById: deleteRequestById(client),
+});

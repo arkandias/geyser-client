@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
+import { useClientHandle, useQuery } from "@urql/vue";
 import { computed, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -48,8 +48,9 @@ graphql(`
 `);
 
 const { t } = useCustomI18n();
+const client = useClientHandle().client;
 
-const { fetchProfile, fetching, loaded, isActive, activeRole } =
+const { fetchProfile, fetching, loaded, active, activeRole } =
   useProfileStore();
 const { currentPhase, setCurrentPhase } = usePhaseStore();
 const { setYears } = useYearsStore();
@@ -57,14 +58,14 @@ const { setCustomTexts } = useCustomTextsStore();
 
 // User profile and active role
 const claims = getClaims();
-void fetchProfile(claims?.userId ?? "");
+void fetchProfile(client, claims?.userId ?? "");
 watch(activeRole, setRoleHeader, { immediate: true });
 
 // Phase
 const currentPhaseQueryResult = useQuery({
   query: GetCurrentPhaseDocument,
   variables: {},
-  pause: () => !isActive.value,
+  pause: () => !active.value,
   context: { additionalTypenames: ["Phase"] },
 });
 watch(
@@ -83,7 +84,7 @@ watch(
 const yearsQueryResult = useQuery({
   query: GetYearsDocument,
   variables: {},
-  pause: () => !isActive.value,
+  pause: () => !active.value,
   context: { additionalTypenames: ["Year"] },
 });
 watch(
@@ -131,7 +132,7 @@ const accessDeniedMessage = computed(() => {
   if (!loaded.value) {
     return t("home.alert.profileNotLoaded");
   }
-  if (!isActive.value) {
+  if (!active.value) {
     return t("home.alert.profileNotActive");
   }
   if (currentPhaseQueryResult.fetching.value) {

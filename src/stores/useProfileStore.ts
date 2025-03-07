@@ -1,19 +1,15 @@
-import { useQuery } from "@urql/vue";
-import { computed, reactive, readonly, ref } from "vue";
+import type { Client } from "@urql/vue";
+import { readonly, ref } from "vue";
 
 import { ROLES, type Role, isRole } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
 import { GetUserProfileDocument } from "@/gql/graphql.ts";
-import { i18n } from "@/services/i18n.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
   query GetUserProfile($uid: String!) {
     profile: teacherByPk(uid: $uid) {
       uid
-      firstname
-      lastname
-      alias
+      displayname
       active
       roles {
         type
@@ -22,77 +18,48 @@ graphql(`
   }
 `);
 
-const { t } = i18n.global;
+const uid = ref("");
+const displayname = ref("");
+const active = ref(false);
 
-type Profile = {
-  uid: string;
-  firstname: string;
-  lastname: string;
-  alias?: string | null;
-  active: boolean;
-};
-
-const profile = reactive<Profile>({
-  uid: "",
-  firstname: "",
-  lastname: "",
-  alias: null,
-  active: false,
-});
 const roles = ref<Role[]>([]);
 const activeRole = ref<Role>(ROLES.TEACHER);
 
-const isActive = computed(() => profile.active);
-
-const setProfile = (newProfile: Profile) => {
-  Object.assign(profile, newProfile);
-};
-const setRoles = (newRoles: Role[]) => {
-  roles.value = [...newRoles];
-};
-
-const loaded = ref(false);
 const fetching = ref(false);
+const loaded = ref(false);
 
-const fetchProfile = async (uid: string) => {
+const fetchProfile = async (client: Client, claim: string) => {
   fetching.value = true;
 
-  const { data, error } = await useQuery({
-    query: GetUserProfileDocument,
-    variables: { uid },
-    context: { requestPolicy: "network-only" },
-  });
+  const { data, error } = await client.query(
+    GetUserProfileDocument,
+    { uid: claim },
+    { requestPolicy: "network-only" },
+  );
 
-  if (data.value?.profile && !error.value) {
-    setProfile(data.value.profile);
-    setRoles(
-      data.value.profile.roles
-        .map((role) => role.type)
-        .filter((role) => isRole(role))
-        .concat(ROLES.TEACHER),
-    );
+  if (data?.profile && !error) {
+    uid.value = data.profile.uid;
+    displayname.value = data.profile.displayname ?? "";
+    active.value = data.profile.active;
+    roles.value = data.profile.roles
+      .map((role) => role.type)
+      .filter((role) => isRole(role))
+      .concat(ROLES.TEACHER);
 
     if (roles.value.includes(ROLES.ADMIN)) {
       activeRole.value = ROLES.ADMIN;
     }
 
     // Log invalid roles (if any)
-    const invalidRoles = data.value.profile.roles
+    const invalidRoles = data.profile.roles
       .map((role) => role.type)
       .filter((role) => !isRole(role));
     if (invalidRoles.length) {
-      console.error(`Invalid roles: ${invalidRoles.join(", ")}`);
+      console.warn(`Invalid roles: ${invalidRoles.join(", ")}`);
     }
 
-    notify(NotifyType.SUCCESS, {
-      message: t("notification.profile.found"),
-    });
     loaded.value = true;
   } else {
-    notify(NotifyType.ERROR, {
-      message: t("notification.profile.notFound"),
-      caption: error.value?.message,
-    });
     loaded.value = false;
   }
 
@@ -102,45 +69,19 @@ const fetchProfile = async (uid: string) => {
 const setActiveRole = (role: Role) => {
   if (roles.value.includes(role)) {
     activeRole.value = role;
-  }
-};
-
-// Impersonating
-const isImpersonating = ref(false);
-const profileSaved = reactive<Profile>({ ...profile });
-const rolesSaved = ref<Role[]>([]);
-const activeRoleSaved = ref<Role>(ROLES.TEACHER);
-
-const impersonate = async (uid: string) => {
-  if (!isImpersonating.value) {
-    Object.assign(profileSaved, profile);
-    rolesSaved.value = [...roles.value];
-    activeRoleSaved.value = activeRole.value;
-  }
-  await fetchProfile(uid);
-  setActiveRole(ROLES.TEACHER);
-  isImpersonating.value = true;
-};
-
-const stopImpersonating = () => {
-  if (isImpersonating.value) {
-    setProfile(profileSaved);
-    setRoles(rolesSaved.value);
-    setActiveRole(activeRoleSaved.value);
-    isImpersonating.value = false;
+  } else {
+    console.error(`Role '${role}' is not an allowed role`);
   }
 };
 
 export const useProfileStore = () => ({
-  profile: readonly(profile),
+  uid: readonly(uid),
+  displayname: readonly(displayname),
+  active: readonly(active),
   roles: readonly(roles),
   activeRole: readonly(activeRole),
-  setActiveRole,
-  isActive,
   loaded: readonly(loaded),
   fetching: readonly(fetching),
   fetchProfile,
-  isImpersonating: readonly(isImpersonating),
-  impersonate,
-  stopImpersonating,
+  setActiveRole,
 });

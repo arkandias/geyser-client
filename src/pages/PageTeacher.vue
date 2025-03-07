@@ -35,10 +35,10 @@ graphql(`
 `);
 
 const { activeYear } = useYearsStore();
-const { profile } = useProfileStore();
+const { uid: myUid } = useProfileStore();
 const { getValue: uid } = useQueryParam("uid");
 
-const activeUid = computed(() => uid.value ?? profile.uid);
+const activeUid = computed(() => uid.value ?? myUid.value);
 
 const teacherDetailsQueryResult = useQuery({
   query: GetTeacherDetailsDocument,

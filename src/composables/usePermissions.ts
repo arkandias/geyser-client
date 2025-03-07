@@ -9,7 +9,7 @@ import { useYearsStore } from "@/stores/useYearsStore.ts";
 export const usePermissions = () => {
   const { isCurrentYearActive } = useYearsStore();
   const { currentPhase } = usePhaseStore();
-  const { activeRole, profile } = useProfileStore();
+  const { uid: myUid, activeRole } = useProfileStore();
 
   const toAdmin = computed(() => activeRole.value === ROLES.ADMIN);
 
@@ -49,7 +49,7 @@ export const usePermissions = () => {
   const toEditADescription = computed(
     () => (coordinators: string[]) =>
       activeRole.value === ROLES.ADMIN ||
-      (isCurrentYearActive.value && coordinators.includes(profile.uid)),
+      (isCurrentYearActive.value && coordinators.includes(myUid.value)),
   );
 
   const toViewAllServices = computed(
@@ -65,7 +65,7 @@ export const usePermissions = () => {
       (activeRole.value === ROLES.TEACHER &&
         currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value &&
-        uid === profile.uid),
+        uid === myUid.value),
   );
 
   const toEditAMessage = computed(
@@ -74,7 +74,7 @@ export const usePermissions = () => {
       (activeRole.value === ROLES.TEACHER &&
         currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value &&
-        uid === profile.uid),
+        uid === myUid.value),
   );
 
   return readonly({

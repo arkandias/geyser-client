@@ -4,7 +4,6 @@ import { computed } from "vue";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { PriorityChipDataFragmentDoc } from "@/gql/graphql.ts";
 import { priorityColor } from "@/utils/colors.ts";
-import { formatUser } from "@/utils/format.ts";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof PriorityChipDataFragmentDoc>;
@@ -14,9 +13,7 @@ graphql(`
   fragment PriorityChipData on Priority {
     service {
       teacher {
-        firstname
-        lastname
-        alias
+        displayname
       }
     }
     seniority
@@ -34,7 +31,7 @@ const data = computed(() =>
     <QAvatar :color="priorityColor(data.isPriority)" text-color="white" square>
       {{ data.seniority }}
     </QAvatar>
-    {{ formatUser(data.service.teacher) }}
+    {{ data.service.teacher.displayname }}
   </QChip>
 </template>
 

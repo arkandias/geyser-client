@@ -21,7 +21,7 @@ import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 
 import TableCourses from "@/components/TableCourses.vue";
-import TableTeachers from "@/components/TableTeachers.vue";
+import TableServices from "@/components/TableServices.vue";
 import CourseDetails from "@/components/course/CourseDetails.vue";
 
 graphql(`
@@ -75,7 +75,7 @@ graphql(`
 const { t } = useCustomI18n();
 
 const { activeYear, isCurrentYearActive } = useYearsStore();
-const { profile } = useProfileStore();
+const { uid } = useProfileStore();
 const { closeLeftPanel, isLeftPanelOpen, openLeftPanel } = useLeftPanelStore();
 
 const { getValue: selectedCourse } = useQueryParam("courseId", true);
@@ -104,7 +104,7 @@ const serviceRowsQueryResult = useQuery({
   variables: reactive({
     year: computed(() => activeYear.value ?? NaN),
     where: computed(() =>
-      perm.toViewAllServices ? {} : { uid: { _eq: profile.uid } },
+      perm.toViewAllServices ? {} : { uid: { _eq: uid.value } },
     ),
   }),
   pause: () => activeYear.value === null,
@@ -180,7 +180,7 @@ watch(
       :disable="!isLeftPanelOpen"
     >
       <template #before>
-        <TableTeachers
+        <TableServices
           :service-row-fragments="serviceRows"
           :fetching="fetchingServiceRowss"
         />

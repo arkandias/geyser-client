@@ -9833,6 +9833,7 @@ type Teacher {
 
   """Timestamp when the record was created"""
   createdAt: timestamptz!
+  displayname: String
 
   """Teacher's first name"""
   firstname: String!
@@ -10025,6 +10026,7 @@ input TeacherBoolExp {
   coordinations: CoordinationBoolExp
   coordinationsAggregate: CoordinationAggregateBoolExp
   createdAt: TimestamptzComparisonExp
+  displayname: StringComparisonExp
   firstname: StringComparisonExp
   lastname: StringComparisonExp
   position: PositionBoolExp
@@ -10118,6 +10120,7 @@ type TeacherMaxFields {
 
   """Timestamp when the record was created"""
   createdAt: timestamptz
+  displayname: String
 
   """Teacher's first name"""
   firstname: String
@@ -10151,6 +10154,7 @@ input TeacherMaxOrderBy {
 
   """Timestamp when the record was created"""
   createdAt: OrderBy
+  displayname: OrderBy
 
   """Teacher's first name"""
   firstname: OrderBy
@@ -10182,6 +10186,7 @@ type TeacherMinFields {
 
   """Timestamp when the record was created"""
   createdAt: timestamptz
+  displayname: String
 
   """Teacher's first name"""
   firstname: String
@@ -10215,6 +10220,7 @@ input TeacherMinOrderBy {
 
   """Timestamp when the record was created"""
   createdAt: OrderBy
+  displayname: OrderBy
 
   """Teacher's first name"""
   firstname: OrderBy
@@ -10271,6 +10277,7 @@ input TeacherOrderBy {
   baseServiceHours: OrderBy
   coordinationsAggregate: CoordinationAggregateOrderBy
   createdAt: OrderBy
+  displayname: OrderBy
   firstname: OrderBy
   lastname: OrderBy
   position: PositionOrderBy
@@ -10303,6 +10310,9 @@ enum TeacherSelectColumn {
 
   """column name"""
   createdAt
+
+  """column name"""
+  displayname
 
   """column name"""
   firstname
@@ -10486,6 +10496,7 @@ input TeacherStreamCursorValueInput {
 
   """Timestamp when the record was created"""
   createdAt: timestamptz
+  displayname: String
 
   """Teacher's first name"""
   firstname: String

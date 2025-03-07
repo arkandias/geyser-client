@@ -18,7 +18,7 @@ import {
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import { type Column, getField } from "@/types/column.ts";
-import { formatProgram, formatUser, nf } from "@/utils/format.ts";
+import { formatProgram, nf } from "@/utils/format.ts";
 import { compare, normalizeForSearch, uniqueValue } from "@/utils/misc.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
@@ -69,9 +69,7 @@ graphql(`
   fragment ServiceDetails on Service {
     teacher {
       uid
-      firstname
-      lastname
-      alias
+      displayname
     }
     requests(orderBy: [{ type: ASC }, { courseId: ASC }]) {
       courseId
@@ -141,8 +139,8 @@ const getTeacherTotal = (row: CourseRow, requestType: RequestType) => {
   return null;
 };
 
-const title = computed(() =>
-  teacher.value ? formatUser(teacher.value) : t("courses.label", 2),
+const title = computed(
+  () => teacher.value?.displayname ?? t("courses.label", 2),
 );
 
 // Row selection
@@ -412,7 +410,7 @@ const downloadTeacherAssignments = async () => {
       year: activeYear.value,
       where: { service: { uid: { _eq: teacher.value.uid } } },
     },
-    `${activeYear.value} ${formatUser(teacher.value)}`,
+    `${activeYear.value} ${teacher.value.displayname}`,
   );
 };
 </script>

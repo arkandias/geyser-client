@@ -7,7 +7,7 @@ import {
   type GetAssignmentsQueryVariables,
 } from "@/gql/graphql.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
-import { formatProgram, formatUser } from "@/utils/format.ts";
+import { formatProgram } from "@/utils/format.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
@@ -56,9 +56,7 @@ graphql(`
       service {
         teacher {
           uid
-          firstname
-          lastname
-          alias
+          displayname
         }
       }
     }
@@ -87,7 +85,7 @@ export const useDownloadAssignments = () => {
       [t("downloadAssignments.course")]: a.course.name,
       [t("downloadAssignments.semester")]: a.course.semester,
       [t("downloadAssignments.type")]: a.course.type.label,
-      [t("downloadAssignments.teacher")]: formatUser(a.service.teacher),
+      [t("downloadAssignments.teacher")]: a.service.teacher.displayname,
       [t("downloadAssignments.email")]: a.service.teacher.uid,
     }));
 

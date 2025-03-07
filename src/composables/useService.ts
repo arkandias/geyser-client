@@ -20,18 +20,19 @@ graphql(`
 `);
 
 export const useService = () => {
-  const { profile } = useProfileStore();
+  const { uid } = useProfileStore();
   const { activeYear } = useYearsStore();
   const serviceQueryResult = useQuery({
     query: GetServiceFromTeacherDocument,
     variables: reactive({
       year: computed(() => activeYear.value ?? NaN),
-      uid: computed(() => profile.uid),
+      uid,
     }),
     pause: () => activeYear.value === null,
   });
-  const hasService = computed(
-    () => !!serviceQueryResult.data.value?.teacher?.services.length,
+  const serviceId = computed(
+    () => serviceQueryResult.data.value?.teacher?.services[0]?.id ?? null,
   );
-  return { hasService };
+  const hasService = computed(() => serviceId.value !== null);
+  return { serviceId, hasService };
 };
