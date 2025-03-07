@@ -18,10 +18,7 @@ graphql(`
       year
       requests(
         where: { type: { _eq: "assignment" } }
-        orderBy: [
-          { service: { teacher: { lastname: ASC } } }
-          { service: { teacher: { firstname: ASC } } }
-        ]
+        orderBy: [{ service: { teacher: { displayname: ASC } } }]
       ) {
         id
         ...RequestCardData
@@ -30,10 +27,7 @@ graphql(`
         year
         requests(
           where: { type: { _eq: "assignment" } }
-          orderBy: [
-            { service: { teacher: { lastname: ASC } } }
-            { service: { teacher: { firstname: ASC } } }
-          ]
+          orderBy: [{ service: { teacher: { displayname: ASC } } }]
         ) {
           id
           ...RequestCardData
@@ -42,10 +36,7 @@ graphql(`
           year
           requests(
             where: { type: { _eq: "assignment" } }
-            orderBy: [
-              { service: { teacher: { lastname: ASC } } }
-              { service: { teacher: { firstname: ASC } } }
-            ]
+            orderBy: [{ service: { teacher: { displayname: ASC } } }]
           ) {
             id
             ...RequestCardData

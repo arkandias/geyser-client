@@ -496,16 +496,15 @@ Si ces mentions contiennent des parcours, des cours ou admettent des responsable
       requests: "Demandes",
       priorities: "Priorités",
     },
-    coordinations: {
-      title: "Responsables",
-      programs: "Responsables de mention",
-      tracks: "Responsables de parcours",
-      courses: "Responsables d'enseignement",
-    },
     roles: {
-      title: "Rôles",
+      title: "Rôles et responsabilités",
       admin: "Administrateurs",
       commissioners: "Commissaires",
+      coordinations: {
+        programs: "Responsables de mention",
+        tracks: "Responsables de parcours",
+        courses: "Responsables d'enseignement",
+      },
     },
   },
 } as const;

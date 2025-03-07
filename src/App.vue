@@ -65,7 +65,7 @@ watch(activeRole, setRoleHeader, { immediate: true });
 const currentPhaseQueryResult = useQuery({
   query: GetCurrentPhaseDocument,
   variables: {},
-  pause: () => !active.value,
+  pause: () => !loaded.value || !active.value,
   context: { additionalTypenames: ["Phase"] },
 });
 watch(
@@ -84,7 +84,7 @@ watch(
 const yearsQueryResult = useQuery({
   query: GetYearsDocument,
   variables: {},
-  pause: () => !active.value,
+  pause: () => !loaded.value || !active.value,
   context: { additionalTypenames: ["Year"] },
 });
 watch(
@@ -109,6 +109,7 @@ const customTextsQueryResult = useQuery({
   query: GetCustomTextsDocument,
   variables: {},
   context: { additionalTypenames: ["UiText"] },
+  pause: () => !loaded.value || !active.value,
 });
 watch(
   customTextsQueryResult.data,

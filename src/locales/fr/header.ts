@@ -144,6 +144,10 @@ export default {
     },
     user: {
       label: "Utilisateur",
+      impersonate: {
+        label: "Incarner",
+        dialog: { title: "Incarner un intervenant", button: "Valider" },
+      },
       logout: "Déconnexion",
     },
   },

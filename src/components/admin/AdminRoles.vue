@@ -18,6 +18,28 @@ const { t } = useCustomI18n();
       :label="t('admin.roles.commissioners')"
     >
     </AdminSection>
+
+    <QSeparator />
+
+    <AdminSection
+      icon="sym_s_account_tree"
+      :label="t('admin.roles.coordinations.programs')"
+    >
+    </AdminSection>
+
+    <QSeparator />
+    <AdminSection
+      icon="sym_s_alt_route"
+      :label="t('admin.roles.coordinations.tracks')"
+    >
+    </AdminSection>
+
+    <QSeparator />
+    <AdminSection
+      icon="sym_s_menu_book"
+      :label="t('admin.roles.coordinations.courses')"
+    >
+    </AdminSection>
   </QList>
 </template>
 

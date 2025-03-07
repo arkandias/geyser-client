@@ -14,7 +14,7 @@ graphql(`
   query GetServices($year: Int!) {
     services: service(
       where: { year: { _eq: $year } }
-      orderBy: [{ teacher: { lastname: ASC } }, { teacher: { firstname: ASC } }]
+      orderBy: [{ teacher: { displayname: ASC } }]
     ) {
       id
       teacher {
@@ -33,13 +33,7 @@ const servicesQueryResult = useQuery({
 });
 const services = computed(() => servicesQueryResult.data.value?.services ?? []);
 
-type Option = {
-  value: number;
-  label: string;
-  search: string;
-};
-
-const options = ref<Option[]>([]);
+const options = ref<{ value: number; label: string; search: string }[]>([]);
 const optionsInit = computed(() =>
   services.value.map((s) => ({
     value: s.id,
@@ -68,7 +62,7 @@ const filter = (val: string, update: (x: () => void) => void) => {
   <QSelect
     v-model="id"
     :options
-    :label="t('role.teacher')"
+    :label="t('service')"
     color="primary"
     emit-value
     map-options

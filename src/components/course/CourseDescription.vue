@@ -21,28 +21,16 @@ graphql(`
   fragment CourseDescription on Course {
     courseId: id
     description
-    coordinations(
-      orderBy: [{ teacher: { lastname: ASC } }, { teacher: { firstname: ASC } }]
-    ) {
+    coordinations(orderBy: [{ teacher: { displayname: ASC } }]) {
       uid
     }
     program {
-      coordinations(
-        orderBy: [
-          { teacher: { lastname: ASC } }
-          { teacher: { firstname: ASC } }
-        ]
-      ) {
+      coordinations(orderBy: [{ teacher: { displayname: ASC } }]) {
         uid
       }
     }
     track {
-      coordinations(
-        orderBy: [
-          { teacher: { lastname: ASC } }
-          { teacher: { firstname: ASC } }
-        ]
-      ) {
+      coordinations(orderBy: [{ teacher: { displayname: ASC } }]) {
         uid
       }
     }
