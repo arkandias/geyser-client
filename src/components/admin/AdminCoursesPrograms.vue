@@ -150,7 +150,7 @@ const columns: Column<Row>[] = [
     label: t("admin.courses.programs.table.columns.visible"),
     align: "center",
     field: "visible",
-    format: (val) => (val ? "✓" : "✗"),
+    format: (val: boolean) => (val ? "✓" : "✗"),
     sortable: true,
     searchable: false,
   },

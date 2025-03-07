@@ -184,6 +184,7 @@ const columns: Column<CourseRow>[] = [
     label: "Nom",
     align: "left",
     field: "name",
+    format: (val: string) => (val.length > 40 ? val.slice(0, 40) + "…" : val),
     sortable: true,
     visible: true,
     searchable: true,

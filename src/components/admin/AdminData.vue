@@ -380,7 +380,7 @@ const importColumns: Column<[string, FieldDescriptor]>[] = [
     label: t("admin.data.import.table.columns.nonNullable"),
     align: "center",
     field: ([_, fieldDescriptor]) => !fieldDescriptor.nullable,
-    format: (val) => (val ? "✓" : "✗"),
+    format: (val: boolean) => (val ? "✓" : "✗"),
   },
 ];
 
