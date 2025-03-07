@@ -151,7 +151,7 @@ const { getValue: selectedCourse, toggleValue: toggleCourse } = useQueryParam(
   true,
 );
 const selectedRow = computed(() => [{ id: selectedCourse.value }]);
-const onRowClick = async (_: Event, row: CourseRowFragment) => {
+const onRowClick = async (_: Event, row: CourseRow) => {
   await toggleCourse(row.id);
 };
 
@@ -385,17 +385,22 @@ const filterMethod = (
 const weightedHours = ref(false);
 const stickyHeader = ref(false);
 
-// Styling options controllers
-const isAssigned = (row: CourseRowFragment) =>
-  !!requests.value?.some(
-    (r) => r.courseId === row.id && r.type === REQUEST_TYPES.ASSIGNMENT,
-  );
-const isVisible = (row: CourseRowFragment): boolean =>
-  !!service.value ||
-  (row.visible &&
-    row.program.degree.visible &&
-    row.program.visible &&
-    (row.track?.visible ?? true));
+// Row styling
+const isAssigned = computed(
+  () => (row: CourseRow) =>
+    requests.value?.some(
+      (r) => r.courseId === row.id && r.type === REQUEST_TYPES.ASSIGNMENT,
+    ),
+);
+const isVisible = (row: CourseRow) =>
+  row.visible &&
+  row.program.degree.visible &&
+  row.program.visible &&
+  (row.track?.visible ?? true);
+const tableRowClassFn = computed(
+  () => (row: CourseRow) =>
+    isAssigned.value(row) ? "assigned" : !isVisible(row) ? "non-visible" : "",
+);
 
 const downloadTeacherAssignments = async () => {
   if (activeYear.value === null || !teacher.value) {
@@ -421,17 +426,16 @@ const downloadTeacherAssignments = async () => {
   </QDialog>
 
   <QTable
-    v-model:selected="selectedRow"
-    :title
     :columns
     :visible-columns
     :rows="courses"
+    :selected="selectedRow"
     :loading="fetchingCourses"
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"
     :filter-method
-    row-key="id"
+    :table-row-class-fn
     flat
     square
     dense
@@ -647,24 +651,6 @@ const downloadTeacherAssignments = async () => {
         </QTooltip>
       </QTh>
     </template>
-    <template #body-cell="scope">
-      <QTd
-        :props="scope"
-        :class="{
-          'non-visible': !isVisible(scope.row),
-          assigned: isAssigned(scope.row),
-        }"
-      >
-        {{
-          scope.col.abbreviable
-            ? (scope.value?.short ?? scope.value.long)
-            : scope.value
-        }}
-        <QTooltip v-if="scope.value?.short" :delay="TOOLTIP_DELAY">
-          {{ scope.value.long }}
-        </QTooltip>
-      </QTd>
-    </template>
   </QTable>
 </template>
 
@@ -683,10 +669,10 @@ const downloadTeacherAssignments = async () => {
 .q-input {
   width: $table-filter-search-input-width;
 }
-.non-visible {
+:deep(.non-visible) {
   background-color: rgba($negative, 0.1);
 }
-.assigned {
+:deep(.assigned) {
   background-color: rgba($positive, 0.1);
 }
 </style>

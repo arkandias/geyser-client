@@ -77,9 +77,12 @@ const services = computed(() =>
 );
 
 // Row selection
+const rowKey = (row: ServiceRowsFragment) => row.teacher.uid;
 const { getValue: selectedTeacher, toggleValue: toggleTeacher } =
   useQueryParam("uid");
-const selectedRow = computed(() => [{ uid: selectedTeacher.value }]);
+const selectedRow = computed(() => [
+  { teacher: { uid: selectedTeacher.value } },
+]);
 const onRowClick = async (_: Event, row: ServiceRowsFragment) => {
   await toggleTeacher(row.teacher.uid);
 };
@@ -213,22 +216,27 @@ const filterMethod = (
     ),
   );
 
-// Styling options controllers
+// Options
 const stickyHeader = ref(false);
+
+// Row styling
+const tableRowClassFn = (row: ServiceRowsFragment) =>
+  row.teacher.visible ? "" : "non-visible";
 </script>
 
 <template>
   <QTable
-    v-model:selected="selectedRow"
     :columns
     :visible-columns
     :rows="services"
+    :row-key
+    :selected="selectedRow"
     :loading="fetching"
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"
     :filter-method
-    row-key="uid"
+    :table-row-class-fn
     flat
     square
     dense
@@ -309,14 +317,6 @@ const stickyHeader = ref(false);
         </QTooltip>
       </QTh>
     </template>
-    <template #body-cell="scope">
-      <QTd
-        :props="scope"
-        :class="{ 'non-visible': !scope.row.teacher.visible }"
-      >
-        {{ scope.value }}
-      </QTd>
-    </template>
   </QTable>
 </template>
 
@@ -324,7 +324,7 @@ const stickyHeader = ref(false);
 .q-input {
   width: $table-filter-search-input-width;
 }
-.non-visible {
+:deep(.non-visible) {
   background-color: rgba($negative, 0.1);
 }
 </style>
