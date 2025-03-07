@@ -22,7 +22,6 @@ export default {
     },
     error: {
       unknown: "Erreur inconnue",
-      downloadFailed: "Le téléchargement a échoué",
     },
   },
   unit: {

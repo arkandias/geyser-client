@@ -58,15 +58,13 @@ const transform =
   (value: string, field: string | number) => {
     const descriptor = rowDescriptor[field];
     if (!descriptor) {
-      throw new Error(`Unexpected field: ${String(field)}`);
+      throw new Error(`Unexpected field: ${field}`);
     }
     try {
       return parseField(value, descriptor);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
-      throw new Error(
-        `Error while parsing field '${String(field)}': ${message}`,
-      );
+      throw new Error(`Error while parsing field '${field}': ${message}`);
     }
   };
 

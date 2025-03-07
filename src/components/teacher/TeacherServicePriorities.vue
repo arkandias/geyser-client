@@ -8,7 +8,7 @@ import {
 } from "@/gql/graphql.ts";
 import type { ArrayElement } from "@/types/misc.ts";
 import { priorityColor } from "@/utils/colors.ts";
-import { displayName, formatProgram } from "@/utils/format.ts";
+import { formatProgram } from "@/utils/format.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import TeacherList from "@/components/teacher/TeacherList.vue";
@@ -30,29 +30,23 @@ graphql(`
     ) {
       id
       course {
-        name
-        nameShort
+        name: nameDisplay
         semester
         type {
           label
         }
         program {
-          name
-          nameShort
+          name: nameDisplay
           degree {
-            name
-            nameShort
+            name: nameDisplay
           }
         }
         track {
-          name
-          nameShort
+          name: nameDisplay
           program {
-            name
-            nameShort
+            name: nameDisplay
             degree {
-              name
-              nameShort
+              name: nameDisplay
             }
           }
         }
@@ -72,14 +66,14 @@ const priorities = computed(
 type Priority = ArrayElement<TeacherServicePrioritiesFragment["priorities"]>;
 
 const formatPriorityTS = (priority: Priority) =>
-  priority.course.type.label + " au S" + priority.course.semester.toString();
+  `${priority.course.type.label} au S${priority.course.semester}`;
 
-const formatPriority = (priority: Priority) => displayName(priority.course);
+const formatPriority = (priority: Priority) => priority.course.name;
 
 const formatPriorityExtra = (priority: Priority) =>
   formatProgram(priority.course.program) +
   (priority.course.track
-    ? `, parcours ${displayName(priority.course.track)}`
+    ? `, parcours ${priority.course.track.name ?? ""}`
     : "");
 </script>
 

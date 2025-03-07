@@ -43,8 +43,8 @@ const caption = computed(() =>
   data.value
     ? `${data.value.program.degree.name} — ` +
       `${data.value.program.name} — ` +
-      (data.value.track?.name ? `${data.value.track.name} — ` : "") +
-      `S${data.value.semester.toString()} — ` +
+      (data.value.track ? `${data.value.track.name} — ` : "") +
+      `S${data.value.semester} — ` +
       data.value.courseType.label
     : "Cliquez sur ce volet pour afficher des informations supplémentaires",
 );

@@ -12,7 +12,7 @@ import {
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type { ArrayElement } from "@/types/misc.ts";
-import { displayName, formatProgram } from "@/utils/format.ts";
+import { formatProgram } from "@/utils/format.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import TeacherList from "@/components/teacher/TeacherList.vue";
@@ -29,48 +29,37 @@ graphql(`
       id
       program {
         id
-        name
-        nameShort
+        name: nameDisplay
         degree {
-          name
-          nameShort
+          name: nameDisplay
         }
       }
       track {
         id
-        name
-        nameShort
+        name: nameDisplay
         program {
-          name
-          nameShort
+          name: nameDisplay
           degree {
-            name
-            nameShort
+            name: nameDisplay
           }
         }
       }
       course {
         id
         year
-        name
-        nameShort
+        name: nameDisplay
         program {
-          name
-          nameShort
+          name: nameDisplay
           degree {
-            name
-            nameShort
+            name: nameDisplay
           }
         }
         track {
-          name
-          nameShort
+          name: nameDisplay
           program {
-            name
-            nameShort
+            name: nameDisplay
             degree {
-              name
-              nameShort
+              name: nameDisplay
             }
           }
         }
@@ -108,11 +97,8 @@ const formatCoordinationType = (coordination: Coordination) =>
 const formatCoordination = (coordination: Coordination) =>
   (coordination.program
     ? formatProgram(coordination.program)
-    : coordination.track
-      ? displayName(coordination.track)
-      : coordination.course
-        ? displayName(coordination.course)
-        : "") + (coordination.comment ? ` (${coordination.comment})` : "");
+    : (coordination.track?.name ?? coordination.course?.name ?? "")) +
+  (coordination.comment ? ` (${coordination.comment})` : "");
 
 const formatCoordinationExtra = (coordination: Coordination) =>
   coordination.track
@@ -120,7 +106,7 @@ const formatCoordinationExtra = (coordination: Coordination) =>
     : coordination.course
       ? formatProgram(coordination.course.program) +
         (coordination.course.track
-          ? `, parcours ${displayName(coordination.course.track)}`
+          ? `, parcours ${coordination.course.track.name ?? ""}`
           : "")
       : "";
 
@@ -135,31 +121,20 @@ const downloadProgramAssignments = async (coordination: Coordination) => {
     where = {
       course: { programId: { _eq: coordination.program.id } },
     };
-    filename =
-      activeYear.value.toString() + " " + formatProgram(coordination.program);
+    filename = `${activeYear.value} ${formatProgram(coordination.program)}`;
   } else if (coordination.track) {
     where = {
       course: { trackId: { _eq: coordination.track.id } },
     };
-    filename =
-      activeYear.value.toString() +
-      " " +
-      formatProgram(coordination.track.program) +
-      " " +
-      displayName(coordination.track);
+    filename = `${activeYear.value} ${formatProgram(coordination.track.program)} ${coordination.track.name}`;
   } else if (coordination.course) {
     where = {
       course: { id: { _eq: coordination.course.id } },
     };
     filename =
-      activeYear.value.toString() +
-      " " +
-      formatProgram(coordination.course.program) +
-      (coordination.course.track
-        ? " " + displayName(coordination.course.track)
-        : "") +
-      " " +
-      displayName(coordination.course);
+      `${activeYear.value} ${formatProgram(coordination.course.program)} ` +
+      (coordination.course.track ? ` ${coordination.course.track.name})` : "") +
+      `${coordination.course.name}`;
   } else {
     console.error("Invalid coordination:", coordination);
     return;

@@ -1,0 +1,225 @@
+<script setup lang="ts">
+import { useMutation } from "@urql/vue";
+import { computed, ref } from "vue";
+
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { type FragmentType, graphql, useFragment } from "@/gql";
+import {
+  type AdminDegreeFragment,
+  AdminDegreeFragmentDoc,
+  DegreeConstraint,
+  DegreeUpdateColumn,
+  DeleteDegreesDocument,
+  InsertDegreesDocument,
+  UpdateDegreesDocument,
+  UpsertDegreesDocument,
+} from "@/gql/graphql.ts";
+import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
+import type { Column } from "@/types/column.ts";
+import { nullRow } from "@/utils/admin-data.ts";
+
+import AdminData from "@/components/admin/AdminData.vue";
+
+const { degreeFragments } = defineProps<{
+  degreeFragments: FragmentType<typeof AdminDegreeFragmentDoc>[];
+}>();
+
+const { t } = useCustomI18n();
+
+const idKey = "id";
+const rowDescriptor = {
+  name: { type: "string" },
+  nameShort: { type: "string", nullable: true },
+  visible: { type: "boolean" },
+} as const;
+
+type Row = AdminDegreeFragment;
+type T = typeof rowDescriptor;
+type FormValues = NullableParsedRow<T>;
+type ImportRow = ParsedRow<T>;
+type InsertInput = {
+  name?: string | null;
+  nameShort?: string | null;
+  visible?: boolean | null;
+};
+
+graphql(`
+  fragment AdminDegree on Degree {
+    id
+    name
+    nameShort
+    visible
+  }
+
+  mutation InsertDegrees($objects: [DegreeInsertInput!]!) {
+    insertData: insertDegree(objects: $objects) {
+      returning {
+        id
+      }
+    }
+  }
+
+  mutation UpsertDegrees(
+    $objects: [DegreeInsertInput!]!
+    $onConflict: DegreeOnConflict
+  ) {
+    upsertData: insertDegree(objects: $objects, onConflict: $onConflict) {
+      returning {
+        id
+      }
+    }
+  }
+
+  mutation UpdateDegrees($ids: [Int!]!, $changes: DegreeSetInput!) {
+    updateData: updateDegree(where: { id: { _in: $ids } }, _set: $changes) {
+      returning {
+        id
+      }
+    }
+  }
+
+  mutation DeleteDegrees($ids: [Int!]!) {
+    deleteData: deleteDegree(where: { id: { _in: $ids } }) {
+      returning {
+        id
+      }
+    }
+  }
+`);
+
+const degrees = computed(() =>
+  degreeFragments.map((f) => useFragment(AdminDegreeFragmentDoc, f)),
+);
+const insertDegrees = useMutation(InsertDegreesDocument);
+const upsertDegrees = useMutation(UpsertDegreesDocument);
+const updateDegrees = useMutation(UpdateDegreesDocument);
+const deleteDegrees = useMutation(DeleteDegreesDocument);
+
+const constraint = DegreeConstraint.DegreeNameKey;
+const updateColumns = [
+  DegreeUpdateColumn.NameShort,
+  DegreeUpdateColumn.Visible,
+];
+
+const formValues = ref<FormValues>(nullRow(rowDescriptor));
+const selectedFields = ref<string[]>([]);
+
+const columns: Column<Row>[] = [
+  {
+    name: "name",
+    label: t("admin.courses.degrees.table.columns.name"),
+    align: "left",
+    field: "name",
+    sortable: true,
+    searchable: true,
+  },
+  {
+    name: "nameShort",
+    label: t("admin.courses.degrees.table.columns.nameShort"),
+    align: "left",
+    field: "nameShort",
+    sortable: true,
+    searchable: true,
+  },
+  {
+    name: "visible",
+    label: t("admin.courses.degrees.table.columns.visible"),
+    align: "center",
+    field: "visible",
+    format: (val) => (val ? "✓" : "✗"),
+    sortable: true,
+    searchable: false,
+  },
+];
+
+const formatRow = (row: Row) => row.name;
+
+const initForm = (rows: Row[]): FormValues =>
+  rows.length === 1 ? { ...rows[0] } : nullRow(rowDescriptor);
+
+function validateImportRow(
+  importRow: ImportRow,
+  checkConflicts: boolean,
+): InsertInput;
+function validateImportRow(
+  importRow: Partial<ImportRow>,
+  checkConflicts: boolean,
+): Partial<InsertInput>;
+function validateImportRow(
+  importRow: Partial<ImportRow>,
+  checkConflicts: boolean,
+): Partial<InsertInput> {
+  const object: Partial<InsertInput> = {};
+
+  if (importRow.name !== undefined) {
+    object.name = importRow.name;
+    if (checkConflicts && degrees.value.find((d) => d.name === object.name)) {
+      throw new Error(t("admin.courses.degrees.form.error.conflictName"));
+    }
+  }
+
+  if (importRow.nameShort !== undefined) {
+    object.nameShort = importRow.nameShort;
+  }
+
+  if (importRow.visible !== undefined) {
+    object.visible = importRow.visible;
+  }
+
+  return object;
+}
+</script>
+
+<template>
+  <AdminData
+    v-model:form-values="formValues"
+    v-model:selected-fields="selectedFields"
+    name="degrees"
+    message-prefix="admin.courses.degrees"
+    :id-key
+    :row-descriptor
+    :columns
+    :rows="degrees"
+    :format-row
+    :init-form
+    :validate-import-row
+    :insert-data="insertDegrees"
+    :upsert-data="upsertDegrees"
+    :update-data="updateDegrees"
+    :delete-data="deleteDegrees"
+    :constraint
+    :update-columns
+  >
+    <template #form="{ multipleSelection }">
+      <QInput
+        v-if="!multipleSelection"
+        v-model="formValues.name"
+        :label="t('admin.courses.degrees.form.fields.name')"
+        square
+        dense
+      />
+      <QInput
+        v-if="!multipleSelection"
+        v-model="formValues.nameShort"
+        :label="t('admin.courses.degrees.form.fields.nameShort')"
+        square
+        dense
+      />
+      <div class="q-mr-md">
+        <QCheckbox
+          v-if="multipleSelection"
+          v-model="selectedFields"
+          val="active"
+        />
+        <QToggle
+          v-model="formValues.visible"
+          :disable="multipleSelection && !selectedFields.includes('visible')"
+          :label="t('admin.courses.degrees.form.fields.visible')"
+          left-label
+        />
+      </div>
+    </template>
+  </AdminData>
+</template>
+
+<style scoped lang="scss"></style>

@@ -25,6 +25,17 @@ const tsrules: Linter.RulesRecord = {
       ignoreRestSiblings: true,
     },
   ],
+  "@typescript-eslint/restrict-template-expressions": [
+    "error",
+    {
+      allowAny: true,
+      allowBoolean: true,
+      allowNullish: true,
+      allowNumber: true,
+      allowRegExp: true,
+      allow: [{ name: ["Error", "URL", "URLSearchParams"], from: "lib" }],
+    },
+  ],
 };
 
 export default tseslint.config(

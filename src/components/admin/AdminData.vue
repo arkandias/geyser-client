@@ -18,14 +18,15 @@ import type {
   FieldDescriptor,
   NullableParsedRow,
   ParsedRow,
+  PrimitiveTypeName,
   RowDescriptor,
   Scalar,
   SimpleObject,
 } from "@/types/admin-data.ts";
-import type { ColumnNonAbbreviable } from "@/types/columns.ts";
+import { type Column, getField } from "@/types/column.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
 import { importCSV } from "@/utils/csv-import.ts";
-import { getField, normalizeForSearch } from "@/utils/misc.ts";
+import { normalizeForSearch } from "@/utils/misc.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 type Id = Row[IdKey];
@@ -71,7 +72,7 @@ const {
   messagePrefix: string;
   idKey: IdKey;
   rowDescriptor: T;
-  columns: ColumnNonAbbreviable<Row>[];
+  columns: Column<Row>[];
   rows: Row[];
   formatRow: (row: Row) => string;
   initForm: (rows: Row[]) => FormValues;
@@ -359,7 +360,7 @@ watch(isImportDialogOpen, (value) => {
   }
 });
 
-const importColumns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
+const importColumns: Column<[string, FieldDescriptor]>[] = [
   {
     name: "key",
     label: t("admin.data.import.table.columns.key"),
@@ -371,14 +372,15 @@ const importColumns: ColumnNonAbbreviable<[string, FieldDescriptor]>[] = [
     label: t("admin.data.import.table.columns.type"),
     align: "left",
     field: ([_, fieldDescriptor]) => fieldDescriptor.type,
-    format: (val: string) => t("admin.data.import.table.type." + val),
+    format: (val: PrimitiveTypeName) =>
+      t(`admin.data.import.table.type.${val}`),
   },
   {
     name: "nonNullable",
     label: t("admin.data.import.table.columns.nonNullable"),
     align: "center",
     field: ([_, fieldDescriptor]) => !fieldDescriptor.nullable,
-    format: (val: boolean) => (val ? "✓" : "✗"),
+    format: (val) => (val ? "✓" : "✗"),
   },
 ];
 
@@ -465,7 +467,7 @@ const importRowsHandle = async () => {
 const exportDataHandle = () => {
   try {
     downloadCSV(
-      `${name}_${Date.now().toString()}`,
+      `${name}_${Date.now()}`,
       selectedRows.value.length ? selectedRows.value : rows,
       Object.keys(rowDescriptor),
     );

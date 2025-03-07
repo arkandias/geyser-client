@@ -15,7 +15,7 @@ import {
   UpsertServiceModificationTypesDocument,
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
-import type { ColumnNonAbbreviable } from "@/types/columns.ts";
+import type { Column } from "@/types/column.ts";
 import { nullRow } from "@/utils/admin-data.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
@@ -122,7 +122,7 @@ const updateColumns = [ServiceModificationTypeUpdateColumn.Description];
 const formValues = ref<FormValues>(nullRow(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
-const columns: ColumnNonAbbreviable<Row>[] = [
+const columns: Column<Row>[] = [
   {
     name: "label",
     label: t("admin.teachers.serviceModificationTypes.table.columns.label"),

@@ -165,11 +165,7 @@ const updateYearVisibilityHandle = async (value: number, visible: boolean) => {
 };
 
 const deleteYearHandle = async (value: number) => {
-  if (
-    !confirm(
-      t("admin.general.years.confirm.delete", { year: value.toString() }),
-    )
-  ) {
+  if (!confirm(t("admin.general.years.confirm.delete", { year: value }))) {
     return;
   }
 

@@ -19,7 +19,7 @@ import {
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
-import type { ColumnNonAbbreviable } from "@/types/columns.ts";
+import type { Column } from "@/types/column.ts";
 import { inputToNumber, nullRow } from "@/utils/admin-data.ts";
 import { formatUser, nf } from "@/utils/format.ts";
 
@@ -196,7 +196,7 @@ const updateHours = (value: string | number | null) => {
   formValues.value.hours = inputToNumber(value);
 };
 
-const columns: ColumnNonAbbreviable<Row>[] = [
+const columns: Column<Row>[] = [
   {
     name: "year",
     label: t("admin.teachers.serviceModifications.table.columns.year"),
@@ -234,7 +234,7 @@ const columns: ColumnNonAbbreviable<Row>[] = [
 ];
 
 const formatRow = (row: Row): string =>
-  `${row.service.year.toString()} — ${getUser(row.service.uid)} — ${row.type.label}`;
+  `${row.service.year} — ${getUser(row.service.uid)} — ${row.type.label}`;
 
 const initForm = (rows: Row[]): FormValues =>
   rows.length === 1

@@ -19,20 +19,13 @@ export const formatUser = (user: TeacherName) =>
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   user.alias || user.firstname + " " + user.lastname;
 
-type DisplayName = {
-  name: string;
-  nameShort?: string | null;
-};
-
-export const displayName = (displayName: DisplayName) =>
-  displayName.nameShort ?? displayName.name;
-
-type Program = DisplayName & {
-  degree: DisplayName;
-};
-
-export const formatProgram = (program: Program) =>
-  displayName(program.degree) + " " + displayName(program);
+export const formatProgram = (program: {
+  name?: string | null | undefined;
+  degree: { name?: string | null | undefined };
+}) =>
+  !program.degree.name || !program.name
+    ? ""
+    : program.degree.name + " " + program.name;
 
 export const formatWH = (hours: number) =>
   n(hours) + "\u00A0" + t("unit.weightedHours");

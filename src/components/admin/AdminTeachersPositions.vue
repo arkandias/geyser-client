@@ -15,7 +15,7 @@ import {
   UpsertPositionsDocument,
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
-import type { ColumnNonAbbreviable } from "@/types/columns.ts";
+import type { Column } from "@/types/column.ts";
 import { inputToNumber, nullRow } from "@/utils/admin-data.ts";
 import { nf } from "@/utils/format.ts";
 
@@ -109,7 +109,7 @@ const updateBaseServiceHours = (value: string | number | null) => {
   formValues.value.baseServiceHours = inputToNumber(value);
 };
 
-const columns: ColumnNonAbbreviable<Row>[] = [
+const columns: Column<Row>[] = [
   {
     name: "label",
     label: t("admin.teachers.positions.table.columns.label"),

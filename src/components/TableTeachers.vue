@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, toValue } from "vue";
+import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
@@ -10,10 +10,10 @@ import {
   type ServiceRowsFragment,
   ServiceRowsFragmentDoc,
 } from "@/gql/graphql.ts";
-import type { ColumnNonAbbreviable } from "@/types/columns.ts";
+import { type Column, getField } from "@/types/column.ts";
 import { nf } from "@/utils/format.ts";
 import { modifiedService, totalHW } from "@/utils/hours.ts";
-import { getField, normalizeForSearch } from "@/utils/misc.ts";
+import { normalizeForSearch } from "@/utils/misc.ts";
 
 const { serviceRowFragments } = defineProps<{
   serviceRowFragments: FragmentType<typeof ServiceRowsFragmentDoc>[];
@@ -85,7 +85,7 @@ const onRowClick = async (_: Event, row: ServiceRowsFragment) => {
 };
 
 // Columns definition
-const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
+const columns: Column<ServiceRowsFragment>[] = [
   {
     name: "firstname",
     label: "Prénom",
@@ -117,7 +117,7 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
     name: "message",
     label: "M.",
     tooltip: "Message",
-    align: "left",
+    align: "center",
     field: (row) => (row.message ? "✓" : "✗"),
     sortable: true,
     visible: false,
@@ -140,7 +140,7 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
     field: (row) => totalHW(row.totalAssigned),
     format: (val: number) => nf.format(val),
     sortable: true,
-    visible: () => perm.toViewAssignments,
+    visible: perm.toViewAssignments,
     searchable: false,
   },
   {
@@ -187,10 +187,10 @@ const columns: ColumnNonAbbreviable<ServiceRowsFragment>[] = [
   },
 ];
 const searchableColumns = columns
-  .filter((col) => toValue(col.searchable))
+  .filter((col) => col.searchable)
   .map((col) => col.name);
-const visibleColumns = computed(() =>
-  columns.filter((col) => toValue(col.visible)).map((col) => col.name),
+const visibleColumns = ref(
+  columns.filter((col) => col.visible).map((col) => col.name),
 );
 const isMenuColumnsOpen = ref(false);
 const isMenuColumnsTooltipVisible = ref(false);

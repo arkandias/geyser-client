@@ -16,7 +16,7 @@ import {
   UpsertTeachersDocument,
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
-import type { ColumnNonAbbreviable } from "@/types/columns.ts";
+import type { Column } from "@/types/column.ts";
 import { inputToNumber, nullRow } from "@/utils/admin-data.ts";
 import { nf } from "@/utils/format.ts";
 
@@ -141,7 +141,7 @@ const updateBaseServiceHours = (value: string | number | null) => {
   formValues.value.baseServiceHours = inputToNumber(value);
 };
 
-const columns: ColumnNonAbbreviable<Row>[] = [
+const columns: Column<Row>[] = [
   {
     name: "uid",
     label: t("admin.teachers.teachers.table.columns.uid"),
@@ -193,16 +193,18 @@ const columns: ColumnNonAbbreviable<Row>[] = [
   {
     name: "visible",
     label: t("admin.teachers.teachers.table.columns.visible"),
+    align: "center",
     field: "visible",
-    format: (val: boolean) => (val ? "✓" : "✗"),
+    format: (val) => (val ? "✓" : "✗"),
     sortable: true,
     searchable: false,
   },
   {
     name: "active",
     label: t("admin.teachers.teachers.table.columns.active"),
+    align: "center",
     field: "active",
-    format: (val: boolean) => (val ? "✓" : "✗"),
+    format: (val) => (val ? "✓" : "✗"),
     sortable: true,
     searchable: false,
   },

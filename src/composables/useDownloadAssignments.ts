@@ -7,7 +7,7 @@ import {
   type GetAssignmentsQueryVariables,
 } from "@/gql/graphql.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
-import { displayName, formatProgram, formatUser } from "@/utils/format.ts";
+import { formatProgram, formatUser } from "@/utils/format.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
@@ -32,25 +32,19 @@ graphql(`
       ]
     ) {
       course {
-        name
-        nameShort
+        name: nameDisplay
         program {
-          name
-          nameShort
+          name: nameDisplay
           degree {
-            name
-            nameShort
+            name: nameDisplay
           }
         }
         track {
-          name
-          nameShort
+          name: nameDisplay
           program {
-            name
-            nameShort
+            name: nameDisplay
             degree {
-              name
-              nameShort
+              name: nameDisplay
             }
           }
         }
@@ -86,20 +80,22 @@ export const useDownloadAssignments = () => {
       .then((result) => result.data?.assignments ?? []);
 
     const formattedAssignments = assignments.map((a) => ({
-      [t("course.program")]: formatProgram(a.course.program),
-      [t("course.track")]: a.course.track ? displayName(a.course.track) : null,
-      [t("course.label")]: a.course.name,
-      [t("course.semester")]: a.course.semester,
-      [t("course.type")]: a.course.type.label,
-      [t("role.teacher")]: formatUser(a.service.teacher),
-      [t("teacher.email")]: a.service.teacher.uid,
+      [t("downloadAssignments.program")]: formatProgram(a.course.program),
+      [t("downloadAssignments.track")]: a.course.track
+        ? a.course.track.name
+        : null,
+      [t("downloadAssignments.course")]: a.course.name,
+      [t("downloadAssignments.semester")]: a.course.semester,
+      [t("downloadAssignments.type")]: a.course.type.label,
+      [t("downloadAssignments.teacher")]: formatUser(a.service.teacher),
+      [t("downloadAssignments.email")]: a.service.teacher.uid,
     }));
 
     try {
       downloadCSV(filename, formattedAssignments);
     } catch (error) {
       notify(NotifyType.ERROR, {
-        message: t("notification.error.downloadFailed"),
+        message: t("downloadAssignments.error.downloadFailed"),
         caption: error instanceof Error ? error.message : "Unknown error",
       });
     }

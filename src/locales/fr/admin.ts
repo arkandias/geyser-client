@@ -153,7 +153,7 @@ la supprimer.`,
             active: "Actif",
           },
           error: {
-            conflictEmail: "Cet email existe déjà",
+            conflictEmail: "Il existe déjà un utilisateur avec cet email",
             positionNotFound: "Il n'existe pas de fonction avec ce label",
             baseServiceHoursNegative:
               "Entrez un nombre d'heures positif ou nul",
@@ -207,7 +207,7 @@ vous ne pourrez pas les supprimer.`,
             baseServiceHours: "Service de base",
           },
           error: {
-            conflictLabel: "Ce label existe déjà",
+            conflictLabel: "Il existe déjà une fonction avec ce label",
             baseServiceHoursNegative:
               "Entrez un nombre d'heures positif ou nul",
           },
@@ -259,7 +259,7 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
           },
           error: {
             conflictYearUid:
-              "Un service existe déjà pour cet intervenant et cette année",
+              "Il existe déjà un service pour cet intervenant et cette année",
             hoursNegative: "Entrez un nombre d'heures positif ou nul",
           },
         },
@@ -359,7 +359,8 @@ Si des modifications ou des demandes sont rattachés à ces services, vous ne po
             description: "Description",
           },
           error: {
-            conflictLabel: "Ce label existe déjà",
+            conflictLabel:
+              "Il existe déjà un type de modification avec ce label",
           },
         },
         data: {
@@ -369,7 +370,7 @@ Si des modifications ou des demandes sont rattachés à ces services, vous ne po
             update:
               "Aucun type de modification mis à jour | Type de modification mis à jour | {count} types de modification mis à jour",
             delete:
-              "Aucun type de modification supprimé | Type de modification supprimé | {count} Types de modification supprimés",
+              "Aucun type de modification supprimé | Type de modification supprimé | {count} types de modification supprimés",
             import:
               "0 type de modification importé | 1 type de modification importé | {count} types de modification importés",
             export:
@@ -388,10 +389,106 @@ Si ces types sont attribués à des modifications, vous ne pourrez pas les suppr
     },
     courses: {
       title: "Enseignements",
-      courses: "Enseignements",
-      degrees: "Diplômes",
-      programs: "Mentions",
+      degrees: {
+        label: "Diplômes",
+        table: {
+          columns: {
+            name: "Nom",
+            nameShort: "Nom court",
+            visible: "Visible",
+          },
+        },
+        form: {
+          title: {
+            none: "Nouveau diplôme",
+            single: "{label}",
+            multiple: "{count} diplômes sélectionnés",
+          },
+          fields: {
+            name: "Nom",
+            nameShort: "Nom court",
+            visible: "Visible",
+          },
+          error: {
+            conflictLabel: "Il existe déjà un diplôme avec ce nom",
+          },
+        },
+        data: {
+          success: {
+            insert:
+              "Aucun diplôme créé | Diplôme créé | {count} diplômes créés",
+            update:
+              "Aucun diplôme mis à jour | Diplôme mis à jour | {count} diplômes mis à jour",
+            delete:
+              "Aucun diplôme supprimé | Diplôme supprimé | {count} diplômes supprimés",
+            import:
+              "0 diplôme importé | 1 diplôme importé | {count} diplômes importés",
+            export:
+              "0 diplôme exporté | 1 diplôme exporté | {count} diplômes exportés",
+          },
+          confirm: {
+            delete: {
+              single: `Êtes-vous sûr de vouloir supprimer le diplôme « {label} » ?
+Si ce diplôme contient des mentions, vous ne pourrez pas le supprimer.`,
+              multiple: `Êtes-vous sûr de vouloir supprimer les {count} diplômes sélectionnés ?
+Si ces diplômes contiennent des mentions, vous ne pourrez pas les supprimer.`,
+            },
+          },
+        },
+      },
+      programs: {
+        label: "Mentions",
+        table: {
+          columns: {
+            degree: "Diplôme",
+            name: "Nom",
+            nameShort: "Nom court",
+            visible: "Visible",
+          },
+        },
+        form: {
+          title: {
+            none: "Nouvelle mention",
+            single: "{label}",
+            multiple: "{count} mentions sélectionnées",
+          },
+          fields: {
+            degree: "Diplôme",
+            name: "Nom",
+            nameShort: "Nom court",
+            visible: "Visible",
+          },
+          error: {
+            conflictDegreeName:
+              "Il existe déjà une mention du même diplôme avec ce nom",
+            degreeNotFound: "Il n'existe pas de diplôme avec ce nom",
+          },
+        },
+        data: {
+          success: {
+            insert:
+              "Aucune mention créée | Mention créée | {count} mentions créées",
+            update:
+              "Aucune mention mise à jour | Mention mise à jour | {count} mentions mises à jour",
+            delete:
+              "Aucune mention supprimée | Mention supprimée | {count} mentions supprimées",
+            import:
+              "0 mention importée | 1 mention importée | {count} mentions importées",
+            export:
+              "0 mention exportée | 1 mention exportée | {count} mentions exportées",
+          },
+          confirm: {
+            delete: {
+              single: `Êtes-vous sûr de vouloir supprimer la mention « {label} » ?
+Si cette mention contient des parcours, des cours ou admet un responsable, vous ne pourrez pas la supprimer.`,
+              multiple: `Êtes-vous sûr de vouloir supprimer les {count} mentions sélectionnées ?
+Si ces mentions contiennent des parcours, des cours ou admettent des responsables, vous ne pourrez pas les supprimer.`,
+            },
+          },
+        },
+      },
       tracks: "Parcours",
+      courses: "Enseignements",
       types: "Types d'enseignement",
     },
     requests: {

@@ -171,7 +171,7 @@ watch(
 <template>
   <QPage>
     <QCard v-if="!isCurrentYearActive" id="warning-archive" class="text-body1">
-      {{ t("header.warning.archive", String(activeYear)) }}
+      {{ t("header.warning.archive", { year: activeYear }) }}
     </QCard>
     <QSplitter
       id="first-splitter"

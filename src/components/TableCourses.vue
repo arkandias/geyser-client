@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, toValue } from "vue";
+import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useDownloadAssignments } from "@/composables/useDownloadAssignments.ts";
@@ -17,15 +17,9 @@ import {
   ServiceDetailsFragmentDoc,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
-import { type Column, isAbbreviable } from "@/types/columns.ts";
+import { type Column, getField } from "@/types/column.ts";
 import { formatProgram, formatUser, nf } from "@/utils/format.ts";
-import {
-  compare,
-  compareAbbr,
-  getField,
-  normalizeForSearch,
-  uniqueValue,
-} from "@/utils/misc.ts";
+import { compare, normalizeForSearch, uniqueValue } from "@/utils/misc.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
 
@@ -38,25 +32,21 @@ const { courseRowFragments, serviceDetailsFragment } = defineProps<{
 graphql(`
   fragment CourseRow on Course {
     id
-    name
-    nameShort
+    name: nameDisplay
     visible
     program {
       degree {
         id
-        name
-        nameShort
+        name: nameDisplay
         visible
       }
       id
-      name
-      nameShort
+      name: nameDisplay
       visible
     }
     track {
       id
-      name
-      nameShort
+      name: nameDisplay
       visible
     }
     courseType: type {
@@ -152,7 +142,7 @@ const getTeacherTotal = (row: CourseRow, requestType: RequestType) => {
 };
 
 const title = computed(() =>
-  teacher.value ? formatUser(teacher.value) : t("course.label", 2),
+  teacher.value ? formatUser(teacher.value) : t("courses.label", 2),
 );
 
 // Row selection
@@ -174,90 +164,71 @@ const columns: Column<CourseRow>[] = [
   {
     name: "program",
     label: "Formation",
-    field: (row) => ({
-      long: row.program.degree.name + " " + row.program.name,
-      short: formatProgram(row.program),
-    }),
     align: "left",
+    field: (row) => formatProgram(row.program),
     sortable: true,
-    sort: compareAbbr,
     visible: true,
     searchable: true,
-    abbreviable: true,
   },
   {
     name: "track",
     label: "Parcours",
-    field: (row) => ({
-      long: row.track?.name ?? "",
-      short: row.track?.nameShort ?? null,
-    }),
     align: "left",
+    field: (row) => row.track?.name,
     sortable: true,
-    sort: compareAbbr,
     visible: true,
     searchable: true,
-    abbreviable: true,
   },
   {
     name: "name",
     label: "Nom",
-    field: (row) => ({
-      long: row.name,
-      short: row.nameShort ?? null,
-    }),
     align: "left",
+    field: "name",
     sortable: true,
-    sort: compareAbbr,
     visible: true,
     searchable: true,
-    abbreviable: true,
   },
   {
     name: "type",
     label: "Type",
-    field: (row) => row.courseType.label,
     align: "left",
+    field: (row) => row.courseType.label,
     sortable: true,
     visible: true,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "semester",
     label: "S.",
     tooltip: "Semestre",
-    field: (row) => row.semester,
-    format: (val: number) => "S" + val.toString(),
     align: "left",
+    field: (row) => row.semester,
+    format: (val: number) => `S${val}`,
     sortable: true,
     visible: true,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "hours",
     label: "H.",
     tooltip: "Nombre d'heures par groupe",
+    align: "left",
     field: (row) =>
       (row.hoursPerGroup ?? 0) *
       (weightedHours.value ? row.courseType.coefficient : 1),
-    align: "left",
     sortable: true,
     visible: true,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "groups",
     label: "G.",
     tooltip: "Nombre de groupes ouverts",
-    field: (row) => row.numberOfGroups ?? 0,
     align: "left",
+    field: (row) => row.numberOfGroups ?? 0,
     sortable: true,
     visible: true,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "assigned",
@@ -268,9 +239,8 @@ const columns: Column<CourseRow>[] = [
       (weightedHours.value ? row.courseType.coefficient : 1),
     format: (val: number | null) => (val === null ? "-" : nf.format(val)),
     sortable: true,
-    visible: () => perm.toViewAssignments,
+    visible: perm.toViewAssignments,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "diffAssigned",
@@ -284,7 +254,6 @@ const columns: Column<CourseRow>[] = [
     sortable: true,
     visible: false,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "primary",
@@ -297,7 +266,6 @@ const columns: Column<CourseRow>[] = [
     sortable: true,
     visible: true,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "diffPrimary",
@@ -311,7 +279,6 @@ const columns: Column<CourseRow>[] = [
     sortable: true,
     visible: false,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "diffPrimaryPriority",
@@ -325,7 +292,6 @@ const columns: Column<CourseRow>[] = [
     sortable: true,
     visible: false,
     searchable: false,
-    abbreviable: false,
   },
   {
     name: "secondary",
@@ -338,14 +304,13 @@ const columns: Column<CourseRow>[] = [
     sortable: true,
     visible: true,
     searchable: false,
-    abbreviable: false,
   },
 ];
 const searchableColumns = columns
-  .filter((col) => toValue(col.searchable))
+  .filter((col) => col.searchable)
   .map((col) => col.name);
-const visibleColumns = computed(() =>
-  columns.filter((col) => toValue(col.visible)).map((col) => col.name),
+const visibleColumns = ref(
+  columns.filter((col) => col.visible).map((col) => col.name),
 );
 const isMenuColumnsOpen = ref(false);
 const isMenuColumnsTooltipVisible = ref(false);
@@ -378,7 +343,7 @@ const semestersOptions = computed(() =>
   courses.value
     .map((c) => ({
       value: c.semester,
-      label: "S" + c.semester.toString(),
+      label: `S${c.semester}`,
     }))
     .filter(uniqueValue("value"))
     .sort(compare("label")),
@@ -410,11 +375,9 @@ const filterMethod = (
         (terms.semesters.length === 0 ||
           terms.semesters.includes(row.semester)) &&
         terms.searchColumns.some((col) =>
-          normalizeForSearch(
-            isAbbreviable(col)
-              ? col.field(row).long + " " + (col.field(row).short ?? "")
-              : String(getField(row, col.field)),
-          ).includes(terms.search),
+          normalizeForSearch(String(getField(row, col.field))).includes(
+            terms.search,
+          ),
         ),
   );
 
@@ -443,7 +406,7 @@ const downloadTeacherAssignments = async () => {
       year: activeYear.value,
       where: { service: { uid: { _eq: teacher.value.uid } } },
     },
-    activeYear.value.toString() + " " + formatUser(teacher.value),
+    `${activeYear.value} ${formatUser(teacher.value)}`,
   );
 };
 </script>

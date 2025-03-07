@@ -1003,6 +1003,8 @@ type Course {
 
   """Course description"""
   description: String
+  ensIdImport: String
+  formationIdImport: String
 
   """Standard number of student groups"""
   groups: Int!
@@ -1027,9 +1029,11 @@ type Course {
 
   """Full course name"""
   name: String!
+  nameDisplay: String
 
   """Abbreviated course name"""
   nameShort: String
+  nomImport: String
 
   """An object relationship"""
   parent: Course
@@ -1334,6 +1338,8 @@ input CourseBoolExp {
   createdAt: TimestamptzComparisonExp
   cycleYear: IntComparisonExp
   description: StringComparisonExp
+  ensIdImport: StringComparisonExp
+  formationIdImport: StringComparisonExp
   groups: IntComparisonExp
   groupsAdjusted: IntComparisonExp
   groupsEffective: IntComparisonExp
@@ -1342,7 +1348,9 @@ input CourseBoolExp {
   hoursEffective: IntComparisonExp
   id: IntComparisonExp
   name: StringComparisonExp
+  nameDisplay: StringComparisonExp
   nameShort: StringComparisonExp
+  nomImport: StringComparisonExp
   parent: CourseBoolExp
   parentId: IntComparisonExp
   priorities: PriorityBoolExp
@@ -1368,6 +1376,11 @@ input CourseBoolExp {
 unique or primary key constraints on table "course"
 """
 enum CourseConstraint {
+  """
+  unique or primary key constraint on columns "ens_id_import"
+  """
+  course_ens_id_import_key
+
   """
   unique or primary key constraint on columns "id"
   """
@@ -1434,6 +1447,8 @@ input CourseInsertInput {
 
   """Course description"""
   description: String
+  ensIdImport: String
+  formationIdImport: String
 
   """Standard number of student groups"""
   groups: Int
@@ -1455,6 +1470,7 @@ input CourseInsertInput {
 
   """Abbreviated course name"""
   nameShort: String
+  nomImport: String
   parent: CourseObjRelInsertInput
 
   """Reference to previous year's version of this course"""
@@ -1505,6 +1521,8 @@ type CourseMaxFields {
 
   """Course description"""
   description: String
+  ensIdImport: String
+  formationIdImport: String
 
   """Standard number of student groups"""
   groups: Int
@@ -1529,9 +1547,11 @@ type CourseMaxFields {
 
   """Full course name"""
   name: String
+  nameDisplay: String
 
   """Abbreviated course name"""
   nameShort: String
+  nomImport: String
 
   """Reference to previous year's version of this course"""
   parentId: Int
@@ -1579,6 +1599,8 @@ input CourseMaxOrderBy {
 
   """Course description"""
   description: OrderBy
+  ensIdImport: OrderBy
+  formationIdImport: OrderBy
 
   """Standard number of student groups"""
   groups: OrderBy
@@ -1603,9 +1625,11 @@ input CourseMaxOrderBy {
 
   """Full course name"""
   name: OrderBy
+  nameDisplay: OrderBy
 
   """Abbreviated course name"""
   nameShort: OrderBy
+  nomImport: OrderBy
 
   """Reference to previous year's version of this course"""
   parentId: OrderBy
@@ -1646,6 +1670,8 @@ type CourseMinFields {
 
   """Course description"""
   description: String
+  ensIdImport: String
+  formationIdImport: String
 
   """Standard number of student groups"""
   groups: Int
@@ -1670,9 +1696,11 @@ type CourseMinFields {
 
   """Full course name"""
   name: String
+  nameDisplay: String
 
   """Abbreviated course name"""
   nameShort: String
+  nomImport: String
 
   """Reference to previous year's version of this course"""
   parentId: Int
@@ -1720,6 +1748,8 @@ input CourseMinOrderBy {
 
   """Course description"""
   description: OrderBy
+  ensIdImport: OrderBy
+  formationIdImport: OrderBy
 
   """Standard number of student groups"""
   groups: OrderBy
@@ -1744,9 +1774,11 @@ input CourseMinOrderBy {
 
   """Full course name"""
   name: OrderBy
+  nameDisplay: OrderBy
 
   """Abbreviated course name"""
   nameShort: OrderBy
+  nomImport: OrderBy
 
   """Reference to previous year's version of this course"""
   parentId: OrderBy
@@ -1814,6 +1846,8 @@ input CourseOrderBy {
   createdAt: OrderBy
   cycleYear: OrderBy
   description: OrderBy
+  ensIdImport: OrderBy
+  formationIdImport: OrderBy
   groups: OrderBy
   groupsAdjusted: OrderBy
   groupsEffective: OrderBy
@@ -1822,7 +1856,9 @@ input CourseOrderBy {
   hoursEffective: OrderBy
   id: OrderBy
   name: OrderBy
+  nameDisplay: OrderBy
   nameShort: OrderBy
+  nomImport: OrderBy
   parent: CourseOrderBy
   parentId: OrderBy
   prioritiesAggregate: PriorityAggregateOrderBy
@@ -1862,6 +1898,12 @@ enum CourseSelectColumn {
   description
 
   """column name"""
+  ensIdImport
+
+  """column name"""
+  formationIdImport
+
+  """column name"""
   groups
 
   """column name"""
@@ -1886,7 +1928,13 @@ enum CourseSelectColumn {
   name
 
   """column name"""
+  nameDisplay
+
+  """column name"""
   nameShort
+
+  """column name"""
+  nomImport
 
   """column name"""
   parentId
@@ -1941,6 +1989,8 @@ input CourseSetInput {
 
   """Course description"""
   description: String
+  ensIdImport: String
+  formationIdImport: String
 
   """Standard number of student groups"""
   groups: Int
@@ -1962,6 +2012,7 @@ input CourseSetInput {
 
   """Abbreviated course name"""
   nameShort: String
+  nomImport: String
 
   """Reference to previous year's version of this course"""
   parentId: Int
@@ -2337,6 +2388,8 @@ input CourseStreamCursorValueInput {
 
   """Course description"""
   description: String
+  ensIdImport: String
+  formationIdImport: String
 
   """Standard number of student groups"""
   groups: Int
@@ -2361,9 +2414,11 @@ input CourseStreamCursorValueInput {
 
   """Full course name"""
   name: String
+  nameDisplay: String
 
   """Abbreviated course name"""
   nameShort: String
+  nomImport: String
 
   """Reference to previous year's version of this course"""
   parentId: Int
@@ -2949,6 +3004,12 @@ enum CourseUpdateColumn {
   description
 
   """column name"""
+  ensIdImport
+
+  """column name"""
+  formationIdImport
+
+  """column name"""
   groups
 
   """column name"""
@@ -2968,6 +3029,9 @@ enum CourseUpdateColumn {
 
   """column name"""
   nameShort
+
+  """column name"""
+  nomImport
 
   """column name"""
   parentId
@@ -3348,6 +3412,7 @@ type Degree {
 
   """Full degree name, unique (e.g., Bachelor of Science)"""
   name: String!
+  nameDisplay: String
 
   """Abbreviated degree name (e.g., BSc)"""
   nameShort: String
@@ -3438,6 +3503,7 @@ input DegreeBoolExp {
   createdAt: TimestamptzComparisonExp
   id: IntComparisonExp
   name: StringComparisonExp
+  nameDisplay: StringComparisonExp
   nameShort: StringComparisonExp
   programs: ProgramBoolExp
   programsAggregate: ProgramAggregateBoolExp
@@ -3504,6 +3570,7 @@ type DegreeMaxFields {
 
   """Full degree name, unique (e.g., Bachelor of Science)"""
   name: String
+  nameDisplay: String
 
   """Abbreviated degree name (e.g., BSc)"""
   nameShort: String
@@ -3524,6 +3591,7 @@ type DegreeMinFields {
 
   """Full degree name, unique (e.g., Bachelor of Science)"""
   name: String
+  nameDisplay: String
 
   """Abbreviated degree name (e.g., BSc)"""
   nameShort: String
@@ -3569,6 +3637,7 @@ input DegreeOrderBy {
   createdAt: OrderBy
   id: OrderBy
   name: OrderBy
+  nameDisplay: OrderBy
   nameShort: OrderBy
   programsAggregate: ProgramAggregateOrderBy
   updatedAt: OrderBy
@@ -3593,6 +3662,9 @@ enum DegreeSelectColumn {
 
   """column name"""
   name
+
+  """column name"""
+  nameDisplay
 
   """column name"""
   nameShort
@@ -3668,6 +3740,7 @@ input DegreeStreamCursorValueInput {
 
   """Full degree name, unique (e.g., Bachelor of Science)"""
   name: String
+  nameDisplay: String
 
   """Abbreviated degree name (e.g., BSc)"""
   nameShort: String
@@ -5314,9 +5387,11 @@ type Program {
 
   """Full program name, unique within its degree (e.g., Mathematics)"""
   name: String!
+  nameDisplay: String
 
   """Abbreviated program name"""
   nameShort: String
+  nomImport: String
 
   """An array relationship"""
   tracks(
@@ -5457,7 +5532,9 @@ input ProgramBoolExp {
   degreeId: IntComparisonExp
   id: IntComparisonExp
   name: StringComparisonExp
+  nameDisplay: StringComparisonExp
   nameShort: StringComparisonExp
+  nomImport: StringComparisonExp
   tracks: TrackBoolExp
   tracksAggregate: TrackAggregateBoolExp
   updatedAt: TimestamptzComparisonExp
@@ -5512,6 +5589,7 @@ input ProgramInsertInput {
 
   """Abbreviated program name"""
   nameShort: String
+  nomImport: String
   tracks: TrackArrRelInsertInput
 
   """
@@ -5536,9 +5614,11 @@ type ProgramMaxFields {
 
   """Full program name, unique within its degree (e.g., Mathematics)"""
   name: String
+  nameDisplay: String
 
   """Abbreviated program name"""
   nameShort: String
+  nomImport: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -5561,9 +5641,11 @@ input ProgramMaxOrderBy {
 
   """Full program name, unique within its degree (e.g., Mathematics)"""
   name: OrderBy
+  nameDisplay: OrderBy
 
   """Abbreviated program name"""
   nameShort: OrderBy
+  nomImport: OrderBy
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -5584,9 +5666,11 @@ type ProgramMinFields {
 
   """Full program name, unique within its degree (e.g., Mathematics)"""
   name: String
+  nameDisplay: String
 
   """Abbreviated program name"""
   nameShort: String
+  nomImport: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -5609,9 +5693,11 @@ input ProgramMinOrderBy {
 
   """Full program name, unique within its degree (e.g., Mathematics)"""
   name: OrderBy
+  nameDisplay: OrderBy
 
   """Abbreviated program name"""
   nameShort: OrderBy
+  nomImport: OrderBy
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -5658,7 +5744,9 @@ input ProgramOrderBy {
   degreeId: OrderBy
   id: OrderBy
   name: OrderBy
+  nameDisplay: OrderBy
   nameShort: OrderBy
+  nomImport: OrderBy
   tracksAggregate: TrackAggregateOrderBy
   updatedAt: OrderBy
   visible: OrderBy
@@ -5687,7 +5775,13 @@ enum ProgramSelectColumn {
   name
 
   """column name"""
+  nameDisplay
+
+  """column name"""
   nameShort
+
+  """column name"""
+  nomImport
 
   """column name"""
   updatedAt
@@ -5730,6 +5824,7 @@ input ProgramSetInput {
 
   """Abbreviated program name"""
   nameShort: String
+  nomImport: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -5824,9 +5919,11 @@ input ProgramStreamCursorValueInput {
 
   """Full program name, unique within its degree (e.g., Mathematics)"""
   name: String
+  nameDisplay: String
 
   """Abbreviated program name"""
   nameShort: String
+  nomImport: String
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -5875,6 +5972,9 @@ enum ProgramUpdateColumn {
 
   """column name"""
   nameShort
+
+  """column name"""
+  nomImport
 
   """column name"""
   updatedAt
@@ -10649,9 +10749,11 @@ type Track {
   Full track name, unique within its program (e.g., Pure Mathematics, Applied Mathematics, Statistics, etc.)
   """
   name: String!
+  nameDisplay: String
 
   """Abbreviated track name"""
   nameShort: String
+  nomImport: String
 
   """An object relationship"""
   program: Program!
@@ -10760,7 +10862,9 @@ input TrackBoolExp {
   createdAt: TimestamptzComparisonExp
   id: IntComparisonExp
   name: StringComparisonExp
+  nameDisplay: StringComparisonExp
   nameShort: StringComparisonExp
+  nomImport: StringComparisonExp
   program: ProgramBoolExp
   programId: IntComparisonExp
   updatedAt: TimestamptzComparisonExp
@@ -10813,6 +10917,7 @@ input TrackInsertInput {
 
   """Abbreviated track name"""
   nameShort: String
+  nomImport: String
   program: ProgramObjRelInsertInput
 
   """Parent program for this track"""
@@ -10839,9 +10944,11 @@ type TrackMaxFields {
   Full track name, unique within its program (e.g., Pure Mathematics, Applied Mathematics, Statistics, etc.)
   """
   name: String
+  nameDisplay: String
 
   """Abbreviated track name"""
   nameShort: String
+  nomImport: String
 
   """Parent program for this track"""
   programId: Int
@@ -10866,9 +10973,11 @@ input TrackMaxOrderBy {
   Full track name, unique within its program (e.g., Pure Mathematics, Applied Mathematics, Statistics, etc.)
   """
   name: OrderBy
+  nameDisplay: OrderBy
 
   """Abbreviated track name"""
   nameShort: OrderBy
+  nomImport: OrderBy
 
   """Parent program for this track"""
   programId: OrderBy
@@ -10891,9 +11000,11 @@ type TrackMinFields {
   Full track name, unique within its program (e.g., Pure Mathematics, Applied Mathematics, Statistics, etc.)
   """
   name: String
+  nameDisplay: String
 
   """Abbreviated track name"""
   nameShort: String
+  nomImport: String
 
   """Parent program for this track"""
   programId: Int
@@ -10918,9 +11029,11 @@ input TrackMinOrderBy {
   Full track name, unique within its program (e.g., Pure Mathematics, Applied Mathematics, Statistics, etc.)
   """
   name: OrderBy
+  nameDisplay: OrderBy
 
   """Abbreviated track name"""
   nameShort: OrderBy
+  nomImport: OrderBy
 
   """Parent program for this track"""
   programId: OrderBy
@@ -10968,7 +11081,9 @@ input TrackOrderBy {
   createdAt: OrderBy
   id: OrderBy
   name: OrderBy
+  nameDisplay: OrderBy
   nameShort: OrderBy
+  nomImport: OrderBy
   program: ProgramOrderBy
   programId: OrderBy
   updatedAt: OrderBy
@@ -10995,7 +11110,13 @@ enum TrackSelectColumn {
   name
 
   """column name"""
+  nameDisplay
+
+  """column name"""
   nameShort
+
+  """column name"""
+  nomImport
 
   """column name"""
   programId
@@ -11040,6 +11161,7 @@ input TrackSetInput {
 
   """Abbreviated track name"""
   nameShort: String
+  nomImport: String
 
   """Parent program for this track"""
   programId: Int
@@ -11136,9 +11258,11 @@ input TrackStreamCursorValueInput {
   Full track name, unique within its program (e.g., Pure Mathematics, Applied Mathematics, Statistics, etc.)
   """
   name: String
+  nameDisplay: String
 
   """Abbreviated track name"""
   nameShort: String
+  nomImport: String
 
   """Parent program for this track"""
   programId: Int
@@ -11187,6 +11311,9 @@ enum TrackUpdateColumn {
 
   """column name"""
   nameShort
+
+  """column name"""
+  nomImport
 
   """column name"""
   programId
