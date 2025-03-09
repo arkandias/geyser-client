@@ -44,8 +44,7 @@ type T = typeof rowDescriptor;
 type FormValues = NullableParsedRow<T>;
 type ImportRow = ParsedRow<T>;
 type InsertInput = {
-  year?: number | null;
-  uid?: string | null;
+  serviceId?: number | null;
   hours?: number | null;
   message?: string | null;
 };
@@ -185,19 +184,32 @@ function validateImportRow(
 ): Partial<InsertInput> {
   const object: Partial<InsertInput> = {};
 
-  if (importRow.year !== undefined) {
-    object.year = importRow.year;
-  }
+  if (importRow.year !== undefined || importRow.uid !== undefined) {
+    if (importRow.uid === undefined) {
+      throw new Error(
+        t("admin.teachers.service.form.error.updateYearWithoutUid"),
+      );
+    }
 
-  if (importRow.uid !== undefined) {
-    object.uid = importRow.uid;
-  }
+    if (importRow.year === undefined) {
+      throw new Error(
+        t("admin.teachers.service.form.error.updateUidWithoutYear"),
+      );
+    }
 
-  if (
-    checkConflicts &&
-    services.value.find((s) => s.year === object.year && s.uid === object.uid)
-  ) {
-    throw new Error(t("admin.teachers.services.form.error.conflictYearUid"));
+    object.serviceId = services.value.find(
+      (s) => s.year === importRow.year && s.uid === importRow.uid,
+    )?.id;
+
+    if (object.serviceId === undefined) {
+      throw new Error(
+        t("admin.teachers.serviceModifications.form.error.serviceNotFound"),
+      );
+    }
+
+    if (checkConflicts) {
+      throw new Error(t("admin.teachers.services.form.error.conflictYearUid"));
+    }
   }
 
   if (importRow.hours !== undefined) {

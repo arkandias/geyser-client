@@ -53,15 +53,15 @@ graphql(`
     degree {
       id
       name
-      nameShort
     }
-    name: nameDisplay
+    name
+    nameShort
     visible
   }
 
   fragment AdminProgramDegree on Degree {
     id
-    nameDisplay
+    name
   }
 
   mutation InsertPrograms($objects: [ProgramInsertInput!]!) {
@@ -156,7 +156,7 @@ const columns: Column<Row>[] = [
   },
 ];
 
-const formatRow = (row: Row) => row.name ?? "";
+const formatRow = (row: Row) => row.name;
 
 const initForm = (rows: Row[]): FormValues =>
   rows.length === 1
@@ -179,7 +179,7 @@ function validateImportRow(
 
   if (importRow.degree !== undefined) {
     object.degreeId = degrees.value.find(
-      (d) => d.nameDisplay === importRow.degree,
+      (d) => d.name === importRow.degree,
     )?.id;
     if (object.degreeId === undefined) {
       throw new Error(t("admin.courses.programs.form.error.degreeNotFound"));
@@ -191,7 +191,7 @@ function validateImportRow(
     if (
       checkConflicts &&
       programs.value.find(
-        (m) => m.degree.id === object.degreeId && m.name === object.name,
+        (p) => p.degree.id === object.degreeId && p.name === object.name,
       )
     ) {
       throw new Error(
@@ -235,7 +235,7 @@ function validateImportRow(
     <template #form="{ multipleSelection }">
       <QSelect
         v-model="formValues.degree"
-        :options="degrees.map((d) => d.nameDisplay)"
+        :options="degrees.map((d) => d.name)"
         :label="t('admin.courses.programs.form.fields.degree')"
         :disable="multipleSelection && !selectedFields.includes('degree')"
         square

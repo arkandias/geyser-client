@@ -12,8 +12,8 @@ export default {
       search: "Rechercher...",
       error: {
         invalidForm: "Formulaire non valide",
-        emptyField: "{field} requis",
-        notANumber: "{field} n'est pas un nombre valide",
+        emptyField: "Le champ « {field} » est requis",
+        notANumber: "Le champ « {field} » n'est pas un nombre valide",
         insertFailed: "Échec de la création",
         updateFailed: "Échec de la mise à jour",
         deleteFailed: "Échec de la suppression",
@@ -258,6 +258,10 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
             message: "Message",
           },
           error: {
+            updateYearWithoutUid:
+              "Vous ne pouvez pas modifier l'année sans sélectionner un intervenant",
+            updateUidWithoutYear:
+              "Vous ne pouvez pas modifier l'intervenant sans sélectionner une année",
             conflictYearUid:
               "Il existe déjà un service pour cet intervenant et cette année",
             hoursNegative: "Entrez un nombre d'heures positif ou nul",
@@ -459,9 +463,9 @@ Si ces diplômes contiennent des mentions, vous ne pourrez pas les supprimer.`,
             visible: "Visible",
           },
           error: {
+            degreeNotFound: "Il n'existe pas de diplôme avec ce nom",
             conflictDegreeName:
               "Il existe déjà une mention du même diplôme avec ce nom",
-            degreeNotFound: "Il n'existe pas de diplôme avec ce nom",
           },
         },
         data: {
@@ -487,7 +491,64 @@ Si ces mentions contiennent des parcours, des cours ou admettent des responsable
           },
         },
       },
-      tracks: "Parcours",
+      tracks: {
+        label: "Parcours",
+        table: {
+          columns: {
+            degree: "Diplôme",
+            program: "Mention",
+            name: "Nom",
+            nameShort: "Nom court",
+            visible: "Visible",
+          },
+        },
+        form: {
+          title: {
+            none: "Nouveau parcours",
+            single: "{label}",
+            multiple: "{count} parcours sélectionnés",
+          },
+          fields: {
+            degree: "Diplôme",
+            program: "Mention",
+            name: "Nom",
+            nameShort: "Nom court",
+            visible: "Visible",
+          },
+          error: {
+            updateDegreeWithoutProgram:
+              "Vous ne pouvez pas modifier le diplôme sans sélectionner une mention",
+            updateProgramWithoutDegree:
+              "Vous ne pouvez pas modifier la mention sans sélectionner un diplôme",
+            degreeNotFound: "Il n'existe pas de diplôme avec ce nom",
+            programNotFound: "Il n'existe pas de mention avec ce nom",
+            conflictProgramName:
+              "Il existe déjà un parcours de la même mention avec ce nom",
+          },
+        },
+        data: {
+          success: {
+            insert:
+              "Aucun parcours créé | Parcours créé | {count} parcours créés",
+            update:
+              "Aucun parcours mis à jour | Parcours mis à jour | {count} parcours mis à jour",
+            delete:
+              "Aucun parcours supprimé | Parcours supprimé | {count} parcours supprimés",
+            import:
+              "0 parcours importé | 1 parcours importé | {count} parcours importés",
+            export:
+              "0 parcours exporté | 1 parcours exporté | {count} parcours exportés",
+          },
+          confirm: {
+            delete: {
+              single: `Êtes-vous sûr de vouloir supprimer le parcours « {label} » ?
+Si ce parcours contient des cours ou admet un responsable, vous ne pourrez pas l supprimer.`,
+              multiple: `Êtes-vous sûr de vouloir supprimer les {count} parcours sélectionnés ?
+Si ces parcours contiennent des cours ou admettent des responsables, vous ne pourrez pas les supprimer.`,
+            },
+          },
+        },
+      },
       courses: "Enseignements",
       types: "Types d'enseignement",
     },

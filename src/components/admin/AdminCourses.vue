@@ -8,6 +8,7 @@ import { GetAdminCoursesDocument } from "@/gql/graphql.ts";
 
 import AdminCoursesDegrees from "@/components/admin/AdminCoursesDegrees.vue";
 import AdminCoursesPrograms from "@/components/admin/AdminCoursesPrograms.vue";
+import AdminCoursesTracks from "@/components/admin/AdminCoursesTracks.vue";
 import AdminSection from "@/components/admin/AdminSection.vue";
 
 const { t } = useCustomI18n();
@@ -17,9 +18,21 @@ graphql(`
     degrees: degree(orderBy: [{ name: ASC }]) {
       ...AdminDegree
       ...AdminProgramDegree
+      ...AdminTrackDegree
     }
-    programs: program(orderBy: [{ degree: { name: ASC } }, { name: ASC }]) {
+    programs: program(
+      orderBy: [{ degree: { nameDisplay: ASC } }, { name: ASC }]
+    ) {
       ...AdminProgram
+    }
+    tracks: track(
+      orderBy: [
+        { program: { degree: { nameDisplay: ASC } } }
+        { program: { nameDisplay: ASC } }
+        { nameDisplay: ASC }
+      ]
+    ) {
+      ...AdminTrack
     }
   }
 `);
@@ -36,6 +49,7 @@ const degrees = computed(
 const programs = computed(
   () => adminCoursesQueryResult.data.value?.programs ?? [],
 );
+const tracks = computed(() => adminCoursesQueryResult.data.value?.tracks ?? []);
 </script>
 
 <template>
@@ -58,7 +72,14 @@ const programs = computed(
 
     <QSeparator />
 
-    <AdminSection icon="sym_s_alt_route" :label="t('admin.courses.tracks')">
+    <AdminSection
+      icon="sym_s_alt_route"
+      :label="t('admin.courses.tracks.label')"
+    >
+      <AdminCoursesTracks
+        :degree-fragments="degrees"
+        :track-fragments="tracks"
+      />
     </AdminSection>
 
     <QSeparator />
