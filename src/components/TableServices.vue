@@ -11,7 +11,6 @@ import {
   ServiceRowsFragmentDoc,
 } from "@/gql/graphql.ts";
 import { type Column, getField } from "@/types/column.ts";
-import { nf } from "@/utils/format.ts";
 import { modifiedService, totalHW } from "@/utils/hours.ts";
 import { normalizeForSearch } from "@/utils/misc.ts";
 
@@ -66,7 +65,7 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
+const { t, n } = useCustomI18n();
 
 const perm = usePermissions();
 
@@ -111,7 +110,7 @@ const columns: Column<ServiceRowsFragment>[] = [
     label: "S.",
     tooltip: "Service à réaliser (en heures EQTD)",
     field: (row) => modifiedService(row),
-    format: (val: number) => nf.format(val),
+    format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: true,
     searchable: false,
@@ -121,7 +120,7 @@ const columns: Column<ServiceRowsFragment>[] = [
     label: "A.",
     tooltip: "Nombre d'heures EQTD attribuées",
     field: (row) => totalHW(row.totalAssigned),
-    format: (val: number) => nf.format(val),
+    format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: perm.toViewAssignments,
     searchable: false,
@@ -132,7 +131,7 @@ const columns: Column<ServiceRowsFragment>[] = [
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD attribuées",
     field: (row) => modifiedService(row) - totalHW(row.totalAssigned),
-    format: (val: number) => nf.format(val),
+    format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: false,
     searchable: false,
@@ -142,7 +141,7 @@ const columns: Column<ServiceRowsFragment>[] = [
     label: "V1",
     tooltip: "Nombre d'heures EQTD demandées en vœux principaux",
     field: (row) => totalHW(row.totalPrimary),
-    format: (val: number) => nf.format(val),
+    format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: true,
     searchable: false,
@@ -153,7 +152,7 @@ const columns: Column<ServiceRowsFragment>[] = [
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",
     field: (row) => modifiedService(row) - totalHW(row.totalPrimary),
-    format: (val: number) => nf.format(val),
+    format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: false,
     searchable: false,
@@ -163,7 +162,7 @@ const columns: Column<ServiceRowsFragment>[] = [
     label: "V2",
     tooltip: "Nombre d'heures EQTD demandées en vœux secondaires",
     field: (row) => totalHW(row.totalSecondary),
-    format: (val: number) => nf.format(val),
+    format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: true,
     searchable: false,

@@ -9,6 +9,11 @@ const numberFormat = {
     style: "decimal",
     maximumFractionDigits: 2,
   },
+  decimalFixed: {
+    style: "decimal",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  },
 } as const;
 
 export type CustomI18nOptions = I18nOptions & {

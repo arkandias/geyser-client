@@ -21,7 +21,6 @@ import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
 import { inputToNumber, nullRow } from "@/utils/admin-data.ts";
-import { nf } from "@/utils/format.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -45,7 +44,7 @@ const {
   >[];
 }>();
 
-const { t } = useCustomI18n();
+const { t, n } = useCustomI18n();
 const { years } = useYearsStore();
 
 const idKey = "id";
@@ -228,7 +227,8 @@ const columns: Column<Row>[] = [
     name: "hours",
     label: t("admin.teachers.services.table.columns.hours"),
     field: "hours",
-    format: (val: number | null) => (val === null ? null : nf.format(val)),
+    format: (val: number | null) =>
+      val === null ? null : n(val, "decimalFixed"),
     sortable: true,
     searchable: false,
   },

@@ -18,7 +18,6 @@ import {
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
 import { inputToNumber, nullRow } from "@/utils/admin-data.ts";
-import { nf } from "@/utils/format.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -27,7 +26,7 @@ const { teacherFragments, positionFragments } = defineProps<{
   positionFragments: FragmentType<typeof AdminTeacherPositionFragmentDoc>[];
 }>();
 
-const { t } = useCustomI18n();
+const { t, n } = useCustomI18n();
 
 const idKey = "uid";
 const rowDescriptor = {
@@ -186,7 +185,8 @@ const columns: Column<Row>[] = [
     name: "baseServiceHours",
     label: t("admin.teachers.teachers.table.columns.baseServiceHours"),
     field: "baseServiceHours",
-    format: (val: number | null) => (val === null ? null : nf.format(val)),
+    format: (val: number | null) =>
+      val === null ? null : n(val, "decimalFixed"),
     sortable: true,
     searchable: false,
   },

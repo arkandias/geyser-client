@@ -9,6 +9,7 @@ import { GetAdminCoursesDocument } from "@/gql/graphql.ts";
 import AdminCoursesDegrees from "@/components/admin/AdminCoursesDegrees.vue";
 import AdminCoursesPrograms from "@/components/admin/AdminCoursesPrograms.vue";
 import AdminCoursesTracks from "@/components/admin/AdminCoursesTracks.vue";
+import AdminCoursesTypes from "@/components/admin/AdminCoursesTypes.vue";
 import AdminSection from "@/components/admin/AdminSection.vue";
 
 const { t } = useCustomI18n();
@@ -34,6 +35,9 @@ graphql(`
     ) {
       ...AdminTrack
     }
+    types: courseType(orderBy: { label: ASC }) {
+      ...AdminCourseType
+    }
   }
 `);
 
@@ -50,6 +54,7 @@ const programs = computed(
   () => adminCoursesQueryResult.data.value?.programs ?? [],
 );
 const tracks = computed(() => adminCoursesQueryResult.data.value?.tracks ?? []);
+const types = computed(() => adminCoursesQueryResult.data.value?.types ?? []);
 </script>
 
 <template>
@@ -84,15 +89,19 @@ const tracks = computed(() => adminCoursesQueryResult.data.value?.tracks ?? []);
 
     <QSeparator />
 
-    <AdminSection icon="sym_s_menu_book" :label="t('admin.courses.courses')">
+    <AdminSection
+      icon="sym_s_menu_book"
+      :label="t('admin.courses.courses.label')"
+    >
     </AdminSection>
 
     <QSeparator />
 
     <AdminSection
       icon="sym_s_format_list_bulleted"
-      :label="t('admin.courses.types')"
+      :label="t('admin.courses.types.label')"
     >
+      <AdminCoursesTypes :course-type-fragments="types" />
     </AdminSection>
   </QList>
 </template>

@@ -96,11 +96,9 @@ const displayActions = computed(
       </QTooltip>
     </QCardSection>
     <QCardSection class="q-pa-xs text-caption">
-      {{ n(groups, "decimal") }}
-      {{ t("requestCard.group", Math.ceil(groups)) }}
+      {{ n(groups) }} {{ t("requestCard.group", Math.ceil(groups)) }}
       <br />
-      {{ n(data.hours, "decimal") }}
-      {{ t("requestCard.hour", Math.ceil(data.hours)) }}
+      {{ n(data.hours) }} {{ t("requestCard.hour", Math.ceil(data.hours)) }}
     </QCardSection>
     <QSeparator v-if="!archive && displayActions(data.type)" />
     <QCardActions

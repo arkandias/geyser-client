@@ -549,8 +549,55 @@ Si ces parcours contiennent des cours ou admettent des responsables, vous ne pou
           },
         },
       },
-      courses: "Enseignements",
-      types: "Types d'enseignement",
+      courses: { label: "Enseignements" },
+      types: {
+        label: "Types d'enseignement",
+        table: {
+          columns: {
+            label: "Label",
+            coefficient: "Coefficient",
+            description: "Description",
+          },
+        },
+        form: {
+          title: {
+            none: "Nouveau type d'enseignement",
+            single: "{label}",
+            multiple: "{count} types d'enseignement' sélectionnés",
+          },
+          fields: {
+            label: "Label",
+            coefficient: "Coefficient",
+            description: "Description",
+          },
+          error: {
+            conflictLabel:
+              "Il existe déjà un type d'enseignement avec ce label",
+          },
+        },
+        data: {
+          success: {
+            insert:
+              "Aucun type d'enseignement créé | Type d'enseignement créé | {count} types d'enseignement créés",
+            update:
+              "Aucun type d'enseignement mis à jour | Type d'enseignement mis à jour | {count} types d'enseignement mis à jour",
+            delete:
+              "Aucun type d'enseignement supprimé | Type d'enseignement supprimé | {count} types d'enseignement supprimés",
+            import:
+              "0 type d'enseignement importé | 1 type d'enseignement importé | {count} types d'enseignement importés",
+            export:
+              "0 type d'enseignement exporté | 1 type d'enseignement exporté | {count} types d'enseignement exportés",
+          },
+          confirm: {
+            delete: {
+              single: `Êtes-vous sûr de vouloir supprimer le type d'enseignement « {label} » ?
+Si ce type est attribué à des enseignements, vous ne pourrez pas le supprimer.`,
+              multiple: `Êtes-vous sûr de vouloir supprimer les {count} types d'enseignement sélectionnés ?
+Si ces types sont attribués à des enseignements, vous ne pourrez pas les supprimer.`,
+            },
+          },
+        },
+      },
     },
     requests: {
       title: "Demandes et priorités",

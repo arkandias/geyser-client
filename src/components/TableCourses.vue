@@ -18,7 +18,7 @@ import {
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import { type Column, getField } from "@/types/column.ts";
-import { formatProgram, nf } from "@/utils/format.ts";
+import { formatProgram } from "@/utils/format.ts";
 import { compare, normalizeForSearch, uniqueValue } from "@/utils/misc.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
@@ -79,7 +79,7 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
+const { t, n } = useCustomI18n();
 
 const { activeYear } = useYearsStore();
 const perm = usePermissions();
@@ -236,7 +236,8 @@ const columns: Column<CourseRow>[] = [
     field: (row) =>
       (getTeacherTotal(row, REQUEST_TYPES.ASSIGNMENT) ?? row.totalAssigned) *
       (weightedHours.value ? row.courseType.coefficient : 1),
-    format: (val: number | null) => (val === null ? "-" : nf.format(val)),
+    format: (val: number | null) =>
+      val === null ? "-" : n(val, "decimalFixed"),
     sortable: true,
     visible: perm.toViewAssignments,
     searchable: false,
@@ -249,7 +250,7 @@ const columns: Column<CourseRow>[] = [
     field: (row) =>
       ((row.totalHours ?? 0) - row.totalAssigned) *
       (weightedHours.value ? row.courseType.coefficient : 1),
-    format: (val: number) => (teacher.value ? "-" : nf.format(val)),
+    format: (val: number) => (teacher.value ? "-" : n(val, "decimalFixed")),
     sortable: true,
     visible: false,
     searchable: false,
@@ -261,7 +262,7 @@ const columns: Column<CourseRow>[] = [
     field: (row) =>
       (getTeacherTotal(row, REQUEST_TYPES.PRIMARY) ?? row.totalPrimary) *
       (weightedHours.value ? row.courseType.coefficient : 1),
-    format: (val: number) => nf.format(val),
+    format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: true,
     searchable: false,
@@ -274,7 +275,7 @@ const columns: Column<CourseRow>[] = [
     field: (row) =>
       ((row.totalHours ?? 0) - row.totalPrimary) *
       (weightedHours.value ? row.courseType.coefficient : 1),
-    format: (val: number) => (teacher.value ? "-" : nf.format(val)),
+    format: (val: number) => (teacher.value ? "-" : n(val, "decimalFixed")),
     sortable: true,
     visible: false,
     searchable: false,
@@ -287,7 +288,7 @@ const columns: Column<CourseRow>[] = [
     field: (row) =>
       ((row.totalHours ?? 0) - row.totalPriority) *
       (weightedHours.value ? row.courseType.coefficient : 1),
-    format: (val: number) => (teacher.value ? "-" : nf.format(val)),
+    format: (val: number) => (teacher.value ? "-" : n(val, "decimalFixed")),
     sortable: true,
     visible: false,
     searchable: false,
@@ -299,7 +300,7 @@ const columns: Column<CourseRow>[] = [
     field: (row) =>
       (getTeacherTotal(row, REQUEST_TYPES.SECONDARY) ?? row.totalSecondary) *
       (weightedHours.value ? row.courseType.coefficient : 1),
-    format: (val: number) => nf.format(val),
+    format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: true,
     searchable: false,
