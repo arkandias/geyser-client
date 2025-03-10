@@ -15,15 +15,8 @@ export default {
     commissioner: "Commissaire",
     teacher: "Intervenant",
   },
-  notification: {
-    profile: {
-      found: "Profil trouvé",
-      notFound: "Profil non trouvé",
-    },
-    error: {
-      unknown: "Erreur inconnue",
-    },
-  },
+  yes: "Oui",
+  no: "Non",
   unit: {
     hours: "h",
     weightedHours: "htd",

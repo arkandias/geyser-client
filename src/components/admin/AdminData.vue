@@ -145,7 +145,7 @@ const openForm = (rows?: Row[]) => {
 
 // ===== Data Operations =====
 const errorMessage = (error: unknown) =>
-  error instanceof Error ? error.message : t("notification.error.unknown");
+  error instanceof Error ? error.message : t("admin.data.error.unknownError");
 
 function setImportRowValue<K extends keyof ImportRow>(
   row: Partial<ImportRow>,

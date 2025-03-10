@@ -11,6 +11,7 @@ export default {
       },
       search: "Rechercher...",
       error: {
+        unknownError: "Erreur inconnue",
         invalidForm: "Formulaire non valide",
         emptyField: "Le champ « {field} » est requis",
         notANumber: "Le champ « {field} » n'est pas un nombre valide",

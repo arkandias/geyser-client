@@ -17,7 +17,7 @@ import {
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
-import { inputToNumber, nullRow } from "@/utils/admin-data.ts";
+import { inputToNumber, nullRow, yesNoOptions } from "@/utils/admin-data.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -279,13 +279,18 @@ function validateImportRow(
   return object;
 }
 
+// Filters
 const selectedPositions = ref<string[]>([]);
+const selectedVisible = ref<boolean | null>(null);
+const selectedActive = ref<boolean | null>(null);
 const filteredTeachers = computed(() =>
-  selectedPositions.value.length
-    ? teachers.value.filter((t) =>
-        selectedPositions.value.includes(t.position?.label ?? ""),
-      )
-    : teachers.value,
+  teachers.value.filter(
+    (t) =>
+      (!selectedPositions.value.length ||
+        selectedPositions.value.includes(t.position?.label ?? "")) &&
+      (selectedVisible.value === null || t.visible === selectedVisible.value) &&
+      (selectedActive.value === null || t.active === selectedActive.value),
+  ),
 );
 </script>
 
@@ -336,6 +341,34 @@ const filteredTeachers = computed(() =>
           </QChip>
         </template>
       </QSelect>
+      <QSelect
+        v-model="selectedVisible"
+        :options="yesNoOptions"
+        color="primary"
+        :label="t('admin.teachers.teachers.table.columns.visible')"
+        emit-value
+        map-options
+        clearable
+        clear-icon="sym_s_close"
+        square
+        dense
+        options-dense
+        style="width: 100%"
+      />
+      <QSelect
+        v-model="selectedActive"
+        :options="yesNoOptions"
+        color="primary"
+        :label="t('admin.teachers.teachers.table.columns.active')"
+        emit-value
+        map-options
+        clearable
+        clear-icon="sym_s_close"
+        square
+        dense
+        options-dense
+        style="width: 100%"
+      />
     </template>
     <template #form="{ multipleSelection }">
       <QInput

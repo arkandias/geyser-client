@@ -17,7 +17,7 @@ import {
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
-import { nullRow } from "@/utils/admin-data.ts";
+import { nullRow, yesNoOptions } from "@/utils/admin-data.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -210,6 +210,18 @@ function validateImportRow(
 
   return object;
 }
+
+// Filters
+const selectedDegrees = ref<string[]>([]);
+const selectedVisible = ref<boolean | null>(null);
+const filteredPrograms = computed(() =>
+  programs.value.filter(
+    (p) =>
+      (!selectedDegrees.value.length ||
+        selectedDegrees.value.includes(p.degree.name)) &&
+      (selectedVisible.value === null || p.visible === selectedVisible.value),
+  ),
+);
 </script>
 
 <template>
@@ -221,7 +233,7 @@ function validateImportRow(
     :id-key
     :row-descriptor
     :columns
-    :rows="programs"
+    :rows="filteredPrograms"
     :format-row
     :init-form
     :validate-import-row
@@ -232,6 +244,48 @@ function validateImportRow(
     :constraint
     :update-columns
   >
+    <template #filters>
+      <QSelect
+        v-model="selectedDegrees"
+        :options="degrees.map((d) => d.name)"
+        color="primary"
+        :label="t('admin.courses.programs.table.columns.degree')"
+        multiple
+        use-chips
+        square
+        dense
+        options-dense
+        style="width: 100%"
+      >
+        <!-- this slot to use dense QChip -->
+        <template #selected-item="scope">
+          <QChip
+            :tabindex="scope.tabindex"
+            class="q-ma-none"
+            color="grey3"
+            removable
+            dense
+            @remove="scope.removeAtIndex(scope.index)"
+          >
+            {{ scope.opt.label ?? scope.opt }}
+          </QChip>
+        </template>
+      </QSelect>
+      <QSelect
+        v-model="selectedVisible"
+        :options="yesNoOptions"
+        color="primary"
+        :label="t('admin.courses.programs.table.columns.visible')"
+        emit-value
+        map-options
+        clearable
+        clear-icon="sym_s_close"
+        square
+        dense
+        options-dense
+        style="width: 100%"
+      />
+    </template>
     <template #form="{ multipleSelection }">
       <QSelect
         v-model="formValues.degree"

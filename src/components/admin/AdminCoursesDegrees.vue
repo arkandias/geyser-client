@@ -16,7 +16,7 @@ import {
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
-import { nullRow } from "@/utils/admin-data.ts";
+import { nullRow, yesNoOptions } from "@/utils/admin-data.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -168,6 +168,15 @@ function validateImportRow(
 
   return object;
 }
+
+// Filters
+const selectedVisible = ref<boolean | null>(null);
+const filteredDegrees = computed(() =>
+  degrees.value.filter(
+    (d) =>
+      selectedVisible.value === null || d.visible === selectedVisible.value,
+  ),
+);
 </script>
 
 <template>
@@ -179,7 +188,7 @@ function validateImportRow(
     :id-key
     :row-descriptor
     :columns
-    :rows="degrees"
+    :rows="filteredDegrees"
     :format-row
     :init-form
     :validate-import-row
@@ -190,6 +199,22 @@ function validateImportRow(
     :constraint
     :update-columns
   >
+    <template #filters>
+      <QSelect
+        v-model="selectedVisible"
+        :options="yesNoOptions"
+        color="primary"
+        :label="t('admin.courses.programs.table.columns.visible')"
+        emit-value
+        map-options
+        clearable
+        clear-icon="sym_s_close"
+        square
+        dense
+        options-dense
+        style="width: 100%"
+      />
+    </template>
     <template #form="{ multipleSelection }">
       <QInput
         v-if="!multipleSelection"

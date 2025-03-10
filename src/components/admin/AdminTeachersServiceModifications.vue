@@ -303,6 +303,7 @@ function validateImportRow(
   return object;
 }
 
+// Filters
 const selectedYears = ref<number[]>([]);
 const selectedUids = ref<string[]>([]);
 const selectedTypes = ref<string[]>([]);
