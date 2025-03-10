@@ -84,4 +84,5 @@ export default {
       deleted: "{type} supprimée",
     },
   },
+  service: "Service",
 } as const;

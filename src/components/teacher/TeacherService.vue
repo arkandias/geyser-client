@@ -34,8 +34,4 @@ const service = computed(() =>
   <TeacherServiceMessage :data-fragment="service" />
 </template>
 
-<style scoped lang="scss">
-.q-card__section {
-  text-align: center;
-}
-</style>
+<style scoped lang="scss"></style>

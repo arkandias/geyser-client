@@ -1,5 +1,6 @@
 import { computed, readonly } from "vue";
 
+import { useService } from "@/composables/useService.ts";
 import { PHASES } from "@/config/types/phases.ts";
 import { ROLES } from "@/config/types/roles.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
@@ -10,6 +11,7 @@ export const usePermissions = () => {
   const { isCurrentYearActive } = useYearsStore();
   const { currentPhase } = usePhaseStore();
   const { uid: myUid, activeRole } = useProfileStore();
+  const { hasService } = useService();
 
   const toAdmin = computed(() => activeRole.value === ROLES.ADMIN);
 
@@ -18,7 +20,8 @@ export const usePermissions = () => {
       activeRole.value === ROLES.ADMIN ||
       (activeRole.value === ROLES.TEACHER &&
         currentPhase.value === PHASES.REQUESTS &&
-        isCurrentYearActive.value),
+        isCurrentYearActive.value &&
+        hasService.value),
   );
 
   const toSubmitRequestsForOthers = computed(

@@ -15,10 +15,12 @@ const {
   text,
   setText,
   defaultText = "",
+  textStyle,
 } = defineProps<{
   text: string;
   setText: (text: string) => Promise<SetTextReturn>;
   defaultText?: string;
+  textStyle?: string;
 }>();
 
 const { t } = useCustomI18n();
@@ -120,7 +122,7 @@ defineExpose({ onDelete });
     </QCard>
   </QDialog>
   <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-  <div class="displayed-text" v-html="text || defaultText" />
+  <div class="displayed-text" :style="textStyle" v-html="text || defaultText" />
 </template>
 
 <style scoped lang="scss">

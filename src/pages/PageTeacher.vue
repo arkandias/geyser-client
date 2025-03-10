@@ -10,7 +10,6 @@ import { useYearsStore } from "@/stores/useYearsStore.ts";
 
 import TeacherCoordinations from "@/components/teacher/TeacherCoordinations.vue";
 import TeacherService from "@/components/teacher/TeacherService.vue";
-import TeacherServiceCreation from "@/components/teacher/TeacherServiceCreation.vue";
 import TeacherTitle from "@/components/teacher/TeacherTitle.vue";
 
 graphql(`
@@ -21,7 +20,6 @@ graphql(`
       }
       ...TeacherTitle
       ...TeacherCoordinations
-      ...TeacherNoService
 
       services(
         where: { year: { _eq: $year } }
@@ -65,14 +63,12 @@ const isCoordinator = computed(
       <TeacherTitle v-if="teacher" :data-fragment="teacher" />
       <TeacherCoordinations v-if="isCoordinator" :data-fragment="teacher" />
       <TeacherService v-if="service" :data-fragment="service" />
-      <TeacherServiceCreation
-        v-else
-        :year="activeYear"
-        :uid="activeUid"
-        :data-fragment="teacher"
-      />
     </QCard>
   </QPage>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:deep(.q-card__section) {
+  text-align: center;
+}
+</style>
