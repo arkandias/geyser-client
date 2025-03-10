@@ -85,40 +85,10 @@ const setActiveRole = (role: Role) => {
   }
 };
 
-// Impersonating
-const isImpersonating = ref(false);
-const profileSaved: Profile = {
-  uid: "",
-  displayname: "",
-  active: false,
-  roles: [],
-  activeRole: ROLES.TEACHER,
-};
-
-const startImpersonating = async (client: Client, claim: string) => {
-  if (!isImpersonating.value) {
-    Object.assign(profileSaved, profile);
-  }
-  await fetchProfile(client, claim);
-  isImpersonating.value = true;
-};
-
-const stopImpersonating = () => {
-  if (isImpersonating.value) {
-    Object.assign(profile, profileSaved);
-    isImpersonating.value = false;
-  } else {
-    console.warn("User is not currently impersonating");
-  }
-};
-
 export const useProfileStore = () => ({
   ...toRefs(profile),
   loaded: readonly(loaded),
   fetching: readonly(fetching),
   fetchProfile,
   setActiveRole,
-  isImpersonating: readonly(isImpersonating),
-  startImpersonating,
-  stopImpersonating,
 });

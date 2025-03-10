@@ -6,7 +6,6 @@ import { useDarkMode } from "@/composables/useDarkMode.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { useRefreshData } from "@/composables/useRefreshData.ts";
 import { version } from "@/config/env.ts";
-import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { buttonColor } from "@/utils/colors.ts";
 
 import MenuInfo from "@/components/header/MenuInfo.vue";
@@ -19,7 +18,6 @@ defineProps<{ disable?: boolean }>();
 const { t } = useCustomI18n();
 
 const router = useRouter();
-const { uid, isImpersonating, stopImpersonating } = useProfileStore();
 const perm = usePermissions();
 const { refreshData } = useRefreshData();
 const { isDarkModeActive, toggleDarkMode } = useDarkMode();
@@ -27,12 +25,6 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
 
 <template>
   <QHeader id="header">
-    <QBar v-if="isImpersonating" id="warning-impersonating">
-      <div class="col text-body1">
-        {{ t("header.warning.impersonating", { uid }) }}
-      </div>
-      <QBtn icon="sym_s_close" flat square @click="stopImpersonating()" />
-    </QBar>
     <QToolbar>
       <QToolbarTitle shrink>
         <QAvatar icon="sym_s_spa" square size="xl" />
@@ -115,17 +107,8 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
   height: $header-height;
   background-color: $primary;
 }
-#header:has(#warning-impersonating) {
-  height: $header-height + $warning-height;
-}
 .dev #header {
   background-color: $secondary;
-}
-#warning-impersonating {
-  height: $warning-height;
-  text-align: center;
-  background-color: $accent;
-  color: black;
 }
 #transition-wrapper {
   display: flex;

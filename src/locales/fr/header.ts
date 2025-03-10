@@ -2,7 +2,6 @@ export default {
   header: {
     warning: {
       archive: "Vous consultez une archive ({year})",
-      impersonating: "Vous incarnez un intervenant ({uid})",
     },
     home: {
       label: "Accueil",
@@ -144,10 +143,6 @@ export default {
     },
     user: {
       label: "Utilisateur",
-      impersonate: {
-        label: "Incarner",
-        dialog: { title: "Incarner un intervenant", button: "Valider" },
-      },
       logout: "Déconnexion",
     },
   },

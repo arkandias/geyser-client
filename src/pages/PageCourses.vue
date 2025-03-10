@@ -222,32 +222,17 @@ watch(
 #first-splitter,
 #first-splitter :deep(.sticky-header-table) {
   height: calc(100vh - $header-height);
-  #header:has(#warning-impersonating) ~ .q-page-container & {
-    height: calc(100vh - $header-height - $warning-height);
-  }
 }
 #warning-archive + #first-splitter,
 #warning-archive + #first-splitter :deep(.sticky-header-table) {
   height: calc(100vh - $header-height - $warning-height);
-  #header:has(#warning-impersonating) ~ .q-page-container & {
-    height: calc(100vh - $header-height - $warning-height - $warning-height);
-  }
 }
 #first-splitter #second-splitter :deep(.sticky-header-table) {
   height: calc((100vh - $header-height) * v-bind("hSplitterRatio") / 100);
-  #header:has(#warning-impersonating) ~ .q-page-container & {
-    height: calc(
-      (100vh - $header-height - $warning-height) * v-bind("hSplitterRatio") /
-        100
-    );
-  }
 }
 /* prettier-ignore */
 #warning-archive + #first-splitter #second-splitter :deep(.sticky-header-table) {
   height: calc((100vh - $header-height - $warning-height) * v-bind('hSplitterRatio') / 100);
-  #header:has(#warning-impersonating) ~ .q-page-container & {
-    height: calc((100vh - $header-height - $warning-height - $warning-height) * v-bind('hSplitterRatio') / 100);
-  }
 }
 
 // sticky header tables
