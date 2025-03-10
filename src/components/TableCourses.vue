@@ -321,7 +321,7 @@ const programsOptions = computed(() =>
   courses.value
     .map((c) => ({
       value: c.program.id,
-      label: `${row.program.degree.name} ${row.program.name}`,
+      label: `${c.program.degree.name} ${c.program.name}`,
     }))
     .filter(uniqueValue("value"))
     .sort(compare("label")),
