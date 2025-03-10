@@ -8,7 +8,6 @@ import {
 } from "@/gql/graphql.ts";
 import type { ArrayElement } from "@/types/misc.ts";
 import { priorityColor } from "@/utils/colors.ts";
-import { formatProgram } from "@/utils/format.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import TeacherList from "@/components/teacher/TeacherList.vue";
@@ -71,10 +70,8 @@ const formatPriorityTS = (priority: Priority) =>
 const formatPriority = (priority: Priority) => priority.course.name;
 
 const formatPriorityExtra = (priority: Priority) =>
-  formatProgram(priority.course.program) +
-  (priority.course.track
-    ? `, parcours ${priority.course.track.name ?? ""}`
-    : "");
+  `${priority.course.program.degree.name} ${priority.course.program.name}` +
+  (priority.course.track ? `, parcours ${priority.course.track.name}` : "");
 </script>
 
 <template>

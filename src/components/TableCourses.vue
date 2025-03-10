@@ -18,7 +18,6 @@ import {
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import { type Column, getField } from "@/types/column.ts";
-import { formatProgram } from "@/utils/format.ts";
 import { compare, normalizeForSearch, uniqueValue } from "@/utils/misc.ts";
 
 import PageTeacher from "@/pages/PageTeacher.vue";
@@ -163,7 +162,7 @@ const columns: Column<CourseRow>[] = [
     name: "program",
     label: "Formation",
     align: "left",
-    field: (row) => formatProgram(row.program),
+    field: (row) => `${row.program.degree.name} ${row.program.name}`,
     sortable: true,
     visible: true,
     searchable: true,
@@ -322,7 +321,7 @@ const programsOptions = computed(() =>
   courses.value
     .map((c) => ({
       value: c.program.id,
-      label: formatProgram(c.program),
+      label: `${row.program.degree.name} ${row.program.name}`,
     }))
     .filter(uniqueValue("value"))
     .sort(compare("label")),

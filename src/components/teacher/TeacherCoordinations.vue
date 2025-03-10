@@ -12,7 +12,6 @@ import {
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type { ArrayElement } from "@/types/misc.ts";
-import { formatProgram } from "@/utils/format.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import TeacherList from "@/components/teacher/TeacherList.vue";
@@ -85,6 +84,14 @@ const coordinations = computed(() =>
 // Helpers
 type Coordination = ArrayElement<TeacherCoordinationsFragment["coordinations"]>;
 
+const formatProgram = (program: {
+  name?: string | null | undefined;
+  degree: { name?: string | null | undefined };
+}) =>
+  !program.degree.name || !program.name
+    ? ""
+    : program.degree.name + " " + program.name;
+
 const formatCoordinationType = (coordination: Coordination) =>
   coordination.program
     ? "Mention"
@@ -106,7 +113,7 @@ const formatCoordinationExtra = (coordination: Coordination) =>
     : coordination.course
       ? formatProgram(coordination.course.program) +
         (coordination.course.track
-          ? `, parcours ${coordination.course.track.name ?? ""}`
+          ? `, parcours ${coordination.course.track.name}`
           : "")
       : "";
 

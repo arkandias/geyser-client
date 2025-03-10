@@ -7,7 +7,6 @@ import {
   type GetAssignmentsQueryVariables,
 } from "@/gql/graphql.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
-import { formatProgram } from "@/utils/format.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
@@ -77,7 +76,8 @@ export const useDownloadAssignments = () => {
       .then((result) => result.data?.assignments ?? []);
 
     const formattedAssignments = assignments.map((a) => ({
-      [t("downloadAssignments.program")]: formatProgram(a.course.program),
+      [t("downloadAssignments.program")]:
+        `${a.course.program.degree.name} ${a.course.program.name}`,
       [t("downloadAssignments.track")]: a.course.track
         ? a.course.track.name
         : null,
