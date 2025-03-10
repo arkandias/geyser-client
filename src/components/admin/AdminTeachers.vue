@@ -13,6 +13,8 @@ import AdminTeachersServiceModifications from "@/components/admin/AdminTeachersS
 import AdminTeachersServices from "@/components/admin/AdminTeachersServices.vue";
 import AdminTeachersTeachers from "@/components/admin/AdminTeachersTeachers.vue";
 
+const { t } = useCustomI18n();
+
 graphql(`
   query GetAdminTeachers {
     teachers: teacher(orderBy: [{ uid: ASC }]) {
@@ -71,8 +73,6 @@ const serviceModifications = computed(
 const serviceModificationTypes = computed(
   () => adminTeachersQueryResult.data.value?.serviceModificationTypes ?? [],
 );
-
-const { t } = useCustomI18n();
 </script>
 
 <template>

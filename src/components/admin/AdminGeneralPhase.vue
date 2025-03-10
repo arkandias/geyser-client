@@ -8,6 +8,16 @@ import { SetCurrentPhaseDocument } from "@/gql/graphql.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
+const { t } = useCustomI18n();
+const { currentPhase } = usePhaseStore();
+
+const phaseOptions = [
+  { value: PHASES.REQUESTS, label: t("phase.requests") },
+  { value: PHASES.ASSIGNMENTS, label: t("phase.assignments") },
+  { value: PHASES.RESULTS, label: t("phase.results") },
+  { value: PHASES.SHUTDOWN, label: t("phase.shutdown") },
+];
+
 graphql(`
   mutation SetCurrentPhase($value: String!) {
     phases: updatePhase(
@@ -27,16 +37,7 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
-const { currentPhase } = usePhaseStore();
 const setCurrentPhase = useMutation(SetCurrentPhaseDocument);
-
-const phaseOptions = [
-  { value: PHASES.REQUESTS, label: t("phase.requests") },
-  { value: PHASES.ASSIGNMENTS, label: t("phase.assignments") },
-  { value: PHASES.RESULTS, label: t("phase.results") },
-  { value: PHASES.SHUTDOWN, label: t("phase.shutdown") },
-];
 
 const setCurrentPhaseHandle = async (phase: string): Promise<void> => {
   const { error } = await setCurrentPhase.executeMutation({

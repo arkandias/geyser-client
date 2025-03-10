@@ -13,6 +13,13 @@ import {
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
+const { t } = useCustomI18n();
+const { years, currentYear } = useYearsStore();
+
+const selectedYear = ref<number | null>(null);
+const isFormOpen = ref(false);
+const formValue = ref<number | null>(null);
+
 graphql(`
   mutation SetCurrentYear($value: Int!) {
     years: updateYear(
@@ -49,13 +56,6 @@ graphql(`
     }
   }
 `);
-
-const { t } = useCustomI18n();
-const { years, currentYear } = useYearsStore();
-
-const selectedYear = ref<number | null>(null);
-const isFormOpen = ref(false);
-const formValue = ref<number | null>(null);
 
 const setCurrentYear = useMutation(SetCurrentYearDocument);
 const insertYear = useMutation(InsertYearDocument);

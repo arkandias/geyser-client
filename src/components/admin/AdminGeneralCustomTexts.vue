@@ -23,6 +23,22 @@ import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 
 import EditableText from "@/components/core/EditableText.vue";
 
+const { t } = useCustomI18n();
+const { customTexts } = useCustomTextsStore();
+
+const customTextOptions = computed(() =>
+  Object.entries(customTexts.value).map(([key, value]) => ({
+    key,
+    value,
+    label: t(`admin.general.customTexts.${key}`),
+  })),
+);
+const customTextsEdit = ref(
+  Object.fromEntries(
+    Object.entries(customTexts.value).map(([key]) => [key, false]),
+  ),
+);
+
 graphql(`
   mutation UpdateCustomText($key: String!, $value: String) {
     updateCustomTextByPk: insertUiTextOne(
@@ -40,23 +56,8 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
-const { customTexts } = useCustomTextsStore();
 const updateCustomText = useMutation(UpdateCustomTextDocument);
 const deleteCustomText = useMutation(DeleteCustomTextDocument);
-
-const customTextOptions = computed(() =>
-  Object.entries(customTexts.value).map(([key, value]) => ({
-    key,
-    value,
-    label: t(`admin.general.customTexts.${key}`),
-  })),
-);
-const customTextsEdit = ref(
-  Object.fromEntries(
-    Object.entries(customTexts.value).map(([key]) => [key, false]),
-  ),
-);
 
 const updateCustomTextHandle = (key: string, value: string) =>
   value
