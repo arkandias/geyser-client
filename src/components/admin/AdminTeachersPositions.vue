@@ -16,7 +16,7 @@ import {
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
-import { inputToNumber, nullRow } from "@/utils/admin-data.ts";
+import { inputToNumber } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -101,13 +101,6 @@ const updateColumns = [
   PositionUpdateColumn.BaseServiceHours,
 ];
 
-const formValues = ref<FormValues>(nullRow(rowDescriptor));
-const selectedFields = ref<string[]>([]);
-
-const updateBaseServiceHours = (value: string | number | null) => {
-  formValues.value.baseServiceHours = inputToNumber(value);
-};
-
 const columns: Column<Row>[] = [
   {
     name: "label",
@@ -138,8 +131,11 @@ const columns: Column<Row>[] = [
 
 const formatRow = (row: Row) => row.label;
 
-const initForm = (rows: Row[]): FormValues =>
-  rows.length === 1 ? { ...rows[0] } : nullRow(rowDescriptor);
+const initForm = (rows: Row[]): FormValues => ({
+  label: rows[0]?.label ?? null,
+  description: rows[0]?.description ?? null,
+  baseServiceHours: rows[0]?.baseServiceHours ?? null,
+});
 
 function validateImportRow(
   importRow: ImportRow,
@@ -161,7 +157,9 @@ function validateImportRow(
       checkConflicts &&
       positions.value.find((p) => p.label === object.label)
     ) {
-      throw new Error(t("admin.teachers.positions.form.error.conflictLabel"));
+      throw new Error(
+        t("admin.teachers.positions.form.error.conflictLabel", importRow),
+      );
     }
   }
 
@@ -170,16 +168,19 @@ function validateImportRow(
   }
 
   if (importRow.baseServiceHours !== undefined) {
-    object.baseServiceHours = importRow.baseServiceHours;
-    if (object.baseServiceHours !== null && object.baseServiceHours < 0) {
+    if (importRow.baseServiceHours !== null && importRow.baseServiceHours < 0) {
       throw new Error(
         t("admin.teachers.positions.form.error.baseServiceHoursNegative"),
       );
     }
+    object.baseServiceHours = importRow.baseServiceHours;
   }
 
   return object;
 }
+
+const formValues = ref<FormValues>(initForm([]));
+const selectedFields = ref<string[]>([]);
 </script>
 
 <template>
@@ -211,16 +212,12 @@ function validateImportRow(
         dense
       />
       <QInput
+        v-if="!multipleSelection"
         v-model="formValues.description"
         :label="t('admin.teachers.positions.form.fields.description')"
-        :disable="multipleSelection && !selectedFields.includes('description')"
         square
         dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="description" />
-        </template>
-      </QInput>
+      />
       <QInput
         :model-value="formValues.baseServiceHours"
         type="number"
@@ -231,7 +228,9 @@ function validateImportRow(
         :suffix="t('unit.weightedHours')"
         square
         dense
-        @update:model-value="updateBaseServiceHours"
+        @update:model-value="
+          (value) => (formValues.baseServiceHours = inputToNumber(value))
+        "
       >
         <template v-if="multipleSelection" #before>
           <QCheckbox v-model="selectedFields" val="baseServiceHours" />

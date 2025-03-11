@@ -5,9 +5,9 @@ import { computed, ref } from "vue";
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  AdminProgramDegreeFragmentDoc,
   type AdminProgramFragment,
   AdminProgramFragmentDoc,
+  AdminProgramsDegreeFragmentDoc,
   DeleteProgramsDocument,
   InsertProgramsDocument,
   ProgramConstraint,
@@ -17,12 +17,12 @@ import {
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
-import { nullRow, yesNoOptions } from "@/utils/admin-data.ts";
+import { booleanOptions } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
 const { degreeFragments, programFragments } = defineProps<{
-  degreeFragments: FragmentType<typeof AdminProgramDegreeFragmentDoc>[];
+  degreeFragments: FragmentType<typeof AdminProgramsDegreeFragmentDoc>[];
   programFragments: FragmentType<typeof AdminProgramFragmentDoc>[];
 }>();
 
@@ -43,7 +43,7 @@ type ImportRow = ParsedRow<T>;
 type InsertInput = {
   degreeId: number;
   name: string;
-  nameShort?: string | null;
+  nameShort: string | null;
   visible: boolean;
 };
 
@@ -53,13 +53,15 @@ graphql(`
     degree {
       id
       name
+      nameDisplay
     }
     name
     nameShort
+    nameDisplay
     visible
   }
 
-  fragment AdminProgramDegree on Degree {
+  fragment AdminProgramsDegree on Degree {
     id
     name
   }
@@ -101,7 +103,7 @@ graphql(`
 `);
 
 const degrees = computed(() =>
-  degreeFragments.map((f) => useFragment(AdminProgramDegreeFragmentDoc, f)),
+  degreeFragments.map((f) => useFragment(AdminProgramsDegreeFragmentDoc, f)),
 );
 const programs = computed(() =>
   programFragments.map((f) => useFragment(AdminProgramFragmentDoc, f)),
@@ -116,9 +118,6 @@ const updateColumns = [
   ProgramUpdateColumn.NameShort,
   ProgramUpdateColumn.Visible,
 ];
-
-const formValues = ref<FormValues>(nullRow(rowDescriptor));
-const selectedFields = ref<string[]>([]);
 
 const columns: Column<Row>[] = [
   {
@@ -156,12 +155,14 @@ const columns: Column<Row>[] = [
   },
 ];
 
-const formatRow = (row: Row) => row.name;
+const formatRow = (row: Row) => `${row.degree.nameDisplay} ${row.nameDisplay}`;
 
-const initForm = (rows: Row[]): FormValues =>
-  rows.length === 1
-    ? { ...rows[0], degree: rows[0]?.degree.name }
-    : nullRow(rowDescriptor);
+const initForm = (rows: Row[]): FormValues => ({
+  degree: rows[0]?.degree.name ?? null,
+  name: rows[0]?.name ?? null,
+  nameShort: rows[0]?.nameShort ?? null,
+  visible: rows[0]?.visible ?? null,
+});
 
 function validateImportRow(
   importRow: ImportRow,
@@ -178,12 +179,14 @@ function validateImportRow(
   const object: Partial<InsertInput> = {};
 
   if (importRow.degree !== undefined) {
-    object.degreeId = degrees.value.find(
-      (d) => d.name === importRow.degree,
-    )?.id;
-    if (object.degreeId === undefined) {
-      throw new Error(t("admin.courses.programs.form.error.degreeNotFound"));
+    const degree = degrees.value.find((d) => d.name === importRow.degree);
+    if (degree === undefined) {
+      throw new Error(
+        t("admin.courses.programs.form.error.degreeNotFound", importRow),
+      );
     }
+
+    object.degreeId = degree.id;
   }
 
   if (importRow.name !== undefined) {
@@ -195,7 +198,7 @@ function validateImportRow(
       )
     ) {
       throw new Error(
-        t("admin.courses.programs.form.error.conflictDegreeName"),
+        t("admin.courses.programs.form.error.conflictDegreeName", importRow),
       );
     }
   }
@@ -210,6 +213,9 @@ function validateImportRow(
 
   return object;
 }
+
+const formValues = ref<FormValues>(initForm([]));
+const selectedFields = ref<string[]>([]);
 
 // Filters
 const selectedDegrees = ref<string[]>([]);
@@ -248,7 +254,6 @@ const filteredPrograms = computed(() =>
       <QSelect
         v-model="selectedDegrees"
         :options="degrees.map((d) => d.name)"
-        color="primary"
         :label="t('admin.courses.programs.table.columns.degree')"
         multiple
         use-chips
@@ -256,24 +261,10 @@ const filteredPrograms = computed(() =>
         dense
         options-dense
         style="width: 100%"
-      >
-        <!-- this slot to use dense QChip -->
-        <template #selected-item="scope">
-          <QChip
-            :tabindex="scope.tabindex"
-            class="q-ma-none"
-            color="grey3"
-            removable
-            dense
-            @remove="scope.removeAtIndex(scope.index)"
-          >
-            {{ scope.opt.label ?? scope.opt }}
-          </QChip>
-        </template>
-      </QSelect>
+      />
       <QSelect
         v-model="selectedVisible"
-        :options="yesNoOptions"
+        :options="booleanOptions(t('yes'), t('no'))"
         color="primary"
         :label="t('admin.courses.programs.table.columns.visible')"
         emit-value
@@ -288,18 +279,14 @@ const filteredPrograms = computed(() =>
     </template>
     <template #form="{ multipleSelection }">
       <QSelect
+        v-if="!multipleSelection"
         v-model="formValues.degree"
         :options="degrees.map((d) => d.name)"
         :label="t('admin.courses.programs.form.fields.degree')"
-        :disable="multipleSelection && !selectedFields.includes('degree')"
         square
         dense
         options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="degree" />
-        </template>
-      </QSelect>
+      />
       <QInput
         v-if="!multipleSelection"
         v-model="formValues.name"
@@ -318,7 +305,7 @@ const filteredPrograms = computed(() =>
         <QCheckbox
           v-if="multipleSelection"
           v-model="selectedFields"
-          val="active"
+          val="visible"
         />
         <QToggle
           v-model="formValues.visible"

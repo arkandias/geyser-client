@@ -87,6 +87,6 @@ const routeTabs = [
 
 <style scoped lang="scss">
 :global(.admin-form) {
-  min-width: $admin-form-min-width;
+  width: $admin-form-width;
 }
 </style>

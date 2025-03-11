@@ -12,11 +12,6 @@ defineSlots<{ default(): unknown }>();
 
 graphql(`
   fragment CourseExpansion on Course {
-    name
-    courseType: type {
-      label
-    }
-    semester
     program {
       degree {
         name
@@ -25,6 +20,11 @@ graphql(`
     }
     track {
       name
+    }
+    name
+    semester
+    courseType: type {
+      label
     }
   }
 `);

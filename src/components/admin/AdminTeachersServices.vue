@@ -7,7 +7,7 @@ import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type AdminServiceFragment,
   AdminServiceFragmentDoc,
-  AdminServiceTeacherFragmentDoc,
+  AdminServicesTeacherFragmentDoc,
   DeleteServicesDocument,
   InsertServicesDocument,
   ServiceConstraint,
@@ -18,13 +18,13 @@ import {
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
-import { inputToNumber, nullRow } from "@/utils/admin-data.ts";
+import { inputToNumber } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
 const { teacherFragments, serviceFragments } = defineProps<{
   serviceFragments: FragmentType<typeof AdminServiceFragmentDoc>[];
-  teacherFragments: FragmentType<typeof AdminServiceTeacherFragmentDoc>[];
+  teacherFragments: FragmentType<typeof AdminServicesTeacherFragmentDoc>[];
 }>();
 
 const { t, n } = useCustomI18n();
@@ -53,11 +53,14 @@ graphql(`
     id
     year
     uid
+    teacher {
+      displayname
+    }
     hours
     message
   }
 
-  fragment AdminServiceTeacher on Teacher {
+  fragment AdminServicesTeacher on Teacher {
     uid
     displayname
   }
@@ -102,7 +105,7 @@ const services = computed(() =>
   serviceFragments.map((f) => useFragment(AdminServiceFragmentDoc, f)),
 );
 const teachers = computed(() =>
-  teacherFragments.map((f) => useFragment(AdminServiceTeacherFragmentDoc, f)),
+  teacherFragments.map((f) => useFragment(AdminServicesTeacherFragmentDoc, f)),
 );
 const insertServices = useMutation(InsertServicesDocument);
 const upsertServices = useMutation(UpsertServicesDocument);
@@ -111,21 +114,6 @@ const deleteServices = useMutation(DeleteServicesDocument);
 
 const constraint = ServiceConstraint.ServiceYearUidKey;
 const updateColumns = [ServiceUpdateColumn.Hours, ServiceUpdateColumn.Message];
-
-const formValues = ref<FormValues>(nullRow(rowDescriptor));
-const selectedFields = ref<string[]>([]);
-
-const teacherOptions = computed(() =>
-  teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
-);
-
-const getName = computed(
-  () => (uid: string) => teachers.value.find((t) => t.uid === uid)?.displayname,
-);
-
-const updateHours = (value: string | number | null) => {
-  formValues.value.hours = inputToNumber(value);
-};
 
 const columns: Column<Row>[] = [
   {
@@ -141,7 +129,6 @@ const columns: Column<Row>[] = [
     label: t("admin.teachers.services.table.columns.uid"),
     align: "left",
     field: "uid",
-    format: (val: string) => getName.value(val),
     sortable: true,
     searchable: true,
   },
@@ -157,18 +144,23 @@ const columns: Column<Row>[] = [
   {
     name: "message",
     label: t("admin.teachers.services.table.columns.message"),
-    align: "left",
+    align: "center",
     field: "message",
+    format: (val: string) => (val ? "✓" : "✗"),
     sortable: true,
     searchable: false,
   },
 ];
 
 const formatRow = (row: Row): string =>
-  `${row.year} — ${getName.value(row.uid)}`;
+  `${row.year} — ${row.teacher.displayname}`;
 
-const initForm = (rows: Row[]): FormValues =>
-  rows.length === 1 ? { ...rows[0] } : nullRow(rowDescriptor);
+const initForm = (rows: Row[]): FormValues => ({
+  year: rows[0]?.year,
+  uid: rows[0]?.uid,
+  hours: rows[0]?.hours,
+  message: rows[0]?.message,
+});
 
 function validateImportRow(
   importRow: ImportRow,
@@ -203,22 +195,25 @@ function validateImportRow(
 
     if (object.serviceId === undefined) {
       throw new Error(
-        t("admin.teachers.serviceModifications.form.error.serviceNotFound"),
+        t(
+          "admin.teachers.serviceModifications.form.error.serviceNotFound",
+          importRow,
+        ),
       );
     }
 
     if (checkConflicts) {
-      throw new Error(t("admin.teachers.services.form.error.conflictYearUid"));
+      throw new Error(
+        t("admin.teachers.services.form.error.conflictYearUid", importRow),
+      );
     }
   }
 
   if (importRow.hours !== undefined) {
-    object.hours = importRow.hours;
-    if (object.hours < 0) {
-      throw new Error(
-        t("admin.teachers.positions.form.error.baseServiceHoursNegative"),
-      );
+    if (importRow.hours < 0) {
+      throw new Error(t("admin.teachers.positions.form.error.hoursNegative"));
     }
+    object.hours = importRow.hours;
   }
 
   if (importRow.message !== undefined) {
@@ -227,6 +222,13 @@ function validateImportRow(
 
   return object;
 }
+
+const formValues = ref<FormValues>(initForm([]));
+const selectedFields = ref<string[]>([]);
+
+const teacherOptions = computed(() =>
+  teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
+);
 
 // Filters
 const selectedYears = ref<number[]>([]);
@@ -264,7 +266,6 @@ const filteredServices = computed(() =>
       <QSelect
         v-model="selectedYears"
         :options="years.map((y) => y.value)"
-        color="primary"
         :label="t('admin.teachers.services.table.columns.year')"
         multiple
         use-chips
@@ -272,25 +273,10 @@ const filteredServices = computed(() =>
         dense
         options-dense
         style="width: 100%"
-      >
-        <!-- this slot to use dense QChip -->
-        <template #selected-item="scope">
-          <QChip
-            :tabindex="scope.tabindex"
-            class="q-ma-none"
-            color="grey3"
-            removable
-            dense
-            @remove="scope.removeAtIndex(scope.index)"
-          >
-            {{ scope.opt }}
-          </QChip>
-        </template>
-      </QSelect>
+      />
       <QSelect
         v-model="selectedUids"
         :options="teacherOptions"
-        color="primary"
         :label="t('admin.teachers.services.table.columns.uid')"
         emit-value
         map-options
@@ -300,21 +286,7 @@ const filteredServices = computed(() =>
         dense
         options-dense
         style="width: 100%"
-      >
-        <!-- this slot to use dense QChip -->
-        <template #selected-item="scope">
-          <QChip
-            :tabindex="scope.tabindex"
-            class="q-ma-none"
-            color="grey3"
-            removable
-            dense
-            @remove="scope.removeAtIndex(scope.index)"
-          >
-            {{ scope.opt.label }}
-          </QChip>
-        </template>
-      </QSelect>
+      />
     </template>
     <template #form="{ multipleSelection }">
       <QSelect
@@ -347,7 +319,9 @@ const filteredServices = computed(() =>
         :suffix="t('unit.weightedHours')"
         square
         dense
-        @update:model-value="updateHours"
+        @update:model-value="
+          (value) => (formValues.hours = inputToNumber(value))
+        "
       >
         <template v-if="multipleSelection" #before>
           <QCheckbox v-model="selectedFields" val="hours" />

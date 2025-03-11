@@ -7,9 +7,9 @@ import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type AdminServiceModificationFragment,
   AdminServiceModificationFragmentDoc,
-  AdminServiceModificationServiceFragmentDoc,
-  AdminServiceModificationServiceModificationTypeFragmentDoc,
-  AdminServiceModificationTeacherFragmentDoc,
+  AdminServiceModificationsServiceFragmentDoc,
+  AdminServiceModificationsServiceModificationTypeFragmentDoc,
+  AdminServiceModificationsTeacherFragmentDoc,
   DeleteServiceModificationsDocument,
   InsertServiceModificationsDocument,
   ServiceModificationConstraint,
@@ -20,7 +20,7 @@ import {
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
-import { inputToNumber, nullRow } from "@/utils/admin-data.ts";
+import { inputToNumber } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -31,16 +31,16 @@ const {
   teacherFragments,
 } = defineProps<{
   serviceFragments: FragmentType<
-    typeof AdminServiceModificationServiceFragmentDoc
+    typeof AdminServiceModificationsServiceFragmentDoc
   >[];
   serviceModificationFragments: FragmentType<
     typeof AdminServiceModificationFragmentDoc
   >[];
   serviceModificationTypeFragments: FragmentType<
-    typeof AdminServiceModificationServiceModificationTypeFragmentDoc
+    typeof AdminServiceModificationsServiceModificationTypeFragmentDoc
   >[];
   teacherFragments: FragmentType<
-    typeof AdminServiceModificationTeacherFragmentDoc
+    typeof AdminServiceModificationsTeacherFragmentDoc
   >[];
 }>();
 
@@ -72,6 +72,9 @@ graphql(`
       id
       year
       uid
+      teacher {
+        displayname
+      }
     }
     type {
       id
@@ -80,18 +83,18 @@ graphql(`
     hours
   }
 
-  fragment AdminServiceModificationServiceModificationType on ServiceModificationType {
+  fragment AdminServiceModificationsServiceModificationType on ServiceModificationType {
     id
     label
   }
 
-  fragment AdminServiceModificationService on Service {
+  fragment AdminServiceModificationsService on Service {
     id
     year
     uid
   }
 
-  fragment AdminServiceModificationTeacher on Teacher {
+  fragment AdminServiceModificationsTeacher on Teacher {
     uid
     displayname
   }
@@ -145,7 +148,7 @@ graphql(`
 
 const services = computed(() =>
   serviceFragments.map((f) =>
-    useFragment(AdminServiceModificationServiceFragmentDoc, f),
+    useFragment(AdminServiceModificationsServiceFragmentDoc, f),
   ),
 );
 const serviceModifications = computed(() =>
@@ -155,12 +158,12 @@ const serviceModifications = computed(() =>
 );
 const serviceModificationTypes = computed(() =>
   serviceModificationTypeFragments.map((f) =>
-    useFragment(AdminServiceModificationServiceModificationTypeFragmentDoc, f),
+    useFragment(AdminServiceModificationsServiceModificationTypeFragmentDoc, f),
   ),
 );
 const teachers = computed(() =>
   teacherFragments.map((f) =>
-    useFragment(AdminServiceModificationTeacherFragmentDoc, f),
+    useFragment(AdminServiceModificationsTeacherFragmentDoc, f),
   ),
 );
 const insertServiceModifications = useMutation(
@@ -182,21 +185,6 @@ const updateColumns = [
   ServiceModificationUpdateColumn.Hours,
 ];
 
-const formValues = ref<FormValues>(nullRow(rowDescriptor));
-const selectedFields = ref<string[]>([]);
-
-const teacherOptions = computed(() =>
-  teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
-);
-
-const getName = computed(
-  () => (uid: string) => teachers.value.find((t) => t.uid === uid)?.displayname,
-);
-
-const updateHours = (value: string | number | null) => {
-  formValues.value.hours = inputToNumber(value);
-};
-
 const columns: Column<Row>[] = [
   {
     name: "year",
@@ -211,7 +199,6 @@ const columns: Column<Row>[] = [
     label: t("admin.teachers.serviceModifications.table.columns.uid"),
     align: "left",
     field: (row) => row.service.uid,
-    format: (val: string) => getName.value(val),
     sortable: true,
     searchable: true,
   },
@@ -235,17 +222,14 @@ const columns: Column<Row>[] = [
 ];
 
 const formatRow = (row: Row): string =>
-  `${row.service.year} — ${getName.value(row.service.uid)} — ${row.type.label}`;
+  `${row.service.year} — ${row.service.teacher.displayname} — ${row.type.label}`;
 
-const initForm = (rows: Row[]): FormValues =>
-  rows.length === 1
-    ? {
-        year: rows[0]?.service.year,
-        uid: rows[0]?.service.uid,
-        type: rows[0]?.type.label,
-        hours: rows[0]?.hours,
-      }
-    : nullRow(rowDescriptor);
+const initForm = (rows: Row[]): FormValues => ({
+  year: rows[0]?.service.year,
+  uid: rows[0]?.service.uid,
+  type: rows[0]?.type.label,
+  hours: rows[0]?.hours,
+});
 
 function validateImportRow(
   importRow: ImportRow,
@@ -280,7 +264,10 @@ function validateImportRow(
     )?.id;
     if (object.serviceId === undefined) {
       throw new Error(
-        t("admin.teachers.serviceModifications.form.error.serviceNotFound"),
+        t(
+          "admin.teachers.serviceModifications.form.error.serviceNotFound",
+          importRow,
+        ),
       );
     }
   }
@@ -291,7 +278,10 @@ function validateImportRow(
     )?.id;
     if (object.typeId === undefined) {
       throw new Error(
-        t("admin.teachers.serviceModifications.form.error.typeNotFound"),
+        t(
+          "admin.teachers.serviceModifications.form.error.typeNotFound",
+          importRow,
+        ),
       );
     }
   }
@@ -302,6 +292,13 @@ function validateImportRow(
 
   return object;
 }
+
+const formValues = ref<FormValues>(initForm([]));
+const selectedFields = ref<string[]>([]);
+
+const teacherOptions = computed(() =>
+  teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
+);
 
 // Filters
 const selectedYears = ref<number[]>([]);
@@ -344,7 +341,6 @@ const filteredServiceModifications = computed(() =>
       <QSelect
         v-model="selectedYears"
         :options="years.map((y) => y.value)"
-        color="primary"
         :label="t('admin.teachers.serviceModifications.table.columns.year')"
         multiple
         use-chips
@@ -352,25 +348,10 @@ const filteredServiceModifications = computed(() =>
         dense
         options-dense
         style="width: 100%"
-      >
-        <!-- this slot to use dense QChip -->
-        <template #selected-item="scope">
-          <QChip
-            :tabindex="scope.tabindex"
-            class="q-ma-none"
-            color="grey3"
-            removable
-            dense
-            @remove="scope.removeAtIndex(scope.index)"
-          >
-            {{ scope.opt }}
-          </QChip>
-        </template>
-      </QSelect>
+      />
       <QSelect
         v-model="selectedUids"
         :options="teacherOptions"
-        color="primary"
         :label="t('admin.teachers.serviceModifications.table.columns.uid')"
         emit-value
         map-options
@@ -380,25 +361,10 @@ const filteredServiceModifications = computed(() =>
         dense
         options-dense
         style="width: 100%"
-      >
-        <!-- this slot to use dense QChip -->
-        <template #selected-item="scope">
-          <QChip
-            :tabindex="scope.tabindex"
-            class="q-ma-none"
-            color="grey3"
-            removable
-            dense
-            @remove="scope.removeAtIndex(scope.index)"
-          >
-            {{ scope.opt.label }}
-          </QChip>
-        </template>
-      </QSelect>
+      />
       <QSelect
         v-model="selectedTypes"
         :options="serviceModificationTypes.map((smt) => smt.label)"
-        color="primary"
         :label="t('admin.teachers.serviceModifications.table.columns.type')"
         multiple
         use-chips
@@ -406,21 +372,7 @@ const filteredServiceModifications = computed(() =>
         dense
         options-dense
         style="width: 100%"
-      >
-        <!-- this slot to use dense QChip -->
-        <template #selected-item="scope">
-          <QChip
-            :tabindex="scope.tabindex"
-            class="q-ma-none"
-            color="grey3"
-            removable
-            dense
-            @remove="scope.removeAtIndex(scope.index)"
-          >
-            {{ scope.opt }}
-          </QChip>
-        </template>
-      </QSelect>
+      />
     </template>
     <template #form="{ multipleSelection }">
       <QSelect
@@ -466,7 +418,9 @@ const filteredServiceModifications = computed(() =>
         :suffix="t('unit.weightedHours')"
         square
         dense
-        @update:model-value="updateHours"
+        @update:model-value="
+          (value) => (formValues.hours = inputToNumber(value))
+        "
       >
         <template v-if="multipleSelection" #before>
           <QCheckbox v-model="selectedFields" val="hours" />

@@ -6,10 +6,11 @@ import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { graphql } from "@/gql";
 import { GetAdminCoursesDocument } from "@/gql/graphql.ts";
 
+import AdminCoursesCourseTypes from "@/components/admin/AdminCoursesCourseTypes.vue";
+import AdminCoursesCourses from "@/components/admin/AdminCoursesCourses.vue";
 import AdminCoursesDegrees from "@/components/admin/AdminCoursesDegrees.vue";
 import AdminCoursesPrograms from "@/components/admin/AdminCoursesPrograms.vue";
 import AdminCoursesTracks from "@/components/admin/AdminCoursesTracks.vue";
-import AdminCoursesTypes from "@/components/admin/AdminCoursesTypes.vue";
 import AdminSection from "@/components/admin/AdminSection.vue";
 
 const { t } = useCustomI18n();
@@ -18,8 +19,9 @@ graphql(`
   query GetAdminCourses {
     degrees: degree(orderBy: [{ name: ASC }]) {
       ...AdminDegree
-      ...AdminProgramDegree
-      ...AdminTrackDegree
+      ...AdminProgramsDegree
+      ...AdminTracksDegree
+      ...AdminCoursesDegree
     }
     programs: program(
       orderBy: [{ degree: { nameDisplay: ASC } }, { name: ASC }]
@@ -35,8 +37,21 @@ graphql(`
     ) {
       ...AdminTrack
     }
+    courses: course(
+      orderBy: [
+        { program: { degree: { name: ASC } } }
+        { program: { name: ASC } }
+        { track: { name: ASC } }
+        { name: ASC }
+        { semester: ASC }
+        { type: { label: ASC } }
+      ]
+    ) {
+      ...AdminCourse
+    }
     types: courseType(orderBy: { label: ASC }) {
       ...AdminCourseType
+      ...AdminCoursesCourseType
     }
   }
 `);
@@ -54,6 +69,9 @@ const programs = computed(
   () => adminCoursesQueryResult.data.value?.programs ?? [],
 );
 const tracks = computed(() => adminCoursesQueryResult.data.value?.tracks ?? []);
+const courses = computed(
+  () => adminCoursesQueryResult.data.value?.courses ?? [],
+);
 const types = computed(() => adminCoursesQueryResult.data.value?.types ?? []);
 </script>
 
@@ -93,6 +111,11 @@ const types = computed(() => adminCoursesQueryResult.data.value?.types ?? []);
       icon="sym_s_menu_book"
       :label="t('admin.courses.courses.label')"
     >
+      <AdminCoursesCourses
+        :degree-fragments="degrees"
+        :course-fragments="courses"
+        :course-type-fragments="types"
+      />
     </AdminSection>
 
     <QSeparator />
@@ -101,7 +124,7 @@ const types = computed(() => adminCoursesQueryResult.data.value?.types ?? []);
       icon="sym_s_format_list_bulleted"
       :label="t('admin.courses.types.label')"
     >
-      <AdminCoursesTypes :course-type-fragments="types" />
+      <AdminCoursesCourseTypes :course-type-fragments="types" />
     </AdminSection>
   </QList>
 </template>

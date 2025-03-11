@@ -16,7 +16,7 @@ import {
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
-import { nullRow } from "@/utils/admin-data.ts";
+import { inputToNumber } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -98,9 +98,6 @@ const deleteCourseTypes = useMutation(DeleteCourseTypesDocument);
 const constraint = CourseTypeConstraint.CourseTypeLabelKey;
 const updateColumns = [CourseTypeUpdateColumn.Description];
 
-const formValues = ref<FormValues>(nullRow(rowDescriptor));
-const selectedFields = ref<string[]>([]);
-
 const columns: Column<Row>[] = [
   {
     name: "label",
@@ -129,8 +126,11 @@ const columns: Column<Row>[] = [
 
 const formatRow = (row: Row) => row.label;
 
-const initForm = (rows: Row[]): FormValues =>
-  rows.length === 1 ? { ...rows[0] } : nullRow(rowDescriptor);
+const initForm = (rows: Row[]): FormValues => ({
+  label: rows[0]?.label ?? null,
+  coefficient: rows[0]?.coefficient ?? null,
+  description: rows[0]?.description ?? null,
+});
 
 function validateImportRow(
   importRow: ImportRow,
@@ -152,7 +152,9 @@ function validateImportRow(
       checkConflicts &&
       courseTypes.value.find((p) => p.label === object.label)
     ) {
-      throw new Error(t("admin.courses.types.form.error.conflictLabel"));
+      throw new Error(
+        t("admin.courses.types.form.error.conflictLabel", importRow),
+      );
     }
   }
 
@@ -166,6 +168,9 @@ function validateImportRow(
 
   return object;
 }
+
+const formValues = ref<FormValues>(initForm([]));
+const selectedFields = ref<string[]>([]);
 </script>
 
 <template>
@@ -197,16 +202,27 @@ function validateImportRow(
         dense
       />
       <QInput
-        v-model="formValues.description"
-        :label="t('admin.courses.types.form.fields.description')"
-        :disable="multipleSelection && !selectedFields.includes('description')"
+        :model-value="formValues.coefficient"
+        type="number"
+        :label="t('admin.courses.types.form.fields.coefficient')"
+        :disable="multipleSelection && !selectedFields.includes('coefficient')"
         square
         dense
+        @update:model-value="
+          (value) => (formValues.coefficient = inputToNumber(value))
+        "
       >
         <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="description" />
+          <QCheckbox v-model="selectedFields" val="coefficient" />
         </template>
       </QInput>
+      <QInput
+        v-if="!multipleSelection"
+        v-model="formValues.description"
+        :label="t('admin.courses.types.form.fields.description')"
+        square
+        dense
+      />
     </template>
   </AdminData>
 </template>

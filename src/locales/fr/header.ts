@@ -34,7 +34,7 @@ export default {
         message: `
           <div>
             Pour toute question ou remarque, vous pouvez envoyer un message à l'adresse
-            électronique suivante :
+            électronique suivante&nbsp;:
             <a href="mailto:contact{'@'}geyserflow.org"
               >contact{'@'}geyserflow.org</a
             >
@@ -51,14 +51,14 @@ export default {
             Ces informations sont conservées de manière sécurisée sur les serveurs de
             <i>GeyserFlow</i>, sans transmission à des services externes.
           </p>
-          <p>Confidentialité de vos données :</p>
+          <p>Confidentialité de vos données&nbsp;:</p>
           <ul>
             <li>
-              <strong>Visibles par tous les intervenants :</strong>
+              <strong>Visibles par tous les intervenants&nbsp;:</strong>
               vos vœux (principaux et secondaires) et vos attributions.
             </li>
             <li>
-              <strong>Visibles uniquement par la commission :</strong>
+              <strong>Visibles uniquement par la commission&nbsp;:</strong>
               vos modifications de services (décharges, délégations, etc.) et votre
               message à l''attention de celle-ci.
             </li>
@@ -75,7 +75,7 @@ export default {
           </p>
           <p>
             Pour exercer vos droits ou pour toute question sur le traitement de vos
-            données, vous pouvez envoyer un message à l'adresse électronique suivante :
+            données, vous pouvez envoyer un message à l'adresse électronique suivante&nbsp;:
             <a href="mailto:contact{'@'}geyserflow.org"
               >contact{'@'}geyserflow.org</a
             >
@@ -105,7 +105,7 @@ export default {
           <p class="text-italic">
             La licence publique générale GNU Affero (GNU AGPL) est une version
             modifiée de la version 3 de la GNU GPL ordinaire. Elle a une seule
-            exigence supplémentaire : si vous exécutez un programme modifié sur un
+            exigence supplémentaire&nbsp;: si vous exécutez un programme modifié sur un
             serveur et laissez d'autres utilisateurs communiquer avec lui, votre
             serveur doit aussi leur permettre de télécharger le code source
             correspondant à la version modifiée en fonctionnement.
@@ -120,7 +120,7 @@ export default {
             >
             le 03/03/2024.
           </p>
-          Le code source de Geyser est disponible sur GitHub :
+          Le code source de Geyser est disponible sur GitHub&nbsp;:
           <ol>
             <li>
               <a

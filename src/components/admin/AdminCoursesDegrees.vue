@@ -16,7 +16,7 @@ import {
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
-import { nullRow, yesNoOptions } from "@/utils/admin-data.ts";
+import { booleanOptions } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -39,7 +39,7 @@ type FormValues = NullableParsedRow<T>;
 type ImportRow = ParsedRow<T>;
 type InsertInput = {
   name?: string | null;
-  nameShort?: string | null;
+  nameShort: string | null;
   visible?: boolean | null;
 };
 
@@ -101,9 +101,6 @@ const updateColumns = [
   DegreeUpdateColumn.Visible,
 ];
 
-const formValues = ref<FormValues>(nullRow(rowDescriptor));
-const selectedFields = ref<string[]>([]);
-
 const columns: Column<Row>[] = [
   {
     name: "name",
@@ -134,8 +131,11 @@ const columns: Column<Row>[] = [
 
 const formatRow = (row: Row) => row.name;
 
-const initForm = (rows: Row[]): FormValues =>
-  rows.length === 1 ? { ...rows[0] } : nullRow(rowDescriptor);
+const initForm = (rows: Row[]): FormValues => ({
+  name: rows[0]?.name ?? null,
+  nameShort: rows[0]?.nameShort ?? null,
+  visible: rows[0]?.visible ?? null,
+});
 
 function validateImportRow(
   importRow: ImportRow,
@@ -154,7 +154,9 @@ function validateImportRow(
   if (importRow.name !== undefined) {
     object.name = importRow.name;
     if (checkConflicts && degrees.value.find((d) => d.name === object.name)) {
-      throw new Error(t("admin.courses.degrees.form.error.conflictName"));
+      throw new Error(
+        t("admin.courses.degrees.form.error.conflictName", importRow),
+      );
     }
   }
 
@@ -168,6 +170,9 @@ function validateImportRow(
 
   return object;
 }
+
+const formValues = ref<FormValues>(initForm([]));
+const selectedFields = ref<string[]>([]);
 
 // Filters
 const selectedVisible = ref<boolean | null>(null);
@@ -202,7 +207,7 @@ const filteredDegrees = computed(() =>
     <template #filters>
       <QSelect
         v-model="selectedVisible"
-        :options="yesNoOptions"
+        :options="booleanOptions(t('yes'), t('no'))"
         color="primary"
         :label="t('admin.courses.programs.table.columns.visible')"
         emit-value
@@ -234,12 +239,12 @@ const filteredDegrees = computed(() =>
         <QCheckbox
           v-if="multipleSelection"
           v-model="selectedFields"
-          val="active"
+          val="visible"
         />
         <QToggle
           v-model="formValues.visible"
-          :disable="multipleSelection && !selectedFields.includes('visible')"
           :label="t('admin.courses.degrees.form.fields.visible')"
+          :disable="multipleSelection && !selectedFields.includes('visible')"
           left-label
         />
       </div>

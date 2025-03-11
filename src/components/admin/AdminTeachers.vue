@@ -19,16 +19,16 @@ graphql(`
   query GetAdminTeachers {
     teachers: teacher(orderBy: [{ uid: ASC }]) {
       ...AdminTeacher
-      ...AdminServiceTeacher
-      ...AdminServiceModificationTeacher
+      ...AdminServicesTeacher
+      ...AdminServiceModificationsTeacher
     }
     positions: position(orderBy: [{ label: ASC }]) {
       ...AdminPosition
-      ...AdminTeacherPosition
+      ...AdminTeachersPosition
     }
     services: service(orderBy: [{ year: DESC }, { uid: ASC }]) {
       ...AdminService
-      ...AdminServiceModificationService
+      ...AdminServiceModificationsService
     }
     serviceModifications: serviceModification(
       orderBy: [{ service: { year: DESC } }, { service: { uid: ASC } }]
@@ -39,7 +39,7 @@ graphql(`
       orderBy: [{ label: ASC }]
     ) {
       ...AdminServiceModificationType
-      ...AdminServiceModificationServiceModificationType
+      ...AdminServiceModificationsServiceModificationType
     }
   }
 `);

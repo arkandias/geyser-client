@@ -27,3 +27,11 @@ export const compare =
 
 export const capitalize = <T extends string>(str: T): Capitalize<T> =>
   (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<T>;
+
+export const inputToNumber = (input: string | number | null) =>
+  typeof input === "string" ? (input === "" ? null : Number(input)) : input;
+
+export const booleanOptions = (trueLabel: string, falseLabel: string) => [
+  { value: true, label: trueLabel },
+  { value: false, label: falseLabel },
+];

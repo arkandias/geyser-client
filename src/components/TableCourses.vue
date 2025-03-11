@@ -48,12 +48,12 @@ graphql(`
       name: nameDisplay
       visible
     }
-    courseType: type {
+    semester
+    type {
       id
       label
       coefficient
     }
-    semester
     hoursPerGroup: hoursEffective
     numberOfGroups: groupsEffective
     totalHours: totalHoursEffective
@@ -187,21 +187,21 @@ const columns: Column<CourseRow>[] = [
     searchable: true,
   },
   {
-    name: "type",
-    label: "Type",
+    name: "semester",
+    label: "S.",
+    tooltip: "Semestre",
     align: "left",
-    field: (row) => row.courseType.label,
+    field: "semester",
+    format: (val: number) => `S${val}`,
     sortable: true,
     visible: true,
     searchable: false,
   },
   {
-    name: "semester",
-    label: "S.",
-    tooltip: "Semestre",
+    name: "type",
+    label: "Type",
     align: "left",
-    field: (row) => row.semester,
-    format: (val: number) => `S${val}`,
+    field: (row) => row.type.label,
     sortable: true,
     visible: true,
     searchable: false,
@@ -213,7 +213,8 @@ const columns: Column<CourseRow>[] = [
     align: "left",
     field: (row) =>
       (row.hoursPerGroup ?? 0) *
-      (weightedHours.value ? row.courseType.coefficient : 1),
+      (weightedHours.value ? row.type.coefficient : 1),
+    format: (val: number | null) => (val === null ? null : n(val)),
     sortable: true,
     visible: true,
     searchable: false,
@@ -224,6 +225,7 @@ const columns: Column<CourseRow>[] = [
     tooltip: "Nombre de groupes ouverts",
     align: "left",
     field: (row) => row.numberOfGroups ?? 0,
+    format: (val: number | null) => (val === null ? null : n(val)),
     sortable: true,
     visible: true,
     searchable: false,
@@ -234,7 +236,7 @@ const columns: Column<CourseRow>[] = [
     tooltip: "Nombre d'heures attribuées",
     field: (row) =>
       (getTeacherTotal(row, REQUEST_TYPES.ASSIGNMENT) ?? row.totalAssigned) *
-      (weightedHours.value ? row.courseType.coefficient : 1),
+      (weightedHours.value ? row.type.coefficient : 1),
     format: (val: number | null) =>
       val === null ? "-" : n(val, "decimalFixed"),
     sortable: true,
@@ -248,7 +250,7 @@ const columns: Column<CourseRow>[] = [
       "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
     field: (row) =>
       ((row.totalHours ?? 0) - row.totalAssigned) *
-      (weightedHours.value ? row.courseType.coefficient : 1),
+      (weightedHours.value ? row.type.coefficient : 1),
     format: (val: number) => (teacher.value ? "-" : n(val, "decimalFixed")),
     sortable: true,
     visible: false,
@@ -260,7 +262,7 @@ const columns: Column<CourseRow>[] = [
     tooltip: "Nombre d'heures demandées en vœux principaux",
     field: (row) =>
       (getTeacherTotal(row, REQUEST_TYPES.PRIMARY) ?? row.totalPrimary) *
-      (weightedHours.value ? row.courseType.coefficient : 1),
+      (weightedHours.value ? row.type.coefficient : 1),
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: true,
@@ -273,7 +275,7 @@ const columns: Column<CourseRow>[] = [
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
     field: (row) =>
       ((row.totalHours ?? 0) - row.totalPrimary) *
-      (weightedHours.value ? row.courseType.coefficient : 1),
+      (weightedHours.value ? row.type.coefficient : 1),
     format: (val: number) => (teacher.value ? "-" : n(val, "decimalFixed")),
     sortable: true,
     visible: false,
@@ -286,7 +288,7 @@ const columns: Column<CourseRow>[] = [
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",
     field: (row) =>
       ((row.totalHours ?? 0) - row.totalPriority) *
-      (weightedHours.value ? row.courseType.coefficient : 1),
+      (weightedHours.value ? row.type.coefficient : 1),
     format: (val: number) => (teacher.value ? "-" : n(val, "decimalFixed")),
     sortable: true,
     visible: false,
@@ -298,7 +300,7 @@ const columns: Column<CourseRow>[] = [
     tooltip: "Nombre d'heures demandées en vœux secondaires",
     field: (row) =>
       (getTeacherTotal(row, REQUEST_TYPES.SECONDARY) ?? row.totalSecondary) *
-      (weightedHours.value ? row.courseType.coefficient : 1),
+      (weightedHours.value ? row.type.coefficient : 1),
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: true,
@@ -327,15 +329,6 @@ const programsOptions = computed(() =>
     .sort(compare("label")),
 );
 
-// Course types
-const courseTypes = ref<string[]>([]);
-const courseTypesOptions = computed(() =>
-  courses.value
-    .map((c) => c.courseType)
-    .filter(uniqueValue("id"))
-    .sort(compare("label")),
-);
-
 // Semesters
 const semesters = ref<number[]>([]);
 const semestersOptions = computed(() =>
@@ -348,6 +341,15 @@ const semestersOptions = computed(() =>
     .sort(compare("label")),
 );
 
+// Course types
+const courseTypes = ref<string[]>([]);
+const courseTypeOptions = computed(() =>
+  courses.value
+    .map((c) => c.type)
+    .filter(uniqueValue("id"))
+    .sort(compare("label")),
+);
+
 // Search
 const search = ref<string | null>(null);
 
@@ -355,8 +357,8 @@ const search = ref<string | null>(null);
 const filterObj = computed(() => ({
   teacherRequests: requests.value,
   programs: programs.value,
-  courseTypes: courseTypes.value,
   semesters: semesters.value,
+  courseTypes: courseTypes.value,
   search: normalizeForSearch(search.value ?? ""),
   searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
 }));
@@ -369,10 +371,10 @@ const filterMethod = (
       ? terms.teacherRequests.some((r) => r.courseId === row.id)
       : (terms.programs.length === 0 ||
           terms.programs.some((p) => p === row.program.id)) &&
-        (terms.courseTypes.length === 0 ||
-          terms.courseTypes.some((ct) => ct === row.courseType.label)) &&
         (terms.semesters.length === 0 ||
           terms.semesters.includes(row.semester)) &&
+        (terms.courseTypes.length === 0 ||
+          terms.courseTypes.some((ct) => ct === row.type.label)) &&
         terms.searchColumns.some((col) =>
           normalizeForSearch(String(getField(row, col.field))).includes(
             terms.search,
@@ -494,7 +496,6 @@ const downloadTeacherAssignments = async () => {
           v-model="programs"
           :options="programsOptions"
           :disable="!!service"
-          color="primary"
           label="Formation"
           emit-value
           map-options
@@ -503,75 +504,33 @@ const downloadTeacherAssignments = async () => {
           square
           dense
           options-dense
-        >
-          <!-- this slot to use dense QChip -->
-          <template #selected-item="scope">
-            <QChip
-              :tabindex="scope.tabindex"
-              class="q-ma-none"
-              color="grey3"
-              removable
-              dense
-              @remove="scope.removeAtIndex(scope.index)"
-            >
-              {{ scope.opt.label }}
-            </QChip>
-          </template>
-        </QSelect>
-        <QSelect
-          v-model="courseTypes"
-          :options="courseTypesOptions"
-          :disable="!!service"
-          color="primary"
-          label="Type"
-          emit-value
-          map-options
-          multiple
-          square
-          dense
-          options-dense
-        >
-          <!-- this slot to use dense QChip -->
-          <template #selected-item="scope">
-            <QChip
-              :tabindex="scope.tabindex"
-              class="q-ma-none"
-              color="grey3"
-              removable
-              dense
-              @remove="scope.removeAtIndex(scope.index)"
-            >
-              {{ scope.opt.label }}
-            </QChip>
-          </template>
-        </QSelect>
+        />
         <QSelect
           v-model="semesters"
           :options="semestersOptions"
           :disable="!!service"
-          color="primary"
           label="Semestre"
           emit-value
           map-options
           multiple
+          use-chips
           square
           dense
           options-dense
-        >
-          <!-- this slot to use dense QChip -->
-          <template #selected-item="scope">
-            <QChip
-              :tabindex="scope.tabindex"
-              class="q-ma-none"
-              color="grey3"
-              removable
-              dense
-              @remove="scope.removeAtIndex(scope.index)"
-            >
-              {{ scope.opt.label }}
-            </QChip>
-          </template>
-        </QSelect>
+        />
+        <QSelect
+          v-model="courseTypes"
+          :options="courseTypeOptions"
+          :disable="!!service"
+          label="Type"
+          emit-value
+          map-options
+          multiple
+          use-chips
+          square
+          dense
+          options-dense
+        />
         <QInput
           v-model="search"
           :disable="!!service"

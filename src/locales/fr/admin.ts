@@ -32,14 +32,14 @@ export default {
       import: {
         title: "Import depuis un fichier CSV",
         csvInstructions: `
-        Pour être valide, le fichier CSV doit impérativement respecter les règles suivantes :
+        Pour être valide, le fichier CSV doit impérativement respecter les règles suivantes&nbsp;:
         <ul>
           <li>Le fichier doit contenir exactement les colonnes listées dans le tableau ci-dessous, toutes sont obligatoires.</li>
           <li>Les noms des colonnes doivent être écrits exactement comme indiqué dans le tableau (en minuscules).</li>
           <li>Les valeurs doivent être séparées par des virgules.</li>
           <li>Les textes contenant des virgules doivent être entre guillemets doubles.</li>
-          <li>Si un texte contient lui-même des guillemets doubles, ceux-ci doivent être doublés (ex : "Il a dit : ""Bonjour""")</li>
-          <li>Les nombres doivent utiliser le point comme séparateur décimal et ne pas contenir d'espaces (ex : 1234.56).</li>
+          <li>Si un texte contient lui-même des guillemets doubles, ceux-ci doivent être doublés (ex&nbsp;: "Il a dit&nbsp;: ""Bonjour""")</li>
+          <li>Les nombres doivent utiliser le point comme séparateur décimal et ne pas contenir d'espaces (ex&nbsp;: 1234.56).</li>
           <li>Les valeurs booléennes doivent être écrites "true" ou "false" (en minuscules)</li>
         </ul>`,
         table: {
@@ -154,10 +154,12 @@ la supprimer.`,
             active: "Actif",
           },
           error: {
-            conflictEmail: "Il existe déjà un utilisateur avec cet email",
-            positionNotFound: "Il n'existe pas de fonction avec ce label",
+            conflictEmail:
+              "Il existe déjà un utilisateur avec l'email « {uid} »",
+            positionNotFound:
+              "Il n'existe pas de fonction avec le label « {position} »",
             baseServiceHoursNegative:
-              "Entrez un nombre d'heures positif ou nul",
+              "Entrez un nombre d'heures de service de base positif ou nul",
           },
         },
         data: {
@@ -176,11 +178,9 @@ la supprimer.`,
           confirm: {
             delete: {
               single: `Êtes-vous sûr de vouloir supprimer l'intervenant « {label} » ?
-Si des services, responsabilités ou rôles sont attribués à cet intervenant, \
-vous ne pourrez pas le supprimer.`,
+S'il existe des services, des responsabilités ou des rôles pour cet intervenant, vous ne pourrez pas le supprimer.`,
               multiple: `Êtes-vous sûr de vouloir supprimer les {count} intervenants sélectionnés ?
-Si des services, responsabilités ou rôles sont attribués à ces intervenant, \
-vous ne pourrez pas les supprimer.`,
+S'il existe des services, des responsabilités ou des rôles pour ces intervenants, vous ne pourrez pas les supprimer.`,
             },
           },
         },
@@ -189,7 +189,6 @@ vous ne pourrez pas les supprimer.`,
         label: "Fonctions",
         table: {
           columns: {
-            value: "Valeur",
             label: "Label",
             description: "Description",
             baseServiceHours: "S. base (@:unit.weightedHours)",
@@ -202,15 +201,15 @@ vous ne pourrez pas les supprimer.`,
             multiple: "{count} fonctions sélectionnées",
           },
           fields: {
-            value: "Valeur",
             label: "Label",
             description: "Description",
             baseServiceHours: "Service de base",
           },
           error: {
-            conflictLabel: "Il existe déjà une fonction avec ce label",
-            baseServiceHoursNegative:
-              "Entrez un nombre d'heures positif ou nul",
+            conflictLabel:
+              "Il existe déjà une fonction avec le label « {label} »",
+            hoursNegative:
+              "Entrez un nombre d'heures de service de base positif ou nul",
           },
         },
         data: {
@@ -264,7 +263,7 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
             updateUidWithoutYear:
               "Vous ne pouvez pas modifier l'intervenant sans sélectionner une année",
             conflictYearUid:
-              "Il existe déjà un service pour cet intervenant et cette année",
+              "Il existe déjà un service pour l'intervenant {uid} et l'année {year}",
             hoursNegative: "Entrez un nombre d'heures positif ou nul",
           },
         },
@@ -284,9 +283,9 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
           confirm: {
             delete: {
               single: `Êtes-vous sûr de vouloir supprimer le service « {label} » ?
-Si des modifications ou des demandes sont rattachés à ce service, vous ne pourrez pas le supprimer.`,
+S'il existe des modifications ou des demandes pour ce service, vous ne pourrez pas le supprimer.`,
               multiple: `Êtes-vous sûr de vouloir supprimer les {count} services sélectionnés ?
-Si des modifications ou des demandes sont rattachés à ces services, vous ne pourrez pas les supprimer.`,
+S'il existe des modifications ou des demandes pour ces services, vous ne pourrez pas les supprimer.`,
             },
           },
         },
@@ -319,9 +318,9 @@ Si des modifications ou des demandes sont rattachés à ces services, vous ne po
             updateUidWithoutYear:
               "Vous ne pouvez pas modifier l'intervenant sans sélectionner une année",
             serviceNotFound:
-              "Il n'existe pas de service pour cet intervenant et cette année",
+              "Il n'existe pas de service pour l'intervenant {uid} et l'année {year}",
             typeNotFound:
-              "Il n'existe pas de modification de service avec ce label",
+              "Il n'existe pas de modification de service avec le label « {type} »",
           },
         },
         data: {
@@ -365,7 +364,7 @@ Si des modifications ou des demandes sont rattachés à ces services, vous ne po
           },
           error: {
             conflictLabel:
-              "Il existe déjà un type de modification avec ce label",
+              "Il existe déjà un type de modification avec le label « {label} »",
           },
         },
         data: {
@@ -415,7 +414,7 @@ Si ces types sont attribués à des modifications, vous ne pourrez pas les suppr
             visible: "Visible",
           },
           error: {
-            conflictLabel: "Il existe déjà un diplôme avec ce nom",
+            conflictLabel: "Il existe déjà un diplôme avec le nom « {name} »",
           },
         },
         data: {
@@ -464,9 +463,10 @@ Si ces diplômes contiennent des mentions, vous ne pourrez pas les supprimer.`,
             visible: "Visible",
           },
           error: {
-            degreeNotFound: "Il n'existe pas de diplôme avec ce nom",
+            degreeNotFound:
+              "Il n'existe pas de diplôme avec le nom « {degree} »",
             conflictDegreeName:
-              "Il existe déjà une mention du même diplôme avec ce nom",
+              "Il existe déjà une mention du diplôme « {degree} » avec le nom « {name} »",
           },
         },
         data: {
@@ -485,9 +485,9 @@ Si ces diplômes contiennent des mentions, vous ne pourrez pas les supprimer.`,
           confirm: {
             delete: {
               single: `Êtes-vous sûr de vouloir supprimer la mention « {label} » ?
-Si cette mention contient des parcours, des cours ou admet un responsable, vous ne pourrez pas la supprimer.`,
+S'il existe des parcours, des cours ou des responsables pour cette mention, vous ne pourrez pas la supprimer.`,
               multiple: `Êtes-vous sûr de vouloir supprimer les {count} mentions sélectionnées ?
-Si ces mentions contiennent des parcours, des cours ou admettent des responsables, vous ne pourrez pas les supprimer.`,
+S'il existe des parcours, des cours ou des responsables pour ces mentions, vous ne pourrez pas les supprimer.`,
             },
           },
         },
@@ -521,10 +521,12 @@ Si ces mentions contiennent des parcours, des cours ou admettent des responsable
               "Vous ne pouvez pas modifier le diplôme sans sélectionner une mention",
             updateProgramWithoutDegree:
               "Vous ne pouvez pas modifier la mention sans sélectionner un diplôme",
-            degreeNotFound: "Il n'existe pas de diplôme avec ce nom",
-            programNotFound: "Il n'existe pas de mention avec ce nom",
+            degreeNotFound:
+              "Il n'existe pas de diplôme avec le nom « {degree} »",
+            programNotFound:
+              "Il n'existe pas de mention du diplôme « {degree} » avec le nom « {program} »",
             conflictProgramName:
-              "Il existe déjà un parcours de la même mention avec ce nom",
+              "Il existe déjà un parcours de la mention « {program} » du diplôme « {degree} » avec le nom « {name} »",
           },
         },
         data: {
@@ -543,14 +545,109 @@ Si ces mentions contiennent des parcours, des cours ou admettent des responsable
           confirm: {
             delete: {
               single: `Êtes-vous sûr de vouloir supprimer le parcours « {label} » ?
-Si ce parcours contient des cours ou admet un responsable, vous ne pourrez pas l supprimer.`,
+S'il existe des cours ou des responsables pour ce parcours, vous ne pourrez pas le supprimer.`,
               multiple: `Êtes-vous sûr de vouloir supprimer les {count} parcours sélectionnés ?
-Si ces parcours contiennent des cours ou admettent des responsables, vous ne pourrez pas les supprimer.`,
+S'il existe des cours ou des responsables pour ces parcours, vous ne pourrez pas les supprimer.`,
             },
           },
         },
       },
-      courses: { label: "Enseignements" },
+      courses: {
+        label: "Enseignements",
+        table: {
+          columns: {
+            year: "Année",
+            degree: "Diplôme",
+            program: "Mention",
+            track: "Parcours",
+            name: "Nom",
+            nameShort: "Nom court",
+            semester: "Semestre",
+            type: "Type",
+            hours: "H.",
+            hoursAdjusted: "H. cor.",
+            groups: "G.",
+            groupsAdjusted: "G. cor.",
+            description: "Description",
+            priorityRule: "Prio.",
+            visible: "Visible",
+          },
+        },
+        form: {
+          title: {
+            none: "Nouvel enseignement",
+            single: "{label}",
+            multiple: "{count} enseignements sélectionnés",
+          },
+          fields: {
+            year: "Année",
+            degree: "Diplôme",
+            program: "Mention",
+            track: "Parcours",
+            name: "Nom",
+            nameShort: "Nom court",
+            semester: "Semestre",
+            type: "Type d'enseignement",
+            hours: "Nombre d'heures par groupe",
+            hoursAdjusted: "Nombre d'heures par groupe corrigé",
+            groups: "Nombre de groupes",
+            groupsAdjusted: "Nombre de groupes corrigé",
+            description: "Description",
+            priorityRule: "Règle de priorité",
+            visible: "Visible",
+          },
+          error: {
+            updateDegreeWithoutProgram:
+              "Vous ne pouvez pas modifier le diplôme sans sélectionner une mention",
+            updateProgramWithoutDegree:
+              "Vous ne pouvez pas modifier la mention sans sélectionner un diplôme",
+            updateTrackWithoutProgram:
+              "Vous ne pouvez pas modifier le parcours sans sélectionner une mention",
+            updateTrackWithoutDegree:
+              "Vous ne pouvez pas modifier le parcours sans sélectionner un diplôme",
+            degreeNotFound:
+              "Il n'existe pas de diplôme avec le nom « {degree} »",
+            programNotFound:
+              "Il n'existe pas de mention du diplôme « {degree} » avec le nom « {program} »",
+            trackNotFound:
+              "Il n'existe pas de parcours dans la mention « {program} » du diplôme « {degree} » avec le nom « {track} »",
+            courseTypeNotFound:
+              "Il n'existe pas de type d'enseignement avec le label « {type} »",
+            conflictYearProgramTrackNameSemesterType:
+              "Il existe déjà un {type} au semestre {semester} avec le nom « {name} » dans le parcours « {track} » de la mention « {program} » du diplôme « {degree} » pour l'année {year}",
+            hoursNegative: "Entrez un nombre d'heures positif ou nul",
+            hoursAdjustedNegative:
+              "Entrez un nombre d'heures corrigé positif ou nul",
+            groupsNegative: "Entrez un nombre de groupes positif ou nul",
+            groupsAdjustedNegative:
+              "Entrez un nombre de groupes corrigé positif ou nul",
+            priorityRule:
+              "La règle de priorité doit être un entier positif ou nul",
+          },
+        },
+        data: {
+          success: {
+            insert:
+              "Aucun enseignement créé | Enseignement créé | {count} enseignements créés",
+            update:
+              "Aucun enseignement mis à jour | Enseignement mis à jour | {count} enseignements mis à jour",
+            delete:
+              "Aucun enseignement supprimé | Enseignement supprimé | {count} enseignements supprimés",
+            import:
+              "0 enseignement importé | 1 enseignement importé | {count} enseignements importés",
+            export:
+              "0 enseignement exporté | 1 enseignement exporté | {count} enseignements exportés",
+          },
+          confirm: {
+            delete: {
+              single: `Êtes-vous sûr de vouloir supprimer l'enseignement « {label} » ?
+S'il existe des demandes, des priorités ou des responsables pour cet enseignement, vous ne pourrez pas le supprimer.`,
+              multiple: `Êtes-vous sûr de vouloir supprimer les {count} parcours sélectionnés ?
+S'il existe des demandes, des priorités ou des responsables pour ces enseignements, vous ne pourrez pas les supprimer.`,
+            },
+          },
+        },
+      },
       types: {
         label: "Types d'enseignement",
         table: {
@@ -573,7 +670,7 @@ Si ces parcours contiennent des cours ou admettent des responsables, vous ne pou
           },
           error: {
             conflictLabel:
-              "Il existe déjà un type d'enseignement avec ce label",
+              "Il existe déjà un type d'enseignement avec le label « {label} »",
           },
         },
         data: {

@@ -16,7 +16,6 @@ import {
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
-import { nullRow } from "@/utils/admin-data.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
@@ -119,9 +118,6 @@ const constraint =
   ServiceModificationTypeConstraint.ServiceModificationTypeLabelKey;
 const updateColumns = [ServiceModificationTypeUpdateColumn.Description];
 
-const formValues = ref<FormValues>(nullRow(rowDescriptor));
-const selectedFields = ref<string[]>([]);
-
 const columns: Column<Row>[] = [
   {
     name: "label",
@@ -145,8 +141,10 @@ const columns: Column<Row>[] = [
 
 const formatRow = (row: Row) => row.label;
 
-const initForm = (rows: Row[]): FormValues =>
-  rows.length === 1 ? { ...rows[0] } : nullRow(rowDescriptor);
+const initForm = (rows: Row[]): FormValues => ({
+  label: rows[0]?.label,
+  description: rows[0]?.description,
+});
 
 function validateImportRow(
   importRow: ImportRow,
@@ -169,7 +167,10 @@ function validateImportRow(
       serviceModificationTypes.value.find((p) => p.label === object.label)
     ) {
       throw new Error(
-        t("admin.teachers.serviceModificationTypes.form.error.conflictLabel"),
+        t(
+          "admin.teachers.serviceModificationTypes.form.error.conflictLabel",
+          importRow,
+        ),
       );
     }
   }
@@ -180,6 +181,9 @@ function validateImportRow(
 
   return object;
 }
+
+const formValues = ref<FormValues>(initForm([]));
+const selectedFields = ref<string[]>([]);
 </script>
 
 <template>
@@ -211,18 +215,14 @@ function validateImportRow(
         dense
       />
       <QInput
+        v-if="!multipleSelection"
         v-model="formValues.description"
         :label="
           t('admin.teachers.serviceModificationTypes.form.fields.description')
         "
-        :disable="multipleSelection && !selectedFields.includes('description')"
         square
         dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="description" />
-        </template>
-      </QInput>
+      />
     </template>
   </AdminData>
 </template>

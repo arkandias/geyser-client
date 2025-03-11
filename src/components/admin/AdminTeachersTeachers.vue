@@ -7,7 +7,7 @@ import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type AdminTeacherFragment,
   AdminTeacherFragmentDoc,
-  AdminTeacherPositionFragmentDoc,
+  AdminTeachersPositionFragmentDoc,
   DeleteTeachersDocument,
   InsertTeachersDocument,
   TeacherConstraint,
@@ -17,13 +17,13 @@ import {
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
-import { inputToNumber, nullRow, yesNoOptions } from "@/utils/admin-data.ts";
+import { booleanOptions, inputToNumber } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
 const { teacherFragments, positionFragments } = defineProps<{
   teacherFragments: FragmentType<typeof AdminTeacherFragmentDoc>[];
-  positionFragments: FragmentType<typeof AdminTeacherPositionFragmentDoc>[];
+  positionFragments: FragmentType<typeof AdminTeachersPositionFragmentDoc>[];
 }>();
 
 const { t, n } = useCustomI18n();
@@ -70,7 +70,7 @@ graphql(`
     active
   }
 
-  fragment AdminTeacherPosition on Position {
+  fragment AdminTeachersPosition on Position {
     id
     label
   }
@@ -115,7 +115,9 @@ const teachers = computed(() =>
   teacherFragments.map((f) => useFragment(AdminTeacherFragmentDoc, f)),
 );
 const positions = computed(() =>
-  positionFragments.map((f) => useFragment(AdminTeacherPositionFragmentDoc, f)),
+  positionFragments.map((f) =>
+    useFragment(AdminTeachersPositionFragmentDoc, f),
+  ),
 );
 const insertTeachers = useMutation(InsertTeachersDocument);
 const upsertTeachers = useMutation(UpsertTeachersDocument);
@@ -132,13 +134,6 @@ const updateColumns = [
   TeacherUpdateColumn.Visible,
   TeacherUpdateColumn.Active,
 ];
-
-const formValues = ref<FormValues>(nullRow(rowDescriptor));
-const selectedFields = ref<string[]>([]);
-
-const updateBaseServiceHours = (value: string | number | null) => {
-  formValues.value.baseServiceHours = inputToNumber(value);
-};
 
 const columns: Column<Row>[] = [
   {
@@ -212,10 +207,16 @@ const columns: Column<Row>[] = [
 
 const formatRow = (row: Row) => row.uid;
 
-const initForm = (rows: Row[]): FormValues =>
-  rows.length === 1
-    ? { ...rows[0], position: rows[0]?.position?.label ?? null }
-    : nullRow(rowDescriptor);
+const initForm = (rows: Row[]): FormValues => ({
+  uid: rows[0]?.uid ?? null,
+  firstname: rows[0]?.firstname ?? null,
+  lastname: rows[0]?.lastname ?? null,
+  alias: rows[0]?.alias ?? null,
+  position: rows[0]?.position?.label ?? null,
+  baseServiceHours: rows[0]?.baseServiceHours ?? null,
+  visible: rows[0]?.visible ?? null,
+  active: rows[0]?.active ?? null,
+});
 
 function validateImportRow(
   importRow: ImportRow,
@@ -234,7 +235,9 @@ function validateImportRow(
   if (importRow.uid !== undefined) {
     object.uid = importRow.uid;
     if (checkConflicts && teachers.value.find((t) => t.uid === object.uid)) {
-      throw new Error(t("admin.teachers.teachers.form.error.conflictEmail"));
+      throw new Error(
+        t("admin.teachers.teachers.form.error.conflictEmail", importRow),
+      );
     }
   }
 
@@ -255,17 +258,19 @@ function validateImportRow(
       ? positions.value.find((p) => p.label === importRow.position)?.id
       : null;
     if (object.positionId === undefined) {
-      throw new Error(t("admin.teachers.teachers.form.error.positionNotFound"));
+      throw new Error(
+        t("admin.teachers.teachers.form.error.positionNotFound", importRow),
+      );
     }
   }
 
   if (importRow.baseServiceHours !== undefined) {
-    object.baseServiceHours = importRow.baseServiceHours;
-    if (object.baseServiceHours !== null && object.baseServiceHours < 0) {
+    if (importRow.baseServiceHours !== null && importRow.baseServiceHours < 0) {
       throw new Error(
         t("admin.teachers.teachers.form.error.baseServiceHoursNegative"),
       );
     }
+    object.baseServiceHours = importRow.baseServiceHours;
   }
 
   if (importRow.visible !== undefined) {
@@ -278,6 +283,9 @@ function validateImportRow(
 
   return object;
 }
+
+const formValues = ref<FormValues>(initForm([]));
+const selectedFields = ref<string[]>([]);
 
 // Filters
 const selectedPositions = ref<string[]>([]);
@@ -318,7 +326,6 @@ const filteredTeachers = computed(() =>
       <QSelect
         v-model="selectedPositions"
         :options="positions.map((p) => p.label)"
-        color="primary"
         :label="t('admin.teachers.teachers.table.columns.position')"
         multiple
         use-chips
@@ -326,24 +333,10 @@ const filteredTeachers = computed(() =>
         dense
         options-dense
         style="width: 100%"
-      >
-        <!-- this slot to use dense QChip -->
-        <template #selected-item="scope">
-          <QChip
-            :tabindex="scope.tabindex"
-            class="q-ma-none"
-            color="grey3"
-            removable
-            dense
-            @remove="scope.removeAtIndex(scope.index)"
-          >
-            {{ scope.opt }}
-          </QChip>
-        </template>
-      </QSelect>
+      />
       <QSelect
         v-model="selectedVisible"
-        :options="yesNoOptions"
+        :options="booleanOptions(t('yes'), t('no'))"
         color="primary"
         :label="t('admin.teachers.teachers.table.columns.visible')"
         emit-value
@@ -357,7 +350,7 @@ const filteredTeachers = computed(() =>
       />
       <QSelect
         v-model="selectedActive"
-        :options="yesNoOptions"
+        :options="booleanOptions(t('yes'), t('no'))"
         color="primary"
         :label="t('admin.teachers.teachers.table.columns.active')"
         emit-value
@@ -426,8 +419,10 @@ const filteredTeachers = computed(() =>
             :suffix="t('unit.weightedHours')"
             square
             dense
-            style="width: 150px"
-            @update:model-value="updateBaseServiceHours"
+            style="width: 180px"
+            @update:model-value="
+              (value) => (formValues.baseServiceHours = inputToNumber(value))
+            "
           >
             <template v-if="multipleSelection" #before>
               <QCheckbox v-model="selectedFields" val="baseServiceHours" />
@@ -442,8 +437,8 @@ const filteredTeachers = computed(() =>
           />
           <QToggle
             v-model="formValues.visible"
-            :disable="multipleSelection && !selectedFields.includes('visible')"
             :label="t('admin.teachers.teachers.form.fields.visible')"
+            :disable="multipleSelection && !selectedFields.includes('visible')"
             left-label
           />
         </div>
@@ -455,8 +450,8 @@ const filteredTeachers = computed(() =>
           />
           <QToggle
             v-model="formValues.active"
-            :disable="multipleSelection && !selectedFields.includes('active')"
             :label="t('admin.teachers.teachers.form.fields.active')"
+            :disable="multipleSelection && !selectedFields.includes('active')"
             left-label
           />
         </div>

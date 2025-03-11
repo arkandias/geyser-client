@@ -29,11 +29,6 @@ graphql(`
     ) {
       id
       course {
-        name: nameDisplay
-        semester
-        type {
-          label
-        }
         program {
           name: nameDisplay
           degree {
@@ -48,6 +43,11 @@ graphql(`
               name: nameDisplay
             }
           }
+        }
+        name: nameDisplay
+        semester
+        type {
+          label
         }
       }
       seniority

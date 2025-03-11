@@ -30,7 +30,6 @@ graphql(`
       ]
     ) {
       course {
-        name: nameDisplay
         program {
           name: nameDisplay
           degree {
@@ -46,6 +45,7 @@ graphql(`
             }
           }
         }
+        name: nameDisplay
         semester
         type {
           label

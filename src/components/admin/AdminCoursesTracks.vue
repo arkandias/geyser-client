@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  AdminTrackDegreeFragmentDoc,
   type AdminTrackFragment,
   AdminTrackFragmentDoc,
+  AdminTracksDegreeFragmentDoc,
   DeleteTracksDocument,
   InsertTracksDocument,
   TrackConstraint,
@@ -17,12 +17,12 @@ import {
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
-import { nullRow, yesNoOptions } from "@/utils/admin-data.ts";
+import { booleanOptions } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";
 
 const { degreeFragments, trackFragments } = defineProps<{
-  degreeFragments: FragmentType<typeof AdminTrackDegreeFragmentDoc>[];
+  degreeFragments: FragmentType<typeof AdminTracksDegreeFragmentDoc>[];
   trackFragments: FragmentType<typeof AdminTrackFragmentDoc>[];
 }>();
 
@@ -44,7 +44,7 @@ type ImportRow = ParsedRow<T>;
 type InsertInput = {
   programId: number;
   name: string;
-  nameShort?: string | null;
+  nameShort: string | null;
   visible: boolean;
 };
 
@@ -54,21 +54,26 @@ graphql(`
     program {
       id
       name
+      nameDisplay
       degree {
         name
+        nameDisplay
       }
     }
     name
     nameShort
+    nameDisplay
     visible
   }
 
-  fragment AdminTrackDegree on Degree {
+  fragment AdminTracksDegree on Degree {
     id
     name
+    nameDisplay
     programs {
       id
       name
+      nameDisplay
     }
   }
 
@@ -109,7 +114,7 @@ graphql(`
 `);
 
 const degrees = computed(() =>
-  degreeFragments.map((f) => useFragment(AdminTrackDegreeFragmentDoc, f)),
+  degreeFragments.map((f) => useFragment(AdminTracksDegreeFragmentDoc, f)),
 );
 const tracks = computed(() =>
   trackFragments.map((f) => useFragment(AdminTrackFragmentDoc, f)),
@@ -121,15 +126,6 @@ const deleteTracks = useMutation(DeleteTracksDocument);
 
 const constraint = TrackConstraint.TrackProgramIdNameKey;
 const updateColumns = [TrackUpdateColumn.NameShort, TrackUpdateColumn.Visible];
-
-const formValues = ref<FormValues>(nullRow(rowDescriptor));
-const selectedFields = ref<string[]>([]);
-
-const programOptions = computed(() =>
-  degrees.value
-    .find((d) => d.name === formValues.value.degree)
-    ?.programs.map((p) => p.name),
-);
 
 const columns: Column<Row>[] = [
   {
@@ -175,16 +171,16 @@ const columns: Column<Row>[] = [
   },
 ];
 
-const formatRow = (row: Row) => row.name;
+const formatRow = (row: Row) =>
+  `${row.nameDisplay} (${row.program.degree.nameDisplay} — ${row.program.nameDisplay})`;
 
-const initForm = (rows: Row[]): FormValues =>
-  rows.length === 1
-    ? {
-        ...rows[0],
-        degree: rows[0]?.program.degree.name,
-        program: rows[0]?.program.name,
-      }
-    : nullRow(rowDescriptor);
+const initForm = (rows: Row[]): FormValues => ({
+  degree: rows[0]?.program.degree.name ?? null,
+  program: rows[0]?.program.name ?? null,
+  name: rows[0]?.name ?? null,
+  nameShort: rows[0]?.nameShort ?? null,
+  visible: rows[0]?.visible ?? null,
+});
 
 function validateImportRow(
   importRow: ImportRow,
@@ -215,16 +211,19 @@ function validateImportRow(
 
     const degree = degrees.value.find((d) => d.name === importRow.degree);
     if (degree === undefined) {
-      throw new Error(t("admin.courses.tracks.form.error.degreeNotFound"));
+      throw new Error(
+        t("admin.courses.tracks.form.error.degreeNotFound", importRow),
+      );
     }
 
-    object.programId = degree.programs.find(
-      (p) => p.name === importRow.program,
-    )?.id;
-
-    if (object.programId === undefined) {
-      throw new Error(t("admin.courses.tracks.form.error.programNotFound"));
+    const program = degree.programs.find((p) => p.name === importRow.program);
+    if (program === undefined) {
+      throw new Error(
+        t("admin.courses.tracks.form.error.programNotFound", importRow),
+      );
     }
+
+    object.programId = program.id;
   }
 
   if (importRow.name !== undefined) {
@@ -235,7 +234,9 @@ function validateImportRow(
         (t) => t.program.id === object.programId && t.name === object.name,
       )
     ) {
-      throw new Error(t("admin.courses.tracks.form.error.conflictProgramName"));
+      throw new Error(
+        t("admin.courses.tracks.form.error.conflictProgramName", importRow),
+      );
     }
   }
 
@@ -249,6 +250,30 @@ function validateImportRow(
 
   return object;
 }
+
+const formValues = ref<FormValues>(initForm([]));
+const selectedFields = ref<string[]>([]);
+
+const programOptions = computed(
+  () =>
+    degrees.value
+      .find((d) => d.name === formValues.value.degree)
+      ?.programs.map((p) => p.name) ?? [],
+);
+
+watch(
+  [() => formValues.value.degree, () => formValues.value.program],
+  ([degree, program]) => {
+    if (
+      program &&
+      !degrees.value
+        .find((d) => d.name === degree)
+        ?.programs.find((p) => p.name === program)
+    ) {
+      formValues.value.program = null;
+    }
+  },
+);
 
 // Filters
 const selectedDegrees = ref<string[]>([]);
@@ -306,7 +331,6 @@ const filteredTracks = computed(() =>
       <QSelect
         v-model="selectedDegrees"
         :options="degrees.map((d) => d.name)"
-        color="primary"
         :label="t('admin.courses.tracks.table.columns.degree')"
         multiple
         use-chips
@@ -314,25 +338,10 @@ const filteredTracks = computed(() =>
         dense
         options-dense
         style="width: 100%"
-      >
-        <!-- this slot to use dense QChip -->
-        <template #selected-item="scope">
-          <QChip
-            :tabindex="scope.tabindex"
-            class="q-ma-none"
-            color="grey3"
-            removable
-            dense
-            @remove="scope.removeAtIndex(scope.index)"
-          >
-            {{ scope.opt.label ?? scope.opt }}
-          </QChip>
-        </template>
-      </QSelect>
+      />
       <QSelect
         v-model="selectedPrograms"
         :options="selectProgramOptions"
-        color="primary"
         :label="t('admin.courses.tracks.table.columns.program')"
         emit-value
         map-options
@@ -342,24 +351,10 @@ const filteredTracks = computed(() =>
         dense
         options-dense
         style="width: 100%"
-      >
-        <!-- this slot to use dense QChip -->
-        <template #selected-item="scope">
-          <QChip
-            :tabindex="scope.tabindex"
-            class="q-ma-none"
-            color="grey3"
-            removable
-            dense
-            @remove="scope.removeAtIndex(scope.index)"
-          >
-            {{ scope.opt.label ?? scope.opt }}
-          </QChip>
-        </template>
-      </QSelect>
+      />
       <QSelect
         v-model="selectedVisible"
-        :options="yesNoOptions"
+        :options="booleanOptions(t('yes'), t('no'))"
         color="primary"
         :label="t('admin.courses.tracks.table.columns.visible')"
         emit-value
@@ -374,34 +369,23 @@ const filteredTracks = computed(() =>
     </template>
     <template #form="{ multipleSelection }">
       <QSelect
+        v-if="!multipleSelection"
         v-model="formValues.degree"
         :options="degrees.map((d) => d.name)"
         :label="t('admin.courses.tracks.form.fields.degree')"
-        :disable="multipleSelection && !selectedFields.includes('degree')"
         square
         dense
         options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="degree" />
-        </template>
-      </QSelect>
+      />
       <QSelect
+        v-if="!multipleSelection"
         v-model="formValues.program"
         :options="programOptions"
         :label="t('admin.courses.tracks.form.fields.program')"
-        :disable="
-          !formValues.degree ||
-          (multipleSelection && !selectedFields.includes('program'))
-        "
         square
         dense
         options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="program" />
-        </template>
-      </QSelect>
+      />
       <QInput
         v-if="!multipleSelection"
         v-model="formValues.name"
@@ -420,7 +404,7 @@ const filteredTracks = computed(() =>
         <QCheckbox
           v-if="multipleSelection"
           v-model="selectedFields"
-          val="active"
+          val="visible"
         />
         <QToggle
           v-model="formValues.visible"
