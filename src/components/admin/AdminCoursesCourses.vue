@@ -606,30 +606,28 @@ const selectedTracks = ref<
 const selectedSemesters = ref<number[]>([]);
 const selectedTypes = ref<string[]>([]);
 const selectedVisible = ref<boolean | null>(null);
-const filteredCourses = computed(() =>
-  courses.value.filter(
-    (c) =>
-      (!selectedYears.value.length || selectedYears.value.includes(c.year)) &&
-      (!selectedDegrees.value.length ||
-        selectedDegrees.value.includes(c.program.degree.name)) &&
-      (!selectedPrograms.value.length ||
-        selectedPrograms.value.some(
-          (p) =>
-            p.degree === c.program.degree.name && p.program === c.program.name,
-        )) &&
-      (!selectedTracks.value.length ||
-        selectedTracks.value.some(
-          (t) =>
-            t.degree === c.program.degree.name &&
-            t.program === c.program.name &&
-            t.track === c.track?.name,
-        )) &&
-      (!selectedSemesters.value.length ||
-        selectedSemesters.value.includes(c.semester)) &&
-      (!selectedTypes.value.length ||
-        selectedTypes.value.includes(c.type.label)) &&
-      (selectedVisible.value === null || c.visible === selectedVisible.value),
-  ),
+const filterFn = computed(
+  () => (r: Row) =>
+    (!selectedYears.value.length || selectedYears.value.includes(r.year)) &&
+    (!selectedDegrees.value.length ||
+      selectedDegrees.value.includes(r.program.degree.name)) &&
+    (!selectedPrograms.value.length ||
+      selectedPrograms.value.some(
+        (p) =>
+          p.degree === r.program.degree.name && p.program === r.program.name,
+      )) &&
+    (!selectedTracks.value.length ||
+      selectedTracks.value.some(
+        (t) =>
+          t.degree === r.program.degree.name &&
+          t.program === r.program.name &&
+          t.track === r.track?.name,
+      )) &&
+    (!selectedSemesters.value.length ||
+      selectedSemesters.value.includes(r.semester)) &&
+    (!selectedTypes.value.length ||
+      selectedTypes.value.includes(r.type.label)) &&
+    (selectedVisible.value === null || r.visible === selectedVisible.value),
 );
 </script>
 
@@ -642,7 +640,8 @@ const filteredCourses = computed(() =>
     :id-key
     :row-descriptor
     :columns
-    :rows="filteredCourses"
+    :rows="courses"
+    :filter-fn
     :format-row
     :init-form
     :validate-import-row

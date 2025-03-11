@@ -292,14 +292,12 @@ const selectedFields = ref<string[]>([]);
 const selectedPositions = ref<string[]>([]);
 const selectedVisible = ref<boolean | null>(null);
 const selectedActive = ref<boolean | null>(null);
-const filteredTeachers = computed(() =>
-  teachers.value.filter(
-    (t) =>
-      (!selectedPositions.value.length ||
-        selectedPositions.value.includes(t.position?.label ?? "")) &&
-      (selectedVisible.value === null || t.visible === selectedVisible.value) &&
-      (selectedActive.value === null || t.active === selectedActive.value),
-  ),
+const filterFn = computed(
+  () => (r: Row) =>
+    (!selectedPositions.value.length ||
+      selectedPositions.value.includes(r.position?.label ?? "")) &&
+    (selectedVisible.value === null || r.visible === selectedVisible.value) &&
+    (selectedActive.value === null || r.active === selectedActive.value),
 );
 </script>
 
@@ -312,7 +310,8 @@ const filteredTeachers = computed(() =>
     :id-key
     :row-descriptor
     :columns
-    :rows="filteredTeachers"
+    :rows="teachers"
+    :filter-fn
     :format-row
     :init-form
     :validate-import-row

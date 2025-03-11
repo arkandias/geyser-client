@@ -58,6 +58,7 @@ const {
   rowDescriptor,
   columns,
   rows,
+  filterFn,
   formatRow,
   initForm,
   validateImportRow,
@@ -74,6 +75,7 @@ const {
   rowDescriptor: T;
   columns: Column<Row>[];
   rows: Row[];
+  filterFn?: (row: Row) => boolean;
   formatRow: (row: Row) => string;
   initForm: (rows: Row[]) => FormValues;
   validateImportRow: ValidateImportRow;
@@ -326,7 +328,7 @@ const deleteDataHandle = async () => {
 
 // ===== Search & Filtering =====
 const hasFilters = computed(() => !!slots["filters"]);
-const filters = ref(false);
+const showFilters = ref(false);
 const search = ref<string | null>(null);
 const searchableColumns = columns
   .filter((col) => toValue(col.searchable))
@@ -339,12 +341,14 @@ const filterMethod = (
   rows: readonly Row[],
   terms: typeof filterObj.value,
 ): readonly Row[] =>
-  rows.filter((row) =>
-    terms.searchColumns.some((col) =>
-      normalizeForSearch(String(getField(row, col.field))).includes(
-        terms.search,
-      ),
-    ),
+  rows.filter(
+    (row) =>
+      terms.searchColumns.some((col) =>
+        normalizeForSearch(String(getField(row, col.field))).includes(
+          terms.search,
+        ),
+      ) &&
+      (!showFilters.value || (filterFn?.(row) ?? true)),
   );
 
 // ===== Data Import =====
@@ -565,13 +569,13 @@ const exportDataHandle = () => {
       <QBtn
         v-if="hasFilters"
         icon="sym_s_filter_list"
-        :color="filters ? 'primary' : 'grey'"
+        :color="showFilters ? 'primary' : 'grey'"
         flat
         round
         dense
-        @click="filters = !filters"
+        @click="showFilters = !showFilters"
       />
-      <slot v-if="filters" name="filters" />
+      <slot v-if="showFilters" name="filters" />
     </template>
   </QTable>
 

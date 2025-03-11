@@ -297,18 +297,16 @@ const selectProgramOptions = computed(() =>
 );
 const selectedPrograms = ref<{ degree: string; program: string }[]>([]);
 const selectedVisible = ref<boolean | null>(null);
-const filteredTracks = computed(() =>
-  tracks.value.filter(
-    (t) =>
-      (!selectedDegrees.value.length ||
-        selectedDegrees.value.includes(t.program.degree.name)) &&
-      (!selectedPrograms.value.length ||
-        selectedPrograms.value.some(
-          (p) =>
-            p.degree === t.program.degree.name && p.program === t.program.name,
-        )) &&
-      (selectedVisible.value === null || t.visible === selectedVisible.value),
-  ),
+const filterFn = computed(
+  () => (r: Row) =>
+    (!selectedDegrees.value.length ||
+      selectedDegrees.value.includes(r.program.degree.name)) &&
+    (!selectedPrograms.value.length ||
+      selectedPrograms.value.some(
+        (p) =>
+          p.degree === r.program.degree.name && p.program === r.program.name,
+      )) &&
+    (selectedVisible.value === null || r.visible === selectedVisible.value),
 );
 </script>
 
@@ -321,7 +319,8 @@ const filteredTracks = computed(() =>
     :id-key
     :row-descriptor
     :columns
-    :rows="filteredTracks"
+    :rows="tracks"
+    :filter-fn
     :format-row
     :init-form
     :validate-import-row

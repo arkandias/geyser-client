@@ -177,11 +177,9 @@ const selectedFields = ref<string[]>([]);
 
 // Filters
 const selectedVisible = ref<boolean | null>(null);
-const filteredDegrees = computed(() =>
-  degrees.value.filter(
-    (d) =>
-      selectedVisible.value === null || d.visible === selectedVisible.value,
-  ),
+const filterFn = computed(
+  () => (r: Row) =>
+    selectedVisible.value === null || r.visible === selectedVisible.value,
 );
 </script>
 
@@ -194,7 +192,8 @@ const filteredDegrees = computed(() =>
     :id-key
     :row-descriptor
     :columns
-    :rows="filteredDegrees"
+    :rows="degrees"
+    :filter-fn
     :format-row
     :init-form
     :validate-import-row

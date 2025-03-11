@@ -222,13 +222,11 @@ const selectedFields = ref<string[]>([]);
 // Filters
 const selectedDegrees = ref<string[]>([]);
 const selectedVisible = ref<boolean | null>(null);
-const filteredPrograms = computed(() =>
-  programs.value.filter(
-    (p) =>
-      (!selectedDegrees.value.length ||
-        selectedDegrees.value.includes(p.degree.name)) &&
-      (selectedVisible.value === null || p.visible === selectedVisible.value),
-  ),
+const filterFn = computed(
+  () => (r: Row) =>
+    (!selectedDegrees.value.length ||
+      selectedDegrees.value.includes(r.degree.name)) &&
+    (selectedVisible.value === null || r.visible === selectedVisible.value),
 );
 </script>
 
@@ -241,7 +239,8 @@ const filteredPrograms = computed(() =>
     :id-key
     :row-descriptor
     :columns
-    :rows="filteredPrograms"
+    :rows="programs"
+    :filter-fn
     :format-row
     :init-form
     :validate-import-row

@@ -238,12 +238,10 @@ const teacherOptions = computed(() =>
 // Filters
 const selectedYears = ref<number[]>([]);
 const selectedUids = ref<string[]>([]);
-const filteredServices = computed(() =>
-  services.value.filter(
-    (s) =>
-      (!selectedYears.value.length || selectedYears.value.includes(s.year)) &&
-      (!selectedUids.value.length || selectedUids.value.includes(s.uid)),
-  ),
+const filterFn = computed(
+  () => (r: Row) =>
+    (!selectedYears.value.length || selectedYears.value.includes(r.year)) &&
+    (!selectedUids.value.length || selectedUids.value.includes(r.uid)),
 );
 </script>
 
@@ -256,7 +254,8 @@ const filteredServices = computed(() =>
     :id-key
     :row-descriptor
     :columns
-    :rows="filteredServices"
+    :rows="services"
+    :filter-fn
     :format-row
     :init-form
     :validate-import-row

@@ -305,16 +305,13 @@ const teacherOptions = computed(() =>
 const selectedYears = ref<number[]>([]);
 const selectedUids = ref<string[]>([]);
 const selectedTypes = ref<string[]>([]);
-const filteredServiceModifications = computed(() =>
-  serviceModifications.value.filter(
-    (sm) =>
-      (!selectedYears.value.length ||
-        selectedYears.value.includes(sm.service.year)) &&
-      (!selectedUids.value.length ||
-        selectedUids.value.includes(sm.service.uid)) &&
-      (!selectedTypes.value.length ||
-        selectedTypes.value.includes(sm.type.label)),
-  ),
+const filterFn = computed(
+  () => (r: Row) =>
+    (!selectedYears.value.length ||
+      selectedYears.value.includes(r.service.year)) &&
+    (!selectedUids.value.length ||
+      selectedUids.value.includes(r.service.uid)) &&
+    (!selectedTypes.value.length || selectedTypes.value.includes(r.type.label)),
 );
 </script>
 
@@ -327,7 +324,8 @@ const filteredServiceModifications = computed(() =>
     :id-key
     :row-descriptor
     :columns
-    :rows="filteredServiceModifications"
+    :rows="serviceModifications"
+    :filter-fn
     :format-row
     :init-form
     :validate-import-row
