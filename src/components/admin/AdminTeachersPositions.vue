@@ -97,6 +97,7 @@ const deletePositions = useMutation(DeletePositionsDocument);
 
 const constraint = PositionConstraint.PositionLabelKey;
 const updateColumns = [
+  PositionUpdateColumn.Label,
   PositionUpdateColumn.Description,
   PositionUpdateColumn.BaseServiceHours,
 ];
@@ -205,19 +206,27 @@ const selectedFields = ref<string[]>([]);
   >
     <template #form="{ multipleSelection }">
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.label"
         :label="t('admin.teachers.positions.form.fields.label')"
+        :disable="multipleSelection && !selectedFields.includes('label')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="label" />
+        </template>
+      </QInput>
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.description"
         :label="t('admin.teachers.positions.form.fields.description')"
+        :disable="multipleSelection && !selectedFields.includes('description')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="description" />
+        </template>
+      </QInput>
       <QInput
         :model-value="formValues.baseServiceHours"
         type="number"

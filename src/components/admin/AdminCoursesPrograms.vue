@@ -115,6 +115,8 @@ const deletePrograms = useMutation(DeleteProgramsDocument);
 
 const constraint = ProgramConstraint.ProgramDegreeIdNameKey;
 const updateColumns = [
+  ProgramUpdateColumn.DegreeId,
+  ProgramUpdateColumn.Name,
   ProgramUpdateColumn.NameShort,
   ProgramUpdateColumn.Visible,
 ];
@@ -279,28 +281,40 @@ const filteredPrograms = computed(() =>
     </template>
     <template #form="{ multipleSelection }">
       <QSelect
-        v-if="!multipleSelection"
         v-model="formValues.degree"
         :options="degrees.map((d) => d.name)"
         :label="t('admin.courses.programs.form.fields.degree')"
+        :disable="multipleSelection && !selectedFields.includes('degree')"
         square
         dense
         options-dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="degree" />
+        </template>
+      </QSelect>
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.name"
         :label="t('admin.courses.programs.form.fields.name')"
+        :disable="multipleSelection && !selectedFields.includes('name')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="name" />
+        </template>
+      </QInput>
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.nameShort"
         :label="t('admin.courses.programs.form.fields.nameShort')"
+        :disable="multipleSelection && !selectedFields.includes('nameShort')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="nameShort" />
+        </template>
+      </QInput>
       <div class="q-mr-md">
         <QCheckbox
           v-if="multipleSelection"

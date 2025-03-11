@@ -113,7 +113,12 @@ const updateServices = useMutation(UpdateServicesDocument);
 const deleteServices = useMutation(DeleteServicesDocument);
 
 const constraint = ServiceConstraint.ServiceYearUidKey;
-const updateColumns = [ServiceUpdateColumn.Hours, ServiceUpdateColumn.Message];
+const updateColumns = [
+  ServiceUpdateColumn.Year,
+  ServiceUpdateColumn.Uid,
+  ServiceUpdateColumn.Hours,
+  ServiceUpdateColumn.Message,
+];
 
 const columns: Column<Row>[] = [
   {
@@ -156,10 +161,10 @@ const formatRow = (row: Row): string =>
   `${row.year} — ${row.teacher.displayname}`;
 
 const initForm = (rows: Row[]): FormValues => ({
-  year: rows[0]?.year,
-  uid: rows[0]?.uid,
-  hours: rows[0]?.hours,
-  message: rows[0]?.message,
+  year: rows[0]?.year ?? null,
+  uid: rows[0]?.uid ?? null,
+  hours: rows[0]?.hours ?? null,
+  message: rows[0]?.message ?? null,
 });
 
 function validateImportRow(
@@ -290,7 +295,6 @@ const filteredServices = computed(() =>
     </template>
     <template #form="{ multipleSelection }">
       <QSelect
-        v-if="!multipleSelection"
         v-model="formValues.year"
         :options="years.map((y) => y.value)"
         :label="t('admin.teachers.services.form.fields.year')"
@@ -298,9 +302,12 @@ const filteredServices = computed(() =>
         square
         dense
         options-dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="year" />
+        </template>
+      </QSelect>
       <QSelect
-        v-if="!multipleSelection"
         v-model="formValues.uid"
         :options="teacherOptions"
         :label="t('admin.teachers.services.form.fields.uid')"
@@ -310,7 +317,11 @@ const filteredServices = computed(() =>
         square
         dense
         options-dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="uid" />
+        </template>
+      </QSelect>
       <QInput
         :model-value="formValues.hours"
         type="number"

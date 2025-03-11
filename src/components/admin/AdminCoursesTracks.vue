@@ -125,7 +125,12 @@ const updateTracks = useMutation(UpdateTracksDocument);
 const deleteTracks = useMutation(DeleteTracksDocument);
 
 const constraint = TrackConstraint.TrackProgramIdNameKey;
-const updateColumns = [TrackUpdateColumn.NameShort, TrackUpdateColumn.Visible];
+const updateColumns = [
+  TrackUpdateColumn.ProgramId,
+  TrackUpdateColumn.Name,
+  TrackUpdateColumn.NameShort,
+  TrackUpdateColumn.Visible,
+];
 
 const columns: Column<Row>[] = [
   {
@@ -369,34 +374,46 @@ const filteredTracks = computed(() =>
     </template>
     <template #form="{ multipleSelection }">
       <QSelect
-        v-if="!multipleSelection"
         v-model="formValues.degree"
         :options="degrees.map((d) => d.name)"
         :label="t('admin.courses.tracks.form.fields.degree')"
+        :disable="multipleSelection && !selectedFields.includes('degree')"
         square
         dense
         options-dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="degree" />
+        </template>
+      </QSelect>
       <QSelect
-        v-if="!multipleSelection"
         v-model="formValues.program"
         :options="programOptions"
         :label="t('admin.courses.tracks.form.fields.program')"
+        :disable="multipleSelection && !selectedFields.includes('program')"
         square
         dense
         options-dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="program" />
+        </template>
+      </QSelect>
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.name"
         :label="t('admin.courses.tracks.form.fields.name')"
+        :disable="multipleSelection && !selectedFields.includes('name')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="name" />
+        </template>
+      </QInput>
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.nameShort"
         :label="t('admin.courses.tracks.form.fields.nameShort')"
+        :disable="multipleSelection && !selectedFields.includes('nameShort')"
         square
         dense
       />

@@ -126,6 +126,7 @@ const deleteTeachers = useMutation(DeleteTeachersDocument);
 
 const constraint = TeacherConstraint.TeacherPkey;
 const updateColumns = [
+  TeacherUpdateColumn.Uid,
   TeacherUpdateColumn.Firstname,
   TeacherUpdateColumn.Lastname,
   TeacherUpdateColumn.Alias,
@@ -365,33 +366,49 @@ const filteredTeachers = computed(() =>
     </template>
     <template #form="{ multipleSelection }">
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.uid"
         :label="t('admin.teachers.teachers.form.fields.uid')"
+        :disable="multipleSelection && !selectedFields.includes('uid')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="uid" />
+        </template>
+      </QInput>
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.firstname"
         :label="t('admin.teachers.teachers.form.fields.firstname')"
+        :disable="multipleSelection && !selectedFields.includes('firstname')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="firstname" />
+        </template>
+      </QInput>
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.lastname"
         :label="t('admin.teachers.teachers.form.fields.lastname')"
+        :disable="multipleSelection && !selectedFields.includes('lastname')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="lastname" />
+        </template>
+      </QInput>
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.alias"
         :label="t('admin.teachers.teachers.form.fields.alias')"
+        :disable="multipleSelection && !selectedFields.includes('alias')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="alias" />
+        </template>
+      </QInput>
       <QSelect
         v-model="formValues.position"
         :options="positions.map((p) => p.label)"

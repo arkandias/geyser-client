@@ -97,6 +97,7 @@ const deleteDegrees = useMutation(DeleteDegreesDocument);
 
 const constraint = DegreeConstraint.DegreeNameKey;
 const updateColumns = [
+  DegreeUpdateColumn.Name,
   DegreeUpdateColumn.NameShort,
   DegreeUpdateColumn.Visible,
 ];
@@ -222,19 +223,27 @@ const filteredDegrees = computed(() =>
     </template>
     <template #form="{ multipleSelection }">
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.name"
         :label="t('admin.courses.degrees.form.fields.name')"
+        :disable="multipleSelection && !selectedFields.includes('name')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="name" />
+        </template>
+      </QInput>
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.nameShort"
         :label="t('admin.courses.degrees.form.fields.nameShort')"
+        :disable="multipleSelection && !selectedFields.includes('nameShort')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="nameShort" />
+        </template>
+      </QInput>
       <div class="q-mr-md">
         <QCheckbox
           v-if="multipleSelection"

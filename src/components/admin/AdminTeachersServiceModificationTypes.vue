@@ -116,7 +116,10 @@ const deleteServiceModificationTypes = useMutation(
 
 const constraint =
   ServiceModificationTypeConstraint.ServiceModificationTypeLabelKey;
-const updateColumns = [ServiceModificationTypeUpdateColumn.Description];
+const updateColumns = [
+  ServiceModificationTypeUpdateColumn.Label,
+  ServiceModificationTypeUpdateColumn.Description,
+];
 
 const columns: Column<Row>[] = [
   {
@@ -142,8 +145,8 @@ const columns: Column<Row>[] = [
 const formatRow = (row: Row) => row.label;
 
 const initForm = (rows: Row[]): FormValues => ({
-  label: rows[0]?.label,
-  description: rows[0]?.description,
+  label: rows[0]?.label ?? null,
+  description: rows[0]?.description ?? null,
 });
 
 function validateImportRow(
@@ -208,21 +211,29 @@ const selectedFields = ref<string[]>([]);
   >
     <template #form="{ multipleSelection }">
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.label"
         :label="t('admin.teachers.serviceModificationTypes.form.fields.label')"
+        :disable="multipleSelection && !selectedFields.includes('label')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="label" />
+        </template>
+      </QInput>
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.description"
         :label="
           t('admin.teachers.serviceModificationTypes.form.fields.description')
         "
+        :disable="multipleSelection && !selectedFields.includes('description')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="description" />
+        </template>
+      </QInput>
     </template>
   </AdminData>
 </template>

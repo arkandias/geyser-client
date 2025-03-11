@@ -183,7 +183,19 @@ const deleteCourses = useMutation(DeleteCoursesDocument);
 const constraint =
   CourseConstraint.CourseYearProgramIdTrackIdNameSemesterTypeIdKey;
 const updateColumns = [
+  CourseUpdateColumn.Year,
+  CourseUpdateColumn.ProgramId,
+  CourseUpdateColumn.TrackId,
+  CourseUpdateColumn.Name,
   CourseUpdateColumn.NameShort,
+  CourseUpdateColumn.Semester,
+  CourseUpdateColumn.TypeId,
+  CourseUpdateColumn.Hours,
+  CourseUpdateColumn.HoursAdjusted,
+  CourseUpdateColumn.Groups,
+  CourseUpdateColumn.GroupsAdjusted,
+  CourseUpdateColumn.Description,
+  CourseUpdateColumn.PriorityRule,
   CourseUpdateColumn.Visible,
 ];
 
@@ -318,19 +330,21 @@ const formatRow = (row: Row) =>
   (row.track ? ` — ${row.track.nameDisplay})` : `)`);
 
 const initForm = (rows: Row[]): FormValues => ({
-  year: rows[0]?.year,
-  degree: rows[0]?.program.degree.name,
-  program: rows[0]?.program.name,
+  year: rows[0]?.year ?? null,
+  degree: rows[0]?.program.degree.name ?? null,
+  program: rows[0]?.program.name ?? null,
   track: rows[0]?.track?.name ?? null,
-  semester: rows[0]?.semester,
-  type: rows[0]?.type.label,
-  hours: rows[0]?.hours,
-  hoursAdjusted: rows[0]?.hoursAdjusted,
-  groups: rows[0]?.groups,
-  groupsAdjusted: rows[0]?.groupsAdjusted,
-  description: rows[0]?.description,
-  priorityRule: rows[0]?.priorityRule,
-  visible: rows[0]?.visible,
+  name: rows[0]?.name ?? null,
+  nameShort: rows[0]?.nameShort ?? null,
+  semester: rows[0]?.semester ?? null,
+  type: rows[0]?.type.label ?? null,
+  hours: rows[0]?.hours ?? null,
+  hoursAdjusted: rows[0]?.hoursAdjusted ?? null,
+  groups: rows[0]?.groups ?? null,
+  groupsAdjusted: rows[0]?.groupsAdjusted ?? null,
+  description: rows[0]?.description ?? null,
+  priorityRule: rows[0]?.priorityRule ?? null,
+  visible: rows[0]?.visible ?? null,
 });
 
 function validateImportRow(
@@ -397,14 +411,17 @@ function validateImportRow(
         );
       }
 
-      const track = program.tracks.find((t) => t.name === importRow.track);
-      if (track === undefined) {
-        throw new Error(
-          t("admin.courses.courses.form.error.trackNotFound", importRow),
-        );
+      if (importRow.track === null) {
+        object.trackId = null;
+      } else {
+        const track = program.tracks.find((t) => t.name === importRow.track);
+        if (track === undefined) {
+          throw new Error(
+            t("admin.courses.courses.form.error.trackNotFound", importRow),
+          );
+        }
+        object.trackId = track.id;
       }
-
-      object.trackId = track.id;
     }
   }
 
@@ -786,19 +803,27 @@ const filteredCourses = computed(() =>
         </template>
       </QSelect>
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.name"
         :label="t('admin.courses.courses.form.fields.name')"
+        :disable="multipleSelection && !selectedFields.includes('name')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="name" />
+        </template>
+      </QInput>
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.nameShort"
         :label="t('admin.courses.courses.form.fields.nameShort')"
+        :disable="multipleSelection && !selectedFields.includes('nameShort')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="nameShort" />
+        </template>
+      </QInput>
       <QSelect
         v-model="formValues.semester"
         :options="semesterOptions"
@@ -892,12 +917,16 @@ const filteredCourses = computed(() =>
         </template>
       </QInput>
       <QInput
-        v-if="!multipleSelection"
         v-model="formValues.description"
         :label="t('admin.courses.courses.form.fields.description')"
+        :disable="multipleSelection && !selectedFields.includes('description')"
         square
         dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="description" />
+        </template>
+      </QInput>
       <QInput
         :model-value="formValues.priorityRule"
         type="number"

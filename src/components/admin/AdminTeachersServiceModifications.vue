@@ -181,6 +181,7 @@ const deleteServiceModifications = useMutation(
 
 const constraint = ServiceModificationConstraint.ServiceModificationPkey;
 const updateColumns = [
+  ServiceModificationUpdateColumn.ServiceId,
   ServiceModificationUpdateColumn.TypeId,
   ServiceModificationUpdateColumn.Hours,
 ];
@@ -225,10 +226,10 @@ const formatRow = (row: Row): string =>
   `${row.service.year} — ${row.service.teacher.displayname} — ${row.type.label}`;
 
 const initForm = (rows: Row[]): FormValues => ({
-  year: rows[0]?.service.year,
-  uid: rows[0]?.service.uid,
-  type: rows[0]?.type.label,
-  hours: rows[0]?.hours,
+  year: rows[0]?.service.year ?? null,
+  uid: rows[0]?.service.uid ?? null,
+  type: rows[0]?.type.label ?? null,
+  hours: rows[0]?.hours ?? null,
 });
 
 function validateImportRow(
@@ -376,7 +377,6 @@ const filteredServiceModifications = computed(() =>
     </template>
     <template #form="{ multipleSelection }">
       <QSelect
-        v-if="!multipleSelection"
         v-model="formValues.year"
         :options="years.map((y) => y.value)"
         :label="t('admin.teachers.serviceModifications.form.fields.year')"
@@ -384,9 +384,12 @@ const filteredServiceModifications = computed(() =>
         square
         dense
         options-dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="year" />
+        </template>
+      </QSelect>
       <QSelect
-        v-if="!multipleSelection"
         v-model="formValues.uid"
         :options="teacherOptions"
         :label="t('admin.teachers.serviceModifications.form.fields.uid')"
@@ -396,7 +399,11 @@ const filteredServiceModifications = computed(() =>
         square
         dense
         options-dense
-      />
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="uid" />
+        </template>
+      </QSelect>
       <QSelect
         v-model="formValues.type"
         :options="serviceModificationTypes.map((smt) => smt.label)"
