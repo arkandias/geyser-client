@@ -9,8 +9,6 @@ import { quasarOptions } from "@/services/quasar.ts";
 import { clientOptions } from "@/services/urql.ts";
 import { router } from "@/services/router.ts";
 
-import "@quasar/extras/material-symbols-sharp/material-symbols-sharp.css";
-import "@quasar/extras/roboto-font/roboto-font.css";
 import "quasar/src/css/index.sass";
 import "@/css/main.scss";
 

@@ -28,10 +28,8 @@
     "codegen": "pnpm codegen:schema && pnpm codegen:documents"
   },
   "dependencies": {
-    "@quasar/extras": "^1.16.17",
     "@urql/vue": "^1.4.3",
     "dompurify": "^3.2.4",
-    "dotenv": "^16.4.7",
     "graphql": "^16.10.0",
     "keycloak-js": "^26.2.0",
     "papaparse": "^5.5.2",
@@ -57,6 +55,7 @@
     "@urql/devtools": "^2.0.3",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/test-utils": "^2.4.6",
+    "dotenv": "^16.4.7",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-vue": "^9.33.0",

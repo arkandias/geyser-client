@@ -9,6 +9,16 @@ import { defineConfig } from "vite";
 export default defineConfig({
   build: {
     target: "es2022",
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-core": ["vue", "vue-router", "vue-i18n"],
+          "vendor-data": ["@urql/vue", "graphql", "papaparse", "dompurify"],
+          "vendor-auth": ["keycloak-js"],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000,
   },
   server: {
     port: 5173,

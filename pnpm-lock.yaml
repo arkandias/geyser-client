@@ -8,18 +8,12 @@ importers:
 
   .:
     dependencies:
-      '@quasar/extras':
-        specifier: ^1.16.17
-        version: 1.16.17
       '@urql/vue':
         specifier: ^1.4.3
         version: 1.4.3(@urql/core@5.1.1(graphql@16.10.0))(vue@3.5.13(typescript@5.8.2))
       dompurify:
         specifier: ^3.2.4
         version: 3.2.4
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.4.7
       graphql:
         specifier: ^16.10.0
         version: 16.10.0
@@ -90,6 +84,9 @@ importers:
       '@vue/test-utils':
         specifier: ^2.4.6
         version: 2.4.6
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.4.7
       eslint:
         specifier: ^9.22.0
         version: 9.22.0(jiti@2.4.2)
@@ -814,9 +811,6 @@ packages:
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
-
-  '@quasar/extras@1.16.17':
-    resolution: {integrity: sha512-4aX9XU/oj1+8O2C7LQCgywmoIw7suyUEZMPFFLWI61f21mF55VOsMdLCBhjeFgL5U4EWy079mfOR6/J8thi/ag==}
 
   '@quasar/vite-plugin@1.9.0':
     resolution: {integrity: sha512-r1MFtI2QZJ2g20pe75Zuv4aoi0uoK8oP0yEdzLWRoOLCbhtf2+StJpUza9TydYi3KcvCl9+4HUf3OAWVKoxDmQ==}
@@ -3748,8 +3742,6 @@ snapshots:
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
-
-  '@quasar/extras@1.16.17': {}
 
   '@quasar/vite-plugin@1.9.0(@vitejs/plugin-vue@5.2.1(vite@6.2.1(@types/node@22.13.10)(jiti@2.4.2)(sass-embedded@1.85.1)(sass@1.83.1)(yaml@2.7.0))(vue@3.5.13(typescript@5.8.2)))(quasar@2.18.1)(vite@6.2.1(@types/node@22.13.10)(jiti@2.4.2)(sass-embedded@1.85.1)(sass@1.83.1)(yaml@2.7.0))(vue@3.5.13(typescript@5.8.2))':
     dependencies:
