@@ -545,48 +545,75 @@ watch(
 );
 
 // Filters
-// const selectedDegrees = ref<string[]>([]);
-// const selectProgramOptions = computed(() =>
-//   degrees.value
-//     .filter(
-//       (d) =>
-//         !selectedDegrees.value.length || selectedDegrees.value.includes(d.name),
-//     )
-//     .flatMap((d) =>
-//       d.programs.map((p) => ({
-//         value: { degree: d.name, program: p.name },
-//         label: `${d.name} — ${p.name}`,
-//       })),
-//     ),
-// );
-// const selectedPrograms = ref<{ degree: string; program: string }[]>([]);
-// const selectTrackOptions = computed(() =>
-//   degrees.value
-//     .filter(
-//       (d) =>
-//         !selectedDegrees.value.length || selectedDegrees.value.includes(d.name),
-//     )
-//     .flatMap((d) =>
-//       d.programs.map((p) => ({
-//         value: { degree: d.name, program: p.name },
-//         label: `${d.name} — ${p.name}`,
-//       })),
-//     ),
-// );
-// const selectedVisible = ref<boolean | null>(null);
-// const filteredCourses = computed(() =>
-//   courses.value.filter(
-//     (c) =>
-//       (!selectedDegrees.value.length ||
-//         selectedDegrees.value.includes(c.program.degree.name)) &&
-//       (!selectedPrograms.value.length ||
-//         selectedPrograms.value.some(
-//           (p) =>
-//             p.degree === c.program.degree.name && p.program === c.program.name,
-//         )) &&
-//       (selectedVisible.value === null || c.visible === selectedVisible.value),
-//   ),
-// );
+const selectedYears = ref<number[]>([]);
+const selectedDegrees = ref<string[]>([]);
+const selectProgramOptions = computed(() =>
+  degrees.value
+    .filter(
+      (d) =>
+        !selectedDegrees.value.length || selectedDegrees.value.includes(d.name),
+    )
+    .flatMap((d) =>
+      d.programs.map((p) => ({
+        value: { degree: d.name, program: p.name },
+        label: `${d.name} — ${p.name}`,
+      })),
+    ),
+);
+const selectedPrograms = ref<{ degree: string; program: string }[]>([]);
+const selectTrackOptions = computed(() =>
+  degrees.value
+    .filter(
+      (d) =>
+        !selectedDegrees.value.length || selectedDegrees.value.includes(d.name),
+    )
+    .flatMap((d) =>
+      d.programs
+        .filter(
+          (p) =>
+            !selectedPrograms.value.length ||
+            selectedPrograms.value.some((sp) => sp.program === p.name),
+        )
+        .map((p) => ({ ...p, degree: d.name })),
+    )
+    .flatMap((p) =>
+      p.tracks.flatMap((t) => ({
+        value: { degree: p.degree, program: p.name, track: t.name },
+        label: `${p.degree} — ${p.name} — ${t.name}`,
+      })),
+    ),
+);
+const selectedTracks = ref<
+  { degree: string; program: string; track: string }[]
+>([]);
+const selectedSemesters = ref<number[]>([]);
+const selectedTypes = ref<string[]>([]);
+const selectedVisible = ref<boolean | null>(null);
+const filteredCourses = computed(() =>
+  courses.value.filter(
+    (c) =>
+      (!selectedYears.value.length || selectedYears.value.includes(c.year)) &&
+      (!selectedDegrees.value.length ||
+        selectedDegrees.value.includes(c.program.degree.name)) &&
+      (!selectedPrograms.value.length ||
+        selectedPrograms.value.some(
+          (p) =>
+            p.degree === c.program.degree.name && p.program === c.program.name,
+        )) &&
+      (!selectedTracks.value.length ||
+        selectedTracks.value.some(
+          (t) =>
+            t.degree === c.program.degree.name &&
+            t.program === c.program.name &&
+            t.track === c.track?.name,
+        )) &&
+      (!selectedSemesters.value.length ||
+        selectedSemesters.value.includes(c.semester)) &&
+      (!selectedTypes.value.length ||
+        selectedTypes.value.includes(c.type.label)) &&
+      (selectedVisible.value === null || c.visible === selectedVisible.value),
+  ),
+);
 </script>
 
 <template>
@@ -598,7 +625,7 @@ watch(
     :id-key
     :row-descriptor
     :columns
-    :rows="courses"
+    :rows="filteredCourses"
     :format-row
     :init-form
     :validate-import-row
@@ -609,76 +636,94 @@ watch(
     :constraint
     :update-columns
   >
-    <!--    <template #filters>-->
-    <!--      <QSelect-->
-    <!--        v-model="selectedDegrees"-->
-    <!--        :options="degrees.map((d) => d.name)"-->
-    <!--        color="primary"-->
-    <!--        :label="t('admin.courses.courses.table.columns.degree')"-->
-    <!--        multiple-->
-    <!--        use-chips-->
-    <!--        square-->
-    <!--        dense-->
-    <!--        options-dense-->
-    <!--        style="width: 100%"-->
-    <!--      >-->
-    <!--        &lt;!&ndash; this slot to use dense QChip &ndash;&gt;-->
-    <!--        <template #selected-item="scope">-->
-    <!--          <QChip-->
-    <!--            :tabindex="scope.tabindex"-->
-    <!--            class="q-ma-none"-->
-    <!--            color="grey3"-->
-    <!--            removable-->
-    <!--            dense-->
-    <!--            @remove="scope.removeAtIndex(scope.index)"-->
-    <!--          >-->
-    <!--            {{ scope.opt.label ?? scope.opt }}-->
-    <!--          </QChip>-->
-    <!--        </template>-->
-    <!--      </QSelect>-->
-    <!--      <QSelect-->
-    <!--        v-model="selectedPrograms"-->
-    <!--        :options="selectProgramOptions"-->
-    <!--        color="primary"-->
-    <!--        :label="t('admin.courses.courses.table.columns.program')"-->
-    <!--        emit-value-->
-    <!--        map-options-->
-    <!--        multiple-->
-    <!--        use-chips-->
-    <!--        square-->
-    <!--        dense-->
-    <!--        options-dense-->
-    <!--        style="width: 100%"-->
-    <!--      >-->
-    <!--        &lt;!&ndash; this slot to use dense QChip &ndash;&gt;-->
-    <!--        <template #selected-item="scope">-->
-    <!--          <QChip-->
-    <!--            :tabindex="scope.tabindex"-->
-    <!--            class="q-ma-none"-->
-    <!--            color="grey3"-->
-    <!--            removable-->
-    <!--            dense-->
-    <!--            @remove="scope.removeAtIndex(scope.index)"-->
-    <!--          >-->
-    <!--            {{ scope.opt.label ?? scope.opt }}-->
-    <!--          </QChip>-->
-    <!--        </template>-->
-    <!--      </QSelect>-->
-    <!--      <QSelect-->
-    <!--        v-model="selectedVisible"-->
-    <!--        :options="booleanOptions(t('yes'), t('no'))"-->
-    <!--        color="primary"-->
-    <!--        :label="t('admin.courses.courses.table.columns.visible')"-->
-    <!--        emit-value-->
-    <!--        map-options-->
-    <!--        clearable-->
-    <!--        clear-icon="sym_s_close"-->
-    <!--        square-->
-    <!--        dense-->
-    <!--        options-dense-->
-    <!--        style="width: 100%"-->
-    <!--      />-->
-    <!--    </template>-->
+    <template #filters>
+      <QSelect
+        v-model="selectedYears"
+        :options="years.map((y) => y.value)"
+        :label="t('admin.courses.courses.table.columns.year')"
+        multiple
+        use-chips
+        square
+        dense
+        options-dense
+        style="width: 100%"
+      />
+      <QSelect
+        v-model="selectedDegrees"
+        :options="degrees.map((d) => d.name)"
+        :label="t('admin.courses.courses.table.columns.degree')"
+        multiple
+        use-chips
+        square
+        dense
+        options-dense
+        style="width: 100%"
+      />
+      <QSelect
+        v-model="selectedPrograms"
+        :options="selectProgramOptions"
+        :label="t('admin.courses.courses.table.columns.program')"
+        emit-value
+        map-options
+        multiple
+        use-chips
+        square
+        dense
+        options-dense
+        style="width: 100%"
+      />
+      <QSelect
+        v-model="selectedTracks"
+        :options="selectTrackOptions"
+        :label="t('admin.courses.courses.table.columns.track')"
+        emit-value
+        map-options
+        multiple
+        use-chips
+        square
+        dense
+        options-dense
+        style="width: 100%"
+      />
+      <QSelect
+        v-model="selectedSemesters"
+        :options="semesterOptions"
+        :label="t('admin.courses.courses.table.columns.year')"
+        emit-value
+        map-options
+        multiple
+        use-chips
+        square
+        dense
+        options-dense
+        style="width: 100%"
+      />
+      <QSelect
+        v-model="selectedTypes"
+        :options="courseTypes.map((ct) => ct.label)"
+        :label="t('admin.courses.courses.table.columns.type')"
+        multiple
+        use-chips
+        square
+        dense
+        options-dense
+        style="width: 100%"
+      />
+      <QSelect
+        v-model="selectedVisible"
+        :options="booleanOptions(t('yes'), t('no'))"
+        color="primary"
+        :label="t('admin.courses.courses.table.columns.visible')"
+        emit-value
+        map-options
+        clearable
+        clear-icon="sym_s_close"
+        square
+        dense
+        options-dense
+        style="width: 100%"
+      />
+    </template>
     <template #form="{ multipleSelection }">
       <QSelect
         v-model="formValues.year"
