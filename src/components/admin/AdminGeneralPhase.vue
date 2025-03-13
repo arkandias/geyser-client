@@ -20,18 +20,7 @@ const phaseOptions = [
 
 graphql(`
   mutation SetCurrentPhase($value: String!) {
-    phases: updatePhase(
-      where: { value: { _neq: $value } }
-      _set: { current: null }
-    ) {
-      returning {
-        value
-      }
-    }
-    enCours: updatePhaseByPk(
-      pkColumns: { value: $value }
-      _set: { current: true }
-    ) {
+    updatePhaseByPk(pkColumns: { value: $value }, _set: { current: true }) {
       value
     }
   }

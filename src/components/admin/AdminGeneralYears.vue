@@ -22,18 +22,7 @@ const formValue = ref<number | null>(null);
 
 graphql(`
   mutation SetCurrentYear($value: Int!) {
-    years: updateYear(
-      where: { value: { _neq: $value } }
-      _set: { current: null }
-    ) {
-      returning {
-        value
-      }
-    }
-    current: updateYearByPk(
-      pkColumns: { value: $value }
-      _set: { current: true }
-    ) {
+    updateYearByPk(pkColumns: { value: $value }, _set: { current: true }) {
       value
     }
   }
