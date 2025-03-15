@@ -77,20 +77,10 @@ export default {
         type: "Sélectionnez un type de demande",
       },
     },
-    identical: "{type} déjà enregistrée",
-    success: {
-      created: "{type} créée",
-      updated: "{type} mise à jour",
-      deleted: "{type} supprimée",
-    },
-    error: {
-      fetch: "Erreur lors de la récupération de la demande actuelle",
-      create: "Échec de la création",
-      update: "Échec de la mise à jour",
-      delete: "Échec de la suppression",
-    },
+    success: "Demande enregistrée",
+    error: "Échec de l'enregistrement",
     tooltip: {
-      submit: "Valider la demande",
+      submit: "Enregistrer la demande",
     },
   },
   priorityForm: {
@@ -109,18 +99,10 @@ export default {
         seniority: "Sélectionnez un nombre d'années entier positif ou nul",
       },
     },
-    identical: "Priorité déjà enregistrée",
-    success: {
-      created: "Priorité créée",
-      updated: "Priorité mise à jour",
-    },
-    error: {
-      fetch: "Erreur lors de la récupération de la priorité actuelle",
-      create: "Échec de la création",
-      update: "Échec de la mise à jour",
-    },
+    success: "Priorité enregistrée",
+    error: "Échec de l'enregistrement",
     tooltip: {
-      submit: "Valider la priorité",
+      submit: "Enregistrer la priorité",
     },
   },
   selectService: {

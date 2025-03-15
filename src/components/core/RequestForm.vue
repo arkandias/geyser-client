@@ -9,7 +9,6 @@ import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   DeleteRequestDocument,
-  GetRequestDocument,
   RequestFormDataFragmentDoc,
   UpsertRequestDocument,
 } from "@/gql/graphql.ts";
@@ -25,21 +24,6 @@ graphql(`
   fragment RequestFormData on Course {
     courseId: id
     hoursPerGroup: hoursEffective
-  }
-
-  query GetRequest($serviceId: Int!, $courseId: Int!, $requestType: String!) {
-    requests: request(
-      where: {
-        _and: [
-          { serviceId: { _eq: $serviceId } }
-          { courseId: { _eq: $courseId } }
-          { type: { _eq: $requestType } }
-        ]
-      }
-      limit: 1 # unique
-    ) {
-      hours
-    }
   }
 
   mutation UpsertRequest(
@@ -197,34 +181,6 @@ const submitForm = async (): Promise<void> => {
     return;
   }
 
-  const result = await client.query(
-    GetRequestDocument,
-    {
-      serviceId: serviceId.value,
-      courseId: courseId.value,
-      requestType: requestType.value,
-    },
-    { requestPolicy: "network-only" },
-  );
-  if (!result.data?.requests || result.error) {
-    notify(NotifyType.ERROR, {
-      message: t("requestForm.error.fetch"),
-      caption: result.error?.message,
-    });
-    return;
-  }
-
-  const current = result.data.requests[0]?.hours ?? 0;
-
-  if (current === hours.value) {
-    notify(NotifyType.DEFAULT, {
-      message: t("requestForm.identical", {
-        type: t(`requestForm.requestType.${requestType.value}`),
-      }),
-    });
-    return;
-  }
-
   if (hours.value === 0) {
     const { data, error } = await client.mutation(DeleteRequestDocument, {
       serviceId: serviceId.value,
@@ -234,13 +190,11 @@ const submitForm = async (): Promise<void> => {
 
     if (data?.requests?.returning && !error) {
       notify(NotifyType.SUCCESS, {
-        message: t("requestForm.success.deleted", {
-          type: t(`requestForm.requestType.${requestType.value}`),
-        }),
+        message: t("requestForm.success"),
       });
     } else {
       notify(NotifyType.ERROR, {
-        message: t("requestForm.error.delete"),
+        message: t("requestForm.error"),
         caption: error?.message,
       });
     }
@@ -254,20 +208,11 @@ const submitForm = async (): Promise<void> => {
 
     if (data?.request && !error) {
       notify(NotifyType.SUCCESS, {
-        message: t(
-          current === 0
-            ? "requestForm.success.created"
-            : "requestForm.success.updated",
-          { type: t(`requestForm.requestType.${requestType.value}`) },
-        ),
+        message: t("requestForm.success"),
       });
     } else {
       notify(NotifyType.ERROR, {
-        message: t(
-          current === 0
-            ? "requestForm.error.create"
-            : "requestForm.error.update",
-        ),
+        message: t("requestForm.error"),
         caption: error?.message,
       });
     }
