@@ -75,7 +75,7 @@ const setMessage = computed(
 
 <style scoped lang="scss">
 :deep(.displayed-text) {
-  max-width: $teacher-page-content-width;
+  width: $teacher-details-width;
   padding: 8px;
 }
 </style>

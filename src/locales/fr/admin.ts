@@ -149,7 +149,7 @@ la supprimer.`,
             lastname: "Nom",
             alias: "Alias",
             position: "Fonction",
-            baseServiceHours: "Service de base",
+            baseServiceHours: "Service de base (@:unit.weightedHours)",
             visible: "Visible",
             active: "Actif",
           },
@@ -203,7 +203,7 @@ S'il existe des services, des responsabilités ou des rôles pour ces intervenan
           fields: {
             label: "Label",
             description: "Description",
-            baseServiceHours: "Service de base",
+            baseServiceHours: "Service de base (@:unit.weightedHours)",
           },
           error: {
             conflictLabel:
@@ -254,7 +254,7 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
           fields: {
             year: "Année",
             uid: "Intervenant",
-            hours: "Heures",
+            hours: "Heures (@:unit.weightedHours)",
             message: "Message",
           },
           error: {
@@ -310,7 +310,7 @@ S'il existe des modifications ou des demandes pour ces services, vous ne pourrez
             year: "Année",
             uid: "Intervenant",
             type: "Type",
-            hours: "Heures",
+            hours: "Heures (@:unit.weightedHours)",
           },
           error: {
             updateYearWithoutUid:

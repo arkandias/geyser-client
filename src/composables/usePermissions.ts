@@ -49,6 +49,8 @@ export const usePermissions = () => {
         isCurrentYearActive.value),
   );
 
+  const toEditPriorities = computed(() => activeRole.value === ROLES.ADMIN);
+
   const toEditADescription = computed(
     () => (coordinators: string[]) =>
       activeRole.value === ROLES.ADMIN ||
@@ -88,6 +90,7 @@ export const usePermissions = () => {
     toDeleteRequests,
     toViewAssignments,
     toEditAssignments,
+    toEditPriorities,
     toEditADescription,
     toViewAllServices,
     toEditAService,

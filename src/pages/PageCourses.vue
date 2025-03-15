@@ -186,7 +186,12 @@ watch(
         />
       </template>
       <template #after>
-        <QSplitter id="second-splitter" v-model="hSplitterRatio" horizontal>
+        <QSplitter
+          id="second-splitter"
+          v-model="hSplitterRatio"
+          horizontal
+          :limits="[0, 100]"
+        >
           <template #before>
             <TableCourses
               :course-row-fragments="courseRows"

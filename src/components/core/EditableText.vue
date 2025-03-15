@@ -27,28 +27,28 @@ const { t } = useCustomI18n();
 
 const editorText = ref("");
 
-const onSave = async () => {
+const save = async () => {
   if (isOnlyWhitespace(editorText.value)) {
     editorText.value = "";
   }
   if (editorText.value === text) {
-    notify(NotifyType.DEFAULT, { message: t("editor.save.noChanges") });
+    notify(NotifyType.DEFAULT, { message: t("editableText.save.noChanges") });
   } else {
     const { returnId, error } = await setText(editorText.value);
     if (!!returnId && !error) {
       notify(NotifyType.SUCCESS, {
         message: t(
           editorText.value
-            ? "editor.save.success.updated"
-            : "editor.save.success.deleted",
+            ? "editableText.save.success.updated"
+            : "editableText.save.success.deleted",
         ),
       });
     } else {
       notify(NotifyType.ERROR, {
         message: t(
           editorText.value
-            ? "editor.save.error.update"
-            : "editor.save.error.delete",
+            ? "editableText.save.error.update"
+            : "editableText.save.error.delete",
         ),
         caption: error?.message,
       });
@@ -57,17 +57,17 @@ const onSave = async () => {
   showEditor.value = false;
 };
 
-const onAbort = () => {
+const abort = () => {
   editorText.value = text;
   showEditor.value = false;
 };
 
-const onDelete = async () => {
+const clear = async () => {
   editorText.value = "";
-  await onSave();
+  await save();
 };
 
-watch(() => text, onAbort, { immediate: true });
+watch(() => text, abort, { immediate: true });
 
 const toolbar = [
   ["left", "center", "right", "justify"],
@@ -91,7 +91,7 @@ const isOnlyWhitespace = (htmlString: string) => {
   return /^\s*$/.test(textOnly);
 };
 
-defineExpose({ onDelete });
+defineExpose({ clear });
 </script>
 
 <template>
@@ -103,20 +103,20 @@ defineExpose({ onDelete });
       <QSeparator />
       <QCardActions align="right">
         <QBtn
-          :label="t('editor.button.cancel')"
+          :label="t('editableText.button.cancel')"
           color="primary"
           flat
           square
           dense
-          @click="onAbort()"
+          @click="abort()"
         />
         <QBtn
-          :label="t('editor.button.save')"
+          :label="t('editableText.button.save')"
           color="primary"
           flat
           square
           dense
-          @click="onSave()"
+          @click="save()"
         />
       </QCardActions>
     </QCard>

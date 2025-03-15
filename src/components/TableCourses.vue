@@ -148,7 +148,7 @@ const { getValue: selectedCourse, toggleValue: toggleCourse } = useQueryParam(
   true,
 );
 const selectedRow = computed(() => [{ id: selectedCourse.value }]);
-const onRowClick = async (_: Event, row: CourseRow) => {
+const selectRow = async (_: Event, row: CourseRow) => {
   await toggleCourse(row.id);
 };
 
@@ -214,7 +214,7 @@ const columns: Column<CourseRow>[] = [
     field: (row) =>
       (row.hoursPerGroup ?? 0) *
       (weightedHours.value ? row.type.coefficient : 1),
-    format: (val: number | null) => (val === null ? null : n(val)),
+    format: (val: number | null) => (val === null ? null : n(val, "decimal")),
     sortable: true,
     visible: true,
     searchable: false,
@@ -225,7 +225,7 @@ const columns: Column<CourseRow>[] = [
     tooltip: "Nombre de groupes ouverts",
     align: "left",
     field: (row) => row.numberOfGroups ?? 0,
-    format: (val: number | null) => (val === null ? null : n(val)),
+    format: (val: number | null) => (val === null ? null : n(val, "decimal")),
     sortable: true,
     visible: true,
     searchable: false,
@@ -442,7 +442,7 @@ const downloadTeacherAssignments = async () => {
     dense
     virtual-scroll
     :class="{ 'sticky-header-table': stickyHeader }"
-    @row-click="onRowClick"
+    @row-click="selectRow"
   >
     <template #top>
       <div class="q-table__title">
@@ -614,7 +614,7 @@ const downloadTeacherAssignments = async () => {
 
 <style scoped lang="scss">
 .teacher-details-layout {
-  max-width: min($teacher-page-content-width * 1.5, 80vw);
+  max-width: min($teacher-details-width * 1.5, 80vw);
   max-height: 80vh;
   background-color: white;
 }
@@ -622,10 +622,10 @@ const downloadTeacherAssignments = async () => {
   background-color: $dark;
 }
 .q-select {
-  min-width: $table-filter-select-min-width;
+  min-width: 120px;
 }
 .q-input {
-  width: $table-filter-search-input-width;
+  width: 120px;
 }
 :deep(.non-visible) {
   background-color: rgba($negative, 0.1);

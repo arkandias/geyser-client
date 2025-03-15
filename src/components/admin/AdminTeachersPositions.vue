@@ -234,7 +234,6 @@ const selectedFields = ref<string[]>([]);
         :disable="
           multipleSelection && !selectedFields.includes('baseServiceHours')
         "
-        :suffix="t('unit.weightedHours')"
         square
         dense
         @update:model-value="

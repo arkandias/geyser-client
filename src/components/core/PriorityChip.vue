@@ -1,9 +1,18 @@
 <script setup lang="ts">
+import { useClientHandle } from "@urql/vue";
 import { computed } from "vue";
 
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { usePermissions } from "@/composables/usePermissions.ts";
+import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { PriorityChipDataFragmentDoc } from "@/gql/graphql.ts";
+import {
+  DeleteComputedPriorityDocument,
+  DeletePriorityDocument,
+  PriorityChipDataFragmentDoc,
+} from "@/gql/graphql.ts";
 import { priorityColor } from "@/utils/colors.ts";
+import { NotifyType, notify } from "@/utils/notify.ts";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof PriorityChipDataFragmentDoc>;
@@ -11,6 +20,7 @@ const { dataFragment } = defineProps<{
 
 graphql(`
   fragment PriorityChipData on Priority {
+    id
     service {
       teacher {
         displayname
@@ -18,21 +28,99 @@ graphql(`
     }
     seniority
     isPriority
+    computed
+  }
+
+  mutation DeletePriority($id: Int!) {
+    priority: deletePriorityByPk(id: $id) {
+      id
+    }
+  }
+
+  mutation DeleteComputedPriority($id: Int!) {
+    priority: updatePriorityByPk(
+      pkColumns: { id: $id }
+      _set: { seniority: null, isPriority: null, computed: false }
+    ) {
+      id
+    }
   }
 `);
 
-const data = computed(() =>
+const { t } = useCustomI18n();
+const perm = usePermissions();
+const client = useClientHandle().client;
+
+const priority = computed(() =>
   useFragment(PriorityChipDataFragmentDoc, dataFragment),
 );
+
+const remove = async () => {
+  const { data, error } = await (priority.value.computed
+    ? client.mutation(DeleteComputedPriorityDocument, { id: priority.value.id })
+    : client.mutation(DeletePriorityDocument, { id: priority.value.id }));
+
+  if (data?.priority && !error) {
+    notify(
+      NotifyType.SUCCESS,
+      priority.value.computed
+        ? {
+            message: t("priorityChip.deleteComputed.success.message"),
+            caption: t("priorityChip.deleteComputed.success.caption"),
+          }
+        : { message: t("priorityChip.delete.success") },
+    );
+  } else {
+    notify(NotifyType.ERROR, {
+      message: priority.value.computed
+        ? t("priorityChip.deleteComputed.error")
+        : t("priorityChip.delete.error"),
+      caption: error?.message,
+    });
+  }
+};
 </script>
 
 <template>
-  <QChip :color="priorityColor(data.isPriority)" outline square dense>
-    <QAvatar :color="priorityColor(data.isPriority)" text-color="white" square>
-      {{ data.seniority }}
+  <QChip
+    :removable="perm.toEditPriorities"
+    icon-remove="sym_s_close"
+    :color="priorityColor(priority.isPriority)"
+    outline
+    square
+    dense
+    class="priority-chip"
+    @remove="remove()"
+  >
+    <QAvatar
+      :color="priorityColor(priority.isPriority)"
+      text-color="white"
+      square
+    >
+      {{ priority.seniority }}
     </QAvatar>
-    {{ data.service.teacher.displayname }}
+    <div class="priority-chip__title q-pa-xs text-body2">
+      {{ priority.service.teacher.displayname }}
+    </div>
+    <QIcon
+      v-if="perm.toEditPriorities && priority.computed"
+      name="sym_s_copyright"
+      size="xs"
+    />
+    <QTooltip :delay="TOOLTIP_DELAY" anchor="top middle" self="bottom middle">
+      {{ priority.service.teacher.displayname }}
+    </QTooltip>
   </QChip>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.priority-chip {
+  width: 150px;
+}
+.priority-chip__title {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>

@@ -242,8 +242,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
           <QInput
             v-model.number="baseServiceHours"
             type="number"
-            step="any"
-            suffix="htd"
+            label="Heures"
             square
             dense
             form="edit-base-service"
@@ -309,7 +308,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             dense
             options-dense
             form="add-modification"
-            class="inline-block"
+            class="inline-block q-ml-sm"
           >
             <template #option="scope">
               <QItem v-bind="scope.itemProps">
@@ -327,8 +326,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
           <QInput
             v-model.number="modificationHours"
             type="number"
-            step="any"
-            suffix="htd"
+            label="Heures"
             square
             dense
             form="add-modification"
@@ -369,11 +367,9 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
 
 <style scoped lang="scss">
 .q-select {
-  width: $modification-form-type-select-width;
-  margin: 0 8px;
+  width: 240px;
 }
 .q-input {
-  width: $modification-form-hours-input-width;
-  margin: 0 8px;
+  width: 60px;
 }
 </style>

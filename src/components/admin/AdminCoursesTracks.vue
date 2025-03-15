@@ -424,8 +424,8 @@ const filterFn = computed(
         />
         <QToggle
           v-model="formValues.visible"
-          :disable="multipleSelection && !selectedFields.includes('visible')"
           :label="t('admin.courses.tracks.form.fields.visible')"
+          :disable="multipleSelection && !selectedFields.includes('visible')"
           left-label
         />
       </div>

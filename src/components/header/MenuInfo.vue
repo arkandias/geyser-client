@@ -70,7 +70,7 @@ const messages = computed(() => ({
 
 <style scoped lang="scss">
 .q-dialog .q-card {
-  max-width: $info-dialog-max-width;
+  max-width: 720px;
 }
 .q-item {
   white-space: nowrap;

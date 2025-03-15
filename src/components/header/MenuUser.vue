@@ -31,7 +31,7 @@ const roleOptions = computed(() =>
   ].filter((role) => roles.value.includes(role.value)),
 );
 
-const onUpdate = async (value: Role) => {
+const update = async (value: Role) => {
   setActiveRole(value);
   await refreshData();
 };
@@ -52,7 +52,7 @@ const onUpdate = async (value: Role) => {
           :options="roleOptions"
           color="primary"
           type="radio"
-          @update:model-value="onUpdate"
+          @update:model-value="update"
         />
       </QItem>
       <QSeparator />
@@ -69,9 +69,6 @@ const onUpdate = async (value: Role) => {
 </template>
 
 <style scoped lang="scss">
-.q-dialog .q-card {
-  width: $info-dialog-max-width;
-}
 .q-item {
   white-space: nowrap;
 }

@@ -114,7 +114,7 @@ const columns: Column<Row>[] = [
   {
     name: "coefficient",
     label: t("admin.courses.types.table.columns.coefficient"),
-    field: (row) => n(row.coefficient),
+    field: (row) => n(row.coefficient, "decimal"),
     sortable: true,
     searchable: false,
   },

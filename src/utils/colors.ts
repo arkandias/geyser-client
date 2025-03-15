@@ -12,6 +12,6 @@ export const priorityColor = (
     case false:
       return "negative";
     default:
-      return "grey";
+      return "info";
   }
 };

@@ -4595,6 +4595,8 @@ type PositionVarianceFields {
 
 """Teacher course assignment history and priority status"""
 type Priority {
+  computed: Boolean!
+
   """An object relationship"""
   course: Course!
 
@@ -4722,6 +4724,7 @@ input PriorityBoolExp {
   _and: [PriorityBoolExp!]
   _not: PriorityBoolExp
   _or: [PriorityBoolExp!]
+  computed: BooleanComparisonExp
   course: CourseBoolExp
   courseId: IntComparisonExp
   createdAt: TimestamptzComparisonExp
@@ -4769,6 +4772,7 @@ input PriorityIncInput {
 input type for inserting data into table "priority"
 """
 input PriorityInsertInput {
+  computed: Boolean
   course: CourseObjRelInsertInput
 
   """Course for which priority is tracked"""
@@ -4914,6 +4918,7 @@ input PriorityOnConflict {
 
 """Ordering options when selecting data from "priority"."""
 input PriorityOrderBy {
+  computed: OrderBy
   course: CourseOrderBy
   courseId: OrderBy
   createdAt: OrderBy
@@ -4935,6 +4940,9 @@ input PriorityPkColumnsInput {
 select columns of table "priority"
 """
 enum PrioritySelectColumn {
+  """column name"""
+  computed
+
   """column name"""
   courseId
 
@@ -4962,6 +4970,9 @@ select "priorityAggregateBoolExpBool_andArgumentsColumns" columns of table "prio
 """
 enum PrioritySelectColumnPriorityAggregateBoolExpBool_andArgumentsColumns {
   """column name"""
+  computed
+
+  """column name"""
   isPriority
 }
 
@@ -4970,6 +4981,9 @@ select "priorityAggregateBoolExpBool_orArgumentsColumns" columns of table "prior
 """
 enum PrioritySelectColumnPriorityAggregateBoolExpBool_orArgumentsColumns {
   """column name"""
+  computed
+
+  """column name"""
   isPriority
 }
 
@@ -4977,6 +4991,8 @@ enum PrioritySelectColumnPriorityAggregateBoolExpBool_orArgumentsColumns {
 input type for updating data in table "priority"
 """
 input PrioritySetInput {
+  computed: Boolean
+
   """Course for which priority is tracked"""
   courseId: Int
 
@@ -5110,6 +5126,8 @@ input PriorityStreamCursorInput {
 
 """Initial value of the column from where the streaming should start"""
 input PriorityStreamCursorValueInput {
+  computed: Boolean
+
   """Course for which priority is tracked"""
   courseId: Int
 
@@ -5170,6 +5188,9 @@ input PrioritySumOrderBy {
 update columns of table "priority"
 """
 enum PriorityUpdateColumn {
+  """column name"""
+  computed
+
   """column name"""
   courseId
 
@@ -12085,6 +12106,14 @@ type YearVarianceFields {
   value: Float
 }
 
+input computeServicePrioritiesArgs {
+  s: service_scalar
+}
+
+input computeYearPrioritiesArgs {
+  year_param: Int
+}
+
 input coordinationAggregateBoolExpCount {
   arguments: [CoordinationSelectColumn!]
   distinct: Boolean
@@ -12113,8 +12142,117 @@ input courseAggregateBoolExpCount {
   predicate: IntComparisonExp!
 }
 
+input createServiceArgs {
+  p_uid: String
+  p_year: Int
+}
+
+input createYearServicesArgs {
+  p_year: Int
+}
+
 """mutation root"""
 type mutation_root {
+  """
+  execute VOLATILE function "compute_service_priorities" which returns "priority"
+  """
+  computeServicePriorities(
+    """
+    input parameters for function "computeServicePriorities"
+    """
+    args: computeServicePrioritiesArgs!
+
+    """distinct select on columns"""
+    distinctOn: [PrioritySelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [PriorityOrderBy!]
+
+    """filter the rows returned"""
+    where: PriorityBoolExp
+  ): [Priority!]!
+
+  """
+  execute VOLATILE function "compute_year_priorities" which returns "priority"
+  """
+  computeYearPriorities(
+    """
+    input parameters for function "computeYearPriorities"
+    """
+    args: computeYearPrioritiesArgs!
+
+    """distinct select on columns"""
+    distinctOn: [PrioritySelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [PriorityOrderBy!]
+
+    """filter the rows returned"""
+    where: PriorityBoolExp
+  ): [Priority!]!
+
+  """
+  execute VOLATILE function "create_service" which returns "service"
+  """
+  createService(
+    """
+    input parameters for function "createService"
+    """
+    args: createServiceArgs!
+
+    """distinct select on columns"""
+    distinctOn: [ServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [ServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: ServiceBoolExp
+  ): Service
+
+  """
+  execute VOLATILE function "create_year_services" which returns "service"
+  """
+  createYearServices(
+    """
+    input parameters for function "createYearServices"
+    """
+    args: createYearServicesArgs!
+
+    """distinct select on columns"""
+    distinctOn: [ServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [ServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: ServiceBoolExp
+  ): [Service!]!
+
   """
   delete data from the table: "coordination"
   """
@@ -14409,6 +14547,8 @@ input serviceModificationAggregateBoolExpCount {
   filter: ServiceModificationBoolExp
   predicate: IntComparisonExp!
 }
+
+scalar service_scalar
 
 type subscription_root {
   """

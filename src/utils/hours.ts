@@ -29,4 +29,4 @@ export const modifiedService = (service?: {
 }) => (service?.hours ?? 0) - totalH(service?.totalModifications);
 
 export const formatWH = (hours: number) =>
-  n(hours) + "\u00A0" + t("unit.weightedHours");
+  n(hours, "decimal") + "\u00A0" + t("unit.weightedHours");

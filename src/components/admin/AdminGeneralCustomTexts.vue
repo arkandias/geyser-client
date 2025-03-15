@@ -41,7 +41,7 @@ const customTextsEdit = ref(
 
 graphql(`
   mutation UpdateCustomText($key: String!, $value: String) {
-    updateCustomTextByPk: insertUiTextOne(
+    customText: insertUiTextOne(
       object: { key: $key, value: $value }
       onConflict: { constraint: ui_text_pkey, updateColumns: [value] }
     ) {
@@ -50,7 +50,7 @@ graphql(`
   }
 
   mutation DeleteCustomText($key: String!) {
-    deleteCustomTextByPk: deleteUiTextByPk(key: $key) {
+    customText: deleteUiTextByPk(key: $key) {
       key
     }
   }
@@ -62,17 +62,17 @@ const deleteCustomText = useMutation(DeleteCustomTextDocument);
 const updateCustomTextHandle = (key: string, value: string) =>
   value
     ? updateCustomText.executeMutation({ key, value }).then((result) => ({
-        returnId: result.data?.updateCustomTextByPk?.key,
+        returnId: result.data?.customText?.key,
         error: result.error,
       }))
     : deleteCustomText.executeMutation({ key }).then((result) => ({
-        returnId: result.data?.deleteCustomTextByPk?.key,
+        returnId: result.data?.customText?.key,
         error: result.error,
       }));
 
 // For deletion, use EditableText's exposed method
 type EditableTextInstance = {
-  onDelete: () => Promise<void>;
+  clear: () => Promise<void>;
 };
 
 const editableTextRefs = Object.fromEntries(
@@ -84,7 +84,7 @@ const editableTextRefs = Object.fromEntries(
 
 const setRef = (key: string, el: Element | ComponentPublicInstance | null) => {
   if (isCustomTextKey(key)) {
-    if (el && "onDelete" in el) {
+    if (el && "clear" in el) {
       editableTextRefs[key].value = el as EditableTextInstance;
     } else if (el === null) {
       editableTextRefs[key].value = null;
@@ -94,7 +94,7 @@ const setRef = (key: string, el: Element | ComponentPublicInstance | null) => {
 
 const callOnDelete = async (key: string) => {
   if (isCustomTextKey(key)) {
-    await editableTextRefs[key].value?.onDelete();
+    await editableTextRefs[key].value?.clear();
   }
 };
 </script>

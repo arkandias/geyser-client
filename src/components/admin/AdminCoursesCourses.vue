@@ -269,7 +269,7 @@ const columns: Column<Row>[] = [
     name: "hours",
     label: t("admin.courses.courses.table.columns.hours"),
     field: "hours",
-    format: (val: number | null) => (val === null ? null : n(val)),
+    format: (val: number | null) => (val === null ? null : n(val, "decimal")),
     sortable: true,
     searchable: false,
   },
@@ -277,7 +277,7 @@ const columns: Column<Row>[] = [
     name: "hoursAdjusted",
     label: t("admin.courses.courses.table.columns.hoursAdjusted"),
     field: "hoursAdjusted",
-    format: (val: number | null) => (val === null ? null : n(val)),
+    format: (val: number | null) => (val === null ? null : n(val, "decimal")),
     sortable: true,
     searchable: false,
   },
@@ -285,7 +285,7 @@ const columns: Column<Row>[] = [
     name: "groups",
     label: t("admin.courses.courses.table.columns.groups"),
     field: "groups",
-    format: (val: number | null) => (val === null ? null : n(val)),
+    format: (val: number | null) => (val === null ? null : n(val, "decimal")),
     sortable: true,
     searchable: false,
   },
@@ -293,7 +293,7 @@ const columns: Column<Row>[] = [
     name: "groupsAdjusted",
     label: t("admin.courses.courses.table.columns.groupsAdjusted"),
     field: "groupsAdjusted",
-    format: (val: number | null) => (val === null ? null : n(val)),
+    format: (val: number | null) => (val === null ? null : n(val, "decimal")),
     sortable: true,
     searchable: false,
   },
@@ -951,8 +951,8 @@ const filterFn = computed(
         />
         <QToggle
           v-model="formValues.visible"
-          :disable="multipleSelection && !selectedFields.includes('visible')"
           :label="t('admin.courses.courses.form.fields.visible')"
+          :disable="multipleSelection && !selectedFields.includes('visible')"
           left-label
         />
       </div>

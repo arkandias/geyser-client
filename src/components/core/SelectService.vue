@@ -62,7 +62,7 @@ const filter = (val: string, update: (x: () => void) => void) => {
   <QSelect
     v-model="id"
     :options
-    :label="t('service')"
+    :label="t('selectService.label')"
     color="primary"
     emit-value
     map-options

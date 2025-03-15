@@ -22,25 +22,28 @@ const formValue = ref<number | null>(null);
 
 graphql(`
   mutation SetCurrentYear($value: Int!) {
-    updateYearByPk(pkColumns: { value: $value }, _set: { current: true }) {
+    year: updateYearByPk(
+      pkColumns: { value: $value }
+      _set: { current: true }
+    ) {
       value
     }
   }
 
   mutation InsertYear($value: Int!, $visible: Boolean!) {
-    insertYearOne(object: { value: $value, visible: $visible }) {
+    year: insertYearOne(object: { value: $value, visible: $visible }) {
       value
     }
   }
 
   mutation UpdateYear($value: Int!, $changes: YearSetInput!) {
-    updateYearByPk(pkColumns: { value: $value }, _set: $changes) {
+    year: updateYearByPk(pkColumns: { value: $value }, _set: $changes) {
       value
     }
   }
 
   mutation DeleteYear($value: Int!) {
-    deleteYearByPk(value: $value) {
+    year: deleteYearByPk(value: $value) {
       value
     }
   }
@@ -88,14 +91,14 @@ const insertYearHandle = async () => {
       message: t("admin.data.error.insertFailed"),
       caption: error.message,
     });
-  } else if (data?.insertYearOne?.value === undefined) {
+  } else if (data?.year?.value === undefined) {
     notify(NotifyType.DEFAULT, {
       message: t("admin.data.error.noReturnData"),
     });
   } else {
     notify(NotifyType.SUCCESS, {
       message: t("admin.general.years.success.insert", {
-        value: data.insertYearOne.value,
+        value: data.year.value,
       }),
     });
   }
@@ -120,14 +123,14 @@ const updateYearHandle = async (
       message: t("admin.data.error.updateFailed"),
       caption: error.message,
     });
-  } else if (data?.updateYearByPk?.value === undefined) {
+  } else if (data?.year?.value === undefined) {
     notify(NotifyType.DEFAULT, {
       message: t("admin.data.error.noReturnData"),
     });
   } else {
     notify(NotifyType.SUCCESS, {
       message: t("admin.general.years.success.update", {
-        value: data.updateYearByPk.value,
+        value: data.year.value,
       }),
     });
   }
@@ -164,26 +167,26 @@ const deleteYearHandle = async (value: number) => {
       message: t("admin.data.error.deleteFailed"),
       caption: error.message,
     });
-  } else if (data?.deleteYearByPk?.value === undefined) {
+  } else if (data?.year?.value === undefined) {
     notify(NotifyType.DEFAULT, {
       message: t("admin.data.error.noReturnData"),
     });
   } else {
     notify(NotifyType.SUCCESS, {
       message: t("admin.general.years.success.delete", {
-        value: data.deleteYearByPk.value,
+        value: data.year.value,
       }),
     });
   }
 };
 
-const onCreateClick = () => {
+const create = () => {
   selectedYear.value = null;
   formValue.value = null;
   isFormOpen.value = true;
 };
 
-const onEditClick = (year: number) => {
+const edit = (year: number) => {
   selectedYear.value = year;
   formValue.value = year;
   isFormOpen.value = true;
@@ -198,7 +201,7 @@ const onEditClick = (year: number) => {
       color="primary"
       no-caps
       outline
-      @click="onCreateClick()"
+      @click="create()"
     />
   </div>
 
@@ -214,7 +217,7 @@ const onEditClick = (year: number) => {
           flat
           square
           dense
-          @click="onEditClick(year.value)"
+          @click="edit(year.value)"
         />
       </QItemSection>
       <QItemSection avatar>
@@ -263,8 +266,8 @@ const onEditClick = (year: number) => {
         >
           <QInput
             v-model.number="formValue"
-            :label="t('admin.general.years.year')"
             type="number"
+            :label="t('admin.general.years.year')"
             square
             dense
           />

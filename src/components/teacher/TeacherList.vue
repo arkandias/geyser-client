@@ -10,7 +10,7 @@ defineSlots<{ default(): unknown }>();
 
 <style scoped lang="scss">
 .q-list {
-  width: $teacher-page-content-width;
+  width: $teacher-details-width;
 }
 :slotted(.q-item) {
   padding: 8px !important;

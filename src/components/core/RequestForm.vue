@@ -4,11 +4,15 @@ import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
-import { useRequestOperations } from "@/composables/useRequestOperations.ts";
 import { useService } from "@/composables/useService.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { RequestFormDataFragmentDoc } from "@/gql/graphql.ts";
+import {
+  DeleteRequestDocument,
+  GetRequestDocument,
+  RequestFormDataFragmentDoc,
+  UpsertRequestDocument,
+} from "@/gql/graphql.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 import SelectService from "@/components/core/SelectService.vue";
@@ -22,6 +26,63 @@ graphql(`
     courseId: id
     hoursPerGroup: hoursEffective
   }
+
+  query GetRequest($serviceId: Int!, $courseId: Int!, $requestType: String!) {
+    requests: request(
+      where: {
+        _and: [
+          { serviceId: { _eq: $serviceId } }
+          { courseId: { _eq: $courseId } }
+          { type: { _eq: $requestType } }
+        ]
+      }
+      limit: 1 # unique
+    ) {
+      hours
+    }
+  }
+
+  mutation UpsertRequest(
+    $serviceId: Int!
+    $courseId: Int!
+    $requestType: String!
+    $hours: Float!
+  ) {
+    request: insertRequestOne(
+      object: {
+        serviceId: $serviceId
+        courseId: $courseId
+        type: $requestType
+        hours: $hours
+      }
+      onConflict: {
+        constraint: request_service_id_course_id_type_key
+        updateColumns: [hours]
+      }
+    ) {
+      id
+    }
+  }
+
+  mutation DeleteRequest(
+    $serviceId: Int!
+    $courseId: Int!
+    $requestType: String!
+  ) {
+    requests: deleteRequest(
+      where: {
+        _and: [
+          { serviceId: { _eq: $serviceId } }
+          { courseId: { _eq: $courseId } }
+          { type: { _eq: $requestType } }
+        ]
+      }
+    ) {
+      returning {
+        id
+      }
+    }
+  }
 `);
 
 const { t } = useCustomI18n();
@@ -29,33 +90,33 @@ const { t } = useCustomI18n();
 const { serviceId: myServiceId } = useService();
 const perm = usePermissions();
 const client = useClientHandle().client;
-const { updateRequest } = useRequestOperations(client);
 
 const data = computed(() =>
   useFragment(RequestFormDataFragmentDoc, dataFragment),
 );
+const courseId = computed(() => data.value.courseId);
+const hoursPerGroup = computed(() => data.value.hoursPerGroup ?? null);
 
 const hours = ref<number | null>(null);
 watch(
-  () => data.value.hoursPerGroup,
+  hoursPerGroup,
   (value) => {
-    hours.value = value ?? null;
+    hours.value = value;
   },
   { immediate: true },
 );
 
 const groups = computed<number | null>({
   get: () =>
-    hours.value === null || data.value.hoursPerGroup == null
+    hours.value === null || hoursPerGroup.value == null
       ? null
-      : Math.round(
-          (hours.value / data.value.hoursPerGroup + Number.EPSILON) * 100,
-        ) / 100,
+      : Math.round((hours.value / hoursPerGroup.value + Number.EPSILON) * 100) /
+        100,
   set: (newValue) => {
     hours.value =
-      newValue === null || data.value.hoursPerGroup == null
+      newValue === null || hoursPerGroup.value == null
         ? null
-        : newValue * data.value.hoursPerGroup;
+        : newValue * hoursPerGroup.value;
   },
 });
 
@@ -69,17 +130,22 @@ const requestTypeInit = computed(() =>
 );
 const requestTypeOptions = computed(() => [
   ...(perm.toEditAssignments
-    ? [{ value: REQUEST_TYPES.ASSIGNMENT, label: t("requestType.assignment") }]
+    ? [
+        {
+          value: REQUEST_TYPES.ASSIGNMENT,
+          label: t(`requestForm.field.requestType.${REQUEST_TYPES.ASSIGNMENT}`),
+        },
+      ]
     : []),
   ...(perm.toSubmitRequests
     ? [
         {
           value: REQUEST_TYPES.PRIMARY,
-          label: t("requestType.primary"),
+          label: t(`requestForm.field.requestType.${REQUEST_TYPES.PRIMARY}`),
         },
         {
           value: REQUEST_TYPES.SECONDARY,
-          label: t("requestType.secondary"),
+          label: t(`requestForm.field.requestType.${REQUEST_TYPES.SECONDARY}`),
         },
       ]
     : []),
@@ -112,31 +178,102 @@ const submitForm = async (): Promise<void> => {
   if (serviceId.value === null) {
     notify(NotifyType.ERROR, {
       message: t("requestForm.invalid.message"),
-      caption: t("requestForm.invalid.caption.noTeacher"),
+      caption: t("requestForm.invalid.caption.service"),
     });
     return;
   }
   if (hours.value === null || hours.value < 0) {
     notify(NotifyType.ERROR, {
       message: t("requestForm.invalid.message"),
-      caption: t("requestForm.invalid.caption.negativeHours"),
+      caption: t("requestForm.invalid.caption.hours"),
     });
     return;
   }
-  if (!requestType.value) {
+  if (requestType.value === null) {
     notify(NotifyType.ERROR, {
       message: t("requestForm.invalid.message"),
-      caption: t("requestForm.invalid.caption.noType"),
+      caption: t("requestForm.invalid.caption.type"),
     });
     return;
   }
-  await updateRequest(
-    serviceId.value,
-    data.value.courseId,
-    requestType.value,
-    hours.value,
+
+  const result = await client.query(
+    GetRequestDocument,
+    {
+      serviceId: serviceId.value,
+      courseId: courseId.value,
+      requestType: requestType.value,
+    },
+    { requestPolicy: "network-only" },
   );
+  if (!result.data?.requests || result.error) {
+    notify(NotifyType.ERROR, {
+      message: t("requestForm.error.fetch"),
+      caption: result.error?.message,
+    });
+    return;
+  }
+
+  const current = result.data.requests[0]?.hours ?? 0;
+
+  if (current === hours.value) {
+    notify(NotifyType.DEFAULT, {
+      message: t("requestForm.identical", {
+        type: t(`requestForm.requestType.${requestType.value}`),
+      }),
+    });
+    return;
+  }
+
+  if (hours.value === 0) {
+    const { data, error } = await client.mutation(DeleteRequestDocument, {
+      serviceId: serviceId.value,
+      courseId: courseId.value,
+      requestType: requestType.value,
+    });
+
+    if (data?.requests?.returning && !error) {
+      notify(NotifyType.SUCCESS, {
+        message: t("requestForm.success.deleted", {
+          type: t(`requestForm.requestType.${requestType.value}`),
+        }),
+      });
+    } else {
+      notify(NotifyType.ERROR, {
+        message: t("requestForm.error.delete"),
+        caption: error?.message,
+      });
+    }
+  } else {
+    const { data, error } = await client.mutation(UpsertRequestDocument, {
+      serviceId: serviceId.value,
+      courseId: courseId.value,
+      requestType: requestType.value,
+      hours: hours.value,
+    });
+
+    if (data?.request && !error) {
+      notify(NotifyType.SUCCESS, {
+        message: t(
+          current === 0
+            ? "requestForm.success.created"
+            : "requestForm.success.updated",
+          { type: t(`requestForm.requestType.${requestType.value}`) },
+        ),
+      });
+    } else {
+      notify(NotifyType.ERROR, {
+        message: t(
+          current === 0
+            ? "requestForm.error.create"
+            : "requestForm.error.update",
+        ),
+        caption: error?.message,
+      });
+    }
+  }
 };
+
 const resetForm = (): void => {
   serviceId.value = serviceIdInit.value;
   hours.value = data.value.hoursPerGroup ?? null;
@@ -158,19 +295,17 @@ const resetForm = (): void => {
     />
     <QInput
       v-model.number="groups"
-      color="primary"
       type="number"
-      step="any"
-      label="Groupes"
+      :label="t('requestForm.field.groups')"
+      color="primary"
       square
       dense
     />
     <QInput
       v-model.number="hours"
-      color="primary"
       type="number"
-      step="any"
-      label="Heures"
+      :label="t('requestForm.field.hours')"
+      color="primary"
       square
       dense
     />
@@ -191,9 +326,9 @@ const resetForm = (): void => {
 
 <style scoped lang="scss">
 .q-select {
-  width: $request-form-teacher-select-width;
+  width: 180px;
 }
 .q-input {
-  width: $request-form-numeric-inputs-width;
+  width: 60px;
 }
 </style>

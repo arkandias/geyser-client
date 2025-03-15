@@ -80,7 +80,7 @@ const { getValue: selectedTeacher, toggleValue: toggleTeacher } =
 const selectedRow = computed(() => [
   { teacher: { uid: selectedTeacher.value } },
 ]);
-const onRowClick = async (_: Event, row: ServiceRowsFragment) => {
+const selectRow = async (_: Event, row: ServiceRowsFragment) => {
   await toggleTeacher(row.teacher.uid);
 };
 
@@ -221,7 +221,7 @@ const tableRowClassFn = (row: ServiceRowsFragment) =>
     dense
     virtual-scroll
     :class="{ 'sticky-header-table': stickyHeader }"
-    @row-click="onRowClick"
+    @row-click="selectRow"
   >
     <template #top>
       <div class="q-table__title">{{ t("services.label", 2) }}</div>
@@ -301,7 +301,7 @@ const tableRowClassFn = (row: ServiceRowsFragment) =>
 
 <style scoped lang="scss">
 .q-input {
-  width: $table-filter-search-input-width;
+  width: 120px;
 }
 :deep(.non-visible) {
   background-color: rgba($negative, 0.1);

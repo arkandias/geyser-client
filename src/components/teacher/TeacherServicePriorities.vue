@@ -19,6 +19,7 @@ const { dataFragment } = defineProps<{
 graphql(`
   fragment TeacherServicePriorities on Service {
     priorities(
+      where: { isPriority: { _isNull: false } }
       orderBy: [
         { course: { semester: ASC } }
         { course: { type: { label: ASC } } }

@@ -16,6 +16,7 @@ const defaultOptions = (type: NotifyType): QNotifyCreateOptions => {
     case NotifyType.DEFAULT:
       return {
         ...commonProps,
+        color: "info",
       };
     case NotifyType.ERROR:
       return {

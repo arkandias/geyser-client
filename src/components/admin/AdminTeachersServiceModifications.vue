@@ -420,7 +420,6 @@ const filterFn = computed(
         type="number"
         :label="t('admin.teachers.serviceModifications.form.fields.hours')"
         :disable="multipleSelection && !selectedFields.includes('hours')"
-        :suffix="t('unit.weightedHours')"
         square
         dense
         @update:model-value="
