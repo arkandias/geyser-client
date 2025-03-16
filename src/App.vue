@@ -1,45 +1,46 @@
 <script setup lang="ts">
-import { useClientHandle, useQuery } from "@urql/vue";
+import { useQuery } from "villus";
 import { computed, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { PHASES } from "@/config/types/phases.ts";
-import { ROLES } from "@/config/types/roles.ts";
+import { ROLES, isRole } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
-import {
-  GetCurrentPhaseDocument,
-  GetCustomTextsDocument,
-  GetYearsDocument,
-} from "@/gql/graphql.ts";
-import { getClaims } from "@/services/keycloak.ts";
-import { setRoleHeader } from "@/services/urql.ts";
+import { GetAppDataDocument, GetUserProfileDocument } from "@/gql/graphql.ts";
+import { getClaims, setRoleHeader } from "@/services/keycloak.ts";
 import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
+import { NotifyType, notify } from "@/utils/notify.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
 import PageHome from "@/pages/PageHome.vue";
 
 graphql(`
-  query GetCurrentPhase {
+  query GetUserProfile($uid: String!) {
+    profile: teacherByPk(uid: $uid) {
+      uid
+      displayname
+      active
+      roles {
+        type
+      }
+    }
+  }
+
+  query GetAppData {
     phases: phase(
       where: { current: { _eq: true } }
       limit: 1 # unique
     ) {
       value
     }
-  }
-
-  query GetYears {
     years: year(orderBy: { value: DESC }) {
       value
       current
       visible
     }
-  }
-
-  query GetCustomTexts {
     customTexts: uiText(orderBy: [{ key: ASC }]) {
       key
       value
@@ -48,86 +49,96 @@ graphql(`
 `);
 
 const { t } = useCustomI18n();
-const client = useClientHandle().client;
 
-const { fetchProfile, fetching, loaded, active, activeRole } =
-  useProfileStore();
+const { active, activeRole, loaded, setProfile } = useProfileStore();
 const { currentPhase, setCurrentPhase } = usePhaseStore();
 const { setYears } = useYearsStore();
 const { setCustomTexts } = useCustomTextsStore();
 
-// User profile and active role
+// Fetch user profile
 const claims = getClaims();
-void fetchProfile(client, claims?.userId ?? "");
+const userProfileQueryResult = useQuery({
+  query: GetUserProfileDocument,
+  variables: { uid: claims?.userId ?? "" },
+  paused: !claims,
+});
+watch(
+  [userProfileQueryResult.data, userProfileQueryResult.error],
+  ([data, error]) => {
+    if (error) {
+      notify(NotifyType.ERROR, {
+        message: t("app.userProfile.error"),
+        caption: error.message,
+      });
+    }
+
+    if (data?.profile) {
+      setProfile({
+        uid: data.profile.uid,
+        displayname: data.profile.displayname ?? "",
+        active: data.profile.active,
+        roles: data.profile.roles
+          .map((role) => role.type)
+          .filter((role) => isRole(role))
+          .concat(ROLES.TEACHER),
+      });
+
+      // Log invalid roles (if any)
+      const invalidRoles = data.profile.roles
+        .map((role) => role.type)
+        .filter((role) => !isRole(role));
+      if (invalidRoles.length) {
+        console.warn(`Invalid roles: ${invalidRoles.join(", ")}`);
+      }
+    }
+  },
+  { immediate: true },
+);
 watch(activeRole, setRoleHeader, { immediate: true });
 
-// Phase
-const currentPhaseQueryResult = useQuery({
-  query: GetCurrentPhaseDocument,
+// Fetch app data
+const appDataQueryResult = useQuery({
+  query: GetAppDataDocument,
   variables: {},
-  pause: () => !loaded.value || !active.value,
-  context: { additionalTypenames: ["Phase"] },
+  // context: { additionalTypenames: ["Phase", "Year", "UiText"] },
+  paused: () => !loaded.value || !active.value,
 });
 watch(
-  currentPhaseQueryResult.data,
-  (value) => {
-    if (value?.phases[0]?.value === undefined) {
-      // not fetched yet
+  [appDataQueryResult.data, appDataQueryResult.error],
+  ([data, error]) => {
+    if (error) {
+      notify(NotifyType.ERROR, {
+        message: t("app.data.error"),
+        caption: error.message,
+      });
       return;
     }
-    setCurrentPhase(value.phases[0].value);
+
+    if (data?.phases[0]) {
+      setCurrentPhase(data.phases[0].value);
+    }
+    if (data?.years) {
+      setYears(
+        data.years.map((year) => ({
+          value: year.value,
+          current: !!year.current,
+          visible: year.visible,
+        })),
+      );
+    }
+    if (data?.customTexts) {
+      setCustomTexts(data.customTexts);
+    }
   },
   { immediate: true },
 );
 
-// Years
-const yearsQueryResult = useQuery({
-  query: GetYearsDocument,
-  variables: {},
-  pause: () => !loaded.value || !active.value,
-  context: { additionalTypenames: ["Year"] },
-});
-watch(
-  yearsQueryResult.data,
-  (value) => {
-    if (value?.years === undefined) {
-      // not fetched yet
-      return;
-    }
-    setYears(
-      value.years.map((year) => ({
-        ...year,
-        current: !!year.current,
-      })),
-    );
-  },
-  { immediate: true },
-);
-
-// Custom texts
-const customTextsQueryResult = useQuery({
-  query: GetCustomTextsDocument,
-  variables: {},
-  context: { additionalTypenames: ["UiText"] },
-  pause: () => !loaded.value || !active.value,
-});
-watch(
-  customTextsQueryResult.data,
-  (value) => {
-    if (value?.customTexts === undefined) {
-      // not fetched yet
-      return;
-    }
-    setCustomTexts(value.customTexts);
-  },
-  { immediate: true },
-);
-
+// Access check and information messages
 const accessDeniedMessage = computed(() => {
   if (!claims) {
     return t("home.alert.noAuth");
   }
-  if (fetching.value) {
+  if (userProfileQueryResult.isFetching.value) {
     return t("home.alert.loadingProfile");
   }
   if (!loaded.value) {
@@ -136,8 +147,8 @@ const accessDeniedMessage = computed(() => {
   if (!active.value) {
     return t("home.alert.profileNotActive");
   }
-  if (currentPhaseQueryResult.fetching.value) {
-    return t("home.alert.loadingPhase");
+  if (appDataQueryResult.isFetching.value) {
+    return t("home.alert.loadingAppData");
   }
   if (
     currentPhase.value === PHASES.SHUTDOWN &&

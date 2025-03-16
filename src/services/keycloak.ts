@@ -2,7 +2,6 @@ import Keycloak from "keycloak-js";
 
 import {
   HASURA_CLAIMS_NAMESPACE,
-  HASURA_DEFAULT_USER_ID,
   KEYCLOAK_TOKEN_MIN_VALIDITY,
 } from "@/config/constants.ts";
 import {
@@ -12,7 +11,6 @@ import {
   hasuraUserId,
 } from "@/config/env.ts";
 import { ROLES, type Role, isRole } from "@/config/types/roles.ts";
-import { type HasuraClaims, isXHasuraClaims } from "@/types/claims.ts";
 
 const keycloak = new Keycloak({
   url: authURL,
@@ -28,7 +26,7 @@ keycloak.onTokenExpired = () => {
   console.debug("Token expired");
 };
 
-export const initKeycloak = async () => {
+const initKeycloak = async () => {
   if (bypassAuth) {
     console.debug("Bypassing Keycloak authentication");
     return;
@@ -50,39 +48,16 @@ export const initKeycloak = async () => {
   }
 };
 
-export const logout = async () => {
-  if (!bypassAuth) {
-    await keycloak.logout();
-  }
+type HasuraClaims = {
+  userId: string;
+  defaultRole: Role;
+  allowedRoles: Role[];
 };
-
-export const refreshToken = async () => {
-  if (bypassAuth) {
-    return;
-  }
-  try {
-    const refreshed = await keycloak.updateToken(KEYCLOAK_TOKEN_MIN_VALIDITY);
-    console.debug(refreshed ? "Token was refreshed" : "Token is still valid");
-  } catch (error) {
-    console.error("Failed to refresh the token:", error);
-    keycloak.clearToken();
-  }
-};
-
-export const getAuthHeader = (): Record<string, string> =>
-  bypassAuth
-    ? {
-        "X-Hasura-Admin-Secret": hasuraAdminSecret,
-        "X-Hasura-User-Id": hasuraUserId || HASURA_DEFAULT_USER_ID,
-      }
-    : keycloak.token
-      ? { Authorization: "Bearer " + keycloak.token }
-      : {};
 
 export const getClaims = (): HasuraClaims | null => {
   if (bypassAuth) {
     return {
-      userId: hasuraUserId || HASURA_DEFAULT_USER_ID,
+      userId: hasuraUserId,
       defaultRole: ROLES.ADMIN,
       allowedRoles: [ROLES.TEACHER, ROLES.COMMISSIONER, ROLES.ADMIN],
     };
@@ -96,6 +71,42 @@ export const getClaims = (): HasuraClaims | null => {
     return null;
   }
   return validateClaims(keycloak.tokenParsed);
+};
+
+const roleHeader: { "X-Hasura-Role"?: Role } = {};
+
+export const setRoleHeader = (role: Role) => {
+  roleHeader["X-Hasura-Role"] = role;
+};
+
+export const getAuthHeader = async (): Promise<Record<string, string>> => {
+  if (bypassAuth) {
+    return {
+      "X-Hasura-Admin-Secret": hasuraAdminSecret,
+      "X-Hasura-User-Id": hasuraUserId,
+    };
+  }
+  await refreshToken();
+  return { Authorization: `Bearer ${keycloak.token}`, ...roleHeader };
+};
+
+export const logout = async () => {
+  if (!bypassAuth) {
+    await keycloak.logout();
+  }
+};
+
+const refreshToken = async () => {
+  if (bypassAuth) {
+    return;
+  }
+  try {
+    const refreshed = await keycloak.updateToken(KEYCLOAK_TOKEN_MIN_VALIDITY);
+    console.debug(refreshed ? "Token was refreshed" : "Token is still valid");
+  } catch (error) {
+    console.error("Failed to refresh the token:", error);
+    keycloak.clearToken();
+  }
 };
 
 const validateClaims = (
@@ -129,3 +140,38 @@ const validateClaims = (
     allowedRoles: validRoles,
   };
 };
+
+type XHasuraClaims<T extends string> = Record<
+  T,
+  {
+    "x-hasura-user-id": string;
+    "x-hasura-default-role": string;
+    "x-hasura-allowed-roles": string[];
+  }
+>;
+
+const isXHasuraClaims = <T extends string>(
+  namespace: T,
+  claims: unknown,
+): claims is XHasuraClaims<T> => {
+  if (!claims || typeof claims !== "object" || !(namespace in claims)) {
+    return false;
+  }
+  const namespaceClaims = (claims as Record<T, unknown>)[namespace];
+  if (!namespaceClaims || typeof namespaceClaims !== "object") {
+    return false;
+  }
+  return (
+    "x-hasura-user-id" in namespaceClaims &&
+    "x-hasura-default-role" in namespaceClaims &&
+    "x-hasura-allowed-roles" in namespaceClaims &&
+    typeof namespaceClaims["x-hasura-user-id"] === "string" &&
+    typeof namespaceClaims["x-hasura-default-role"] === "string" &&
+    Array.isArray(namespaceClaims["x-hasura-allowed-roles"]) &&
+    namespaceClaims["x-hasura-allowed-roles"].every(
+      (role) => typeof role === "string",
+    )
+  );
+};
+
+await initKeycloak();

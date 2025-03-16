@@ -43,7 +43,7 @@ export default {
       loadingProfile: "Chargement de votre profil...",
       profileNotLoaded: "Votre profil n'a pas pu être chargé",
       profileNotActive: "Votre profil n'est pas actif",
-      loadingPhase: "Chargement de la phase en cours...",
+      loadingAppData: "Chargement des paramètres de l'application...",
       shutdown: "Geyser est actuellement fermé",
       pageNotFound: "Page non trouvée",
     },

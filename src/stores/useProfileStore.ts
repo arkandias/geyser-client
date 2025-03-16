@@ -1,94 +1,49 @@
-import type { Client } from "@urql/vue";
 import { reactive, readonly, ref, toRefs } from "vue";
 
-import { ROLES, type Role, isRole } from "@/config/types/roles.ts";
-import { graphql } from "@/gql";
-import { GetUserProfileDocument } from "@/gql/graphql.ts";
-
-graphql(`
-  query GetUserProfile($uid: String!) {
-    profile: teacherByPk(uid: $uid) {
-      uid
-      displayname
-      active
-      roles {
-        type
-      }
-    }
-  }
-`);
+import { ROLES, type Role } from "@/config/types/roles.ts";
 
 type Profile = {
   uid: string;
   displayname: string;
   active: boolean;
   roles: Role[];
-  activeRole: Role;
 };
 
 const profile = reactive<Profile>({
   uid: "",
   displayname: "",
   active: false,
-  roles: [],
-  activeRole: ROLES.TEACHER,
+  roles: [ROLES.TEACHER],
 });
 
-const fetching = ref(false);
+const activeRole = ref<Role>(ROLES.TEACHER);
+
 const loaded = ref(false);
 
-const fetchProfile = async (client: Client, claim: string) => {
-  fetching.value = true;
+const setProfile = (newProfile: Profile) => {
+  Object.assign(profile, newProfile);
 
-  const { data, error } = await client.query(
-    GetUserProfileDocument,
-    { uid: claim },
-    { requestPolicy: "network-only" },
-  );
-
-  if (data?.profile && !error) {
-    profile.uid = data.profile.uid;
-    profile.displayname = data.profile.displayname ?? "";
-    profile.active = data.profile.active;
-    profile.roles = data.profile.roles
-      .map((role) => role.type)
-      .filter((role) => isRole(role))
-      .concat(ROLES.TEACHER);
-
-    if (profile.roles.includes(ROLES.ADMIN)) {
-      profile.activeRole = ROLES.ADMIN;
-    } else {
-      profile.activeRole = ROLES.TEACHER;
-    }
-
-    // Log invalid roles (if any)
-    const invalidRoles = data.profile.roles
-      .map((role) => role.type)
-      .filter((role) => !isRole(role));
-    if (invalidRoles.length) {
-      console.warn(`Invalid roles: ${invalidRoles.join(", ")}`);
-    }
-
-    loaded.value = true;
+  if (profile.roles.includes(ROLES.ADMIN)) {
+    activeRole.value = ROLES.ADMIN;
   } else {
-    loaded.value = false;
+    activeRole.value = ROLES.TEACHER;
   }
 
-  fetching.value = false;
+  loaded.value = true;
 };
 
 const setActiveRole = (role: Role) => {
   if (profile.roles.includes(role)) {
-    profile.activeRole = role;
+    activeRole.value = role;
   } else {
-    console.error(`Role '${role}' is not an allowed role`);
+    console.error(`Role not allowed: ${role}`);
   }
 };
 
 export const useProfileStore = () => ({
-  ...toRefs(profile),
+  ...toRefs(readonly(profile)),
+  activeRole: readonly(activeRole),
   loaded: readonly(loaded),
-  fetching: readonly(fetching),
-  fetchProfile,
+  setProfile,
   setActiveRole,
 });

@@ -26,6 +26,9 @@ importers:
       quasar:
         specifier: ^2.18.1
         version: 2.18.1
+      villus:
+        specifier: ^3.5.2
+        version: 3.5.2(graphql@16.10.0)(vue@3.5.13(typescript@5.8.2))
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.2)
@@ -2685,6 +2688,12 @@ packages:
 
   varint@6.0.0:
     resolution: {integrity: sha512-cXEIW6cfr15lFv563k4GuVuW/fiwjknytD37jIOLSdSWuOI6WnO/oKwmP2FQTU2l01LP8/M5TSAJpzUaGe3uWg==}
+
+  villus@3.5.2:
+    resolution: {integrity: sha512-Tn6zAXVigaY91lTgWuT5WecAwfxRjTX5ezwRU1e2A/sD3yRi3v0tnVgRQJ7EjaMSNrbY+iXWHMVCGhof1llSvQ==}
+    peerDependencies:
+      graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+      vue: ^3.0.0 || ^2.7.0
 
   vite-node@3.0.8:
     resolution: {integrity: sha512-6PhR4H9VGlcwXZ+KWCdMqbtG649xCPZqfI9j2PsK1FcXgEzro5bGHcVKFCTqPLaNKZES8Evqv4LwvZARsq5qlg==}
@@ -5603,6 +5612,11 @@ snapshots:
   value-or-promise@1.0.12: {}
 
   varint@6.0.0: {}
+
+  villus@3.5.2(graphql@16.10.0)(vue@3.5.13(typescript@5.8.2)):
+    dependencies:
+      graphql: 16.10.0
+      vue: 3.5.13(typescript@5.8.2)
 
   vite-node@3.0.8(@types/node@22.13.10)(jiti@2.4.2)(sass-embedded@1.85.1)(sass@1.83.1)(yaml@2.7.0):
     dependencies:

@@ -1,4 +1,5 @@
 import admin from "@/locales/fr/admin.ts";
+import app from "@/locales/fr/app.ts";
 import common from "@/locales/fr/common.ts";
 import core from "@/locales/fr/core.ts";
 import courses from "@/locales/fr/courses.ts";
@@ -10,6 +11,7 @@ import services from "@/locales/fr/services.ts";
 
 export default {
   ...admin,
+  ...app,
   ...common,
   ...core,
   ...courses,
