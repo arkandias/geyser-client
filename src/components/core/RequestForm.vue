@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { useClientHandle } from "@urql/vue";
+import { useMutation } from "villus";
 import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
-import { useService } from "@/composables/useService.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
@@ -12,6 +11,7 @@ import {
   RequestFormDataFragmentDoc,
   UpsertRequestDocument,
 } from "@/gql/graphql.ts";
+import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 import SelectService from "@/components/core/SelectService.vue";
@@ -70,10 +70,11 @@ graphql(`
 `);
 
 const { t } = useCustomI18n();
-
-const { serviceId: myServiceId } = useService();
+const { activeYearServiceId: myServiceId } = useProfileStore();
 const perm = usePermissions();
-const client = useClientHandle().client;
+
+const upsertRequest = useMutation(UpsertRequestDocument);
+const deleteRequest = useMutation(DeleteRequestDocument);
 
 const data = computed(() =>
   useFragment(RequestFormDataFragmentDoc, dataFragment),
@@ -182,7 +183,7 @@ const submitForm = async (): Promise<void> => {
   }
 
   if (hours.value === 0) {
-    const { data, error } = await client.mutation(DeleteRequestDocument, {
+    const { data, error } = await deleteRequest.execute({
       serviceId: serviceId.value,
       courseId: courseId.value,
       requestType: requestType.value,
@@ -199,7 +200,7 @@ const submitForm = async (): Promise<void> => {
       });
     }
   } else {
-    const { data, error } = await client.mutation(UpsertRequestDocument, {
+    const { data, error } = await upsertRequest.execute({
       serviceId: serviceId.value,
       courseId: courseId.value,
       requestType: requestType.value,

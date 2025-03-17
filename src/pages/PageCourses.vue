@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
+import { useQuery } from "villus";
 import { computed, reactive, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -73,85 +73,69 @@ graphql(`
 `);
 
 const { t } = useCustomI18n();
-
 const { activeYear, isCurrentYearActive } = useYearsStore();
-const { uid } = useProfileStore();
+const { uid: myUid } = useProfileStore();
 const { closeLeftPanel, isLeftPanelOpen, openLeftPanel } = useLeftPanelStore();
-
-const { getValue: selectedCourse } = useQueryParam("courseId", true);
-const { getValue: selectedTeacher } = useQueryParam("uid");
 const perm = usePermissions();
 
 // Course rows
-const courseRowsQueryResult = useQuery({
+const getCourseRows = useQuery({
   query: GetCourseRowsDocument,
   variables: reactive({
     year: computed(() => activeYear.value ?? NaN),
   }),
-  pause: () => activeYear.value === null,
-  context: {
-    additionalTypenames: ["Request"],
-  },
+  paused: ({ year }) => Number.isNaN(year),
+  tags: ["Request"],
 });
-const fetchingCourseRows = computed(() => courseRowsQueryResult.fetching.value);
-const courseRows = computed(
-  () => courseRowsQueryResult.data.value?.courses ?? [],
-);
+const fetchingCourseRows = computed(() => getCourseRows.isFetching.value);
+const courseRows = computed(() => getCourseRows.data.value?.courses ?? []);
 
 // Service rows
-const serviceRowsQueryResult = useQuery({
+const getServiceRows = useQuery({
   query: GetServiceRowsDocument,
   variables: reactive({
     year: computed(() => activeYear.value ?? NaN),
     where: computed(() =>
-      perm.toViewAllServices ? {} : { uid: { _eq: uid.value } },
+      perm.toViewAllServices ? {} : { uid: { _eq: myUid.value } },
     ),
   }),
-  pause: () => activeYear.value === null,
-  context: {
-    additionalTypenames: ["Request", "ServiceModification", "Service"],
-  },
+  paused: ({ year }) => Number.isNaN(year),
+  tags: ["Request", "Service", "ServiceModification"],
 });
-const fetchingServiceRowss = computed(
-  () => serviceRowsQueryResult.fetching.value,
-);
-const serviceRows = computed(
-  () => serviceRowsQueryResult.data.value?.services ?? [],
-);
+const fetchingServiceRows = computed(() => getServiceRows.isFetching.value);
+const serviceRows = computed(() => getServiceRows.data.value?.services ?? []);
 
 // Selected course details
-const courseDetailsQueryResult = useQuery({
+const { getValue: selectedCourse } = useQueryParam("courseId", true);
+const getCourseDetails = useQuery({
   query: GetCourseDetailsDocument,
   variables: reactive({
     courseId: computed(() => selectedCourse.value ?? NaN),
   }),
-  pause: () => selectedCourse.value === null,
-  context: {
-    additionalTypenames: ["Request", "Priority"],
-  },
+  paused: ({ courseId }) => Number.isNaN(courseId),
+  tags: ["Request", "Priority"],
 });
 const courseDetails = computed(() =>
-  courseDetailsQueryResult.isPaused.value
+  selectedCourse.value === null
     ? null
-    : (courseDetailsQueryResult.data.value?.course ?? null),
+    : (getCourseDetails.data.value?.course ?? null),
 );
 
 // Selected teacher courses
-const teacherCoursesQueryResult = useQuery({
+const { getValue: selectedTeacher } = useQueryParam("uid");
+const getTeacherCourses = useQuery({
   query: GetServiceDetailsDocument,
   variables: reactive({
     year: computed(() => activeYear.value ?? NaN),
     uid: computed(() => selectedTeacher.value ?? ""),
   }),
-  pause: () => !activeYear.value || !selectedTeacher.value,
-  context: {
-    additionalTypenames: ["Request", "ServiceModification", "Service"],
-  },
+  paused: ({ year, uid }) => Number.isNaN(year) || !uid,
+  tags: ["Request", "Service", "ServiceModification"],
 });
 const teacher = computed(() =>
-  teacherCoursesQueryResult.isPaused.value
+  activeYear.value === null || selectedTeacher.value === null
     ? null
-    : (teacherCoursesQueryResult.data.value?.services[0] ?? null),
+    : (getTeacherCourses.data.value?.services[0] ?? null),
 );
 
 // Toggle left panel based on user's permissions
@@ -182,7 +166,7 @@ watch(
       <template #before>
         <TableServices
           :service-row-fragments="serviceRows"
-          :fetching="fetchingServiceRowss"
+          :fetching="fetchingServiceRows"
         />
       </template>
       <template #after>

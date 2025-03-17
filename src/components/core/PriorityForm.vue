@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useClientHandle } from "@urql/vue";
+import { useMutation } from "villus";
 import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -21,7 +21,6 @@ const { dataFragment } = defineProps<{
 graphql(`
   fragment PriorityFormData on Course {
     courseId: id
-    priorityRule
   }
 
   mutation UpsertPriority(
@@ -49,7 +48,8 @@ graphql(`
 `);
 
 const { t } = useCustomI18n();
-const client = useClientHandle().client;
+
+const upsertPriority = useMutation(UpsertPriorityDocument);
 
 const data = computed(() =>
   useFragment(PriorityFormDataFragmentDoc, dataFragment),
@@ -84,7 +84,7 @@ const submitForm = async (): Promise<void> => {
     return;
   }
 
-  const result = await client.mutation(UpsertPriorityDocument, {
+  const result = await upsertPriority.execute({
     serviceId: serviceId.value,
     courseId: data.value.courseId,
     seniority: seniority.value,
@@ -102,6 +102,7 @@ const submitForm = async (): Promise<void> => {
     });
   }
 };
+
 const resetForm = (): void => {
   serviceId.value = null;
   seniority.value = null;

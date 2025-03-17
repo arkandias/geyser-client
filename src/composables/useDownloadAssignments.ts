@@ -1,4 +1,4 @@
-import { useClientHandle } from "@urql/vue";
+import { useQuery } from "villus";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { graphql } from "@/gql";
@@ -63,16 +63,17 @@ graphql(`
 
 export const useDownloadAssignments = () => {
   const { t } = useCustomI18n();
-  const client = useClientHandle().client;
+  const getAssignments = useQuery({
+    query: GetAssignmentsDocument,
+    fetchOnMount: false,
+  });
 
   const downloadAssignments = async (
     variables: GetAssignmentsQueryVariables,
     filename: string,
   ) => {
-    const assignments = await client
-      .query(GetAssignmentsDocument, variables, {
-        requestPolicy: "network-only",
-      })
+    const assignments = await getAssignments
+      .execute({ variables, cachePolicy: "network-only" })
       .then((result) => result.data?.assignments ?? []);
 
     const formattedAssignments = assignments.map((a) => ({

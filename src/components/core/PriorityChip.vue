@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useClientHandle } from "@urql/vue";
+import { useMutation } from "villus";
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -49,7 +49,9 @@ graphql(`
 
 const { t } = useCustomI18n();
 const perm = usePermissions();
-const client = useClientHandle().client;
+
+const deletePriority = useMutation(DeletePriorityDocument);
+const deleteComputedPriority = useMutation(DeleteComputedPriorityDocument);
 
 const priority = computed(() =>
   useFragment(PriorityChipDataFragmentDoc, dataFragment),
@@ -57,8 +59,8 @@ const priority = computed(() =>
 
 const remove = async () => {
   const { data, error } = await (priority.value.computed
-    ? client.mutation(DeleteComputedPriorityDocument, { id: priority.value.id })
-    : client.mutation(DeletePriorityDocument, { id: priority.value.id }));
+    ? deleteComputedPriority.execute({ id: priority.value.id })
+    : deletePriority.execute({ id: priority.value.id }));
 
   if (data?.priority && !error) {
     notify(

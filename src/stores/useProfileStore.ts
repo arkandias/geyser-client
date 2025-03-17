@@ -1,12 +1,14 @@
-import { reactive, readonly, ref, toRefs } from "vue";
+import { computed, reactive, readonly, ref, toRefs } from "vue";
 
 import { ROLES, type Role } from "@/config/types/roles.ts";
+import { useYearsStore } from "@/stores/useYearsStore.ts";
 
 type Profile = {
   uid: string;
   displayname: string;
   active: boolean;
   roles: Role[];
+  services: { id: number; year: number }[];
 };
 
 const profile = reactive<Profile>({
@@ -14,6 +16,7 @@ const profile = reactive<Profile>({
   displayname: "",
   active: false,
   roles: [ROLES.TEACHER],
+  services: [],
 });
 
 const activeRole = ref<Role>(ROLES.TEACHER);
@@ -40,10 +43,23 @@ const setActiveRole = (role: Role) => {
   }
 };
 
-export const useProfileStore = () => ({
-  ...toRefs(readonly(profile)),
-  activeRole: readonly(activeRole),
-  loaded: readonly(loaded),
-  setProfile,
-  setActiveRole,
-});
+export const useProfileStore = () => {
+  const { activeYear } = useYearsStore();
+
+  const activeYearServiceId = computed(
+    () =>
+      profile.services.find((service) => service.year === activeYear.value)
+        ?.id ?? null,
+  );
+  const hasService = computed(() => activeYearServiceId.value !== null);
+
+  return {
+    ...toRefs(readonly(profile)),
+    activeRole: readonly(activeRole),
+    loaded: readonly(loaded),
+    activeYearServiceId,
+    hasService,
+    setProfile,
+    setActiveRole,
+  };
+};

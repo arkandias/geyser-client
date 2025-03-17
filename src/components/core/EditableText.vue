@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CombinedError } from "@urql/vue";
+import type { CombinedError } from "villus";
 import { ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -7,7 +7,7 @@ import { NotifyType, notify } from "@/utils/notify.ts";
 
 type SetTextReturn = {
   returnId: string | number | null | undefined;
-  error: CombinedError | undefined;
+  error: CombinedError | null | undefined;
 };
 
 const showEditor = defineModel<boolean>();
@@ -76,17 +76,14 @@ const toolbar = [
   ["unordered", "ordered", "outdent", "indent"],
 ];
 
-// Helpers
 const isOnlyWhitespace = (htmlString: string) => {
   // First remove common whitespace HTML entities
   const withoutEntities = htmlString.replace(
     /&nbsp;|&ensp;|&emsp;|&thinsp;/g,
     "",
   );
-
   // Then remove all HTML tags
   const textOnly = withoutEntities.replace(/<[^>]*>/g, "");
-
   // Check if remaining content is only whitespace
   return /^\s*$/.test(textOnly);
 };

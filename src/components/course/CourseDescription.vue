@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useMutation } from "@urql/vue";
 import DOMPurify from "dompurify";
+import { useMutation } from "villus";
 import { computed, ref } from "vue";
 
 import { usePermissions } from "@/composables/usePermissions.ts";
@@ -48,10 +48,11 @@ graphql(`
 
 const perm = usePermissions();
 
+const updateDescription = useMutation(UpdateDescriptionDocument);
+
 const data = computed(() =>
   useFragment(CourseDescriptionFragmentDoc, dataFragment),
 );
-const updateDescription = useMutation(UpdateDescriptionDocument);
 
 const description = computed(() =>
   DOMPurify.sanitize(data.value.description ?? ""),
@@ -63,14 +64,15 @@ const coordinators = computed(() => [
 ]);
 
 const editDescription = ref(false);
+
 const setDescription = (text: string) =>
   updateDescription
-    .executeMutation({
+    .execute({
       courseId: data.value.courseId,
       description: text || null,
     })
     .then((result) => ({
-      returnId: result.data?.course?.id,
+      returnId: result.data?.course?.id ?? null,
       error: result.error,
     }));
 </script>

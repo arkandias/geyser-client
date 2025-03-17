@@ -10,7 +10,6 @@ import { useProfileStore } from "@/stores/useProfileStore.ts";
 import MenuBase from "@/components/header/MenuBase.vue";
 
 const { t } = useCustomI18n();
-
 const { displayname, roles, activeRole, setActiveRole } = useProfileStore();
 const { refreshData } = useRefreshData();
 

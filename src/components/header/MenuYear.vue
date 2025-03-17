@@ -7,7 +7,6 @@ import { useYearsStore } from "@/stores/useYearsStore.ts";
 import MenuBase from "@/components/header/MenuBase.vue";
 
 const { t } = useCustomI18n();
-
 const { years, activeYear, selectYear } = useYearsStore();
 
 const options = computed(() =>
@@ -20,11 +19,6 @@ const options = computed(() =>
 );
 
 const selected = ref<number | null>(null);
-
-const update = async () => {
-  await selectYear(selected.value);
-};
-
 watch(
   activeYear,
   (value) => {
@@ -32,6 +26,10 @@ watch(
   },
   { immediate: true },
 );
+
+const update = async () => {
+  await selectYear(selected.value);
+};
 </script>
 
 <template>

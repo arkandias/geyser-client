@@ -79,7 +79,6 @@ graphql(`
 `);
 
 const { t, n } = useCustomI18n();
-
 const { activeYear } = useYearsStore();
 const perm = usePermissions();
 const { downloadAssignments } = useDownloadAssignments();

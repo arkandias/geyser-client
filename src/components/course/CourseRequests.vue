@@ -19,6 +19,7 @@ const { dataFragment } = defineProps<{
 graphql(`
   fragment CourseRequests on Course {
     ...RequestFormData
+
     requests(orderBy: [{ service: { teacher: { displayname: ASC } } }]) {
       id
       type
@@ -28,7 +29,6 @@ graphql(`
 `);
 
 const { t } = useCustomI18n();
-
 const perm = usePermissions();
 
 const data = computed(() =>

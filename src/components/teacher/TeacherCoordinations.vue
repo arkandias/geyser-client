@@ -81,7 +81,6 @@ const coordinations = computed(() =>
   ),
 );
 
-// Helpers
 type Coordination = ArrayElement<TeacherCoordinationsFragment["coordinations"]>;
 
 const formatProgram = (program: {

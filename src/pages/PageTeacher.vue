@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
+import { useQuery } from "villus";
 import { computed, reactive } from "vue";
 
 import { useQueryParam } from "@/composables/useQueryParam.ts";
@@ -36,20 +36,16 @@ const { activeYear } = useYearsStore();
 const { uid: myUid } = useProfileStore();
 const { getValue: uid } = useQueryParam("uid");
 
-const activeUid = computed(() => uid.value ?? myUid.value);
-
-const teacherDetailsQueryResult = useQuery({
+const { data } = useQuery({
   query: GetTeacherDetailsDocument,
   variables: reactive({
     year: computed(() => activeYear.value ?? NaN),
-    uid: activeUid,
+    uid: computed(() => uid.value ?? myUid.value),
   }),
-  pause: () => activeYear.value === null,
-  context: {
-    additionalTypenames: ["Request", "ServiceModification", "Service"],
-  },
+  paused: ({ year }) => Number.isNaN(year),
+  tags: ["Request", "Service", "ServiceModification"],
 });
-const data = computed(() => teacherDetailsQueryResult.data.value);
+
 const teacher = computed(() => data.value?.teacher ?? null);
 const service = computed(() => data.value?.teacher?.services[0] ?? null);
 const isCoordinator = computed(

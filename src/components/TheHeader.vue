@@ -16,7 +16,6 @@ import ToolbarCourses from "@/components/header/ToolbarCourses.vue";
 defineProps<{ disable?: boolean }>();
 
 const { t } = useCustomI18n();
-
 const router = useRouter();
 const perm = usePermissions();
 const { refreshData } = useRefreshData();

@@ -24,7 +24,12 @@ graphql(`
       displayname
       active
       roles {
+        id
         type
+      }
+      services {
+        id
+        year
       }
     }
   }
@@ -49,7 +54,6 @@ graphql(`
 `);
 
 const { t } = useCustomI18n();
-
 const { active, activeRole, loaded, setProfile } = useProfileStore();
 const { currentPhase, setCurrentPhase } = usePhaseStore();
 const { setYears } = useYearsStore();
@@ -57,13 +61,13 @@ const { setCustomTexts } = useCustomTextsStore();
 
 // Fetch user profile
 const claims = getClaims();
-const userProfileQueryResult = useQuery({
+const getUserProfile = useQuery({
   query: GetUserProfileDocument,
   variables: { uid: claims?.userId ?? "" },
   paused: !claims,
 });
 watch(
-  [userProfileQueryResult.data, userProfileQueryResult.error],
+  [getUserProfile.data, getUserProfile.error],
   ([data, error]) => {
     if (error) {
       notify(NotifyType.ERROR, {
@@ -81,6 +85,7 @@ watch(
           .map((role) => role.type)
           .filter((role) => isRole(role))
           .concat(ROLES.TEACHER),
+        services: data.profile.services,
       });
 
       // Log invalid roles (if any)
@@ -97,14 +102,12 @@ watch(
 watch(activeRole, setRoleHeader, { immediate: true });
 
 // Fetch app data
-const appDataQueryResult = useQuery({
+const getAppData = useQuery({
   query: GetAppDataDocument,
-  variables: {},
-  // context: { additionalTypenames: ["Phase", "Year", "UiText"] },
   paused: () => !loaded.value || !active.value,
 });
 watch(
-  [appDataQueryResult.data, appDataQueryResult.error],
+  [getAppData.data, getAppData.error],
   ([data, error]) => {
     if (error) {
       notify(NotifyType.ERROR, {
@@ -138,7 +141,7 @@ const accessDeniedMessage = computed(() => {
   if (!claims) {
     return t("home.alert.noAuth");
   }
-  if (userProfileQueryResult.isFetching.value) {
+  if (getUserProfile.isFetching.value) {
     return t("home.alert.loadingProfile");
   }
   if (!loaded.value) {
@@ -147,7 +150,7 @@ const accessDeniedMessage = computed(() => {
   if (!active.value) {
     return t("home.alert.profileNotActive");
   }
-  if (appDataQueryResult.isFetching.value) {
+  if (getAppData.isFetching.value) {
     return t("home.alert.loadingAppData");
   }
   if (

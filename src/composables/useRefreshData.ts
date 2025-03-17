@@ -1,4 +1,4 @@
-import { useMutation } from "@urql/vue";
+import { useMutation } from "villus";
 
 import { graphql } from "@/gql";
 import { DummyMutationDocument } from "@/gql/graphql.ts";
@@ -14,21 +14,11 @@ graphql(`
 `);
 
 export const useRefreshData = () => {
-  // this is an ugly hack to invalidate cache (using urql's Document Caching):
-  // we use a dummy mutation and add all the typenames we want to invalidate
-  const dummyMutation = useMutation(DummyMutationDocument);
+  const dummyMutation = useMutation(DummyMutationDocument, {
+    refetchTags: ["Request", "ServiceModificaton", "Priority", "Service"],
+  });
   const refreshData = async (): Promise<void> => {
-    await dummyMutation.executeMutation(
-      {},
-      {
-        additionalTypenames: [
-          "Request",
-          "ServiceModificaton",
-          "Priority",
-          "Service",
-        ],
-      },
-    );
+    await dummyMutation.execute({});
   };
   return { refreshData };
 };

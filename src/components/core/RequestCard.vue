@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useClientHandle } from "@urql/vue";
+import { useMutation, useQuery } from "villus";
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -91,12 +91,18 @@ graphql(`
 
 const { t, n } = useCustomI18n();
 const perm = usePermissions();
-const client = useClientHandle().client;
+
+const getAssignment = useQuery({
+  query: GetAssignmentDocument,
+  fetchOnMount: false,
+});
+const insertAssignment = useMutation(InsertAssignementDocument);
+const updateAssignment = useMutation(UpdateAssignmentDocument);
+const deleteRequestCard = useMutation(DeleteRequestCardDocument);
 
 const request = computed(() =>
   useFragment(RequestCardDataFragmentDoc, dataFragment),
 );
-
 const groups = computed(() =>
   request.value.course.hoursPerGroup
     ? request.value.hours / request.value.course.hoursPerGroup
@@ -107,7 +113,6 @@ const displayAssignButton = computed(
   () => (requestType: string) =>
     requestType !== REQUEST_TYPES.ASSIGNMENT && perm.toEditAssignments,
 );
-
 const displayDeleteButton = computed(() => (requestType: string) => {
   switch (requestType) {
     case REQUEST_TYPES.ASSIGNMENT:
@@ -116,7 +121,6 @@ const displayDeleteButton = computed(() => (requestType: string) => {
       return perm.toDeleteRequests;
   }
 });
-
 const displayActions = computed(
   () => (requestType: string) =>
     displayAssignButton.value(requestType) ||
@@ -124,14 +128,13 @@ const displayActions = computed(
 );
 
 const assign = async (): Promise<void> => {
-  const result = await client.query(
-    GetAssignmentDocument,
-    {
+  const result = await getAssignment.execute({
+    variables: {
       serviceId: request.value.service.id,
       courseId: request.value.course.id,
     },
-    { requestPolicy: "network-only" },
-  );
+    cachePolicy: "network-only",
+  });
 
   if (!result.data?.requests || result.error) {
     notify(NotifyType.ERROR, {
@@ -151,7 +154,7 @@ const assign = async (): Promise<void> => {
       return;
     }
 
-    const { data, error } = await client.mutation(UpdateAssignmentDocument, {
+    const { data, error } = await updateAssignment.execute({
       id: assignment.id,
       hours: request.value.hours,
     });
@@ -167,7 +170,7 @@ const assign = async (): Promise<void> => {
       });
     }
   } else {
-    const { data, error } = await client.mutation(InsertAssignementDocument, {
+    const { data, error } = await insertAssignment.execute({
       serviceId: request.value.service.id,
       courseId: request.value.course.id,
       hours: request.value.hours,
@@ -187,7 +190,7 @@ const assign = async (): Promise<void> => {
 };
 
 const remove = async (): Promise<void> => {
-  const { data, error } = await client.mutation(DeleteRequestCardDocument, {
+  const { data, error } = await deleteRequestCard.execute({
     id: request.value.id,
   });
 

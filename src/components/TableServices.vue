@@ -66,7 +66,6 @@ graphql(`
 `);
 
 const { t, n } = useCustomI18n();
-
 const perm = usePermissions();
 
 const services = computed(() =>

@@ -62,7 +62,6 @@ const priorities = computed(
     useFragment(TeacherServicePrioritiesFragmentDoc, dataFragment).priorities,
 );
 
-// Helpers
 type Priority = ArrayElement<TeacherServicePrioritiesFragment["priorities"]>;
 
 const formatPriorityTS = (priority: Priority) =>

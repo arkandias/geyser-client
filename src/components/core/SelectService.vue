@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
+import { useQuery } from "villus";
 import { computed, reactive, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -27,19 +27,20 @@ graphql(`
 const { t } = useCustomI18n();
 const { activeYear } = useYearsStore();
 
-const servicesQueryResult = useQuery({
+const { data } = useQuery({
   query: GetServicesDocument,
-  variables: reactive({ year: activeYear }),
+  variables: reactive({ year: computed(() => activeYear.value ?? NaN) }),
+  paused: ({ year }) => Number.isNaN(year),
 });
-const services = computed(() => servicesQueryResult.data.value?.services ?? []);
 
 const options = ref<{ value: number; label: string; search: string }[]>([]);
-const optionsInit = computed(() =>
-  services.value.map((s) => ({
-    value: s.id,
-    label: s.teacher.displayname ?? "",
-    search: normalizeForSearch(s.teacher.displayname ?? ""),
-  })),
+const optionsInit = computed(
+  () =>
+    data.value?.services.map((s) => ({
+      value: s.id,
+      label: s.teacher.displayname ?? "",
+      search: normalizeForSearch(s.teacher.displayname ?? ""),
+    })) ?? [],
 );
 watch(
   optionsInit,

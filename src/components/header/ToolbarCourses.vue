@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useQueryParam } from "@/composables/useQueryParam.ts";
-import { useService } from "@/composables/useService.ts";
 import { useLeftPanelStore } from "@/stores/useLeftPanelStore.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { buttonColor } from "@/utils/colors.ts";
@@ -9,11 +8,9 @@ import { buttonColor } from "@/utils/colors.ts";
 import MenuYear from "@/components/header/MenuYear.vue";
 
 const { t } = useCustomI18n();
-
-const { uid } = useProfileStore();
-const { hasService } = useService();
-const { getValue: selectedUid, toggleValue: toggleUid } = useQueryParam("uid");
+const { uid, hasService } = useProfileStore();
 const { isLeftPanelOpen, toggleLeftPanel } = useLeftPanelStore();
+const { getValue: selectedUid, toggleValue: toggleUid } = useQueryParam("uid");
 </script>
 
 <template>

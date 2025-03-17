@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useMutation, useQuery } from "@urql/vue";
-import { computed, ref } from "vue";
+import { useMutation, useQuery } from "villus";
+import { computed, ref, watch } from "vue";
 
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
@@ -23,14 +23,6 @@ const { dataFragment } = defineProps<{
 }>();
 
 graphql(`
-  query GetModificationTypes {
-    modificationTypes: serviceModificationType(orderBy: { label: ASC }) {
-      id
-      label
-      description
-    }
-  }
-
   fragment TeacherServiceDetails on Service {
     id
     uid
@@ -61,6 +53,14 @@ graphql(`
     }
   }
 
+  query GetModificationTypes {
+    modificationTypes: serviceModificationType(orderBy: { label: ASC }) {
+      id
+      label
+      description
+    }
+  }
+
   mutation InsertModification(
     $serviceId: Int!
     $modificationTypeId: Int!
@@ -86,23 +86,17 @@ graphql(`
 
 const perm = usePermissions();
 
-const modificationTypesQueryResult = useQuery({
-  query: GetModificationTypesDocument,
-  variables: {},
-});
-const service = computed(() =>
-  useFragment(TeacherServiceDetailsFragmentDoc, dataFragment),
-);
 const upsertService = useMutation(UpsertServiceDocument);
 const insertModification = useMutation(InsertModificationDocument);
 const deleteModification = useMutation(DeleteModificationDocument);
 
+const service = computed(() =>
+  useFragment(TeacherServiceDetailsFragmentDoc, dataFragment),
+);
+
 // Base service hours form
 const isBaseServiceFormOpen = ref(false);
-const baseServiceHours = ref(
-  // eslint-disable-next-line vue/no-ref-object-reactivity-loss
-  service.value.hours,
-);
+const baseServiceHours = ref(0);
 const resetBaseServiceForm = (): void => {
   isBaseServiceFormOpen.value = false;
   baseServiceHours.value = service.value.hours;
@@ -118,7 +112,7 @@ const submitBaseServiceForm = async (): Promise<void> => {
   if (baseServiceHours.value === service.value.hours) {
     notify(NotifyType.DEFAULT, { message: "Pas de changement à enregistrer" });
   } else {
-    const { data, error } = await upsertService.executeMutation({
+    const { data, error } = await upsertService.execute({
       year: service.value.year,
       uid: service.value.uid,
       hours: baseServiceHours.value,
@@ -134,12 +128,17 @@ const submitBaseServiceForm = async (): Promise<void> => {
   }
   resetBaseServiceForm();
 };
+watch(service, resetBaseServiceForm, { immediate: true });
 
 // Modifications form
+const isModificationFormOpen = ref(false);
+const modificationTypesQueryResult = useQuery({
+  query: GetModificationTypesDocument,
+  paused: () => !isModificationFormOpen.value,
+});
 const modificationTypesOptions = computed(
   () => modificationTypesQueryResult.data.value?.modificationTypes ?? [],
 );
-const isModificationFormOpen = ref(false);
 const modificationTypeId = ref<number | null>(null);
 const modificationHours = ref(0);
 const resetModificationForm = (): void => {
@@ -162,7 +161,7 @@ const submitModificationForm = async (): Promise<void> => {
     });
     return;
   }
-  const { data, error } = await insertModification.executeMutation({
+  const { data, error } = await insertModification.execute({
     serviceId: service.value.id,
     modificationTypeId: modificationTypeId.value,
     hours: modificationHours.value,
@@ -179,7 +178,7 @@ const submitModificationForm = async (): Promise<void> => {
 };
 
 const handleModificationDeletion = async (id: number): Promise<void> => {
-  const { data, error } = await deleteModification.executeMutation({ id });
+  const { data, error } = await deleteModification.execute({ id });
   if (data?.serviceModification && !error) {
     notify(NotifyType.SUCCESS, { message: "Modification supprimée" });
   } else {

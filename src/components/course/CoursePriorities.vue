@@ -17,6 +17,7 @@ const { dataFragment } = defineProps<{
 graphql(`
   fragment CoursePriorities on Course {
     ...PriorityFormData
+
     priorities(orderBy: [{ service: { teacher: { displayname: ASC } } }]) {
       id
       isPriority
@@ -32,9 +33,9 @@ const data = computed(() =>
 );
 
 const priorities = computed(() =>
-  useFragment(CoursePrioritiesFragmentDoc, dataFragment).priorities.filter(
-    (p) => perm.toEditPriorities || p.isPriority !== null,
-  ),
+  perm.toEditPriorities
+    ? data.value.priorities
+    : data.value.priorities.filter((p) => p.isPriority !== null),
 );
 </script>
 

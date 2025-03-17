@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useMutation } from "@urql/vue";
 import DOMPurify from "dompurify";
+import { useMutation } from "villus";
 import { computed, ref } from "vue";
 
 import { usePermissions } from "@/composables/usePermissions.ts";
@@ -36,23 +36,23 @@ graphql(`
 
 const perm = usePermissions();
 
+const updateMessage = useMutation(UpdateMessageDocument);
+
 const data = computed(() =>
   useFragment(TeacherServiceMessageFragmentDoc, dataFragment),
 );
-const updateMessage = useMutation(UpdateMessageDocument);
-
-const message = computed(() => DOMPurify.sanitize(data.value.message ?? ""));
 
 const editMessage = ref(false);
+const message = computed(() => DOMPurify.sanitize(data.value.message ?? ""));
 const setMessage = computed(
   () => (message: string) =>
     updateMessage
-      .executeMutation({
+      .execute({
         serviceId: data.value.id,
         message: message || null,
       })
       .then((result) => ({
-        returnId: result.data?.service?.id,
+        returnId: result.data?.service?.id ?? null,
         error: result.error,
       })),
 );
