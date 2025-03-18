@@ -94,7 +94,7 @@ export const useDownloadAssignments = () => {
     } catch (error) {
       notify(NotifyType.ERROR, {
         message: t("downloadAssignments.error.downloadFailed"),
-        caption: error instanceof Error ? error.message : "Unknown error",
+        caption: error instanceof Error ? error.message : t("unknownError"),
       });
     }
   };

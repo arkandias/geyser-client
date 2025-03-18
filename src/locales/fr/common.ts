@@ -21,4 +21,5 @@ export default {
   },
   yes: "Oui",
   no: "Non",
+  unknownError: "Erreur inconnue",
 } as const;
