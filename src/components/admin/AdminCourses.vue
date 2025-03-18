@@ -59,15 +59,7 @@ graphql(`
 
 const { data } = useQuery({
   query: GetAdminCoursesDocument,
-  tags: [
-    "All",
-    "Course",
-    "CourseType",
-    "Degree",
-    "Description",
-    "Program",
-    "Track",
-  ],
+  tags: ["All"],
 });
 const degrees = computed(() => data.value?.degrees ?? []);
 const programs = computed(() => data.value?.programs ?? []);

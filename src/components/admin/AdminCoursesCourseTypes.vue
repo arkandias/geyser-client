@@ -91,16 +91,16 @@ const courseTypes = computed(() =>
   courseTypeFragments.map((f) => useFragment(AdminCourseTypeFragmentDoc, f)),
 );
 const insertCourseTypes = useMutation(InsertCourseTypesDocument, {
-  refetchTags: ["CourseType"],
+  refetchTags: ["All"],
 });
 const upsertCourseTypes = useMutation(UpsertCourseTypesDocument, {
-  refetchTags: ["CourseType"],
+  refetchTags: ["All"],
 });
 const updateCourseTypes = useMutation(UpdateCourseTypesDocument, {
-  refetchTags: ["CourseType"],
+  refetchTags: ["All"],
 });
 const deleteCourseTypes = useMutation(DeleteCourseTypesDocument, {
-  refetchTags: ["CourseType"],
+  refetchTags: ["All"],
 });
 
 const constraint = CourseTypeConstraint.CourseTypeLabelKey;

@@ -92,10 +92,10 @@ const updateService = useMutation(UpdateServiceDocument, {
   refetchTags: ["Service"],
 });
 const insertModification = useMutation(InsertModificationDocument, {
-  refetchTags: ["ServiceModification"],
+  refetchTags: ["Service"],
 });
 const deleteModification = useMutation(DeleteModificationDocument, {
-  refetchTags: ["ServiceModification"],
+  refetchTags: ["Service"],
 });
 
 const service = computed(() =>
@@ -143,7 +143,7 @@ const isModificationFormOpen = ref(false);
 const { data } = useQuery({
   query: GetModificationTypesDocument,
   paused: () => !isModificationFormOpen.value,
-  tags: ["All", "ServiceModificationType"],
+  tags: ["All"],
 });
 const modificationTypesOptions = computed(
   () => data.value?.modificationTypes ?? [],

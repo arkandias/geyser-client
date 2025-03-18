@@ -109,16 +109,16 @@ const programs = computed(() =>
   programFragments.map((f) => useFragment(AdminProgramFragmentDoc, f)),
 );
 const insertPrograms = useMutation(InsertProgramsDocument, {
-  refetchTags: ["Program"],
+  refetchTags: ["All"],
 });
 const upsertPrograms = useMutation(UpsertProgramsDocument, {
-  refetchTags: ["Program"],
+  refetchTags: ["All"],
 });
 const updatePrograms = useMutation(UpdateProgramsDocument, {
-  refetchTags: ["Program"],
+  refetchTags: ["All"],
 });
 const deletePrograms = useMutation(DeleteProgramsDocument, {
-  refetchTags: ["Program"],
+  refetchTags: ["All"],
 });
 
 const constraint = ProgramConstraint.ProgramDegreeIdNameKey;

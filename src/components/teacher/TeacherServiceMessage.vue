@@ -37,7 +37,7 @@ graphql(`
 const perm = usePermissions();
 
 const updateMessage = useMutation(UpdateMessageDocument, {
-  refetchTags: ["Message"],
+  refetchTags: ["Service"],
 });
 
 const data = computed(() =>

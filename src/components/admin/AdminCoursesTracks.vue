@@ -120,16 +120,16 @@ const tracks = computed(() =>
   trackFragments.map((f) => useFragment(AdminTrackFragmentDoc, f)),
 );
 const insertTracks = useMutation(InsertTracksDocument, {
-  refetchTags: ["Track"],
+  refetchTags: ["All"],
 });
 const upsertTracks = useMutation(UpsertTracksDocument, {
-  refetchTags: ["Track"],
+  refetchTags: ["All"],
 });
 const updateTracks = useMutation(UpdateTracksDocument, {
-  refetchTags: ["Track"],
+  refetchTags: ["All"],
 });
 const deleteTracks = useMutation(DeleteTracksDocument, {
-  refetchTags: ["Track"],
+  refetchTags: ["All"],
 });
 
 const constraint = TrackConstraint.TrackProgramIdNameKey;

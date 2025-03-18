@@ -91,16 +91,16 @@ const degrees = computed(() =>
   degreeFragments.map((f) => useFragment(AdminDegreeFragmentDoc, f)),
 );
 const insertDegrees = useMutation(InsertDegreesDocument, {
-  refetchTags: ["Degree"],
+  refetchTags: ["All"],
 });
 const upsertDegrees = useMutation(UpsertDegreesDocument, {
-  refetchTags: ["Degree"],
+  refetchTags: ["All"],
 });
 const updateDegrees = useMutation(UpdateDegreesDocument, {
-  refetchTags: ["Degree"],
+  refetchTags: ["All"],
 });
 const deleteDegrees = useMutation(DeleteDegreesDocument, {
-  refetchTags: ["Degree"],
+  refetchTags: ["All"],
 });
 
 const constraint = DegreeConstraint.DegreeNameKey;

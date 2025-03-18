@@ -176,16 +176,16 @@ const courseTypes = computed(() =>
   ),
 );
 const insertCourses = useMutation(InsertCoursesDocument, {
-  refetchTags: ["Course"],
+  refetchTags: ["All"],
 });
 const upsertCourses = useMutation(UpsertCoursesDocument, {
-  refetchTags: ["Course"],
+  refetchTags: ["All"],
 });
 const updateCourses = useMutation(UpdateCoursesDocument, {
-  refetchTags: ["Course"],
+  refetchTags: ["All"],
 });
 const deleteCourses = useMutation(DeleteCoursesDocument, {
-  refetchTags: ["Course"],
+  refetchTags: ["All"],
 });
 
 const constraint =

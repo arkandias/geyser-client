@@ -104,25 +104,25 @@ const serviceModificationTypes = computed(() =>
 const insertServiceModificationTypes = useMutation(
   InsertServiceModificationTypesDocument,
   {
-    refetchTags: ["ServiceModificationType"],
+    refetchTags: ["All"],
   },
 );
 const upsertServiceModificationTypes = useMutation(
   UpsertServiceModificationTypesDocument,
   {
-    refetchTags: ["ServiceModificationType"],
+    refetchTags: ["All"],
   },
 );
 const updateServiceModificationTypes = useMutation(
   UpdateServiceModificationTypesDocument,
   {
-    refetchTags: ["ServiceModificationType"],
+    refetchTags: ["All"],
   },
 );
 const deleteServiceModificationTypes = useMutation(
   DeleteServiceModificationTypesDocument,
   {
-    refetchTags: ["ServiceModificationType"],
+    refetchTags: ["All"],
   },
 );
 

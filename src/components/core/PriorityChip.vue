@@ -51,10 +51,10 @@ const { t } = useCustomI18n();
 const perm = usePermissions();
 
 const deletePriority = useMutation(DeletePriorityDocument, {
-  refetchTags: ["Priority"],
+  refetchTags: ["Request"],
 });
 const deleteComputedPriority = useMutation(DeleteComputedPriorityDocument, {
-  refetchTags: ["Priority"],
+  refetchTags: ["Request"],
 });
 
 const priority = computed(() =>

@@ -85,15 +85,7 @@ const getCourseRows = useQuery({
     year: computed(() => activeYear.value ?? 0),
   }),
   paused: () => activeYear.value === null,
-  tags: [
-    "All",
-    "Course",
-    "CourseType",
-    "Degree",
-    "Program",
-    "Request",
-    "Track",
-  ],
+  tags: ["All", "Request"],
 });
 const fetchingCourseRows = computed(() => getCourseRows.isFetching.value);
 const courseRows = computed(() => getCourseRows.data.value?.courses ?? []);
@@ -108,14 +100,7 @@ const getServiceRows = useQuery({
     ),
   }),
   paused: () => activeYear.value === null,
-  tags: [
-    "All",
-    "Message",
-    "Request",
-    "Service",
-    "ServiceModification",
-    "Teacher",
-  ],
+  tags: ["All", "Request", "Service"],
 });
 const fetchingServiceRows = computed(() => getServiceRows.isFetching.value);
 const serviceRows = computed(() => getServiceRows.data.value?.services ?? []);
@@ -128,17 +113,7 @@ const getCourseDetails = useQuery({
     courseId: computed(() => selectedCourse.value ?? 0),
   }),
   paused: () => selectedCourse.value === null,
-  tags: [
-    "All",
-    "Course",
-    "CourseType",
-    "Degree",
-    "Description",
-    "Priority",
-    "Program",
-    "Request",
-    "Track",
-  ],
+  tags: ["All", "Description", "Request"],
 });
 const courseDetails = computed(() =>
   selectedCourse.value === null
@@ -155,7 +130,7 @@ const getTeacherCourses = useQuery({
     uid: computed(() => selectedTeacher.value ?? ""),
   }),
   paused: () => activeYear.value === null || selectedTeacher.value === null,
-  tags: ["All", "Request", "Teacher"],
+  tags: ["All", "Request"],
 });
 const teacher = computed(() =>
   activeYear.value === null || selectedTeacher.value === null

@@ -65,7 +65,7 @@ const getUserProfile = useQuery({
   query: GetUserProfileDocument,
   variables: { uid: claims?.userId ?? "" },
   paused: !claims,
-  tags: ["All", "Role", "Service", "Teacher"],
+  tags: ["All"],
 });
 watch(
   [getUserProfile.data, getUserProfile.error],
@@ -106,7 +106,7 @@ watch(activeRole, setRoleHeader, { immediate: true });
 const getAppData = useQuery({
   query: GetAppDataDocument,
   paused: () => !loaded.value || !active.value,
-  tags: ["All", "Phase", "Year", "CustomText"],
+  tags: ["All"],
 });
 watch(
   [getAppData.data, getAppData.error],
