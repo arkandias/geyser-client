@@ -43,7 +43,15 @@ const { data } = useQuery({
     uid: computed(() => uid.value ?? myUid.value),
   }),
   paused: () => activeYear.value === null,
-  tags: ["Priority", "Request", "Service", "ServiceModification"],
+  tags: [
+    "Coordination",
+    "Message",
+    "Priority",
+    "Request",
+    "Service",
+    "ServiceModification",
+    "Teacher",
+  ],
 });
 
 const teacher = computed(() => data.value?.teacher ?? null);

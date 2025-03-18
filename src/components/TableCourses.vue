@@ -35,7 +35,6 @@ graphql(`
     visible
     program {
       degree {
-        id
         name: nameDisplay
         visible
       }
@@ -44,7 +43,6 @@ graphql(`
       visible
     }
     track {
-      id
       name: nameDisplay
       visible
     }
@@ -120,6 +118,7 @@ const courses = computed<CourseRow[]>(() =>
     return { ...rest, ...totals };
   }),
 );
+
 const service = computed(() =>
   useFragment(ServiceDetailsFragmentDoc, serviceDetailsFragment),
 );

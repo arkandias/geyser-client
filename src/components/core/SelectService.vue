@@ -31,6 +31,7 @@ const { data } = useQuery({
   query: GetServicesDocument,
   variables: reactive({ year: computed(() => activeYear.value ?? 0) }),
   paused: () => activeYear.value === null,
+  tags: ["Service", "Teacher"],
 });
 
 const options = ref<{ value: number; label: string; search: string }[]>([]);
