@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
+import { useQuery } from "villus";
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -44,34 +44,17 @@ graphql(`
   }
 `);
 
-const adminTeachersQueryResult = useQuery({
+const { data } = useQuery({
   query: GetAdminTeachersDocument,
-  variables: {},
-  context: {
-    additionalTypenames: [
-      "Teacher",
-      "Position",
-      "Service",
-      "ServiceModification",
-      "ServiceModificationType",
-    ],
-  },
 });
-
-const teachers = computed(
-  () => adminTeachersQueryResult.data.value?.teachers ?? [],
-);
-const positions = computed(
-  () => adminTeachersQueryResult.data.value?.positions ?? [],
-);
-const services = computed(
-  () => adminTeachersQueryResult.data.value?.services ?? [],
-);
+const teachers = computed(() => data.value?.teachers ?? []);
+const positions = computed(() => data.value?.positions ?? []);
+const services = computed(() => data.value?.services ?? []);
 const serviceModifications = computed(
-  () => adminTeachersQueryResult.data.value?.serviceModifications ?? [],
+  () => data.value?.serviceModifications ?? [],
 );
 const serviceModificationTypes = computed(
-  () => adminTeachersQueryResult.data.value?.serviceModificationTypes ?? [],
+  () => data.value?.serviceModificationTypes ?? [],
 );
 </script>
 

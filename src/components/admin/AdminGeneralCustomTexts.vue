@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "@urql/vue";
+import { useMutation } from "villus";
 import {
   type ComponentPublicInstance,
   type ShallowRef,
@@ -26,17 +26,17 @@ import EditableText from "@/components/core/EditableText.vue";
 const { t } = useCustomI18n();
 const { customTexts } = useCustomTextsStore();
 
+const customTextsEdit = ref(
+  Object.fromEntries(
+    Object.entries(customTexts.value).map(([key]) => [key, false]),
+  ),
+);
 const customTextOptions = computed(() =>
   Object.entries(customTexts.value).map(([key, value]) => ({
     key,
     value,
     label: t(`admin.general.customTexts.${key}`),
   })),
-);
-const customTextsEdit = ref(
-  Object.fromEntries(
-    Object.entries(customTexts.value).map(([key]) => [key, false]),
-  ),
 );
 
 graphql(`
@@ -61,11 +61,11 @@ const deleteCustomText = useMutation(DeleteCustomTextDocument);
 
 const updateCustomTextHandle = (key: string, value: string) =>
   value
-    ? updateCustomText.executeMutation({ key, value }).then((result) => ({
+    ? updateCustomText.execute({ key, value }).then((result) => ({
         returnId: result.data?.customText?.key,
         error: result.error,
       }))
-    : deleteCustomText.executeMutation({ key }).then((result) => ({
+    : deleteCustomText.execute({ key }).then((result) => ({
         returnId: result.data?.customText?.key,
         error: result.error,
       }));

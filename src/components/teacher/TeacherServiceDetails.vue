@@ -132,12 +132,12 @@ watch(service, resetBaseServiceForm, { immediate: true });
 
 // Modifications form
 const isModificationFormOpen = ref(false);
-const modificationTypesQueryResult = useQuery({
+const { data } = useQuery({
   query: GetModificationTypesDocument,
   paused: () => !isModificationFormOpen.value,
 });
 const modificationTypesOptions = computed(
-  () => modificationTypesQueryResult.data.value?.modificationTypes ?? [],
+  () => data.value?.modificationTypes ?? [],
 );
 const modificationTypeId = ref<number | null>(null);
 const modificationHours = ref(0);

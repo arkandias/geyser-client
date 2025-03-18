@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "@urql/vue";
+import { useMutation } from "villus";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { PHASES } from "@/config/types/phases.ts";
@@ -32,7 +32,7 @@ graphql(`
 const setCurrentPhase = useMutation(SetCurrentPhaseDocument);
 
 const setCurrentPhaseHandle = async (phase: string): Promise<void> => {
-  const { error } = await setCurrentPhase.executeMutation({
+  const { error } = await setCurrentPhase.execute({
     value: phase,
   });
   if (error) {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "@urql/vue";
+import { useMutation } from "villus";
 import { ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -55,9 +55,10 @@ const updateYear = useMutation(UpdateYearDocument);
 const deleteYear = useMutation(DeleteYearDocument);
 
 const setCurrentYearHandle = async (year: number): Promise<void> => {
-  const { error } = await setCurrentYear.executeMutation({
+  const { error } = await setCurrentYear.execute({
     value: year,
   });
+
   if (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.general.years.error.setCurrent"),
@@ -79,7 +80,7 @@ const insertYearHandle = async () => {
     return;
   }
 
-  const { data, error } = await insertYear.executeMutation({
+  const { data, error } = await insertYear.execute({
     value: formValue.value,
     visible: false,
   });
@@ -111,7 +112,7 @@ const updateYearHandle = async (
     visible?: boolean;
   },
 ) => {
-  const { data, error } = await updateYear.executeMutation({
+  const { data, error } = await updateYear.execute({
     value,
     changes,
   });
@@ -161,7 +162,7 @@ const deleteYearHandle = async (value: number) => {
     return;
   }
 
-  const { data, error } = await deleteYear.executeMutation({ value });
+  const { data, error } = await deleteYear.execute({ value });
   if (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.deleteFailed"),

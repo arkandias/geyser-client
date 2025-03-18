@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "@urql/vue";
+import { useMutation } from "villus";
 import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";

@@ -10,7 +10,7 @@
     UpdateColumn
   "
 >
-import type { AnyVariables, UseMutationResponse } from "@urql/vue";
+import type { MutationApi } from "villus";
 import { type Ref, computed, ref, toValue, useSlots, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -39,12 +39,9 @@ type ValidateImportRow = {
     checkConflicts: boolean,
   ): Partial<InsertInput>;
 };
-type OperationResult<N extends string> = Partial<
-  Record<N, { returning: Record<IdKey, Id>[] } | null>
->;
-type MutationHandle<Name extends string, Variables extends AnyVariables> = Pick<
-  UseMutationResponse<OperationResult<Name>, Variables>,
-  "executeMutation"
+type CustomMutationApi<Name extends string, TVars> = MutationApi<
+  Partial<Record<Name, { returning: Record<IdKey, Id>[] } | null>>,
+  TVars
 >;
 
 const formValues = defineModel<FormValues>("formValues", { required: true });
@@ -79,8 +76,8 @@ const {
   formatRow: (row: Row) => string;
   initForm: (rows: Row[]) => FormValues;
   validateImportRow: ValidateImportRow;
-  insertData: MutationHandle<"insertData", { objects: InsertInput[] }>;
-  upsertData: MutationHandle<
+  insertData: CustomMutationApi<"insertData", { objects: InsertInput[] }>;
+  upsertData: CustomMutationApi<
     "upsertData",
     {
       objects: InsertInput[];
@@ -90,14 +87,14 @@ const {
       };
     }
   >;
-  updateData: MutationHandle<
+  updateData: CustomMutationApi<
     "updateData",
     {
       ids: Id[];
       changes: Partial<InsertInput>;
     }
   >;
-  deleteData: MutationHandle<"deleteData", { ids: Id[] }>;
+  deleteData: CustomMutationApi<"deleteData", { ids: Id[] }>;
   constraint: Constraint;
   updateColumns: UpdateColumn[];
 }>();
@@ -217,7 +214,7 @@ const insertDataHandle = async () => {
     return;
   }
 
-  const { data, error } = await insertData.executeMutation({
+  const { data, error } = await insertData.execute({
     objects: [object],
   });
   if (error) {
@@ -258,7 +255,7 @@ const updateDataHandle = async () => {
     return;
   }
 
-  const { data, error } = await updateData.executeMutation({
+  const { data, error } = await updateData.execute({
     ids: selectedRows.value.map((row) => row[idKey]),
     changes,
   });
@@ -302,7 +299,7 @@ const deleteDataHandle = async () => {
     return;
   }
 
-  const { data, error } = await deleteData.executeMutation({
+  const { data, error } = await deleteData.execute({
     ids: selectedRows.value.map((row) => row[idKey]),
   });
   if (error) {
@@ -431,7 +428,7 @@ const importRowsHandle = async () => {
       }
     });
 
-    const { data, error } = await upsertData.executeMutation({
+    const { data, error } = await upsertData.execute({
       objects,
       onConflict: {
         constraint,

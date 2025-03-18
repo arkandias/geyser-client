@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from "@urql/vue";
+import { useQuery } from "villus";
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -57,23 +57,14 @@ graphql(`
   }
 `);
 
-const adminCoursesQueryResult = useQuery({
+const { data } = useQuery({
   query: GetAdminCoursesDocument,
-  variables: {},
-  context: { additionalTypenames: ["Degree"] },
 });
-
-const degrees = computed(
-  () => adminCoursesQueryResult.data.value?.degrees ?? [],
-);
-const programs = computed(
-  () => adminCoursesQueryResult.data.value?.programs ?? [],
-);
-const tracks = computed(() => adminCoursesQueryResult.data.value?.tracks ?? []);
-const courses = computed(
-  () => adminCoursesQueryResult.data.value?.courses ?? [],
-);
-const types = computed(() => adminCoursesQueryResult.data.value?.types ?? []);
+const degrees = computed(() => data.value?.degrees ?? []);
+const programs = computed(() => data.value?.programs ?? []);
+const tracks = computed(() => data.value?.tracks ?? []);
+const courses = computed(() => data.value?.courses ?? []);
+const types = computed(() => data.value?.types ?? []);
 </script>
 
 <template>
