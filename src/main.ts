@@ -2,10 +2,10 @@
 import { createApp } from "vue";
 import { Quasar } from "quasar";
 
-import { i18n } from "@/services/i18n.ts";
 import { quasarOptions } from "@/services/quasar.ts";
-import { client } from "@/services/villus.ts";
+import { i18n } from "@/services/i18n.ts";
 import { router } from "@/services/router.ts";
+import { client } from "@/services/villus.ts";
 
 import "quasar/src/css/index.sass";
 import "@/css/main.scss";
@@ -19,8 +19,8 @@ if (import.meta.env.PROD) {
 }
 
 createApp(App)
-  .use(i18n)
   .use(Quasar, quasarOptions)
-  .use(client)
+  .use(i18n)
   .use(router)
+  .use(client)
   .mount("#app");
