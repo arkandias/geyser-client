@@ -90,9 +90,9 @@ la supprimer.`,
         },
         success: {
           setCurrent: "Année en cours mise à jour",
-          insert: "Année {value} créée",
-          update: "Année {value} mise à jour",
-          delete: "Année {value} supprimée",
+          insert: "Année créée",
+          update: "Année mise à jour",
+          delete: "Année supprimée",
         },
       },
       customTexts: {

@@ -182,9 +182,7 @@ const deleteYearHandle = async (value: number) => {
     });
   } else {
     notify(NotifyType.SUCCESS, {
-      message: t("admin.general.years.success.delete", {
-        value: data.year.value,
-      }),
+      message: t("admin.general.years.success.delete"),
     });
   }
 };
@@ -254,7 +252,7 @@ const edit = (year: number) => {
       </QItemSection>
       <QItemSection side>
         <QRadio
-          v-model="currentYear"
+          :model-value="currentYear"
           :val="year.value"
           :label="t('admin.general.years.current')"
           :disable="!year.visible"

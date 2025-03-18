@@ -52,7 +52,7 @@ const setCurrentPhaseHandle = async (phase: string): Promise<void> => {
 
 <template>
   <QOptionGroup
-    v-model="currentPhase"
+    :model-value="currentPhase"
     :options="phaseOptions"
     type="radio"
     inline

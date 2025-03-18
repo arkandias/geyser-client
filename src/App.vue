@@ -143,7 +143,7 @@ const accessDeniedMessage = computed(() => {
   if (!claims) {
     return t("home.alert.noAuth");
   }
-  if (getUserProfile.isFetching.value) {
+  if (getUserProfile.isFetching.value && !getUserProfile.isDone.value) {
     return t("home.alert.loadingProfile");
   }
   if (!loaded.value) {
@@ -152,7 +152,7 @@ const accessDeniedMessage = computed(() => {
   if (!active.value) {
     return t("home.alert.profileNotActive");
   }
-  if (getAppData.isFetching.value) {
+  if (getAppData.isFetching.value && !getAppData.isDone.value) {
     return t("home.alert.loadingAppData");
   }
   if (
