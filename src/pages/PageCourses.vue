@@ -82,9 +82,9 @@ const perm = usePermissions();
 const getCourseRows = useQuery({
   query: GetCourseRowsDocument,
   variables: reactive({
-    year: computed(() => activeYear.value ?? NaN),
+    year: computed(() => activeYear.value ?? 0),
   }),
-  paused: ({ year }) => Number.isNaN(year),
+  paused: () => activeYear.value === null,
   tags: ["Request"],
 });
 const fetchingCourseRows = computed(() => getCourseRows.isFetching.value);
@@ -94,12 +94,12 @@ const courseRows = computed(() => getCourseRows.data.value?.courses ?? []);
 const getServiceRows = useQuery({
   query: GetServiceRowsDocument,
   variables: reactive({
-    year: computed(() => activeYear.value ?? NaN),
+    year: computed(() => activeYear.value ?? 0),
     where: computed(() =>
       perm.toViewAllServices ? {} : { uid: { _eq: myUid.value } },
     ),
   }),
-  paused: ({ year }) => Number.isNaN(year),
+  paused: () => activeYear.value === null,
   tags: ["Request", "Service", "ServiceModification"],
 });
 const fetchingServiceRows = computed(() => getServiceRows.isFetching.value);
@@ -110,9 +110,9 @@ const { getValue: selectedCourse } = useQueryParam("courseId", true);
 const getCourseDetails = useQuery({
   query: GetCourseDetailsDocument,
   variables: reactive({
-    courseId: computed(() => selectedCourse.value ?? NaN),
+    courseId: computed(() => selectedCourse.value ?? 0),
   }),
-  paused: ({ courseId }) => Number.isNaN(courseId),
+  paused: () => selectedCourse.value === null,
   tags: ["Request", "Priority"],
 });
 const courseDetails = computed(() =>
@@ -126,10 +126,10 @@ const { getValue: selectedTeacher } = useQueryParam("uid");
 const getTeacherCourses = useQuery({
   query: GetServiceDetailsDocument,
   variables: reactive({
-    year: computed(() => activeYear.value ?? NaN),
+    year: computed(() => activeYear.value ?? 0),
     uid: computed(() => selectedTeacher.value ?? ""),
   }),
-  paused: ({ year, uid }) => Number.isNaN(year) || !uid,
+  paused: () => activeYear.value === null || selectedTeacher.value === null,
   tags: ["Request", "Service", "ServiceModification"],
 });
 const teacher = computed(() =>

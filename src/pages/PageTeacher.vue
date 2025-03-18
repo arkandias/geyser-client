@@ -39,11 +39,11 @@ const { getValue: uid } = useQueryParam("uid");
 const { data } = useQuery({
   query: GetTeacherDetailsDocument,
   variables: reactive({
-    year: computed(() => activeYear.value ?? NaN),
+    year: computed(() => activeYear.value ?? 0),
     uid: computed(() => uid.value ?? myUid.value),
   }),
-  paused: ({ year }) => Number.isNaN(year),
-  tags: ["Request", "Service", "ServiceModification"],
+  paused: () => activeYear.value === null,
+  tags: ["Priority", "Request", "Service", "ServiceModification"],
 });
 
 const teacher = computed(() => data.value?.teacher ?? null);

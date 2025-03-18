@@ -29,8 +29,8 @@ const { activeYear } = useYearsStore();
 
 const { data } = useQuery({
   query: GetServicesDocument,
-  variables: reactive({ year: computed(() => activeYear.value ?? NaN) }),
-  paused: ({ year }) => Number.isNaN(year),
+  variables: reactive({ year: computed(() => activeYear.value ?? 0) }),
+  paused: () => activeYear.value === null,
 });
 
 const options = ref<{ value: number; label: string; search: string }[]>([]);
