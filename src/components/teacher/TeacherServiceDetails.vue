@@ -135,7 +135,7 @@ const isModificationFormOpen = ref(false);
 const { data } = useQuery({
   query: GetModificationTypesDocument,
   paused: () => !isModificationFormOpen.value,
-  tags: ["ServiceModificationType"],
+  tags: ["All", "ServiceModificationType"],
 });
 const modificationTypesOptions = computed(
   () => data.value?.modificationTypes ?? [],

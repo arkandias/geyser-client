@@ -15,7 +15,7 @@ graphql(`
 
 export const useRefreshData = () => {
   const dummyMutation = useMutation(DummyMutationDocument, {
-    refetchTags: ["Request", "ServiceModificaton", "Priority", "Service"],
+    refetchTags: ["All"],
   });
   const refreshData = async (): Promise<void> => {
     await dummyMutation.execute({});

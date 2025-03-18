@@ -47,6 +47,7 @@ graphql(`
 const { data } = useQuery({
   query: GetAdminTeachersDocument,
   tags: [
+    "All",
     "Position",
     "Service",
     "ServiceModification",

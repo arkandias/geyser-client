@@ -44,6 +44,7 @@ const { data } = useQuery({
   }),
   paused: () => activeYear.value === null,
   tags: [
+    "All",
     "Coordination",
     "Message",
     "Priority",
