@@ -18,7 +18,7 @@ defineProps<{ disable?: boolean }>();
 const { t } = useCustomI18n();
 const router = useRouter();
 const perm = usePermissions();
-const { refreshData } = useRefreshData();
+const { isRefreshing, refreshData } = useRefreshData();
 const { isDarkModeActive, toggleDarkMode } = useDarkMode();
 </script>
 
@@ -83,7 +83,14 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         <QTooltip>{{ t("header.admin.label") }}</QTooltip>
       </QBtn>
       <QSeparator v-if="perm.toAdmin" vertical inset color="white" />
-      <QBtn icon="sym_s_refresh" :disable flat square @click="refreshData()">
+      <QBtn
+        icon="sym_s_refresh"
+        :disable
+        :loading="isRefreshing"
+        flat
+        square
+        @click="refreshData()"
+      >
         <QTooltip>{{ t("header.refreshData.label") }}</QTooltip>
       </QBtn>
       <QBtn

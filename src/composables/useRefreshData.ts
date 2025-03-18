@@ -1,4 +1,5 @@
 import { useMutation } from "villus";
+import { ref } from "vue";
 
 import { graphql } from "@/gql";
 import { DummyMutationDocument } from "@/gql/graphql.ts";
@@ -17,8 +18,13 @@ export const useRefreshData = () => {
   const dummyMutation = useMutation(DummyMutationDocument, {
     refetchTags: ["All"],
   });
+  const isRefreshing = ref(false);
+
   const refreshData = async (): Promise<void> => {
+    isRefreshing.value = true;
     await dummyMutation.execute({});
+    isRefreshing.value = false;
   };
-  return { refreshData };
+
+  return { isRefreshing, refreshData };
 };
