@@ -73,8 +73,12 @@ const { t } = useCustomI18n();
 const { activeYearServiceId: myServiceId } = useProfileStore();
 const perm = usePermissions();
 
-const upsertRequest = useMutation(UpsertRequestDocument);
-const deleteRequest = useMutation(DeleteRequestDocument);
+const upsertRequest = useMutation(UpsertRequestDocument, {
+  refetchTags: ["Request"],
+});
+const deleteRequest = useMutation(DeleteRequestDocument, {
+  refetchTags: ["Request"],
+});
 
 const data = computed(() =>
   useFragment(RequestFormDataFragmentDoc, dataFragment),

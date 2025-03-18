@@ -10,7 +10,7 @@ import {
   GetModificationTypesDocument,
   InsertModificationDocument,
   TeacherServiceDetailsFragmentDoc,
-  UpsertServiceDocument,
+  UpdateServiceDocument,
 } from "@/gql/graphql.ts";
 import { formatWH, modifiedService } from "@/utils/hours.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
@@ -44,12 +44,14 @@ graphql(`
     }
   }
 
-  mutation UpsertService($year: Int!, $uid: String!, $hours: Float!) {
-    service: insertServiceOne(
-      object: { year: $year, uid: $uid, hours: $hours }
-      onConflict: { constraint: service_year_uid_key, updateColumns: [hours] }
+  mutation UpdateService($year: Int!, $uid: String!, $hours: Float!) {
+    services: updateService(
+      where: { year: { _eq: $year }, uid: { _eq: $uid } }
+      _set: { hours: $hours }
     ) {
-      id
+      returning {
+        id
+      }
     }
   }
 
@@ -86,9 +88,15 @@ graphql(`
 
 const perm = usePermissions();
 
-const upsertService = useMutation(UpsertServiceDocument);
-const insertModification = useMutation(InsertModificationDocument);
-const deleteModification = useMutation(DeleteModificationDocument);
+const updateService = useMutation(UpdateServiceDocument, {
+  refetchTags: ["Service"],
+});
+const insertModification = useMutation(InsertModificationDocument, {
+  refetchTags: ["ServiceModification"],
+});
+const deleteModification = useMutation(DeleteModificationDocument, {
+  refetchTags: ["ServiceModification"],
+});
 
 const service = computed(() =>
   useFragment(TeacherServiceDetailsFragmentDoc, dataFragment),
@@ -112,12 +120,12 @@ const submitBaseServiceForm = async (): Promise<void> => {
   if (baseServiceHours.value === service.value.hours) {
     notify(NotifyType.DEFAULT, { message: "Pas de changement à enregistrer" });
   } else {
-    const { data, error } = await upsertService.execute({
+    const { data, error } = await updateService.execute({
       year: service.value.year,
       uid: service.value.uid,
       hours: baseServiceHours.value,
     });
-    if (data?.service && !error) {
+    if (data?.services?.returning[0] && !error) {
       notify(NotifyType.SUCCESS, { message: "Service de base modifié" });
     } else {
       notify(NotifyType.ERROR, {

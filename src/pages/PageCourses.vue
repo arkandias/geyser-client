@@ -90,6 +90,7 @@ const getCourseRows = useQuery({
     "Course",
     "CourseType",
     "Degree",
+    "Description",
     "Program",
     "Request",
     "Track",

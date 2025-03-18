@@ -107,10 +107,18 @@ const services = computed(() =>
 const teachers = computed(() =>
   teacherFragments.map((f) => useFragment(AdminServicesTeacherFragmentDoc, f)),
 );
-const insertServices = useMutation(InsertServicesDocument);
-const upsertServices = useMutation(UpsertServicesDocument);
-const updateServices = useMutation(UpdateServicesDocument);
-const deleteServices = useMutation(DeleteServicesDocument);
+const insertServices = useMutation(InsertServicesDocument, {
+  refetchTags: ["Service"],
+});
+const upsertServices = useMutation(UpsertServicesDocument, {
+  refetchTags: ["Service"],
+});
+const updateServices = useMutation(UpdateServicesDocument, {
+  refetchTags: ["Service"],
+});
+const deleteServices = useMutation(DeleteServicesDocument, {
+  refetchTags: ["Service"],
+});
 
 const constraint = ServiceConstraint.ServiceYearUidKey;
 const updateColumns = [

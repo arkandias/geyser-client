@@ -108,10 +108,18 @@ const degrees = computed(() =>
 const programs = computed(() =>
   programFragments.map((f) => useFragment(AdminProgramFragmentDoc, f)),
 );
-const insertPrograms = useMutation(InsertProgramsDocument);
-const upsertPrograms = useMutation(UpsertProgramsDocument);
-const updatePrograms = useMutation(UpdateProgramsDocument);
-const deletePrograms = useMutation(DeleteProgramsDocument);
+const insertPrograms = useMutation(InsertProgramsDocument, {
+  refetchTags: ["Program"],
+});
+const upsertPrograms = useMutation(UpsertProgramsDocument, {
+  refetchTags: ["Program"],
+});
+const updatePrograms = useMutation(UpdateProgramsDocument, {
+  refetchTags: ["Program"],
+});
+const deletePrograms = useMutation(DeleteProgramsDocument, {
+  refetchTags: ["Program"],
+});
 
 const constraint = ProgramConstraint.ProgramDegreeIdNameKey;
 const updateColumns = [

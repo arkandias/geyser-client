@@ -48,7 +48,9 @@ graphql(`
 
 const perm = usePermissions();
 
-const updateDescription = useMutation(UpdateDescriptionDocument);
+const updateDescription = useMutation(UpdateDescriptionDocument, {
+  refetchTags: ["Description"],
+});
 
 const data = computed(() =>
   useFragment(CourseDescriptionFragmentDoc, dataFragment),

@@ -96,9 +96,15 @@ const getAssignment = useQuery({
   query: GetAssignmentDocument,
   fetchOnMount: false,
 });
-const insertAssignment = useMutation(InsertAssignementDocument);
-const updateAssignment = useMutation(UpdateAssignmentDocument);
-const deleteRequestCard = useMutation(DeleteRequestCardDocument);
+const insertAssignment = useMutation(InsertAssignementDocument, {
+  refetchTags: ["Request"],
+});
+const updateAssignment = useMutation(UpdateAssignmentDocument, {
+  refetchTags: ["Request"],
+});
+const deleteRequestCard = useMutation(DeleteRequestCardDocument, {
+  refetchTags: ["Request"],
+});
 
 const request = computed(() =>
   useFragment(RequestCardDataFragmentDoc, dataFragment),

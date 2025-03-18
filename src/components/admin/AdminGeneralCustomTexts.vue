@@ -56,8 +56,12 @@ graphql(`
   }
 `);
 
-const updateCustomText = useMutation(UpdateCustomTextDocument);
-const deleteCustomText = useMutation(DeleteCustomTextDocument);
+const updateCustomText = useMutation(UpdateCustomTextDocument, {
+  refetchTags: ["CustomText"],
+});
+const deleteCustomText = useMutation(DeleteCustomTextDocument, {
+  refetchTags: ["CustomText"],
+});
 
 const updateCustomTextHandle = (key: string, value: string) =>
   value

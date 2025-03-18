@@ -36,7 +36,9 @@ graphql(`
 
 const perm = usePermissions();
 
-const updateMessage = useMutation(UpdateMessageDocument);
+const updateMessage = useMutation(UpdateMessageDocument, {
+  refetchTags: ["Message"],
+});
 
 const data = computed(() =>
   useFragment(TeacherServiceMessageFragmentDoc, dataFragment),

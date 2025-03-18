@@ -49,10 +49,18 @@ graphql(`
   }
 `);
 
-const setCurrentYear = useMutation(SetCurrentYearDocument);
-const insertYear = useMutation(InsertYearDocument);
-const updateYear = useMutation(UpdateYearDocument);
-const deleteYear = useMutation(DeleteYearDocument);
+const setCurrentYear = useMutation(SetCurrentYearDocument, {
+  refetchTags: ["Year"],
+});
+const insertYear = useMutation(InsertYearDocument, {
+  refetchTags: ["Year"],
+});
+const updateYear = useMutation(UpdateYearDocument, {
+  refetchTags: ["Year"],
+});
+const deleteYear = useMutation(DeleteYearDocument, {
+  refetchTags: ["Year"],
+});
 
 const setCurrentYearHandle = async (year: number): Promise<void> => {
   const { error } = await setCurrentYear.execute({

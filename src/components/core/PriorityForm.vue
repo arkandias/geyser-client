@@ -49,7 +49,9 @@ graphql(`
 
 const { t } = useCustomI18n();
 
-const upsertPriority = useMutation(UpsertPriorityDocument);
+const upsertPriority = useMutation(UpsertPriorityDocument, {
+  refetchTags: ["Priority"],
+});
 
 const data = computed(() =>
   useFragment(PriorityFormDataFragmentDoc, dataFragment),

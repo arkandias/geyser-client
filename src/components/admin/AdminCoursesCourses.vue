@@ -175,10 +175,18 @@ const courseTypes = computed(() =>
     useFragment(AdminCoursesCourseTypeFragmentDoc, f),
   ),
 );
-const insertCourses = useMutation(InsertCoursesDocument);
-const upsertCourses = useMutation(UpsertCoursesDocument);
-const updateCourses = useMutation(UpdateCoursesDocument);
-const deleteCourses = useMutation(DeleteCoursesDocument);
+const insertCourses = useMutation(InsertCoursesDocument, {
+  refetchTags: ["Course"],
+});
+const upsertCourses = useMutation(UpsertCoursesDocument, {
+  refetchTags: ["Course"],
+});
+const updateCourses = useMutation(UpdateCoursesDocument, {
+  refetchTags: ["Course"],
+});
+const deleteCourses = useMutation(DeleteCoursesDocument, {
+  refetchTags: ["Course"],
+});
 
 const constraint =
   CourseConstraint.CourseYearProgramIdTrackIdNameSemesterTypeIdKey;

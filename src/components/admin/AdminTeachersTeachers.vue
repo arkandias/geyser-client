@@ -119,10 +119,18 @@ const positions = computed(() =>
     useFragment(AdminTeachersPositionFragmentDoc, f),
   ),
 );
-const insertTeachers = useMutation(InsertTeachersDocument);
-const upsertTeachers = useMutation(UpsertTeachersDocument);
-const updateTeachers = useMutation(UpdateTeachersDocument);
-const deleteTeachers = useMutation(DeleteTeachersDocument);
+const insertTeachers = useMutation(InsertTeachersDocument, {
+  refetchTags: ["Teacher"],
+});
+const upsertTeachers = useMutation(UpsertTeachersDocument, {
+  refetchTags: ["Teacher"],
+});
+const updateTeachers = useMutation(UpdateTeachersDocument, {
+  refetchTags: ["Teacher"],
+});
+const deleteTeachers = useMutation(DeleteTeachersDocument, {
+  refetchTags: ["Teacher"],
+});
 
 const constraint = TeacherConstraint.TeacherPkey;
 const updateColumns = [

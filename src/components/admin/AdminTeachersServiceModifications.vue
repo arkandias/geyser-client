@@ -168,15 +168,27 @@ const teachers = computed(() =>
 );
 const insertServiceModifications = useMutation(
   InsertServiceModificationsDocument,
+  {
+    refetchTags: ["ServiceModification"],
+  },
 );
 const upsertServiceModifications = useMutation(
   UpsertServiceModificationsDocument,
+  {
+    refetchTags: ["ServiceModification"],
+  },
 );
 const updateServiceModifications = useMutation(
   UpdateServiceModificationsDocument,
+  {
+    refetchTags: ["ServiceModification"],
+  },
 );
 const deleteServiceModifications = useMutation(
   DeleteServiceModificationsDocument,
+  {
+    refetchTags: ["ServiceModification"],
+  },
 );
 
 const constraint = ServiceModificationConstraint.ServiceModificationPkey;

@@ -50,8 +50,12 @@ graphql(`
 const { t } = useCustomI18n();
 const perm = usePermissions();
 
-const deletePriority = useMutation(DeletePriorityDocument);
-const deleteComputedPriority = useMutation(DeleteComputedPriorityDocument);
+const deletePriority = useMutation(DeletePriorityDocument, {
+  refetchTags: ["Priority"],
+});
+const deleteComputedPriority = useMutation(DeleteComputedPriorityDocument, {
+  refetchTags: ["Priority"],
+});
 
 const priority = computed(() =>
   useFragment(PriorityChipDataFragmentDoc, dataFragment),

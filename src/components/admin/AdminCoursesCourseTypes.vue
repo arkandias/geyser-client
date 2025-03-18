@@ -90,10 +90,18 @@ graphql(`
 const courseTypes = computed(() =>
   courseTypeFragments.map((f) => useFragment(AdminCourseTypeFragmentDoc, f)),
 );
-const insertCourseTypes = useMutation(InsertCourseTypesDocument);
-const upsertCourseTypes = useMutation(UpsertCourseTypesDocument);
-const updateCourseTypes = useMutation(UpdateCourseTypesDocument);
-const deleteCourseTypes = useMutation(DeleteCourseTypesDocument);
+const insertCourseTypes = useMutation(InsertCourseTypesDocument, {
+  refetchTags: ["CourseType"],
+});
+const upsertCourseTypes = useMutation(UpsertCourseTypesDocument, {
+  refetchTags: ["CourseType"],
+});
+const updateCourseTypes = useMutation(UpdateCourseTypesDocument, {
+  refetchTags: ["CourseType"],
+});
+const deleteCourseTypes = useMutation(DeleteCourseTypesDocument, {
+  refetchTags: ["CourseType"],
+});
 
 const constraint = CourseTypeConstraint.CourseTypeLabelKey;
 const updateColumns = [

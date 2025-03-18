@@ -119,10 +119,18 @@ const degrees = computed(() =>
 const tracks = computed(() =>
   trackFragments.map((f) => useFragment(AdminTrackFragmentDoc, f)),
 );
-const insertTracks = useMutation(InsertTracksDocument);
-const upsertTracks = useMutation(UpsertTracksDocument);
-const updateTracks = useMutation(UpdateTracksDocument);
-const deleteTracks = useMutation(DeleteTracksDocument);
+const insertTracks = useMutation(InsertTracksDocument, {
+  refetchTags: ["Track"],
+});
+const upsertTracks = useMutation(UpsertTracksDocument, {
+  refetchTags: ["Track"],
+});
+const updateTracks = useMutation(UpdateTracksDocument, {
+  refetchTags: ["Track"],
+});
+const deleteTracks = useMutation(DeleteTracksDocument, {
+  refetchTags: ["Track"],
+});
 
 const constraint = TrackConstraint.TrackProgramIdNameKey;
 const updateColumns = [

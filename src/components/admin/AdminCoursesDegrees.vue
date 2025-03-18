@@ -90,10 +90,18 @@ graphql(`
 const degrees = computed(() =>
   degreeFragments.map((f) => useFragment(AdminDegreeFragmentDoc, f)),
 );
-const insertDegrees = useMutation(InsertDegreesDocument);
-const upsertDegrees = useMutation(UpsertDegreesDocument);
-const updateDegrees = useMutation(UpdateDegreesDocument);
-const deleteDegrees = useMutation(DeleteDegreesDocument);
+const insertDegrees = useMutation(InsertDegreesDocument, {
+  refetchTags: ["Degree"],
+});
+const upsertDegrees = useMutation(UpsertDegreesDocument, {
+  refetchTags: ["Degree"],
+});
+const updateDegrees = useMutation(UpdateDegreesDocument, {
+  refetchTags: ["Degree"],
+});
+const deleteDegrees = useMutation(DeleteDegreesDocument, {
+  refetchTags: ["Degree"],
+});
 
 const constraint = DegreeConstraint.DegreeNameKey;
 const updateColumns = [

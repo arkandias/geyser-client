@@ -90,10 +90,18 @@ graphql(`
 const positions = computed(() =>
   positionFragments.map((f) => useFragment(AdminPositionFragmentDoc, f)),
 );
-const insertPositions = useMutation(InsertPositionsDocument);
-const upsertPositions = useMutation(UpsertPositionsDocument);
-const updatePositions = useMutation(UpdatePositionsDocument);
-const deletePositions = useMutation(DeletePositionsDocument);
+const insertPositions = useMutation(InsertPositionsDocument, {
+  refetchTags: ["Position"],
+});
+const upsertPositions = useMutation(UpsertPositionsDocument, {
+  refetchTags: ["Position"],
+});
+const updatePositions = useMutation(UpdatePositionsDocument, {
+  refetchTags: ["Position"],
+});
+const deletePositions = useMutation(DeletePositionsDocument, {
+  refetchTags: ["Position"],
+});
 
 const constraint = PositionConstraint.PositionLabelKey;
 const updateColumns = [
