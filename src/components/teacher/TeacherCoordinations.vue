@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useDownloadAssignments } from "@/composables/useDownloadAssignments.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
@@ -68,6 +69,7 @@ graphql(`
   }
 `);
 
+const { t } = useCustomI18n();
 const { activeYear } = useYearsStore();
 const perm = usePermissions();
 const { downloadAssignments } = useDownloadAssignments();
@@ -93,11 +95,11 @@ const formatProgram = (program: {
 
 const formatCoordinationType = (coordination: Coordination) =>
   coordination.program
-    ? "Mention"
+    ? t("teacher.coordinations.type.program")
     : coordination.track
-      ? "Parcours"
+      ? t("teacher.coordinations.type.track")
       : coordination.course
-        ? "UE"
+        ? t("teacher.coordinations.type.course")
         : "";
 
 const formatCoordination = (coordination: Coordination) =>
@@ -112,7 +114,7 @@ const formatCoordinationExtra = (coordination: Coordination) =>
     : coordination.course
       ? formatProgram(coordination.course.program) +
         (coordination.course.track
-          ? `, parcours ${coordination.course.track.name}`
+          ? `, ${t("teacher.coordinations.format.track", { track: coordination.course.track.name })}`
           : "")
       : "";
 
@@ -157,7 +159,7 @@ const downloadProgramAssignments = async (coordination: Coordination) => {
 </script>
 
 <template>
-  <DetailsSection title="Responsabilités">
+  <DetailsSection :title="t('teacher.coordinations.title')">
     <TeacherList>
       <QItem v-for="c in coordinations" :key="c.id" class="q-pa-none">
         <QItemSection>
@@ -179,7 +181,7 @@ const downloadProgramAssignments = async (coordination: Coordination) => {
             @click="downloadProgramAssignments(c)"
           >
             <QTooltip :delay="TOOLTIP_DELAY">
-              Télécharger les attributions
+              {{ t("teacher.coordinations.tooltip.downloadAssignments") }}
             </QTooltip>
           </QBtn>
         </QItemSection>

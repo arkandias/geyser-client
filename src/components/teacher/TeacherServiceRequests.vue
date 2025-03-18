@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { TeacherServiceRequestsFragmentDoc } from "@/gql/graphql.ts";
@@ -39,6 +40,7 @@ graphql(`
   }
 `);
 
+const { t } = useCustomI18n();
 const perm = usePermissions();
 
 const requestsTotals = computed(() =>
@@ -47,18 +49,18 @@ const requestsTotals = computed(() =>
 </script>
 
 <template>
-  <DetailsSection title="Demandes">
+  <DetailsSection :title="t('teacher.requests.title')">
     <TeacherTable>
       <tr v-if="perm.toViewAssignments">
-        <td>Attributions</td>
+        <td>{{ t("teacher.requests.assignments") }}</td>
         <td>{{ formatWH(totalHW(requestsTotals.assigned)) }}</td>
       </tr>
       <tr>
-        <td>Demandes principales</td>
+        <td>{{ t("teacher.requests.primary") }}</td>
         <td>{{ formatWH(totalHW(requestsTotals.primary)) }}</td>
       </tr>
       <tr>
-        <td>Demandes secondaires</td>
+        <td>{{ t("teacher.requests.secondary") }}</td>
         <td>{{ formatWH(totalHW(requestsTotals.secondary)) }}</td>
       </tr>
     </TeacherTable>

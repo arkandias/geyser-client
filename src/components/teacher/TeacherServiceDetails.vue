@@ -2,6 +2,7 @@
 import { useMutation, useQuery } from "villus";
 import { computed, ref, watch } from "vue";
 
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -86,6 +87,7 @@ graphql(`
   }
 `);
 
+const { t } = useCustomI18n();
 const perm = usePermissions();
 
 const updateService = useMutation(UpdateServiceDocument, {
@@ -112,13 +114,15 @@ const resetBaseServiceForm = (): void => {
 const submitBaseServiceForm = async (): Promise<void> => {
   if (baseServiceHours.value < 0) {
     notify(NotifyType.ERROR, {
-      message: "Formulaire non valide",
-      caption: "Sélectionnez un nombre d'heures strictement positif",
+      message: t("teacher.details.baseServiceForm.invalid.message"),
+      caption: t("teacher.details.baseServiceForm.invalid.caption.hours"),
     });
     return;
   }
   if (baseServiceHours.value === service.value.hours) {
-    notify(NotifyType.DEFAULT, { message: "Pas de changement à enregistrer" });
+    notify(NotifyType.DEFAULT, {
+      message: t("teacher.details.baseServiceForm.noChanges"),
+    });
   } else {
     const { data, error } = await updateService.execute({
       year: service.value.year,
@@ -126,10 +130,12 @@ const submitBaseServiceForm = async (): Promise<void> => {
       hours: baseServiceHours.value,
     });
     if (data?.services?.returning[0] && !error) {
-      notify(NotifyType.SUCCESS, { message: "Service de base modifié" });
+      notify(NotifyType.SUCCESS, {
+        message: t("teacher.details.baseServiceForm.success"),
+      });
     } else {
       notify(NotifyType.ERROR, {
-        message: "Échec de la modification",
+        message: t("teacher.details.baseServiceForm.error"),
         caption: error?.message,
       });
     }
@@ -158,15 +164,15 @@ const resetModificationForm = (): void => {
 const submitModificationForm = async (): Promise<void> => {
   if (!modificationTypeId.value) {
     notify(NotifyType.ERROR, {
-      message: "Formulaire non valide",
-      caption: "Sélectionnez un type de modification de service",
+      message: t("teacher.details.modificationForm.invalid.message"),
+      caption: t("teacher.details.modificationForm.invalid.caption.type"),
     });
     return;
   }
   if (modificationHours.value <= 0) {
     notify(NotifyType.ERROR, {
-      message: "Formulaire non valide",
-      caption: "Sélectionnez un nombre d'heures strictement positif",
+      message: t("teacher.details.modificationForm.invalid.message"),
+      caption: t("teacher.details.modificationForm.invalid.caption.type"),
     });
     return;
   }
@@ -176,10 +182,12 @@ const submitModificationForm = async (): Promise<void> => {
     hours: modificationHours.value,
   });
   if (data?.serviceModification && !error) {
-    notify(NotifyType.SUCCESS, { message: "Modification ajoutée" });
+    notify(NotifyType.SUCCESS, {
+      message: t("teacher.details.modificationForm.success.create"),
+    });
   } else {
     notify(NotifyType.ERROR, {
-      message: "Échec de l'ajout",
+      message: t("teacher.details.modificationForm.error.create"),
       caption: error?.message,
     });
   }
@@ -189,10 +197,12 @@ const submitModificationForm = async (): Promise<void> => {
 const handleModificationDeletion = async (id: number): Promise<void> => {
   const { data, error } = await deleteModification.execute({ id });
   if (data?.serviceModification && !error) {
-    notify(NotifyType.SUCCESS, { message: "Modification supprimée" });
+    notify(NotifyType.SUCCESS, {
+      message: t("teacher.details.modificationForm.success.delete"),
+    });
   } else {
     notify(NotifyType.ERROR, {
-      message: "Échec de la suppression",
+      message: t("teacher.details.modificationForm.error.delete"),
       caption: error?.message,
     });
   }
@@ -200,7 +210,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
 </script>
 
 <template>
-  <DetailsSection title="Service">
+  <DetailsSection :title="t('teacher.details.title')">
     <form
       id="edit-base-service"
       @submit.prevent="submitBaseServiceForm"
@@ -214,7 +224,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
     <TeacherTable>
       <tr>
         <td>
-          Base
+          {{ t("teacher.details.baseServiceHours") }}
           <QBtn
             v-if="isBaseServiceFormOpen"
             form="edit-base-service"
@@ -227,7 +237,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             dense
           >
             <QTooltip :delay="TOOLTIP_DELAY">
-              Valider le service de base
+              {{ t("teacher.details.baseServiceForm.tooltip.validate") }}
             </QTooltip>
           </QBtn>
           <QBtn
@@ -242,7 +252,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             @click="isBaseServiceFormOpen = true"
           >
             <QTooltip :delay="TOOLTIP_DELAY">
-              Éditer le service de base
+              {{ t("teacher.details.baseServiceForm.tooltip.edit") }}
             </QTooltip>
           </QBtn>
         </td>
@@ -250,7 +260,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
           <QInput
             v-model.number="baseServiceHours"
             type="number"
-            label="Heures"
+            :label="t('teacher.details.baseServiceForm.fields.hours')"
             square
             dense
             form="edit-base-service"
@@ -261,7 +271,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
       </tr>
       <tr>
         <td>
-          Modifications
+          {{ t("teacher.details.modifications") }}
           <QBtn
             v-if="isModificationFormOpen"
             form="add-modification"
@@ -273,7 +283,9 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             square
             dense
           >
-            <QTooltip :delay="TOOLTIP_DELAY">Valider la modification</QTooltip>
+            <QTooltip :delay="TOOLTIP_DELAY">
+              {{ t("teacher.details.modificationForm.tooltip.validate") }}
+            </QTooltip>
           </QBtn>
           <QBtn
             v-else-if="perm.toEditAService(service.uid)"
@@ -285,7 +297,9 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             dense
             @click="isModificationFormOpen = true"
           >
-            <QTooltip :delay="TOOLTIP_DELAY">Ajouter une modification</QTooltip>
+            <QTooltip :delay="TOOLTIP_DELAY">
+              {{ t("teacher.details.modificationForm.tooltip.create") }}
+            </QTooltip>
           </QBtn>
         </td>
       </tr>
@@ -302,13 +316,13 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             dense
           >
             <QTooltip :delay="TOOLTIP_DELAY">
-              Supprimer la modification
+              {{ t("teacher.details.modificationForm.tooltip.delete") }}
             </QTooltip>
           </QBtn>
           <QSelect
             v-model="modificationTypeId"
             :options="modificationTypesOptions"
-            label="Type"
+            :label="t('teacher.details.modificationForm.fields.type')"
             option-value="id"
             emit-value
             map-options
@@ -334,7 +348,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
           <QInput
             v-model.number="modificationHours"
             type="number"
-            label="Heures"
+            :label="t('teacher.details.modificationForm.fields.hours')"
             square
             dense
             form="add-modification"
@@ -355,7 +369,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
             @click="handleModificationDeletion(m.id)"
           >
             <QTooltip :delay="TOOLTIP_DELAY">
-              Supprimer la modification
+              {{ t("teacher.details.modificationForm.tooltip.delete") }}
             </QTooltip>
           </QBtn>
           {{ m.modificationType.label }}
@@ -366,7 +380,9 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
         <td colspan="100%" style="border-bottom: 1px solid black" />
       </tr>
       <tr>
-        <td>Total</td>
+        <td>
+          {{ t("teacher.details.total") }}
+        </td>
         <td>{{ formatWH(modifiedService(service)) }}</td>
       </tr>
     </TeacherTable>

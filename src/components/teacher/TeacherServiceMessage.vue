@@ -3,6 +3,7 @@ import DOMPurify from "dompurify";
 import { useMutation } from "villus";
 import { computed, ref } from "vue";
 
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
@@ -34,6 +35,7 @@ graphql(`
   }
 `);
 
+const { t } = useCustomI18n();
 const perm = usePermissions();
 
 const updateMessage = useMutation(UpdateMessageDocument, {
@@ -63,9 +65,9 @@ const setMessage = computed(
 <template>
   <DetailsSection
     v-model="editMessage"
-    title="Message pour la commission"
+    :title="t('teacher.message.title')"
     :editable="perm.toEditAMessage(data.uid)"
-    edition-tooltip="Éditer le message"
+    :edition-tooltip="t('teacher.message.editionTooltip')"
   >
     <EditableText
       v-model="editMessage"
