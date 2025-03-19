@@ -91,16 +91,16 @@ const positions = computed(() =>
   positionFragments.map((f) => useFragment(AdminPositionFragmentDoc, f)),
 );
 const insertPositions = useMutation(InsertPositionsDocument, {
-  refetchTags: ["All"],
+  refetchTags: ["all"],
 });
 const upsertPositions = useMutation(UpsertPositionsDocument, {
-  refetchTags: ["All"],
+  refetchTags: ["all"],
 });
 const updatePositions = useMutation(UpdatePositionsDocument, {
-  refetchTags: ["All"],
+  refetchTags: ["all"],
 });
 const deletePositions = useMutation(DeletePositionsDocument, {
-  refetchTags: ["All"],
+  refetchTags: ["all"],
 });
 
 const constraint = PositionConstraint.PositionLabelKey;

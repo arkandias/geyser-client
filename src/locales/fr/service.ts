@@ -1,5 +1,7 @@
 export default {
-  teacher: {
+  service: {
+    fetchingService: "Chargement du service…",
+    noService: "Pas de service",
     coordinations: {
       title: "Responsabilités",
       type: {

@@ -5,27 +5,20 @@ import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useDownloadAssignments } from "@/composables/useDownloadAssignments.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { useQueryParam } from "@/composables/useQueryParam.ts";
+import { useServices } from "@/composables/useServices.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
-import {
-  REQUEST_TYPES,
-  type RequestType,
-} from "@/config/types/request-types.ts";
+import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import {
-  type CourseRowFragment,
-  CourseRowFragmentDoc,
-  ServiceDetailsFragmentDoc,
-} from "@/gql/graphql.ts";
+import { type CourseRowFragment, CourseRowFragmentDoc } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import { type Column, getField } from "@/types/column.ts";
 import { compare, normalizeForSearch, uniqueValue } from "@/utils/misc.ts";
 
-import PageTeacher from "@/pages/PageTeacher.vue";
+import PageService from "@/pages/PageService.vue";
 
-const { courseRowFragments, serviceDetailsFragment } = defineProps<{
+const { courseRowFragments } = defineProps<{
   courseRowFragments: FragmentType<typeof CourseRowFragmentDoc>[];
   fetchingCourses?: boolean;
-  serviceDetailsFragment: FragmentType<typeof ServiceDetailsFragmentDoc> | null;
 }>();
 
 graphql(`
@@ -48,7 +41,6 @@ graphql(`
     }
     semester
     type {
-      id
       label
       coefficient
     }
@@ -56,88 +48,117 @@ graphql(`
     numberOfGroups: groupsEffective
     totalHours: totalHoursEffective
     requests {
-      id
+      serviceId
       type
       hours
       isPriority
-    }
-  }
-
-  fragment ServiceDetails on Service {
-    teacher {
-      uid
-      displayname
-    }
-    requests(orderBy: [{ type: ASC }, { courseId: ASC }]) {
-      courseId
-      type
-      hours
     }
   }
 `);
 
 const { t, n } = useCustomI18n();
 const { activeYear } = useYearsStore();
+const { services } = useServices();
 const perm = usePermissions();
 const { downloadAssignments } = useDownloadAssignments();
 
-type CourseRow = Omit<CourseRowFragment, "requests"> & {
+// Service selection
+const { getValue: selectedService, setValue: selectService } = useQueryParam(
+  "serviceId",
+  true,
+);
+const service = computed(
+  () => services.value.find((s) => s.id === selectedService.value) ?? null,
+);
+
+const title = computed(
+  () => service.value?.teacher.displayname ?? t("courses.label", 2),
+);
+
+// Options
+const stickyHeader = ref(false);
+const weightedHours = ref(false);
+
+type CourseRow = Omit<CourseRowFragment, "hoursPerGroup" | "numberOfGroups"> & {
+  hours: number;
+  groups: number;
   totalAssigned: number;
   totalPrimary: number;
   totalSecondary: number;
-  totalPriority: number;
+  diffAssigned: number | null;
+  diffPrimary: number | null;
+  diffPrimaryPriority: number | null;
 };
 
 const courses = computed<CourseRow[]>(() =>
   courseRowFragments.map((f) => {
-    const { requests, ...rest } = useFragment(CourseRowFragmentDoc, f);
-    const totals = requests.reduce(
-      (acc, req) => ({
-        totalAssigned:
-          acc.totalAssigned +
-          (req.type === REQUEST_TYPES.ASSIGNMENT ? req.hours : 0),
-        totalPrimary:
-          acc.totalAssigned +
-          (req.type === REQUEST_TYPES.PRIMARY ? req.hours : 0),
-        totalSecondary:
-          acc.totalAssigned +
-          (req.type === REQUEST_TYPES.SECONDARY ? req.hours : 0),
-        totalPriority:
-          acc.totalAssigned +
-          (req.type === REQUEST_TYPES.PRIMARY && req.isPriority
-            ? req.hours
-            : 0),
-      }),
-      {
-        totalAssigned: 0,
-        totalPrimary: 0,
-        totalSecondary: 0,
-        totalPriority: 0,
-      },
+    const { hoursPerGroup, numberOfGroups, requests, ...rest } = useFragment(
+      CourseRowFragmentDoc,
+      f,
     );
-    return { ...rest, ...totals };
+    const { totalAssigned, totalPrimary, totalSecondary, totalPriority } =
+      requests.reduce(
+        (t, r) => ({
+          totalAssigned:
+            t.totalAssigned +
+            (r.type === REQUEST_TYPES.ASSIGNMENT ? r.hours : 0),
+          totalPrimary:
+            t.totalPrimary + (r.type === REQUEST_TYPES.PRIMARY ? r.hours : 0),
+          totalSecondary:
+            t.totalSecondary +
+            (r.type === REQUEST_TYPES.SECONDARY ? r.hours : 0),
+          totalPriority:
+            t.totalPriority +
+            (r.type === REQUEST_TYPES.PRIMARY && r.isPriority ? r.hours : 0),
+        }),
+        {
+          totalAssigned: 0,
+          totalPrimary: 0,
+          totalSecondary: 0,
+          totalPriority: 0,
+        },
+      );
+    const weight = weightedHours.value ? rest.type.coefficient : 1;
+    return {
+      ...rest,
+      hours: (hoursPerGroup ?? 0) * weight,
+      groups: numberOfGroups ?? 0,
+      requests,
+      totalAssigned: totalAssigned * weight,
+      diffAssigned: ((rest.totalHours ?? 0) - totalAssigned) * weight,
+      totalPrimary: totalPrimary * weight,
+      diffPrimary: ((rest.totalHours ?? 0) - totalPrimary) * weight,
+      diffPrimaryPriority: ((rest.totalHours ?? 0) - totalPriority) * weight,
+      totalSecondary: totalSecondary * weight,
+    };
   }),
 );
 
-const service = computed(() =>
-  useFragment(ServiceDetailsFragmentDoc, serviceDetailsFragment),
-);
-const teacher = computed(() => service.value?.teacher ?? null);
-const requests = computed(() => service.value?.requests ?? null);
-
-const getTeacherTotal = (row: CourseRow, requestType: RequestType) => {
-  if (requests.value) {
-    return (
-      requests.value.find(
-        (r) => r.courseId === row.id && r.type === requestType,
-      )?.hours ?? 0
+const coursesWithTeacher = computed<CourseRow[]>(() =>
+  courses.value.map((row) => {
+    const serviceRequests = row.requests.filter(
+      (r) => r.serviceId === service.value?.id,
     );
-  }
-  return null;
-};
-
-const title = computed(
-  () => teacher.value?.displayname ?? t("courses.label", 2),
+    return {
+      ...row,
+      ...(service.value
+        ? {
+            totalAssigned:
+              serviceRequests.find((r) => r.type === REQUEST_TYPES.ASSIGNMENT)
+                ?.hours ?? 0,
+            totalPrimary:
+              serviceRequests.find((r) => r.type === REQUEST_TYPES.PRIMARY)
+                ?.hours ?? 0,
+            totalSecondary:
+              serviceRequests.find((r) => r.type === REQUEST_TYPES.SECONDARY)
+                ?.hours ?? 0,
+            diffAssigned: null,
+            diffPrimary: null,
+            diffPrimaryPriority: null,
+          }
+        : {}),
+    };
+  }),
 );
 
 // Row selection
@@ -149,10 +170,6 @@ const selectedRow = computed(() => [{ id: selectedCourse.value }]);
 const selectRow = async (_: Event, row: CourseRow) => {
   await toggleCourse(row.id);
 };
-
-// Teacher buttons
-const showTeacherDetails = ref(false);
-const { setValue: selectTeacher } = useQueryParam("uid");
 
 // Columns definition
 const columns: Column<CourseRow>[] = [
@@ -209,10 +226,8 @@ const columns: Column<CourseRow>[] = [
     label: "H.",
     tooltip: "Nombre d'heures par groupe",
     align: "left",
-    field: (row) =>
-      (row.hoursPerGroup ?? 0) *
-      (weightedHours.value ? row.type.coefficient : 1),
-    format: (val: number | null) => (val === null ? null : n(val, "decimal")),
+    field: "hours",
+    format: (val: number) => n(val, "decimal"),
     sortable: true,
     visible: true,
     searchable: false,
@@ -222,21 +237,18 @@ const columns: Column<CourseRow>[] = [
     label: "G.",
     tooltip: "Nombre de groupes ouverts",
     align: "left",
-    field: (row) => row.numberOfGroups ?? 0,
-    format: (val: number | null) => (val === null ? null : n(val, "decimal")),
+    field: "groups",
+    format: (val: number) => n(val, "decimal"),
     sortable: true,
     visible: true,
     searchable: false,
   },
   {
-    name: "assigned",
+    name: "totalAssigned",
     label: "A.",
     tooltip: "Nombre d'heures attribuées",
-    field: (row) =>
-      (getTeacherTotal(row, REQUEST_TYPES.ASSIGNMENT) ?? row.totalAssigned) *
-      (weightedHours.value ? row.type.coefficient : 1),
-    format: (val: number | null) =>
-      val === null ? "-" : n(val, "decimalFixed"),
+    field: "totalAssigned",
+    format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: perm.toViewAssignments,
     searchable: false,
@@ -246,21 +258,18 @@ const columns: Column<CourseRow>[] = [
     label: "ΔA",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
-    field: (row) =>
-      ((row.totalHours ?? 0) - row.totalAssigned) *
-      (weightedHours.value ? row.type.coefficient : 1),
-    format: (val: number) => (teacher.value ? "-" : n(val, "decimalFixed")),
+    field: "diffAssigned",
+    format: (val: number | null) =>
+      val === null ? "-" : n(val, "decimalFixed"),
     sortable: true,
     visible: false,
     searchable: false,
   },
   {
-    name: "primary",
+    name: "totalPrimary",
     label: "V1",
     tooltip: "Nombre d'heures demandées en vœux principaux",
-    field: (row) =>
-      (getTeacherTotal(row, REQUEST_TYPES.PRIMARY) ?? row.totalPrimary) *
-      (weightedHours.value ? row.type.coefficient : 1),
+    field: "totalPrimary",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: true,
@@ -271,10 +280,9 @@ const columns: Column<CourseRow>[] = [
     label: "ΔV1",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
-    field: (row) =>
-      ((row.totalHours ?? 0) - row.totalPrimary) *
-      (weightedHours.value ? row.type.coefficient : 1),
-    format: (val: number) => (teacher.value ? "-" : n(val, "decimalFixed")),
+    field: "diffPrimary",
+    format: (val: number | null) =>
+      val === null ? "-" : n(val, "decimalFixed"),
     sortable: true,
     visible: false,
     searchable: false,
@@ -284,21 +292,18 @@ const columns: Column<CourseRow>[] = [
     label: "ΔV1 Prio",
     tooltip:
       "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",
-    field: (row) =>
-      ((row.totalHours ?? 0) - row.totalPriority) *
-      (weightedHours.value ? row.type.coefficient : 1),
-    format: (val: number) => (teacher.value ? "-" : n(val, "decimalFixed")),
+    field: "diffPrimaryPriority",
+    format: (val: number | null) =>
+      val === null ? "-" : n(val, "decimalFixed"),
     sortable: true,
     visible: false,
     searchable: false,
   },
   {
-    name: "secondary",
+    name: "totalSecondary",
     label: "V2",
     tooltip: "Nombre d'heures demandées en vœux secondaires",
-    field: (row) =>
-      (getTeacherTotal(row, REQUEST_TYPES.SECONDARY) ?? row.totalSecondary) *
-      (weightedHours.value ? row.type.coefficient : 1),
+    field: "totalPrimary",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: true,
@@ -344,7 +349,7 @@ const courseTypes = ref<string[]>([]);
 const courseTypeOptions = computed(() =>
   courses.value
     .map((c) => c.type)
-    .filter(uniqueValue("id"))
+    .filter(uniqueValue("label"))
     .sort(compare("label")),
 );
 
@@ -353,7 +358,7 @@ const search = ref<string | null>(null);
 
 // Filter attributes
 const filterObj = computed(() => ({
-  teacherRequests: requests.value,
+  serviceId: service.value?.id ?? null,
   programs: programs.value,
   semesters: semesters.value,
   courseTypes: courseTypes.value,
@@ -365,8 +370,8 @@ const filterMethod = (
   terms: typeof filterObj.value,
 ): readonly CourseRow[] =>
   rows.filter((row) =>
-    terms.teacherRequests
-      ? terms.teacherRequests.some((r) => r.courseId === row.id)
+    terms.serviceId
+      ? row.requests.some((r) => r.serviceId === terms.serviceId)
       : (terms.programs.length === 0 ||
           terms.programs.some((p) => p === row.program.id)) &&
         (terms.semesters.length === 0 ||
@@ -380,15 +385,14 @@ const filterMethod = (
         ),
   );
 
-// Options
-const weightedHours = ref(false);
-const stickyHeader = ref(false);
-
 // Row styling
 const isAssigned = computed(
   () => (row: CourseRow) =>
-    requests.value?.some(
-      (r) => r.courseId === row.id && r.type === REQUEST_TYPES.ASSIGNMENT,
+    service.value !== null &&
+    row.requests.some(
+      (r) =>
+        r.serviceId === service.value?.id &&
+        r.type === REQUEST_TYPES.ASSIGNMENT,
     ),
 );
 const isVisible = (row: CourseRow) =>
@@ -401,16 +405,18 @@ const tableRowClassFn = computed(
     isAssigned.value(row) ? "assigned" : !isVisible(row) ? "non-visible" : "",
 );
 
+// Teacher buttons
+const showTeacherDetails = ref(false);
 const downloadTeacherAssignments = async () => {
-  if (activeYear.value === null || !teacher.value) {
+  if (activeYear.value === null || !service.value) {
     return;
   }
   await downloadAssignments(
     {
       year: activeYear.value,
-      where: { service: { uid: { _eq: teacher.value.uid } } },
+      where: { serviceId: { _eq: service.value.id } },
     },
-    `${activeYear.value} ${teacher.value.displayname}`,
+    `${activeYear.value} ${service.value.teacher.displayname}`,
   );
 };
 </script>
@@ -419,7 +425,7 @@ const downloadTeacherAssignments = async () => {
   <QDialog v-model="showTeacherDetails">
     <QLayout view="hHh lpR fFf" container class="teacher-details-layout">
       <QPageContainer>
-        <PageTeacher />
+        <PageService />
       </QPageContainer>
     </QLayout>
   </QDialog>
@@ -427,7 +433,7 @@ const downloadTeacherAssignments = async () => {
   <QTable
     :columns
     :visible-columns
-    :rows="courses"
+    :rows="coursesWithTeacher"
     :selected="selectedRow"
     :loading="fetchingCourses"
     :pagination="{ rowsPerPage: 100 }"
@@ -447,7 +453,7 @@ const downloadTeacherAssignments = async () => {
         {{ title }}
         <QBtn
           v-if="service"
-          icon="sym_s_visibility"
+          icon="sym_s_badge"
           color="primary"
           size="sm"
           flat
@@ -457,20 +463,6 @@ const downloadTeacherAssignments = async () => {
         >
           <QTooltip :delay="TOOLTIP_DELAY">
             Afficher les informations de l'intervenant
-          </QTooltip>
-        </QBtn>
-        <QBtn
-          v-if="service"
-          icon="sym_s_close"
-          color="primary"
-          size="sm"
-          flat
-          square
-          dense
-          @click="selectTeacher()"
-        >
-          <QTooltip :delay="TOOLTIP_DELAY">
-            Désélectionner l'intervenant
           </QTooltip>
         </QBtn>
         <QBtn
@@ -485,6 +477,20 @@ const downloadTeacherAssignments = async () => {
         >
           <QTooltip :delay="TOOLTIP_DELAY">
             Télécharger les attributions de l'intervenant
+          </QTooltip>
+        </QBtn>
+        <QBtn
+          v-if="service"
+          icon="sym_s_close"
+          color="primary"
+          size="sm"
+          flat
+          square
+          dense
+          @click="selectService()"
+        >
+          <QTooltip :delay="TOOLTIP_DELAY">
+            Désélectionner l'intervenant
           </QTooltip>
         </QBtn>
       </div>

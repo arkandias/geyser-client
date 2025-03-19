@@ -7,7 +7,7 @@ import customTextDefault from "@/locales/fr/custom-text-default.ts";
 import downloadAssignments from "@/locales/fr/download-assignments.ts";
 import header from "@/locales/fr/header.ts";
 import home from "@/locales/fr/home.ts";
-import teacher from "@/locales/fr/teacher.ts";
+import service from "@/locales/fr/service.ts";
 
 export default {
   ...admin,
@@ -19,5 +19,5 @@ export default {
   ...downloadAssignments,
   ...header,
   ...home,
-  ...teacher,
+  ...service,
 } as const;

@@ -44,11 +44,11 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
       <QSeparator vertical inset color="white" />
       <QBtn
         icon="sym_s_badge"
-        :color="buttonColor(router.currentRoute.value.name === 'teacher')"
+        :color="buttonColor(router.currentRoute.value.name === 'service')"
         :disable
         flat
         square
-        @click="router.push({ name: 'teacher' })"
+        @click="router.push({ name: 'service' })"
       >
         <QTooltip>{{ t("header.teacher.label") }}</QTooltip>
       </QBtn>

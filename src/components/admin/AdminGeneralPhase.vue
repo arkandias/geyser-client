@@ -30,7 +30,7 @@ graphql(`
 `);
 
 const setCurrentPhase = useMutation(SetCurrentPhaseDocument, {
-  refetchTags: ["All"],
+  refetchTags: ["all"],
 });
 
 const setCurrentPhaseHandle = async (phase: string): Promise<void> => {

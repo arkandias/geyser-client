@@ -169,25 +169,25 @@ const teachers = computed(() =>
 const insertServiceModifications = useMutation(
   InsertServiceModificationsDocument,
   {
-    refetchTags: ["All"],
+    refetchTags: ["all"],
   },
 );
 const upsertServiceModifications = useMutation(
   UpsertServiceModificationsDocument,
   {
-    refetchTags: ["All"],
+    refetchTags: ["all"],
   },
 );
 const updateServiceModifications = useMutation(
   UpdateServiceModificationsDocument,
   {
-    refetchTags: ["All"],
+    refetchTags: ["all"],
   },
 );
 const deleteServiceModifications = useMutation(
   DeleteServiceModificationsDocument,
   {
-    refetchTags: ["All"],
+    refetchTags: ["all"],
   },
 );
 

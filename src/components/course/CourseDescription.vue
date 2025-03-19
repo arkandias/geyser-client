@@ -49,7 +49,7 @@ graphql(`
 const perm = usePermissions();
 
 const updateDescription = useMutation(UpdateDescriptionDocument, {
-  refetchTags: ["Description"],
+  refetchTags: ["description"],
 });
 
 const data = computed(() =>

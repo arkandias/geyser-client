@@ -9,7 +9,6 @@ import { graphql } from "@/gql";
 import {
   GetCourseDetailsDocument,
   GetCourseRowsDocument,
-  GetServiceDetailsDocument,
   GetServiceRowsDocument,
 } from "@/gql/graphql.ts";
 import {
@@ -52,22 +51,13 @@ graphql(`
       where: { _and: [{ year: { _eq: $year } }, { teacher: $where }] }
       orderBy: [{ teacher: { displayname: ASC } }]
     ) {
-      ...ServiceRows
+      ...ServiceRow
     }
   }
 
   query GetCourseDetails($courseId: Int!) {
     course: courseByPk(id: $courseId) {
       ...CourseDetails
-    }
-  }
-
-  query GetServiceDetails($year: Int!, $uid: String!) {
-    services: service(
-      where: { _and: [{ year: { _eq: $year } }, { uid: { _eq: $uid } }] }
-      limit: 1 # unique
-    ) {
-      ...ServiceDetails
     }
   }
 `);
@@ -85,7 +75,7 @@ const getCourseRows = useQuery({
     year: computed(() => activeYear.value ?? 0),
   }),
   paused: () => activeYear.value === null,
-  tags: ["All", "Request"],
+  tags: ["all", "request"],
 });
 const fetchingCourseRows = computed(() => getCourseRows.isFetching.value);
 const courseRows = computed(() => getCourseRows.data.value?.courses ?? []);
@@ -100,7 +90,7 @@ const getServiceRows = useQuery({
     ),
   }),
   paused: () => activeYear.value === null,
-  tags: ["All", "Request", "Service"],
+  tags: ["all", "request", "service"],
 });
 const fetchingServiceRows = computed(() => getServiceRows.isFetching.value);
 const serviceRows = computed(() => getServiceRows.data.value?.services ?? []);
@@ -113,29 +103,12 @@ const getCourseDetails = useQuery({
     courseId: computed(() => selectedCourse.value ?? 0),
   }),
   paused: () => selectedCourse.value === null,
-  tags: ["All", "Description", "Request"],
+  tags: ["all", "description", "request"],
 });
 const courseDetails = computed(() =>
   selectedCourse.value === null
     ? null
     : (getCourseDetails.data.value?.course ?? null),
-);
-
-// Selected teacher courses
-const { getValue: selectedTeacher } = useQueryParam("uid");
-const getTeacherCourses = useQuery({
-  query: GetServiceDetailsDocument,
-  variables: reactive({
-    year: computed(() => activeYear.value ?? 0),
-    uid: computed(() => selectedTeacher.value ?? ""),
-  }),
-  paused: () => activeYear.value === null || selectedTeacher.value === null,
-  tags: ["All", "Request"],
-});
-const teacher = computed(() =>
-  activeYear.value === null || selectedTeacher.value === null
-    ? null
-    : (getTeacherCourses.data.value?.services[0] ?? null),
 );
 
 // Toggle left panel based on user's permissions
@@ -180,7 +153,6 @@ watch(
             <TableCourses
               :course-row-fragments="courseRows"
               :fetching-courses="fetchingCourseRows"
-              :service-details-fragment="teacher"
             />
           </template>
           <template #after>

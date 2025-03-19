@@ -5,61 +5,35 @@ import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { useQueryParam } from "@/composables/useQueryParam.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
+import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
-  type ServiceRowsFragment,
-  ServiceRowsFragmentDoc,
+  type ServiceRowFragment,
+  ServiceRowFragmentDoc,
 } from "@/gql/graphql.ts";
 import { type Column, getField } from "@/types/column.ts";
-import { modifiedService, totalHW } from "@/utils/hours.ts";
 import { normalizeForSearch } from "@/utils/misc.ts";
 
 const { serviceRowFragments } = defineProps<{
-  serviceRowFragments: FragmentType<typeof ServiceRowsFragmentDoc>[];
+  serviceRowFragments: FragmentType<typeof ServiceRowFragmentDoc>[];
   fetching?: boolean;
 }>();
 
 graphql(`
-  fragment ServiceRows on Service {
+  fragment ServiceRow on Service {
+    id
     teacher {
       uid
       displayname
       visible
     }
     hours
-    totalModifications: modificationsAggregate {
-      aggregate {
-        sum {
-          hours
-        }
-      }
+    modifications {
+      hours
     }
-    totalAssigned: requestsAggregate(
-      where: { _and: [{ type: { _eq: "assignment" } }] }
-    ) {
-      aggregate {
-        sum {
-          hoursWeighted
-        }
-      }
-    }
-    totalPrimary: requestsAggregate(
-      where: { _and: [{ type: { _eq: "primary" } }] }
-    ) {
-      aggregate {
-        sum {
-          hoursWeighted
-        }
-      }
-    }
-    totalSecondary: requestsAggregate(
-      where: { _and: [{ type: { _eq: "secondary" } }] }
-    ) {
-      aggregate {
-        sum {
-          hoursWeighted
-        }
-      }
+    requests {
+      type
+      hoursWeighted
     }
     message
   }
@@ -68,23 +42,70 @@ graphql(`
 const { t, n } = useCustomI18n();
 const perm = usePermissions();
 
-const services = computed(() =>
-  serviceRowFragments.map((f) => useFragment(ServiceRowsFragmentDoc, f)),
+type ServiceRow = Omit<
+  ServiceRowFragment,
+  "hours" | "modifications" | "requests"
+> & {
+  modifiedService: number;
+  totalAssigned: number;
+  totalPrimary: number;
+  totalSecondary: number;
+  diffAssignment: number;
+  diffPrimary: number;
+  diffSecondary: number;
+};
+
+const services = computed<ServiceRow[]>(() =>
+  serviceRowFragments.map((f) => {
+    const { hours, modifications, requests, ...rest } = useFragment(
+      ServiceRowFragmentDoc,
+      f,
+    );
+    const totalModifications = modifications.reduce((t, m) => t + m.hours, 0);
+    const { totalAssigned, totalPrimary, totalSecondary } = requests.reduce(
+      (t, r) => ({
+        totalAssigned:
+          t.totalAssigned +
+          (r.type === REQUEST_TYPES.ASSIGNMENT ? (r.hoursWeighted ?? 0) : 0),
+        totalPrimary:
+          t.totalAssigned +
+          (r.type === REQUEST_TYPES.PRIMARY ? (r.hoursWeighted ?? 0) : 0),
+        totalSecondary:
+          t.totalAssigned +
+          (r.type === REQUEST_TYPES.SECONDARY ? (r.hoursWeighted ?? 0) : 0),
+      }),
+      {
+        totalAssigned: 0,
+        totalPrimary: 0,
+        totalSecondary: 0,
+      },
+    );
+    const modifiedService = hours - totalModifications;
+    return {
+      ...rest,
+      modifiedService,
+      totalAssigned,
+      totalPrimary,
+      totalSecondary,
+      diffAssignment: modifiedService - totalAssigned,
+      diffPrimary: modifiedService - totalPrimary,
+      diffSecondary: modifiedService - totalSecondary,
+    };
+  }),
 );
 
 // Row selection
-const rowKey = (row: ServiceRowsFragment) => row.teacher.uid;
-const { getValue: selectedTeacher, toggleValue: toggleTeacher } =
-  useQueryParam("uid");
-const selectedRow = computed(() => [
-  { teacher: { uid: selectedTeacher.value } },
-]);
-const selectRow = async (_: Event, row: ServiceRowsFragment) => {
-  await toggleTeacher(row.teacher.uid);
+const { getValue: selectedService, toggleValue: toggleService } = useQueryParam(
+  "serviceId",
+  true,
+);
+const selectedRow = computed(() => [{ id: selectedService.value }]);
+const selectRow = async (_: Event, row: ServiceRowFragment) => {
+  await toggleService(row.id);
 };
 
 // Columns definition
-const columns: Column<ServiceRowsFragment>[] = [
+const columns: Column<ServiceRow>[] = [
   {
     name: "teacher",
     label: "Intervenant",
@@ -99,26 +120,27 @@ const columns: Column<ServiceRowsFragment>[] = [
     label: "M.",
     tooltip: "Message",
     align: "center",
-    field: (row) => (row.message ? "✓" : "✗"),
+    field: (row) => !!row.message,
+    format: (val: boolean) => (val ? "✓" : "✗"),
     sortable: true,
     visible: false,
     searchable: false,
   },
   {
-    name: "service",
+    name: "modifiedService",
     label: "S.",
     tooltip: "Service à réaliser (en heures EQTD)",
-    field: (row) => modifiedService(row),
+    field: "modifiedService",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: true,
     searchable: false,
   },
   {
-    name: "assignment",
+    name: "totalAssigned",
     label: "A.",
     tooltip: "Nombre d'heures EQTD attribuées",
-    field: (row) => totalHW(row.totalAssigned),
+    field: "totalAssigned",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: perm.toViewAssignments,
@@ -129,7 +151,7 @@ const columns: Column<ServiceRowsFragment>[] = [
     label: "\u0394A",
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD attribuées",
-    field: (row) => modifiedService(row) - totalHW(row.totalAssigned),
+    field: "diffAssignment",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: false,
@@ -139,7 +161,7 @@ const columns: Column<ServiceRowsFragment>[] = [
     name: "primary",
     label: "V1",
     tooltip: "Nombre d'heures EQTD demandées en vœux principaux",
-    field: (row) => totalHW(row.totalPrimary),
+    field: "totalPrimary",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: true,
@@ -150,7 +172,7 @@ const columns: Column<ServiceRowsFragment>[] = [
     label: "\u0394V1",
     tooltip:
       "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",
-    field: (row) => modifiedService(row) - totalHW(row.totalPrimary),
+    field: "diffPrimary",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: false,
@@ -160,7 +182,7 @@ const columns: Column<ServiceRowsFragment>[] = [
     name: "secondary",
     label: "V2",
     tooltip: "Nombre d'heures EQTD demandées en vœux secondaires",
-    field: (row) => totalHW(row.totalSecondary),
+    field: "totalSecondary",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: true,
@@ -183,9 +205,9 @@ const filterObj = computed(() => ({
   searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
 }));
 const filterMethod = (
-  rows: readonly ServiceRowsFragment[],
+  rows: readonly ServiceRow[],
   terms: typeof filterObj.value,
-): readonly ServiceRowsFragment[] =>
+): readonly ServiceRow[] =>
   rows.filter((row) =>
     terms.searchColumns.some((col) =>
       normalizeForSearch(String(getField(row, col.field))).includes(
@@ -198,7 +220,7 @@ const filterMethod = (
 const stickyHeader = ref(false);
 
 // Row styling
-const tableRowClassFn = (row: ServiceRowsFragment) =>
+const tableRowClassFn = (row: ServiceRowFragment) =>
   row.teacher.visible ? "" : "non-visible";
 </script>
 
@@ -207,7 +229,6 @@ const tableRowClassFn = (row: ServiceRowsFragment) =>
     :columns
     :visible-columns
     :rows="services"
-    :row-key
     :selected="selectedRow"
     :loading="fetching"
     :pagination="{ rowsPerPage: 100 }"

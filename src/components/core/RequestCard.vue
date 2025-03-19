@@ -97,13 +97,13 @@ const getAssignment = useQuery({
   fetchOnMount: false,
 });
 const insertAssignment = useMutation(InsertAssignementDocument, {
-  refetchTags: ["Request"],
+  refetchTags: ["request"],
 });
 const updateAssignment = useMutation(UpdateAssignmentDocument, {
-  refetchTags: ["Request"],
+  refetchTags: ["request"],
 });
 const deleteRequestCard = useMutation(DeleteRequestCardDocument, {
-  refetchTags: ["Request"],
+  refetchTags: ["request"],
 });
 
 const request = computed(() =>

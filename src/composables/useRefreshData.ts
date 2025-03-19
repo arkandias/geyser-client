@@ -16,7 +16,7 @@ graphql(`
 
 export const useRefreshData = () => {
   const dummyMutation = useMutation(DummyMutationDocument, {
-    refetchTags: ["All"],
+    refetchTags: ["all"],
   });
   const isRefreshing = ref(false);
 

@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useQueryParam } from "@/composables/useQueryParam.ts";
+import { useServices } from "@/composables/useServices.ts";
 import { useLeftPanelStore } from "@/stores/useLeftPanelStore.ts";
-import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { buttonColor } from "@/utils/colors.ts";
 
 import MenuYear from "@/components/header/MenuYear.vue";
 
 const { t } = useCustomI18n();
-const { uid, hasService } = useProfileStore();
+const { hasService, myServiceId } = useServices();
 const { isLeftPanelOpen, toggleLeftPanel } = useLeftPanelStore();
-const { getValue: selectedUid, toggleValue: toggleUid } = useQueryParam("uid");
+const { getValue: selectedService, toggleValue: toggleService } = useQueryParam(
+  "serviceId",
+  true,
+);
 </script>
 
 <template>
@@ -23,15 +26,15 @@ const { getValue: selectedUid, toggleValue: toggleUid } = useQueryParam("uid");
     square
     @click="toggleLeftPanel()"
   >
-    <QTooltip>{{ t("header.courses.teachersFilter") }}</QTooltip>
+    <QTooltip>{{ t("header.courses.servicesFilter") }}</QTooltip>
   </QBtn>
   <QBtn
     icon="sym_s_assignment"
-    :color="buttonColor(selectedUid === uid)"
+    :color="buttonColor(selectedService === myServiceId)"
     :disable="!hasService"
     flat
     square
-    @click="toggleUid(uid)"
+    @click="toggleService(myServiceId)"
   >
     <QTooltip>{{ t("header.courses.myRequests") }}</QTooltip>
   </QBtn>

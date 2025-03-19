@@ -39,7 +39,7 @@ const { t } = useCustomI18n();
 const perm = usePermissions();
 
 const updateMessage = useMutation(UpdateMessageDocument, {
-  refetchTags: ["Service"],
+  refetchTags: ["service"],
 });
 
 const data = computed(() =>
@@ -65,9 +65,9 @@ const setMessage = computed(
 <template>
   <DetailsSection
     v-model="editMessage"
-    :title="t('teacher.message.title')"
+    :title="t('service.message.title')"
     :editable="perm.toEditAMessage(data.uid)"
-    :edition-tooltip="t('teacher.message.editionTooltip')"
+    :edition-tooltip="t('service.message.editionTooltip')"
   >
     <EditableText
       v-model="editMessage"

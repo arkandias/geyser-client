@@ -120,16 +120,16 @@ const positions = computed(() =>
   ),
 );
 const insertTeachers = useMutation(InsertTeachersDocument, {
-  refetchTags: ["All"],
+  refetchTags: ["all"],
 });
 const upsertTeachers = useMutation(UpsertTeachersDocument, {
-  refetchTags: ["All"],
+  refetchTags: ["all"],
 });
 const updateTeachers = useMutation(UpdateTeachersDocument, {
-  refetchTags: ["All"],
+  refetchTags: ["all"],
 });
 const deleteTeachers = useMutation(DeleteTeachersDocument, {
-  refetchTags: ["All"],
+  refetchTags: ["all"],
 });
 
 const constraint = TeacherConstraint.TeacherPkey;

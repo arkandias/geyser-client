@@ -4,6 +4,7 @@ import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
+import { useServices } from "@/composables/useServices.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
@@ -11,7 +12,6 @@ import {
   RequestFormDataFragmentDoc,
   UpsertRequestDocument,
 } from "@/gql/graphql.ts";
-import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { NotifyType, notify } from "@/utils/notify.ts";
 
 import SelectService from "@/components/core/SelectService.vue";
@@ -70,14 +70,14 @@ graphql(`
 `);
 
 const { t } = useCustomI18n();
-const { activeYearServiceId: myServiceId } = useProfileStore();
+const { myServiceId } = useServices();
 const perm = usePermissions();
 
 const upsertRequest = useMutation(UpsertRequestDocument, {
-  refetchTags: ["Request"],
+  refetchTags: ["request"],
 });
 const deleteRequest = useMutation(DeleteRequestDocument, {
-  refetchTags: ["Request"],
+  refetchTags: ["request"],
 });
 
 const data = computed(() =>

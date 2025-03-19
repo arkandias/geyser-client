@@ -12,8 +12,8 @@ export default {
     courses: {
       label: "Enseignements",
       year: "Année",
-      teachersFilter: "Filtre intervenants",
-      myRequests: "Mes demandes",
+      servicesFilter: "Filtre services",
+      myService: "Mon service",
     },
     admin: {
       label: "Administration",

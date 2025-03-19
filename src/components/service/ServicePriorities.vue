@@ -11,7 +11,7 @@ import type { ArrayElement } from "@/types/misc.ts";
 import { priorityColor } from "@/utils/colors.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
-import TeacherList from "@/components/teacher/TeacherList.vue";
+import ServiceList from "@/components/service/ServiceList.vue";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof TeacherServicePrioritiesFragmentDoc>;
@@ -68,7 +68,7 @@ const priorities = computed(
 type Priority = ArrayElement<TeacherServicePrioritiesFragment["priorities"]>;
 
 const formatPriorityTS = (priority: Priority) =>
-  t("teacher.priorities.format.typeSemester", {
+  t("service.priorities.format.typeSemester", {
     type: priority.course.type.label,
     semester: priority.course.semester,
   });
@@ -78,13 +78,13 @@ const formatPriority = (priority: Priority) => priority.course.name;
 const formatPriorityExtra = (priority: Priority) =>
   `${priority.course.program.degree.name} ${priority.course.program.name}` +
   (priority.course.track
-    ? `, ${t("teacher.priorities.format.track", { track: priority.course.track.name })}`
+    ? `, ${t("service.priorities.format.track", { track: priority.course.track.name })}`
     : "");
 </script>
 
 <template>
-  <DetailsSection :title="t('teacher.priorities.title')">
-    <TeacherList>
+  <DetailsSection :title="t('service.priorities.title')">
+    <ServiceList>
       <QItem v-for="p in priorities" :key="p.id" class="q-pa-none">
         <QItemSection>
           <QItemLabel overline>{{ formatPriorityTS(p) }}</QItemLabel>
@@ -102,7 +102,7 @@ const formatPriorityExtra = (priority: Priority) =>
           </QAvatar>
         </QItemSection>
       </QItem>
-    </TeacherList>
+    </ServiceList>
   </DetailsSection>
 </template>
 

@@ -9,7 +9,7 @@ export default {
         import: "Importer",
         export: "Exporter",
       },
-      search: "Rechercher...",
+      search: "Rechercher…",
       error: {
         unknownError: "Erreur inconnue",
         invalidForm: "Formulaire non valide",
@@ -283,9 +283,9 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
           confirm: {
             delete: {
               single: `Êtes-vous sûr de vouloir supprimer le service « {label} » ?
-S'il existe des modifications ou des demandes pour ce service, vous ne pourrez pas le supprimer.`,
+S'il existe des modifications, des demandes ou des priorités pour ce service, vous ne pourrez pas le supprimer.`,
               multiple: `Êtes-vous sûr de vouloir supprimer les {count} services sélectionnés ?
-S'il existe des modifications ou des demandes pour ces services, vous ne pourrez pas les supprimer.`,
+S'il existe des modifications, des demandes ou des priorités pour ces services, vous ne pourrez pas les supprimer.`,
             },
           },
         },

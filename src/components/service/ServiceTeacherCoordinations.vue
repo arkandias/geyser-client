@@ -15,7 +15,7 @@ import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type { ArrayElement } from "@/types/misc.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
-import TeacherList from "@/components/teacher/TeacherList.vue";
+import ServiceList from "@/components/service/ServiceList.vue";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof TeacherCoordinationsFragmentDoc>;
@@ -95,11 +95,11 @@ const formatProgram = (program: {
 
 const formatCoordinationType = (coordination: Coordination) =>
   coordination.program
-    ? t("teacher.coordinations.type.program")
+    ? t("service.coordinations.type.program")
     : coordination.track
-      ? t("teacher.coordinations.type.track")
+      ? t("service.coordinations.type.track")
       : coordination.course
-        ? t("teacher.coordinations.type.course")
+        ? t("service.coordinations.type.course")
         : "";
 
 const formatCoordination = (coordination: Coordination) =>
@@ -114,7 +114,7 @@ const formatCoordinationExtra = (coordination: Coordination) =>
     : coordination.course
       ? formatProgram(coordination.course.program) +
         (coordination.course.track
-          ? `, ${t("teacher.coordinations.format.track", { track: coordination.course.track.name })}`
+          ? `, ${t("service.coordinations.format.track", { track: coordination.course.track.name })}`
           : "")
       : "";
 
@@ -159,8 +159,8 @@ const downloadProgramAssignments = async (coordination: Coordination) => {
 </script>
 
 <template>
-  <DetailsSection :title="t('teacher.coordinations.title')">
-    <TeacherList>
+  <DetailsSection :title="t('service.coordinations.title')">
+    <ServiceList>
       <QItem v-for="c in coordinations" :key="c.id" class="q-pa-none">
         <QItemSection>
           <QItemLabel overline>
@@ -181,12 +181,12 @@ const downloadProgramAssignments = async (coordination: Coordination) => {
             @click="downloadProgramAssignments(c)"
           >
             <QTooltip :delay="TOOLTIP_DELAY">
-              {{ t("teacher.coordinations.tooltip.downloadAssignments") }}
+              {{ t("service.coordinations.tooltip.downloadAssignments") }}
             </QTooltip>
           </QBtn>
         </QItemSection>
       </QItem>
-    </TeacherList>
+    </ServiceList>
   </DetailsSection>
 </template>
 

@@ -50,7 +50,7 @@ graphql(`
 const { t } = useCustomI18n();
 
 const upsertPriority = useMutation(UpsertPriorityDocument, {
-  refetchTags: ["Request"],
+  refetchTags: ["request"],
 });
 
 const data = computed(() =>

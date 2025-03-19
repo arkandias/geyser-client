@@ -9,7 +9,7 @@ import { i18n } from "@/services/i18n.ts";
 import PageAdmin from "@/pages/PageAdmin.vue";
 import PageCourses from "@/pages/PageCourses.vue";
 import PageHome from "@/pages/PageHome.vue";
-import PageTeacher from "@/pages/PageTeacher.vue";
+import PageService from "@/pages/PageService.vue";
 
 const { t } = i18n.global;
 
@@ -20,9 +20,9 @@ const routes: RouteRecordRaw[] = [
     component: PageHome,
   },
   {
-    path: "/teacher",
-    name: "teacher",
-    component: PageTeacher,
+    path: "/service",
+    name: "service",
+    component: PageService,
   },
   {
     path: "/courses",

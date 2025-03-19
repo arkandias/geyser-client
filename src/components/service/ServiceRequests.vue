@@ -8,7 +8,7 @@ import { TeacherServiceRequestsFragmentDoc } from "@/gql/graphql.ts";
 import { formatWH, totalHW } from "@/utils/hours.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
-import TeacherTable from "@/components/teacher/TeacherTable.vue";
+import ServiceTable from "@/components/service/ServiceTable.vue";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof TeacherServiceRequestsFragmentDoc>;
@@ -49,21 +49,21 @@ const requestsTotals = computed(() =>
 </script>
 
 <template>
-  <DetailsSection :title="t('teacher.requests.title')">
-    <TeacherTable>
+  <DetailsSection :title="t('service.requests.title')">
+    <ServiceTable>
       <tr v-if="perm.toViewAssignments">
-        <td>{{ t("teacher.requests.assignments") }}</td>
+        <td>{{ t("service.requests.assignments") }}</td>
         <td>{{ formatWH(totalHW(requestsTotals.assigned)) }}</td>
       </tr>
       <tr>
-        <td>{{ t("teacher.requests.primary") }}</td>
+        <td>{{ t("service.requests.primary") }}</td>
         <td>{{ formatWH(totalHW(requestsTotals.primary)) }}</td>
       </tr>
       <tr>
-        <td>{{ t("teacher.requests.secondary") }}</td>
+        <td>{{ t("service.requests.secondary") }}</td>
         <td>{{ formatWH(totalHW(requestsTotals.secondary)) }}</td>
       </tr>
-    </TeacherTable>
+    </ServiceTable>
   </DetailsSection>
 </template>
 

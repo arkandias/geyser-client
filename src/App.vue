@@ -27,10 +27,6 @@ graphql(`
         id
         type
       }
-      services {
-        id
-        year
-      }
     }
   }
 
@@ -65,7 +61,7 @@ const getUserProfile = useQuery({
   query: GetUserProfileDocument,
   variables: { uid: claims?.userId ?? "" },
   paused: !claims,
-  tags: ["All"],
+  tags: ["all"],
 });
 watch(
   [getUserProfile.data, getUserProfile.error],
@@ -86,7 +82,6 @@ watch(
           .map((role) => role.type)
           .filter((role) => isRole(role))
           .concat(ROLES.TEACHER),
-        services: data.profile.services,
       });
 
       // Log invalid roles (if any)
@@ -106,7 +101,7 @@ watch(activeRole, setRoleHeader, { immediate: true });
 const getAppData = useQuery({
   query: GetAppDataDocument,
   paused: () => !loaded.value || !active.value,
-  tags: ["All"],
+  tags: ["all"],
 });
 watch(
   [getAppData.data, getAppData.error],
@@ -118,7 +113,6 @@ watch(
       });
       return;
     }
-
     if (data?.phases[0]) {
       setCurrentPhase(data.phases[0].value);
     }
