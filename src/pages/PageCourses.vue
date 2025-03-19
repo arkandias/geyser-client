@@ -72,7 +72,7 @@ const perm = usePermissions();
 const getCourseRows = useQuery({
   query: GetCourseRowsDocument,
   variables: reactive({
-    year: computed(() => activeYear.value ?? 0),
+    year: computed(() => activeYear.value ?? -1),
   }),
   paused: () => activeYear.value === null,
   tags: ["all", "request"],
@@ -84,7 +84,7 @@ const courseRows = computed(() => getCourseRows.data.value?.courses ?? []);
 const getServiceRows = useQuery({
   query: GetServiceRowsDocument,
   variables: reactive({
-    year: computed(() => activeYear.value ?? 0),
+    year: computed(() => activeYear.value ?? -1),
     where: computed(() =>
       perm.toViewAllServices ? {} : { uid: { _eq: myUid.value } },
     ),
@@ -100,7 +100,7 @@ const { getValue: selectedCourse } = useQueryParam("courseId", true);
 const getCourseDetails = useQuery({
   query: GetCourseDetailsDocument,
   variables: reactive({
-    courseId: computed(() => selectedCourse.value ?? 0),
+    courseId: computed(() => selectedCourse.value ?? -1),
   }),
   paused: () => selectedCourse.value === null,
   tags: ["all", "description", "request"],

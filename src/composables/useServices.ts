@@ -27,7 +27,7 @@ export const useServices = () => {
 
   const { data, isFetching: fetchingServices } = useQuery({
     query: GetServicesDocument,
-    variables: reactive({ year: computed(() => activeYear.value ?? 0) }),
+    variables: reactive({ year: computed(() => activeYear.value ?? -1) }),
     paused: () => activeYear.value === null,
     tags: ["all"],
   });

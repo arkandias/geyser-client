@@ -37,7 +37,7 @@ const serviceId = computed(() => selectedService.value ?? myServiceId.value);
 const { data, isFetching, isDone } = useQuery({
   query: GetServiceDetailsDocument,
   variables: reactive({
-    id: computed(() => serviceId.value ?? 0),
+    id: computed(() => serviceId.value ?? -1),
   }),
   paused: () => serviceId.value === null,
   tags: ["all", "request", "service"],
