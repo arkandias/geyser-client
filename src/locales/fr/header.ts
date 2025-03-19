@@ -1,8 +1,5 @@
 export default {
   header: {
-    warning: {
-      archive: "Vous consultez une archive ({year})",
-    },
     home: {
       label: "Accueil",
     },

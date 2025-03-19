@@ -36,7 +36,7 @@ const { getValue: selectedService, toggleValue: toggleService } = useQueryParam(
     square
     @click="toggleService(myServiceId)"
   >
-    <QTooltip>{{ t("header.courses.myRequests") }}</QTooltip>
+    <QTooltip>{{ t("header.courses.myService") }}</QTooltip>
   </QBtn>
 </template>
 

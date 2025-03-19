@@ -47,7 +47,7 @@ type ServiceRow = Omit<
   "hours" | "modifications" | "requests"
 > & {
   modifiedService: number;
-  totalAssigned: number;
+  totalAssignment: number;
   totalPrimary: number;
   totalSecondary: number;
   diffAssignment: number;
@@ -62,20 +62,20 @@ const services = computed<ServiceRow[]>(() =>
       f,
     );
     const totalModifications = modifications.reduce((t, m) => t + m.hours, 0);
-    const { totalAssigned, totalPrimary, totalSecondary } = requests.reduce(
+    const { totalAssignment, totalPrimary, totalSecondary } = requests.reduce(
       (t, r) => ({
-        totalAssigned:
-          t.totalAssigned +
+        totalAssignment:
+          t.totalAssignment +
           (r.type === REQUEST_TYPES.ASSIGNMENT ? (r.hoursWeighted ?? 0) : 0),
         totalPrimary:
-          t.totalAssigned +
+          t.totalAssignment +
           (r.type === REQUEST_TYPES.PRIMARY ? (r.hoursWeighted ?? 0) : 0),
         totalSecondary:
-          t.totalAssigned +
+          t.totalAssignment +
           (r.type === REQUEST_TYPES.SECONDARY ? (r.hoursWeighted ?? 0) : 0),
       }),
       {
-        totalAssigned: 0,
+        totalAssignment: 0,
         totalPrimary: 0,
         totalSecondary: 0,
       },
@@ -84,10 +84,10 @@ const services = computed<ServiceRow[]>(() =>
     return {
       ...rest,
       modifiedService,
-      totalAssigned,
+      totalAssignment,
       totalPrimary,
       totalSecondary,
-      diffAssignment: modifiedService - totalAssigned,
+      diffAssignment: modifiedService - totalAssignment,
       diffPrimary: modifiedService - totalPrimary,
       diffSecondary: modifiedService - totalSecondary,
     };
@@ -108,7 +108,8 @@ const selectRow = async (_: Event, row: ServiceRowFragment) => {
 const columns: Column<ServiceRow>[] = [
   {
     name: "teacher",
-    label: "Intervenant",
+    label: t("courses.table.services.columns.teacher.label"),
+    tooltip: t("courses.table.services.columns.teacher.tooltip"),
     align: "left",
     field: (row) => row.teacher.displayname,
     sortable: true,
@@ -117,8 +118,8 @@ const columns: Column<ServiceRow>[] = [
   },
   {
     name: "message",
-    label: "M.",
-    tooltip: "Message",
+    label: t("courses.table.services.columns.message.label"),
+    tooltip: t("courses.table.services.columns.message.tooltip"),
     align: "center",
     field: (row) => !!row.message,
     format: (val: boolean) => (val ? "✓" : "✗"),
@@ -128,8 +129,8 @@ const columns: Column<ServiceRow>[] = [
   },
   {
     name: "modifiedService",
-    label: "S.",
-    tooltip: "Service à réaliser (en heures EQTD)",
+    label: t("courses.table.services.columns.modifiedService.label"),
+    tooltip: t("courses.table.services.columns.modifiedService.tooltip"),
     field: "modifiedService",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
@@ -137,10 +138,10 @@ const columns: Column<ServiceRow>[] = [
     searchable: false,
   },
   {
-    name: "totalAssigned",
-    label: "A.",
-    tooltip: "Nombre d'heures EQTD attribuées",
-    field: "totalAssigned",
+    name: "totalAssignment",
+    label: t("courses.table.services.columns.totalAssignment.label"),
+    tooltip: t("courses.table.services.columns.totalAssignment.tooltip"),
+    field: "totalAssignment",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: perm.toViewAssignments,
@@ -148,9 +149,8 @@ const columns: Column<ServiceRow>[] = [
   },
   {
     name: "diffAssignment",
-    label: "\u0394A",
-    tooltip:
-      "Différence entre le service et le nombre d'heures EQTD attribuées",
+    label: t("courses.table.services.columns.diffAssignment.label"),
+    tooltip: t("courses.table.services.columns.diffAssignment.tooltip"),
     field: "diffAssignment",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
@@ -158,9 +158,9 @@ const columns: Column<ServiceRow>[] = [
     searchable: false,
   },
   {
-    name: "primary",
-    label: "V1",
-    tooltip: "Nombre d'heures EQTD demandées en vœux principaux",
+    name: "totalPrimary",
+    label: t("courses.table.services.columns.totalPrimary.label"),
+    tooltip: t("courses.table.services.columns.totalPrimary.tooltip"),
     field: "totalPrimary",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
@@ -169,9 +169,8 @@ const columns: Column<ServiceRow>[] = [
   },
   {
     name: "diffPrimary",
-    label: "\u0394V1",
-    tooltip:
-      "Différence entre le service et le nombre d'heures EQTD demandées en vœux principaux",
+    label: t("courses.table.services.columns.diffPrimary.label"),
+    tooltip: t("courses.table.services.columns.diffPrimary.tooltip"),
     field: "diffPrimary",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
@@ -179,9 +178,9 @@ const columns: Column<ServiceRow>[] = [
     searchable: false,
   },
   {
-    name: "secondary",
-    label: "V2",
-    tooltip: "Nombre d'heures EQTD demandées en vœux secondaires",
+    name: "totalSecondary",
+    label: t("courses.table.services.columns.totalSecondary.label"),
+    tooltip: t("courses.table.services.columns.totalSecondary.tooltip"),
     field: "totalSecondary",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
@@ -244,13 +243,15 @@ const tableRowClassFn = (row: ServiceRowFragment) =>
     @row-click="selectRow"
   >
     <template #top>
-      <div class="q-table__title">{{ t("services.label", 2) }}</div>
+      <div class="q-table__title">
+        {{ t("courses.table.services.title") }}
+      </div>
       <QSpace />
       <div class="row q-gutter-md">
         <QInput
           v-model="search"
           color="primary"
-          placeholder="Recherche"
+          :placeholder="t('courses.table.services.filters.search')"
           clearable
           clear-icon="sym_s_close"
           square
@@ -262,7 +263,9 @@ const tableRowClassFn = (row: ServiceRowFragment) =>
           color="primary"
           dense
         >
-          <QTooltip>En-tête fixe</QTooltip>
+          <QTooltip>
+            {{ t("courses.table.services.options.stickyHeader") }}
+          </QTooltip>
         </QToggle>
         <QBtn
           icon="sym_s_view_column"
@@ -272,7 +275,7 @@ const tableRowClassFn = (row: ServiceRowFragment) =>
           dense
         >
           <QTooltip v-model="isMenuColumnsTooltipVisible">
-            Colonnes visibles
+            {{ t("courses.table.services.options.visibleColumns") }}
           </QTooltip>
           <QMenu
             v-model="isMenuColumnsOpen"

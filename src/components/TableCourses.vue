@@ -72,7 +72,7 @@ const service = computed(
 );
 
 const title = computed(
-  () => service.value?.teacher.displayname ?? t("courses.label", 2),
+  () => service.value?.teacher.displayname ?? t("courses.table.courses.title"),
 );
 
 // Options
@@ -82,10 +82,10 @@ const weightedHours = ref(false);
 type CourseRow = Omit<CourseRowFragment, "hoursPerGroup" | "numberOfGroups"> & {
   hours: number;
   groups: number;
-  totalAssigned: number;
+  totalAssignment: number;
   totalPrimary: number;
   totalSecondary: number;
-  diffAssigned: number | null;
+  diffAssignment: number | null;
   diffPrimary: number | null;
   diffPrimaryPriority: number | null;
 };
@@ -96,11 +96,11 @@ const courses = computed<CourseRow[]>(() =>
       CourseRowFragmentDoc,
       f,
     );
-    const { totalAssigned, totalPrimary, totalSecondary, totalPriority } =
+    const { totalAssignment, totalPrimary, totalSecondary, totalPriority } =
       requests.reduce(
         (t, r) => ({
-          totalAssigned:
-            t.totalAssigned +
+          totalAssignment:
+            t.totalAssignment +
             (r.type === REQUEST_TYPES.ASSIGNMENT ? r.hours : 0),
           totalPrimary:
             t.totalPrimary + (r.type === REQUEST_TYPES.PRIMARY ? r.hours : 0),
@@ -112,7 +112,7 @@ const courses = computed<CourseRow[]>(() =>
             (r.type === REQUEST_TYPES.PRIMARY && r.isPriority ? r.hours : 0),
         }),
         {
-          totalAssigned: 0,
+          totalAssignment: 0,
           totalPrimary: 0,
           totalSecondary: 0,
           totalPriority: 0,
@@ -124,8 +124,8 @@ const courses = computed<CourseRow[]>(() =>
       hours: (hoursPerGroup ?? 0) * weight,
       groups: numberOfGroups ?? 0,
       requests,
-      totalAssigned: totalAssigned * weight,
-      diffAssigned: ((rest.totalHours ?? 0) - totalAssigned) * weight,
+      totalAssignment: totalAssignment * weight,
+      diffAssignment: ((rest.totalHours ?? 0) - totalAssignment) * weight,
       totalPrimary: totalPrimary * weight,
       diffPrimary: ((rest.totalHours ?? 0) - totalPrimary) * weight,
       diffPrimaryPriority: ((rest.totalHours ?? 0) - totalPriority) * weight,
@@ -143,7 +143,7 @@ const coursesWithTeacher = computed<CourseRow[]>(() =>
       ...row,
       ...(service.value
         ? {
-            totalAssigned:
+            totalAssignment:
               serviceRequests.find((r) => r.type === REQUEST_TYPES.ASSIGNMENT)
                 ?.hours ?? 0,
             totalPrimary:
@@ -152,7 +152,7 @@ const coursesWithTeacher = computed<CourseRow[]>(() =>
             totalSecondary:
               serviceRequests.find((r) => r.type === REQUEST_TYPES.SECONDARY)
                 ?.hours ?? 0,
-            diffAssigned: null,
+            diffAssignment: null,
             diffPrimary: null,
             diffPrimaryPriority: null,
           }
@@ -174,8 +174,9 @@ const selectRow = async (_: Event, row: CourseRow) => {
 // Columns definition
 const columns: Column<CourseRow>[] = [
   {
-    name: "program",
-    label: "Formation",
+    name: "degreeProgram",
+    label: t("courses.table.courses.columns.degreeProgram.label"),
+    tooltip: t("courses.table.courses.columns.degreeProgram.tooltip"),
     align: "left",
     field: (row) => `${row.program.degree.name} ${row.program.name}`,
     sortable: true,
@@ -184,7 +185,8 @@ const columns: Column<CourseRow>[] = [
   },
   {
     name: "track",
-    label: "Parcours",
+    label: t("courses.table.courses.columns.track.label"),
+    tooltip: t("courses.table.courses.columns.track.tooltip"),
     align: "left",
     field: (row) => row.track?.name,
     sortable: true,
@@ -193,7 +195,8 @@ const columns: Column<CourseRow>[] = [
   },
   {
     name: "name",
-    label: "Nom",
+    label: t("courses.table.courses.columns.name.label"),
+    tooltip: t("courses.table.courses.columns.name.tooltip"),
     align: "left",
     field: "name",
     format: (val: string) => (val.length > 40 ? val.slice(0, 40) + "…" : val),
@@ -203,8 +206,8 @@ const columns: Column<CourseRow>[] = [
   },
   {
     name: "semester",
-    label: "S.",
-    tooltip: "Semestre",
+    label: t("courses.table.courses.columns.semester.label"),
+    tooltip: t("courses.table.courses.columns.semester.tooltip"),
     align: "left",
     field: "semester",
     format: (val: number) => `S${val}`,
@@ -214,7 +217,8 @@ const columns: Column<CourseRow>[] = [
   },
   {
     name: "type",
-    label: "Type",
+    label: t("courses.table.courses.columns.type.label"),
+    tooltip: t("courses.table.courses.columns.type.tooltip"),
     align: "left",
     field: (row) => row.type.label,
     sortable: true,
@@ -223,8 +227,8 @@ const columns: Column<CourseRow>[] = [
   },
   {
     name: "hours",
-    label: "H.",
-    tooltip: "Nombre d'heures par groupe",
+    label: t("courses.table.courses.columns.hours.label"),
+    tooltip: t("courses.table.courses.columns.hours.tooltip"),
     align: "left",
     field: "hours",
     format: (val: number) => n(val, "decimal"),
@@ -234,8 +238,8 @@ const columns: Column<CourseRow>[] = [
   },
   {
     name: "groups",
-    label: "G.",
-    tooltip: "Nombre de groupes ouverts",
+    label: t("courses.table.courses.columns.groups.label"),
+    tooltip: t("courses.table.courses.columns.groups.tooltip"),
     align: "left",
     field: "groups",
     format: (val: number) => n(val, "decimal"),
@@ -244,21 +248,20 @@ const columns: Column<CourseRow>[] = [
     searchable: false,
   },
   {
-    name: "totalAssigned",
-    label: "A.",
-    tooltip: "Nombre d'heures attribuées",
-    field: "totalAssigned",
+    name: "totalAssignment",
+    label: t("courses.table.courses.columns.totalAssignment.label"),
+    tooltip: t("courses.table.courses.columns.totalAssignment.tooltip"),
+    field: "totalAssignment",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: perm.toViewAssignments,
     searchable: false,
   },
   {
-    name: "diffAssigned",
-    label: "ΔA",
-    tooltip:
-      "Différence entre le nombre d'heures total et le nombre d'heures attribuées",
-    field: "diffAssigned",
+    name: "diffAssignment",
+    label: t("courses.table.courses.columns.diffAssignment.label"),
+    tooltip: t("courses.table.courses.columns.diffAssignment.tooltip"),
+    field: "diffAssignment",
     format: (val: number | null) =>
       val === null ? "-" : n(val, "decimalFixed"),
     sortable: true,
@@ -267,8 +270,8 @@ const columns: Column<CourseRow>[] = [
   },
   {
     name: "totalPrimary",
-    label: "V1",
-    tooltip: "Nombre d'heures demandées en vœux principaux",
+    label: t("courses.table.courses.columns.totalPrimary.label"),
+    tooltip: t("courses.table.courses.columns.totalPrimary.tooltip"),
     field: "totalPrimary",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
@@ -277,9 +280,8 @@ const columns: Column<CourseRow>[] = [
   },
   {
     name: "diffPrimary",
-    label: "ΔV1",
-    tooltip:
-      "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux",
+    label: t("courses.table.courses.columns.diffPrimary.label"),
+    tooltip: t("courses.table.courses.columns.diffPrimary.tooltip"),
     field: "diffPrimary",
     format: (val: number | null) =>
       val === null ? "-" : n(val, "decimalFixed"),
@@ -289,9 +291,8 @@ const columns: Column<CourseRow>[] = [
   },
   {
     name: "diffPrimaryPriority",
-    label: "ΔV1 Prio",
-    tooltip:
-      "Différence entre le nombre d'heures total et le nombre d'heures demandées en vœux principaux prioritaires",
+    label: t("courses.table.courses.columns.diffPrimaryPriority.label"),
+    tooltip: t("courses.table.courses.columns.diffPrimaryPriority.tooltip"),
     field: "diffPrimaryPriority",
     format: (val: number | null) =>
       val === null ? "-" : n(val, "decimalFixed"),
@@ -301,9 +302,9 @@ const columns: Column<CourseRow>[] = [
   },
   {
     name: "totalSecondary",
-    label: "V2",
-    tooltip: "Nombre d'heures demandées en vœux secondaires",
-    field: "totalPrimary",
+    label: t("courses.table.courses.columns.totalSecondary.label"),
+    tooltip: t("courses.table.courses.columns.totalSecondary.tooltip"),
+    field: "totalSecondary",
     format: (val: number) => n(val, "decimalFixed"),
     sortable: true,
     visible: true,
@@ -321,8 +322,8 @@ const isMenuColumnsTooltipVisible = ref(false);
 
 // Filters
 // Programs
-const programs = ref<number[]>([]);
-const programsOptions = computed(() =>
+const degreePrograms = ref<number[]>([]);
+const degreeProgramOptions = computed(() =>
   courses.value
     .map((c) => ({
       value: c.program.id,
@@ -334,7 +335,7 @@ const programsOptions = computed(() =>
 
 // Semesters
 const semesters = ref<number[]>([]);
-const semestersOptions = computed(() =>
+const semesterOptions = computed(() =>
   courses.value
     .map((c) => ({
       value: c.semester,
@@ -359,7 +360,7 @@ const search = ref<string | null>(null);
 // Filter attributes
 const filterObj = computed(() => ({
   serviceId: service.value?.id ?? null,
-  programs: programs.value,
+  programs: degreePrograms.value,
   semesters: semesters.value,
   courseTypes: courseTypes.value,
   search: normalizeForSearch(search.value ?? ""),
@@ -462,7 +463,7 @@ const downloadTeacherAssignments = async () => {
           @click="showTeacherDetails = true"
         >
           <QTooltip :delay="TOOLTIP_DELAY">
-            Afficher les informations de l'intervenant
+            {{ t("courses.table.courses.options.teacher.viewDetails") }}
           </QTooltip>
         </QBtn>
         <QBtn
@@ -476,7 +477,7 @@ const downloadTeacherAssignments = async () => {
           @click="downloadTeacherAssignments()"
         >
           <QTooltip :delay="TOOLTIP_DELAY">
-            Télécharger les attributions de l'intervenant
+            {{ t("courses.table.courses.options.teacher.downloadAssignments") }}
           </QTooltip>
         </QBtn>
         <QBtn
@@ -490,17 +491,17 @@ const downloadTeacherAssignments = async () => {
           @click="selectService()"
         >
           <QTooltip :delay="TOOLTIP_DELAY">
-            Désélectionner l'intervenant
+            {{ t("courses.table.courses.options.teacher.deselect") }}
           </QTooltip>
         </QBtn>
       </div>
       <QSpace />
       <div class="row q-gutter-md">
         <QSelect
-          v-model="programs"
-          :options="programsOptions"
+          v-model="degreePrograms"
+          :options="degreeProgramOptions"
           :disable="!!service"
-          label="Formation"
+          :label="t('courses.table.courses.filters.degreeProgram')"
           emit-value
           map-options
           multiple
@@ -511,9 +512,9 @@ const downloadTeacherAssignments = async () => {
         />
         <QSelect
           v-model="semesters"
-          :options="semestersOptions"
+          :options="semesterOptions"
           :disable="!!service"
-          label="Semestre"
+          :label="t('courses.table.courses.filters.semester')"
           emit-value
           map-options
           multiple
@@ -526,7 +527,7 @@ const downloadTeacherAssignments = async () => {
           v-model="courseTypes"
           :options="courseTypeOptions"
           :disable="!!service"
-          label="Type"
+          :label="t('courses.table.courses.filters.type')"
           emit-value
           map-options
           multiple
@@ -539,7 +540,7 @@ const downloadTeacherAssignments = async () => {
           v-model="search"
           :disable="!!service"
           color="primary"
-          placeholder="Recherche"
+          :placeholder="t('courses.table.courses.filters.search')"
           clearable
           clear-icon="sym_s_close"
           square
@@ -551,7 +552,9 @@ const downloadTeacherAssignments = async () => {
           color="primary"
           dense
         >
-          <QTooltip>Heures EQTD</QTooltip>
+          <QTooltip>
+            {{ t("courses.table.courses.options.weightedHours") }}
+          </QTooltip>
         </QToggle>
         <QToggle
           v-model="stickyHeader"
@@ -559,7 +562,9 @@ const downloadTeacherAssignments = async () => {
           color="primary"
           dense
         >
-          <QTooltip>En-tête fixe</QTooltip>
+          <QTooltip>
+            {{ t("courses.table.courses.options.stickyHeader") }}
+          </QTooltip>
         </QToggle>
         <QBtn
           icon="sym_s_view_column"
@@ -569,7 +574,7 @@ const downloadTeacherAssignments = async () => {
           dense
         >
           <QTooltip v-model="isMenuColumnsTooltipVisible">
-            Colonnes visibles
+            {{ t("courses.table.courses.options.visibleColumns") }}
           </QTooltip>
           <QMenu
             v-model="isMenuColumnsOpen"
