@@ -42,6 +42,7 @@ const debugPlugin = definePlugin((context: ClientPluginContext) => {
   console.groupCollapsed(
     `[Villus] 🚀 Request #${requestId}: ${operationName} (${context.operation.type})`,
   );
+  console.log(`Start time: ${startTime}`);
   console.log("Operation:", context.operation);
   console.log("Fetch Options:", context.opContext);
   console.groupEnd();
