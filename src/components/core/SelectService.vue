@@ -1,23 +1,47 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { useQuery } from "villus";
+import { computed, reactive, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
-import { useServices } from "@/composables/useServices.ts";
+import { graphql } from "@/gql";
+import { GetServicesDocument } from "@/gql/graphql.ts";
+import { useYearsStore } from "@/stores/useYearsStore.ts";
 import { normalizeForSearch } from "@/utils/misc.ts";
 
 const id = defineModel<number | null>();
 
-const { t } = useCustomI18n();
+graphql(`
+  query GetServices($year: Int!) {
+    services: service(
+      where: { year: { _eq: $year } }
+      orderBy: [{ teacher: { displayname: ASC } }]
+    ) {
+      id
+      teacher {
+        displayname
+      }
+    }
+  }
+`);
 
-const { services } = useServices();
+const { t } = useCustomI18n();
+const { activeYear } = useYearsStore();
+
+const { data } = useQuery({
+  query: GetServicesDocument,
+  variables: reactive({ year: computed(() => activeYear.value ?? 0) }),
+  paused: () => activeYear.value === null,
+  tags: ["All"],
+});
 
 const options = ref<{ value: number; label: string; search: string }[]>([]);
-const optionsInit = computed(() =>
-  services.value.map((s) => ({
-    value: s.id,
-    label: s.teacher.displayname ?? "",
-    search: normalizeForSearch(s.teacher.displayname ?? ""),
-  })),
+const optionsInit = computed(
+  () =>
+    data.value?.services.map((s) => ({
+      value: s.id,
+      label: s.teacher.displayname ?? "",
+      search: normalizeForSearch(s.teacher.displayname ?? ""),
+    })) ?? [],
 );
 watch(
   optionsInit,

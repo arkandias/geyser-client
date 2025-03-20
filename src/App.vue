@@ -27,6 +27,10 @@ graphql(`
         id
         type
       }
+      services {
+        id
+        year
+      }
     }
   }
 
@@ -82,6 +86,7 @@ watch(
           .map((role) => role.type)
           .filter((role) => isRole(role))
           .concat(ROLES.TEACHER),
+        services: data.profile.services,
       });
 
       // Log invalid roles (if any)

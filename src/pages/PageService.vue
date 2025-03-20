@@ -4,9 +4,9 @@ import { computed, reactive } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useQueryParam } from "@/composables/useQueryParam.ts";
-import { useServices } from "@/composables/useServices.ts";
 import { graphql } from "@/gql";
 import { GetServiceDetailsDocument } from "@/gql/graphql.ts";
+import { useProfileStore } from "@/stores/useProfileStore.ts";
 
 import ServiceDetails from "@/components/service/ServiceDetails.vue";
 import ServiceMessage from "@/components/service/ServiceMessage.vue";
@@ -29,7 +29,7 @@ graphql(`
 `);
 
 const { t } = useCustomI18n();
-const { myServiceId } = useServices();
+const { serviceId: myServiceId } = useProfileStore();
 const { getValue: selectedService } = useQueryParam("serviceId", true);
 
 const serviceId = computed(() => selectedService.value ?? myServiceId.value);

@@ -5,19 +5,23 @@ import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useDownloadAssignments } from "@/composables/useDownloadAssignments.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { useQueryParam } from "@/composables/useQueryParam.ts";
-import { useServices } from "@/composables/useServices.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { type CourseRowFragment, CourseRowFragmentDoc } from "@/gql/graphql.ts";
+import {
+  type CourseRowFragment,
+  CourseRowFragmentDoc,
+  TableCoursesServiceFragmentDoc,
+} from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import { type Column, getField } from "@/types/column.ts";
 import { compare, normalizeForSearch, uniqueValue } from "@/utils/misc.ts";
 
 import PageService from "@/pages/PageService.vue";
 
-const { courseRowFragments } = defineProps<{
+const { courseRowFragments, serviceFragments } = defineProps<{
   courseRowFragments: FragmentType<typeof CourseRowFragmentDoc>[];
+  serviceFragments: FragmentType<typeof TableCoursesServiceFragmentDoc>[];
   fetchingCourses?: boolean;
 }>();
 
@@ -54,11 +58,17 @@ graphql(`
       isPriority
     }
   }
+
+  fragment TableCoursesService on Service {
+    id
+    teacher {
+      displayname
+    }
+  }
 `);
 
 const { t, n } = useCustomI18n();
 const { activeYear } = useYearsStore();
-const { services } = useServices();
 const perm = usePermissions();
 const { downloadAssignments } = useDownloadAssignments();
 
@@ -67,12 +77,16 @@ const { getValue: selectedService, setValue: selectService } = useQueryParam(
   "serviceId",
   true,
 );
-const service = computed(
-  () => services.value.find((s) => s.id === selectedService.value) ?? null,
+const services = computed(() =>
+  serviceFragments.map((f) => useFragment(TableCoursesServiceFragmentDoc, f)),
+);
+const teacher = computed(
+  () =>
+    services.value.find((s) => s.id === selectedService.value)?.teacher ?? null,
 );
 
 const title = computed(
-  () => service.value?.teacher.displayname ?? t("courses.table.courses.title"),
+  () => teacher.value?.displayname ?? t("courses.table.courses.title"),
 );
 
 // Options
@@ -134,31 +148,30 @@ const courses = computed<CourseRow[]>(() =>
   }),
 );
 
+// TODO: vérifier
 const coursesWithTeacher = computed<CourseRow[]>(() =>
-  courses.value.map((row) => {
-    const serviceRequests = row.requests.filter(
-      (r) => r.serviceId === service.value?.id,
-    );
-    return {
-      ...row,
-      ...(service.value
-        ? {
-            totalAssignment:
-              serviceRequests.find((r) => r.type === REQUEST_TYPES.ASSIGNMENT)
-                ?.hours ?? 0,
-            totalPrimary:
-              serviceRequests.find((r) => r.type === REQUEST_TYPES.PRIMARY)
-                ?.hours ?? 0,
-            totalSecondary:
-              serviceRequests.find((r) => r.type === REQUEST_TYPES.SECONDARY)
-                ?.hours ?? 0,
-            diffAssignment: null,
-            diffPrimary: null,
-            diffPrimaryPriority: null,
-          }
-        : {}),
-    };
-  }),
+  selectedService.value
+    ? courses.value
+    : courses.value.map((row) => {
+        const serviceRequests = row.requests.filter(
+          (r) => r.serviceId === selectedService.value,
+        );
+        return {
+          ...row,
+          totalAssignment:
+            serviceRequests.find((r) => r.type === REQUEST_TYPES.ASSIGNMENT)
+              ?.hours ?? 0,
+          totalPrimary:
+            serviceRequests.find((r) => r.type === REQUEST_TYPES.PRIMARY)
+              ?.hours ?? 0,
+          totalSecondary:
+            serviceRequests.find((r) => r.type === REQUEST_TYPES.SECONDARY)
+              ?.hours ?? 0,
+          diffAssignment: null,
+          diffPrimary: null,
+          diffPrimaryPriority: null,
+        };
+      }),
 );
 
 // Row selection
@@ -263,7 +276,7 @@ const columns: Column<CourseRow>[] = [
     tooltip: t("courses.table.courses.columns.diffAssignment.tooltip"),
     field: "diffAssignment",
     format: (val: number | null) =>
-      val === null ? "-" : n(val, "decimalFixed"),
+      val === null ? "–" : n(val, "decimalFixed"),
     sortable: true,
     visible: false,
     searchable: false,
@@ -284,7 +297,7 @@ const columns: Column<CourseRow>[] = [
     tooltip: t("courses.table.courses.columns.diffPrimary.tooltip"),
     field: "diffPrimary",
     format: (val: number | null) =>
-      val === null ? "-" : n(val, "decimalFixed"),
+      val === null ? "–" : n(val, "decimalFixed"),
     sortable: true,
     visible: false,
     searchable: false,
@@ -295,7 +308,7 @@ const columns: Column<CourseRow>[] = [
     tooltip: t("courses.table.courses.columns.diffPrimaryPriority.tooltip"),
     field: "diffPrimaryPriority",
     format: (val: number | null) =>
-      val === null ? "-" : n(val, "decimalFixed"),
+      val === null ? "–" : n(val, "decimalFixed"),
     sortable: true,
     visible: false,
     searchable: false,
@@ -359,7 +372,7 @@ const search = ref<string | null>(null);
 
 // Filter attributes
 const filterObj = computed(() => ({
-  serviceId: service.value?.id ?? null,
+  serviceId: selectedService.value ?? null,
   programs: degreePrograms.value,
   semesters: semesters.value,
   courseTypes: courseTypes.value,
@@ -389,10 +402,11 @@ const filterMethod = (
 // Row styling
 const isAssigned = computed(
   () => (row: CourseRow) =>
-    service.value !== null &&
+    // TODO: use teacherRequests
+    selectedService.value !== null &&
     row.requests.some(
       (r) =>
-        r.serviceId === service.value?.id &&
+        r.serviceId === selectedService.value &&
         r.type === REQUEST_TYPES.ASSIGNMENT,
     ),
 );
@@ -409,15 +423,19 @@ const tableRowClassFn = computed(
 // Teacher buttons
 const showTeacherDetails = ref(false);
 const downloadTeacherAssignments = async () => {
-  if (activeYear.value === null || !service.value) {
+  if (
+    activeYear.value === null ||
+    selectedService.value === null ||
+    !teacher.value
+  ) {
     return;
   }
   await downloadAssignments(
     {
       year: activeYear.value,
-      where: { serviceId: { _eq: service.value.id } },
+      where: { serviceId: { _eq: selectedService.value } },
     },
-    `${activeYear.value} ${service.value.teacher.displayname}`,
+    `${activeYear.value} ${teacher.value.displayname}`,
   );
 };
 </script>
@@ -453,7 +471,7 @@ const downloadTeacherAssignments = async () => {
       <div class="q-table__title">
         {{ title }}
         <QBtn
-          v-if="service"
+          v-if="teacher"
           icon="sym_s_badge"
           color="primary"
           size="sm"
@@ -467,7 +485,7 @@ const downloadTeacherAssignments = async () => {
           </QTooltip>
         </QBtn>
         <QBtn
-          v-if="service && perm.toViewAssignments"
+          v-if="teacher && perm.toViewAssignments"
           icon="sym_s_download"
           color="primary"
           size="sm"
@@ -481,7 +499,7 @@ const downloadTeacherAssignments = async () => {
           </QTooltip>
         </QBtn>
         <QBtn
-          v-if="service"
+          v-if="teacher"
           icon="sym_s_close"
           color="primary"
           size="sm"
@@ -500,7 +518,7 @@ const downloadTeacherAssignments = async () => {
         <QSelect
           v-model="degreePrograms"
           :options="degreeProgramOptions"
-          :disable="!!service"
+          :disable="!!teacher"
           :label="t('courses.table.courses.filters.degreeProgram')"
           emit-value
           map-options
@@ -513,7 +531,7 @@ const downloadTeacherAssignments = async () => {
         <QSelect
           v-model="semesters"
           :options="semesterOptions"
-          :disable="!!service"
+          :disable="!!teacher"
           :label="t('courses.table.courses.filters.semester')"
           emit-value
           map-options
@@ -526,7 +544,7 @@ const downloadTeacherAssignments = async () => {
         <QSelect
           v-model="courseTypes"
           :options="courseTypeOptions"
-          :disable="!!service"
+          :disable="!!teacher"
           :label="t('courses.table.courses.filters.type')"
           emit-value
           map-options
@@ -538,7 +556,7 @@ const downloadTeacherAssignments = async () => {
         />
         <QInput
           v-model="search"
-          :disable="!!service"
+          :disable="!!teacher"
           color="primary"
           :placeholder="t('courses.table.courses.filters.search')"
           clearable

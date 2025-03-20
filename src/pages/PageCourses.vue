@@ -52,6 +52,7 @@ graphql(`
       orderBy: [{ teacher: { displayname: ASC } }]
     ) {
       ...ServiceRow
+      ...TableCoursesService
     }
   }
 
@@ -152,6 +153,7 @@ watch(
           <template #before>
             <TableCourses
               :course-row-fragments="courseRows"
+              :service-fragments="serviceRows"
               :fetching-courses="fetchingCourseRows"
             />
           </template>
