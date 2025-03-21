@@ -45,13 +45,13 @@ const service = computed(() => data.value?.service ?? null);
 </script>
 
 <template>
-  <QPage>
+  <QPage class="column items-center">
     <QCard v-if="isFetching && !isDone" flat square>
       <QCardSection class="text-h4 q-pa-xl">
         {{ t("service.fetchingService") }}
       </QCardSection>
     </QCard>
-    <QCard v-else-if="service" flat square class="column items-center">
+    <QCard v-else-if="service" flat square>
       <ServiceTeacher :data-fragment="service.teacher" />
       <ServiceDetails :data-fragment="service" />
       <ServiceRequests :data-fragment="service" />
@@ -67,6 +67,9 @@ const service = computed(() => data.value?.service ?? null);
 </template>
 
 <style scoped lang="scss">
+.q-card {
+  width: 480px;
+}
 :deep(.q-card__section) {
   text-align: center;
 }

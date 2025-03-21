@@ -10,7 +10,7 @@ defineSlots<{ default(): unknown }>();
 
 <style scoped lang="scss">
 table {
-  width: $teacher-details-width;
+  width: 100%;
   border-spacing: 8px;
 }
 :slotted(td:last-child) {

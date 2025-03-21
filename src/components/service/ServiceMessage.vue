@@ -79,7 +79,6 @@ const setMessage = computed(
 
 <style scoped lang="scss">
 :deep(.displayed-text) {
-  width: $teacher-details-width;
   padding: 8px;
 }
 </style>

@@ -9,9 +9,6 @@ defineSlots<{ default(): unknown }>();
 </template>
 
 <style scoped lang="scss">
-.q-list {
-  width: $teacher-details-width;
-}
 :slotted(.q-item) {
   padding: 8px !important;
 }

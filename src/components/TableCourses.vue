@@ -443,7 +443,7 @@ const downloadTeacherAssignments = async () => {
 
 <template>
   <QDialog v-model="showTeacherDetails">
-    <QLayout view="hHh lpR fFf" container class="teacher-details-layout">
+    <QLayout view="hHh lpR fFf" container>
       <QPageContainer>
         <PageService />
       </QPageContainer>
@@ -641,12 +641,7 @@ const downloadTeacherAssignments = async () => {
 </template>
 
 <style scoped lang="scss">
-.teacher-details-layout {
-  max-width: min($teacher-details-width * 1.5, 80vw);
-  max-height: 80vh;
-  background-color: white;
-}
-.body--dark .teacher-details-layout {
+.body--dark .page-service-layout {
   background-color: $dark;
 }
 .q-select {
