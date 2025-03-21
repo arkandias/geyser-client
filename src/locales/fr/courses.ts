@@ -53,7 +53,7 @@ export default {
         },
       },
       courses: {
-        title: "Services",
+        title: "Enseignements",
         columns: {
           degreeProgram: {
             label: "Formation",
@@ -151,7 +151,7 @@ export default {
   ici :
 </p>
 <ul>
-  <li>les responsables de la mention, du parcours et de l'UE ;</li>
+  <li>les responsables de la mention, du parcours et de l'enseignement ;</li>
   <li>une description de l'enseignement.</li>
 </ul>
 <p>
