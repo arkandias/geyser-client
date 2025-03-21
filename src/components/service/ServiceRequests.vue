@@ -5,7 +5,6 @@ import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { TeacherServiceRequestsFragmentDoc } from "@/gql/graphql.ts";
-import { formatWH, totalHW } from "@/utils/hours.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import ServiceTable from "@/components/service/ServiceTable.vue";
@@ -40,12 +39,17 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
+const { t, n } = useCustomI18n();
 const perm = usePermissions();
 
 const requestsTotals = computed(() =>
   useFragment(TeacherServiceRequestsFragmentDoc, dataFragment),
 );
+
+const formatTotal = (type: "assigned" | "primary" | "secondary") =>
+  n(requestsTotals.value[type].aggregate?.sum?.hoursWeighted ?? 0, "decimal") +
+  "\u00A0" +
+  t("unit.weightedHours");
 </script>
 
 <template>
@@ -53,15 +57,15 @@ const requestsTotals = computed(() =>
     <ServiceTable>
       <tr v-if="perm.toViewAssignments">
         <td>{{ t("service.requests.assignments") }}</td>
-        <td>{{ formatWH(totalHW(requestsTotals.assigned)) }}</td>
+        <td>{{ formatTotal("assigned") }}</td>
       </tr>
       <tr>
         <td>{{ t("service.requests.primary") }}</td>
-        <td>{{ formatWH(totalHW(requestsTotals.primary)) }}</td>
+        <td>{{ formatTotal("primary") }}</td>
       </tr>
       <tr>
         <td>{{ t("service.requests.secondary") }}</td>
-        <td>{{ formatWH(totalHW(requestsTotals.secondary)) }}</td>
+        <td>{{ formatTotal("secondary") }}</td>
       </tr>
     </ServiceTable>
   </DetailsSection>

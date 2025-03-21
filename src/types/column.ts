@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export function getField<R>(row: R, field: string | ((row: R) => any)): any {
-  if (typeof field === "function") {
-    return field(row);
-  }
-  return row[field as keyof R];
-}
-
 export type Column<R> = {
   // QTable `columns` fields
   name: string;

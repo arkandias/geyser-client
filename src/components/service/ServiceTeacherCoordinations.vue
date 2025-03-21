@@ -83,8 +83,6 @@ const coordinations = computed(() =>
   ),
 );
 
-type Coordination = ArrayElement<TeacherCoordinationsFragment["coordinations"]>;
-
 const formatProgram = (program: {
   name?: string | null | undefined;
   degree: { name?: string | null | undefined };
@@ -92,6 +90,8 @@ const formatProgram = (program: {
   !program.degree.name || !program.name
     ? ""
     : program.degree.name + " " + program.name;
+
+type Coordination = ArrayElement<TeacherCoordinationsFragment["coordinations"]>;
 
 const formatCoordinationType = (coordination: Coordination) =>
   coordination.program

@@ -14,8 +14,8 @@ import {
   UpdatePositionsDocument,
   UpsertPositionsDocument,
 } from "@/gql/graphql.ts";
-import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
+import type { NullableParsedRow, ParsedRow } from "@/types/data.ts";
 import { inputToNumber } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";

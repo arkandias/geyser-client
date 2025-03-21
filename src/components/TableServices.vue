@@ -11,8 +11,8 @@ import {
   type ServiceRowFragment,
   ServiceRowFragmentDoc,
 } from "@/gql/graphql.ts";
-import { type Column, getField } from "@/types/column.ts";
-import { normalizeForSearch } from "@/utils/misc.ts";
+import type { Column } from "@/types/column.ts";
+import { getField, normalizeForSearch } from "@/utils/misc.ts";
 
 const { serviceRowFragments } = defineProps<{
   serviceRowFragments: FragmentType<typeof ServiceRowFragmentDoc>[];

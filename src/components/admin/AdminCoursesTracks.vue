@@ -15,8 +15,8 @@ import {
   UpdateTracksDocument,
   UpsertTracksDocument,
 } from "@/gql/graphql.ts";
-import type { NullableParsedRow, ParsedRow } from "@/types/admin-data.ts";
 import type { Column } from "@/types/column.ts";
+import type { NullableParsedRow, ParsedRow } from "@/types/data.ts";
 import { booleanOptions } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/AdminData.vue";

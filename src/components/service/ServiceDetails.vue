@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "villus";
 import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -13,8 +14,6 @@ import {
   TeacherServiceDetailsFragmentDoc,
   UpdateServiceDocument,
 } from "@/gql/graphql.ts";
-import { formatWH, modifiedService } from "@/utils/hours.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import ServiceTable from "@/components/service/ServiceTable.vue";
@@ -87,7 +86,8 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
+const { t, n } = useCustomI18n();
+const { notify } = useNotify();
 const perm = usePermissions();
 
 const updateService = useMutation(UpdateServiceDocument, {
@@ -102,6 +102,11 @@ const deleteModification = useMutation(DeleteModificationDocument, {
 
 const service = computed(() =>
   useFragment(TeacherServiceDetailsFragmentDoc, dataFragment),
+);
+const totalService = computed(
+  () =>
+    service.value.hours -
+    (service.value.totalModifications.aggregate?.sum?.hours ?? 0),
 );
 
 // Base service hours form
@@ -207,6 +212,9 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
     });
   }
 };
+
+const formatWH = (hours: number) =>
+  n(hours, "decimal") + "\u00A0" + t("unit.weightedHours");
 </script>
 
 <template>
@@ -383,7 +391,7 @@ const handleModificationDeletion = async (id: number): Promise<void> => {
         <td>
           {{ t("service.details.total") }}
         </td>
-        <td>{{ formatWH(modifiedService(service)) }}</td>
+        <td>{{ formatWH(totalService) }}</td>
       </tr>
     </ServiceTable>
   </DetailsSection>

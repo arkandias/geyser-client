@@ -14,6 +14,8 @@ import type { MutationApi } from "villus";
 import { type Ref, computed, ref, toValue, useSlots, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { NotifyType, useNotify } from "@/composables/useNotify.ts";
+import type { Column } from "@/types/column.ts";
 import type {
   FieldDescriptor,
   NullableParsedRow,
@@ -22,12 +24,10 @@ import type {
   RowDescriptor,
   Scalar,
   SimpleObject,
-} from "@/types/admin-data.ts";
-import { type Column, getField } from "@/types/column.ts";
+} from "@/types/data.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
 import { importCSV } from "@/utils/csv-import.ts";
-import { normalizeForSearch } from "@/utils/misc.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
+import { getField, normalizeForSearch } from "@/utils/misc.ts";
 
 type Id = Row[IdKey];
 type FormValues = NullableParsedRow<T>;
@@ -105,6 +105,7 @@ defineSlots<{
 
 const slots = useSlots();
 const { t } = useCustomI18n();
+const { notify } = useNotify();
 
 // ===== Data Table =====
 const selectedRows: Ref<Row[]> = ref([]);

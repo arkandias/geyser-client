@@ -3,6 +3,7 @@ import { useMutation } from "villus";
 import { ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { graphql } from "@/gql";
 import {
   DeleteYearDocument,
@@ -11,9 +12,9 @@ import {
   UpdateYearDocument,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
 
 const { t } = useCustomI18n();
+const { notify } = useNotify();
 const { years, currentYear } = useYearsStore();
 
 const selectedYear = ref<number | null>(null);

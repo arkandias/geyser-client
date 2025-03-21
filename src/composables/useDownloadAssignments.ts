@@ -1,13 +1,13 @@
 import { useQuery } from "villus";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { graphql } from "@/gql";
 import {
   GetAssignmentsDocument,
   type GetAssignmentsQueryVariables,
 } from "@/gql/graphql.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
 
 graphql(`
   query GetAssignments($year: Int!, $where: RequestBoolExp = {}) {
@@ -63,6 +63,7 @@ graphql(`
 
 export const useDownloadAssignments = () => {
   const { t } = useCustomI18n();
+  const { notify } = useNotify();
   const getAssignments = useQuery({
     query: GetAssignmentsDocument,
     fetchOnMount: false,
@@ -94,7 +95,10 @@ export const useDownloadAssignments = () => {
     } catch (error) {
       notify(NotifyType.ERROR, {
         message: t("downloadAssignments.error.downloadFailed"),
-        caption: error instanceof Error ? error.message : t("unknownError"),
+        caption:
+          error instanceof Error
+            ? error.message
+            : t("downloadAssignments.error.unknownError"),
       });
     }
   };

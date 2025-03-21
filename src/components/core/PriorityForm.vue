@@ -3,6 +3,7 @@ import { useMutation } from "villus";
 import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   PriorityFormDataFragmentDoc,
@@ -10,7 +11,6 @@ import {
 } from "@/gql/graphql.ts";
 import { priorityColor } from "@/utils/colors.ts";
 import { inputToNumber } from "@/utils/misc.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
 
 import SelectService from "@/components/core/SelectService.vue";
 
@@ -48,6 +48,7 @@ graphql(`
 `);
 
 const { t } = useCustomI18n();
+const { notify } = useNotify();
 
 const upsertPriority = useMutation(UpsertPriorityDocument, {
   refetchTags: ["request"],

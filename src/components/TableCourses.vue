@@ -14,8 +14,13 @@ import {
   TableCoursesServiceFragmentDoc,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
-import { type Column, getField } from "@/types/column.ts";
-import { compare, normalizeForSearch, uniqueValue } from "@/utils/misc.ts";
+import type { Column } from "@/types/column.ts";
+import {
+  compare,
+  getField,
+  normalizeForSearch,
+  uniqueValue,
+} from "@/utils/misc.ts";
 
 import PageService from "@/pages/PageService.vue";
 

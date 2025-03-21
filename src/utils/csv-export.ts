@@ -1,6 +1,6 @@
 import { unparse } from "papaparse";
 
-import type { Scalar, SimpleObject } from "@/types/admin-data.ts";
+import type { Scalar, SimpleObject } from "@/types/data.ts";
 import { toSlug } from "@/utils/misc.ts";
 
 const flattenSimpleObjectEntries = <T extends Scalar>(

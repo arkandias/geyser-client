@@ -3,6 +3,7 @@ import { useMutation } from "villus";
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -12,7 +13,6 @@ import {
   PriorityChipDataFragmentDoc,
 } from "@/gql/graphql.ts";
 import { priorityColor } from "@/utils/colors.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
 
 const { dataFragment } = defineProps<{
   dataFragment: FragmentType<typeof PriorityChipDataFragmentDoc>;
@@ -48,6 +48,7 @@ graphql(`
 `);
 
 const { t } = useCustomI18n();
+const { notify } = useNotify();
 const perm = usePermissions();
 
 const deletePriority = useMutation(DeletePriorityDocument, {

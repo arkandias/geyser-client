@@ -3,6 +3,7 @@ import { useQuery } from "villus";
 import { computed, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { PHASES } from "@/config/types/phases.ts";
 import { ROLES, isRole } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
@@ -12,7 +13,6 @@ import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
 import PageHome from "@/pages/PageHome.vue";
@@ -54,6 +54,7 @@ graphql(`
 `);
 
 const { t } = useCustomI18n();
+const { notify } = useNotify();
 const { active, activeRole, loaded, setProfile } = useProfileStore();
 const { currentPhase, setCurrentPhase } = usePhaseStore();
 const { setYears } = useYearsStore();

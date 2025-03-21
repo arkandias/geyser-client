@@ -2,13 +2,14 @@
 import { useMutation } from "villus";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { PHASES } from "@/config/types/phases.ts";
 import { graphql } from "@/gql";
 import { SetCurrentPhaseDocument } from "@/gql/graphql.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
 
 const { t } = useCustomI18n();
+const { notify } = useNotify();
 const { currentPhase } = usePhaseStore();
 
 const phaseOptions = [

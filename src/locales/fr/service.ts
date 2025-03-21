@@ -35,7 +35,7 @@ export default {
             hours: "Sélectionnez un nombre d'heures positif ou nul",
           },
         },
-        noChanges: "Pas de changement à enregistrer",
+        noChanges: "Pas de changement",
         success: "Service de base modifié",
         error: "Échec de la modification",
       },

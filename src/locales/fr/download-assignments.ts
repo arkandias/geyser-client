@@ -9,6 +9,7 @@ export default {
     email: "Email",
     error: {
       downloadFailed: "Le téléchargement a échoué",
+      unknownError: "Erreur inconnue",
     },
   },
 };

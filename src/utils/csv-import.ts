@@ -5,7 +5,7 @@ import type {
   ParsedField,
   ParsedRow,
   RowDescriptor,
-} from "@/types/admin-data.ts";
+} from "@/types/data.ts";
 
 /**
  * Parses a string value into a strongly-typed field (string, number, or

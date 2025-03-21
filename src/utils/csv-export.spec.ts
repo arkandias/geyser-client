@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { flattenSimpleObject, processSimpleObject } from "./csv-export.ts";
-import type { Scalar } from "@/types/admin-data.ts";
+import type { Scalar } from "@/types/data.ts";
 
 describe("flattenSimpleObject", () => {
   it("handles flat object mapping", () => {

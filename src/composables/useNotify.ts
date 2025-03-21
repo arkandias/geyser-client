@@ -1,4 +1,4 @@
-import { Notify, type QNotifyCreateOptions } from "quasar";
+import { type QNotifyCreateOptions, useQuasar } from "quasar";
 
 export enum NotifyType {
   DEFAULT = "DEFAULT",
@@ -31,6 +31,12 @@ const defaultOptions = (type: NotifyType): QNotifyCreateOptions => {
   }
 };
 
-export const notify = (type: NotifyType, opts: QNotifyCreateOptions) => {
-  Notify.create({ ...defaultOptions(type), ...opts });
+export const useNotify = () => {
+  const $q = useQuasar();
+
+  const notify = (type: NotifyType, opts: QNotifyCreateOptions) => {
+    $q.notify({ ...defaultOptions(type), ...opts });
+  };
+
+  return { notify };
 };

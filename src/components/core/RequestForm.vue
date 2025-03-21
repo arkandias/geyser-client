@@ -3,6 +3,7 @@ import { useMutation } from "villus";
 import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -12,7 +13,6 @@ import {
   UpsertRequestDocument,
 } from "@/gql/graphql.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
 
 import SelectService from "@/components/core/SelectService.vue";
 
@@ -70,6 +70,7 @@ graphql(`
 `);
 
 const { t } = useCustomI18n();
+const { notify } = useNotify();
 const { serviceId: myServiceId } = useProfileStore();
 const perm = usePermissions();
 

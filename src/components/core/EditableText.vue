@@ -3,7 +3,7 @@ import type { CombinedError } from "villus";
 import { ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
-import { NotifyType, notify } from "@/utils/notify.ts";
+import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 
 type SetTextReturn = {
   returnId: string | number | null | undefined;
@@ -24,6 +24,7 @@ const {
 }>();
 
 const { t } = useCustomI18n();
+const { notify } = useNotify();
 
 const editorText = ref("");
 

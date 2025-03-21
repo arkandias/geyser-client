@@ -5,7 +5,7 @@ export default {
       cancel: "Annuler",
     },
     save: {
-      noChanges: "Pas de changement à enregistrer",
+      noChanges: "Pas de changement",
       success: {
         updated: "Texte mis à jour",
         deleted: "Texte supprimé",
