@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CourseArchivesFragmentDoc } from "@/gql/graphql.ts";
 
@@ -47,6 +48,8 @@ graphql(`
   }
 `);
 
+const { t } = useCustomI18n();
+
 const archives = computed(() => {
   const nestedArchives = useFragment(CourseArchivesFragmentDoc, dataFragment);
   return [
@@ -58,7 +61,7 @@ const archives = computed(() => {
 </script>
 
 <template>
-  <DetailsSection title="Archives">
+  <DetailsSection :title="t('courses.details.archives.title')">
     <DetailsSubsection
       v-for="a in archives"
       :key="a.year"

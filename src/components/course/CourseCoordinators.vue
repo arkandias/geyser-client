@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type CourseCoordinatorsFragment,
@@ -41,6 +42,8 @@ graphql(`
   }
 `);
 
+const { t } = useCustomI18n();
+
 const data = computed(() =>
   useFragment(CourseCoordinatorsFragmentDoc, dataFragment),
 );
@@ -61,17 +64,21 @@ const formatCoordinators = (coordinators: Coordinator[]) =>
 </script>
 
 <template>
-  <DetailsSubsection title="Responsables">
+  <DetailsSubsection :title="t('courses.expansion.coordinators.title')">
     <div v-if="programCoordinators.length">
-      Responsable{{ programCoordinators.length > 1 ? "s" : "" }} de la mention :
+      {{
+        t("courses.expansion.coordinators.program", programCoordinators.length)
+      }}
       {{ formatCoordinators(programCoordinators) }}
     </div>
     <div v-if="trackCoordinators.length">
-      Responsable{{ trackCoordinators.length > 1 ? "s" : "" }} du parcours :
+      {{ t("courses.expansion.coordinators.track", trackCoordinators.length) }}
       {{ formatCoordinators(trackCoordinators) }}
     </div>
     <div v-if="courseCoordinators.length">
-      Responsable{{ courseCoordinators.length > 1 ? "s" : "" }} de l'UE :
+      {{
+        t("courses.expansion.coordinators.course", courseCoordinators.length)
+      }}
       {{ formatCoordinators(courseCoordinators) }}
     </div>
   </DetailsSubsection>

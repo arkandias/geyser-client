@@ -36,30 +36,26 @@ const data = computed(() =>
 );
 
 const requestsByType = computed(() =>
-  [
-    { value: REQUEST_TYPES.ASSIGNMENT, label: t("requestType.assignment") },
-    { value: REQUEST_TYPES.PRIMARY, label: t("requestType.primary") },
-    { value: REQUEST_TYPES.SECONDARY, label: t("requestType.secondary") },
-  ]
-    .filter(
-      (opt) => opt.value !== REQUEST_TYPES.ASSIGNMENT || perm.toViewAssignments,
-    )
-    .map((opt) => ({
-      ...opt,
-      requests: data.value.requests.filter((r) => r.type === opt.value),
-    })),
+  (perm.toViewAssignments
+    ? [REQUEST_TYPES.ASSIGNMENT, REQUEST_TYPES.PRIMARY, REQUEST_TYPES.SECONDARY]
+    : [REQUEST_TYPES.PRIMARY, REQUEST_TYPES.SECONDARY]
+  ).map((value) => ({
+    value,
+    label: t(`requestType.${value}`, 2),
+    requests: data.value.requests.filter((r) => r.type === value),
+  })),
 );
 </script>
 
 <template>
-  <DetailsSection title="Demandes">
+  <DetailsSection :title="t('courses.details.requests.title')">
     <DetailsSubsection v-if="perm.toSubmitRequests || perm.toEditAssignments">
       <RequestForm :data-fragment="data" />
     </DetailsSubsection>
     <DetailsSubsection
       v-for="opt in requestsByType"
       :key="opt.value"
-      :title="opt.label + 's'"
+      :title="opt.label"
     >
       <QCardSection class="row q-gutter-xs">
         <RequestCard v-for="r in opt.requests" :key="r.id" :data-fragment="r" />

@@ -67,8 +67,8 @@ const priorities = computed(
 
 type Priority = ArrayElement<TeacherServicePrioritiesFragment["priorities"]>;
 
-const formatPriorityTS = (priority: Priority) =>
-  t("service.priorities.format.typeSemester", {
+const formatTypeAndSemester = (priority: Priority) =>
+  t("service.priorities.format.typeAndSemester", {
     type: priority.course.type.label,
     semester: priority.course.semester,
   });
@@ -87,7 +87,7 @@ const formatPriorityExtra = (priority: Priority) =>
     <ServiceList>
       <QItem v-for="p in priorities" :key="p.id" class="q-pa-none">
         <QItemSection>
-          <QItemLabel overline>{{ formatPriorityTS(p) }}</QItemLabel>
+          <QItemLabel overline>{{ formatTypeAndSemester(p) }}</QItemLabel>
           <QItemLabel>{{ formatPriority(p) }}</QItemLabel>
           <QItemLabel caption>{{ formatPriorityExtra(p) }}</QItemLabel>
         </QItemSection>

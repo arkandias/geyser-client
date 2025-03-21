@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { computed, watch } from "vue";
 
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CourseDetailsFragmentDoc } from "@/gql/graphql.ts";
 
 import CourseArchives from "@/components/course/CourseArchives.vue";
 import CourseCoordinators from "@/components/course/CourseCoordinators.vue";
 import CourseDescription from "@/components/course/CourseDescription.vue";
-import CourseDetailsDefault from "@/components/course/CourseDetailsDefault.vue";
 import CourseExpansion from "@/components/course/CourseExpansion.vue";
-import CourseExpansionDefault from "@/components/course/CourseExpansionDefault.vue";
 import CoursePriorities from "@/components/course/CoursePriorities.vue";
 import CourseRequests from "@/components/course/CourseRequests.vue";
 
@@ -28,6 +27,8 @@ graphql(`
     ...CourseArchives
   }
 `);
+
+const { t } = useCustomI18n();
 
 const details = computed(() =>
   useFragment(CourseDetailsFragmentDoc, dataFragment),
@@ -52,7 +53,13 @@ watch(
         <CourseCoordinators :data-fragment="details" />
         <CourseDescription :data-fragment="details" />
       </template>
-      <CourseExpansionDefault v-else />
+      <!-- eslint-disable vue/no-v-html vue/no-v-text-v-html-on-component -->
+      <QCardSection
+        v-else
+        class="text-justify"
+        v-html="t('courses.expansion.defaultText')"
+      />
+      <!-- eslint-enable vue/no-v-html vue/no-v-text-v-html-on-component -->
     </QCard>
   </CourseExpansion>
   <QCard flat square>
@@ -63,7 +70,13 @@ watch(
       <QSeparator />
       <CourseArchives :data-fragment="details" />
     </template>
-    <CourseDetailsDefault v-else />
+    <!-- eslint-disable vue/no-v-html vue/no-v-text-v-html-on-component -->
+    <QCardSection
+      v-else
+      class="text-body2 text-justify"
+      v-html="t('courses.details.defaultText')"
+    />
+    <!-- eslint-enable vue/no-v-html vue/no-v-text-v-html-on-component -->
   </QCard>
 </template>
 

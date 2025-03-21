@@ -7,7 +7,7 @@ export default {
       type: {
         program: "Mention",
         track: "Parcours",
-        course: "UE",
+        course: "Enseignement",
       },
       format: {
         track: "parcours {track}",
@@ -75,7 +75,7 @@ export default {
     priorities: {
       title: "Priorités",
       format: {
-        typeSemester: "{type} au S{semester}",
+        typeAndSemester: "{type} au S{semester}",
         track: "parcours {track}",
       },
     },

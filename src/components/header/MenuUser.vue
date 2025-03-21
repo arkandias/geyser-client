@@ -23,11 +23,10 @@ watch(
 );
 
 const roleOptions = computed(() =>
-  [
-    { value: ROLES.TEACHER, label: t("role.teacher") },
-    { value: ROLES.COMMISSIONER, label: t("role.commissioner") },
-    { value: ROLES.ADMIN, label: t("role.admin") },
-  ].filter((role) => roles.value.includes(role.value)),
+  roles.value.map((role) => ({
+    value: role,
+    label: t(`role.${role}`, 1),
+  })),
 );
 
 const update = async (value: Role) => {

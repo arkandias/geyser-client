@@ -6,14 +6,14 @@ export default {
     shutdown: "Fermeture",
   },
   requestType: {
-    primary: "Principale",
-    secondary: "Secondaire",
-    assignment: "Attribution",
+    assignment: "Attribution | Attributions",
+    primary: "Principale | Principales",
+    secondary: "Secondaire | Secondaires",
   },
   role: {
-    admin: "Administrateur",
-    commissioner: "Commissaire",
-    teacher: "Intervenant",
+    admin: "Administrateur | Administrateurs",
+    commissioner: "Commissaire | Commissaires",
+    teacher: "Intervenant | Intervenants",
   },
   unit: {
     hours: "h",

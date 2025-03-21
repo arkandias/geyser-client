@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CoursePrioritiesFragmentDoc } from "@/gql/graphql.ts";
@@ -26,6 +27,7 @@ graphql(`
   }
 `);
 
+const { t } = useCustomI18n();
 const perm = usePermissions();
 
 const data = computed(() =>
@@ -40,7 +42,7 @@ const priorities = computed(() =>
 </script>
 
 <template>
-  <DetailsSection title="Priorités">
+  <DetailsSection :title="t('courses.details.priorities.title')">
     <DetailsSubsection v-if="perm.toEditPriorities">
       <PriorityForm :data-fragment="data" />
     </DetailsSubsection>

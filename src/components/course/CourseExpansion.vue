@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CourseExpansionFragmentDoc } from "@/gql/graphql.ts";
 
@@ -29,14 +30,14 @@ graphql(`
   }
 `);
 
+const { t } = useCustomI18n();
+
 const data = computed(() =>
   useFragment(CourseExpansionFragmentDoc, dataFragment),
 );
 
 const label = computed(() =>
-  data.value
-    ? data.value.name
-    : "Sélectionnez un course dans la liste ci-dessus",
+  data.value ? data.value.name : t("courses.expansion.defaultLabel"),
 );
 
 const caption = computed(() =>
@@ -44,9 +45,9 @@ const caption = computed(() =>
     ? `${data.value.program.degree.name} — ` +
       `${data.value.program.name} — ` +
       (data.value.track ? `${data.value.track.name} — ` : "") +
-      `S${data.value.semester} — ` +
+      `${t("courses.expansion.formatSemester", { semester: data.value.semester })} — ` +
       data.value.courseType.label
-    : "Cliquez sur ce volet pour afficher des informations supplémentaires",
+    : t("courses.expansion.defaultCaption"),
 );
 </script>
 

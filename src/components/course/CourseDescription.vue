@@ -3,6 +3,7 @@ import DOMPurify from "dompurify";
 import { useMutation } from "villus";
 import { computed, ref } from "vue";
 
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
@@ -46,6 +47,7 @@ graphql(`
   }
 `);
 
+const { t } = useCustomI18n();
 const perm = usePermissions();
 
 const updateDescription = useMutation(UpdateDescriptionDocument, {
@@ -82,14 +84,14 @@ const setDescription = (text: string) =>
 <template>
   <DetailsSubsection
     v-model="editDescription"
-    title="Description"
+    :title="t('courses.expansion.description.title')"
     :editable="perm.toEditADescription(coordinators)"
   >
     <EditableText
       v-model="editDescription"
       :text="description"
       :set-text="setDescription"
-      default-text="Pas de description (contactez un responsable)"
+      :default-text="t('courses.expansion.description.defaultText')"
     />
   </DetailsSubsection>
 </template>
