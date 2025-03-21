@@ -148,30 +148,27 @@ const courses = computed<CourseRow[]>(() =>
   }),
 );
 
-// TODO: vérifier
-const coursesWithTeacher = computed<CourseRow[]>(() =>
-  selectedService.value
-    ? courses.value
-    : courses.value.map((row) => {
-        const serviceRequests = row.requests.filter(
-          (r) => r.serviceId === selectedService.value,
-        );
-        return {
-          ...row,
-          totalAssignment:
-            serviceRequests.find((r) => r.type === REQUEST_TYPES.ASSIGNMENT)
-              ?.hours ?? 0,
-          totalPrimary:
-            serviceRequests.find((r) => r.type === REQUEST_TYPES.PRIMARY)
-              ?.hours ?? 0,
-          totalSecondary:
-            serviceRequests.find((r) => r.type === REQUEST_TYPES.SECONDARY)
-              ?.hours ?? 0,
-          diffAssignment: null,
-          diffPrimary: null,
-          diffPrimaryPriority: null,
-        };
-      }),
+const teacherCourses = computed<CourseRow[]>(() =>
+  courses.value.map((row) => {
+    const teacherRequests = row.requests.filter(
+      (r) => r.serviceId === selectedService.value,
+    );
+    return {
+      ...row,
+      totalAssignment:
+        teacherRequests.find((r) => r.type === REQUEST_TYPES.ASSIGNMENT)
+          ?.hours ?? 0,
+      totalPrimary:
+        teacherRequests.find((r) => r.type === REQUEST_TYPES.PRIMARY)?.hours ??
+        0,
+      totalSecondary:
+        teacherRequests.find((r) => r.type === REQUEST_TYPES.SECONDARY)
+          ?.hours ?? 0,
+      diffAssignment: null,
+      diffPrimary: null,
+      diffPrimaryPriority: null,
+    };
+  }),
 );
 
 // Row selection
@@ -402,7 +399,6 @@ const filterMethod = (
 // Row styling
 const isAssigned = computed(
   () => (row: CourseRow) =>
-    // TODO: use teacherRequests
     selectedService.value !== null &&
     row.requests.some(
       (r) =>
@@ -452,7 +448,7 @@ const downloadTeacherAssignments = async () => {
   <QTable
     :columns
     :visible-columns
-    :rows="coursesWithTeacher"
+    :rows="teacher ? teacherCourses : courses"
     :selected="selectedRow"
     :loading="fetchingCourses"
     :pagination="{ rowsPerPage: 100 }"
