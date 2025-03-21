@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from "villus";
-import { computed, reactive, watch } from "vue";
+import { computed, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
@@ -72,9 +72,7 @@ const perm = usePermissions();
 // Course rows
 const getCourseRows = useQuery({
   query: GetCourseRowsDocument,
-  variables: reactive({
-    year: computed(() => activeYear.value ?? -1),
-  }),
+  variables: () => ({ year: activeYear.value ?? -1 }),
   paused: () => activeYear.value === null,
   tags: ["all", "request"],
 });
@@ -84,11 +82,9 @@ const courseRows = computed(() => getCourseRows.data.value?.courses ?? []);
 // Service rows
 const getServiceRows = useQuery({
   query: GetServiceRowsDocument,
-  variables: reactive({
-    year: computed(() => activeYear.value ?? -1),
-    where: computed(() =>
-      perm.toViewAllServices ? {} : { uid: { _eq: myUid.value } },
-    ),
+  variables: () => ({
+    year: activeYear.value ?? -1,
+    where: perm.toViewAllServices ? {} : { uid: { _eq: myUid.value } },
   }),
   paused: () => activeYear.value === null,
   tags: ["all", "request", "service"],
@@ -100,9 +96,7 @@ const serviceRows = computed(() => getServiceRows.data.value?.services ?? []);
 const { getValue: selectedCourse } = useQueryParam("courseId", true);
 const getCourseDetails = useQuery({
   query: GetCourseDetailsDocument,
-  variables: reactive({
-    courseId: computed(() => selectedCourse.value ?? -1),
-  }),
+  variables: () => ({ courseId: selectedCourse.value ?? -1 }),
   paused: () => selectedCourse.value === null,
   tags: ["all", "description", "request"],
 });

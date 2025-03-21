@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from "villus";
-import { computed, reactive, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { graphql } from "@/gql";
@@ -29,7 +29,7 @@ const { activeYear } = useYearsStore();
 
 const { data } = useQuery({
   query: GetServicesDocument,
-  variables: reactive({ year: computed(() => activeYear.value ?? 0) }),
+  variables: () => ({ year: activeYear.value ?? 0 }),
   paused: () => activeYear.value === null,
   tags: ["All"],
 });

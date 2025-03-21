@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from "villus";
-import { computed, reactive } from "vue";
+import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useQueryParam } from "@/composables/useQueryParam.ts";
@@ -36,9 +36,7 @@ const serviceId = computed(() => selectedService.value ?? myServiceId.value);
 
 const { data, isFetching, isDone } = useQuery({
   query: GetServiceDetailsDocument,
-  variables: reactive({
-    id: computed(() => serviceId.value ?? -1),
-  }),
+  variables: () => ({ id: serviceId.value ?? -1 }),
   paused: () => serviceId.value === null,
   tags: ["all", "request", "service"],
 });
