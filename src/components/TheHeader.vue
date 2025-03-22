@@ -130,7 +130,7 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
 }
 .v-enter-to,
 .v-leave-from {
-  width: 185px;
+  width: 182px;
 }
 .v-enter-from,
 .v-leave-to {
