@@ -39,7 +39,7 @@ const update = async () => {
         <QItemLabel header>{{ t("header.courses.year") }}</QItemLabel>
       </QItem>
       <QSeparator />
-      <QItem class="item-options">
+      <QItem class="q-pl-sm">
         <QOptionGroup
           v-model="selected"
           :options
@@ -52,11 +52,4 @@ const update = async () => {
   </MenuBase>
 </template>
 
-<style scoped lang="scss">
-.item-options {
-  padding-left: 8px;
-}
-.q-radio__label {
-  white-space: nowrap;
-}
-</style>
+<style scoped lang="scss"></style>

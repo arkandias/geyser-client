@@ -442,7 +442,7 @@ const downloadTeacherAssignments = async () => {
 </script>
 
 <template>
-  <QDialog v-model="showTeacherDetails">
+  <QDialog v-model="showTeacherDetails" square>
     <QLayout view="hHh lpR fFf" container>
       <QPageContainer>
         <PageService />

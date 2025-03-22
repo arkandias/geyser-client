@@ -85,8 +85,4 @@ const routeTabs = [
   </QPage>
 </template>
 
-<style scoped lang="scss">
-:global(.admin-form) {
-  width: 540px;
-}
-</style>
+<style scoped lang="scss"></style>

@@ -57,7 +57,7 @@ const messages = computed(() => ({
     </QList>
   </MenuBase>
 
-  <QDialog v-for="s in sections" :key="s" v-model="isDialogOpen[s]">
+  <QDialog v-for="s in sections" :key="s" v-model="isDialogOpen[s]" square>
     <QCard square>
       <QCardSection class="text-h6">
         {{ labels[s] }}
@@ -70,7 +70,7 @@ const messages = computed(() => ({
 
 <style scoped lang="scss">
 .q-dialog .q-card {
-  max-width: 720px;
+  max-width: $dialog-info-max-width;
 }
 .q-item {
   white-space: nowrap;

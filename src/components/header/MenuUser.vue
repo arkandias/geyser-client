@@ -44,7 +44,7 @@ const update = async (value: Role) => {
         </QItemLabel>
       </QItem>
       <QSeparator />
-      <QItem class="item-options">
+      <QItem class="q-pl-sm">
         <QOptionGroup
           v-model="role"
           :options="roleOptions"
@@ -67,13 +67,10 @@ const update = async (value: Role) => {
 </template>
 
 <style scoped lang="scss">
-.q-item {
-  white-space: nowrap;
-}
-.item-options {
-  padding-left: 8px;
-}
-.q-radio__label {
-  white-space: nowrap;
-}
+//.q-item {
+//  white-space: nowrap;
+//}
+//.q-radio__label {
+//  white-space: nowrap;
+//}
 </style>

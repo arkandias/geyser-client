@@ -431,28 +431,25 @@ const filterFn = computed(
           <QCheckbox v-model="selectedFields" val="position" />
         </template>
       </QSelect>
-      <div class="row">
-        <div class="q-mr-md">
-          <QInput
-            :model-value="formValues.baseServiceHours"
-            type="number"
-            :label="t('admin.teachers.teachers.form.fields.baseServiceHours')"
-            :disable="
-              multipleSelection && !selectedFields.includes('baseServiceHours')
-            "
-            square
-            dense
-            style="width: 180px"
-            @update:model-value="
-              (value) => (formValues.baseServiceHours = inputToNumber(value))
-            "
-          >
-            <template v-if="multipleSelection" #before>
-              <QCheckbox v-model="selectedFields" val="baseServiceHours" />
-            </template>
-          </QInput>
-        </div>
-        <div class="q-mr-md">
+      <QInput
+        :model-value="formValues.baseServiceHours"
+        type="number"
+        :label="t('admin.teachers.teachers.form.fields.baseServiceHours')"
+        :disable="
+          multipleSelection && !selectedFields.includes('baseServiceHours')
+        "
+        square
+        dense
+        @update:model-value="
+          (value) => (formValues.baseServiceHours = inputToNumber(value))
+        "
+      >
+        <template v-if="multipleSelection" #before>
+          <QCheckbox v-model="selectedFields" val="baseServiceHours" />
+        </template>
+      </QInput>
+      <div class="row q-gutter-md">
+        <div>
           <QCheckbox
             v-if="multipleSelection"
             v-model="selectedFields"
@@ -465,7 +462,7 @@ const filterFn = computed(
             left-label
           />
         </div>
-        <div class="q-mr-md">
+        <div>
           <QCheckbox
             v-if="multipleSelection"
             v-model="selectedFields"

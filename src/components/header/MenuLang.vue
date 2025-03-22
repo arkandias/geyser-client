@@ -23,7 +23,7 @@ const localeOptions = AVAILABLE_LOCALES.map((l) => ({
         </QItemLabel>
       </QItem>
       <QSeparator />
-      <QItem class="item-options">
+      <QItem class="q-pl-sm">
         <QOptionGroup
           v-model="locale"
           :options="localeOptions"
@@ -36,11 +36,4 @@ const localeOptions = AVAILABLE_LOCALES.map((l) => ({
   </MenuBase>
 </template>
 
-<style scoped lang="scss">
-.item-options {
-  padding-left: 8px;
-}
-.q-radio__label {
-  white-space: nowrap;
-}
-</style>
+<style scoped lang="scss"></style>

@@ -85,7 +85,7 @@ const formatPriorityExtra = (priority: Priority) =>
 <template>
   <DetailsSection :title="t('service.priorities.title')">
     <ServiceList>
-      <QItem v-for="p in priorities" :key="p.id" class="q-pa-none">
+      <QItem v-for="p in priorities" :key="p.id" class="q-pa-sm">
         <QItemSection>
           <QItemLabel overline>{{ formatTypeAndSemester(p) }}</QItemLabel>
           <QItemLabel>{{ formatPriority(p) }}</QItemLabel>

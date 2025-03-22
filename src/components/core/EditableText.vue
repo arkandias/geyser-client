@@ -15,11 +15,13 @@ const {
   text,
   setText,
   defaultText = "",
+  textClass,
   textStyle,
 } = defineProps<{
   text: string;
   setText: (text: string) => Promise<SetTextReturn>;
   defaultText?: string;
+  textClass?: string;
   textStyle?: string;
 }>();
 
@@ -56,11 +58,14 @@ const save = async () => {
     }
   }
   showEditor.value = false;
+  if (!editorText.value) {
+    editorText.value = defaultText;
+  }
 };
 
 const abort = () => {
-  editorText.value = text;
   showEditor.value = false;
+  editorText.value = text || defaultText;
 };
 
 const clear = async () => {
@@ -68,7 +73,7 @@ const clear = async () => {
   await save();
 };
 
-watch(() => text, abort, { immediate: true });
+watch(() => text || defaultText, abort, { immediate: true });
 
 const toolbar = [
   ["left", "center", "right", "justify"],
@@ -120,10 +125,13 @@ defineExpose({ clear });
     </QCard>
   </QDialog>
   <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-  <div class="displayed-text" :style="textStyle" v-html="text || defaultText" />
+  <div :class="textClass" :style="textStyle" v-html="text || defaultText" />
 </template>
 
 <style scoped lang="scss">
+.q-dialog .q-card {
+  max-width: $dialog-text-editor-max-width;
+}
 :deep(.q-editor__toolbar) {
   background-color: $grey-3;
 }

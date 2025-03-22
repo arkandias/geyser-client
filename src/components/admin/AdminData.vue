@@ -578,7 +578,7 @@ const exportDataHandle = () => {
   </QTable>
 
   <QDialog v-model="isFormOpen" square>
-    <QCard flat square class="admin-form">
+    <QCard flat square>
       <QCardSection v-if="isFormOpen" class="text-h6">
         {{ formTitle }}
       </QCardSection>
@@ -610,7 +610,7 @@ const exportDataHandle = () => {
   </QDialog>
 
   <QDialog v-model="isImportDialogOpen" square>
-    <QCard flat square class="admin-form">
+    <QCard flat square>
       <QCardSection class="text-h6">
         {{ t("admin.data.import.title") }}
       </QCardSection>
@@ -663,4 +663,9 @@ const exportDataHandle = () => {
   </QDialog>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.q-dialog .q-card {
+  max-width: unset;
+  width: $dialog-admin-data-width;
+}
+</style>

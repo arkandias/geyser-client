@@ -73,12 +73,9 @@ const setMessage = computed(
       v-model="editMessage"
       :text="message"
       :set-text="setMessage"
+      text-class="q-pa-sm"
     />
   </DetailsSection>
 </template>
 
-<style scoped lang="scss">
-:deep(.displayed-text) {
-  padding: 8px;
-}
-</style>
+<style scoped lang="scss"></style>
