@@ -76,7 +76,10 @@ const getCourseRows = useQuery({
   paused: () => activeYear.value === null,
   tags: ["all", "request"],
 });
-const fetchingCourseRows = computed(() => getCourseRows.isFetching.value);
+const fetchingCourseRows = computed(
+  // Need to check manually that query is not paused (issue #220)
+  () => activeYear.value !== null && getCourseRows.isFetching.value,
+);
 const courseRows = computed(() => getCourseRows.data.value?.courses ?? []);
 
 // Service rows
@@ -89,7 +92,10 @@ const getServiceRows = useQuery({
   paused: () => activeYear.value === null,
   tags: ["all", "request", "service"],
 });
-const fetchingServiceRows = computed(() => getServiceRows.isFetching.value);
+const fetchingServiceRows = computed(
+  // Need to check manually that query is not paused (issue #220)
+  () => activeYear.value !== null && getServiceRows.isFetching.value,
+);
 const serviceRows = computed(() => getServiceRows.data.value?.services ?? []);
 
 // Selected course details
@@ -118,12 +124,20 @@ watch(
   },
   { immediate: true },
 );
+
+const warningMessage = computed(() =>
+  activeYear.value === null
+    ? t("courses.warning.noActiveYear")
+    : !isCurrentYearActive.value
+      ? t("courses.warning.archive", { year: activeYear.value })
+      : "",
+);
 </script>
 
 <template>
   <QPage>
-    <QCard v-if="!isCurrentYearActive" id="warning-archive" class="text-body1">
-      {{ t("courses.warning.archive", { year: activeYear }) }}
+    <QCard v-if="warningMessage" id="warning-header" class="text-body1">
+      {{ warningMessage }}
     </QCard>
     <QSplitter
       id="first-splitter"
@@ -161,7 +175,7 @@ watch(
 </template>
 
 <style scoped lang="scss">
-#warning-archive {
+#warning-header {
   height: $warning-height;
   text-align: center;
   background-color: $accent;
@@ -180,15 +194,15 @@ watch(
 #first-splitter :deep(.sticky-header-table) {
   height: calc(100vh - $header-height);
 }
-#warning-archive + #first-splitter,
-#warning-archive + #first-splitter :deep(.sticky-header-table) {
+#warning-header + #first-splitter,
+#warning-header + #first-splitter :deep(.sticky-header-table) {
   height: calc(100vh - $header-height - $warning-height);
 }
 #first-splitter #second-splitter :deep(.sticky-header-table) {
   height: calc((100vh - $header-height) * v-bind("hSplitterRatio") / 100);
 }
 /* prettier-ignore */
-#warning-archive + #first-splitter #second-splitter :deep(.sticky-header-table) {
+#warning-header + #first-splitter #second-splitter :deep(.sticky-header-table) {
   height: calc((100vh - $header-height - $warning-height) * v-bind('hSplitterRatio') / 100);
 }
 

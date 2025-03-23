@@ -46,7 +46,12 @@ const service = computed(() => data.value?.service ?? null);
 
 <template>
   <QPage class="column items-center">
-    <QCard v-if="isFetching && !isDone" flat square>
+    <QCard v-if="serviceId === null" flat square>
+      <QCardSection class="text-h4 q-pa-xl">
+        {{ t("service.noService") }}
+      </QCardSection>
+    </QCard>
+    <QCard v-else-if="isFetching && !isDone" flat square>
       <QCardSection class="text-h4 q-pa-xl">
         {{ t("service.fetchingService") }}
       </QCardSection>
