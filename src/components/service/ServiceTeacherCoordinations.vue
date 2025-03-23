@@ -161,7 +161,7 @@ const downloadProgramAssignments = async (coordination: Coordination) => {
 <template>
   <DetailsSection :title="t('service.coordinations.title')">
     <ServiceList>
-      <QItem v-for="c in coordinations" :key="c.id" class="q-pa-sm">
+      <QItem v-for="c in coordinations" :key="c.id">
         <QItemSection>
           <QItemLabel overline>
             {{ formatCoordinationType(c) }}

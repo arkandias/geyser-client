@@ -94,6 +94,12 @@ const services = computed<ServiceRow[]>(() =>
   }),
 );
 
+const noResultsLabel = computed(() =>
+  services.value.length
+    ? t("courses.table.services.noResults")
+    : t("courses.table.services.noData"),
+);
+
 // Row selection
 const { getValue: selectedService, toggleValue: toggleService } = useQueryParam(
   "serviceId",
@@ -225,6 +231,7 @@ const tableRowClassFn = (row: ServiceRowFragment) =>
 
 <template>
   <QTable
+    :title="t('courses.table.services.title')"
     :columns
     :visible-columns
     :rows="services"
@@ -235,6 +242,8 @@ const tableRowClassFn = (row: ServiceRowFragment) =>
     :filter="filterObj"
     :filter-method
     :table-row-class-fn
+    :loading-label="t('courses.table.services.loading')"
+    :no-results-label
     flat
     square
     dense
@@ -242,11 +251,7 @@ const tableRowClassFn = (row: ServiceRowFragment) =>
     :class="{ 'sticky-header-table': stickyHeader }"
     @row-click="selectRow"
   >
-    <template #top>
-      <div class="q-table__title">
-        {{ t("courses.table.services.title") }}
-      </div>
-      <QSpace />
+    <template #top-right>
       <div class="row q-gutter-md">
         <QInput
           v-model="search"

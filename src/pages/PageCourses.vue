@@ -147,8 +147,8 @@ watch(
           <template #before>
             <TableCourses
               :course-row-fragments="courseRows"
+              :fetching="fetchingCourseRows"
               :service-fragments="serviceRows"
-              :fetching-courses="fetchingCourseRows"
             />
           </template>
           <template #after>

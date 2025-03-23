@@ -3,16 +3,12 @@ defineSlots<{ default(): unknown }>();
 </script>
 
 <template>
-  <table>
+  <QMarkupTable separator="none" flat square dense>
     <slot />
-  </table>
+  </QMarkupTable>
 </template>
 
 <style scoped lang="scss">
-table {
-  width: 100%;
-  border-spacing: 8px;
-}
 :slotted(td:last-child) {
   text-align: end;
 }

@@ -51,6 +51,9 @@ export default {
           stickyHeader: "En-tête fixe",
           visibleColumns: "Colonnes visibles",
         },
+        loading: "Chargement des services…",
+        noData: "Aucun service trouvé",
+        noResults: "Aucun service ne correspond aux filtres",
       },
       courses: {
         title: "Enseignements",
@@ -127,6 +130,9 @@ export default {
           stickyHeader: "En-tête fixe",
           visibleColumns: "Colonnes visibles",
         },
+        loading: "Chargement des enseignements…",
+        noData: "Aucun enseignement trouvé",
+        noResults: "Aucun enseignement ne correspond aux filtres",
       },
     },
     expansion: {

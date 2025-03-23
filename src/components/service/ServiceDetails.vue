@@ -230,169 +230,169 @@ const formatWH = (hours: number) =>
       @reset="resetModificationForm"
     />
     <ServiceTable>
-      <tr>
-        <td>
-          {{ t("service.details.baseServiceHours") }}
-          <QBtn
-            v-if="isBaseServiceFormOpen"
-            form="edit-base-service"
-            type="submit"
-            icon="sym_s_check_circle"
-            color="primary"
-            size="sm"
-            flat
-            square
-            dense
-          >
-            <QTooltip :delay="TOOLTIP_DELAY">
-              {{ t("service.details.baseServiceForm.tooltip.validate") }}
-            </QTooltip>
-          </QBtn>
-          <QBtn
-            v-else-if="perm.toEditAService(service.uid)"
-            form="edit-base-service"
-            icon="sym_s_edit"
-            color="primary"
-            size="sm"
-            flat
-            square
-            dense
-            @click="isBaseServiceFormOpen = true"
-          >
-            <QTooltip :delay="TOOLTIP_DELAY">
-              {{ t("service.details.baseServiceForm.tooltip.edit") }}
-            </QTooltip>
-          </QBtn>
-        </td>
-        <td v-if="isBaseServiceFormOpen">
-          <QInput
-            v-model.number="baseServiceHours"
-            type="number"
-            :label="t('service.details.baseServiceForm.fields.hours')"
-            square
-            dense
-            form="edit-base-service"
-            class="inline-block"
-          />
-        </td>
-        <td v-else>{{ formatWH(service.hours) }}</td>
-      </tr>
-      <tr>
-        <td>
-          {{ t("service.details.modifications") }}
-          <QBtn
-            v-if="isModificationFormOpen"
-            form="add-modification"
-            type="submit"
-            icon="sym_s_check_circle"
-            color="primary"
-            size="sm"
-            flat
-            square
-            dense
-          >
-            <QTooltip :delay="TOOLTIP_DELAY">
-              {{ t("service.details.modificationForm.tooltip.validate") }}
-            </QTooltip>
-          </QBtn>
-          <QBtn
-            v-else-if="perm.toEditAService(service.uid)"
-            icon="sym_s_add_circle"
-            color="primary"
-            size="sm"
-            flat
-            square
-            dense
-            @click="isModificationFormOpen = true"
-          >
-            <QTooltip :delay="TOOLTIP_DELAY">
-              {{ t("service.details.modificationForm.tooltip.create") }}
-            </QTooltip>
-          </QBtn>
-        </td>
-      </tr>
-      <tr v-if="isModificationFormOpen">
-        <td>
-          <QBtn
-            form="add-modification"
-            type="reset"
-            icon="sym_s_cancel"
-            color="primary"
-            size="sm"
-            flat
-            square
-            dense
-          >
-            <QTooltip :delay="TOOLTIP_DELAY">
-              {{ t("service.details.modificationForm.tooltip.delete") }}
-            </QTooltip>
-          </QBtn>
-          <QSelect
-            v-model="modificationTypeId"
-            :options="modificationTypesOptions"
-            :label="t('service.details.modificationForm.fields.type')"
-            option-value="id"
-            emit-value
-            map-options
-            square
-            dense
-            options-dense
-            form="add-modification"
-            class="inline-block q-ml-sm"
-          >
-            <template #option="scope">
-              <QItem v-bind="scope.itemProps">
-                <QItemSection>
-                  <QItemLabel>{{ scope.opt.label }}</QItemLabel>
-                  <QItemLabel v-if="scope.opt.description" caption>
-                    {{ scope.opt.description }}
-                  </QItemLabel>
-                </QItemSection>
-              </QItem>
-            </template>
-          </QSelect>
-        </td>
-        <td>
-          <QInput
-            v-model.number="modificationHours"
-            type="number"
-            :label="t('service.details.modificationForm.fields.hours')"
-            square
-            dense
-            form="add-modification"
-            class="inline-block"
-          />
-        </td>
-      </tr>
-      <tr v-for="m in service.modifications" :key="m.id">
-        <td>
-          <QBtn
-            v-if="perm.toEditAService(service.uid)"
-            icon="sym_s_cancel"
-            color="primary"
-            size="sm"
-            flat
-            square
-            dense
-            @click="handleModificationDeletion(m.id)"
-          >
-            <QTooltip :delay="TOOLTIP_DELAY">
-              {{ t("service.details.modificationForm.tooltip.delete") }}
-            </QTooltip>
-          </QBtn>
-          {{ m.modificationType.label }}
-        </td>
-        <td>{{ formatWH(m.hours) }}</td>
-      </tr>
-      <tr>
-        <td colspan="100%" style="border-bottom: 1px solid black" />
-      </tr>
-      <tr>
-        <td>
-          {{ t("service.details.total") }}
-        </td>
-        <td>{{ formatWH(totalService) }}</td>
-      </tr>
+      <tbody>
+        <tr>
+          <td>
+            {{ t("service.details.baseServiceHours") }}
+            <QBtn
+              v-if="isBaseServiceFormOpen"
+              form="edit-base-service"
+              type="submit"
+              icon="sym_s_check_circle"
+              color="primary"
+              size="sm"
+              flat
+              square
+              dense
+            >
+              <QTooltip :delay="TOOLTIP_DELAY">
+                {{ t("service.details.baseServiceForm.tooltip.validate") }}
+              </QTooltip>
+            </QBtn>
+            <QBtn
+              v-else-if="perm.toEditAService(service.uid)"
+              form="edit-base-service"
+              icon="sym_s_edit"
+              color="primary"
+              size="sm"
+              flat
+              square
+              dense
+              @click="isBaseServiceFormOpen = true"
+            >
+              <QTooltip :delay="TOOLTIP_DELAY">
+                {{ t("service.details.baseServiceForm.tooltip.edit") }}
+              </QTooltip>
+            </QBtn>
+          </td>
+          <td v-if="isBaseServiceFormOpen">
+            <QInput
+              v-model.number="baseServiceHours"
+              type="number"
+              :label="t('service.details.baseServiceForm.fields.hours')"
+              square
+              dense
+              form="edit-base-service"
+              class="inline-block"
+            />
+          </td>
+          <td v-else>{{ formatWH(service.hours) }}</td>
+        </tr>
+        <tr>
+          <td>
+            {{ t("service.details.modifications") }}
+            <QBtn
+              v-if="isModificationFormOpen"
+              form="add-modification"
+              type="submit"
+              icon="sym_s_check_circle"
+              color="primary"
+              size="sm"
+              flat
+              square
+              dense
+            >
+              <QTooltip :delay="TOOLTIP_DELAY">
+                {{ t("service.details.modificationForm.tooltip.validate") }}
+              </QTooltip>
+            </QBtn>
+            <QBtn
+              v-else-if="perm.toEditAService(service.uid)"
+              icon="sym_s_add_circle"
+              color="primary"
+              size="sm"
+              flat
+              square
+              dense
+              @click="isModificationFormOpen = true"
+            >
+              <QTooltip :delay="TOOLTIP_DELAY">
+                {{ t("service.details.modificationForm.tooltip.create") }}
+              </QTooltip>
+            </QBtn>
+          </td>
+          <td />
+        </tr>
+        <tr v-if="isModificationFormOpen">
+          <td>
+            <QBtn
+              form="add-modification"
+              type="reset"
+              icon="sym_s_cancel"
+              color="primary"
+              size="sm"
+              flat
+              square
+              dense
+            >
+              <QTooltip :delay="TOOLTIP_DELAY">
+                {{ t("service.details.modificationForm.tooltip.delete") }}
+              </QTooltip>
+            </QBtn>
+            <QSelect
+              v-model="modificationTypeId"
+              :options="modificationTypesOptions"
+              :label="t('service.details.modificationForm.fields.type')"
+              option-value="id"
+              emit-value
+              map-options
+              square
+              dense
+              options-dense
+              form="add-modification"
+              class="inline-block q-ml-sm"
+            >
+              <template #option="scope">
+                <QItem v-bind="scope.itemProps">
+                  <QItemSection>
+                    <QItemLabel>{{ scope.opt.label }}</QItemLabel>
+                    <QItemLabel v-if="scope.opt.description" caption>
+                      {{ scope.opt.description }}
+                    </QItemLabel>
+                  </QItemSection>
+                </QItem>
+              </template>
+            </QSelect>
+          </td>
+          <td>
+            <QInput
+              v-model.number="modificationHours"
+              type="number"
+              :label="t('service.details.modificationForm.fields.hours')"
+              square
+              dense
+              form="add-modification"
+              class="inline-block"
+            />
+          </td>
+        </tr>
+        <tr v-for="m in service.modifications" :key="m.id">
+          <td>
+            <QBtn
+              v-if="perm.toEditAService(service.uid)"
+              icon="sym_s_cancel"
+              color="primary"
+              size="sm"
+              flat
+              square
+              dense
+              @click="handleModificationDeletion(m.id)"
+            >
+              <QTooltip :delay="TOOLTIP_DELAY">
+                {{ t("service.details.modificationForm.tooltip.delete") }}
+              </QTooltip>
+            </QBtn>
+            {{ m.modificationType.label }}
+          </td>
+          <td>{{ formatWH(m.hours) }}</td>
+        </tr>
+        <tr class="text-bold">
+          <td>
+            {{ t("service.details.total") }}
+          </td>
+          <td>{{ formatWH(totalService) }}</td>
+        </tr>
+      </tbody>
     </ServiceTable>
   </DetailsSection>
 </template>

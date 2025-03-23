@@ -73,7 +73,7 @@ const setMessage = computed(
       v-model="editMessage"
       :text="message"
       :set-text="setMessage"
-      text-class="q-pa-sm"
+      text-class="q-pa-md"
     />
   </DetailsSection>
 </template>

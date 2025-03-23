@@ -27,7 +27,7 @@ import PageService from "@/pages/PageService.vue";
 const { courseRowFragments, serviceFragments } = defineProps<{
   courseRowFragments: FragmentType<typeof CourseRowFragmentDoc>[];
   serviceFragments: FragmentType<typeof TableCoursesServiceFragmentDoc>[];
-  fetchingCourses?: boolean;
+  fetching?: boolean;
 }>();
 
 graphql(`
@@ -174,6 +174,12 @@ const teacherCourses = computed<CourseRow[]>(() =>
       diffPrimaryPriority: null,
     };
   }),
+);
+
+const noResultsLabel = computed(() =>
+  courses.value.length
+    ? t("courses.table.courses.noResults")
+    : t("courses.table.courses.noData"),
 );
 
 // Row selection
@@ -455,12 +461,14 @@ const downloadTeacherAssignments = async () => {
     :visible-columns
     :rows="teacher ? teacherCourses : courses"
     :selected="selectedRow"
-    :loading="fetchingCourses"
+    :loading="fetching"
     :pagination="{ rowsPerPage: 100 }"
     :rows-per-page-options="[0, 10, 20, 50, 100]"
     :filter="filterObj"
     :filter-method
     :table-row-class-fn
+    :loading-label="t('courses.table.courses.loading')"
+    :no-results-label
     flat
     square
     dense
