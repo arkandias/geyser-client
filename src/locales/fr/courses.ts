@@ -7,8 +7,16 @@ export default {
       services: {
         title: "Services",
         columns: {
-          teacher: {
-            label: "Intervenant",
+          lastname: {
+            label: "Nom",
+            tooltip: "",
+          },
+          firstname: {
+            label: "Prénom",
+            tooltip: "",
+          },
+          alias: {
+            label: "Alias",
             tooltip: "",
           },
           message: {

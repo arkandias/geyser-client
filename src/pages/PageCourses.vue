@@ -49,7 +49,7 @@ graphql(`
   query GetServiceRows($year: Int!, $where: TeacherBoolExp = {}) {
     services: service(
       where: { _and: [{ year: { _eq: $year } }, { teacher: $where }] }
-      orderBy: [{ teacher: { displayname: ASC } }]
+      orderBy: [{ teacher: { lastname: ASC } }, { teacher: { firstname: ASC } }]
     ) {
       ...ServiceRow
       ...TableCoursesService

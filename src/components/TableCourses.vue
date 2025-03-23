@@ -18,6 +18,7 @@ import type { Column } from "@/types/column.ts";
 import {
   compare,
   getField,
+  localeCompare,
   normalizeForSearch,
   uniqueValue,
 } from "@/utils/misc.ts";
@@ -200,6 +201,7 @@ const columns: Column<CourseRow>[] = [
     tooltip: t("courses.table.courses.columns.degreeProgram.tooltip"),
     align: "left",
     field: (row) => `${row.program.degree.name} ${row.program.name}`,
+    sort: localeCompare,
     sortable: true,
     visible: true,
     searchable: true,
@@ -210,6 +212,7 @@ const columns: Column<CourseRow>[] = [
     tooltip: t("courses.table.courses.columns.track.tooltip"),
     align: "left",
     field: (row) => row.track?.name,
+    sort: localeCompare,
     sortable: true,
     visible: true,
     searchable: true,
@@ -221,6 +224,7 @@ const columns: Column<CourseRow>[] = [
     align: "left",
     field: "name",
     format: (val: string) => (val.length > 40 ? val.slice(0, 40) + "…" : val),
+    sort: localeCompare,
     sortable: true,
     visible: true,
     searchable: true,
@@ -332,9 +336,6 @@ const columns: Column<CourseRow>[] = [
     searchable: false,
   },
 ];
-const searchableColumns = columns
-  .filter((col) => col.searchable)
-  .map((col) => col.name);
 const visibleColumns = ref(
   columns.filter((col) => col.visible).map((col) => col.name),
 );
@@ -385,7 +386,7 @@ const filterObj = computed(() => ({
   semesters: semesters.value,
   courseTypes: courseTypes.value,
   search: normalizeForSearch(search.value ?? ""),
-  searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
+  searchColumns: columns.filter((col) => col.searchable),
 }));
 const filterMethod = (
   rows: readonly CourseRow[],

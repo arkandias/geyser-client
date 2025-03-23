@@ -18,12 +18,12 @@ export const uniqueValue =
   (element: T, index: number, array: T[]) =>
     array.findIndex((el) => el[value] === element[value]) === index;
 
-const compareStrings = (a: string, b: string) => (a < b ? -1 : b < a ? 1 : 0);
+export const localeCompare = (a: string, b: string) => a.localeCompare(b);
 
 export const compare =
   <K extends string, T extends Record<K, string>>(name: K) =>
   (a: T, b: T) =>
-    compareStrings(a[name].toLowerCase(), b[name].toLowerCase());
+    localeCompare(a[name].toLowerCase(), b[name].toLowerCase());
 
 export const capitalize = <T extends string>(str: T): Capitalize<T> =>
   (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<T>;

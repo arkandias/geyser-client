@@ -12,7 +12,7 @@ import {
   ServiceRowFragmentDoc,
 } from "@/gql/graphql.ts";
 import type { Column } from "@/types/column.ts";
-import { getField, normalizeForSearch } from "@/utils/misc.ts";
+import { getField, localeCompare, normalizeForSearch } from "@/utils/misc.ts";
 
 const { serviceRowFragments } = defineProps<{
   serviceRowFragments: FragmentType<typeof ServiceRowFragmentDoc>[];
@@ -23,8 +23,9 @@ graphql(`
   fragment ServiceRow on Service {
     id
     teacher {
-      uid
-      displayname
+      firstname
+      lastname
+      alias
       visible
     }
     hours
@@ -113,13 +114,36 @@ const selectRow = async (_: Event, row: ServiceRowFragment) => {
 // Columns definition
 const columns: Column<ServiceRow>[] = [
   {
-    name: "teacher",
-    label: t("courses.table.services.columns.teacher.label"),
-    tooltip: t("courses.table.services.columns.teacher.tooltip"),
+    name: "lastname",
+    label: t("courses.table.services.columns.lastname.label"),
+    tooltip: t("courses.table.services.columns.lastname.tooltip"),
     align: "left",
-    field: (row) => row.teacher.displayname,
+    field: (row) => row.teacher.lastname,
+    sort: localeCompare,
     sortable: true,
     visible: true,
+    searchable: true,
+  },
+  {
+    name: "firstname",
+    label: t("courses.table.services.columns.firstname.label"),
+    tooltip: t("courses.table.services.columns.firstname.tooltip"),
+    align: "left",
+    field: (row) => row.teacher.firstname,
+    sort: localeCompare,
+    sortable: true,
+    visible: true,
+    searchable: true,
+  },
+  {
+    name: "alias",
+    label: t("courses.table.services.columns.alias.label"),
+    tooltip: t("courses.table.services.columns.alias.tooltip"),
+    align: "left",
+    field: (row) => row.teacher.alias,
+    sort: localeCompare,
+    sortable: true,
+    visible: false,
     searchable: true,
   },
   {
@@ -194,9 +218,6 @@ const columns: Column<ServiceRow>[] = [
     searchable: false,
   },
 ];
-const searchableColumns = columns
-  .filter((col) => col.searchable)
-  .map((col) => col.name);
 const visibleColumns = ref(
   columns.filter((col) => col.visible).map((col) => col.name),
 );
@@ -207,7 +228,7 @@ const isMenuColumnsTooltipVisible = ref(false);
 const search = ref<string | null>(null);
 const filterObj = computed(() => ({
   search: normalizeForSearch(search.value ?? ""),
-  searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
+  searchColumns: columns.filter((col) => col.searchable),
 }));
 const filterMethod = (
   rows: readonly ServiceRow[],
