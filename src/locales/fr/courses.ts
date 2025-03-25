@@ -204,18 +204,18 @@ export default {
           </li>
           <li>
             <i class="q-icon text-primary material-symbols-sharp">vertical_split</i>
-            Filtre services : permet d'afficher/masquer la liste des services de l'année
-            en cours (fonctionnalité réservée aux membres de la commission et aux
-            administrateurs).
+            Table des services : permet d'afficher/masquer la liste des services de
+            l'année en cours (fonctionnalité réservée aux membres de la commission et
+            aux administrateurs).
           </li>
           <li>
             <i class="q-icon text-primary material-symbols-sharp">assignment</i>
             Mon service : permet de vous sélectionner/désélectionner vous-même (sans
-            passer par le filtre intervenants).
+            passer par la table des services).
           </li>
         </ul>
         <p>
-          Lorsqu'un intervenant est sélectionné dans le filtre intervenant, les
+          Lorsqu'un intervenant est sélectionné dans la table des services, les
           enseignements qui apparaissent dans la table ci-dessus sont seulement ceux
           qui ont été demandés par l'intervenant ou attribués à l'intervenant et les
           filtres de recherche sont désactivés. Le nom de l'intervenant apparaît alors

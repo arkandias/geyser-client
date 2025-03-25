@@ -9,7 +9,7 @@ export default {
     courses: {
       label: "Enseignements",
       year: "Année",
-      servicesFilter: "Filtre services",
+      servicesTable: "Table des services",
       myService: "Mon service",
     },
     admin: {

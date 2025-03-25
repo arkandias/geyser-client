@@ -198,16 +198,16 @@ export default {
           </li>
           <li>
             <i class="q-icon text-primary material-symbols-sharp">vertical_split</i>
-            Services filter: allows you to show/hide the list of services for the current 
+            Services table: allows you to show/hide the list of services for the current 
             year (feature reserved for commission members and administrators).
           </li>
           <li>
             <i class="q-icon text-primary material-symbols-sharp">assignment</i>
-            My service: allows you to select/deselect yourself (without going through the teacher filter).
+            My service: allows you to select/deselect yourself (without going through the services table).
           </li>
         </ul>
         <p>
-          When a teacher is selected in the teacher filter, the courses that appear in the table 
+          When a teacher is selected in the services table, the courses that appear in the table 
           above are only those that have been requested by the teacher or assigned to the teacher, 
           and the search filters are disabled. The teacher's name then appears at the top of the table 
           (instead of "Courses"). Two shortcuts are present to the right of the teacher's name:
