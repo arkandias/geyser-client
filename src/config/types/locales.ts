@@ -1,4 +1,4 @@
-export const AVAILABLE_LOCALES = ["fr-FR"] as const;
+export const AVAILABLE_LOCALES = ["fr-FR", "en-US"] as const;
 
 export type AvailableLocale = (typeof AVAILABLE_LOCALES)[number];
 
@@ -13,4 +13,5 @@ export const isAvailableLocale = (
 
 export const LOCALE_LABELS: Record<AvailableLocale, string> = {
   "fr-FR": "Français",
+  "en-US": "English",
 } as const;

@@ -198,15 +198,15 @@ export default {
         <ul>
           <li>
             <i class="q-icon text-primary material-symbols-sharp">history</i>
-            Année : permet de choisir l'année à consulter (par défaut l'année en
-            cours est affichée, mais il est possible de consulter les demandes et
-            les attributions des années antérieures).
+            Année : permet de choisir l'année à consulter (par défaut l'année en cours 
+            est affichée, mais il est possible de consulter les demandes et les
+            attributions des années antérieures).
           </li>
           <li>
             <i class="q-icon text-primary material-symbols-sharp">vertical_split</i>
-            Filtre intervenants : permet d'afficher/masquer la liste des
-            intervenants actifs (fonctionnalité réservée aux membres de la
-            commission et aux administrateurs).
+            Filtre services : permet d'afficher/masquer la liste des services de l'année
+            en cours (fonctionnalité réservée aux membres de la commission et aux
+            administrateurs).
           </li>
           <li>
             <i class="q-icon text-primary material-symbols-sharp">assignment</i>
@@ -218,8 +218,8 @@ export default {
           Lorsqu'un intervenant est sélectionné dans le filtre intervenant, les
           enseignements qui apparaissent dans la table ci-dessus sont seulement ceux
           qui ont été demandés par l'intervenant ou attribués à l'intervenant et les
-          filtres de recherche sont désactivés. Le nom de l'intervenant apparaît
-          alors en haut de la table (à la place de «&nbsp;Enseignements&nbsp;»).
+          filtres de recherche sont désactivés. Le nom de l'intervenant apparaît alors
+          en haut de la table (à la place de «&nbsp;Enseignements&nbsp;»).
           Deux raccourcis sont présents à droite du nom de l'intervenant :
         </p>
         <ul>
