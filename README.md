@@ -93,7 +93,19 @@ pnpm run typecheck
 pnpm run validate
 ```
 
-- Generate code from GraphQL schema and operations
+- Import GraphQL schema from endpoint
+
+```shell
+pnpm run codegen:schema
+```
+
+- Generate types from GraphQL documents
+
+```shell
+pnpm run codegen:documents
+```
+
+- Run complete GraphQL code generation (both schema and documents)
 
 ```shell
 pnpm run codegen
