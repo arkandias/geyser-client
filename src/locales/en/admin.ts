@@ -77,6 +77,9 @@ export default {
         button: {
           create: "Create",
           update: "Update",
+          createServices: "Create services for active teachers",
+          copyCourses: "Copy courses from previous year",
+          computePriorities: "Compute priorities",
         },
         confirm: {
           delete: `Are you sure you want to delete the year {year}?
@@ -84,6 +87,9 @@ If courses or services are associated with this year, you will not be able to de
         },
         error: {
           setCurrent: "Failed to update current year",
+          createServices: "Failed to create services",
+          copyCourses: "Failed to copy courses",
+          computePriorities: "Failed to compute priorities",
           emptyValue: "Enter a value for the year",
           emptyVisibility: "Select the visibility of the year",
         },
@@ -92,6 +98,11 @@ If courses or services are associated with this year, you will not be able to de
           insert: "Year created",
           update: "Year updated",
           delete: "Year deleted",
+          createServices:
+            "0 service created | 1 service created | {count} services created",
+          copyCourses: "0 cours copied | 1 cours copied | {count} cours copied",
+          computePriorities:
+            "0 priorité computed | 1 priorité computed | {count} priorités computed",
         },
       },
       customTexts: {

@@ -87,11 +87,17 @@ const formatPriorityExtra = (priority: Priority) =>
     <ServiceList>
       <QItem v-for="p in priorities" :key="p.id">
         <QItemSection>
-          <QItemLabel overline>{{ formatTypeAndSemester(p) }}</QItemLabel>
-          <QItemLabel>{{ formatPriority(p) }}</QItemLabel>
-          <QItemLabel caption>{{ formatPriorityExtra(p) }}</QItemLabel>
+          <QItemLabel overline>
+            {{ formatTypeAndSemester(p) }}
+          </QItemLabel>
+          <QItemLabel>
+            {{ formatPriority(p) }}
+          </QItemLabel>
+          <QItemLabel caption>
+            {{ formatPriorityExtra(p) }}
+          </QItemLabel>
         </QItemSection>
-        <QItemSection avatar>
+        <QItemSection side>
           <QAvatar
             :color="priorityColor(p.isPriority)"
             text-color="white"

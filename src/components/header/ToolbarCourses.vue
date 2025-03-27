@@ -26,7 +26,9 @@ const { getValue: selectedService, toggleValue: toggleService } = useQueryParam(
     square
     @click="toggleLeftPanel()"
   >
-    <QTooltip>{{ t("header.courses.servicesTable") }}</QTooltip>
+    <QTooltip>
+      {{ t("header.courses.servicesTable") }}
+    </QTooltip>
   </QBtn>
   <QBtn
     icon="sym_s_assignment"
@@ -36,7 +38,9 @@ const { getValue: selectedService, toggleValue: toggleService } = useQueryParam(
     square
     @click="toggleService(serviceId)"
   >
-    <QTooltip>{{ t("header.courses.myService") }}</QTooltip>
+    <QTooltip>
+      {{ t("header.courses.myService") }}
+    </QTooltip>
   </QBtn>
 </template>
 

@@ -28,7 +28,9 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
       <QToolbarTitle shrink>
         <QAvatar icon="sym_s_spa" square size="xl" />
         Geyser
-        <QBadge v-if="version" outline align="middle">{{ version }}</QBadge>
+        <QBadge v-if="version" outline align="middle">
+          {{ version }}
+        </QBadge>
       </QToolbarTitle>
       <QSpace />
       <QBtn
@@ -39,18 +41,22 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="router.push({ name: 'home' })"
       >
-        <QTooltip>{{ t("header.home.label") }}</QTooltip>
+        <QTooltip>
+          {{ t("header.home.label") }}
+        </QTooltip>
       </QBtn>
       <QSeparator vertical inset color="white" />
       <QBtn
-        icon="sym_s_badge"
+        icon="sym_s_id_card"
         :color="buttonColor(router.currentRoute.value.name === 'service')"
         :disable
         flat
         square
         @click="router.push({ name: 'service' })"
       >
-        <QTooltip>{{ t("header.teacher.label") }}</QTooltip>
+        <QTooltip>
+          {{ t("header.teacher.label") }}
+        </QTooltip>
       </QBtn>
       <QSeparator vertical inset color="white" />
       <QBtn
@@ -61,7 +67,9 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="router.push({ name: 'courses' })"
       >
-        <QTooltip>{{ t("header.courses.label") }}</QTooltip>
+        <QTooltip>
+          {{ t("header.courses.label") }}
+        </QTooltip>
       </QBtn>
       <Transition>
         <div
@@ -80,7 +88,9 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="router.push({ path: '/admin/general' })"
       >
-        <QTooltip>{{ t("header.admin.label") }}</QTooltip>
+        <QTooltip>
+          {{ t("header.admin.label") }}
+        </QTooltip>
       </QBtn>
       <QSeparator v-if="perm.toAdmin" vertical inset color="white" />
       <QBtn
@@ -91,7 +101,9 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="refreshData()"
       >
-        <QTooltip>{{ t("header.refreshData.label") }}</QTooltip>
+        <QTooltip>
+          {{ t("header.refreshData.label") }}
+        </QTooltip>
       </QBtn>
       <QBtn
         :icon="isDarkModeActive ? 'sym_s_dark_mode' : 'sym_s_light_mode'"
@@ -99,7 +111,9 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         square
         @click="toggleDarkMode()"
       >
-        <QTooltip>{{ t("header.darkMode.label") }}</QTooltip>
+        <QTooltip>
+          {{ t("header.darkMode.label") }}
+        </QTooltip>
       </QBtn>
       <MenuLang />
       <MenuInfo />

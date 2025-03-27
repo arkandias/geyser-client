@@ -36,7 +36,9 @@ const update = async () => {
   <MenuBase :label="t('header.courses.year')" icon="sym_s_history">
     <QList>
       <QItem class="flex-center">
-        <QItemLabel header>{{ t("header.courses.year") }}</QItemLabel>
+        <QItemLabel header>
+          {{ t("header.courses.year") }}
+        </QItemLabel>
       </QItem>
       <QSeparator />
       <QItem class="q-pl-sm">

@@ -270,7 +270,9 @@ const resetForm = (): void => {
       dense
     />
     <QBtn type="submit" icon="sym_s_check" color="primary" flat square dense>
-      <QTooltip>{{ t("requestForm.tooltip.submit") }}</QTooltip>
+      <QTooltip>
+        {{ t("requestForm.tooltip.submit") }}
+      </QTooltip>
     </QBtn>
   </QForm>
 </template>

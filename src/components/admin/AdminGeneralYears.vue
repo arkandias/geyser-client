@@ -6,6 +6,9 @@ import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { graphql } from "@/gql";
 import {
+  ComputePrioritiesDocument,
+  CopyCoursesDocument,
+  CreateServicesDocument,
   DeleteYearDocument,
   InsertYearDocument,
   SetCurrentYearDocument,
@@ -48,6 +51,24 @@ graphql(`
       value
     }
   }
+
+  mutation CreateServices($year: Int!) {
+    createYearServices(args: { p_year: $year }) {
+      id
+    }
+  }
+
+  mutation CopyCourses($year: Int!) {
+    copyYearCourses(args: { p_year: $year }) {
+      id
+    }
+  }
+
+  mutation ComputePriorities($year: Int!) {
+    computeYearPriorities(args: { p_year: $year }) {
+      id
+    }
+  }
 `);
 
 const setCurrentYear = useMutation(SetCurrentYearDocument, {
@@ -60,6 +81,15 @@ const updateYear = useMutation(UpdateYearDocument, {
   refetchTags: ["all"],
 });
 const deleteYear = useMutation(DeleteYearDocument, {
+  refetchTags: ["all"],
+});
+const createServices = useMutation(CreateServicesDocument, {
+  refetchTags: ["all"],
+});
+const copyCourses = useMutation(CopyCoursesDocument, {
+  refetchTags: ["all"],
+});
+const computePriorities = useMutation(ComputePrioritiesDocument, {
   refetchTags: ["all"],
 });
 
@@ -96,14 +126,10 @@ const insertYearHandle = async () => {
 
   isFormOpen.value = false;
 
-  if (error) {
+  if (error || data?.year?.value === undefined) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.insertFailed"),
-      caption: error.message,
-    });
-  } else if (data?.year?.value === undefined) {
-    notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.noReturnData"),
+      caption: error?.message ?? t("admin.data.error.noReturnData"),
     });
   } else {
     notify(NotifyType.SUCCESS, {
@@ -128,14 +154,10 @@ const updateYearHandle = async (
 
   isFormOpen.value = false;
 
-  if (error) {
+  if (error || data?.year?.value === undefined) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.updateFailed"),
-      caption: error.message,
-    });
-  } else if (data?.year?.value === undefined) {
-    notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.noReturnData"),
+      caption: error?.message ?? t("admin.data.error.noReturnData"),
     });
   } else {
     notify(NotifyType.SUCCESS, {
@@ -172,18 +194,85 @@ const deleteYearHandle = async (value: number) => {
   }
 
   const { data, error } = await deleteYear.execute({ value });
-  if (error) {
+  if (error || data?.year?.value === undefined) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.deleteFailed"),
-      caption: error.message,
-    });
-  } else if (data?.year?.value === undefined) {
-    notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.noReturnData"),
+      caption: error?.message ?? t("admin.data.error.noReturnData"),
     });
   } else {
     notify(NotifyType.SUCCESS, {
       message: t("admin.general.years.success.delete"),
+    });
+  }
+};
+
+const createServicesHandle = async () => {
+  if (selectedYear.value === null) {
+    return;
+  }
+
+  const { data, error } = await createServices.execute({
+    year: selectedYear.value,
+  });
+
+  if (error || !data?.createYearServices) {
+    notify(NotifyType.ERROR, {
+      message: t("admin.data.error.createServices"),
+      caption: error?.message ?? t("admin.data.error.noReturnData"),
+    });
+  } else {
+    notify(NotifyType.SUCCESS, {
+      message: t(
+        "admin.general.years.success.createServices",
+        data.createYearServices.length,
+      ),
+    });
+  }
+};
+
+const copyCoursesHandle = async () => {
+  if (selectedYear.value === null) {
+    return;
+  }
+
+  const { data, error } = await copyCourses.execute({
+    year: selectedYear.value,
+  });
+
+  if (error || !data?.copyYearCourses) {
+    notify(NotifyType.ERROR, {
+      message: t("admin.data.error.copyCourses"),
+      caption: error?.message ?? t("admin.data.error.noReturnData"),
+    });
+  } else {
+    notify(NotifyType.SUCCESS, {
+      message: t(
+        "admin.general.years.success.copyCourses",
+        data.copyYearCourses.length,
+      ),
+    });
+  }
+};
+
+const computePrioritiesHandle = async () => {
+  if (selectedYear.value === null) {
+    return;
+  }
+
+  const { data, error } = await computePriorities.execute({
+    year: selectedYear.value,
+  });
+
+  if (error || !data?.computeYearPriorities) {
+    notify(NotifyType.ERROR, {
+      message: t("admin.data.error.computePriorities"),
+      caption: error?.message ?? t("admin.data.error.noReturnData"),
+    });
+  } else {
+    notify(NotifyType.SUCCESS, {
+      message: t("admin.general.years.success.computePriorities", {
+        count: data.computeYearPriorities.length,
+      }),
     });
   }
 };
@@ -215,10 +304,46 @@ const edit = (year: number) => {
 
   <QList bordered separator dense>
     <QItem v-for="year in years" :key="year.value" dense>
-      <QItemSection avatar>
-        <QBtn icon="sym_s_settings" color="primary" flat square dense />
+      <QItemSection side>
+        <QBtn
+          icon="sym_s_settings"
+          color="primary"
+          flat
+          square
+          dense
+          @click="selectedYear = year.value"
+        >
+          <QMenu square auto-close>
+            <QList>
+              <QItem clickable @click="createServicesHandle()">
+                <QItemSection side>
+                  <QIcon name="sym_s_assignment_ind" color="primary" />
+                </QItemSection>
+                <QItemSection>
+                  {{ t("admin.general.years.button.createServices") }}
+                </QItemSection>
+              </QItem>
+              <QItem clickable @click="copyCoursesHandle()">
+                <QItemSection side>
+                  <QIcon name="sym_s_menu_book" color="primary" />
+                </QItemSection>
+                <QItemSection>
+                  {{ t("admin.general.years.button.copyCourses") }}
+                </QItemSection>
+              </QItem>
+              <QItem clickable @click="computePrioritiesHandle()">
+                <QItemSection side>
+                  <QIcon name="sym_s_assignment_late" color="primary" />
+                </QItemSection>
+                <QItemSection>
+                  {{ t("admin.general.years.button.computePriorities") }}
+                </QItemSection>
+              </QItem>
+            </QList>
+          </QMenu>
+        </QBtn>
       </QItemSection>
-      <QItemSection avatar>
+      <QItemSection side>
         <QBtn
           icon="sym_s_edit"
           color="primary"
@@ -228,7 +353,7 @@ const edit = (year: number) => {
           @click="edit(year.value)"
         />
       </QItemSection>
-      <QItemSection avatar>
+      <QItemSection side>
         <QBtn
           icon="sym_s_delete"
           color="primary"
@@ -239,7 +364,7 @@ const edit = (year: number) => {
         />
       </QItemSection>
       <QItemSection>
-        <QItemLabel>{{ year.value }}</QItemLabel>
+        {{ year.value }}
       </QItemSection>
       <QItemSection side>
         <QToggle

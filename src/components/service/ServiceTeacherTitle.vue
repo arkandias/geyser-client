@@ -25,7 +25,9 @@ const teacher = computed(() =>
 <template>
   <QCard flat square class="text-center">
     <QCardSection>
-      <div class="text-h5">{{ teacher.displayname }}</div>
+      <div class="text-h5">
+        {{ teacher.displayname }}
+      </div>
       <div v-if="teacher.position" class="text-body1 text-italic">
         {{ teacher.position.label }}
       </div>

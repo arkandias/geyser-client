@@ -10,7 +10,7 @@ export default {
       label: "Enseignements",
       year: "Année",
       servicesTable: "Table des services",
-      myService: "Mon service",
+      myService: "Mes demandes",
     },
     admin: {
       label: "Administration",

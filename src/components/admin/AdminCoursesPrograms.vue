@@ -322,7 +322,7 @@ const filterFn = computed(
           <QCheckbox v-model="selectedFields" val="nameShort" />
         </template>
       </QInput>
-      <div class="q-mr-md">
+      <div>
         <QCheckbox
           v-if="multipleSelection"
           v-model="selectedFields"

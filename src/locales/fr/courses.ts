@@ -210,8 +210,8 @@ export default {
           </li>
           <li>
             <i class="q-icon text-primary material-symbols-sharp">assignment</i>
-            Mon service : permet de vous sélectionner/désélectionner vous-même (sans
-            passer par la table des services).
+            Mes demandes : permet de sélectionner/désélectionner votre propre service
+            afin de voir vos demandes (sans passer par la table des services).
           </li>
         </ul>
         <p>

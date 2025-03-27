@@ -96,7 +96,7 @@ const submitForm = async (): Promise<void> => {
 
   if (result.data?.priority && !result.error) {
     notify(NotifyType.SUCCESS, {
-      message: t("priorityForm.success.updated"),
+      message: t("priorityForm.success"),
     });
   } else {
     notify(NotifyType.ERROR, {
@@ -141,7 +141,9 @@ watch(() => data.value.courseId, resetForm);
       dense
     />
     <QBtn type="submit" icon="sym_s_check" color="primary" flat square dense>
-      <QTooltip>{{ t("priorityForm.tooltip.submit") }}</QTooltip>
+      <QTooltip>
+        {{ t("priorityForm.tooltip.submit") }}
+      </QTooltip>
     </QBtn>
   </QForm>
 </template>

@@ -15,7 +15,9 @@ const showTooltip = ref(false);
 
 <template>
   <QBtn :icon :color="buttonColor(isOpen)" flat square>
-    <QTooltip v-model="showTooltip">{{ label }}</QTooltip>
+    <QTooltip v-model="showTooltip">
+      {{ label }}
+    </QTooltip>
     <QMenu v-model="isOpen" square @show="showTooltip = false">
       <slot />
     </QMenu>

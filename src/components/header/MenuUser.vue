@@ -56,21 +56,14 @@ const update = async (value: Role) => {
       <QSeparator />
       <QItem v-close-popup clickable @click="logout()">
         <QItemSection side>
-          <QIcon name="sym_s_logout" />
+          <QIcon name="sym_s_logout" color="primary" />
         </QItemSection>
         <QItemSection>
-          <QItemLabel>{{ t("header.user.logout") }}</QItemLabel>
+          {{ t("header.user.logout") }}
         </QItemSection>
       </QItem>
     </QList>
   </MenuBase>
 </template>
 
-<style scoped lang="scss">
-//.q-item {
-//  white-space: nowrap;
-//}
-//.q-radio__label {
-//  white-space: nowrap;
-//}
-</style>
+<style scoped lang="scss"></style>

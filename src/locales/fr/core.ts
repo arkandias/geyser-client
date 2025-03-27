@@ -49,7 +49,7 @@ export default {
       success: {
         message: "Priorité calculée supprimée",
         caption:
-          "Une priorité neutre a été créée pour empêcher que la priorité supprimée ne soit pas recréée au prochain calcul",
+          "Une priorité neutre a été créée pour que la priorité supprimée ne soit pas recréée au prochain calcul",
       },
       error: "Échec de la suppression",
     },

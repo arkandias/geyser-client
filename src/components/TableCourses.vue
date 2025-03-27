@@ -482,7 +482,7 @@ const downloadTeacherAssignments = async () => {
         {{ title }}
         <QBtn
           v-if="teacher"
-          icon="sym_s_badge"
+          icon="sym_s_id_card"
           color="primary"
           size="sm"
           flat

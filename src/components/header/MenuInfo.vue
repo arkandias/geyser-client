@@ -48,7 +48,7 @@ const messages = computed(() => ({
         @click="isDialogOpen[s] = true"
       >
         <QItemSection side>
-          <QIcon :name="icons[s]" />
+          <QIcon :name="icons[s]" color="primary" />
         </QItemSection>
         <QItemSection>
           {{ labels[s] }}

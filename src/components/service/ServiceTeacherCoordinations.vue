@@ -166,12 +166,14 @@ const downloadProgramAssignments = async (coordination: Coordination) => {
           <QItemLabel overline>
             {{ formatCoordinationType(c) }}
           </QItemLabel>
-          <QItemLabel>{{ formatCoordination(c) }}</QItemLabel>
+          <QItemLabel>
+            {{ formatCoordination(c) }}
+          </QItemLabel>
           <QItemLabel caption>
             {{ formatCoordinationExtra(c) }}
           </QItemLabel>
         </QItemSection>
-        <QItemSection v-if="perm.toViewAssignments" avatar>
+        <QItemSection v-if="perm.toViewAssignments" side>
           <QBtn
             icon="sym_s_download"
             color="primary"

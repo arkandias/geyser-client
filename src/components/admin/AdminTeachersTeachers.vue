@@ -448,8 +448,8 @@ const filterFn = computed(
           <QCheckbox v-model="selectedFields" val="baseServiceHours" />
         </template>
       </QInput>
-      <div class="row q-gutter-md">
-        <div>
+      <div class="row">
+        <div class="q-mr-md">
           <QCheckbox
             v-if="multipleSelection"
             v-model="selectedFields"
@@ -462,7 +462,7 @@ const filterFn = computed(
             left-label
           />
         </div>
-        <div>
+        <div class="q-mr-md">
           <QCheckbox
             v-if="multipleSelection"
             v-model="selectedFields"

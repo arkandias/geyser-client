@@ -276,7 +276,9 @@ const formatWH = (hours: number) =>
               class="inline-block"
             />
           </td>
-          <td v-else>{{ formatWH(service.hours) }}</td>
+          <td v-else>
+            {{ formatWH(service.hours) }}
+          </td>
         </tr>
         <tr>
           <td>
@@ -345,7 +347,9 @@ const formatWH = (hours: number) =>
               <template #option="scope">
                 <QItem v-bind="scope.itemProps">
                   <QItemSection>
-                    <QItemLabel>{{ scope.opt.label }}</QItemLabel>
+                    <QItemLabel>
+                      {{ scope.opt.label }}
+                    </QItemLabel>
                     <QItemLabel v-if="scope.opt.description" caption>
                       {{ scope.opt.description }}
                     </QItemLabel>
@@ -384,13 +388,17 @@ const formatWH = (hours: number) =>
             </QBtn>
             {{ m.modificationType.label }}
           </td>
-          <td>{{ formatWH(m.hours) }}</td>
+          <td>
+            {{ formatWH(m.hours) }}
+          </td>
         </tr>
         <tr class="text-bold">
           <td>
             {{ t("service.details.total") }}
           </td>
-          <td>{{ formatWH(totalService) }}</td>
+          <td>
+            {{ formatWH(totalService) }}
+          </td>
         </tr>
       </tbody>
     </ServiceTable>

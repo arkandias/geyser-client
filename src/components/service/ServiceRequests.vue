@@ -57,16 +57,28 @@ const formatTotal = (type: "assigned" | "primary" | "secondary") =>
     <ServiceTable>
       <tbody>
         <tr v-if="perm.toViewAssignments">
-          <td>{{ t("service.requests.assignments") }}</td>
-          <td>{{ formatTotal("assigned") }}</td>
+          <td>
+            {{ t("service.requests.assignments") }}
+          </td>
+          <td>
+            {{ formatTotal("assigned") }}
+          </td>
         </tr>
         <tr>
-          <td>{{ t("service.requests.primary") }}</td>
-          <td>{{ formatTotal("primary") }}</td>
+          <td>
+            {{ t("service.requests.primary") }}
+          </td>
+          <td>
+            {{ formatTotal("primary") }}
+          </td>
         </tr>
         <tr>
-          <td>{{ t("service.requests.secondary") }}</td>
-          <td>{{ formatTotal("secondary") }}</td>
+          <td>
+            {{ t("service.requests.secondary") }}
+          </td>
+          <td>
+            {{ formatTotal("secondary") }}
+          </td>
         </tr>
       </tbody>
     </ServiceTable>

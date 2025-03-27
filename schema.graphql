@@ -12107,11 +12107,11 @@ type YearVarianceFields {
 }
 
 input computeServicePrioritiesArgs {
-  s: service_scalar
+  service_row: service_scalar
 }
 
 input computeYearPrioritiesArgs {
-  year_param: Int
+  p_year: Int
 }
 
 input coordinationAggregateBoolExpCount {
@@ -12119,6 +12119,10 @@ input coordinationAggregateBoolExpCount {
   distinct: Boolean
   filter: CoordinationBoolExp
   predicate: IntComparisonExp!
+}
+
+input copyYearCoursesArgs {
+  p_year: Int
 }
 
 input courseAggregateBoolExpBool_and {
@@ -12204,6 +12208,31 @@ type mutation_root {
   ): [Priority!]!
 
   """
+  execute VOLATILE function "copy_year_courses" which returns "course"
+  """
+  copyYearCourses(
+    """
+    input parameters for function "copyYearCourses"
+    """
+    args: copyYearCoursesArgs!
+
+    """distinct select on columns"""
+    distinctOn: [CourseSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [CourseOrderBy!]
+
+    """filter the rows returned"""
+    where: CourseBoolExp
+  ): [Course!]!
+
+  """
   execute VOLATILE function "create_service" which returns "service"
   """
   createService(
@@ -12226,7 +12255,7 @@ type mutation_root {
 
     """filter the rows returned"""
     where: ServiceBoolExp
-  ): Service
+  ): [Service!]!
 
   """
   execute VOLATILE function "create_year_services" which returns "service"

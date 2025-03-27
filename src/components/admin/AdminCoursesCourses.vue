@@ -712,7 +712,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedSemesters"
         :options="semesterOptions"
-        :label="t('admin.courses.courses.table.columns.year')"
+        :label="t('admin.courses.courses.table.columns.semester')"
         emit-value
         map-options
         multiple
@@ -951,7 +951,7 @@ const filterFn = computed(
           <QCheckbox v-model="selectedFields" val="priorityRule" />
         </template>
       </QInput>
-      <div class="q-mr-md">
+      <div>
         <QCheckbox
           v-if="multipleSelection"
           v-model="selectedFields"

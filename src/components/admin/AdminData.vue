@@ -218,21 +218,17 @@ const insertDataHandle = async () => {
   const { data, error } = await insertData.execute({
     objects: [object],
   });
-  if (error) {
+  if (error || !data?.insertData?.returning) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.insertFailed"),
-      caption: errorMessage(error),
+      caption: error ? errorMessage(error) : t("admin.data.error.noReturnData"),
     });
-  } else if (data?.insertData?.returning) {
+  } else {
     notify(NotifyType.SUCCESS, {
       message: t(
         messagePrefix + ".data.success.insert",
         data.insertData.returning.length,
       ),
-    });
-  } else {
-    notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.noReturnData"),
     });
   }
 
@@ -260,21 +256,17 @@ const updateDataHandle = async () => {
     ids: selectedRows.value.map((row) => row[idKey]),
     changes,
   });
-  if (error) {
+  if (error || !data?.updateData?.returning) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.updateFailed"),
-      caption: errorMessage(error),
+      caption: error ? errorMessage(error) : t("admin.data.error.noReturnData"),
     });
-  } else if (data?.updateData?.returning) {
+  } else {
     notify(NotifyType.SUCCESS, {
       message: t(
         messagePrefix + ".data.success.update",
         data.updateData.returning.length,
       ),
-    });
-  } else {
-    notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.noReturnData"),
     });
   }
 
@@ -303,21 +295,17 @@ const deleteDataHandle = async () => {
   const { data, error } = await deleteData.execute({
     ids: selectedRows.value.map((row) => row[idKey]),
   });
-  if (error) {
+  if (error || !data?.deleteData?.returning) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.deleteFailed"),
-      caption: errorMessage(error),
+      caption: error ? errorMessage(error) : t("admin.data.error.noReturnData"),
     });
-  } else if (data?.deleteData?.returning) {
+  } else {
     notify(NotifyType.SUCCESS, {
       message: t(
         messagePrefix + ".data.success.delete",
         data.deleteData.returning.length,
       ),
-    });
-  } else {
-    notify(NotifyType.DEFAULT, {
-      message: t("admin.data.error.noReturnData"),
     });
   }
 
@@ -436,22 +424,18 @@ const importRowsHandle = async () => {
         updateColumns: overwrite.value ? updateColumns : [],
       },
     });
-    if (error) {
+    if (error || !data?.upsertData?.returning) {
       throw new Error(
         t("admin.data.error.insertError", {
-          reason: error.message,
+          reason: error?.message ?? t("admin.data.error.noReturnData"),
         }),
       );
-    } else if (data?.upsertData?.returning) {
+    } else {
       notify(NotifyType.SUCCESS, {
         message: t(
           messagePrefix + ".data.success.import",
           data.upsertData.returning.length,
         ),
-      });
-    } else {
-      notify(NotifyType.DEFAULT, {
-        message: t("admin.data.error.noReturnData"),
       });
     }
     isImportDialogOpen.value = false;

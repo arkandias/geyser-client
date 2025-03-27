@@ -424,7 +424,7 @@ const filterFn = computed(
         square
         dense
       />
-      <div class="q-mr-md">
+      <div>
         <QCheckbox
           v-if="multipleSelection"
           v-model="selectedFields"
