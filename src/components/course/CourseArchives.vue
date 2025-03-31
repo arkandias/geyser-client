@@ -1,21 +1,53 @@
 <script setup lang="ts">
+import { useQuery } from "villus";
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { CourseArchivesFragmentDoc } from "@/gql/graphql.ts";
+import {
+  CourseArchivesDataFragmentDoc,
+  GetCourseArchivesDocument,
+} from "@/gql/graphql.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
 import RequestCard from "@/components/core/RequestCard.vue";
 
 const { dataFragment } = defineProps<{
-  dataFragment: FragmentType<typeof CourseArchivesFragmentDoc>;
+  dataFragment: FragmentType<typeof CourseArchivesDataFragmentDoc>;
 }>();
 
 graphql(`
-  fragment CourseArchives on Course {
-    parent {
+  fragment CourseArchivesData on Course {
+    year
+    programId
+    trackId
+    name
+    semester
+    typeId
+  }
+
+  query GetCourseArchives(
+    $year: Int!
+    $programId: Int!
+    $trackId: Int
+    $name: String!
+    $semester: Int!
+    $typeId: Int!
+  ) {
+    courses: course(
+      where: {
+        _and: [
+          { year: { _lt: $year } }
+          { programId: { _eq: $programId } }
+          { trackId: { _eq: $trackId } }
+          { name: { _eq: $name } }
+          { semester: { _eq: $semester } }
+          { typeId: { _eq: $typeId } }
+        ]
+      }
+      orderBy: [{ year: DESC }]
+    ) {
       year
       requests(
         where: { type: { _eq: "assignment" } }
@@ -24,40 +56,29 @@ graphql(`
         id
         ...RequestCardData
       }
-      parent {
-        year
-        requests(
-          where: { type: { _eq: "assignment" } }
-          orderBy: [{ service: { teacher: { displayname: ASC } } }]
-        ) {
-          id
-          ...RequestCardData
-        }
-        parent {
-          year
-          requests(
-            where: { type: { _eq: "assignment" } }
-            orderBy: [{ service: { teacher: { displayname: ASC } } }]
-          ) {
-            id
-            ...RequestCardData
-          }
-        }
-      }
     }
   }
 `);
 
 const { t } = useCustomI18n();
 
-const archives = computed(() => {
-  const nestedArchives = useFragment(CourseArchivesFragmentDoc, dataFragment);
-  return [
-    nestedArchives.parent,
-    nestedArchives.parent?.parent,
-    nestedArchives.parent?.parent?.parent,
-  ].filter((a) => !!a);
+const data = computed(() =>
+  useFragment(CourseArchivesDataFragmentDoc, dataFragment),
+);
+
+const getCourseArchives = useQuery({
+  query: GetCourseArchivesDocument,
+  variables: () => ({
+    year: data.value.year,
+    programId: data.value.programId,
+    trackId: data.value.trackId ?? null,
+    name: data.value.name,
+    semester: data.value.semester,
+    typeId: data.value.typeId,
+  }),
 });
+
+const archives = computed(() => getCourseArchives.data.value?.courses ?? []);
 </script>
 
 <template>

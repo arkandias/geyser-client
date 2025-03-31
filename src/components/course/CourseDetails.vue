@@ -24,7 +24,7 @@ graphql(`
     ...CourseDescription
     ...CourseRequests
     ...CoursePriorities
-    ...CourseArchives
+    ...CourseArchivesData
   }
 `);
 
