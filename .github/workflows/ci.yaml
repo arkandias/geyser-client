@@ -11,26 +11,12 @@ concurrency:
   cancel-in-progress: ${{ github.ref_type != 'tag' }}
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup
-      - run: pnpm run test
-
   format:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
       - run: pnpm run format
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup
-      - run: pnpm run lint
 
   typecheck:
     runs-on: ubuntu-latest
@@ -39,8 +25,22 @@ jobs:
       - uses: ./.github/actions/setup
       - run: pnpm run typecheck
 
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm run test
+
   build:
-    needs: [test, format, lint, typecheck]
+    needs: [format, typecheck, lint, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
