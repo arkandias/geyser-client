@@ -54,6 +54,7 @@ graphql(`
     program {
       id
       name
+      nameDisplay
       degree {
         name
         nameDisplay
