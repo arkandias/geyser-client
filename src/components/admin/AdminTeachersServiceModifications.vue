@@ -69,7 +69,6 @@ graphql(`
   fragment AdminServiceModification on ServiceModification {
     id
     service {
-      id
       year
       uid
       teacher {

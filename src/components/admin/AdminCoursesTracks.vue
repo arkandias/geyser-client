@@ -54,7 +54,6 @@ graphql(`
     program {
       id
       name
-      nameDisplay
       degree {
         name
         nameDisplay
@@ -69,11 +68,9 @@ graphql(`
   fragment AdminTracksDegree on Degree {
     id
     name
-    nameDisplay
     programs {
       id
       name
-      nameDisplay
     }
   }
 

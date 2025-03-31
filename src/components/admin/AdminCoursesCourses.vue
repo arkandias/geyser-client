@@ -110,15 +110,12 @@ graphql(`
   fragment AdminCoursesDegree on Degree {
     id
     name
-    nameDisplay
     programs {
       id
       name
-      nameDisplay
       tracks {
         id
         name
-        nameDisplay
       }
     }
   }

@@ -23,16 +23,14 @@ graphql(`
       ...AdminTracksDegree
       ...AdminCoursesDegree
     }
-    programs: program(
-      orderBy: [{ degree: { nameDisplay: ASC } }, { name: ASC }]
-    ) {
+    programs: program(orderBy: [{ degree: { name: ASC } }, { name: ASC }]) {
       ...AdminProgram
     }
     tracks: track(
       orderBy: [
-        { program: { degree: { nameDisplay: ASC } } }
-        { program: { nameDisplay: ASC } }
-        { nameDisplay: ASC }
+        { program: { degree: { name: ASC } } }
+        { program: { name: ASC } }
+        { name: ASC }
       ]
     ) {
       ...AdminTrack
