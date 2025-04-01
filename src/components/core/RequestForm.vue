@@ -22,11 +22,13 @@ const { dataFragment } = defineProps<{
 
 graphql(`
   fragment RequestFormData on Course {
+    year
     courseId: id
     hoursPerGroup: hoursEffective
   }
 
   mutation UpsertRequest(
+    $year: Int!
     $serviceId: Int!
     $courseId: Int!
     $requestType: String!
@@ -34,6 +36,7 @@ graphql(`
   ) {
     request: insertRequestOne(
       object: {
+        year: $year
         serviceId: $serviceId
         courseId: $courseId
         type: $requestType
@@ -84,29 +87,28 @@ const deleteRequest = useMutation(DeleteRequestDocument, {
 const data = computed(() =>
   useFragment(RequestFormDataFragmentDoc, dataFragment),
 );
-const courseId = computed(() => data.value.courseId);
-const hoursPerGroup = computed(() => data.value.hoursPerGroup ?? null);
 
 const hours = ref<number | null>(null);
 watch(
-  hoursPerGroup,
+  () => data.value.hoursPerGroup,
   (value) => {
-    hours.value = value;
+    hours.value = value ?? null;
   },
   { immediate: true },
 );
 
 const groups = computed<number | null>({
   get: () =>
-    hours.value === null || hoursPerGroup.value == null
+    hours.value === null || data.value.hoursPerGroup == null
       ? null
-      : Math.round((hours.value / hoursPerGroup.value + Number.EPSILON) * 100) /
-        100,
+      : Math.round(
+          (hours.value / data.value.hoursPerGroup + Number.EPSILON) * 100,
+        ) / 100,
   set: (newValue) => {
     hours.value =
-      newValue === null || hoursPerGroup.value == null
+      newValue === null || data.value.hoursPerGroup == null
         ? null
-        : newValue * hoursPerGroup.value;
+        : newValue * data.value.hoursPerGroup;
   },
 });
 
@@ -188,38 +190,39 @@ const submitForm = async (): Promise<void> => {
   }
 
   if (hours.value === 0) {
-    const { data, error } = await deleteRequest.execute({
+    const result = await deleteRequest.execute({
       serviceId: serviceId.value,
-      courseId: courseId.value,
+      courseId: data.value.courseId,
       requestType: requestType.value,
     });
 
-    if (data?.requests?.returning && !error) {
+    if (result.data?.requests?.returning && !result.error) {
       notify(NotifyType.SUCCESS, {
         message: t("requestForm.success"),
       });
     } else {
       notify(NotifyType.ERROR, {
         message: t("requestForm.error"),
-        caption: error?.message,
+        caption: result.error?.message,
       });
     }
   } else {
-    const { data, error } = await upsertRequest.execute({
+    const result = await upsertRequest.execute({
+      year: data.value.year,
       serviceId: serviceId.value,
-      courseId: courseId.value,
+      courseId: data.value.courseId,
       requestType: requestType.value,
       hours: hours.value,
     });
 
-    if (data?.request && !error) {
+    if (result.data?.request && !result.error) {
       notify(NotifyType.SUCCESS, {
         message: t("requestForm.success"),
       });
     } else {
       notify(NotifyType.ERROR, {
         message: t("requestForm.error"),
-        caption: error?.message,
+        caption: result.error?.message,
       });
     }
   }

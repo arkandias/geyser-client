@@ -31,7 +31,7 @@ const { data } = useQuery({
   query: GetServicesDocument,
   variables: () => ({ year: activeYear.value ?? 0 }),
   paused: () => activeYear.value === null,
-  tags: ["All"],
+  tags: ["all"],
 });
 
 const options = ref<{ value: number; label: string; search: string }[]>([]);

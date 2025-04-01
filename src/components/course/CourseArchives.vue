@@ -30,7 +30,7 @@ graphql(`
   query GetCourseArchives(
     $year: Int!
     $programId: Int!
-    $trackId: Int
+    $trackIdComp: IntComparisonExp
     $name: String!
     $semester: Int!
     $typeId: Int!
@@ -40,7 +40,7 @@ graphql(`
         _and: [
           { year: { _lt: $year } }
           { programId: { _eq: $programId } }
-          { trackId: { _eq: $trackId } }
+          { trackId: $trackIdComp }
           { name: { _eq: $name } }
           { semester: { _eq: $semester } }
           { typeId: { _eq: $typeId } }
@@ -71,11 +71,15 @@ const getCourseArchives = useQuery({
   variables: () => ({
     year: data.value.year,
     programId: data.value.programId,
-    trackId: data.value.trackId ?? null,
+    trackIdComp:
+      data.value.trackId != null
+        ? { _eq: data.value.trackId }
+        : { _isNull: true },
     name: data.value.name,
     semester: data.value.semester,
     typeId: data.value.typeId,
   }),
+  tags: ["all"],
 });
 
 const archives = computed(() => getCourseArchives.data.value?.courses ?? []);

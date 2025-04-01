@@ -20,10 +20,12 @@ const { dataFragment } = defineProps<{
 
 graphql(`
   fragment PriorityFormData on Course {
+    year
     courseId: id
   }
 
   mutation UpsertPriority(
+    $year: Int!
     $serviceId: Int!
     $courseId: Int!
     $seniority: Int
@@ -31,6 +33,7 @@ graphql(`
   ) {
     priority: insertPriorityOne(
       object: {
+        year: $year
         serviceId: $serviceId
         courseId: $courseId
         seniority: $seniority
@@ -88,6 +91,7 @@ const submitForm = async (): Promise<void> => {
   }
 
   const result = await upsertPriority.execute({
+    year: data.value.year,
     serviceId: serviceId.value,
     courseId: data.value.courseId,
     seniority: seniority.value,
