@@ -235,7 +235,7 @@ const columns: Column<CourseRow>[] = [
     tooltip: t("courses.table.courses.columns.semester.tooltip"),
     align: "left",
     field: "semester",
-    format: (val: number) => `S${val}`,
+    format: (val: number) => t("semester", { semester: val }),
     sortable: true,
     visible: true,
     searchable: false,
@@ -361,7 +361,7 @@ const semesterOptions = computed(() =>
   courses.value
     .map((c) => ({
       value: c.semester,
-      label: `S${c.semester}`,
+      label: t("semester", { semester: c.semester }),
     }))
     .filter(uniqueValue("value"))
     .sort(compare("label")),

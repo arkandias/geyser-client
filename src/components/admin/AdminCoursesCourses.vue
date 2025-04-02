@@ -258,13 +258,13 @@ const columns: Column<Row>[] = [
     label: t("admin.courses.courses.table.columns.semester"),
     align: "left",
     field: "semester",
-    format: (val: number) => `S${val}`,
+    format: (val: number) => t("semester", { semester: val }),
     sortable: true,
     searchable: false,
   },
   {
     name: "type",
-    label: t("admin.courses.courses.table.columns.semester"),
+    label: t("admin.courses.courses.table.columns.type"),
     align: "left",
     field: (row) => row.type.label,
     sortable: true,
@@ -542,9 +542,9 @@ const trackOptions = computed(
       ?.programs.find((p) => p.name === formValues.value.program)
       ?.tracks.map((t) => t.name) ?? [],
 );
-const semesterOptions = [1, 2, 3, 4, 5, 6].map((n) => ({
-  value: n,
-  label: `S${n}`,
+const semesterOptions = [1, 2, 3, 4, 5, 6].map((s) => ({
+  value: s,
+  label: t("semester", { semester: s }),
 }));
 
 watch(
@@ -640,7 +640,7 @@ const filterFn = computed(
   <AdminData
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
-    name="tracks"
+    name="courses"
     message-prefix="admin.courses.courses"
     :id-key
     :row-descriptor

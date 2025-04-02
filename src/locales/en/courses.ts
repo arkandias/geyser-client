@@ -146,7 +146,6 @@ export default {
     expansion: {
       defaultLabel: "Select a course from the list above",
       defaultCaption: "Click on this panel to display additional information",
-      formatSemester: "S{semester}",
       coordinators: {
         title: "Coordinators",
         program: "Program coordinator: | Program coordinators:",

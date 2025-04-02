@@ -45,7 +45,7 @@ const caption = computed(() =>
     ? `${data.value.program.degree.name} — ` +
       `${data.value.program.name} — ` +
       (data.value.track ? `${data.value.track.name} — ` : "") +
-      `${t("courses.expansion.formatSemester", { semester: data.value.semester })} — ` +
+      `${t("semester", { semester: data.value.semester })} — ` +
       data.value.courseType.label
     : t("courses.expansion.defaultCaption"),
 );

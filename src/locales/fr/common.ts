@@ -15,6 +15,7 @@ export default {
     commissioner: "Commissaire | Commissaires",
     teacher: "Intervenant | Intervenants",
   },
+  semester: "S{semester}",
   unit: {
     hours: "h",
     weightedHours: "htd",

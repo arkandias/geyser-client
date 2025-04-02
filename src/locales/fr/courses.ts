@@ -148,7 +148,6 @@ export default {
       defaultLabel: "Sélectionnez un course dans la liste ci-dessus",
       defaultCaption:
         "Cliquez sur ce volet pour afficher des informations supplémentaires",
-      formatSemester: "S{semester}",
       coordinators: {
         title: "Responsables",
         program: "Responsable de la mention : | Responsables de la mention :",
