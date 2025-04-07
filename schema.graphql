@@ -220,9 +220,6 @@ input CoordinationIncInput {
   """
   courseId: Int
 
-  """Unique coordination identifier"""
-  id: Int
-
   """
   Program being coordinated (mutually exclusive with track_id and course_id)
   """
@@ -249,9 +246,6 @@ input CoordinationInsertInput {
 
   """Timestamp when the record was created"""
   createdAt: timestamptz
-
-  """Unique coordination identifier"""
-  id: Int
   program: ProgramObjRelInsertInput
 
   """
@@ -504,9 +498,6 @@ input CoordinationSetInput {
 
   """Timestamp when the record was created"""
   createdAt: timestamptz
-
-  """Unique coordination identifier"""
-  id: Int
 
   """
   Program being coordinated (mutually exclusive with track_id and course_id)
@@ -761,9 +752,6 @@ enum CoordinationUpdateColumn {
 
   """column name"""
   createdAt
-
-  """column name"""
-  id
 
   """column name"""
   programId
@@ -1365,9 +1353,6 @@ input CourseIncInput {
   """Modified teaching hours per group if different from standard"""
   hoursAdjusted: Float
 
-  """Unique course identifier"""
-  id: Int
-
   """
   Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled)
   """
@@ -1414,9 +1399,6 @@ input CourseInsertInput {
 
   """Modified teaching hours per group if different from standard"""
   hoursAdjusted: Float
-
-  """Unique course identifier"""
-  id: Int
 
   """Full course name"""
   name: String
@@ -1950,9 +1932,6 @@ input CourseSetInput {
 
   """Modified teaching hours per group if different from standard"""
   hoursAdjusted: Float
-
-  """Unique course identifier"""
-  id: Int
 
   """Full course name"""
   name: String
@@ -2611,9 +2590,6 @@ input type for incrementing numeric columns in table "course_type"
 input CourseTypeIncInput {
   """Workload multiplier for service hour calculations"""
   coefficient: Float
-
-  """Unique course type identifier"""
-  id: Int
 }
 
 """
@@ -2629,9 +2605,6 @@ input CourseTypeInsertInput {
 
   """Description of the course type and its characteristics"""
   description: String
-
-  """Unique course type identifier"""
-  id: Int
 
   """Human-readable type name for display purposes, unique"""
   label: String
@@ -2771,9 +2744,6 @@ input CourseTypeSetInput {
   """Description of the course type and its characteristics"""
   description: String
 
-  """Unique course type identifier"""
-  id: Int
-
   """Human-readable type name for display purposes, unique"""
   label: String
 
@@ -2867,9 +2837,6 @@ enum CourseTypeUpdateColumn {
   description
 
   """column name"""
-  id
-
-  """column name"""
   label
 
   """column name"""
@@ -2941,9 +2908,6 @@ enum CourseUpdateColumn {
 
   """column name"""
   hoursAdjusted
-
-  """column name"""
-  id
 
   """column name"""
   name
@@ -3431,22 +3395,11 @@ enum DegreeConstraint {
 }
 
 """
-input type for incrementing numeric columns in table "degree"
-"""
-input DegreeIncInput {
-  """Unique degree identifier"""
-  id: Int
-}
-
-"""
 input type for inserting data into table "degree"
 """
 input DegreeInsertInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
-
-  """Unique degree identifier"""
-  id: Int
 
   """Full degree name, unique (e.g., Bachelor of Science)"""
   name: String
@@ -3595,9 +3548,6 @@ input DegreeSetInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Unique degree identifier"""
-  id: Int
-
   """Full degree name, unique (e.g., Bachelor of Science)"""
   name: String
 
@@ -3684,9 +3634,6 @@ enum DegreeUpdateColumn {
   createdAt
 
   """column name"""
-  id
-
-  """column name"""
   name
 
   """column name"""
@@ -3700,9 +3647,6 @@ enum DegreeUpdateColumn {
 }
 
 input DegreeUpdates {
-  """increments the numeric columns with given value of the filtered values"""
-  _inc: DegreeIncInput
-
   """sets the columns of the filtered rows to the given values"""
   _set: DegreeSetInput
 
@@ -4182,9 +4126,6 @@ input PositionIncInput {
   Default annual teaching hours required for this position, can be overridden per teacher
   """
   baseServiceHours: Float
-
-  """Unique position identifier"""
-  id: Int
 }
 
 """
@@ -4201,9 +4142,6 @@ input PositionInsertInput {
 
   """Optional description of the position"""
   description: String
-
-  """Unique position identifier"""
-  id: Int
 
   """Human-readable position name for display purposes, unique"""
   label: String
@@ -4350,9 +4288,6 @@ input PositionSetInput {
   """Optional description of the position"""
   description: String
 
-  """Unique position identifier"""
-  id: Int
-
   """Human-readable position name for display purposes, unique"""
   label: String
 
@@ -4456,9 +4391,6 @@ enum PositionUpdateColumn {
   description
 
   """column name"""
-  id
-
-  """column name"""
   label
 
   """column name"""
@@ -4544,6 +4476,8 @@ type Priority {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz!
+
+  """Year of the priority (must match service's and course's year)"""
   year: Int!
 
   """An object relationship"""
@@ -4621,6 +4555,8 @@ type PriorityAvgFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the priority (must match service's and course's year)"""
   year: Float
 }
 
@@ -4639,6 +4575,8 @@ input PriorityAvgOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the priority (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -4685,14 +4623,13 @@ input PriorityIncInput {
   """Course for which priority is tracked"""
   courseId: Int
 
-  """Unique priority record identifier"""
-  id: Int
-
   """Consecutive years teaching this course before current year"""
   seniority: Int
 
   """Associated teacher service record"""
   serviceId: Int
+
+  """Year of the priority (must match service's and course's year)"""
   year: Int
 }
 
@@ -4712,9 +4649,6 @@ input PriorityInsertInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Unique priority record identifier"""
-  id: Int
-
   """Current priority status based on seniority and course rules"""
   isPriority: Boolean
 
@@ -4729,6 +4663,8 @@ input PriorityInsertInput {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+
+  """Year of the priority (must match service's and course's year)"""
   year: Int
   yearByYear: YearObjRelInsertInput
 }
@@ -4754,6 +4690,8 @@ type PriorityMaxFields {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+
+  """Year of the priority (must match service's and course's year)"""
   year: Int
 }
 
@@ -4780,6 +4718,8 @@ input PriorityMaxOrderBy {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: OrderBy
+
+  """Year of the priority (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -4804,6 +4744,8 @@ type PriorityMinFields {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+
+  """Year of the priority (must match service's and course's year)"""
   year: Int
 }
 
@@ -4830,6 +4772,8 @@ input PriorityMinOrderBy {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: OrderBy
+
+  """Year of the priority (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -4944,9 +4888,6 @@ input PrioritySetInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Unique priority record identifier"""
-  id: Int
-
   """Current priority status based on seniority and course rules"""
   isPriority: Boolean
 
@@ -4960,6 +4901,8 @@ input PrioritySetInput {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+
+  """Year of the priority (must match service's and course's year)"""
   year: Int
 }
 
@@ -4976,6 +4919,8 @@ type PriorityStddevFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the priority (must match service's and course's year)"""
   year: Float
 }
 
@@ -4994,6 +4939,8 @@ input PriorityStddevOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the priority (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -5010,6 +4957,8 @@ type PriorityStddevPopFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the priority (must match service's and course's year)"""
   year: Float
 }
 
@@ -5028,6 +4977,8 @@ input PriorityStddevPopOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the priority (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -5044,6 +4995,8 @@ type PriorityStddevSampFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the priority (must match service's and course's year)"""
   year: Float
 }
 
@@ -5062,6 +5015,8 @@ input PriorityStddevSampOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the priority (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -5105,6 +5060,8 @@ input PriorityStreamCursorValueInput {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+
+  """Year of the priority (must match service's and course's year)"""
   year: Int
 }
 
@@ -5121,6 +5078,8 @@ type PrioritySumFields {
 
   """Associated teacher service record"""
   serviceId: Int
+
+  """Year of the priority (must match service's and course's year)"""
   year: Int
 }
 
@@ -5139,6 +5098,8 @@ input PrioritySumOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the priority (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -5154,9 +5115,6 @@ enum PriorityUpdateColumn {
 
   """column name"""
   createdAt
-
-  """column name"""
-  id
 
   """column name"""
   isPriority
@@ -5198,6 +5156,8 @@ type PriorityVarPopFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the priority (must match service's and course's year)"""
   year: Float
 }
 
@@ -5216,6 +5176,8 @@ input PriorityVarPopOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the priority (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -5232,6 +5194,8 @@ type PriorityVarSampFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the priority (must match service's and course's year)"""
   year: Float
 }
 
@@ -5250,6 +5214,8 @@ input PriorityVarSampOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the priority (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -5266,6 +5232,8 @@ type PriorityVarianceFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the priority (must match service's and course's year)"""
   year: Float
 }
 
@@ -5284,6 +5252,8 @@ input PriorityVarianceOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the priority (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -5554,9 +5524,6 @@ input type for incrementing numeric columns in table "program"
 input ProgramIncInput {
   """Parent degree for this program"""
   degreeId: Int
-
-  """Unique program identifier"""
-  id: Int
 }
 
 """
@@ -5572,9 +5539,6 @@ input ProgramInsertInput {
 
   """Parent degree for this program"""
   degreeId: Int
-
-  """Unique program identifier"""
-  id: Int
 
   """Full program name, unique within its degree (e.g., Mathematics)"""
   name: String
@@ -5824,9 +5788,6 @@ input ProgramSetInput {
   """Parent degree for this program"""
   degreeId: Int
 
-  """Unique program identifier"""
-  id: Int
-
   """Full program name, unique within its degree (e.g., Mathematics)"""
   name: String
 
@@ -5977,9 +5938,6 @@ enum ProgramUpdateColumn {
   degreeId
 
   """column name"""
-  id
-
-  """column name"""
   name
 
   """column name"""
@@ -6094,6 +6052,9 @@ type Request {
   isPriority: Boolean
 
   """An object relationship"""
+  requestType: RequestType!
+
+  """An object relationship"""
   service: Service!
 
   """Associated teacher service record"""
@@ -6102,13 +6063,12 @@ type Request {
   """Type of request (primary choice, backup, or final assignment)"""
   type: String!
 
-  """An object relationship"""
-  typeByType: RequestType!
-
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz!
+
+  """Year of the request (must match service's and course's year)"""
   year: Int!
 
   """An object relationship"""
@@ -6189,6 +6149,8 @@ type RequestAvgFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the request (must match service's and course's year)"""
   year: Float
 }
 
@@ -6207,6 +6169,8 @@ input RequestAvgOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the request (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -6224,10 +6188,10 @@ input RequestBoolExp {
   hoursWeighted: FloatComparisonExp
   id: IntComparisonExp
   isPriority: BooleanComparisonExp
+  requestType: RequestTypeBoolExp
   service: ServiceBoolExp
   serviceId: IntComparisonExp
   type: StringComparisonExp
-  typeByType: RequestTypeBoolExp
   updatedAt: TimestamptzComparisonExp
   year: IntComparisonExp
   yearByYear: YearBoolExp
@@ -6258,11 +6222,10 @@ input RequestIncInput {
   """Requested or assigned teaching hours"""
   hours: Float
 
-  """Unique request identifier"""
-  id: Int
-
   """Associated teacher service record"""
   serviceId: Int
+
+  """Year of the request (must match service's and course's year)"""
   year: Int
 }
 
@@ -6280,9 +6243,7 @@ input RequestInsertInput {
 
   """Requested or assigned teaching hours"""
   hours: Float
-
-  """Unique request identifier"""
-  id: Int
+  requestType: RequestTypeObjRelInsertInput
   service: ServiceObjRelInsertInput
 
   """Associated teacher service record"""
@@ -6290,12 +6251,13 @@ input RequestInsertInput {
 
   """Type of request (primary choice, backup, or final assignment)"""
   type: String
-  typeByType: RequestTypeObjRelInsertInput
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+
+  """Year of the request (must match service's and course's year)"""
   year: Int
   yearByYear: YearObjRelInsertInput
 }
@@ -6329,6 +6291,8 @@ type RequestMaxFields {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+
+  """Year of the request (must match service's and course's year)"""
   year: Int
 }
 
@@ -6358,6 +6322,8 @@ input RequestMaxOrderBy {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: OrderBy
+
+  """Year of the request (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -6390,6 +6356,8 @@ type RequestMinFields {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+
+  """Year of the request (must match service's and course's year)"""
   year: Int
 }
 
@@ -6419,6 +6387,8 @@ input RequestMinOrderBy {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: OrderBy
+
+  """Year of the request (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -6451,10 +6421,10 @@ input RequestOrderBy {
   hoursWeighted: OrderBy
   id: OrderBy
   isPriority: OrderBy
+  requestType: RequestTypeOrderBy
   service: ServiceOrderBy
   serviceId: OrderBy
   type: OrderBy
-  typeByType: RequestTypeOrderBy
   updatedAt: OrderBy
   year: OrderBy
   yearByYear: YearOrderBy
@@ -6508,9 +6478,6 @@ input RequestSetInput {
   """Requested or assigned teaching hours"""
   hours: Float
 
-  """Unique request identifier"""
-  id: Int
-
   """Associated teacher service record"""
   serviceId: Int
 
@@ -6521,6 +6488,8 @@ input RequestSetInput {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+
+  """Year of the request (must match service's and course's year)"""
   year: Int
 }
 
@@ -6542,6 +6511,8 @@ type RequestStddevFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the request (must match service's and course's year)"""
   year: Float
 }
 
@@ -6560,6 +6531,8 @@ input RequestStddevOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the request (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -6581,6 +6554,8 @@ type RequestStddevPopFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the request (must match service's and course's year)"""
   year: Float
 }
 
@@ -6599,6 +6574,8 @@ input RequestStddevPopOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the request (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -6620,6 +6597,8 @@ type RequestStddevSampFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the request (must match service's and course's year)"""
   year: Float
 }
 
@@ -6638,6 +6617,8 @@ input RequestStddevSampOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the request (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -6676,6 +6657,8 @@ input RequestStreamCursorValueInput {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+
+  """Year of the request (must match service's and course's year)"""
   year: Int
 }
 
@@ -6697,6 +6680,8 @@ type RequestSumFields {
 
   """Associated teacher service record"""
   serviceId: Int
+
+  """Year of the request (must match service's and course's year)"""
   year: Int
 }
 
@@ -6715,14 +6700,13 @@ input RequestSumOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the request (must match service's and course's year)"""
   year: OrderBy
 }
 
 """Types of teaching assignment requests in workflow"""
 type RequestType {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz!
-
   """Description of the request type and its purpose"""
   description: String
 
@@ -6762,11 +6746,6 @@ type RequestType {
     where: RequestBoolExp
   ): RequestAggregate!
 
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz!
-
   """Request type identifier"""
   value: String!
 }
@@ -6795,11 +6774,9 @@ input RequestTypeBoolExp {
   _and: [RequestTypeBoolExp!]
   _not: RequestTypeBoolExp
   _or: [RequestTypeBoolExp!]
-  createdAt: TimestamptzComparisonExp
   description: StringComparisonExp
   requests: RequestBoolExp
   requestsAggregate: RequestAggregateBoolExp
-  updatedAt: TimestamptzComparisonExp
   value: StringComparisonExp
 }
 
@@ -6817,17 +6794,9 @@ enum RequestTypeConstraint {
 input type for inserting data into table "request_type"
 """
 input RequestTypeInsertInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the request type and its purpose"""
   description: String
   requests: RequestArrRelInsertInput
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Request type identifier"""
   value: String
@@ -6835,16 +6804,8 @@ input RequestTypeInsertInput {
 
 """aggregate max on columns"""
 type RequestTypeMaxFields {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the request type and its purpose"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Request type identifier"""
   value: String
@@ -6852,16 +6813,8 @@ type RequestTypeMaxFields {
 
 """aggregate min on columns"""
 type RequestTypeMinFields {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the request type and its purpose"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Request type identifier"""
   value: String
@@ -6899,10 +6852,8 @@ input RequestTypeOnConflict {
 
 """Ordering options when selecting data from "request_type"."""
 input RequestTypeOrderBy {
-  createdAt: OrderBy
   description: OrderBy
   requestsAggregate: RequestAggregateOrderBy
-  updatedAt: OrderBy
   value: OrderBy
 }
 
@@ -6917,13 +6868,7 @@ select columns of table "request_type"
 """
 enum RequestTypeSelectColumn {
   """column name"""
-  createdAt
-
-  """column name"""
   description
-
-  """column name"""
-  updatedAt
 
   """column name"""
   value
@@ -6933,16 +6878,8 @@ enum RequestTypeSelectColumn {
 input type for updating data in table "request_type"
 """
 input RequestTypeSetInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the request type and its purpose"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Request type identifier"""
   value: String
@@ -6961,16 +6898,8 @@ input RequestTypeStreamCursorInput {
 
 """Initial value of the column from where the streaming should start"""
 input RequestTypeStreamCursorValueInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the request type and its purpose"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Request type identifier"""
   value: String
@@ -6981,13 +6910,7 @@ update columns of table "request_type"
 """
 enum RequestTypeUpdateColumn {
   """column name"""
-  createdAt
-
-  """column name"""
   description
-
-  """column name"""
-  updatedAt
 
   """column name"""
   value
@@ -7013,9 +6936,6 @@ enum RequestUpdateColumn {
 
   """column name"""
   hours
-
-  """column name"""
-  id
 
   """column name"""
   serviceId
@@ -7059,6 +6979,8 @@ type RequestVarPopFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the request (must match service's and course's year)"""
   year: Float
 }
 
@@ -7077,6 +6999,8 @@ input RequestVarPopOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the request (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -7098,6 +7022,8 @@ type RequestVarSampFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the request (must match service's and course's year)"""
   year: Float
 }
 
@@ -7116,6 +7042,8 @@ input RequestVarSampOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the request (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -7137,6 +7065,8 @@ type RequestVarianceFields {
 
   """Associated teacher service record"""
   serviceId: Float
+
+  """Year of the request (must match service's and course's year)"""
   year: Float
 }
 
@@ -7155,6 +7085,8 @@ input RequestVarianceOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
+
+  """Year of the request (must match service's and course's year)"""
   year: OrderBy
 }
 
@@ -7290,14 +7222,6 @@ enum RoleConstraint {
 }
 
 """
-input type for incrementing numeric columns in table "role"
-"""
-input RoleIncInput {
-  """Unique role assignment identifier"""
-  id: Int
-}
-
-"""
 input type for inserting data into table "role"
 """
 input RoleInsertInput {
@@ -7306,9 +7230,6 @@ input RoleInsertInput {
 
   """Timestamp when the record was created"""
   createdAt: timestamptz
-
-  """Unique role assignment identifier"""
-  id: Int
   roleType: RoleTypeObjRelInsertInput
   teacher: TeacherObjRelInsertInput
 
@@ -7491,9 +7412,6 @@ input RoleSetInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Unique role assignment identifier"""
-  id: Int
-
   """Type of privileged role"""
   type: String
 
@@ -7598,9 +7516,6 @@ input RoleSumOrderBy {
 
 """System roles for privileged access"""
 type RoleType {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz!
-
   """Description of the role privileges and responsibilities"""
   description: String
 
@@ -7640,11 +7555,6 @@ type RoleType {
     where: RoleBoolExp
   ): RoleAggregate!
 
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz!
-
   """Role identifier"""
   value: String!
 }
@@ -7673,11 +7583,9 @@ input RoleTypeBoolExp {
   _and: [RoleTypeBoolExp!]
   _not: RoleTypeBoolExp
   _or: [RoleTypeBoolExp!]
-  createdAt: TimestamptzComparisonExp
   description: StringComparisonExp
   roles: RoleBoolExp
   rolesAggregate: RoleAggregateBoolExp
-  updatedAt: TimestamptzComparisonExp
   value: StringComparisonExp
 }
 
@@ -7695,17 +7603,9 @@ enum RoleTypeConstraint {
 input type for inserting data into table "role_type"
 """
 input RoleTypeInsertInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the role privileges and responsibilities"""
   description: String
   roles: RoleArrRelInsertInput
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Role identifier"""
   value: String
@@ -7713,16 +7613,8 @@ input RoleTypeInsertInput {
 
 """aggregate max on columns"""
 type RoleTypeMaxFields {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the role privileges and responsibilities"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Role identifier"""
   value: String
@@ -7730,16 +7622,8 @@ type RoleTypeMaxFields {
 
 """aggregate min on columns"""
 type RoleTypeMinFields {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the role privileges and responsibilities"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Role identifier"""
   value: String
@@ -7777,10 +7661,8 @@ input RoleTypeOnConflict {
 
 """Ordering options when selecting data from "role_type"."""
 input RoleTypeOrderBy {
-  createdAt: OrderBy
   description: OrderBy
   rolesAggregate: RoleAggregateOrderBy
-  updatedAt: OrderBy
   value: OrderBy
 }
 
@@ -7795,13 +7677,7 @@ select columns of table "role_type"
 """
 enum RoleTypeSelectColumn {
   """column name"""
-  createdAt
-
-  """column name"""
   description
-
-  """column name"""
-  updatedAt
 
   """column name"""
   value
@@ -7811,16 +7687,8 @@ enum RoleTypeSelectColumn {
 input type for updating data in table "role_type"
 """
 input RoleTypeSetInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the role privileges and responsibilities"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Role identifier"""
   value: String
@@ -7839,16 +7707,8 @@ input RoleTypeStreamCursorInput {
 
 """Initial value of the column from where the streaming should start"""
 input RoleTypeStreamCursorValueInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the role privileges and responsibilities"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Role identifier"""
   value: String
@@ -7859,13 +7719,7 @@ update columns of table "role_type"
 """
 enum RoleTypeUpdateColumn {
   """column name"""
-  createdAt
-
-  """column name"""
   description
-
-  """column name"""
-  updatedAt
 
   """column name"""
   value
@@ -7890,9 +7744,6 @@ enum RoleUpdateColumn {
   createdAt
 
   """column name"""
-  id
-
-  """column name"""
   type
 
   """column name"""
@@ -7903,9 +7754,6 @@ enum RoleUpdateColumn {
 }
 
 input RoleUpdates {
-  """increments the numeric columns with given value of the filtered values"""
-  _inc: RoleIncInput
-
   """sets the columns of the filtered rows to the given values"""
   _set: RoleSetInput
 
@@ -8230,9 +8078,6 @@ input ServiceIncInput {
   """Required teaching hours for the year before modifications"""
   hours: Float
 
-  """Unique service identifier"""
-  id: Int
-
   """Academic year for this service record"""
   year: Int
 }
@@ -8246,9 +8091,6 @@ input ServiceInsertInput {
 
   """Required teaching hours for the year before modifications"""
   hours: Float
-
-  """Unique service identifier"""
-  id: Int
 
   """Optional message from teacher to course assignment committee"""
   message: String
@@ -8529,9 +8371,6 @@ input ServiceModificationIncInput {
   """Hour adjustment amount (negative values increase required hours)"""
   hours: Float
 
-  """Unique modification identifier"""
-  id: Int
-
   """Reference to affected service record"""
   serviceId: Int
 
@@ -8548,9 +8387,6 @@ input ServiceModificationInsertInput {
 
   """Hour adjustment amount (negative values increase required hours)"""
   hours: Float
-
-  """Unique modification identifier"""
-  id: Int
   service: ServiceObjRelInsertInput
 
   """Reference to affected service record"""
@@ -8732,9 +8568,6 @@ input ServiceModificationSetInput {
 
   """Hour adjustment amount (negative values increase required hours)"""
   hours: Float
-
-  """Unique modification identifier"""
-  id: Int
 
   """Reference to affected service record"""
   serviceId: Int
@@ -9029,14 +8862,6 @@ enum ServiceModificationTypeConstraint {
 }
 
 """
-input type for incrementing numeric columns in table "service_modification_type"
-"""
-input ServiceModificationTypeIncInput {
-  """Unique modification type identifier"""
-  id: Int
-}
-
-"""
 input type for inserting data into table "service_modification_type"
 """
 input ServiceModificationTypeInsertInput {
@@ -9045,9 +8870,6 @@ input ServiceModificationTypeInsertInput {
 
   """Detailed explanation of the modification type and its application"""
   description: String
-
-  """Unique modification type identifier"""
-  id: Int
 
   """Human-readable type name for display purposes, unique"""
   label: String
@@ -9175,9 +8997,6 @@ input ServiceModificationTypeSetInput {
   """Detailed explanation of the modification type and its application"""
   description: String
 
-  """Unique modification type identifier"""
-  id: Int
-
   """Human-readable type name for display purposes, unique"""
   label: String
 
@@ -9253,9 +9072,6 @@ enum ServiceModificationTypeUpdateColumn {
   description
 
   """column name"""
-  id
-
-  """column name"""
   label
 
   """column name"""
@@ -9263,9 +9079,6 @@ enum ServiceModificationTypeUpdateColumn {
 }
 
 input ServiceModificationTypeUpdates {
-  """increments the numeric columns with given value of the filtered values"""
-  _inc: ServiceModificationTypeIncInput
-
   """sets the columns of the filtered rows to the given values"""
   _set: ServiceModificationTypeSetInput
 
@@ -9300,9 +9113,6 @@ enum ServiceModificationUpdateColumn {
 
   """column name"""
   hours
-
-  """column name"""
-  id
 
   """column name"""
   serviceId
@@ -9509,9 +9319,6 @@ input ServiceSetInput {
   """Required teaching hours for the year before modifications"""
   hours: Float
 
-  """Unique service identifier"""
-  id: Int
-
   """Optional message from teacher to course assignment committee"""
   message: String
 
@@ -9677,9 +9484,6 @@ enum ServiceUpdateColumn {
 
   """column name"""
   hours
-
-  """column name"""
-  id
 
   """column name"""
   message
@@ -10990,9 +10794,6 @@ enum TrackConstraint {
 input type for incrementing numeric columns in table "track"
 """
 input TrackIncInput {
-  """Unique track identifier"""
-  id: Int
-
   """Parent program for this track"""
   programId: Int
 }
@@ -11006,9 +10807,6 @@ input TrackInsertInput {
 
   """Timestamp when the record was created"""
   createdAt: timestamptz
-
-  """Unique track identifier"""
-  id: Int
 
   """
   Full track name, unique within its program (e.g., Pure Mathematics, Applied Mathematics, Statistics, etc.)
@@ -11267,9 +11065,6 @@ input TrackSetInput {
   """Timestamp when the record was created"""
   createdAt: timestamptz
 
-  """Unique track identifier"""
-  id: Int
-
   """
   Full track name, unique within its program (e.g., Pure Mathematics, Applied Mathematics, Statistics, etc.)
   """
@@ -11422,9 +11217,6 @@ update columns of table "track"
 enum TrackUpdateColumn {
   """column name"""
   createdAt
-
-  """column name"""
-  id
 
   """column name"""
   name
@@ -13173,9 +12965,6 @@ type mutation_root {
   update data of the table: "degree"
   """
   updateDegree(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: DegreeIncInput
-
     """sets the columns of the filtered rows to the given values"""
     _set: DegreeSetInput
 
@@ -13187,9 +12976,6 @@ type mutation_root {
   update single row of the table: "degree"
   """
   updateDegreeByPk(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: DegreeIncInput
-
     """sets the columns of the filtered rows to the given values"""
     _set: DegreeSetInput
     pkColumns: DegreePkColumnsInput!
@@ -13399,9 +13185,6 @@ type mutation_root {
   update data of the table: "role"
   """
   updateRole(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: RoleIncInput
-
     """sets the columns of the filtered rows to the given values"""
     _set: RoleSetInput
 
@@ -13413,9 +13196,6 @@ type mutation_root {
   update single row of the table: "role"
   """
   updateRoleByPk(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: RoleIncInput
-
     """sets the columns of the filtered rows to the given values"""
     _set: RoleSetInput
     pkColumns: RolePkColumnsInput!
@@ -13529,9 +13309,6 @@ type mutation_root {
   update data of the table: "service_modification_type"
   """
   updateServiceModificationType(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: ServiceModificationTypeIncInput
-
     """sets the columns of the filtered rows to the given values"""
     _set: ServiceModificationTypeSetInput
 
@@ -13543,9 +13320,6 @@ type mutation_root {
   update single row of the table: "service_modification_type"
   """
   updateServiceModificationTypeByPk(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: ServiceModificationTypeIncInput
-
     """sets the columns of the filtered rows to the given values"""
     _set: ServiceModificationTypeSetInput
     pkColumns: ServiceModificationTypePkColumnsInput!

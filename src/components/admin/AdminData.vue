@@ -487,7 +487,7 @@ const exportDataHandle = () => {
         :label="t('admin.data.button.edit')"
         icon="sym_s_edit"
         color="primary"
-        :disable="!selection || (multipleSelection && !selectedFields)"
+        :disable="!selection"
         no-caps
         outline
         @click="openForm()"

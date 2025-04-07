@@ -172,8 +172,6 @@ export enum CoordinationConstraint {
 export type CoordinationIncInput = {
   /** Course being coordinated (mutually exclusive with program_id and track_id) */
   courseId?: InputMaybe<Scalars['Int']['input']>;
-  /** Unique coordination identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Program being coordinated (mutually exclusive with track_id and course_id) */
   programId?: InputMaybe<Scalars['Int']['input']>;
   /** Track being coordinated (mutually exclusive with program_id and course_id) */
@@ -189,8 +187,6 @@ export type CoordinationInsertInput = {
   courseId?: InputMaybe<Scalars['Int']['input']>;
   /** Timestamp when the record was created */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Unique coordination identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   program?: InputMaybe<ProgramObjRelInsertInput>;
   /** Program being coordinated (mutually exclusive with track_id and course_id) */
   programId?: InputMaybe<Scalars['Int']['input']>;
@@ -352,8 +348,6 @@ export type CoordinationSetInput = {
   courseId?: InputMaybe<Scalars['Int']['input']>;
   /** Timestamp when the record was created */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Unique coordination identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Program being coordinated (mutually exclusive with track_id and course_id) */
   programId?: InputMaybe<Scalars['Int']['input']>;
   /** Track being coordinated (mutually exclusive with program_id and course_id) */
@@ -500,8 +494,6 @@ export enum CoordinationUpdateColumn {
   CourseId = 'courseId',
   /** column name */
   CreatedAt = 'createdAt',
-  /** column name */
-  Id = 'id',
   /** column name */
   ProgramId = 'programId',
   /** column name */
@@ -917,8 +909,6 @@ export type CourseIncInput = {
   hours?: InputMaybe<Scalars['Float']['input']>;
   /** Modified teaching hours per group if different from standard */
   hoursAdjusted?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique course identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<Scalars['Int']['input']>;
   /** Program offering this course */
@@ -950,8 +940,6 @@ export type CourseInsertInput = {
   hours?: InputMaybe<Scalars['Float']['input']>;
   /** Modified teaching hours per group if different from standard */
   hoursAdjusted?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique course identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Full course name */
   name?: InputMaybe<Scalars['String']['input']>;
   /** Abbreviated course name */
@@ -1320,8 +1308,6 @@ export type CourseSetInput = {
   hours?: InputMaybe<Scalars['Float']['input']>;
   /** Modified teaching hours per group if different from standard */
   hoursAdjusted?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique course identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Full course name */
   name?: InputMaybe<Scalars['String']['input']>;
   /** Abbreviated course name */
@@ -1777,8 +1763,6 @@ export enum CourseTypeConstraint {
 export type CourseTypeIncInput = {
   /** Workload multiplier for service hour calculations */
   coefficient?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique course type identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "course_type" */
@@ -1790,8 +1774,6 @@ export type CourseTypeInsertInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the course type and its characteristics */
   description?: InputMaybe<Scalars['String']['input']>;
-  /** Unique course type identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Human-readable type name for display purposes, unique */
   label?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
@@ -1896,8 +1878,6 @@ export type CourseTypeSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the course type and its characteristics */
   description?: InputMaybe<Scalars['String']['input']>;
-  /** Unique course type identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Human-readable type name for display purposes, unique */
   label?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
@@ -1973,8 +1953,6 @@ export enum CourseTypeUpdateColumn {
   /** column name */
   Description = 'description',
   /** column name */
-  Id = 'id',
-  /** column name */
   Label = 'label',
   /** column name */
   UpdatedAt = 'updatedAt'
@@ -2034,8 +2012,6 @@ export enum CourseUpdateColumn {
   Hours = 'hours',
   /** column name */
   HoursAdjusted = 'hoursAdjusted',
-  /** column name */
-  Id = 'id',
   /** column name */
   Name = 'name',
   /** column name */
@@ -2382,18 +2358,10 @@ export enum DegreeConstraint {
   DegreePkey = 'degree_pkey'
 }
 
-/** input type for incrementing numeric columns in table "degree" */
-export type DegreeIncInput = {
-  /** Unique degree identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
-};
-
 /** input type for inserting data into table "degree" */
 export type DegreeInsertInput = {
   /** Timestamp when the record was created */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Unique degree identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Full degree name, unique (e.g., Bachelor of Science) */
   name?: InputMaybe<Scalars['String']['input']>;
   /** Abbreviated degree name (e.g., BSc) */
@@ -2502,8 +2470,6 @@ export enum DegreeSelectColumn {
 export type DegreeSetInput = {
   /** Timestamp when the record was created */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Unique degree identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Full degree name, unique (e.g., Bachelor of Science) */
   name?: InputMaybe<Scalars['String']['input']>;
   /** Abbreviated degree name (e.g., BSc) */
@@ -2573,8 +2539,6 @@ export enum DegreeUpdateColumn {
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
-  Id = 'id',
-  /** column name */
   Name = 'name',
   /** column name */
   NameShort = 'nameShort',
@@ -2585,8 +2549,6 @@ export enum DegreeUpdateColumn {
 }
 
 export type DegreeUpdates = {
-  /** increments the numeric columns with given value of the filtered values */
-  _inc?: InputMaybe<DegreeIncInput>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<DegreeSetInput>;
   /** filter the rows which have to be updated */
@@ -2962,8 +2924,6 @@ export enum PositionConstraint {
 export type PositionIncInput = {
   /** Default annual teaching hours required for this position, can be overridden per teacher */
   baseServiceHours?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique position identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "position" */
@@ -2974,8 +2934,6 @@ export type PositionInsertInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Optional description of the position */
   description?: InputMaybe<Scalars['String']['input']>;
-  /** Unique position identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Human-readable position name for display purposes, unique */
   label?: InputMaybe<Scalars['String']['input']>;
   teachers?: InputMaybe<TeacherArrRelInsertInput>;
@@ -3081,8 +3039,6 @@ export type PositionSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Optional description of the position */
   description?: InputMaybe<Scalars['String']['input']>;
-  /** Unique position identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Human-readable position name for display purposes, unique */
   label?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
@@ -3158,8 +3114,6 @@ export enum PositionUpdateColumn {
   /** column name */
   Description = 'description',
   /** column name */
-  Id = 'id',
-  /** column name */
   Label = 'label',
   /** column name */
   UpdatedAt = 'updatedAt'
@@ -3224,6 +3178,7 @@ export type Priority = {
   serviceId: Scalars['Int']['output'];
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt: Scalars['timestamptz']['output'];
+  /** Year of the priority (must match service's and course's year) */
   year: Scalars['Int']['output'];
   /** An object relationship */
   yearByYear: Year;
@@ -3298,6 +3253,7 @@ export type PriorityAvgFields = {
   seniority?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -3311,6 +3267,7 @@ export type PriorityAvgOrderBy = {
   seniority?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -3345,12 +3302,11 @@ export enum PriorityConstraint {
 export type PriorityIncInput = {
   /** Course for which priority is tracked */
   courseId?: InputMaybe<Scalars['Int']['input']>;
-  /** Unique priority record identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Consecutive years teaching this course before current year */
   seniority?: InputMaybe<Scalars['Int']['input']>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<Scalars['Int']['input']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -3363,8 +3319,6 @@ export type PriorityInsertInput = {
   courseId?: InputMaybe<Scalars['Int']['input']>;
   /** Timestamp when the record was created */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Unique priority record identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Current priority status based on seniority and course rules */
   isPriority?: InputMaybe<Scalars['Boolean']['input']>;
   /** Consecutive years teaching this course before current year */
@@ -3374,6 +3328,7 @@ export type PriorityInsertInput = {
   serviceId?: InputMaybe<Scalars['Int']['input']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<Scalars['Int']['input']>;
   yearByYear?: InputMaybe<YearObjRelInsertInput>;
 };
@@ -3393,6 +3348,7 @@ export type PriorityMaxFields = {
   serviceId?: Maybe<Scalars['Int']['output']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -3410,6 +3366,7 @@ export type PriorityMaxOrderBy = {
   serviceId?: InputMaybe<OrderBy>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: InputMaybe<OrderBy>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -3428,6 +3385,7 @@ export type PriorityMinFields = {
   serviceId?: Maybe<Scalars['Int']['output']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -3445,6 +3403,7 @@ export type PriorityMinOrderBy = {
   serviceId?: InputMaybe<OrderBy>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: InputMaybe<OrderBy>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -3532,8 +3491,6 @@ export type PrioritySetInput = {
   courseId?: InputMaybe<Scalars['Int']['input']>;
   /** Timestamp when the record was created */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Unique priority record identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Current priority status based on seniority and course rules */
   isPriority?: InputMaybe<Scalars['Boolean']['input']>;
   /** Consecutive years teaching this course before current year */
@@ -3542,6 +3499,7 @@ export type PrioritySetInput = {
   serviceId?: InputMaybe<Scalars['Int']['input']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -3556,6 +3514,7 @@ export type PriorityStddevFields = {
   seniority?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -3569,6 +3528,7 @@ export type PriorityStddevOrderBy = {
   seniority?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -3583,6 +3543,7 @@ export type PriorityStddevPopFields = {
   seniority?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -3596,6 +3557,7 @@ export type PriorityStddevPopOrderBy = {
   seniority?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -3610,6 +3572,7 @@ export type PriorityStddevSampFields = {
   seniority?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -3623,6 +3586,7 @@ export type PriorityStddevSampOrderBy = {
   seniority?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -3652,6 +3616,7 @@ export type PriorityStreamCursorValueInput = {
   serviceId?: InputMaybe<Scalars['Int']['input']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -3666,6 +3631,7 @@ export type PrioritySumFields = {
   seniority?: Maybe<Scalars['Int']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Int']['output']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -3679,6 +3645,7 @@ export type PrioritySumOrderBy = {
   seniority?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -3690,8 +3657,6 @@ export enum PriorityUpdateColumn {
   CourseId = 'courseId',
   /** column name */
   CreatedAt = 'createdAt',
-  /** column name */
-  Id = 'id',
   /** column name */
   IsPriority = 'isPriority',
   /** column name */
@@ -3724,6 +3689,7 @@ export type PriorityVarPopFields = {
   seniority?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -3737,6 +3703,7 @@ export type PriorityVarPopOrderBy = {
   seniority?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -3751,6 +3718,7 @@ export type PriorityVarSampFields = {
   seniority?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -3764,6 +3732,7 @@ export type PriorityVarSampOrderBy = {
   seniority?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -3778,6 +3747,7 @@ export type PriorityVarianceFields = {
   seniority?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the priority (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -3791,6 +3761,7 @@ export type PriorityVarianceOrderBy = {
   seniority?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the priority (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -4000,8 +3971,6 @@ export enum ProgramConstraint {
 export type ProgramIncInput = {
   /** Parent degree for this program */
   degreeId?: InputMaybe<Scalars['Int']['input']>;
-  /** Unique program identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "program" */
@@ -4013,8 +3982,6 @@ export type ProgramInsertInput = {
   degree?: InputMaybe<DegreeObjRelInsertInput>;
   /** Parent degree for this program */
   degreeId?: InputMaybe<Scalars['Int']['input']>;
-  /** Unique program identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Full program name, unique within its degree (e.g., Mathematics) */
   name?: InputMaybe<Scalars['String']['input']>;
   /** Abbreviated program name */
@@ -4191,8 +4158,6 @@ export type ProgramSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Parent degree for this program */
   degreeId?: InputMaybe<Scalars['Int']['input']>;
-  /** Unique program identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Full program name, unique within its degree (e.g., Mathematics) */
   name?: InputMaybe<Scalars['String']['input']>;
   /** Abbreviated program name */
@@ -4308,8 +4273,6 @@ export enum ProgramUpdateColumn {
   /** column name */
   DegreeId = 'degreeId',
   /** column name */
-  Id = 'id',
-  /** column name */
   Name = 'name',
   /** column name */
   NameShort = 'nameShort',
@@ -4399,15 +4362,16 @@ export type Request = {
   /** Determines the priority status of a request based on teaching history and course priority rules */
   isPriority?: Maybe<Scalars['Boolean']['output']>;
   /** An object relationship */
+  requestType: RequestType;
+  /** An object relationship */
   service: Service;
   /** Associated teacher service record */
   serviceId: Scalars['Int']['output'];
   /** Type of request (primary choice, backup, or final assignment) */
   type: Scalars['String']['output'];
-  /** An object relationship */
-  typeByType: RequestType;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt: Scalars['timestamptz']['output'];
+  /** Year of the request (must match service's and course's year) */
   year: Scalars['Int']['output'];
   /** An object relationship */
   yearByYear: Year;
@@ -4482,6 +4446,7 @@ export type RequestAvgFields = {
   id?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the request (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -4495,6 +4460,7 @@ export type RequestAvgOrderBy = {
   id?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -4510,10 +4476,10 @@ export type RequestBoolExp = {
   hoursWeighted?: InputMaybe<FloatComparisonExp>;
   id?: InputMaybe<IntComparisonExp>;
   isPriority?: InputMaybe<BooleanComparisonExp>;
+  requestType?: InputMaybe<RequestTypeBoolExp>;
   service?: InputMaybe<ServiceBoolExp>;
   serviceId?: InputMaybe<IntComparisonExp>;
   type?: InputMaybe<StringComparisonExp>;
-  typeByType?: InputMaybe<RequestTypeBoolExp>;
   updatedAt?: InputMaybe<TimestamptzComparisonExp>;
   year?: InputMaybe<IntComparisonExp>;
   yearByYear?: InputMaybe<YearBoolExp>;
@@ -4533,10 +4499,9 @@ export type RequestIncInput = {
   courseId?: InputMaybe<Scalars['Int']['input']>;
   /** Requested or assigned teaching hours */
   hours?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique request identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<Scalars['Int']['input']>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -4549,16 +4514,15 @@ export type RequestInsertInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Requested or assigned teaching hours */
   hours?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique request identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
+  requestType?: InputMaybe<RequestTypeObjRelInsertInput>;
   service?: InputMaybe<ServiceObjRelInsertInput>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<Scalars['Int']['input']>;
   /** Type of request (primary choice, backup, or final assignment) */
   type?: InputMaybe<Scalars['String']['input']>;
-  typeByType?: InputMaybe<RequestTypeObjRelInsertInput>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<Scalars['Int']['input']>;
   yearByYear?: InputMaybe<YearObjRelInsertInput>;
 };
@@ -4582,6 +4546,7 @@ export type RequestMaxFields = {
   type?: Maybe<Scalars['String']['output']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** Year of the request (must match service's and course's year) */
   year?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -4601,6 +4566,7 @@ export type RequestMaxOrderBy = {
   type?: InputMaybe<OrderBy>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: InputMaybe<OrderBy>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -4623,6 +4589,7 @@ export type RequestMinFields = {
   type?: Maybe<Scalars['String']['output']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: Maybe<Scalars['timestamptz']['output']>;
+  /** Year of the request (must match service's and course's year) */
   year?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -4642,6 +4609,7 @@ export type RequestMinOrderBy = {
   type?: InputMaybe<OrderBy>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: InputMaybe<OrderBy>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -4670,10 +4638,10 @@ export type RequestOrderBy = {
   hoursWeighted?: InputMaybe<OrderBy>;
   id?: InputMaybe<OrderBy>;
   isPriority?: InputMaybe<OrderBy>;
+  requestType?: InputMaybe<RequestTypeOrderBy>;
   service?: InputMaybe<ServiceOrderBy>;
   serviceId?: InputMaybe<OrderBy>;
   type?: InputMaybe<OrderBy>;
-  typeByType?: InputMaybe<RequestTypeOrderBy>;
   updatedAt?: InputMaybe<OrderBy>;
   year?: InputMaybe<OrderBy>;
   yearByYear?: InputMaybe<YearOrderBy>;
@@ -4713,14 +4681,13 @@ export type RequestSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Requested or assigned teaching hours */
   hours?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique request identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<Scalars['Int']['input']>;
   /** Type of request (primary choice, backup, or final assignment) */
   type?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -4737,6 +4704,7 @@ export type RequestStddevFields = {
   id?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the request (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -4750,6 +4718,7 @@ export type RequestStddevOrderBy = {
   id?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -4766,6 +4735,7 @@ export type RequestStddevPopFields = {
   id?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the request (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -4779,6 +4749,7 @@ export type RequestStddevPopOrderBy = {
   id?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -4795,6 +4766,7 @@ export type RequestStddevSampFields = {
   id?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the request (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -4808,6 +4780,7 @@ export type RequestStddevSampOrderBy = {
   id?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -4835,6 +4808,7 @@ export type RequestStreamCursorValueInput = {
   type?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
   updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -4851,6 +4825,7 @@ export type RequestSumFields = {
   id?: Maybe<Scalars['Int']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Int']['output']>;
+  /** Year of the request (must match service's and course's year) */
   year?: Maybe<Scalars['Int']['output']>;
 };
 
@@ -4864,22 +4839,19 @@ export type RequestSumOrderBy = {
   id?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
 /** Types of teaching assignment requests in workflow */
 export type RequestType = {
   __typename?: 'RequestType';
-  /** Timestamp when the record was created */
-  createdAt: Scalars['timestamptz']['output'];
   /** Description of the request type and its purpose */
   description?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   requests: Array<Request>;
   /** An aggregate relationship */
   requestsAggregate: RequestAggregate;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt: Scalars['timestamptz']['output'];
   /** Request type identifier */
   value: Scalars['String']['output'];
 };
@@ -4931,11 +4903,9 @@ export type RequestTypeBoolExp = {
   _and?: InputMaybe<Array<RequestTypeBoolExp>>;
   _not?: InputMaybe<RequestTypeBoolExp>;
   _or?: InputMaybe<Array<RequestTypeBoolExp>>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
   requests?: InputMaybe<RequestBoolExp>;
   requestsAggregate?: InputMaybe<RequestAggregateBoolExp>;
-  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
   value?: InputMaybe<StringComparisonExp>;
 };
 
@@ -4947,13 +4917,9 @@ export enum RequestTypeConstraint {
 
 /** input type for inserting data into table "request_type" */
 export type RequestTypeInsertInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the request type and its purpose */
   description?: InputMaybe<Scalars['String']['input']>;
   requests?: InputMaybe<RequestArrRelInsertInput>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Request type identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4961,12 +4927,8 @@ export type RequestTypeInsertInput = {
 /** aggregate max on columns */
 export type RequestTypeMaxFields = {
   __typename?: 'RequestTypeMaxFields';
-  /** Timestamp when the record was created */
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Description of the request type and its purpose */
   description?: Maybe<Scalars['String']['output']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Request type identifier */
   value?: Maybe<Scalars['String']['output']>;
 };
@@ -4974,12 +4936,8 @@ export type RequestTypeMaxFields = {
 /** aggregate min on columns */
 export type RequestTypeMinFields = {
   __typename?: 'RequestTypeMinFields';
-  /** Timestamp when the record was created */
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Description of the request type and its purpose */
   description?: Maybe<Scalars['String']['output']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Request type identifier */
   value?: Maybe<Scalars['String']['output']>;
 };
@@ -5009,10 +4967,8 @@ export type RequestTypeOnConflict = {
 
 /** Ordering options when selecting data from "request_type". */
 export type RequestTypeOrderBy = {
-  createdAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   requestsAggregate?: InputMaybe<RequestAggregateOrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
   value?: InputMaybe<OrderBy>;
 };
 
@@ -5025,23 +4981,15 @@ export type RequestTypePkColumnsInput = {
 /** select columns of table "request_type" */
 export enum RequestTypeSelectColumn {
   /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
   Description = 'description',
-  /** column name */
-  UpdatedAt = 'updatedAt',
   /** column name */
   Value = 'value'
 }
 
 /** input type for updating data in table "request_type" */
 export type RequestTypeSetInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the request type and its purpose */
   description?: InputMaybe<Scalars['String']['input']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Request type identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5056,12 +5004,8 @@ export type RequestTypeStreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type RequestTypeStreamCursorValueInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the request type and its purpose */
   description?: InputMaybe<Scalars['String']['input']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Request type identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5069,11 +5013,7 @@ export type RequestTypeStreamCursorValueInput = {
 /** update columns of table "request_type" */
 export enum RequestTypeUpdateColumn {
   /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
   Description = 'description',
-  /** column name */
-  UpdatedAt = 'updatedAt',
   /** column name */
   Value = 'value'
 }
@@ -5093,8 +5033,6 @@ export enum RequestUpdateColumn {
   CreatedAt = 'createdAt',
   /** column name */
   Hours = 'hours',
-  /** column name */
-  Id = 'id',
   /** column name */
   ServiceId = 'serviceId',
   /** column name */
@@ -5127,6 +5065,7 @@ export type RequestVarPopFields = {
   id?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the request (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -5140,6 +5079,7 @@ export type RequestVarPopOrderBy = {
   id?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -5156,6 +5096,7 @@ export type RequestVarSampFields = {
   id?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the request (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -5169,6 +5110,7 @@ export type RequestVarSampOrderBy = {
   id?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -5185,6 +5127,7 @@ export type RequestVarianceFields = {
   id?: Maybe<Scalars['Float']['output']>;
   /** Associated teacher service record */
   serviceId?: Maybe<Scalars['Float']['output']>;
+  /** Year of the request (must match service's and course's year) */
   year?: Maybe<Scalars['Float']['output']>;
 };
 
@@ -5198,6 +5141,7 @@ export type RequestVarianceOrderBy = {
   id?: InputMaybe<OrderBy>;
   /** Associated teacher service record */
   serviceId?: InputMaybe<OrderBy>;
+  /** Year of the request (must match service's and course's year) */
   year?: InputMaybe<OrderBy>;
 };
 
@@ -5314,20 +5258,12 @@ export enum RoleConstraint {
   RoleUidTypeKey = 'role_uid_type_key'
 }
 
-/** input type for incrementing numeric columns in table "role" */
-export type RoleIncInput = {
-  /** Unique role assignment identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
-};
-
 /** input type for inserting data into table "role" */
 export type RoleInsertInput = {
   /** Additional information about this privilege assignment */
   comment?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp when the record was created */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Unique role assignment identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   roleType?: InputMaybe<RoleTypeObjRelInsertInput>;
   teacher?: InputMaybe<TeacherObjRelInsertInput>;
   /** Type of privileged role */
@@ -5460,8 +5396,6 @@ export type RoleSetInput = {
   comment?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp when the record was created */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Unique role assignment identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Type of privileged role */
   type?: InputMaybe<Scalars['String']['input']>;
   /** Teacher identifier with role access */
@@ -5549,16 +5483,12 @@ export type RoleSumOrderBy = {
 /** System roles for privileged access */
 export type RoleType = {
   __typename?: 'RoleType';
-  /** Timestamp when the record was created */
-  createdAt: Scalars['timestamptz']['output'];
   /** Description of the role privileges and responsibilities */
   description?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   roles: Array<Role>;
   /** An aggregate relationship */
   rolesAggregate: RoleAggregate;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt: Scalars['timestamptz']['output'];
   /** Role identifier */
   value: Scalars['String']['output'];
 };
@@ -5610,11 +5540,9 @@ export type RoleTypeBoolExp = {
   _and?: InputMaybe<Array<RoleTypeBoolExp>>;
   _not?: InputMaybe<RoleTypeBoolExp>;
   _or?: InputMaybe<Array<RoleTypeBoolExp>>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
   roles?: InputMaybe<RoleBoolExp>;
   rolesAggregate?: InputMaybe<RoleAggregateBoolExp>;
-  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
   value?: InputMaybe<StringComparisonExp>;
 };
 
@@ -5626,13 +5554,9 @@ export enum RoleTypeConstraint {
 
 /** input type for inserting data into table "role_type" */
 export type RoleTypeInsertInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the role privileges and responsibilities */
   description?: InputMaybe<Scalars['String']['input']>;
   roles?: InputMaybe<RoleArrRelInsertInput>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Role identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5640,12 +5564,8 @@ export type RoleTypeInsertInput = {
 /** aggregate max on columns */
 export type RoleTypeMaxFields = {
   __typename?: 'RoleTypeMaxFields';
-  /** Timestamp when the record was created */
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Description of the role privileges and responsibilities */
   description?: Maybe<Scalars['String']['output']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Role identifier */
   value?: Maybe<Scalars['String']['output']>;
 };
@@ -5653,12 +5573,8 @@ export type RoleTypeMaxFields = {
 /** aggregate min on columns */
 export type RoleTypeMinFields = {
   __typename?: 'RoleTypeMinFields';
-  /** Timestamp when the record was created */
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Description of the role privileges and responsibilities */
   description?: Maybe<Scalars['String']['output']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Role identifier */
   value?: Maybe<Scalars['String']['output']>;
 };
@@ -5688,10 +5604,8 @@ export type RoleTypeOnConflict = {
 
 /** Ordering options when selecting data from "role_type". */
 export type RoleTypeOrderBy = {
-  createdAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   rolesAggregate?: InputMaybe<RoleAggregateOrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
   value?: InputMaybe<OrderBy>;
 };
 
@@ -5704,23 +5618,15 @@ export type RoleTypePkColumnsInput = {
 /** select columns of table "role_type" */
 export enum RoleTypeSelectColumn {
   /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
   Description = 'description',
-  /** column name */
-  UpdatedAt = 'updatedAt',
   /** column name */
   Value = 'value'
 }
 
 /** input type for updating data in table "role_type" */
 export type RoleTypeSetInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the role privileges and responsibilities */
   description?: InputMaybe<Scalars['String']['input']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Role identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5735,12 +5641,8 @@ export type RoleTypeStreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type RoleTypeStreamCursorValueInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the role privileges and responsibilities */
   description?: InputMaybe<Scalars['String']['input']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Role identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5748,11 +5650,7 @@ export type RoleTypeStreamCursorValueInput = {
 /** update columns of table "role_type" */
 export enum RoleTypeUpdateColumn {
   /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
   Description = 'description',
-  /** column name */
-  UpdatedAt = 'updatedAt',
   /** column name */
   Value = 'value'
 }
@@ -5771,8 +5669,6 @@ export enum RoleUpdateColumn {
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
-  Id = 'id',
-  /** column name */
   Type = 'type',
   /** column name */
   Uid = 'uid',
@@ -5781,8 +5677,6 @@ export enum RoleUpdateColumn {
 }
 
 export type RoleUpdates = {
-  /** increments the numeric columns with given value of the filtered values */
-  _inc?: InputMaybe<RoleIncInput>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<RoleSetInput>;
   /** filter the rows which have to be updated */
@@ -6036,8 +5930,6 @@ export enum ServiceConstraint {
 export type ServiceIncInput = {
   /** Required teaching hours for the year before modifications */
   hours?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique service identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Academic year for this service record */
   year?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -6048,8 +5940,6 @@ export type ServiceInsertInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Required teaching hours for the year before modifications */
   hours?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique service identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Optional message from teacher to course assignment committee */
   message?: InputMaybe<Scalars['String']['input']>;
   modifications?: InputMaybe<ServiceModificationArrRelInsertInput>;
@@ -6266,8 +6156,6 @@ export enum ServiceModificationConstraint {
 export type ServiceModificationIncInput = {
   /** Hour adjustment amount (negative values increase required hours) */
   hours?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique modification identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Reference to affected service record */
   serviceId?: InputMaybe<Scalars['Int']['input']>;
   /** Reference to service modification type */
@@ -6280,8 +6168,6 @@ export type ServiceModificationInsertInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Hour adjustment amount (negative values increase required hours) */
   hours?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique modification identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   service?: InputMaybe<ServiceObjRelInsertInput>;
   /** Reference to affected service record */
   serviceId?: InputMaybe<Scalars['Int']['input']>;
@@ -6414,8 +6300,6 @@ export type ServiceModificationSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Hour adjustment amount (negative values increase required hours) */
   hours?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique modification identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Reference to affected service record */
   serviceId?: InputMaybe<Scalars['Int']['input']>;
   /** Reference to service modification type */
@@ -6646,20 +6530,12 @@ export enum ServiceModificationTypeConstraint {
   ServiceModificationTypePkey = 'service_modification_type_pkey'
 }
 
-/** input type for incrementing numeric columns in table "service_modification_type" */
-export type ServiceModificationTypeIncInput = {
-  /** Unique modification type identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
-};
-
 /** input type for inserting data into table "service_modification_type" */
 export type ServiceModificationTypeInsertInput = {
   /** Timestamp when the record was created */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Detailed explanation of the modification type and its application */
   description?: InputMaybe<Scalars['String']['input']>;
-  /** Unique modification type identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Human-readable type name for display purposes, unique */
   label?: InputMaybe<Scalars['String']['input']>;
   service_modifications?: InputMaybe<ServiceModificationArrRelInsertInput>;
@@ -6756,8 +6632,6 @@ export type ServiceModificationTypeSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Detailed explanation of the modification type and its application */
   description?: InputMaybe<Scalars['String']['input']>;
-  /** Unique modification type identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Human-readable type name for display purposes, unique */
   label?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
@@ -6821,16 +6695,12 @@ export enum ServiceModificationTypeUpdateColumn {
   /** column name */
   Description = 'description',
   /** column name */
-  Id = 'id',
-  /** column name */
   Label = 'label',
   /** column name */
   UpdatedAt = 'updatedAt'
 }
 
 export type ServiceModificationTypeUpdates = {
-  /** increments the numeric columns with given value of the filtered values */
-  _inc?: InputMaybe<ServiceModificationTypeIncInput>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<ServiceModificationTypeSetInput>;
   /** filter the rows which have to be updated */
@@ -6864,8 +6734,6 @@ export enum ServiceModificationUpdateColumn {
   CreatedAt = 'createdAt',
   /** column name */
   Hours = 'hours',
-  /** column name */
-  Id = 'id',
   /** column name */
   ServiceId = 'serviceId',
   /** column name */
@@ -7027,8 +6895,6 @@ export type ServiceSetInput = {
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Required teaching hours for the year before modifications */
   hours?: InputMaybe<Scalars['Float']['input']>;
-  /** Unique service identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Optional message from teacher to course assignment committee */
   message?: InputMaybe<Scalars['String']['input']>;
   /** Teacher identifier linking to teacher table */
@@ -7155,8 +7021,6 @@ export enum ServiceUpdateColumn {
   CreatedAt = 'createdAt',
   /** column name */
   Hours = 'hours',
-  /** column name */
-  Id = 'id',
   /** column name */
   Message = 'message',
   /** column name */
@@ -8098,8 +7962,6 @@ export enum TrackConstraint {
 
 /** input type for incrementing numeric columns in table "track" */
 export type TrackIncInput = {
-  /** Unique track identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Parent program for this track */
   programId?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -8110,8 +7972,6 @@ export type TrackInsertInput = {
   courses?: InputMaybe<CourseArrRelInsertInput>;
   /** Timestamp when the record was created */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Unique track identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Full track name, unique within its program (e.g., Pure Mathematics, Applied Mathematics, Statistics, etc.) */
   name?: InputMaybe<Scalars['String']['input']>;
   /** Abbreviated track name */
@@ -8287,8 +8147,6 @@ export enum TrackSelectColumnTrackAggregateBoolExpBool_OrArgumentsColumns {
 export type TrackSetInput = {
   /** Timestamp when the record was created */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Unique track identifier */
-  id?: InputMaybe<Scalars['Int']['input']>;
   /** Full track name, unique within its program (e.g., Pure Mathematics, Applied Mathematics, Statistics, etc.) */
   name?: InputMaybe<Scalars['String']['input']>;
   /** Abbreviated track name */
@@ -8403,8 +8261,6 @@ export type TrackSumOrderBy = {
 export enum TrackUpdateColumn {
   /** column name */
   CreatedAt = 'createdAt',
-  /** column name */
-  Id = 'id',
   /** column name */
   Name = 'name',
   /** column name */
@@ -9940,7 +9796,6 @@ export type Mutation_RootUpdateCourseTypeManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateDegreeArgs = {
-  _inc?: InputMaybe<DegreeIncInput>;
   _set?: InputMaybe<DegreeSetInput>;
   where: DegreeBoolExp;
 };
@@ -9948,7 +9803,6 @@ export type Mutation_RootUpdateDegreeArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateDegreeByPkArgs = {
-  _inc?: InputMaybe<DegreeIncInput>;
   _set?: InputMaybe<DegreeSetInput>;
   pkColumns: DegreePkColumnsInput;
 };
@@ -10090,7 +9944,6 @@ export type Mutation_RootUpdateRequestTypeManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateRoleArgs = {
-  _inc?: InputMaybe<RoleIncInput>;
   _set?: InputMaybe<RoleSetInput>;
   where: RoleBoolExp;
 };
@@ -10098,7 +9951,6 @@ export type Mutation_RootUpdateRoleArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateRoleByPkArgs = {
-  _inc?: InputMaybe<RoleIncInput>;
   _set?: InputMaybe<RoleSetInput>;
   pkColumns: RolePkColumnsInput;
 };
@@ -10176,7 +10028,6 @@ export type Mutation_RootUpdateServiceModificationManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateServiceModificationTypeArgs = {
-  _inc?: InputMaybe<ServiceModificationTypeIncInput>;
   _set?: InputMaybe<ServiceModificationTypeSetInput>;
   where: ServiceModificationTypeBoolExp;
 };
@@ -10184,7 +10035,6 @@ export type Mutation_RootUpdateServiceModificationTypeArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdateServiceModificationTypeByPkArgs = {
-  _inc?: InputMaybe<ServiceModificationTypeIncInput>;
   _set?: InputMaybe<ServiceModificationTypeSetInput>;
   pkColumns: ServiceModificationTypePkColumnsInput;
 };
@@ -11959,14 +11809,19 @@ export type GetAdminRequestsQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetAdminRequestsQuery = { __typename?: 'query_root', requests: Array<(
     { __typename?: 'Request' }
     & { ' $fragmentRefs'?: { 'AdminRequestFragment': AdminRequestFragment } }
-  )>, degrees: Array<(
-    { __typename?: 'Degree' }
-    & { ' $fragmentRefs'?: { 'AdminRequestsDegreeFragment': AdminRequestsDegreeFragment } }
+  )>, services: Array<(
+    { __typename?: 'Service' }
+    & { ' $fragmentRefs'?: { 'AdminRequestsServiceFragment': AdminRequestsServiceFragment } }
+  )>, courses: Array<(
+    { __typename?: 'Course' }
+    & { ' $fragmentRefs'?: { 'AdminRequestsCourseFragment': AdminRequestsCourseFragment } }
   )> };
 
 export type AdminRequestFragment = { __typename?: 'Request', id: number, year: number, type: string, hours: number, service: { __typename?: 'Service', id: number, uid: string }, course: { __typename?: 'Course', id: number, name: string, semester: number, program: { __typename?: 'Program', id: number, name: string, degree: { __typename?: 'Degree', id: number, name: string } }, track?: { __typename?: 'Track', id: number, name: string } | null, type: { __typename?: 'CourseType', id: number, label: string } } } & { ' $fragmentName'?: 'AdminRequestFragment' };
 
-export type AdminRequestsDegreeFragment = { __typename?: 'Degree', id: number, name: string, programs: Array<{ __typename?: 'Program', id: number, name: string, tracks: Array<{ __typename?: 'Track', id: number, name: string }>, courses: Array<{ __typename?: 'Course', id: number, year: number, name: string, semester: number, track?: { __typename?: 'Track', id: number, name: string } | null, type: { __typename?: 'CourseType', id: number, label: string } }> }> } & { ' $fragmentName'?: 'AdminRequestsDegreeFragment' };
+export type AdminRequestsServiceFragment = { __typename?: 'Service', id: number, year: number, uid: string } & { ' $fragmentName'?: 'AdminRequestsServiceFragment' };
+
+export type AdminRequestsCourseFragment = { __typename?: 'Course', id: number, year: number, name: string, semester: number, program: { __typename?: 'Program', name: string, degree: { __typename?: 'Degree', name: string } }, track?: { __typename?: 'Track', name: string, program: { __typename?: 'Program', name: string, degree: { __typename?: 'Degree', name: string } } } | null, type: { __typename?: 'CourseType', label: string } } & { ' $fragmentName'?: 'AdminRequestsCourseFragment' };
 
 export type InsertRequestsMutationVariables = Exact<{
   objects: Array<RequestInsertInput> | RequestInsertInput;
@@ -12227,14 +12082,14 @@ export type GetAssignmentQueryVariables = Exact<{
 
 export type GetAssignmentQuery = { __typename?: 'query_root', requests: Array<{ __typename?: 'Request', id: number, hours: number }> };
 
-export type InsertAssignementMutationVariables = Exact<{
+export type InsertAssignmentMutationVariables = Exact<{
   serviceId: Scalars['Int']['input'];
   courseId: Scalars['Int']['input'];
   hours: Scalars['Float']['input'];
 }>;
 
 
-export type InsertAssignementMutation = { __typename?: 'mutation_root', assignment?: { __typename?: 'Request', id: number } | null };
+export type InsertAssignmentMutation = { __typename?: 'mutation_root', assignment?: { __typename?: 'Request', id: number } | null };
 
 export type UpdateAssignmentMutationVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -12457,7 +12312,8 @@ export const AdminProgramsDegreeFragmentDoc = {"kind":"Document","definitions":[
 export const AdminTrackFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminTrack"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Track"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameDisplay"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameShort"}},{"kind":"Field","name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}}]} as unknown as DocumentNode<AdminTrackFragment, unknown>;
 export const AdminTracksDegreeFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminTracksDegree"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Degree"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"programs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<AdminTracksDegreeFragment, unknown>;
 export const AdminRequestFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminRequest"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Request"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","name":{"kind":"Name","value":"service"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}}]}},{"kind":"Field","name":{"kind":"Name","value":"course"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"semester"}},{"kind":"Field","name":{"kind":"Name","value":"type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"hours"}}]}}]} as unknown as DocumentNode<AdminRequestFragment, unknown>;
-export const AdminRequestsDegreeFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminRequestsDegree"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Degree"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"programs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"tracks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"courses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"semester"}},{"kind":"Field","name":{"kind":"Name","value":"type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}}]}}]}}]} as unknown as DocumentNode<AdminRequestsDegreeFragment, unknown>;
+export const AdminRequestsServiceFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminRequestsService"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Service"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}}]}}]} as unknown as DocumentNode<AdminRequestsServiceFragment, unknown>;
+export const AdminRequestsCourseFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminRequestsCourse"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Course"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"semester"}},{"kind":"Field","name":{"kind":"Name","value":"type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}}]} as unknown as DocumentNode<AdminRequestsCourseFragment, unknown>;
 export const AdminPositionFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminPosition"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Position"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"baseServiceHours"}}]}}]} as unknown as DocumentNode<AdminPositionFragment, unknown>;
 export const AdminServiceModificationTypeFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminServiceModificationType"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ServiceModificationType"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}}]} as unknown as DocumentNode<AdminServiceModificationTypeFragment, unknown>;
 export const AdminServiceModificationFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminServiceModification"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"ServiceModification"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"service"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"teacher"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"displayname"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"hours"}}]}}]} as unknown as DocumentNode<AdminServiceModificationFragment, unknown>;
@@ -12519,7 +12375,7 @@ export const DeleteYearDocument = {"kind":"Document","definitions":[{"kind":"Ope
 export const CreateServicesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateServices"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"year"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createYearServices"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"args"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"p_year"},"value":{"kind":"Variable","name":{"kind":"Name","value":"year"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CreateServicesMutation, CreateServicesMutationVariables>;
 export const CopyCoursesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CopyCourses"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"year"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"copyYearCourses"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"args"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"p_year"},"value":{"kind":"Variable","name":{"kind":"Name","value":"year"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CopyCoursesMutation, CopyCoursesMutationVariables>;
 export const ComputePrioritiesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ComputePriorities"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"year"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"computeYearPriorities"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"args"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"p_year"},"value":{"kind":"Variable","name":{"kind":"Name","value":"year"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<ComputePrioritiesMutation, ComputePrioritiesMutationVariables>;
-export const GetAdminRequestsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAdminRequests"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"requests"},"name":{"kind":"Name","value":"request"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"year"},"value":{"kind":"EnumValue","value":"DESC"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"service"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"uid"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"program"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"degree"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"program"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"track"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"semester"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"label"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminRequest"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"degrees"},"name":{"kind":"Name","value":"degree"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminRequestsDegree"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminRequest"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Request"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","name":{"kind":"Name","value":"service"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}}]}},{"kind":"Field","name":{"kind":"Name","value":"course"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"semester"}},{"kind":"Field","name":{"kind":"Name","value":"type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"hours"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminRequestsDegree"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Degree"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"programs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"tracks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"courses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"semester"}},{"kind":"Field","name":{"kind":"Name","value":"type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetAdminRequestsQuery, GetAdminRequestsQueryVariables>;
+export const GetAdminRequestsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAdminRequests"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"requests"},"name":{"kind":"Name","value":"request"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"year"},"value":{"kind":"EnumValue","value":"DESC"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"service"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"uid"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"program"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"degree"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"program"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"track"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"semester"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"course"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"label"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminRequest"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"services"},"name":{"kind":"Name","value":"service"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"year"},"value":{"kind":"EnumValue","value":"DESC"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"uid"},"value":{"kind":"EnumValue","value":"ASC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminRequestsService"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"courses"},"name":{"kind":"Name","value":"course"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"year"},"value":{"kind":"EnumValue","value":"DESC"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"program"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"degree"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"program"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"track"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"semester"},"value":{"kind":"EnumValue","value":"ASC"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"label"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminRequestsCourse"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminRequest"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Request"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","name":{"kind":"Name","value":"service"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}}]}},{"kind":"Field","name":{"kind":"Name","value":"course"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"semester"}},{"kind":"Field","name":{"kind":"Name","value":"type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"hours"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminRequestsService"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Service"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","name":{"kind":"Name","value":"uid"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminRequestsCourse"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Course"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"semester"}},{"kind":"Field","name":{"kind":"Name","value":"type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}}]} as unknown as DocumentNode<GetAdminRequestsQuery, GetAdminRequestsQueryVariables>;
 export const InsertRequestsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertRequests"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"objects"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RequestInsertInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"insertData"},"name":{"kind":"Name","value":"insertRequest"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"objects"},"value":{"kind":"Variable","name":{"kind":"Name","value":"objects"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<InsertRequestsMutation, InsertRequestsMutationVariables>;
 export const UpsertRequestsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertRequests"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"objects"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RequestInsertInput"}}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"onConflict"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"RequestOnConflict"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"upsertData"},"name":{"kind":"Name","value":"insertRequest"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"objects"},"value":{"kind":"Variable","name":{"kind":"Name","value":"objects"}}},{"kind":"Argument","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"Variable","name":{"kind":"Name","value":"onConflict"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<UpsertRequestsMutation, UpsertRequestsMutationVariables>;
 export const UpdateRequestsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateRequests"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ids"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"changes"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RequestSetInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"updateData"},"name":{"kind":"Name","value":"updateRequest"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_in"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ids"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"changes"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<UpdateRequestsMutation, UpdateRequestsMutationVariables>;
@@ -12549,7 +12405,7 @@ export const DeletePriorityDocument = {"kind":"Document","definitions":[{"kind":
 export const DeleteComputedPriorityDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteComputedPriority"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"priority"},"name":{"kind":"Name","value":"updatePriorityByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pkColumns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"seniority"},"value":{"kind":"NullValue"}},{"kind":"ObjectField","name":{"kind":"Name","value":"isPriority"},"value":{"kind":"NullValue"}},{"kind":"ObjectField","name":{"kind":"Name","value":"computed"},"value":{"kind":"BooleanValue","value":false}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<DeleteComputedPriorityMutation, DeleteComputedPriorityMutationVariables>;
 export const UpsertPriorityDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertPriority"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"year"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"seniority"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isPriority"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"priority"},"name":{"kind":"Name","value":"insertPriorityOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"year"},"value":{"kind":"Variable","name":{"kind":"Name","value":"year"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"serviceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"courseId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"seniority"},"value":{"kind":"Variable","name":{"kind":"Name","value":"seniority"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"isPriority"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isPriority"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"computed"},"value":{"kind":"BooleanValue","value":false}}]}},{"kind":"Argument","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"priority_service_id_course_id_key"}},{"kind":"ObjectField","name":{"kind":"Name","value":"updateColumns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"seniority"},{"kind":"EnumValue","value":"isPriority"},{"kind":"EnumValue","value":"computed"}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpsertPriorityMutation, UpsertPriorityMutationVariables>;
 export const GetAssignmentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAssignment"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"requests"},"name":{"kind":"Name","value":"request"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_and"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"serviceId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"courseId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"StringValue","value":"assignment","block":false}}]}}]}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"hours"}}]}}]}}]} as unknown as DocumentNode<GetAssignmentQuery, GetAssignmentQueryVariables>;
-export const InsertAssignementDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertAssignement"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"hours"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"assignment"},"name":{"kind":"Name","value":"insertRequestOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"serviceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"courseId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"StringValue","value":"assignment","block":false}},{"kind":"ObjectField","name":{"kind":"Name","value":"hours"},"value":{"kind":"Variable","name":{"kind":"Name","value":"hours"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<InsertAssignementMutation, InsertAssignementMutationVariables>;
+export const InsertAssignmentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertAssignment"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"hours"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"assignment"},"name":{"kind":"Name","value":"insertRequestOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"serviceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"courseId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"StringValue","value":"assignment","block":false}},{"kind":"ObjectField","name":{"kind":"Name","value":"hours"},"value":{"kind":"Variable","name":{"kind":"Name","value":"hours"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<InsertAssignmentMutation, InsertAssignmentMutationVariables>;
 export const UpdateAssignmentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateAssignment"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"hours"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"assignment"},"name":{"kind":"Name","value":"updateRequestByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pkColumns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"hours"},"value":{"kind":"Variable","name":{"kind":"Name","value":"hours"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateAssignmentMutation, UpdateAssignmentMutationVariables>;
 export const DeleteRequestCardDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteRequestCard"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"request"},"name":{"kind":"Name","value":"deleteRequestByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<DeleteRequestCardMutation, DeleteRequestCardMutationVariables>;
 export const UpsertRequestDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertRequest"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"year"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"requestType"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"hours"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"request"},"name":{"kind":"Name","value":"insertRequestOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"year"},"value":{"kind":"Variable","name":{"kind":"Name","value":"year"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"serviceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"serviceId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"courseId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"courseId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"requestType"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"hours"},"value":{"kind":"Variable","name":{"kind":"Name","value":"hours"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"request_service_id_course_id_type_key"}},{"kind":"ObjectField","name":{"kind":"Name","value":"updateColumns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"hours"}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpsertRequestMutation, UpsertRequestMutationVariables>;

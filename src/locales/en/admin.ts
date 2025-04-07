@@ -414,7 +414,7 @@ If these types are assigned to modifications, you will not be able to delete the
             visible: "Visible",
           },
           error: {
-            conflictLabel: 'A degree with the name "{name}" already exists',
+            conflictName: 'A degree with the name "{name}" already exists',
           },
         },
         data: {
@@ -692,8 +692,12 @@ If these types are assigned to courses, you will not be able to delete them.`,
     },
     requests: {
       title: "Requests and priorities",
-      requests: "Requests",
-      priorities: "Priorities",
+      requests: {
+        label: "Requests",
+      },
+      priorities: {
+        label: "Priorities",
+      },
     },
     roles: {
       title: "Roles and responsibilities",

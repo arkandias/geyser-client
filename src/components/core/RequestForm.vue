@@ -5,7 +5,10 @@ import { computed, ref, watch } from "vue";
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
-import { REQUEST_TYPES } from "@/config/types/request-types.ts";
+import {
+  REQUEST_TYPES,
+  type RequestType,
+} from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   DeleteRequestDocument,
@@ -112,7 +115,7 @@ const groups = computed<number | null>({
   },
 });
 
-const requestType = ref<string | null>(null);
+const requestType = ref<RequestType | null>(null);
 const requestTypeInit = computed(() =>
   perm.toEditAssignments
     ? REQUEST_TYPES.ASSIGNMENT
@@ -125,7 +128,7 @@ const requestTypeOptions = computed(() => [
     ? [
         {
           value: REQUEST_TYPES.ASSIGNMENT,
-          label: t(`requestForm.field.requestType.${REQUEST_TYPES.ASSIGNMENT}`),
+          label: t("requestForm.field.requestType.assignment"),
         },
       ]
     : []),
@@ -133,11 +136,11 @@ const requestTypeOptions = computed(() => [
     ? [
         {
           value: REQUEST_TYPES.PRIMARY,
-          label: t(`requestForm.field.requestType.${REQUEST_TYPES.PRIMARY}`),
+          label: t("requestForm.field.requestType.primary"),
         },
         {
           value: REQUEST_TYPES.SECONDARY,
-          label: t(`requestForm.field.requestType.${REQUEST_TYPES.SECONDARY}`),
+          label: t("requestForm.field.requestType.secondary"),
         },
       ]
     : []),

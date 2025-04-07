@@ -11,7 +11,7 @@ import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   DeleteRequestCardDocument,
   GetAssignmentDocument,
-  InsertAssignementDocument,
+  InsertAssignmentDocument,
   RequestCardDataFragmentDoc,
   UpdateAssignmentDocument,
 } from "@/gql/graphql.ts";
@@ -56,11 +56,7 @@ graphql(`
     }
   }
 
-  mutation InsertAssignement(
-    $serviceId: Int!
-    $courseId: Int!
-    $hours: Float!
-  ) {
+  mutation InsertAssignment($serviceId: Int!, $courseId: Int!, $hours: Float!) {
     assignment: insertRequestOne(
       object: {
         serviceId: $serviceId
@@ -97,7 +93,7 @@ const getAssignment = useQuery({
   query: GetAssignmentDocument,
   fetchOnMount: false,
 });
-const insertAssignment = useMutation(InsertAssignementDocument, {
+const insertAssignment = useMutation(InsertAssignmentDocument, {
   refetchTags: ["request"],
 });
 const updateAssignment = useMutation(UpdateAssignmentDocument, {
@@ -120,14 +116,12 @@ const displayAssignButton = computed(
   () => (requestType: string) =>
     requestType !== REQUEST_TYPES.ASSIGNMENT && perm.toEditAssignments,
 );
-const displayDeleteButton = computed(() => (requestType: string) => {
-  switch (requestType) {
-    case REQUEST_TYPES.ASSIGNMENT:
-      return perm.toEditAssignments;
-    default:
-      return perm.toDeleteRequests;
-  }
-});
+const displayDeleteButton = computed(
+  () => (requestType: string) =>
+    requestType === REQUEST_TYPES.ASSIGNMENT
+      ? perm.toEditAssignments
+      : perm.toDeleteRequests,
+);
 const displayActions = computed(
   () => (requestType: string) =>
     displayAssignButton.value(requestType) ||
