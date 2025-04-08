@@ -13,6 +13,9 @@ export const toSlug = (str: string) =>
     .replace(/[\s-]+/g, "_") // Replace spaces and hyphens with underscore
     .trim(); // Remove leading/trailing spaces
 
+export const unique = <T>(element: T, index: number, array: T[]) =>
+  array.findIndex((el) => el === element) === index;
+
 export const uniqueValue =
   <K extends string, T extends Record<K, unknown>>(value: K) =>
   (element: T, index: number, array: T[]) =>

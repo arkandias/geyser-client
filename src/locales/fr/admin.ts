@@ -712,92 +712,141 @@ Si ces types sont attribués à des enseignements, vous ne pourrez pas les suppr
       title: "Demandes et priorités",
       requests: {
         label: "Demandes",
-        //         table: {
-        //           columns: {
-        //             year: "Année",
-        //             type: "Type demande",
-        //             hours: "H.",
-        //             uid: "Intervenant",
-        //             degree: "Diplôme",
-        //             program: "Mention",
-        //             track: "Parcours",
-        //             course: "Enseignement",
-        //             semester: "S.",
-        //             courseType: "Type ens.",
-        //           },
-        //         },
-        //         form: {
-        //           title: {
-        //             none: "Nouvel enseignement",
-        //             single: "{label}",
-        //             multiple: "{count} enseignements sélectionnés",
-        //           },
-        //           fields: {
-        //             year: "Année",
-        //             type: "Type de demande",
-        //             hours: "Nombre d'heures demandées",
-        //             uid: "Intervenant",
-        //             degree: "Diplôme",
-        //             program: "Mention",
-        //             track: "Parcours",
-        //             course: "Enseignement",
-        //             semester: "Semestre",
-        //             courseType: "Type d'enseignement",
-        //           },
-        //           error: {
-        //             updateDegreeWithoutProgram:
-        //               "Vous ne pouvez pas modifier le diplôme sans sélectionner une mention",
-        //             updateProgramWithoutDegree:
-        //               "Vous ne pouvez pas modifier la mention sans sélectionner un diplôme",
-        //             updateTrackWithoutProgram:
-        //               "Vous ne pouvez pas modifier le parcours sans sélectionner une mention",
-        //             updateTrackWithoutDegree:
-        //               "Vous ne pouvez pas modifier le parcours sans sélectionner un diplôme",
-        //             degreeNotFound:
-        //               "Il n'existe pas de diplôme avec le nom « {degree} »",
-        //             programNotFound:
-        //               "Il n'existe pas de mention du diplôme « {degree} » avec le nom « {program} »",
-        //             trackNotFound:
-        //               "Il n'existe pas de parcours dans la mention « {program} » du diplôme « {degree} » avec le nom « {track} »",
-        //             courseTypeNotFound:
-        //               "Il n'existe pas de type d'enseignement avec le label « {type} »",
-        //             conflictYearProgramTrackNameSemesterType:
-        //               "Il existe déjà un {type} au semestre {semester} avec le nom « {name} » dans le parcours « {track} » de la mention « {program} » du diplôme « {degree} » pour l'année {year}",
-        //             hoursNegative: "Entrez un nombre d'heures positif ou nul",
-        //             hoursAdjustedNegative:
-        //               "Entrez un nombre d'heures corrigé positif ou nul",
-        //             groupsNegative: "Entrez un nombre de groupes positif ou nul",
-        //             groupsAdjustedNegative:
-        //               "Entrez un nombre de groupes corrigé positif ou nul",
-        //             priorityRule:
-        //               "La règle de priorité doit être un entier positif ou nul",
-        //           },
-        //         },
-        //         data: {
-        //           success: {
-        //             insert:
-        //               "Aucun enseignement créé | Enseignement créé | {count} enseignements créés",
-        //             update:
-        //               "Aucun enseignement mis à jour | Enseignement mis à jour | {count} enseignements mis à jour",
-        //             delete:
-        //               "Aucun enseignement supprimé | Enseignement supprimé | {count} enseignements supprimés",
-        //             import:
-        //               "0 enseignement importé | 1 enseignement importé | {count} enseignements importés",
-        //             export:
-        //               "0 enseignement exporté | 1 enseignement exporté | {count} enseignements exportés",
-        //           },
-        //           confirm: {
-        //             delete: {
-        //               single: `Êtes-vous sûr de vouloir supprimer l'enseignement « {label} » ?
-        // S'il existe des demandes, des priorités ou des responsables pour cet enseignement, vous ne pourrez pas le supprimer.`,
-        //               multiple: `Êtes-vous sûr de vouloir supprimer les {count} parcours sélectionnés ?
-        // S'il existe des demandes, des priorités ou des responsables pour ces enseignements, vous ne pourrez pas les supprimer.`,
-        //             },
-        //           },
-        //         },
+        table: {
+          columns: {
+            year: "Année",
+            type: "Type demande",
+            hours: "H.",
+            uid: "Intervenant",
+            degree: "Diplôme",
+            program: "Mention",
+            track: "Parcours",
+            course: "Enseignement",
+            semester: "S.",
+            courseType: "Type ens.",
+          },
+        },
+        form: {
+          title: {
+            none: "Nouvelle demande",
+            single: "{label}",
+            multiple: "{count} demandes sélectionnés",
+          },
+          fields: {
+            year: "Année",
+            type: "Type de demande",
+            hours: "Nombre d'heures demandées",
+            uid: "Intervenant",
+            degree: "Diplôme",
+            program: "Mention",
+            track: "Parcours",
+            course: "Enseignement",
+            semester: "Semestre",
+            courseType: "Type d'enseignement",
+          },
+          error: {
+            updateUidWithoutYear:
+              "Vous ne pouvez pas modifier l'intervenant sans sélectionner une année'",
+            serviceNotFound:
+              "Il n'existe pas de service pour l'intervenant {uid} pour l'année {year}",
+            updateCourseMissingFields:
+              "Pour mettre à jour le cours, vous devez sélectionner une année, un diplôme, une mention, un parcours (éventuellement vide), un enseignement, un semestre et un type d'enseignement",
+            courseNotFound:
+              "Il n'existe pas de {type} au semestre {semester} avec le nom « {name} » dans le parcours « {track} » de la mention « {program} » du diplôme « {degree} » pour l'année {year}",
+          },
+        },
+        data: {
+          success: {
+            insert:
+              "Aucune demande créée | Demande créée | {count} demandes créées",
+            update:
+              "Aucune demande mise à jour | Demande mise à jour | {count} demandes mises à jour",
+            delete:
+              "Aucune demande supprimée | Demande supprimée | {count} demandes supprimées",
+            import:
+              "0 demande importée | 1 demande importée | {count} demandes importées",
+            export:
+              "0 demande exportée | 1 demande exportée | {count} demandes exportées",
+          },
+          confirm: {
+            delete: {
+              single:
+                "Êtes-vous sûr de vouloir supprimer la demande « {label} » ?",
+              multiple:
+                "Êtes-vous sûr de vouloir supprimer les {count} demandes sélectionnées ?",
+            },
+          },
+        },
       },
       priorities: {
         label: "Priorités",
+        table: {
+          columns: {
+            year: "Année",
+            seniority: "Ancienneté",
+            isPriority: "Prioritaire",
+            computed: "Calculée",
+            uid: "Intervenant",
+            degree: "Diplôme",
+            program: "Mention",
+            track: "Parcours",
+            course: "Enseignement",
+            semester: "S.",
+            courseType: "Type ens.",
+          },
+        },
+        form: {
+          title: {
+            none: "Nouvelle priorité",
+            single: "{label}",
+            multiple: "{count} priorités sélectionnés",
+          },
+          fields: {
+            year: "Année",
+            seniority: "Ancienneté",
+            isPriority: "Prioritaire",
+            computed: "Calculée",
+            uid: "Intervenant",
+            degree: "Diplôme",
+            program: "Mention",
+            track: "Parcours",
+            course: "Enseignement",
+            semester: "Semestre",
+            courseType: "Type d'enseignement",
+          },
+          error: {
+            updateUidWithoutYear:
+              "Vous ne pouvez pas modifier l'intervenant sans sélectionner une année'",
+            serviceNotFound:
+              "Il n'existe pas de service pour l'intervenant {uid} pour l'année {year}",
+            updateCourseMissingFields:
+              "Pour mettre à jour le cours, vous devez sélectionner une année, un diplôme, une mention, un parcours (éventuellement vide), un enseignement, un semestre et un type d'enseignement",
+            courseNotFound:
+              "Il n'existe pas de {type} au semestre {semester} avec le nom « {name} » dans le parcours « {track} » de la mention « {program} » du diplôme « {degree} » pour l'année {year}",
+          },
+        },
+        data: {
+          success: {
+            insert:
+              "Aucune priorité créée | Priorité créée | {count} priorités créées",
+            update:
+              "Aucune priorité mise à jour | Priorité mise à jour | {count} priorités mises à jour",
+            delete:
+              "Aucune priorité supprimée | Priorité supprimée | {count} priorités supprimées",
+            import:
+              "0 priorité importée | 1 priorité importée | {count} priorités importées",
+            export:
+              "0 priorité exportée | 1 priorité exportée | {count} priorités exportées",
+          },
+          confirm: {
+            delete: {
+              single:
+                "Êtes-vous sûr de vouloir supprimer la priorité « {label} » ?",
+              multiple:
+                "Êtes-vous sûr de vouloir supprimer les {count} priorités sélectionnées ?",
+            },
+          },
+        },
       },
     },
     roles: {
