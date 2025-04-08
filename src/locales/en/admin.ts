@@ -253,7 +253,7 @@ If these positions are assigned to teachers, you will not be able to delete them
           },
           fields: {
             year: "Year",
-            uid: "Instructor",
+            uid: "Teacher",
             hours: "Hours (@:unit.weightedHours)",
             message: "Message",
           },
@@ -295,7 +295,7 @@ If there are modifications, requests, or priorities for these services, you will
         table: {
           columns: {
             year: "Year",
-            uid: "Instructor",
+            uid: "Teacher",
             type: "Type",
             hours: "Hours (@:unit.weightedHours)",
           },
@@ -308,7 +308,7 @@ If there are modifications, requests, or priorities for these services, you will
           },
           fields: {
             year: "Year",
-            uid: "Instructor",
+            uid: "Teacher",
             type: "Type",
             hours: "Hours (@:unit.weightedHours)",
           },
@@ -690,143 +690,140 @@ If these types are assigned to courses, you will not be able to delete them.`,
         },
       },
     },
-
     requests: {
-      title: "Demandes et priorités",
+      title: "Requests and priorities",
       requests: {
-        label: "Demandes",
+        label: "Requests",
         table: {
           columns: {
-            year: "Année",
-            type: "Type demande",
-            hours: "H.",
-            uid: "Intervenant",
-            degree: "Diplôme",
-            program: "Mention",
-            track: "Parcours",
-            course: "Enseignement",
+            year: "Year",
+            type: "Request type",
+            hours: "Hrs.",
+            uid: "Teacher",
+            degree: "Degree",
+            program: "Program",
+            track: "Track",
+            course: "Course",
             semester: "S.",
-            courseType: "Type ens.",
+            courseType: "Course type",
           },
         },
         form: {
           title: {
-            none: "Nouvelle demande",
+            none: "New request",
             single: "{label}",
-            multiple: "{count} demandes sélectionnés",
+            multiple: "{count} requests selected",
           },
           fields: {
-            year: "Année",
-            type: "Type de demande",
-            hours: "Nombre d'heures demandées",
-            uid: "Intervenant",
-            degree: "Diplôme",
-            program: "Mention",
-            track: "Parcours",
-            course: "Enseignement",
-            semester: "Semestre",
-            courseType: "Type d'enseignement",
+            year: "Year",
+            type: "Request type",
+            hours: "Number of requested hours",
+            uid: "Teacher",
+            degree: "Degree",
+            program: "Program",
+            track: "Track",
+            course: "Course",
+            semester: "Semester",
+            courseType: "Course type",
           },
           error: {
             updateUidWithoutYear:
-              "Vous ne pouvez pas modifier l'intervenant sans sélectionner une année'",
+              "You cannot modify the teacher without selecting a year",
             serviceNotFound:
-              "Il n'existe pas de service pour l'intervenant {uid} pour l'année {year}",
+              "No service exists for teacher {uid} for year {year}",
             updateCourseMissingFields:
-              "Pour mettre à jour le cours, vous devez sélectionner une année, un diplôme, une mention, un parcours (éventuellement vide), un enseignement, un semestre et un type d'enseignement",
+              "To update the course, you must select a year, degree, program, track (possibly empty), course, semester, and course type",
             courseNotFound:
-              "Il n'existe pas de {type} au semestre {semester} avec le nom « {name} » dans le parcours « {track} » de la mention « {program} » du diplôme « {degree} » pour l'année {year}",
+              'No {type} in semester {semester} with the name "{name}" in the track "{track}" of the program "{program}" of the degree "{degree}" for year {year} exists',
           },
         },
         data: {
           success: {
             insert:
-              "Aucune demande créée | Demande créée | {count} demandes créées",
+              "No request created | Request created | {count} requests created",
             update:
-              "Aucune demande mise à jour | Demande mise à jour | {count} demandes mises à jour",
+              "No request updated | Request updated | {count} requests updated",
             delete:
-              "Aucune demande supprimée | Demande supprimée | {count} demandes supprimées",
+              "No request deleted | Request deleted | {count} requests deleted",
             import:
-              "0 demande importée | 1 demande importée | {count} demandes importées",
+              "0 request imported | 1 request imported | {count} requests imported",
             export:
-              "0 demande exportée | 1 demande exportée | {count} demandes exportées",
+              "0 request exported | 1 request exported | {count} requests exported",
           },
           confirm: {
             delete: {
-              single:
-                "Êtes-vous sûr de vouloir supprimer la demande « {label} » ?",
+              single: 'Are you sure you want to delete the request "{label}"?',
               multiple:
-                "Êtes-vous sûr de vouloir supprimer les {count} demandes sélectionnées ?",
+                "Are you sure you want to delete the {count} selected requests?",
             },
           },
         },
       },
       priorities: {
-        label: "Priorités",
+        label: "Priorities",
         table: {
           columns: {
-            year: "Année",
-            seniority: "Ancienneté",
-            isPriority: "Prioritaire",
-            computed: "Calculée",
-            uid: "Intervenant",
-            degree: "Diplôme",
-            program: "Mention",
-            track: "Parcours",
-            course: "Enseignement",
+            year: "Year",
+            seniority: "Seniority",
+            isPriority: "Priority",
+            computed: "Computed",
+            uid: "Teacher",
+            degree: "Degree",
+            program: "Program",
+            track: "Track",
+            course: "Course",
             semester: "S.",
-            courseType: "Type ens.",
+            courseType: "Course type",
           },
         },
         form: {
           title: {
-            none: "Nouvelle priorité",
+            none: "New priority",
             single: "{label}",
-            multiple: "{count} priorités sélectionnés",
+            multiple: "{count} priorities selected",
           },
           fields: {
-            year: "Année",
-            seniority: "Ancienneté",
-            isPriority: "Prioritaire",
-            computed: "Calculée",
-            uid: "Intervenant",
-            degree: "Diplôme",
-            program: "Mention",
-            track: "Parcours",
-            course: "Enseignement",
-            semester: "Semestre",
-            courseType: "Type d'enseignement",
+            year: "Year",
+            seniority: "Seniority",
+            isPriority: "Priority",
+            computed: "Computed",
+            uid: "Teacher",
+            degree: "Degree",
+            program: "Program",
+            track: "Track",
+            course: "Course",
+            semester: "Semester",
+            courseType: "Course type",
           },
           error: {
             updateUidWithoutYear:
-              "Vous ne pouvez pas modifier l'intervenant sans sélectionner une année'",
+              "You cannot modify the teacher without selecting a year",
             serviceNotFound:
-              "Il n'existe pas de service pour l'intervenant {uid} pour l'année {year}",
+              "No service exists for teacher {uid} for year {year}",
             updateCourseMissingFields:
-              "Pour mettre à jour le cours, vous devez sélectionner une année, un diplôme, une mention, un parcours (éventuellement vide), un enseignement, un semestre et un type d'enseignement",
+              "To update the course, you must select a year, degree, program, track (possibly empty), course, semester, and course type",
             courseNotFound:
-              "Il n'existe pas de {type} au semestre {semester} avec le nom « {name} » dans le parcours « {track} » de la mention « {program} » du diplôme « {degree} » pour l'année {year}",
+              'No {type} in semester {semester} with the name "{name}" in the track "{track}" of the program "{program}" of the degree "{degree}" for year {year} exists',
           },
         },
         data: {
           success: {
             insert:
-              "Aucune priorité créée | Priorité créée | {count} priorités créées",
+              "No priority created | Priority created | {count} priorities created",
             update:
-              "Aucune priorité mise à jour | Priorité mise à jour | {count} priorités mises à jour",
+              "No priority updated | Priority updated | {count} priorities updated",
             delete:
-              "Aucune priorité supprimée | Priorité supprimée | {count} priorités supprimées",
+              "No priority deleted | Priority deleted | {count} priorities deleted",
             import:
-              "0 priorité importée | 1 priorité importée | {count} priorités importées",
+              "0 priority imported | 1 priority imported | {count} priorities imported",
             export:
-              "0 priorité exportée | 1 priorité exportée | {count} priorités exportées",
+              "0 priority exported | 1 priority exported | {count} priorities exported",
           },
           confirm: {
             delete: {
-              single:
-                "Êtes-vous sûr de vouloir supprimer la priorité « {label} » ?",
+              single: 'Are you sure you want to delete the priority "{label}"?',
               multiple:
-                "Êtes-vous sûr de vouloir supprimer les {count} priorités sélectionnées ?",
+                "Are you sure you want to delete the {count} selected priorities?",
             },
           },
         },
