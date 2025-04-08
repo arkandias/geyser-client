@@ -56,9 +56,15 @@ graphql(`
     }
   }
 
-  mutation InsertAssignment($serviceId: Int!, $courseId: Int!, $hours: Float!) {
+  mutation InsertAssignment(
+    $year: Int!
+    $serviceId: Int!
+    $courseId: Int!
+    $hours: Float!
+  ) {
     assignment: insertRequestOne(
       object: {
+        year: $year
         serviceId: $serviceId
         courseId: $courseId
         type: "assignment"
