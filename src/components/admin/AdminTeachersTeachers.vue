@@ -227,27 +227,15 @@ const initForm = (rows: Row[]): FormValues => ({
   active: rows[0]?.active ?? null,
 });
 
-function validateImportRow(
-  importRow: ImportRow,
-  checkConflicts: boolean,
-): InsertInput;
+function validateImportRow(importRow: ImportRow): InsertInput;
+function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
 function validateImportRow(
   importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
-): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
 ): Partial<InsertInput> {
   const object: Partial<InsertInput> = {};
 
   if (importRow.uid !== undefined) {
     object.uid = importRow.uid;
-    if (checkConflicts && teachers.value.find((t) => t.uid === object.uid)) {
-      throw new Error(
-        t("admin.teachers.teachers.form.error.conflictEmail", importRow),
-      );
-    }
   }
 
   if (importRow.firstname !== undefined) {
@@ -296,6 +284,8 @@ function validateImportRow(
 const formValues = ref<FormValues>(initForm([]));
 const selectedFields = ref<string[]>([]);
 
+const positionOptions = computed(() => positions.value.map((p) => p.label));
+
 // Filters
 const selectedPositions = ref<string[]>([]);
 const selectedVisible = ref<boolean | null>(null);
@@ -333,7 +323,7 @@ const filterFn = computed(
     <template #filters>
       <QSelect
         v-model="selectedPositions"
-        :options="positions.map((p) => p.label)"
+        :options="positionOptions"
         :label="t('admin.teachers.teachers.table.columns.position')"
         multiple
         use-chips
@@ -418,7 +408,7 @@ const filterFn = computed(
       </QInput>
       <QSelect
         v-model="formValues.position"
-        :options="positions.map((p) => p.label)"
+        :options="positionOptions"
         :label="t('admin.teachers.teachers.form.fields.position')"
         :disable="multipleSelection && !selectedFields.includes('position')"
         clearable

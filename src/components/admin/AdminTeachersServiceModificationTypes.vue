@@ -161,33 +161,15 @@ const initForm = (rows: Row[]): FormValues => ({
   description: rows[0]?.description ?? null,
 });
 
-function validateImportRow(
-  importRow: ImportRow,
-  checkConflicts: boolean,
-): InsertInput;
+function validateImportRow(importRow: ImportRow): InsertInput;
+function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
 function validateImportRow(
   importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
-): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
 ): Partial<InsertInput> {
   const object: Partial<InsertInput> = {};
 
   if (importRow.label !== undefined) {
     object.label = importRow.label;
-    if (
-      checkConflicts &&
-      serviceModificationTypes.value.find((p) => p.label === object.label)
-    ) {
-      throw new Error(
-        t(
-          "admin.teachers.serviceModificationTypes.form.error.conflictLabel",
-          importRow,
-        ),
-      );
-    }
   }
 
   if (importRow.description !== undefined) {

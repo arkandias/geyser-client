@@ -165,8 +165,6 @@ la supprimer.`,
             active: "Actif",
           },
           error: {
-            conflictEmail:
-              "Il existe déjà un utilisateur avec l'email « {uid} »",
             positionNotFound:
               "Il n'existe pas de fonction avec le label « {position} »",
             baseServiceHoursNegative:
@@ -217,8 +215,6 @@ S'il existe des services, des responsabilités ou des rôles pour ces intervenan
             baseServiceHours: "Service de base (@:unit.weightedHours)",
           },
           error: {
-            conflictLabel:
-              "Il existe déjà une fonction avec le label « {label} »",
             hoursNegative:
               "Entrez un nombre d'heures de service de base positif ou nul",
           },
@@ -273,8 +269,6 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
               "Vous ne pouvez pas modifier l'année sans sélectionner un intervenant",
             updateUidWithoutYear:
               "Vous ne pouvez pas modifier l'intervenant sans sélectionner une année",
-            conflictYearUid:
-              "Il existe déjà un service pour l'intervenant {uid} et l'année {year}",
             hoursNegative: "Entrez un nombre d'heures positif ou nul",
           },
         },
@@ -373,10 +367,7 @@ S'il existe des modifications, des demandes ou des priorités pour ces services,
             label: "Label",
             description: "Description",
           },
-          error: {
-            conflictLabel:
-              "Il existe déjà un type de modification avec le label « {label} »",
-          },
+          error: {},
         },
         data: {
           success: {
@@ -424,9 +415,7 @@ Si ces types sont attribués à des modifications, vous ne pourrez pas les suppr
             nameShort: "Nom court",
             visible: "Visible",
           },
-          error: {
-            conflictName: "Il existe déjà un diplôme avec le nom « {name} »",
-          },
+          error: {},
         },
         data: {
           success: {
@@ -476,8 +465,6 @@ Si ces diplômes contiennent des mentions, vous ne pourrez pas les supprimer.`,
           error: {
             degreeNotFound:
               "Il n'existe pas de diplôme avec le nom « {degree} »",
-            conflictDegreeName:
-              "Il existe déjà une mention du diplôme « {degree} » avec le nom « {name} »",
           },
         },
         data: {
@@ -536,8 +523,6 @@ S'il existe des parcours, des cours ou des responsables pour ces mentions, vous 
               "Il n'existe pas de diplôme avec le nom « {degree} »",
             programNotFound:
               "Il n'existe pas de mention du diplôme « {degree} » avec le nom « {program} »",
-            conflictProgramName:
-              "Il existe déjà un parcours de la mention « {program} » du diplôme « {degree} » avec le nom « {name} »",
           },
         },
         data: {
@@ -580,7 +565,7 @@ S'il existe des cours ou des responsables pour ces parcours, vous ne pourrez pas
             groups: "G.",
             groupsAdjusted: "G. cor.",
             description: "Description",
-            priorityRule: "Prio.",
+            priorityRule: "Règle priorité",
             visible: "Visible",
           },
         },
@@ -604,7 +589,7 @@ S'il existe des cours ou des responsables pour ces parcours, vous ne pourrez pas
             groups: "Nombre de groupes",
             groupsAdjusted: "Nombre de groupes corrigé",
             description: "Description",
-            priorityRule: "Règle de priorité",
+            priorityRule: "Règle priorité",
             visible: "Visible",
           },
           error: {
@@ -624,8 +609,6 @@ S'il existe des cours ou des responsables pour ces parcours, vous ne pourrez pas
               "Il n'existe pas de parcours dans la mention « {program} » du diplôme « {degree} » avec le nom « {track} »",
             courseTypeNotFound:
               "Il n'existe pas de type d'enseignement avec le label « {type} »",
-            conflictYearProgramTrackNameSemesterType:
-              "Il existe déjà un {type} au semestre {semester} avec le nom « {name} » dans le parcours « {track} » de la mention « {program} » du diplôme « {degree} » pour l'année {year}",
             hoursNegative: "Entrez un nombre d'heures positif ou nul",
             hoursAdjustedNegative:
               "Entrez un nombre d'heures corrigé positif ou nul",
@@ -679,10 +662,7 @@ S'il existe des demandes, des priorités ou des responsables pour ces enseigneme
             coefficient: "Coefficient",
             description: "Description",
           },
-          error: {
-            conflictLabel:
-              "Il existe déjà un type d'enseignement avec le label « {label} »",
-          },
+          error: {},
         },
         data: {
           success: {

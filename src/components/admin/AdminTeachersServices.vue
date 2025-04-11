@@ -175,49 +175,34 @@ const initForm = (rows: Row[]): FormValues => ({
   message: rows[0]?.message ?? null,
 });
 
-function validateImportRow(
-  importRow: ImportRow,
-  checkConflicts: boolean,
-): InsertInput;
+function validateImportRow(importRow: ImportRow): InsertInput;
+function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
 function validateImportRow(
   importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
-): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
 ): Partial<InsertInput> {
   const object: Partial<InsertInput> = {};
 
+  // serviceId
   if (importRow.year !== undefined || importRow.uid !== undefined) {
     if (importRow.uid === undefined) {
       throw new Error(
         t("admin.teachers.service.form.error.updateYearWithoutUid"),
       );
     }
-
     if (importRow.year === undefined) {
       throw new Error(
         t("admin.teachers.service.form.error.updateUidWithoutYear"),
       );
     }
-
     object.serviceId = services.value.find(
       (s) => s.year === importRow.year && s.uid === importRow.uid,
     )?.id;
-
     if (object.serviceId === undefined) {
       throw new Error(
         t(
           "admin.teachers.serviceModifications.form.error.serviceNotFound",
           importRow,
         ),
-      );
-    }
-
-    if (checkConflicts) {
-      throw new Error(
-        t("admin.teachers.services.form.error.conflictYearUid", importRow),
       );
     }
   }
@@ -239,6 +224,7 @@ function validateImportRow(
 const formValues = ref<FormValues>(initForm([]));
 const selectedFields = ref<string[]>([]);
 
+const yearOptions = computed(() => years.value.map((y) => y.value));
 const teacherOptions = computed(() =>
   teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
 );
@@ -277,7 +263,7 @@ const filterFn = computed(
     <template #filters>
       <QSelect
         v-model="selectedYears"
-        :options="years.map((y) => y.value)"
+        :options="yearOptions"
         :label="t('admin.teachers.services.table.columns.year')"
         multiple
         use-chips
@@ -303,7 +289,7 @@ const filterFn = computed(
     <template #form="{ multipleSelection }">
       <QSelect
         v-model="formValues.year"
-        :options="years.map((y) => y.value)"
+        :options="yearOptions"
         :label="t('admin.teachers.services.form.fields.year')"
         :disable="multipleSelection && !selectedFields.includes('year')"
         square

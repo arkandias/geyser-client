@@ -33,11 +33,8 @@ type Id = Row[IdKey];
 type FormValues = NullableParsedRow<T>;
 type ImportRow = ParsedRow<T>;
 type ValidateImportRow = {
-  (importRow: ImportRow, checkConflicts: boolean): InsertInput;
-  (
-    importRow: Partial<ImportRow>,
-    checkConflicts: boolean,
-  ): Partial<InsertInput>;
+  (importRow: ImportRow): InsertInput;
+  (importRow: Partial<ImportRow>): Partial<InsertInput>;
 };
 type CustomMutationApi<Name extends string, TVars> = MutationApi<
   Partial<Record<Name, { returning: Record<IdKey, Id>[] } | null>>,

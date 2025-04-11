@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "villus";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -352,17 +352,10 @@ const initForm = (rows: Row[]): FormValues => ({
   visible: rows[0]?.visible ?? null,
 });
 
-function validateImportRow(
-  importRow: ImportRow,
-  checkConflicts: boolean,
-): InsertInput;
+function validateImportRow(importRow: ImportRow): InsertInput;
+function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
 function validateImportRow(
   importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
-): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
 ): Partial<InsertInput> {
   const object: Partial<InsertInput> = {};
 
@@ -370,6 +363,7 @@ function validateImportRow(
     object.year = importRow.year;
   }
 
+  // programId
   if (
     importRow.degree !== undefined ||
     importRow.program !== undefined ||
@@ -380,42 +374,37 @@ function validateImportRow(
         t("admin.courses.courses.form.error.updateDegreeWithoutProgram"),
       );
     }
-
     if (importRow.program !== undefined && importRow.degree === undefined) {
       throw new Error(
         t("admin.courses.courses.form.error.updateProgramWithoutDegree"),
       );
     }
-
     const degree = degrees.value.find((d) => d.name === importRow.degree);
     if (degree === undefined) {
       throw new Error(
         t("admin.courses.courses.form.error.degreeNotFound", importRow),
       );
     }
-
     const program = degree.programs.find((p) => p.name === importRow.program);
     if (program === undefined) {
       throw new Error(
         t("admin.courses.courses.form.error.programNotFound", importRow),
       );
     }
-
     object.programId = program.id;
 
+    // trackId
     if (importRow.track !== undefined) {
       if (importRow.degree === undefined) {
         throw new Error(
           t("admin.courses.courses.form.error.updateTrackWithoutDegree"),
         );
       }
-
       if (importRow.program === undefined) {
         throw new Error(
           t("admin.courses.courses.form.error.updateTrackWithoutProgram"),
         );
       }
-
       if (importRow.track === null) {
         object.trackId = null;
       } else {
@@ -438,6 +427,7 @@ function validateImportRow(
     object.semester = importRow.semester;
   }
 
+  // typeId
   if (importRow.type !== undefined) {
     const type = courseTypes.value.find((ct) => ct.label === importRow.type);
     if (type === undefined) {
@@ -450,25 +440,6 @@ function validateImportRow(
 
   if (importRow.name !== undefined) {
     object.name = importRow.name;
-    if (
-      checkConflicts &&
-      courses.value.find(
-        (t) =>
-          t.year === object.year &&
-          t.program.id === object.programId &&
-          t.track?.id == object.trackId &&
-          t.name === object.name &&
-          t.semester === object.semester &&
-          t.type.id === object.typeId,
-      )
-    ) {
-      throw new Error(
-        t(
-          "admin.courses.courses.form.error.conflictYearProgramTrackNameSemesterType",
-          importRow,
-        ),
-      );
-    }
   }
 
   if (importRow.hours !== undefined) {
@@ -512,9 +483,7 @@ function validateImportRow(
       importRow.priorityRule !== null &&
       (importRow.priorityRule < 0 || !Number.isInteger(importRow.priorityRule))
     ) {
-      throw new Error(
-        t("admin.courses.courses.form.error.priorityRuleNegative"),
-      );
+      throw new Error(t("admin.courses.courses.form.error.priorityRule"));
     }
     object.priorityRule = importRow.priorityRule;
   }
@@ -529,6 +498,8 @@ function validateImportRow(
 const formValues = ref<FormValues>(initForm([]));
 const selectedFields = ref<string[]>([]);
 
+const yearOptions = computed(() => years.value.map((y) => y.value));
+const degreeOptions = computed(() => degrees.value.map((d) => d.name));
 const programOptions = computed(
   () =>
     degrees.value
@@ -546,30 +517,19 @@ const semesterOptions = [1, 2, 3, 4, 5, 6].map((s) => ({
   value: s,
   label: t("semester", { semester: s }),
 }));
-
-watch(
-  [
-    () => formValues.value.degree,
-    () => formValues.value.program,
-    () => formValues.value.track,
-  ],
-  ([degree, program, track]) => {
-    const degreeProgram = degrees.value
-      .find((d) => d.name === degree)
-      ?.programs.find((p) => p.name === program);
-    if (!degreeProgram) {
-      formValues.value.program = null;
-      formValues.value.track = null;
-    } else if (!degreeProgram.tracks.some((t) => t.name === track)) {
-      formValues.value.track = null;
-    }
-  },
-);
+const typeOptions = computed(() => courseTypes.value.map((ct) => ct.label));
 
 // Filters
 const selectedYears = ref<number[]>([]);
 const selectedDegrees = ref<string[]>([]);
-const selectProgramOptions = computed(() =>
+const selectedPrograms = ref<{ degree: string; program: string }[]>([]);
+const selectedTracks = ref<
+  { degree: string; program: string; track: string }[]
+>([]);
+const selectedSemesters = ref<number[]>([]);
+const selectedTypes = ref<string[]>([]);
+const selectedVisible = ref<boolean | null>(null);
+const selectedProgramOptions = computed(() =>
   degrees.value
     .filter(
       (d) =>
@@ -582,8 +542,7 @@ const selectProgramOptions = computed(() =>
       })),
     ),
 );
-const selectedPrograms = ref<{ degree: string; program: string }[]>([]);
-const selectTrackOptions = computed(() =>
+const selectedTrackOptions = computed(() =>
   degrees.value
     .filter(
       (d) =>
@@ -605,12 +564,6 @@ const selectTrackOptions = computed(() =>
       })),
     ),
 );
-const selectedTracks = ref<
-  { degree: string; program: string; track: string }[]
->([]);
-const selectedSemesters = ref<number[]>([]);
-const selectedTypes = ref<string[]>([]);
-const selectedVisible = ref<boolean | null>(null);
 const filterFn = computed(
   () => (r: Row) =>
     (!selectedYears.value.length || selectedYears.value.includes(r.year)) &&
@@ -660,7 +613,7 @@ const filterFn = computed(
     <template #filters>
       <QSelect
         v-model="selectedYears"
-        :options="years.map((y) => y.value)"
+        :options="yearOptions"
         :label="t('admin.courses.courses.table.columns.year')"
         multiple
         use-chips
@@ -671,7 +624,7 @@ const filterFn = computed(
       />
       <QSelect
         v-model="selectedDegrees"
-        :options="degrees.map((d) => d.name)"
+        :options="degreeOptions"
         :label="t('admin.courses.courses.table.columns.degree')"
         multiple
         use-chips
@@ -682,7 +635,7 @@ const filterFn = computed(
       />
       <QSelect
         v-model="selectedPrograms"
-        :options="selectProgramOptions"
+        :options="selectedProgramOptions"
         :label="t('admin.courses.courses.table.columns.program')"
         emit-value
         map-options
@@ -695,7 +648,7 @@ const filterFn = computed(
       />
       <QSelect
         v-model="selectedTracks"
-        :options="selectTrackOptions"
+        :options="selectedTrackOptions"
         :label="t('admin.courses.courses.table.columns.track')"
         emit-value
         map-options
@@ -721,7 +674,7 @@ const filterFn = computed(
       />
       <QSelect
         v-model="selectedTypes"
-        :options="courseTypes.map((ct) => ct.label)"
+        :options="typeOptions"
         :label="t('admin.courses.courses.table.columns.type')"
         multiple
         use-chips
@@ -748,7 +701,7 @@ const filterFn = computed(
     <template #form="{ multipleSelection }">
       <QSelect
         v-model="formValues.year"
-        :options="years.map((y) => y.value)"
+        :options="yearOptions"
         :label="t('admin.courses.courses.form.fields.year')"
         :disable="multipleSelection && !selectedFields.includes('year')"
         square
@@ -761,7 +714,7 @@ const filterFn = computed(
       </QSelect>
       <QSelect
         v-model="formValues.degree"
-        :options="degrees.map((d) => d.name)"
+        :options="degreeOptions"
         :label="t('admin.courses.courses.form.fields.degree')"
         :disable="multipleSelection && !selectedFields.includes('degree')"
         square
@@ -845,7 +798,7 @@ const filterFn = computed(
       </QSelect>
       <QSelect
         v-model="formValues.type"
-        :options="courseTypes.map((ct) => ct.label)"
+        :options="typeOptions"
         :label="t('admin.courses.courses.form.fields.type')"
         :disable="multipleSelection && !selectedFields.includes('type')"
         square

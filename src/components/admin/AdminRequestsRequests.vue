@@ -384,10 +384,13 @@ function validateImportRow(
 const formValues = ref<FormValues>(initForm([]));
 const selectedFields = ref<string[]>([]);
 
-const typeOptions = Object.values(REQUEST_TYPES).map((rt) => ({
-  value: rt,
-  label: t(`requestType.${rt}`),
-}));
+const yearOptions = computed(() => years.value.map((y) => y.value));
+const typeOptions = computed(() =>
+  Object.values(REQUEST_TYPES).map((rt) => ({
+    value: rt,
+    label: t(`requestType.${rt}`),
+  })),
+);
 const uidOptions = computed(() =>
   services.value
     .filter((s) => s.year === formValues.value.year)
@@ -535,7 +538,7 @@ const filterFn = computed(
     <template #form="{ multipleSelection }">
       <QSelect
         v-model="formValues.year"
-        :options="years.map((y) => y.value)"
+        :options="yearOptions"
         :label="t('admin.requests.requests.form.fields.year')"
         :disable="multipleSelection && !selectedFields.includes('year')"
         clearable

@@ -146,27 +146,15 @@ const initForm = (rows: Row[]): FormValues => ({
   visible: rows[0]?.visible ?? null,
 });
 
-function validateImportRow(
-  importRow: ImportRow,
-  checkConflicts: boolean,
-): InsertInput;
+function validateImportRow(importRow: ImportRow): InsertInput;
+function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
 function validateImportRow(
   importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
-): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
 ): Partial<InsertInput> {
   const object: Partial<InsertInput> = {};
 
   if (importRow.name !== undefined) {
     object.name = importRow.name;
-    if (checkConflicts && degrees.value.find((d) => d.name === object.name)) {
-      throw new Error(
-        t("admin.courses.degrees.form.error.conflictName", importRow),
-      );
-    }
   }
 
   if (importRow.nameShort !== undefined) {

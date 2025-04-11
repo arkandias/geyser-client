@@ -214,7 +214,6 @@ const columns: Column<Row>[] = [
   {
     name: "seniority",
     label: t("admin.requests.priorities.table.columns.seniority"),
-    align: "left",
     field: "seniority",
     format: (val: number) => n(val, "decimal"),
     sortable: true,
@@ -223,14 +222,18 @@ const columns: Column<Row>[] = [
   {
     name: "isPriority",
     label: t("admin.requests.priorities.table.columns.isPriority"),
+    align: "center",
     field: "isPriority",
+    format: (val: boolean) => (val ? "✓" : "✗"),
     sortable: true,
     searchable: false,
   },
   {
     name: "computed",
     label: t("admin.requests.priorities.table.columns.computed"),
+    align: "center",
     field: "computed",
+    format: (val: boolean) => (val ? "✓" : "✗"),
     sortable: true,
     searchable: false,
   },
@@ -406,6 +409,7 @@ function validateImportRow(
 const formValues = ref<FormValues>(initForm([]));
 const selectedFields = ref<string[]>([]);
 
+const yearOptions = computed(() => years.value.map((y) => y.value));
 const uidOptions = computed(() =>
   services.value
     .filter((s) => s.year === formValues.value.year)
@@ -566,7 +570,7 @@ const filterFn = computed(
     <template #form="{ multipleSelection }">
       <QSelect
         v-model="formValues.year"
-        :options="years.map((y) => y.value)"
+        :options="yearOptions"
         :label="t('admin.requests.priorities.form.fields.year')"
         :disable="multipleSelection && !selectedFields.includes('year')"
         clearable

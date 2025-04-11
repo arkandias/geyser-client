@@ -174,20 +174,14 @@ const initForm = (rows: Row[]): FormValues => ({
   visible: rows[0]?.visible ?? null,
 });
 
-function validateImportRow(
-  importRow: ImportRow,
-  checkConflicts: boolean,
-): InsertInput;
+function validateImportRow(importRow: ImportRow): InsertInput;
+function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
 function validateImportRow(
   importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
-): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
 ): Partial<InsertInput> {
   const object: Partial<InsertInput> = {};
 
+  // degreeId
   if (importRow.degree !== undefined) {
     const degree = degrees.value.find((d) => d.name === importRow.degree);
     if (degree === undefined) {
@@ -195,22 +189,11 @@ function validateImportRow(
         t("admin.courses.programs.form.error.degreeNotFound", importRow),
       );
     }
-
     object.degreeId = degree.id;
   }
 
   if (importRow.name !== undefined) {
     object.name = importRow.name;
-    if (
-      checkConflicts &&
-      programs.value.find(
-        (p) => p.degree.id === object.degreeId && p.name === object.name,
-      )
-    ) {
-      throw new Error(
-        t("admin.courses.programs.form.error.conflictDegreeName", importRow),
-      );
-    }
   }
 
   if (importRow.nameShort !== undefined) {
@@ -226,6 +209,8 @@ function validateImportRow(
 
 const formValues = ref<FormValues>(initForm([]));
 const selectedFields = ref<string[]>([]);
+
+const degreeOptions = computed(() => degrees.value.map((d) => d.name));
 
 // Filters
 const selectedDegrees = ref<string[]>([]);
@@ -262,7 +247,7 @@ const filterFn = computed(
     <template #filters>
       <QSelect
         v-model="selectedDegrees"
-        :options="degrees.map((d) => d.name)"
+        :options="degreeOptions"
         :label="t('admin.courses.programs.table.columns.degree')"
         multiple
         use-chips
@@ -289,7 +274,7 @@ const filterFn = computed(
     <template #form="{ multipleSelection }">
       <QSelect
         v-model="formValues.degree"
-        :options="degrees.map((d) => d.name)"
+        :options="degreeOptions"
         :label="t('admin.courses.programs.form.fields.degree')"
         :disable="multipleSelection && !selectedFields.includes('degree')"
         square

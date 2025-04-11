@@ -157,7 +157,6 @@ If courses or services are associated with this year, you will not be able to de
             active: "Active",
           },
           error: {
-            conflictEmail: 'A user with email "{uid}" already exists',
             positionNotFound: 'No position exists with the label "{position}"',
             baseServiceHoursNegative:
               "Enter a positive or zero number of base service hours",
@@ -207,7 +206,6 @@ If there are services, responsibilities, or roles for these teachers, you will n
             baseServiceHours: "Base service (@:unit.weightedHours)",
           },
           error: {
-            conflictLabel: 'A position with the label "{label}" already exists',
             hoursNegative:
               "Enter a positive or zero number of base service hours",
           },
@@ -262,8 +260,6 @@ If these positions are assigned to teachers, you will not be able to delete them
               "You cannot modify the year without selecting a teacher",
             updateUidWithoutYear:
               "You cannot modify the teacher without selecting a year",
-            conflictYearUid:
-              "A service already exists for teacher {uid} and year {year}",
             hoursNegative: "Enter a positive or zero number of hours",
           },
         },
@@ -362,10 +358,7 @@ If there are modifications, requests, or priorities for these services, you will
             label: "Label",
             description: "Description",
           },
-          error: {
-            conflictLabel:
-              'A modification type with the label "{label}" already exists',
-          },
+          error: {},
         },
         data: {
           success: {
@@ -413,9 +406,7 @@ If these types are assigned to modifications, you will not be able to delete the
             nameShort: "Short name",
             visible: "Visible",
           },
-          error: {
-            conflictName: 'A degree with the name "{name}" already exists',
-          },
+          error: {},
         },
         data: {
           success: {
@@ -464,8 +455,6 @@ If these degrees contain programs, you will not be able to delete them.`,
           },
           error: {
             degreeNotFound: 'No degree with the name "{degree}" exists',
-            conflictDegreeName:
-              'A program in the degree "{degree}" with the name "{name}" already exists',
           },
         },
         data: {
@@ -523,8 +512,6 @@ If there are tracks, courses, or coordinators for these programs, you will not b
             degreeNotFound: 'No degree with the name "{degree}" exists',
             programNotFound:
               'No program in the degree "{degree}" with the name "{program}" exists',
-            conflictProgramName:
-              'A track in the program "{program}" of the degree "{degree}" with the name "{name}" already exists',
           },
         },
         data: {
@@ -564,7 +551,7 @@ If there are courses or coordinators for these tracks, you will not be able to d
             groups: "Grps.",
             groupsAdjusted: "Adj. grps.",
             description: "Description",
-            priorityRule: "Priority",
+            priorityRule: "Priority rule",
             visible: "Visible",
           },
         },
@@ -606,8 +593,6 @@ If there are courses or coordinators for these tracks, you will not be able to d
             trackNotFound:
               'No track in the program "{program}" of the degree "{degree}" with the name "{track}" exists',
             courseTypeNotFound: 'No course type with the label "{type}" exists',
-            conflictYearProgramTrackNameSemesterType:
-              'A {type} in semester {semester} with the name "{name}" in the track "{track}" of the program "{program}" of the degree "{degree}" for year {year} already exists',
             hoursNegative: "Enter a positive or zero number of hours",
             hoursAdjustedNegative:
               "Enter a positive or zero adjusted number of hours",
@@ -661,10 +646,7 @@ If there are requests, priorities, or coordinators for these courses, you will n
             coefficient: "Coefficient",
             description: "Description",
           },
-          error: {
-            conflictLabel:
-              'A course type with the label "{label}" already exists',
-          },
+          error: {},
         },
         data: {
           success: {

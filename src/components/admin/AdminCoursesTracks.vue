@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "villus";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -193,62 +193,42 @@ const initForm = (rows: Row[]): FormValues => ({
   visible: rows[0]?.visible ?? null,
 });
 
-function validateImportRow(
-  importRow: ImportRow,
-  checkConflicts: boolean,
-): InsertInput;
+function validateImportRow(importRow: ImportRow): InsertInput;
+function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
 function validateImportRow(
   importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
-): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-  checkConflicts: boolean,
 ): Partial<InsertInput> {
   const object: Partial<InsertInput> = {};
 
+  // programId
   if (importRow.degree !== undefined || importRow.program !== undefined) {
     if (importRow.program === undefined) {
       throw new Error(
         t("admin.courses.tracks.form.error.updateDegreeWithoutProgram"),
       );
     }
-
     if (importRow.degree === undefined) {
       throw new Error(
         t("admin.courses.tracks.form.error.updateProgramWithoutDegree"),
       );
     }
-
     const degree = degrees.value.find((d) => d.name === importRow.degree);
     if (degree === undefined) {
       throw new Error(
         t("admin.courses.tracks.form.error.degreeNotFound", importRow),
       );
     }
-
     const program = degree.programs.find((p) => p.name === importRow.program);
     if (program === undefined) {
       throw new Error(
         t("admin.courses.tracks.form.error.programNotFound", importRow),
       );
     }
-
     object.programId = program.id;
   }
 
   if (importRow.name !== undefined) {
     object.name = importRow.name;
-    if (
-      checkConflicts &&
-      tracks.value.find(
-        (t) => t.program.id === object.programId && t.name === object.name,
-      )
-    ) {
-      throw new Error(
-        t("admin.courses.tracks.form.error.conflictProgramName", importRow),
-      );
-    }
   }
 
   if (importRow.nameShort !== undefined) {
@@ -265,6 +245,7 @@ function validateImportRow(
 const formValues = ref<FormValues>(initForm([]));
 const selectedFields = ref<string[]>([]);
 
+const degreeOptions = computed(() => degrees.value.map((d) => d.name));
 const programOptions = computed(
   () =>
     degrees.value
@@ -272,23 +253,11 @@ const programOptions = computed(
       ?.programs.map((p) => p.name) ?? [],
 );
 
-watch(
-  [() => formValues.value.degree, () => formValues.value.program],
-  ([degree, program]) => {
-    if (
-      program &&
-      !degrees.value
-        .find((d) => d.name === degree)
-        ?.programs.find((p) => p.name === program)
-    ) {
-      formValues.value.program = null;
-    }
-  },
-);
-
 // Filters
 const selectedDegrees = ref<string[]>([]);
-const selectProgramOptions = computed(() =>
+const selectedPrograms = ref<{ degree: string; program: string }[]>([]);
+const selectedVisible = ref<boolean | null>(null);
+const selectedProgramOptions = computed(() =>
   degrees.value
     .filter(
       (d) =>
@@ -301,8 +270,6 @@ const selectProgramOptions = computed(() =>
       })),
     ),
 );
-const selectedPrograms = ref<{ degree: string; program: string }[]>([]);
-const selectedVisible = ref<boolean | null>(null);
 const filterFn = computed(
   () => (r: Row) =>
     (!selectedDegrees.value.length ||
@@ -340,7 +307,7 @@ const filterFn = computed(
     <template #filters>
       <QSelect
         v-model="selectedDegrees"
-        :options="degrees.map((d) => d.name)"
+        :options="degreeOptions"
         :label="t('admin.courses.tracks.table.columns.degree')"
         multiple
         use-chips
@@ -351,7 +318,7 @@ const filterFn = computed(
       />
       <QSelect
         v-model="selectedPrograms"
-        :options="selectProgramOptions"
+        :options="selectedProgramOptions"
         :label="t('admin.courses.tracks.table.columns.program')"
         emit-value
         map-options
@@ -380,7 +347,7 @@ const filterFn = computed(
     <template #form="{ multipleSelection }">
       <QSelect
         v-model="formValues.degree"
-        :options="degrees.map((d) => d.name)"
+        :options="degreeOptions"
         :label="t('admin.courses.tracks.form.fields.degree')"
         :disable="multipleSelection && !selectedFields.includes('degree')"
         square
