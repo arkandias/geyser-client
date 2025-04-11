@@ -28,7 +28,7 @@ graphql(`
     year
     service: vService {
       id
-      teacher {
+      teacher: vTeacher {
         displayname
       }
     }

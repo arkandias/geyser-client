@@ -52,7 +52,7 @@ graphql(`
         }
       }
       service: vService {
-        teacher {
+        teacher: vTeacher {
           uid
           displayname
         }

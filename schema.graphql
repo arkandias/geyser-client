@@ -73,6 +73,9 @@ type Coordination {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz!
+
+  """An object relationship"""
+  vTeacher: VTeacher
 }
 
 """
@@ -194,6 +197,7 @@ input CoordinationBoolExp {
   trackId: IntComparisonExp
   uid: StringComparisonExp
   updatedAt: TimestamptzComparisonExp
+  vTeacher: VTeacherBoolExp
 }
 
 """
@@ -267,6 +271,7 @@ input CoordinationInsertInput {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+  vTeacher: VTeacherObjRelInsertInput
 }
 
 """aggregate max on columns"""
@@ -447,6 +452,7 @@ input CoordinationOrderBy {
   trackId: OrderBy
   uid: OrderBy
   updatedAt: OrderBy
+  vTeacher: VTeacherOrderBy
 }
 
 """primary key columns input for table: coordination"""
@@ -3731,7 +3737,7 @@ type Phase {
   """
   Current phase flag (TRUE or NULL). Constrained to have at most one current phase
   """
-  current: Boolean
+  current: Boolean!
 
   """Summary of activities and permissions during this phase"""
   description: String
@@ -3781,14 +3787,14 @@ unique or primary key constraints on table "phase"
 """
 enum PhaseConstraint {
   """
-  unique or primary key constraint on columns "current"
-  """
-  phase_current_key
-
-  """
   unique or primary key constraint on columns "value"
   """
   phase_pkey
+
+  """
+  unique or primary key constraint on columns "current"
+  """
+  unique_current_phase
 }
 
 """
@@ -7950,6 +7956,9 @@ type Service {
   """
   updatedAt: timestamptz!
 
+  """An object relationship"""
+  vTeacher: VTeacher
+
   """Academic year for this service record"""
   year: Int!
 
@@ -8059,6 +8068,7 @@ input ServiceBoolExp {
   teacher: TeacherBoolExp
   uid: StringComparisonExp
   updatedAt: TimestamptzComparisonExp
+  vTeacher: VTeacherBoolExp
   year: IntComparisonExp
   yearByYear: YearBoolExp
 }
@@ -8118,6 +8128,7 @@ input ServiceInsertInput {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+  vTeacher: VTeacherObjRelInsertInput
 
   """Academic year for this service record"""
   year: Int
@@ -9291,6 +9302,7 @@ input ServiceOrderBy {
   teacher: TeacherOrderBy
   uid: OrderBy
   updatedAt: OrderBy
+  vTeacher: VTeacherOrderBy
   year: OrderBy
   yearByYear: YearOrderBy
 }
@@ -11718,6 +11730,9 @@ type VService {
   """An object relationship"""
   teacher: Teacher
   uid: String
+
+  """An object relationship"""
+  vTeacher: Teacher
   year: Int
 
   """An object relationship"""
@@ -11807,6 +11822,7 @@ input VServiceBoolExp {
   requestsAggregate: RequestAggregateBoolExp
   teacher: TeacherBoolExp
   uid: StringComparisonExp
+  vTeacher: TeacherBoolExp
   year: IntComparisonExp
   yearByYear: YearBoolExp
 }
@@ -11829,6 +11845,7 @@ input VServiceInsertInput {
   requests: RequestArrRelInsertInput
   teacher: TeacherObjRelInsertInput
   uid: String
+  vTeacher: TeacherObjRelInsertInput
   year: Int
   yearByYear: YearObjRelInsertInput
 }
@@ -11891,6 +11908,7 @@ input VServiceOrderBy {
   requestsAggregate: RequestAggregateOrderBy
   teacher: TeacherOrderBy
   uid: OrderBy
+  vTeacher: TeacherOrderBy
   year: OrderBy
   yearByYear: YearOrderBy
 }
@@ -12046,6 +12064,292 @@ input VServiceVarianceOrderBy {
 }
 
 """
+columns and relationships of "v_teacher"
+"""
+type VTeacher {
+  alias: String
+
+  """An array relationship"""
+  coordinations(
+    """distinct select on columns"""
+    distinctOn: [CoordinationSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [CoordinationOrderBy!]
+
+    """filter the rows returned"""
+    where: CoordinationBoolExp
+  ): [Coordination!]!
+
+  """An aggregate relationship"""
+  coordinationsAggregate(
+    """distinct select on columns"""
+    distinctOn: [CoordinationSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [CoordinationOrderBy!]
+
+    """filter the rows returned"""
+    where: CoordinationBoolExp
+  ): CoordinationAggregate!
+  displayname: String
+  firstname: String
+  lastname: String
+
+  """An array relationship"""
+  services(
+    """distinct select on columns"""
+    distinctOn: [ServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [ServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: ServiceBoolExp
+  ): [Service!]!
+
+  """An aggregate relationship"""
+  servicesAggregate(
+    """distinct select on columns"""
+    distinctOn: [ServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [ServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: ServiceBoolExp
+  ): ServiceAggregate!
+  uid: String
+
+  """An array relationship"""
+  vServices(
+    """distinct select on columns"""
+    distinctOn: [VServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: VServiceBoolExp
+  ): [VService!]!
+
+  """An aggregate relationship"""
+  vServicesAggregate(
+    """distinct select on columns"""
+    distinctOn: [VServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: VServiceBoolExp
+  ): VServiceAggregate!
+  visible: Boolean
+}
+
+"""
+aggregated selection of "v_teacher"
+"""
+type VTeacherAggregate {
+  aggregate: VTeacherAggregateFields
+  nodes: [VTeacher!]!
+}
+
+"""
+aggregate fields of "v_teacher"
+"""
+type VTeacherAggregateFields {
+  count(columns: [VTeacherSelectColumn!], distinct: Boolean): Int!
+  max: VTeacherMaxFields
+  min: VTeacherMinFields
+}
+
+"""
+Boolean expression to filter rows from the table "v_teacher". All fields are combined with a logical 'AND'.
+"""
+input VTeacherBoolExp {
+  _and: [VTeacherBoolExp!]
+  _not: VTeacherBoolExp
+  _or: [VTeacherBoolExp!]
+  alias: StringComparisonExp
+  coordinations: CoordinationBoolExp
+  coordinationsAggregate: CoordinationAggregateBoolExp
+  displayname: StringComparisonExp
+  firstname: StringComparisonExp
+  lastname: StringComparisonExp
+  services: ServiceBoolExp
+  servicesAggregate: ServiceAggregateBoolExp
+  uid: StringComparisonExp
+  vServices: VServiceBoolExp
+  vServicesAggregate: VServiceAggregateBoolExp
+  visible: BooleanComparisonExp
+}
+
+"""
+input type for inserting data into table "v_teacher"
+"""
+input VTeacherInsertInput {
+  alias: String
+  coordinations: CoordinationArrRelInsertInput
+  displayname: String
+  firstname: String
+  lastname: String
+  services: ServiceArrRelInsertInput
+  uid: String
+  vServices: VServiceArrRelInsertInput
+  visible: Boolean
+}
+
+"""aggregate max on columns"""
+type VTeacherMaxFields {
+  alias: String
+  displayname: String
+  firstname: String
+  lastname: String
+  uid: String
+}
+
+"""aggregate min on columns"""
+type VTeacherMinFields {
+  alias: String
+  displayname: String
+  firstname: String
+  lastname: String
+  uid: String
+}
+
+"""
+response of any mutation on the table "v_teacher"
+"""
+type VTeacherMutationResponse {
+  """number of rows affected by the mutation"""
+  affectedRows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [VTeacher!]!
+}
+
+"""
+input type for inserting object relation for remote table "v_teacher"
+"""
+input VTeacherObjRelInsertInput {
+  data: VTeacherInsertInput!
+}
+
+"""Ordering options when selecting data from "v_teacher"."""
+input VTeacherOrderBy {
+  alias: OrderBy
+  coordinationsAggregate: CoordinationAggregateOrderBy
+  displayname: OrderBy
+  firstname: OrderBy
+  lastname: OrderBy
+  servicesAggregate: ServiceAggregateOrderBy
+  uid: OrderBy
+  vServicesAggregate: VServiceAggregateOrderBy
+  visible: OrderBy
+}
+
+"""
+select columns of table "v_teacher"
+"""
+enum VTeacherSelectColumn {
+  """column name"""
+  alias
+
+  """column name"""
+  displayname
+
+  """column name"""
+  firstname
+
+  """column name"""
+  lastname
+
+  """column name"""
+  uid
+
+  """column name"""
+  visible
+}
+
+"""
+input type for updating data in table "v_teacher"
+"""
+input VTeacherSetInput {
+  alias: String
+  displayname: String
+  firstname: String
+  lastname: String
+  uid: String
+  visible: Boolean
+}
+
+"""
+Streaming cursor of the table "v_teacher"
+"""
+input VTeacherStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: VTeacherStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input VTeacherStreamCursorValueInput {
+  alias: String
+  displayname: String
+  firstname: String
+  lastname: String
+  uid: String
+  visible: Boolean
+}
+
+input VTeacherUpdates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: VTeacherSetInput
+
+  """filter the rows which have to be updated"""
+  where: VTeacherBoolExp!
+}
+
+"""
 Academic year definitions with current year designation and visibility settings
 """
 type Year {
@@ -12091,7 +12395,7 @@ type Year {
   """
   Current academic year flag (TRUE or NULL). Constrained to have at most one current year
   """
-  current: Boolean
+  current: Boolean!
 
   """An array relationship"""
   priorities(
@@ -12311,7 +12615,7 @@ enum YearConstraint {
   """
   unique or primary key constraint on columns "current"
   """
-  year_current_key
+  unique_current_year
 
   """
   unique or primary key constraint on columns "value"
@@ -13058,6 +13362,14 @@ type mutation_root {
   ): VServiceMutationResponse
 
   """
+  delete data from the table: "v_teacher"
+  """
+  deleteVTeacher(
+    """filter the rows which have to be deleted"""
+    where: VTeacherBoolExp!
+  ): VTeacherMutationResponse
+
+  """
   delete data from the table: "year"
   """
   deleteYear(
@@ -13484,6 +13796,22 @@ type mutation_root {
     """the row to be inserted"""
     object: VServiceInsertInput!
   ): VService
+
+  """
+  insert data into the table: "v_teacher"
+  """
+  insertVTeacher(
+    """the rows to be inserted"""
+    objects: [VTeacherInsertInput!]!
+  ): VTeacherMutationResponse
+
+  """
+  insert a single row into the table: "v_teacher"
+  """
+  insertVTeacherOne(
+    """the row to be inserted"""
+    object: VTeacherInsertInput!
+  ): VTeacher
 
   """
   insert data into the table: "year"
@@ -14098,6 +14426,25 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [VServiceUpdates!]!
   ): [VServiceMutationResponse]
+
+  """
+  update data of the table: "v_teacher"
+  """
+  updateVTeacher(
+    """sets the columns of the filtered rows to the given values"""
+    _set: VTeacherSetInput
+
+    """filter the rows which have to be updated"""
+    where: VTeacherBoolExp!
+  ): VTeacherMutationResponse
+
+  """
+  update multiples rows of table: "v_teacher"
+  """
+  updateVTeacherMany(
+    """updates to execute, in order"""
+    updates: [VTeacherUpdates!]!
+  ): [VTeacherMutationResponse]
 
   """
   update data of the table: "year"
@@ -15048,6 +15395,46 @@ type query_root {
     """filter the rows returned"""
     where: VServiceBoolExp
   ): VServiceAggregate!
+
+  """
+  fetch data from the table: "v_teacher"
+  """
+  vTeacher(
+    """distinct select on columns"""
+    distinctOn: [VTeacherSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VTeacherOrderBy!]
+
+    """filter the rows returned"""
+    where: VTeacherBoolExp
+  ): [VTeacher!]!
+
+  """
+  fetch aggregated fields from the table: "v_teacher"
+  """
+  vTeacherAggregate(
+    """distinct select on columns"""
+    distinctOn: [VTeacherSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VTeacherOrderBy!]
+
+    """filter the rows returned"""
+    where: VTeacherBoolExp
+  ): VTeacherAggregate!
 
   """
   fetch data from the table: "year"
@@ -16264,6 +16651,60 @@ type subscription_root {
     """filter the rows returned"""
     where: VServiceBoolExp
   ): [VService!]!
+
+  """
+  fetch data from the table: "v_teacher"
+  """
+  vTeacher(
+    """distinct select on columns"""
+    distinctOn: [VTeacherSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VTeacherOrderBy!]
+
+    """filter the rows returned"""
+    where: VTeacherBoolExp
+  ): [VTeacher!]!
+
+  """
+  fetch aggregated fields from the table: "v_teacher"
+  """
+  vTeacherAggregate(
+    """distinct select on columns"""
+    distinctOn: [VTeacherSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VTeacherOrderBy!]
+
+    """filter the rows returned"""
+    where: VTeacherBoolExp
+  ): VTeacherAggregate!
+
+  """
+  fetch data from the table in a streaming manner: "v_teacher"
+  """
+  vTeacherStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [VTeacherStreamCursorInput]!
+
+    """filter the rows returned"""
+    where: VTeacherBoolExp
+  ): [VTeacher!]!
 
   """
   fetch data from the table: "year"

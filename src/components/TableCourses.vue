@@ -67,7 +67,7 @@ graphql(`
 
   fragment TableCoursesVService on VService {
     id
-    teacher {
+    teacher: vTeacher {
       displayname
     }
   }

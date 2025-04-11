@@ -22,7 +22,7 @@ graphql(`
   fragment PriorityChipData on Priority {
     id
     service: vService {
-      teacher {
+      teacher: vTeacher {
         displayname
       }
     }
