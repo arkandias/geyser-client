@@ -51,7 +51,7 @@ graphql(`
           label
         }
       }
-      service {
+      service: vService {
         teacher {
           uid
           displayname
@@ -86,8 +86,8 @@ export const useDownloadAssignments = () => {
       [t("downloadAssignments.course")]: a.course.name,
       [t("downloadAssignments.semester")]: a.course.semester,
       [t("downloadAssignments.type")]: a.course.type.label,
-      [t("downloadAssignments.teacher")]: a.service.teacher.displayname,
-      [t("downloadAssignments.email")]: a.service.teacher.uid,
+      [t("downloadAssignments.teacher")]: a.service?.teacher?.displayname,
+      [t("downloadAssignments.email")]: a.service?.teacher?.uid,
     }));
 
     try {

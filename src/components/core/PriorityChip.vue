@@ -21,7 +21,7 @@ const { dataFragment } = defineProps<{
 graphql(`
   fragment PriorityChipData on Priority {
     id
-    service {
+    service: vService {
       teacher {
         displayname
       }
@@ -107,7 +107,7 @@ const remove = async () => {
       {{ priority.seniority }}
     </QAvatar>
     <div class="priority-chip__title q-pa-xs text-body2">
-      {{ priority.service.teacher.displayname }}
+      {{ priority.service?.teacher?.displayname }}
     </div>
     <QIcon
       v-if="perm.toEditPriorities && priority.computed"
@@ -115,7 +115,7 @@ const remove = async () => {
       size="xs"
     />
     <QTooltip :delay="TOOLTIP_DELAY" anchor="top middle" self="bottom middle">
-      {{ priority.service.teacher.displayname }}
+      {{ priority.service?.teacher?.displayname }}
     </QTooltip>
   </QChip>
 </template>

@@ -4477,6 +4477,9 @@ type Priority {
   """
   updatedAt: timestamptz!
 
+  """An object relationship"""
+  vService: VService
+
   """Year of the priority (must match service's and course's year)"""
   year: Int!
 
@@ -4597,6 +4600,7 @@ input PriorityBoolExp {
   service: ServiceBoolExp
   serviceId: IntComparisonExp
   updatedAt: TimestamptzComparisonExp
+  vService: VServiceBoolExp
   year: IntComparisonExp
   yearByYear: YearBoolExp
 }
@@ -4663,6 +4667,7 @@ input PriorityInsertInput {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+  vService: VServiceObjRelInsertInput
 
   """Year of the priority (must match service's and course's year)"""
   year: Int
@@ -4809,6 +4814,7 @@ input PriorityOrderBy {
   service: ServiceOrderBy
   serviceId: OrderBy
   updatedAt: OrderBy
+  vService: VServiceOrderBy
   year: OrderBy
   yearByYear: YearOrderBy
 }
@@ -6068,6 +6074,9 @@ type Request {
   """
   updatedAt: timestamptz!
 
+  """An object relationship"""
+  vService: VService
+
   """Year of the request (must match service's and course's year)"""
   year: Int!
 
@@ -6193,6 +6202,7 @@ input RequestBoolExp {
   serviceId: IntComparisonExp
   type: StringComparisonExp
   updatedAt: TimestamptzComparisonExp
+  vService: VServiceBoolExp
   year: IntComparisonExp
   yearByYear: YearBoolExp
 }
@@ -6256,6 +6266,7 @@ input RequestInsertInput {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+  vService: VServiceObjRelInsertInput
 
   """Year of the request (must match service's and course's year)"""
   year: Int
@@ -6426,6 +6437,7 @@ input RequestOrderBy {
   serviceId: OrderBy
   type: OrderBy
   updatedAt: OrderBy
+  vService: VServiceOrderBy
   year: OrderBy
   yearByYear: YearOrderBy
 }
@@ -8247,6 +8259,9 @@ type ServiceModification {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz!
+
+  """An object relationship"""
+  vService: VService
 }
 
 """
@@ -8352,6 +8367,7 @@ input ServiceModificationBoolExp {
   type: ServiceModificationTypeBoolExp
   typeId: IntComparisonExp
   updatedAt: TimestamptzComparisonExp
+  vService: VServiceBoolExp
 }
 
 """
@@ -8400,6 +8416,7 @@ input ServiceModificationInsertInput {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+  vService: VServiceObjRelInsertInput
 }
 
 """aggregate max on columns"""
@@ -8528,6 +8545,7 @@ input ServiceModificationOrderBy {
   type: ServiceModificationTypeOrderBy
   typeId: OrderBy
   updatedAt: OrderBy
+  vService: VServiceOrderBy
 }
 
 """primary key columns input for table: service_modification"""
@@ -9791,6 +9809,42 @@ type Teacher {
   """
   updatedAt: timestamptz!
 
+  """An array relationship"""
+  vServices(
+    """distinct select on columns"""
+    distinctOn: [VServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: VServiceBoolExp
+  ): [VService!]!
+
+  """An aggregate relationship"""
+  vServicesAggregate(
+    """distinct select on columns"""
+    distinctOn: [VServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: VServiceBoolExp
+  ): VServiceAggregate!
+
   """Controls teacher visibility in the user interface and queries"""
   visible: Boolean!
 }
@@ -9901,6 +9955,8 @@ input TeacherBoolExp {
   servicesAggregate: ServiceAggregateBoolExp
   uid: StringComparisonExp
   updatedAt: TimestamptzComparisonExp
+  vServices: VServiceBoolExp
+  vServicesAggregate: VServiceAggregateBoolExp
   visible: BooleanComparisonExp
 }
 
@@ -9967,6 +10023,7 @@ input TeacherInsertInput {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+  vServices: VServiceArrRelInsertInput
 
   """Controls teacher visibility in the user interface and queries"""
   visible: Boolean
@@ -10166,6 +10223,7 @@ input TeacherOrderBy {
   servicesAggregate: ServiceAggregateOrderBy
   uid: OrderBy
   updatedAt: OrderBy
+  vServicesAggregate: VServiceAggregateOrderBy
   visible: OrderBy
 }
 
@@ -11542,6 +11600,452 @@ input UiTextUpdates {
 }
 
 """
+@primary_key(id)
+@foreign_key(year,public.year,id)
+@foreign_key(uid,public.teacher,uid)
+"""
+type VService {
+  id: Int
+
+  """An array relationship"""
+  modifications(
+    """distinct select on columns"""
+    distinctOn: [ServiceModificationSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [ServiceModificationOrderBy!]
+
+    """filter the rows returned"""
+    where: ServiceModificationBoolExp
+  ): [ServiceModification!]!
+
+  """An aggregate relationship"""
+  modificationsAggregate(
+    """distinct select on columns"""
+    distinctOn: [ServiceModificationSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [ServiceModificationOrderBy!]
+
+    """filter the rows returned"""
+    where: ServiceModificationBoolExp
+  ): ServiceModificationAggregate!
+
+  """An array relationship"""
+  priorities(
+    """distinct select on columns"""
+    distinctOn: [PrioritySelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [PriorityOrderBy!]
+
+    """filter the rows returned"""
+    where: PriorityBoolExp
+  ): [Priority!]!
+
+  """An aggregate relationship"""
+  prioritiesAggregate(
+    """distinct select on columns"""
+    distinctOn: [PrioritySelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [PriorityOrderBy!]
+
+    """filter the rows returned"""
+    where: PriorityBoolExp
+  ): PriorityAggregate!
+
+  """An array relationship"""
+  requests(
+    """distinct select on columns"""
+    distinctOn: [RequestSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [RequestOrderBy!]
+
+    """filter the rows returned"""
+    where: RequestBoolExp
+  ): [Request!]!
+
+  """An aggregate relationship"""
+  requestsAggregate(
+    """distinct select on columns"""
+    distinctOn: [RequestSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [RequestOrderBy!]
+
+    """filter the rows returned"""
+    where: RequestBoolExp
+  ): RequestAggregate!
+
+  """An object relationship"""
+  teacher: Teacher
+  uid: String
+  year: Int
+
+  """An object relationship"""
+  yearByYear: Year
+}
+
+"""
+aggregated selection of "v_service"
+"""
+type VServiceAggregate {
+  aggregate: VServiceAggregateFields
+  nodes: [VService!]!
+}
+
+input VServiceAggregateBoolExp {
+  count: vServiceAggregateBoolExpCount
+}
+
+"""
+aggregate fields of "v_service"
+"""
+type VServiceAggregateFields {
+  avg: VServiceAvgFields
+  count(columns: [VServiceSelectColumn!], distinct: Boolean): Int!
+  max: VServiceMaxFields
+  min: VServiceMinFields
+  stddev: VServiceStddevFields
+  stddevPop: VServiceStddevPopFields
+  stddevSamp: VServiceStddevSampFields
+  sum: VServiceSumFields
+  varPop: VServiceVarPopFields
+  varSamp: VServiceVarSampFields
+  variance: VServiceVarianceFields
+}
+
+"""
+order by aggregate values of table "v_service"
+"""
+input VServiceAggregateOrderBy {
+  avg: VServiceAvgOrderBy
+  count: OrderBy
+  max: VServiceMaxOrderBy
+  min: VServiceMinOrderBy
+  stddev: VServiceStddevOrderBy
+  stddevPop: VServiceStddevPopOrderBy
+  stddevSamp: VServiceStddevSampOrderBy
+  sum: VServiceSumOrderBy
+  varPop: VServiceVarPopOrderBy
+  varSamp: VServiceVarSampOrderBy
+  variance: VServiceVarianceOrderBy
+}
+
+"""
+input type for inserting array relation for remote table "v_service"
+"""
+input VServiceArrRelInsertInput {
+  data: [VServiceInsertInput!]!
+}
+
+"""aggregate avg on columns"""
+type VServiceAvgFields {
+  id: Float
+  year: Float
+}
+
+"""
+order by avg() on columns of table "v_service"
+"""
+input VServiceAvgOrderBy {
+  id: OrderBy
+  year: OrderBy
+}
+
+"""
+Boolean expression to filter rows from the table "v_service". All fields are combined with a logical 'AND'.
+"""
+input VServiceBoolExp {
+  _and: [VServiceBoolExp!]
+  _not: VServiceBoolExp
+  _or: [VServiceBoolExp!]
+  id: IntComparisonExp
+  modifications: ServiceModificationBoolExp
+  modificationsAggregate: ServiceModificationAggregateBoolExp
+  priorities: PriorityBoolExp
+  prioritiesAggregate: PriorityAggregateBoolExp
+  requests: RequestBoolExp
+  requestsAggregate: RequestAggregateBoolExp
+  teacher: TeacherBoolExp
+  uid: StringComparisonExp
+  year: IntComparisonExp
+  yearByYear: YearBoolExp
+}
+
+"""
+input type for incrementing numeric columns in table "v_service"
+"""
+input VServiceIncInput {
+  id: Int
+  year: Int
+}
+
+"""
+input type for inserting data into table "v_service"
+"""
+input VServiceInsertInput {
+  id: Int
+  modifications: ServiceModificationArrRelInsertInput
+  priorities: PriorityArrRelInsertInput
+  requests: RequestArrRelInsertInput
+  teacher: TeacherObjRelInsertInput
+  uid: String
+  year: Int
+  yearByYear: YearObjRelInsertInput
+}
+
+"""aggregate max on columns"""
+type VServiceMaxFields {
+  id: Int
+  uid: String
+  year: Int
+}
+
+"""
+order by max() on columns of table "v_service"
+"""
+input VServiceMaxOrderBy {
+  id: OrderBy
+  uid: OrderBy
+  year: OrderBy
+}
+
+"""aggregate min on columns"""
+type VServiceMinFields {
+  id: Int
+  uid: String
+  year: Int
+}
+
+"""
+order by min() on columns of table "v_service"
+"""
+input VServiceMinOrderBy {
+  id: OrderBy
+  uid: OrderBy
+  year: OrderBy
+}
+
+"""
+response of any mutation on the table "v_service"
+"""
+type VServiceMutationResponse {
+  """number of rows affected by the mutation"""
+  affectedRows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [VService!]!
+}
+
+"""
+input type for inserting object relation for remote table "v_service"
+"""
+input VServiceObjRelInsertInput {
+  data: VServiceInsertInput!
+}
+
+"""Ordering options when selecting data from "v_service"."""
+input VServiceOrderBy {
+  id: OrderBy
+  modificationsAggregate: ServiceModificationAggregateOrderBy
+  prioritiesAggregate: PriorityAggregateOrderBy
+  requestsAggregate: RequestAggregateOrderBy
+  teacher: TeacherOrderBy
+  uid: OrderBy
+  year: OrderBy
+  yearByYear: YearOrderBy
+}
+
+"""
+select columns of table "v_service"
+"""
+enum VServiceSelectColumn {
+  """column name"""
+  id
+
+  """column name"""
+  uid
+
+  """column name"""
+  year
+}
+
+"""
+input type for updating data in table "v_service"
+"""
+input VServiceSetInput {
+  id: Int
+  uid: String
+  year: Int
+}
+
+"""aggregate stddev on columns"""
+type VServiceStddevFields {
+  id: Float
+  year: Float
+}
+
+"""
+order by stddev() on columns of table "v_service"
+"""
+input VServiceStddevOrderBy {
+  id: OrderBy
+  year: OrderBy
+}
+
+"""aggregate stddevPop on columns"""
+type VServiceStddevPopFields {
+  id: Float
+  year: Float
+}
+
+"""
+order by stddevPop() on columns of table "v_service"
+"""
+input VServiceStddevPopOrderBy {
+  id: OrderBy
+  year: OrderBy
+}
+
+"""aggregate stddevSamp on columns"""
+type VServiceStddevSampFields {
+  id: Float
+  year: Float
+}
+
+"""
+order by stddevSamp() on columns of table "v_service"
+"""
+input VServiceStddevSampOrderBy {
+  id: OrderBy
+  year: OrderBy
+}
+
+"""
+Streaming cursor of the table "v_service"
+"""
+input VServiceStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: VServiceStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input VServiceStreamCursorValueInput {
+  id: Int
+  uid: String
+  year: Int
+}
+
+"""aggregate sum on columns"""
+type VServiceSumFields {
+  id: Int
+  year: Int
+}
+
+"""
+order by sum() on columns of table "v_service"
+"""
+input VServiceSumOrderBy {
+  id: OrderBy
+  year: OrderBy
+}
+
+input VServiceUpdates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: VServiceIncInput
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: VServiceSetInput
+
+  """filter the rows which have to be updated"""
+  where: VServiceBoolExp!
+}
+
+"""aggregate varPop on columns"""
+type VServiceVarPopFields {
+  id: Float
+  year: Float
+}
+
+"""
+order by varPop() on columns of table "v_service"
+"""
+input VServiceVarPopOrderBy {
+  id: OrderBy
+  year: OrderBy
+}
+
+"""aggregate varSamp on columns"""
+type VServiceVarSampFields {
+  id: Float
+  year: Float
+}
+
+"""
+order by varSamp() on columns of table "v_service"
+"""
+input VServiceVarSampOrderBy {
+  id: OrderBy
+  year: OrderBy
+}
+
+"""aggregate variance on columns"""
+type VServiceVarianceFields {
+  id: Float
+  year: Float
+}
+
+"""
+order by variance() on columns of table "v_service"
+"""
+input VServiceVarianceOrderBy {
+  id: OrderBy
+  year: OrderBy
+}
+
+"""
 Academic year definitions with current year designation and visibility settings
 """
 type Year {
@@ -11590,6 +12094,78 @@ type Year {
   current: Boolean
 
   """An array relationship"""
+  priorities(
+    """distinct select on columns"""
+    distinctOn: [PrioritySelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [PriorityOrderBy!]
+
+    """filter the rows returned"""
+    where: PriorityBoolExp
+  ): [Priority!]!
+
+  """An aggregate relationship"""
+  prioritiesAggregate(
+    """distinct select on columns"""
+    distinctOn: [PrioritySelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [PriorityOrderBy!]
+
+    """filter the rows returned"""
+    where: PriorityBoolExp
+  ): PriorityAggregate!
+
+  """An array relationship"""
+  requests(
+    """distinct select on columns"""
+    distinctOn: [RequestSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [RequestOrderBy!]
+
+    """filter the rows returned"""
+    where: RequestBoolExp
+  ): [Request!]!
+
+  """An aggregate relationship"""
+  requestsAggregate(
+    """distinct select on columns"""
+    distinctOn: [RequestSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [RequestOrderBy!]
+
+    """filter the rows returned"""
+    where: RequestBoolExp
+  ): RequestAggregate!
+
+  """An array relationship"""
   services(
     """distinct select on columns"""
     distinctOn: [ServiceSelectColumn!]
@@ -11629,6 +12205,42 @@ type Year {
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz!
+
+  """An array relationship"""
+  vServices(
+    """distinct select on columns"""
+    distinctOn: [VServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: VServiceBoolExp
+  ): [VService!]!
+
+  """An aggregate relationship"""
+  vServicesAggregate(
+    """distinct select on columns"""
+    distinctOn: [VServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: VServiceBoolExp
+  ): VServiceAggregate!
 
   """Academic year identifier (e.g., 2024 for 2024-2025 academic year)"""
   value: Int!
@@ -11679,9 +12291,15 @@ input YearBoolExp {
   coursesAggregate: CourseAggregateBoolExp
   createdAt: TimestamptzComparisonExp
   current: BooleanComparisonExp
+  priorities: PriorityBoolExp
+  prioritiesAggregate: PriorityAggregateBoolExp
+  requests: RequestBoolExp
+  requestsAggregate: RequestAggregateBoolExp
   services: ServiceBoolExp
   servicesAggregate: ServiceAggregateBoolExp
   updatedAt: TimestamptzComparisonExp
+  vServices: VServiceBoolExp
+  vServicesAggregate: VServiceAggregateBoolExp
   value: IntComparisonExp
   visible: BooleanComparisonExp
 }
@@ -11722,12 +12340,15 @@ input YearInsertInput {
   Current academic year flag (TRUE or NULL). Constrained to have at most one current year
   """
   current: Boolean
+  priorities: PriorityArrRelInsertInput
+  requests: RequestArrRelInsertInput
   services: ServiceArrRelInsertInput
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
   updatedAt: timestamptz
+  vServices: VServiceArrRelInsertInput
 
   """Academic year identifier (e.g., 2024 for 2024-2025 academic year)"""
   value: Int
@@ -11799,8 +12420,11 @@ input YearOrderBy {
   coursesAggregate: CourseAggregateOrderBy
   createdAt: OrderBy
   current: OrderBy
+  prioritiesAggregate: PriorityAggregateOrderBy
+  requestsAggregate: RequestAggregateOrderBy
   servicesAggregate: ServiceAggregateOrderBy
   updatedAt: OrderBy
+  vServicesAggregate: VServiceAggregateOrderBy
   value: OrderBy
   visible: OrderBy
 }
@@ -12426,6 +13050,14 @@ type mutation_root {
   ): UiText
 
   """
+  delete data from the table: "v_service"
+  """
+  deleteVService(
+    """filter the rows which have to be deleted"""
+    where: VServiceBoolExp!
+  ): VServiceMutationResponse
+
+  """
   delete data from the table: "year"
   """
   deleteYear(
@@ -12836,6 +13468,22 @@ type mutation_root {
     """upsert condition"""
     onConflict: UiTextOnConflict
   ): UiText
+
+  """
+  insert data into the table: "v_service"
+  """
+  insertVService(
+    """the rows to be inserted"""
+    objects: [VServiceInsertInput!]!
+  ): VServiceMutationResponse
+
+  """
+  insert a single row into the table: "v_service"
+  """
+  insertVServiceOne(
+    """the row to be inserted"""
+    object: VServiceInsertInput!
+  ): VService
 
   """
   insert data into the table: "year"
@@ -13428,6 +14076,28 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [UiTextUpdates!]!
   ): [UiTextMutationResponse]
+
+  """
+  update data of the table: "v_service"
+  """
+  updateVService(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: VServiceIncInput
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: VServiceSetInput
+
+    """filter the rows which have to be updated"""
+    where: VServiceBoolExp!
+  ): VServiceMutationResponse
+
+  """
+  update multiples rows of table: "v_service"
+  """
+  updateVServiceMany(
+    """updates to execute, in order"""
+    updates: [VServiceUpdates!]!
+  ): [VServiceMutationResponse]
 
   """
   update data of the table: "year"
@@ -14338,6 +15008,46 @@ type query_root {
     """Text identifier"""
     key: String!
   ): UiText
+
+  """
+  fetch data from the table: "v_service"
+  """
+  vService(
+    """distinct select on columns"""
+    distinctOn: [VServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: VServiceBoolExp
+  ): [VService!]!
+
+  """
+  fetch aggregated fields from the table: "v_service"
+  """
+  vServiceAggregate(
+    """distinct select on columns"""
+    distinctOn: [VServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: VServiceBoolExp
+  ): VServiceAggregate!
 
   """
   fetch data from the table: "year"
@@ -15502,6 +16212,60 @@ type subscription_root {
   ): [UiText!]!
 
   """
+  fetch data from the table: "v_service"
+  """
+  vService(
+    """distinct select on columns"""
+    distinctOn: [VServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: VServiceBoolExp
+  ): [VService!]!
+
+  """
+  fetch aggregated fields from the table: "v_service"
+  """
+  vServiceAggregate(
+    """distinct select on columns"""
+    distinctOn: [VServiceSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [VServiceOrderBy!]
+
+    """filter the rows returned"""
+    where: VServiceBoolExp
+  ): VServiceAggregate!
+
+  """
+  fetch data from the table in a streaming manner: "v_service"
+  """
+  vServiceStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [VServiceStreamCursorInput]!
+
+    """filter the rows returned"""
+    where: VServiceBoolExp
+  ): [VService!]!
+
+  """
   fetch data from the table: "year"
   """
   year(
@@ -15603,5 +16367,12 @@ input trackAggregateBoolExpCount {
   arguments: [TrackSelectColumn!]
   distinct: Boolean
   filter: TrackBoolExp
+  predicate: IntComparisonExp!
+}
+
+input vServiceAggregateBoolExpCount {
+  arguments: [VServiceSelectColumn!]
+  distinct: Boolean
+  filter: VServiceBoolExp
   predicate: IntComparisonExp!
 }

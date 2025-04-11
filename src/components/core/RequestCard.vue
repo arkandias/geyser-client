@@ -25,7 +25,8 @@ const { dataFragment } = defineProps<{
 graphql(`
   fragment RequestCardData on Request {
     id
-    service {
+    year
+    service: vService {
       id
       teacher {
         displayname
@@ -137,7 +138,7 @@ const displayActions = computed(
 const assign = async (): Promise<void> => {
   const result = await getAssignment.execute({
     variables: {
-      serviceId: request.value.service.id,
+      serviceId: request.value.service?.id ?? -1,
       courseId: request.value.course.id,
     },
     cachePolicy: "network-only",
@@ -178,7 +179,8 @@ const assign = async (): Promise<void> => {
     }
   } else {
     const { data, error } = await insertAssignment.execute({
-      serviceId: request.value.service.id,
+      year: request.value.year,
+      serviceId: request.value.service?.id ?? -1,
       courseId: request.value.course.id,
       hours: request.value.hours,
     });
@@ -222,9 +224,9 @@ const remove = async (): Promise<void> => {
         :color="priorityColor(request.isPriority)"
         rounded
       />
-      {{ request.service.teacher.displayname }}
+      {{ request.service?.teacher?.displayname }}
       <QTooltip :delay="TOOLTIP_DELAY" anchor="top middle" self="bottom middle">
-        {{ request.service.teacher.displayname }}
+        {{ request.service?.teacher?.displayname }}
       </QTooltip>
     </QCardSection>
     <QCardSection class="q-pa-xs text-caption">

@@ -16,7 +16,6 @@ import {
   useLeftPanelStore,
   vSplitterRatio,
 } from "@/stores/useLeftPanelStore.ts";
-import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 
 import TableCourses from "@/components/TableCourses.vue";
@@ -46,13 +45,19 @@ graphql(`
     }
   }
 
-  query GetServiceRows($year: Int!, $where: TeacherBoolExp = {}) {
+  query GetServiceRows($year: Int!) {
     services: service(
-      where: { _and: [{ year: { _eq: $year } }, { teacher: $where }] }
+      where: { year: { _eq: $year } }
       orderBy: [{ teacher: { lastname: ASC } }, { teacher: { firstname: ASC } }]
     ) {
       ...ServiceRow
-      ...TableCoursesService
+    }
+
+    vServices: vService(
+      where: { year: { _eq: $year } }
+      orderBy: [{ teacher: { lastname: ASC } }, { teacher: { firstname: ASC } }]
+    ) {
+      ...TableCoursesVService
     }
   }
 
@@ -65,7 +70,6 @@ graphql(`
 
 const { t } = useCustomI18n();
 const { activeYear, isCurrentYearActive } = useYearsStore();
-const { uid: myUid } = useProfileStore();
 const { closeLeftPanel, isLeftPanelOpen, openLeftPanel } = useLeftPanelStore();
 const perm = usePermissions();
 
@@ -87,7 +91,6 @@ const getServiceRows = useQuery({
   query: GetServiceRowsDocument,
   variables: () => ({
     year: activeYear.value ?? -1,
-    where: perm.toViewAllServices ? {} : { uid: { _eq: myUid.value } },
   }),
   paused: () => activeYear.value === null,
   tags: ["all", "request", "service"],
@@ -97,6 +100,7 @@ const fetchingServiceRows = computed(
   () => activeYear.value !== null && getServiceRows.isFetching.value,
 );
 const serviceRows = computed(() => getServiceRows.data.value?.services ?? []);
+const vServiceRows = computed(() => getServiceRows.data.value?.vServices ?? []);
 
 // Selected course details
 const { getValue: selectedCourse } = useQueryParam("courseId", true);
@@ -162,7 +166,7 @@ const warningMessage = computed(() =>
             <TableCourses
               :course-row-fragments="courseRows"
               :fetching="fetchingCourseRows"
-              :service-fragments="serviceRows"
+              :v-service-fragments="vServiceRows"
             />
           </template>
           <template #after>
