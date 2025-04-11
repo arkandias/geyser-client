@@ -203,7 +203,7 @@ function validateForm(fields?: (keyof T)[]): ImportRow | Partial<ImportRow> {
 const insertDataHandle = async () => {
   let object: InsertInput;
   try {
-    object = validateImportRow(validateForm(), true);
+    object = validateImportRow(validateForm());
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.invalidForm"),
@@ -239,7 +239,6 @@ const updateDataHandle = async () => {
       multipleSelection.value && selectedFields.value
         ? validateForm(selectedFields.value)
         : validateForm(),
-      false,
     );
   } catch (error) {
     notify(NotifyType.ERROR, {
@@ -403,7 +402,7 @@ const importRowsHandle = async () => {
 
     const objects = importRows.map((row, index) => {
       try {
-        return validateImportRow(row, false);
+        return validateImportRow(row);
       } catch (error) {
         throw new Error(
           t("admin.data.error.invalidRow", {
