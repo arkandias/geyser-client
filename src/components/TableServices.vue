@@ -112,7 +112,7 @@ const selectRow = async (_: Event, row: ServiceRowFragment) => {
 };
 
 // Columns definition
-const columns: Column<ServiceRow>[] = [
+const columns = computed<Column<ServiceRow>[]>(() => [
   {
     name: "lastname",
     label: t("courses.table.services.columns.lastname.label"),
@@ -217,9 +217,10 @@ const columns: Column<ServiceRow>[] = [
     visible: true,
     searchable: false,
   },
-];
+]);
 const visibleColumns = ref(
-  columns.filter((col) => col.visible).map((col) => col.name),
+  // eslint-disable-next-line vue/no-ref-object-reactivity-loss
+  columns.value.filter((col) => col.visible).map((col) => col.name),
 );
 const isMenuColumnsOpen = ref(false);
 const isMenuColumnsTooltipVisible = ref(false);
@@ -228,7 +229,7 @@ const isMenuColumnsTooltipVisible = ref(false);
 const search = ref<string | null>(null);
 const filterObj = computed(() => ({
   search: normalizeForSearch(search.value ?? ""),
-  searchColumns: columns.filter((col) => col.searchable),
+  searchColumns: columns.value.filter((col) => col.searchable),
 }));
 const filterMethod = (
   rows: readonly ServiceRow[],

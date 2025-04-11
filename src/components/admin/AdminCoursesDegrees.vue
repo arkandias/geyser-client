@@ -110,7 +110,7 @@ const updateColumns = [
   DegreeUpdateColumn.Visible,
 ];
 
-const columns: Column<Row>[] = [
+const columns = computed<Column<Row>[]>(() => [
   {
     name: "name",
     label: t("admin.courses.degrees.table.columns.name"),
@@ -136,7 +136,7 @@ const columns: Column<Row>[] = [
     sortable: true,
     searchable: false,
   },
-];
+]);
 
 const formatRow = (row: Row) => row.name;
 

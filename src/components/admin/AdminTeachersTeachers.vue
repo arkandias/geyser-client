@@ -144,7 +144,7 @@ const updateColumns = [
   TeacherUpdateColumn.Active,
 ];
 
-const columns: Column<Row>[] = [
+const columns = computed<Column<Row>[]>(() => [
   {
     name: "uid",
     label: t("admin.teachers.teachers.table.columns.uid"),
@@ -212,7 +212,7 @@ const columns: Column<Row>[] = [
     sortable: true,
     searchable: false,
   },
-];
+]);
 
 const formatRow = (row: Row) => row.uid;
 

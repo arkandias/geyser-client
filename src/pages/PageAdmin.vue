@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from "vue";
+
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 
 import AdminCourses from "@/components/admin/AdminCourses.vue";
@@ -13,7 +15,7 @@ const { section = "general" } = defineProps<{
 
 const { t } = useCustomI18n();
 
-const routeTabs = [
+const routeTabs = computed(() => [
   {
     name: "general",
     label: t("admin.general.title"),
@@ -39,7 +41,7 @@ const routeTabs = [
     label: t("admin.roles.title"),
     to: "/admin/roles",
   },
-];
+]);
 </script>
 
 <template>

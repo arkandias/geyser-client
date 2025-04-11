@@ -76,7 +76,7 @@ export default {
       title: "Priorities",
       format: {
         typeAndSemester: "{type} in S{semester}",
-        track: "track {track}",
+        track: "{track} track",
       },
     },
     message: {

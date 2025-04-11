@@ -194,7 +194,7 @@ const selectRow = async (_: Event, row: CourseRow) => {
 };
 
 // Columns definition
-const columns: Column<CourseRow>[] = [
+const columns = computed<Column<CourseRow>[]>(() => [
   {
     name: "degreeProgram",
     label: t("courses.table.courses.columns.degreeProgram.label"),
@@ -335,9 +335,10 @@ const columns: Column<CourseRow>[] = [
     visible: true,
     searchable: false,
   },
-];
+]);
 const visibleColumns = ref(
-  columns.filter((col) => col.visible).map((col) => col.name),
+  // eslint-disable-next-line vue/no-ref-object-reactivity-loss
+  columns.value.filter((col) => col.visible).map((col) => col.name),
 );
 const isMenuColumnsOpen = ref(false);
 const isMenuColumnsTooltipVisible = ref(false);
@@ -386,7 +387,7 @@ const filterObj = computed(() => ({
   semesters: semesters.value,
   courseTypes: courseTypes.value,
   search: normalizeForSearch(search.value ?? ""),
-  searchColumns: columns.filter((col) => col.searchable),
+  searchColumns: columns.value.filter((col) => col.searchable),
 }));
 const filterMethod = (
   rows: readonly CourseRow[],

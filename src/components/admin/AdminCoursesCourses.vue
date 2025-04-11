@@ -204,7 +204,7 @@ const updateColumns = [
   CourseUpdateColumn.Visible,
 ];
 
-const columns: Column<Row>[] = [
+const columns = computed<Column<Row>[]>(() => [
   {
     name: "year",
     label: t("admin.courses.courses.table.columns.year"),
@@ -327,7 +327,7 @@ const columns: Column<Row>[] = [
     sortable: true,
     searchable: false,
   },
-];
+]);
 
 const formatRow = (row: Row) =>
   `${row.nameDisplay} (${row.program.degree.nameDisplay}` +

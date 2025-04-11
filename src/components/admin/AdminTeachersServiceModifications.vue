@@ -197,7 +197,7 @@ const updateColumns = [
   ServiceModificationUpdateColumn.Hours,
 ];
 
-const columns: Column<Row>[] = [
+const columns = computed<Column<Row>[]>(() => [
   {
     name: "year",
     label: t("admin.teachers.serviceModifications.table.columns.year"),
@@ -231,7 +231,7 @@ const columns: Column<Row>[] = [
     sortable: true,
     searchable: false,
   },
-];
+]);
 
 const formatRow = (row: Row): string =>
   `${row.service.year} — ${row.service.teacher.displayname} — ${row.type.label}`;

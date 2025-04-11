@@ -138,7 +138,7 @@ const updateColumns = [
   TrackUpdateColumn.Visible,
 ];
 
-const columns: Column<Row>[] = [
+const columns = computed<Column<Row>[]>(() => [
   {
     name: "degree",
     label: t("admin.courses.tracks.table.columns.degree"),
@@ -180,7 +180,7 @@ const columns: Column<Row>[] = [
     sortable: true,
     searchable: false,
   },
-];
+]);
 
 const formatRow = (row: Row) =>
   `${row.nameDisplay} (${row.program.degree.nameDisplay} — ${row.program.nameDisplay})`;

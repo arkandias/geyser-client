@@ -110,7 +110,7 @@ const updateColumns = [
   CourseTypeUpdateColumn.Description,
 ];
 
-const columns: Column<Row>[] = [
+const columns = computed<Column<Row>[]>(() => [
   {
     name: "label",
     label: t("admin.courses.types.table.columns.label"),
@@ -134,7 +134,7 @@ const columns: Column<Row>[] = [
     sortable: true,
     searchable: true,
   },
-];
+]);
 
 const formatRow = (row: Row) => row.label;
 

@@ -129,7 +129,7 @@ const updateColumns = [
   ProgramUpdateColumn.Visible,
 ];
 
-const columns: Column<Row>[] = [
+const columns = computed<Column<Row>[]>(() => [
   {
     name: "degree",
     label: t("admin.courses.programs.table.columns.degree"),
@@ -163,7 +163,7 @@ const columns: Column<Row>[] = [
     sortable: true,
     searchable: false,
   },
-];
+]);
 
 const formatRow = (row: Row) => `${row.degree.nameDisplay} ${row.nameDisplay}`;
 

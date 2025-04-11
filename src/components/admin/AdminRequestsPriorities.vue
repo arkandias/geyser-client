@@ -202,7 +202,7 @@ const updateColumns = [
   PriorityUpdateColumn.Computed,
 ];
 
-const columns: Column<Row>[] = [
+const columns = computed<Column<Row>[]>(() => [
   {
     name: "year",
     label: t("admin.requests.priorities.table.columns.year"),
@@ -294,7 +294,7 @@ const columns: Column<Row>[] = [
     sortable: true,
     searchable: false,
   },
-];
+]);
 
 const formatRow = (row: Row) =>
   `${row.year} — ${row.service.uid} — ${row.course.name}`;

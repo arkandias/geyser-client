@@ -191,7 +191,7 @@ const updateColumns = [
   RequestUpdateColumn.Hours,
 ];
 
-const columns: Column<Row>[] = [
+const columns = computed<Column<Row>[]>(() => [
   {
     name: "year",
     label: t("admin.requests.requests.table.columns.year"),
@@ -274,7 +274,7 @@ const columns: Column<Row>[] = [
     sortable: true,
     searchable: false,
   },
-];
+]);
 
 const formatRow = (row: Row) =>
   `${t(`requestType.${row.type}`)} — ${row.year} — ${row.service.uid} — ${row.course.name}`;
