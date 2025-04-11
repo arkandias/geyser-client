@@ -24,7 +24,11 @@ const { dataFragment } = defineProps<{
 graphql(`
   fragment TeacherCoordinations on Teacher {
     coordinations(
-      orderBy: [{ programId: ASC }, { trackId: ASC }, { courseId: ASC }]
+      orderBy: [
+        { programId: ASC_NULLS_LAST }
+        { trackId: ASC_NULLS_LAST }
+        { courseId: ASC }
+      ]
     ) {
       id
       program {

@@ -28,13 +28,6 @@ graphql(`
     uid
     year
     hours
-    totalModifications: modificationsAggregate {
-      aggregate {
-        sum {
-          hours
-        }
-      }
-    }
     modifications(orderBy: [{ type: { label: ASC } }, { hours: ASC }]) {
       id
       modificationType: type {
@@ -106,7 +99,7 @@ const service = computed(() =>
 const totalService = computed(
   () =>
     service.value.hours -
-    (service.value.totalModifications.aggregate?.sum?.hours ?? 0),
+    service.value.modifications.reduce((t, m) => t + m.hours, 0),
 );
 
 // Base service hours form

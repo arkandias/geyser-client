@@ -15,10 +15,8 @@ graphql(`
   fragment ServiceTeacher on Teacher {
     ...TeacherTitle
     ...TeacherCoordinations
-    coordinationsAggregate {
-      aggregate {
-        count
-      }
+    coordinationIds: coordinations {
+      id
     }
   }
 `);
@@ -27,9 +25,7 @@ const teacher = computed(() =>
   useFragment(ServiceTeacherFragmentDoc, dataFragment),
 );
 
-const isCoordinator = computed(
-  () => !!teacher.value.coordinationsAggregate.aggregate?.count,
-);
+const isCoordinator = computed(() => !!teacher.value.coordinationIds.length);
 </script>
 
 <template>
