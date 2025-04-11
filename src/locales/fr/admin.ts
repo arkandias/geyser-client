@@ -757,6 +757,8 @@ Si ces types sont attribués à des enseignements, vous ne pourrez pas les suppr
             },
           },
         },
+        extraCSVInstructions: `
+          N.B. Le champ « type » doit avoir l'une des valeurs suivantes&nbsp;: <i>assignment</i> (attribution), <i>primary</i> (principale), <i>secondary</i> (secondaire)`,
       },
       priorities: {
         label: "Priorités",

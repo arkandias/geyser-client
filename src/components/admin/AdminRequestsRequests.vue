@@ -381,6 +381,10 @@ function validateImportRow(
   return object;
 }
 
+const extraCsvInstructions = computed(() =>
+  t("admin.requests.requests.extraCSVInstructions"),
+);
+
 const formValues = ref<FormValues>(initForm([]));
 const selectedFields = ref<string[]>([]);
 
@@ -486,6 +490,7 @@ const filterFn = computed(
     :delete-data="deleteRequests"
     :constraint
     :update-columns
+    :extra-csv-instructions
   >
     <template #filters>
       <QSelect

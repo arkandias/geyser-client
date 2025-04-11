@@ -740,6 +740,8 @@ If these types are assigned to courses, you will not be able to delete them.`,
             },
           },
         },
+        extraCSVInstructions: `
+          N.B. Field "type" must be one of: <i>assignment</i>, <i>primary</i>, <i>secondary</i>.`,
       },
       priorities: {
         label: "Priorities",

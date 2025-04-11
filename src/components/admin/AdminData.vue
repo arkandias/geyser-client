@@ -62,6 +62,7 @@ const {
   deleteData,
   constraint,
   updateColumns,
+  extraCsvInstructions,
 } = defineProps<{
   name: string;
   messagePrefix: string;
@@ -94,6 +95,7 @@ const {
   deleteData: CustomMutationApi<"deleteData", { ids: Id[] }>;
   constraint: Constraint;
   updateColumns: UpdateColumn[];
+  extraCsvInstructions?: string;
 }>();
 defineSlots<{
   form(slotProps: { multipleSelection: boolean }): unknown;
@@ -445,6 +447,10 @@ const importRowsHandle = async () => {
   }
 };
 
+const csvInstructions = computed(
+  () => t("admin.data.import.csvInstructions") + (extraCsvInstructions ?? ""),
+);
+
 // ===== Data Export =====
 const exportDataHandle = () => {
   try {
@@ -595,7 +601,7 @@ const exportDataHandle = () => {
         {{ t("admin.data.import.title") }}
       </QCardSection>
       <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-      <QCardSection v-html="t('admin.data.import.csvInstructions')" />
+      <QCardSection v-html="csvInstructions" />
       <QCardSection>
         <QTable
           :columns="importColumns"
