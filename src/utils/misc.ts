@@ -28,6 +28,11 @@ export const compare =
   (a: T, b: T) =>
     localeCompare(a[name].toLowerCase(), b[name].toLowerCase());
 
+export const totalValue = <T extends string>(
+  arr: Partial<Record<T, number | null>>[],
+  value: T,
+) => arr.reduce((tot, val) => tot + (val[value] ?? 0), 0);
+
 export const capitalize = <T extends string>(str: T): Capitalize<T> =>
   (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<T>;
 

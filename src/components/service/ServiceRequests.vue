@@ -5,6 +5,7 @@ import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { TeacherServiceRequestsFragmentDoc } from "@/gql/graphql.ts";
+import { totalValue } from "@/utils/misc.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import ServiceTable from "@/components/service/ServiceTable.vue";
@@ -15,26 +16,17 @@ const { dataFragment } = defineProps<{
 
 graphql(`
   fragment TeacherServiceRequests on Service {
-    assigned: requestsAggregate(where: { type: { _eq: "assignment" } }) {
-      aggregate {
-        sum {
-          hoursWeighted
-        }
-      }
+    assignment: requests(where: { type: { _eq: "assignment" } }) {
+      id
+      hoursWeighted
     }
-    primary: requestsAggregate(where: { type: { _eq: "primary" } }) {
-      aggregate {
-        sum {
-          hoursWeighted
-        }
-      }
+    primary: requests(where: { type: { _eq: "primary" } }) {
+      id
+      hoursWeighted
     }
-    secondary: requestsAggregate(where: { type: { _eq: "secondary" } }) {
-      aggregate {
-        sum {
-          hoursWeighted
-        }
-      }
+    secondary: requests(where: { type: { _eq: "secondary" } }) {
+      id
+      hoursWeighted
     }
   }
 `);
@@ -42,14 +34,17 @@ graphql(`
 const { t, n } = useCustomI18n();
 const perm = usePermissions();
 
-const requestsTotals = computed(() =>
+const service = computed(() =>
   useFragment(TeacherServiceRequestsFragmentDoc, dataFragment),
 );
+const totalRequests = computed(() => ({
+  assignment: totalValue(service.value.assignment, "hoursWeighted"),
+  primary: totalValue(service.value.primary, "hoursWeighted"),
+  secondary: totalValue(service.value.secondary, "hoursWeighted"),
+}));
 
-const formatTotal = (type: "assigned" | "primary" | "secondary") =>
-  n(requestsTotals.value[type].aggregate?.sum?.hoursWeighted ?? 0, "decimal") +
-  "\u00A0" +
-  t("unit.weightedHours");
+const formatTotal = (type: "assignment" | "primary" | "secondary") =>
+  n(totalRequests.value[type], "decimal") + "\u00A0" + t("unit.weightedHours");
 </script>
 
 <template>
@@ -61,7 +56,7 @@ const formatTotal = (type: "assigned" | "primary" | "secondary") =>
             {{ t("service.requests.assignments") }}
           </td>
           <td>
-            {{ formatTotal("assigned") }}
+            {{ formatTotal("assignment") }}
           </td>
         </tr>
         <tr>
