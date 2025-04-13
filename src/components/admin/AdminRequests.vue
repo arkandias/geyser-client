@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from "villus";
+import { useQuery } from "@urql/vue";
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -65,7 +65,7 @@ graphql(`
 
 const { data } = useQuery({
   query: GetAdminRequestsDocument,
-  tags: ["all"],
+  variables: {},
 });
 const requests = computed(() => data.value?.requests ?? []);
 const priorities = computed(() => data.value?.priorities ?? []);

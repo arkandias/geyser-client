@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import {
   type ComponentPublicInstance,
   type ShallowRef,
@@ -56,20 +56,16 @@ graphql(`
   }
 `);
 
-const updateCustomText = useMutation(UpdateCustomTextDocument, {
-  refetchTags: ["all"],
-});
-const deleteCustomText = useMutation(DeleteCustomTextDocument, {
-  refetchTags: ["all"],
-});
+const updateCustomText = useMutation(UpdateCustomTextDocument);
+const deleteCustomText = useMutation(DeleteCustomTextDocument);
 
 const updateCustomTextHandle = (key: string, value: string) =>
   value
-    ? updateCustomText.execute({ key, value }).then((result) => ({
+    ? updateCustomText.executeMutation({ key, value }).then((result) => ({
         returnId: result.data?.customText?.key,
         error: result.error,
       }))
-    : deleteCustomText.execute({ key }).then((result) => ({
+    : deleteCustomText.executeMutation({ key }).then((result) => ({
         returnId: result.data?.customText?.key,
         error: result.error,
       }));

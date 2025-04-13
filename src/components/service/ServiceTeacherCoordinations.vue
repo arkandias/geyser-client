@@ -88,8 +88,8 @@ const coordinations = computed(() =>
 );
 
 const formatProgram = (program: {
-  name?: string | null | undefined;
-  degree: { name?: string | null | undefined };
+  name?: string | null;
+  degree: { name?: string | null };
 }) =>
   !program.degree.name || !program.name
     ? ""

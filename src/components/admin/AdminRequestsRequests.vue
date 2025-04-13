@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -52,11 +52,11 @@ type T = typeof rowDescriptor;
 type FormValues = NullableParsedRow<T>;
 type ImportRow = ParsedRow<T>;
 type InsertInput = {
-  year: number;
-  serviceId: number;
-  courseId: number;
-  type: string;
-  hours: number;
+  year?: number | null;
+  serviceId?: number | null;
+  courseId?: number | null;
+  type?: string | null;
+  hours?: number | null;
 };
 
 graphql(`
@@ -170,18 +170,10 @@ const services = computed(() =>
 const courses = computed(() =>
   courseFragments.map((f) => useFragment(AdminRequestsCourseFragmentDoc, f)),
 );
-const insertRequests = useMutation(InsertRequestsDocument, {
-  refetchTags: ["all"],
-});
-const upsertRequests = useMutation(UpsertRequestsDocument, {
-  refetchTags: ["all"],
-});
-const updateRequests = useMutation(UpdateRequestsDocument, {
-  refetchTags: ["all"],
-});
-const deleteRequests = useMutation(DeleteRequestsDocument, {
-  refetchTags: ["all"],
-});
+const insertRequests = useMutation(InsertRequestsDocument);
+const upsertRequests = useMutation(UpsertRequestsDocument);
+const updateRequests = useMutation(UpdateRequestsDocument);
+const deleteRequests = useMutation(DeleteRequestsDocument);
 
 const constraint = RequestConstraint.RequestServiceIdCourseIdTypeKey;
 const updateColumns = [

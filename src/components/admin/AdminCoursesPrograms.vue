@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -41,10 +41,10 @@ type T = typeof rowDescriptor;
 type FormValues = NullableParsedRow<T>;
 type ImportRow = ParsedRow<T>;
 type InsertInput = {
-  degreeId: number;
-  name: string;
-  nameShort: string | null;
-  visible: boolean;
+  degreeId?: number | null;
+  name?: string | null;
+  nameShort?: string | null;
+  visible?: boolean | null;
 };
 
 graphql(`
@@ -108,18 +108,10 @@ const degrees = computed(() =>
 const programs = computed(() =>
   programFragments.map((f) => useFragment(AdminProgramFragmentDoc, f)),
 );
-const insertPrograms = useMutation(InsertProgramsDocument, {
-  refetchTags: ["all"],
-});
-const upsertPrograms = useMutation(UpsertProgramsDocument, {
-  refetchTags: ["all"],
-});
-const updatePrograms = useMutation(UpdateProgramsDocument, {
-  refetchTags: ["all"],
-});
-const deletePrograms = useMutation(DeleteProgramsDocument, {
-  refetchTags: ["all"],
-});
+const insertPrograms = useMutation(InsertProgramsDocument);
+const upsertPrograms = useMutation(UpsertProgramsDocument);
+const updatePrograms = useMutation(UpdateProgramsDocument);
+const deletePrograms = useMutation(DeleteProgramsDocument);
 
 const constraint = ProgramConstraint.ProgramDegreeIdNameKey;
 const updateColumns = [

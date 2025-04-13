@@ -1,4 +1,4 @@
-import { useQuery } from "villus";
+import { useQuery } from "@urql/vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
@@ -66,7 +66,7 @@ export const useDownloadAssignments = () => {
   const { notify } = useNotify();
   const getAssignments = useQuery({
     query: GetAssignmentsDocument,
-    fetchOnMount: false,
+    pause: true,
   });
 
   const downloadAssignments = async (
@@ -74,8 +74,8 @@ export const useDownloadAssignments = () => {
     filename: string,
   ) => {
     const assignments = await getAssignments
-      .execute({ variables, cachePolicy: "network-only" })
-      .then((result) => result.data?.assignments ?? []);
+      .executeQuery({ variables, cachePolicy: "network-only" })
+      .then((result) => result.data.value?.assignments ?? []);
 
     const formattedAssignments = assignments.map((a) => ({
       [t("downloadAssignments.program")]:

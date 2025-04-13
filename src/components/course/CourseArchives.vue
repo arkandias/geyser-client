@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from "villus";
+import { useQuery } from "@urql/vue";
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -79,7 +79,6 @@ const getCourseArchives = useQuery({
     semester: data.value.semester,
     typeId: data.value.typeId,
   }),
-  tags: ["all"],
 });
 
 const archives = computed(() => getCourseArchives.data.value?.courses ?? []);

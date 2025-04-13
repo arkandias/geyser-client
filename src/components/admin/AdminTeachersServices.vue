@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -107,18 +107,10 @@ const services = computed(() =>
 const teachers = computed(() =>
   teacherFragments.map((f) => useFragment(AdminServicesTeacherFragmentDoc, f)),
 );
-const insertServices = useMutation(InsertServicesDocument, {
-  refetchTags: ["all"],
-});
-const upsertServices = useMutation(UpsertServicesDocument, {
-  refetchTags: ["all"],
-});
-const updateServices = useMutation(UpdateServicesDocument, {
-  refetchTags: ["all"],
-});
-const deleteServices = useMutation(DeleteServicesDocument, {
-  refetchTags: ["all"],
-});
+const insertServices = useMutation(InsertServicesDocument);
+const upsertServices = useMutation(UpsertServicesDocument);
+const updateServices = useMutation(UpdateServicesDocument);
+const deleteServices = useMutation(DeleteServicesDocument);
 
 const constraint = ServiceConstraint.ServiceYearUidKey;
 const updateColumns = [

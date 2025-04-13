@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -51,12 +51,8 @@ const { t } = useCustomI18n();
 const { notify } = useNotify();
 const perm = usePermissions();
 
-const deletePriority = useMutation(DeletePriorityDocument, {
-  refetchTags: ["request"],
-});
-const deleteComputedPriority = useMutation(DeleteComputedPriorityDocument, {
-  refetchTags: ["request"],
-});
+const deletePriority = useMutation(DeletePriorityDocument);
+const deleteComputedPriority = useMutation(DeleteComputedPriorityDocument);
 
 const priority = computed(() =>
   useFragment(PriorityChipDataFragmentDoc, dataFragment),
@@ -64,8 +60,8 @@ const priority = computed(() =>
 
 const remove = async () => {
   const { data, error } = await (priority.value.computed
-    ? deleteComputedPriority.execute({ id: priority.value.id })
-    : deletePriority.execute({ id: priority.value.id }));
+    ? deleteComputedPriority.executeMutation({ id: priority.value.id })
+    : deletePriority.executeMutation({ id: priority.value.id }));
 
   if (data?.priority && !error) {
     notify(

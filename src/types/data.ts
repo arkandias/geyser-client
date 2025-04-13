@@ -28,5 +28,5 @@ export type ParsedRow<T extends RowDescriptor> = {
 };
 
 export type NullableParsedRow<T extends RowDescriptor> = {
-  -readonly [K in keyof T]?: ParsedField<T[K]> | null | undefined;
+  -readonly [K in keyof T]?: ParsedField<T[K]> | null;
 };

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -53,9 +53,7 @@ graphql(`
 const { t } = useCustomI18n();
 const { notify } = useNotify();
 
-const upsertPriority = useMutation(UpsertPriorityDocument, {
-  refetchTags: ["request"],
-});
+const upsertPriority = useMutation(UpsertPriorityDocument);
 
 const data = computed(() =>
   useFragment(PriorityFormDataFragmentDoc, dataFragment),
@@ -90,7 +88,7 @@ const submitForm = async (): Promise<void> => {
     return;
   }
 
-  const result = await upsertPriority.execute({
+  const result = await upsertPriority.executeMutation({
     year: data.value.year,
     serviceId: serviceId.value,
     courseId: data.value.courseId,

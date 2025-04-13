@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from "villus";
+import { useQuery } from "@urql/vue";
 import { computed, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -77,12 +77,11 @@ const perm = usePermissions();
 const getCourseRows = useQuery({
   query: GetCourseRowsDocument,
   variables: () => ({ year: activeYear.value ?? -1 }),
-  paused: () => activeYear.value === null,
-  tags: ["all", "request"],
+  pause: () => activeYear.value === null,
 });
 const fetchingCourseRows = computed(
-  // Need to check manually that query is not paused (issue #220)
-  () => activeYear.value !== null && getCourseRows.isFetching.value,
+  // todo: test that paused query is not fetching (if activeYear is null)
+  () => getCourseRows.fetching.value,
 );
 const courseRows = computed(() => getCourseRows.data.value?.courses ?? []);
 
@@ -92,12 +91,11 @@ const getServiceRows = useQuery({
   variables: () => ({
     year: activeYear.value ?? -1,
   }),
-  paused: () => activeYear.value === null,
-  tags: ["all", "request", "service"],
+  pause: () => activeYear.value === null,
 });
 const fetchingServiceRows = computed(
-  // Need to check manually that query is not paused (issue #220)
-  () => activeYear.value !== null && getServiceRows.isFetching.value,
+  // todo: test that paused query is not fetching (if activeYear is null)
+  () => getServiceRows.fetching.value,
 );
 const serviceRows = computed(() => getServiceRows.data.value?.services ?? []);
 const vServiceRows = computed(() => getServiceRows.data.value?.vServices ?? []);
@@ -107,8 +105,7 @@ const { getValue: selectedCourse } = useQueryParam("courseId", true);
 const getCourseDetails = useQuery({
   query: GetCourseDetailsDocument,
   variables: () => ({ courseId: selectedCourse.value ?? -1 }),
-  paused: () => selectedCourse.value === null,
-  tags: ["all", "description", "request"],
+  pause: () => selectedCourse.value === null,
 });
 const courseDetails = computed(() =>
   selectedCourse.value === null

@@ -13,7 +13,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           "vendor-core": ["vue", "vue-router", "vue-i18n"],
-          "vendor-data": ["graphql", "villus", "papaparse", "dompurify"],
+          "vendor-data": ["graphql", "@urql/vue", "papaparse", "dompurify"],
           "vendor-auth": ["keycloak-js"],
         },
       },

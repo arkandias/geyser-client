@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -42,10 +42,10 @@ type T = typeof rowDescriptor;
 type FormValues = NullableParsedRow<T>;
 type ImportRow = ParsedRow<T>;
 type InsertInput = {
-  programId: number;
-  name: string;
-  nameShort: string | null;
-  visible: boolean;
+  programId?: number | null;
+  name?: string | null;
+  nameShort?: string | null;
+  visible?: boolean | null;
 };
 
 graphql(`
@@ -117,18 +117,10 @@ const degrees = computed(() =>
 const tracks = computed(() =>
   trackFragments.map((f) => useFragment(AdminTrackFragmentDoc, f)),
 );
-const insertTracks = useMutation(InsertTracksDocument, {
-  refetchTags: ["all"],
-});
-const upsertTracks = useMutation(UpsertTracksDocument, {
-  refetchTags: ["all"],
-});
-const updateTracks = useMutation(UpdateTracksDocument, {
-  refetchTags: ["all"],
-});
-const deleteTracks = useMutation(DeleteTracksDocument, {
-  refetchTags: ["all"],
-});
+const insertTracks = useMutation(InsertTracksDocument);
+const upsertTracks = useMutation(UpsertTracksDocument);
+const updateTracks = useMutation(UpdateTracksDocument);
+const deleteTracks = useMutation(DeleteTracksDocument);
 
 const constraint = TrackConstraint.TrackProgramIdNameKey;
 const updateColumns = [

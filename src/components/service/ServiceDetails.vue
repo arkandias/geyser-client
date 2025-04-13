@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation, useQuery } from "villus";
+import { useMutation, useQuery } from "@urql/vue";
 import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -83,15 +83,9 @@ const { t, n } = useCustomI18n();
 const { notify } = useNotify();
 const perm = usePermissions();
 
-const updateService = useMutation(UpdateServiceDocument, {
-  refetchTags: ["service"],
-});
-const insertModification = useMutation(InsertModificationDocument, {
-  refetchTags: ["service"],
-});
-const deleteModification = useMutation(DeleteModificationDocument, {
-  refetchTags: ["service"],
-});
+const updateService = useMutation(UpdateServiceDocument);
+const insertModification = useMutation(InsertModificationDocument);
+const deleteModification = useMutation(DeleteModificationDocument);
 
 const service = computed(() =>
   useFragment(TeacherServiceDetailsFragmentDoc, dataFragment),
@@ -122,7 +116,7 @@ const submitBaseServiceForm = async (): Promise<void> => {
       message: t("service.details.baseServiceForm.noChanges"),
     });
   } else {
-    const { data, error } = await updateService.execute({
+    const { data, error } = await updateService.executeMutation({
       year: service.value.year,
       uid: service.value.uid,
       hours: baseServiceHours.value,
@@ -146,8 +140,9 @@ watch(service, resetBaseServiceForm, { immediate: true });
 const isModificationFormOpen = ref(false);
 const { data } = useQuery({
   query: GetModificationTypesDocument,
-  paused: () => !isModificationFormOpen.value,
-  tags: ["all"],
+  // todo: remove after urql fix
+  variables: {},
+  pause: () => !isModificationFormOpen.value,
 });
 const modificationTypesOptions = computed(
   () => data.value?.modificationTypes ?? [],
@@ -174,7 +169,7 @@ const submitModificationForm = async (): Promise<void> => {
     });
     return;
   }
-  const { data, error } = await insertModification.execute({
+  const { data, error } = await insertModification.executeMutation({
     serviceId: service.value.id,
     modificationTypeId: modificationTypeId.value,
     hours: modificationHours.value,
@@ -193,7 +188,7 @@ const submitModificationForm = async (): Promise<void> => {
 };
 
 const handleModificationDeletion = async (id: number): Promise<void> => {
-  const { data, error } = await deleteModification.execute({ id });
+  const { data, error } = await deleteModification.executeMutation({ id });
   if (data?.serviceModification && !error) {
     notify(NotifyType.SUCCESS, {
       message: t("service.details.modificationForm.success.delete"),

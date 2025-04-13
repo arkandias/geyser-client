@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -80,12 +80,8 @@ const { notify } = useNotify();
 const { serviceId: myServiceId } = useProfileStore();
 const perm = usePermissions();
 
-const upsertRequest = useMutation(UpsertRequestDocument, {
-  refetchTags: ["request"],
-});
-const deleteRequest = useMutation(DeleteRequestDocument, {
-  refetchTags: ["request"],
-});
+const upsertRequest = useMutation(UpsertRequestDocument);
+const deleteRequest = useMutation(DeleteRequestDocument);
 
 const data = computed(() =>
   useFragment(RequestFormDataFragmentDoc, dataFragment),
@@ -193,7 +189,7 @@ const submitForm = async (): Promise<void> => {
   }
 
   if (hours.value === 0) {
-    const result = await deleteRequest.execute({
+    const result = await deleteRequest.executeMutation({
       serviceId: serviceId.value,
       courseId: data.value.courseId,
       requestType: requestType.value,
@@ -210,7 +206,7 @@ const submitForm = async (): Promise<void> => {
       });
     }
   } else {
-    const result = await upsertRequest.execute({
+    const result = await upsertRequest.executeMutation({
       year: data.value.year,
       serviceId: serviceId.value,
       courseId: data.value.courseId,

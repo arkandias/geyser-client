@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -90,18 +90,10 @@ graphql(`
 const positions = computed(() =>
   positionFragments.map((f) => useFragment(AdminPositionFragmentDoc, f)),
 );
-const insertPositions = useMutation(InsertPositionsDocument, {
-  refetchTags: ["all"],
-});
-const upsertPositions = useMutation(UpsertPositionsDocument, {
-  refetchTags: ["all"],
-});
-const updatePositions = useMutation(UpdatePositionsDocument, {
-  refetchTags: ["all"],
-});
-const deletePositions = useMutation(DeletePositionsDocument, {
-  refetchTags: ["all"],
-});
+const insertPositions = useMutation(InsertPositionsDocument);
+const upsertPositions = useMutation(UpsertPositionsDocument);
+const updatePositions = useMutation(UpdatePositionsDocument);
+const deletePositions = useMutation(DeletePositionsDocument);
 
 const constraint = PositionConstraint.PositionLabelKey;
 const updateColumns = [

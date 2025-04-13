@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from "villus";
+import { useQuery } from "@urql/vue";
 import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -30,8 +30,7 @@ const { activeYear } = useYearsStore();
 const { data } = useQuery({
   query: GetServicesDocument,
   variables: () => ({ year: activeYear.value ?? 0 }),
-  paused: () => activeYear.value === null,
-  tags: ["all"],
+  pause: () => activeYear.value === null,
 });
 
 const options = ref<{ value: number; label: string; search: string }[]>([]);

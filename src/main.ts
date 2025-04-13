@@ -1,11 +1,12 @@
 // sort-imports-ignore
 import { createApp } from "vue";
 import { Quasar } from "quasar";
+import urql from "@urql/vue";
 
 import { quasarOptions } from "@/services/quasar.ts";
 import { i18n } from "@/services/i18n.ts";
 import { router } from "@/services/router.ts";
-import { client } from "@/services/villus.ts";
+import { clientOptions } from "@/services/urql.ts";
 
 import "quasar/src/css/index.sass";
 import "@/css/main.scss";
@@ -22,5 +23,5 @@ createApp(App)
   .use(Quasar, quasarOptions)
   .use(i18n)
   .use(router)
-  .use(client)
+  .use(urql, clientOptions)
   .mount("#app");

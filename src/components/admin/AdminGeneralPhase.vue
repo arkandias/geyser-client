@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
@@ -30,12 +30,10 @@ graphql(`
   }
 `);
 
-const setCurrentPhase = useMutation(SetCurrentPhaseDocument, {
-  refetchTags: ["all"],
-});
+const setCurrentPhase = useMutation(SetCurrentPhaseDocument);
 
 const setCurrentPhaseHandle = async (phase: string): Promise<void> => {
-  const { error } = await setCurrentPhase.execute({
+  const { error } = await setCurrentPhase.executeMutation({
     value: phase,
   });
   if (error) {

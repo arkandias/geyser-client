@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -58,12 +58,12 @@ type T = typeof rowDescriptor;
 type FormValues = NullableParsedRow<T>;
 type ImportRow = ParsedRow<T>;
 type InsertInput = {
-  year: number;
-  serviceId: number;
-  courseId: number;
-  seniority: number;
-  isPriority: boolean | null;
-  computed: boolean;
+  year?: number | null;
+  serviceId?: number | null;
+  courseId?: number | null;
+  seniority?: number | null;
+  isPriority?: boolean | null;
+  computed?: boolean | null;
 };
 
 graphql(`
@@ -180,18 +180,10 @@ const services = computed(() =>
 const courses = computed(() =>
   courseFragments.map((f) => useFragment(AdminPrioritiesCourseFragmentDoc, f)),
 );
-const insertPriorities = useMutation(InsertPrioritiesDocument, {
-  refetchTags: ["all"],
-});
-const upsertPriorities = useMutation(UpsertPrioritiesDocument, {
-  refetchTags: ["all"],
-});
-const updatePriorities = useMutation(UpdatePrioritiesDocument, {
-  refetchTags: ["all"],
-});
-const deletePriorities = useMutation(DeletePrioritiesDocument, {
-  refetchTags: ["all"],
-});
+const insertPriorities = useMutation(InsertPrioritiesDocument);
+const upsertPriorities = useMutation(UpsertPrioritiesDocument);
+const updatePriorities = useMutation(UpdatePrioritiesDocument);
+const deletePriorities = useMutation(DeletePrioritiesDocument);
 
 const constraint = PriorityConstraint.PriorityServiceIdCourseIdKey;
 const updateColumns = [

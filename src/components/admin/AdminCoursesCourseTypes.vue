@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -90,18 +90,10 @@ graphql(`
 const courseTypes = computed(() =>
   courseTypeFragments.map((f) => useFragment(AdminCourseTypeFragmentDoc, f)),
 );
-const insertCourseTypes = useMutation(InsertCourseTypesDocument, {
-  refetchTags: ["all"],
-});
-const upsertCourseTypes = useMutation(UpsertCourseTypesDocument, {
-  refetchTags: ["all"],
-});
-const updateCourseTypes = useMutation(UpdateCourseTypesDocument, {
-  refetchTags: ["all"],
-});
-const deleteCourseTypes = useMutation(DeleteCourseTypesDocument, {
-  refetchTags: ["all"],
-});
+const insertCourseTypes = useMutation(InsertCourseTypesDocument);
+const upsertCourseTypes = useMutation(UpsertCourseTypesDocument);
+const updateCourseTypes = useMutation(UpdateCourseTypesDocument);
+const deleteCourseTypes = useMutation(DeleteCourseTypesDocument);
 
 const constraint = CourseTypeConstraint.CourseTypeLabelKey;
 const updateColumns = [

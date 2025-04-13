@@ -28,12 +28,12 @@
     "codegen": "pnpm codegen:schema && pnpm codegen:documents"
   },
   "dependencies": {
+    "@urql/vue": "^1.4.3",
     "dompurify": "^3.2.5",
     "graphql": "^16.10.0",
     "keycloak-js": "^26.2.0",
     "papaparse": "^5.5.2",
     "quasar": "^2.18.1",
-    "villus": "^3.5.2",
     "vue": "^3.5.13",
     "vue-i18n": "^11.1.3",
     "vue-router": "^4.5.0"
@@ -52,6 +52,7 @@
     "@types/papaparse": "^5.3.15",
     "@typescript-eslint/eslint-plugin": "^8.29.1",
     "@typescript-eslint/parser": "^8.29.1",
+    "@urql/devtools": "^2.0.3",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/test-utils": "^2.4.6",
     "dotenv": "^16.5.0",

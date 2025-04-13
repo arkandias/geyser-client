@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from "villus";
+import { useQuery } from "@urql/vue";
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -34,11 +34,10 @@ const { getValue: selectedService } = useQueryParam("serviceId", true);
 
 const serviceId = computed(() => selectedService.value ?? myServiceId.value);
 
-const { data, isFetching, isDone } = useQuery({
+const { data, fetching } = useQuery({
   query: GetServiceDetailsDocument,
   variables: () => ({ id: serviceId.value ?? -1 }),
-  paused: () => serviceId.value === null,
-  tags: ["all", "request", "service"],
+  pause: () => serviceId.value === null,
 });
 
 const service = computed(() => data.value?.service ?? null);
@@ -51,7 +50,8 @@ const service = computed(() => data.value?.service ?? null);
         {{ t("service.noService") }}
       </QCardSection>
     </QCard>
-    <QCard v-else-if="isFetching && !isDone" flat square>
+    <!--todo: test behavior on updates-->
+    <QCard v-else-if="fetching" flat square>
       <QCardSection class="text-h4 q-pa-xl">
         {{ t("service.fetchingService") }}
       </QCardSection>

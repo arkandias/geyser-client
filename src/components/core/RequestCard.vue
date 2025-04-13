@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation, useQuery } from "villus";
+import { useMutation, useQuery } from "@urql/vue";
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -96,23 +96,22 @@ const { t, n } = useCustomI18n();
 const { notify } = useNotify();
 const perm = usePermissions();
 
-const getAssignment = useQuery({
-  query: GetAssignmentDocument,
-  fetchOnMount: false,
-});
-const insertAssignment = useMutation(InsertAssignmentDocument, {
-  refetchTags: ["request"],
-});
-const updateAssignment = useMutation(UpdateAssignmentDocument, {
-  refetchTags: ["request"],
-});
-const deleteRequestCard = useMutation(DeleteRequestCardDocument, {
-  refetchTags: ["request"],
-});
-
 const request = computed(() =>
   useFragment(RequestCardDataFragmentDoc, dataFragment),
 );
+
+const getAssignment = useQuery({
+  query: GetAssignmentDocument,
+  variables: () => ({
+    serviceId: request.value.service?.id ?? -1,
+    courseId: request.value.course.id,
+  }),
+  pause: true,
+});
+const insertAssignment = useMutation(InsertAssignmentDocument);
+const updateAssignment = useMutation(UpdateAssignmentDocument);
+const deleteRequestCard = useMutation(DeleteRequestCardDocument);
+
 const groups = computed(() =>
   request.value.course.hoursPerGroup
     ? request.value.hours / request.value.course.hoursPerGroup
@@ -136,23 +135,19 @@ const displayActions = computed(
 );
 
 const assign = async (): Promise<void> => {
-  const result = await getAssignment.execute({
-    variables: {
-      serviceId: request.value.service?.id ?? -1,
-      courseId: request.value.course.id,
-    },
+  const result = await getAssignment.executeQuery({
     cachePolicy: "network-only",
   });
 
-  if (!result.data?.requests || result.error) {
+  if (!result.data.value?.requests || result.error.value) {
     notify(NotifyType.ERROR, {
       message: t("requestCard.assign.error"),
-      caption: result.error?.message,
+      caption: result.error.value?.message,
     });
     return;
   }
 
-  const assignment = result.data.requests[0];
+  const assignment = result.data.value.requests[0];
 
   if (assignment) {
     if (assignment.hours === request.value.hours) {
@@ -162,7 +157,7 @@ const assign = async (): Promise<void> => {
       return;
     }
 
-    const { data, error } = await updateAssignment.execute({
+    const { data, error } = await updateAssignment.executeMutation({
       id: assignment.id,
       hours: request.value.hours,
     });
@@ -178,7 +173,7 @@ const assign = async (): Promise<void> => {
       });
     }
   } else {
-    const { data, error } = await insertAssignment.execute({
+    const { data, error } = await insertAssignment.executeMutation({
       year: request.value.year,
       serviceId: request.value.service?.id ?? -1,
       courseId: request.value.course.id,
@@ -199,7 +194,7 @@ const assign = async (): Promise<void> => {
 };
 
 const remove = async (): Promise<void> => {
-  const { data, error } = await deleteRequestCard.execute({
+  const { data, error } = await deleteRequestCard.executeMutation({
     id: request.value.id,
   });
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -167,27 +167,15 @@ const teachers = computed(() =>
 );
 const insertServiceModifications = useMutation(
   InsertServiceModificationsDocument,
-  {
-    refetchTags: ["all"],
-  },
 );
 const upsertServiceModifications = useMutation(
   UpsertServiceModificationsDocument,
-  {
-    refetchTags: ["all"],
-  },
 );
 const updateServiceModifications = useMutation(
   UpdateServiceModificationsDocument,
-  {
-    refetchTags: ["all"],
-  },
 );
 const deleteServiceModifications = useMutation(
   DeleteServiceModificationsDocument,
-  {
-    refetchTags: ["all"],
-  },
 );
 
 const constraint = ServiceModificationConstraint.ServiceModificationPkey;

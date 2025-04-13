@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { useMutation } from "@urql/vue";
 import DOMPurify from "dompurify";
-import { useMutation } from "villus";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -50,9 +50,7 @@ graphql(`
 const { t } = useCustomI18n();
 const perm = usePermissions();
 
-const updateDescription = useMutation(UpdateDescriptionDocument, {
-  refetchTags: ["description"],
-});
+const updateDescription = useMutation(UpdateDescriptionDocument);
 
 const data = computed(() =>
   useFragment(CourseDescriptionFragmentDoc, dataFragment),
@@ -71,7 +69,7 @@ const editDescription = ref(false);
 
 const setDescription = (text: string) =>
   updateDescription
-    .execute({
+    .executeMutation({
       courseId: data.value.courseId,
       description: text || null,
     })

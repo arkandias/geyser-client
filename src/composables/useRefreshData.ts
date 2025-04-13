@@ -1,4 +1,4 @@
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { ref } from "vue";
 
 import { graphql } from "@/gql";
@@ -15,14 +15,17 @@ graphql(`
 `);
 
 export const useRefreshData = () => {
-  const dummyMutation = useMutation(DummyMutationDocument, {
-    refetchTags: ["all"],
-  });
+  const dummyMutation = useMutation(DummyMutationDocument);
   const isRefreshing = ref(false);
 
   const refreshData = async (): Promise<void> => {
     isRefreshing.value = true;
-    await dummyMutation.execute({});
+    await dummyMutation.executeMutation(
+      {},
+      {
+        // todo: add additional typenames
+      },
+    );
     isRefreshing.value = false;
   };
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -119,18 +119,10 @@ const positions = computed(() =>
     useFragment(AdminTeachersPositionFragmentDoc, f),
   ),
 );
-const insertTeachers = useMutation(InsertTeachersDocument, {
-  refetchTags: ["all"],
-});
-const upsertTeachers = useMutation(UpsertTeachersDocument, {
-  refetchTags: ["all"],
-});
-const updateTeachers = useMutation(UpdateTeachersDocument, {
-  refetchTags: ["all"],
-});
-const deleteTeachers = useMutation(DeleteTeachersDocument, {
-  refetchTags: ["all"],
-});
+const insertTeachers = useMutation(InsertTeachersDocument);
+const upsertTeachers = useMutation(UpsertTeachersDocument);
+const updateTeachers = useMutation(UpdateTeachersDocument);
+const deleteTeachers = useMutation(DeleteTeachersDocument);
 
 const constraint = TeacherConstraint.TeacherPkey;
 const updateColumns = [

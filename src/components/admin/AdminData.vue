@@ -5,12 +5,12 @@
     Row extends SimpleObject<Scalar>,
     IdKey extends string & keyof Row,
     T extends RowDescriptor,
-    InsertInput,
-    Constraint,
-    UpdateColumn
+    InsertInput extends object,
+    Constraint extends string,
+    UpdateColumn extends string
   "
 >
-import type { MutationApi } from "villus";
+import type { UseMutationResponse } from "@urql/vue";
 import { type Ref, computed, ref, toValue, useSlots, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -36,9 +36,12 @@ type ValidateImportRow = {
   (importRow: ImportRow): InsertInput;
   (importRow: Partial<ImportRow>): Partial<InsertInput>;
 };
-type CustomMutationApi<Name extends string, TVars> = MutationApi<
+type CustomMutationResponse<
+  Name extends string,
+  V extends object,
+> = UseMutationResponse<
   Partial<Record<Name, { returning: Record<IdKey, Id>[] } | null>>,
-  TVars
+  V
 >;
 
 const formValues = defineModel<FormValues>("formValues", { required: true });
@@ -74,25 +77,28 @@ const {
   formatRow: (row: Row) => string;
   initForm: (rows: Row[]) => FormValues;
   validateImportRow: ValidateImportRow;
-  insertData: CustomMutationApi<"insertData", { objects: InsertInput[] }>;
-  upsertData: CustomMutationApi<
+  insertData: CustomMutationResponse<
+    "insertData",
+    { objects: InsertInput | InsertInput[] }
+  >;
+  upsertData: CustomMutationResponse<
     "upsertData",
     {
-      objects: InsertInput[];
-      onConflict: {
+      objects: InsertInput | InsertInput[];
+      onConflict?: {
         constraint: Constraint;
-        updateColumns: UpdateColumn[];
-      };
+        updateColumns?: UpdateColumn[];
+      } | null;
     }
   >;
-  updateData: CustomMutationApi<
+  updateData: CustomMutationResponse<
     "updateData",
     {
-      ids: Id[];
+      ids: Id | Id[];
       changes: Partial<InsertInput>;
     }
   >;
-  deleteData: CustomMutationApi<"deleteData", { ids: Id[] }>;
+  deleteData: CustomMutationResponse<"deleteData", { ids: Id | Id[] }>;
   constraint: Constraint;
   updateColumns: UpdateColumn[];
   extraCsvInstructions?: string;
@@ -214,7 +220,7 @@ const insertDataHandle = async () => {
     return;
   }
 
-  const { data, error } = await insertData.execute({
+  const { data, error } = await insertData.executeMutation({
     objects: [object],
   });
   if (error || !data?.insertData?.returning) {
@@ -250,7 +256,7 @@ const updateDataHandle = async () => {
     return;
   }
 
-  const { data, error } = await updateData.execute({
+  const { data, error } = await updateData.executeMutation({
     ids: selectedRows.value.map((row) => row[idKey]),
     changes,
   });
@@ -290,7 +296,7 @@ const deleteDataHandle = async () => {
     return;
   }
 
-  const { data, error } = await deleteData.execute({
+  const { data, error } = await deleteData.executeMutation({
     ids: selectedRows.value.map((row) => row[idKey]),
   });
   if (error || !data?.deleteData?.returning) {
@@ -415,7 +421,7 @@ const importRowsHandle = async () => {
       }
     });
 
-    const { data, error } = await upsertData.execute({
+    const { data, error } = await upsertData.executeMutation({
       objects,
       onConflict: {
         constraint,

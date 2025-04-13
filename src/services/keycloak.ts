@@ -73,30 +73,7 @@ export const getClaims = (): HasuraClaims | null => {
   return validateClaims(keycloak.tokenParsed);
 };
 
-const roleHeader: { "X-Hasura-Role"?: Role } = {};
-
-export const setRoleHeader = (role: Role) => {
-  roleHeader["X-Hasura-Role"] = role;
-};
-
-export const getAuthHeader = async (): Promise<Record<string, string>> => {
-  if (bypassAuth) {
-    return {
-      "X-Hasura-Admin-Secret": hasuraAdminSecret,
-      "X-Hasura-User-Id": hasuraUserId,
-    };
-  }
-  await refreshToken();
-  return { Authorization: `Bearer ${keycloak.token}`, ...roleHeader };
-};
-
-export const logout = async () => {
-  if (!bypassAuth) {
-    await keycloak.logout();
-  }
-};
-
-const refreshToken = async () => {
+export const refreshToken = async () => {
   if (bypassAuth) {
     return;
   }
@@ -106,6 +83,20 @@ const refreshToken = async () => {
   } catch (error) {
     console.error("Failed to refresh the token:", error);
     keycloak.clearToken();
+  }
+};
+
+export const getAuthHeader = (): Record<string, string> =>
+  bypassAuth
+    ? {
+        "X-Hasura-Admin-Secret": hasuraAdminSecret,
+        "X-Hasura-User-Id": hasuraUserId,
+      }
+    : { Authorization: `Bearer ${keycloak.token}` };
+
+export const logout = async () => {
+  if (!bypassAuth) {
+    await keycloak.logout();
   }
 };
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -39,7 +39,7 @@ type FormValues = NullableParsedRow<T>;
 type ImportRow = ParsedRow<T>;
 type InsertInput = {
   name?: string | null;
-  nameShort: string | null;
+  nameShort?: string | null;
   visible?: boolean | null;
 };
 
@@ -90,18 +90,10 @@ graphql(`
 const degrees = computed(() =>
   degreeFragments.map((f) => useFragment(AdminDegreeFragmentDoc, f)),
 );
-const insertDegrees = useMutation(InsertDegreesDocument, {
-  refetchTags: ["all"],
-});
-const upsertDegrees = useMutation(UpsertDegreesDocument, {
-  refetchTags: ["all"],
-});
-const updateDegrees = useMutation(UpdateDegreesDocument, {
-  refetchTags: ["all"],
-});
-const deleteDegrees = useMutation(DeleteDegreesDocument, {
-  refetchTags: ["all"],
-});
+const insertDegrees = useMutation(InsertDegreesDocument);
+const upsertDegrees = useMutation(UpsertDegreesDocument);
+const updateDegrees = useMutation(UpdateDegreesDocument);
+const deleteDegrees = useMutation(DeleteDegreesDocument);
 
 const constraint = DegreeConstraint.DegreeNameKey;
 const updateColumns = [

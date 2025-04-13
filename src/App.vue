@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from "villus";
+import { useQuery } from "@urql/vue";
 import { computed, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -8,7 +8,8 @@ import { PHASES } from "@/config/types/phases.ts";
 import { ROLES, isRole } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
 import { GetAppDataDocument, GetUserProfileDocument } from "@/gql/graphql.ts";
-import { getClaims, setRoleHeader } from "@/services/keycloak.ts";
+import { getClaims } from "@/services/keycloak.ts";
+import { setRoleHeader } from "@/services/urql.ts";
 import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
@@ -65,7 +66,7 @@ const claims = getClaims();
 const getUserProfile = useQuery({
   query: GetUserProfileDocument,
   variables: { uid: claims?.userId ?? "" },
-  paused: !claims,
+  pause: !claims,
 });
 watch(
   [getUserProfile.data, getUserProfile.error],
@@ -105,8 +106,9 @@ watch(activeRole, setRoleHeader, { immediate: true });
 // Fetch app data
 const getAppData = useQuery({
   query: GetAppDataDocument,
-  paused: () => !loaded.value || !active.value,
-  tags: ["all"],
+  // todo: remove after urql fix
+  variables: {},
+  pause: () => !loaded.value || !active.value,
 });
 watch(
   [getAppData.data, getAppData.error],
@@ -125,7 +127,7 @@ watch(
       setYears(
         data.years.map((year) => ({
           value: year.value,
-          current: !!year.current,
+          current: year.current,
           visible: year.visible,
         })),
       );
@@ -142,7 +144,7 @@ const accessDeniedMessage = computed(() => {
   if (!claims) {
     return t("home.alert.noAuth");
   }
-  if (getUserProfile.isFetching.value && !getUserProfile.isDone.value) {
+  if (getUserProfile.fetching.value) {
     return t("home.alert.loadingProfile");
   }
   if (!loaded.value) {
@@ -151,7 +153,7 @@ const accessDeniedMessage = computed(() => {
   if (!active.value) {
     return t("home.alert.profileNotActive");
   }
-  if (getAppData.isFetching.value && !getAppData.isDone.value) {
+  if (getAppData.fetching.value) {
     return t("home.alert.loadingAppData");
   }
   if (

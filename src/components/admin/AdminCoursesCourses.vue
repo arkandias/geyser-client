@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -56,20 +56,20 @@ type T = typeof rowDescriptor;
 type FormValues = NullableParsedRow<T>;
 type ImportRow = ParsedRow<T>;
 type InsertInput = {
-  year: number;
-  programId: number;
-  trackId: number | null;
-  name: string;
-  nameShort: string | null;
-  semester: number;
-  typeId: number;
-  hours: number;
-  hoursAdjusted: number | null;
-  groups: number;
-  groupsAdjusted: number | null;
-  description: string | null;
-  priorityRule: number | null;
-  visible: boolean;
+  year?: number | null;
+  programId?: number | null;
+  trackId?: number | null;
+  name?: string | null;
+  nameShort?: string | null;
+  semester?: number | null;
+  typeId?: number | null;
+  hours?: number | null;
+  hoursAdjusted?: number | null;
+  groups?: number | null;
+  groupsAdjusted?: number | null;
+  description?: string | null;
+  priorityRule?: number | null;
+  visible?: boolean | null;
 };
 
 graphql(`
@@ -172,18 +172,10 @@ const courseTypes = computed(() =>
     useFragment(AdminCoursesCourseTypeFragmentDoc, f),
   ),
 );
-const insertCourses = useMutation(InsertCoursesDocument, {
-  refetchTags: ["all"],
-});
-const upsertCourses = useMutation(UpsertCoursesDocument, {
-  refetchTags: ["all"],
-});
-const updateCourses = useMutation(UpdateCoursesDocument, {
-  refetchTags: ["all"],
-});
-const deleteCourses = useMutation(DeleteCoursesDocument, {
-  refetchTags: ["all"],
-});
+const insertCourses = useMutation(InsertCoursesDocument);
+const upsertCourses = useMutation(UpsertCoursesDocument);
+const updateCourses = useMutation(UpdateCoursesDocument);
+const deleteCourses = useMutation(DeleteCoursesDocument);
 
 const constraint =
   CourseConstraint.CourseYearProgramIdTrackIdNameSemesterTypeIdKey;

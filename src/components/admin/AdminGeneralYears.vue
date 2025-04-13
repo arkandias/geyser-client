@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMutation } from "villus";
+import { useMutation } from "@urql/vue";
 import { ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -71,30 +71,16 @@ graphql(`
   }
 `);
 
-const setCurrentYear = useMutation(SetCurrentYearDocument, {
-  refetchTags: ["all"],
-});
-const insertYear = useMutation(InsertYearDocument, {
-  refetchTags: ["all"],
-});
-const updateYear = useMutation(UpdateYearDocument, {
-  refetchTags: ["all"],
-});
-const deleteYear = useMutation(DeleteYearDocument, {
-  refetchTags: ["all"],
-});
-const createServices = useMutation(CreateServicesDocument, {
-  refetchTags: ["all"],
-});
-const copyCourses = useMutation(CopyCoursesDocument, {
-  refetchTags: ["all"],
-});
-const computePriorities = useMutation(ComputePrioritiesDocument, {
-  refetchTags: ["all"],
-});
+const setCurrentYear = useMutation(SetCurrentYearDocument);
+const insertYear = useMutation(InsertYearDocument);
+const updateYear = useMutation(UpdateYearDocument);
+const deleteYear = useMutation(DeleteYearDocument);
+const createServices = useMutation(CreateServicesDocument);
+const copyCourses = useMutation(CopyCoursesDocument);
+const computePriorities = useMutation(ComputePrioritiesDocument);
 
 const setCurrentYearHandle = async (year: number): Promise<void> => {
-  const { error } = await setCurrentYear.execute({
+  const { error } = await setCurrentYear.executeMutation({
     value: year,
   });
 
@@ -119,7 +105,7 @@ const insertYearHandle = async () => {
     return;
   }
 
-  const { data, error } = await insertYear.execute({
+  const { data, error } = await insertYear.executeMutation({
     value: formValue.value,
     visible: false,
   });
@@ -147,7 +133,7 @@ const updateYearHandle = async (
     visible?: boolean;
   },
 ) => {
-  const { data, error } = await updateYear.execute({
+  const { data, error } = await updateYear.executeMutation({
     value,
     changes,
   });
@@ -193,7 +179,7 @@ const deleteYearHandle = async (value: number) => {
     return;
   }
 
-  const { data, error } = await deleteYear.execute({ value });
+  const { data, error } = await deleteYear.executeMutation({ value });
   if (error || data?.year?.value === undefined) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.deleteFailed"),
@@ -211,7 +197,7 @@ const createServicesHandle = async () => {
     return;
   }
 
-  const { data, error } = await createServices.execute({
+  const { data, error } = await createServices.executeMutation({
     year: selectedYear.value,
   });
 
@@ -235,7 +221,7 @@ const copyCoursesHandle = async () => {
     return;
   }
 
-  const { data, error } = await copyCourses.execute({
+  const { data, error } = await copyCourses.executeMutation({
     year: selectedYear.value,
   });
 
@@ -259,7 +245,7 @@ const computePrioritiesHandle = async () => {
     return;
   }
 
-  const { data, error } = await computePriorities.execute({
+  const { data, error } = await computePriorities.executeMutation({
     year: selectedYear.value,
   });
 

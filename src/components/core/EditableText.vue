@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { CombinedError } from "villus";
+import type { CombinedError } from "@urql/vue";
 import { ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 
 type SetTextReturn = {
-  returnId: string | number | null | undefined;
-  error: CombinedError | null | undefined;
+  returnId?: string | number | null;
+  error?: CombinedError | null;
 };
 
 const showEditor = defineModel<boolean>();

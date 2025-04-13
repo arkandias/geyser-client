@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuery } from "villus";
+import { useQuery } from "@urql/vue";
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
@@ -57,7 +57,7 @@ graphql(`
 
 const { data } = useQuery({
   query: GetAdminCoursesDocument,
-  tags: ["all"],
+  variables: {},
 });
 const degrees = computed(() => data.value?.degrees ?? []);
 const programs = computed(() => data.value?.programs ?? []);
