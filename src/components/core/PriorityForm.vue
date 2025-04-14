@@ -9,7 +9,6 @@ import {
   PriorityFormDataFragmentDoc,
   UpsertPriorityDocument,
 } from "@/gql/graphql.ts";
-import { priorityColor } from "@/utils/colors.ts";
 import { inputToNumber } from "@/utils/misc.ts";
 
 import SelectService from "@/components/core/SelectService.vue";
