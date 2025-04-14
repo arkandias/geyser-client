@@ -143,6 +143,7 @@ const { data } = useQuery({
   // todo: remove after urql fix
   variables: {},
   pause: () => !isModificationFormOpen.value,
+  context: { additionalTypenames: ["All"] },
 });
 const modificationTypesOptions = computed(
   () => data.value?.modificationTypes ?? [],

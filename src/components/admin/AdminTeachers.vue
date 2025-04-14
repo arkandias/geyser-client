@@ -47,6 +47,7 @@ graphql(`
 const { data } = useQuery({
   query: GetAdminTeachersDocument,
   variables: {},
+  context: { additionalTypenames: ["All"] },
 });
 const teachers = computed(() => data.value?.teachers ?? []);
 const positions = computed(() => data.value?.positions ?? []);

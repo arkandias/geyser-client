@@ -78,6 +78,7 @@ const getCourseRows = useQuery({
   query: GetCourseRowsDocument,
   variables: () => ({ year: activeYear.value ?? -1 }),
   pause: () => activeYear.value === null,
+  context: { additionalTypenames: ["All", "Request"] },
 });
 const fetchingCourseRows = computed(
   // todo: test that paused query is not fetching (if activeYear is null)
@@ -92,6 +93,9 @@ const getServiceRows = useQuery({
     year: activeYear.value ?? -1,
   }),
   pause: () => activeYear.value === null,
+  context: {
+    additionalTypenames: ["All", "Request", "ServiceModification"],
+  },
 });
 const fetchingServiceRows = computed(
   // todo: test that paused query is not fetching (if activeYear is null)
@@ -106,6 +110,7 @@ const getCourseDetails = useQuery({
   query: GetCourseDetailsDocument,
   variables: () => ({ courseId: selectedCourse.value ?? -1 }),
   pause: () => selectedCourse.value === null,
+  context: { additionalTypenames: ["All", "Priority", "Request"] },
 });
 const courseDetails = computed(() =>
   selectedCourse.value === null

@@ -109,6 +109,7 @@ const getAppData = useQuery({
   // todo: remove after urql fix
   variables: {},
   pause: () => !loaded.value || !active.value,
+  context: { additionalTypenames: ["All"] },
 });
 watch(
   [getAppData.data, getAppData.error],

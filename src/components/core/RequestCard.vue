@@ -107,6 +107,7 @@ const getAssignment = useQuery({
     courseId: request.value.course.id,
   }),
   pause: true,
+  context: { requestPolicy: "network-only" },
 });
 const insertAssignment = useMutation(InsertAssignmentDocument);
 const updateAssignment = useMutation(UpdateAssignmentDocument);
@@ -135,9 +136,7 @@ const displayActions = computed(
 );
 
 const assign = async (): Promise<void> => {
-  const result = await getAssignment.executeQuery({
-    cachePolicy: "network-only",
-  });
+  const result = await getAssignment.executeQuery();
 
   if (!result.data.value?.requests || result.error.value) {
     notify(NotifyType.ERROR, {

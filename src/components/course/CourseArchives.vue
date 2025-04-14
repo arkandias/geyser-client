@@ -79,6 +79,7 @@ const getCourseArchives = useQuery({
     semester: data.value.semester,
     typeId: data.value.typeId,
   }),
+  context: { additionalTypenames: ["All"] },
 });
 
 const archives = computed(() => getCourseArchives.data.value?.courses ?? []);

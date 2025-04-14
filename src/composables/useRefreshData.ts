@@ -20,12 +20,7 @@ export const useRefreshData = () => {
 
   const refreshData = async (): Promise<void> => {
     isRefreshing.value = true;
-    await dummyMutation.executeMutation(
-      {},
-      {
-        // todo: add additional typenames
-      },
-    );
+    await dummyMutation.executeMutation({}, { additionalTypenames: ["All"] });
     isRefreshing.value = false;
   };
 

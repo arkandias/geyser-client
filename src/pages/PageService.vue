@@ -38,6 +38,9 @@ const { data, fetching } = useQuery({
   query: GetServiceDetailsDocument,
   variables: () => ({ id: serviceId.value ?? -1 }),
   pause: () => serviceId.value === null,
+  context: {
+    additionalTypenames: ["All", "Priority", "Request", "ServiceModification"],
+  },
 });
 
 const service = computed(() => data.value?.service ?? null);
