@@ -46,13 +46,7 @@ const routeTabs = computed(() => [
 
 <template>
   <QPage class="q-pa-md">
-    <QTabs
-      active-color="primary"
-      indicator-color="primary"
-      align="justify"
-      class="text-grey"
-      dense
-    >
+    <QTabs align="justify" class="text-grey" dense>
       <QRouteTab
         v-for="tab in routeTabs"
         :key="tab.name"

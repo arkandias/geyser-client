@@ -13,11 +13,11 @@ const { t } = useCustomI18n();
 const { displayname, roles, activeRole, setActiveRole } = useProfileStore();
 const { refreshData } = useRefreshData();
 
-const role = ref<Role | null>(null);
+const selectedRole = ref<Role | null>(null);
 watch(
   activeRole,
   (value) => {
-    role.value = value;
+    selectedRole.value = value;
   },
   { immediate: true },
 );
@@ -46,9 +46,8 @@ const update = async (value: Role) => {
       <QSeparator />
       <QItem class="q-pl-sm">
         <QOptionGroup
-          v-model="role"
+          v-model="selectedRole"
           :options="roleOptions"
-          color="primary"
           type="radio"
           @update:model-value="update"
         />

@@ -547,7 +547,6 @@ const exportDataHandle = () => {
       <QInput
         v-if="searchableColumns.length"
         v-model="search"
-        color="primary"
         :placeholder="t('admin.data.search')"
         clearable
         clear-icon="sym_s_close"
@@ -576,7 +575,7 @@ const exportDataHandle = () => {
       </QCardSection>
       <QCardSection>
         <QForm
-          :id="`${name}-form`"
+          :id="`admin-data-${name}-form`"
           class="q-gutter-md"
           @submit="selection ? updateDataHandle() : insertDataHandle()"
         >
@@ -585,7 +584,7 @@ const exportDataHandle = () => {
       </QCardSection>
       <QCardActions align="right">
         <QBtn
-          :form="`${name}-form`"
+          :form="`admin-data-${name}-form`"
           type="submit"
           :label="
             selection

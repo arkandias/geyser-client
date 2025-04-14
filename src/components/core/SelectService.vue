@@ -65,7 +65,6 @@ const filter = (val: string, update: (x: () => void) => void) => {
     v-model="id"
     :options
     :label="t('selectService.label')"
-    color="primary"
     emit-value
     map-options
     use-input

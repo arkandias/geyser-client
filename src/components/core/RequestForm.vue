@@ -250,7 +250,6 @@ const resetForm = (): void => {
       v-model.number="groups"
       type="number"
       :label="t('requestForm.field.groups')"
-      color="primary"
       square
       dense
     />
@@ -258,18 +257,14 @@ const resetForm = (): void => {
       v-model.number="hours"
       type="number"
       :label="t('requestForm.field.hours')"
-      color="primary"
       square
       dense
     />
-    <QRadio
-      v-for="opt in requestTypeOptions"
-      :key="opt.value"
+    <QOptionGroup
       v-model="requestType"
-      :val="opt.value"
-      :label="opt.label"
-      color="primary"
-      dense
+      :options="requestTypeOptions"
+      type="radio"
+      inline
     />
     <QBtn type="submit" icon="sym_s_check" color="primary" flat square dense>
       <QTooltip>

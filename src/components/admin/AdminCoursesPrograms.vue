@@ -251,7 +251,6 @@ const filterFn = computed(
       <QSelect
         v-model="selectedVisible"
         :options="booleanOptions(t('yes'), t('no'))"
-        color="primary"
         :label="t('admin.courses.programs.table.columns.visible')"
         emit-value
         map-options

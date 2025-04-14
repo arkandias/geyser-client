@@ -127,20 +127,16 @@ watch(() => data.value.courseId, resetForm);
     <QInput
       :model-value="seniority"
       type="number"
-      color="primary"
       :label="t('priorityForm.field.seniority')"
       square
       dense
       @update:model-value="(value) => (seniority = inputToNumber(value))"
     />
-    <QRadio
-      v-for="opt in priorityOptions"
-      :key="String(opt.value)"
+    <QOptionGroup
       v-model="isPriority"
-      :val="opt.value"
-      :label="opt.label"
-      :color="priorityColor(opt.value)"
-      dense
+      :options="priorityOptions"
+      type="radio"
+      inline
     />
     <QBtn type="submit" icon="sym_s_check" color="primary" flat square dense>
       <QTooltip>

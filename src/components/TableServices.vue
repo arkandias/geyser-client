@@ -277,19 +277,13 @@ const tableRowClassFn = (row: ServiceRowFragment) =>
       <div class="row q-gutter-md">
         <QInput
           v-model="search"
-          color="primary"
           :placeholder="t('courses.table.services.filters.search')"
           clearable
           clear-icon="sym_s_close"
           square
           dense
         />
-        <QToggle
-          v-model="stickyHeader"
-          icon="sym_s_scrollable_header"
-          color="primary"
-          dense
-        >
+        <QToggle v-model="stickyHeader" icon="sym_s_scrollable_header" dense>
           <QTooltip>
             {{ t("courses.table.services.options.stickyHeader") }}
           </QTooltip>
@@ -317,7 +311,6 @@ const tableRowClassFn = (row: ServiceRowFragment) =>
                   v-model="visibleColumns"
                   :val="col.name"
                   :label="col.label"
-                  color="primary"
                   dense
                 />
                 <QTooltip

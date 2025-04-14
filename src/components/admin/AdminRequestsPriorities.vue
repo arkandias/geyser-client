@@ -481,7 +481,7 @@ const filterFn = computed(
   <AdminData
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
-    name="tracks"
+    name="priorities"
     message-prefix="admin.requests.priorities"
     :id-key
     :row-descriptor

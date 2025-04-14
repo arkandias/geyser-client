@@ -568,29 +568,18 @@ const downloadTeacherAssignments = async () => {
         <QInput
           v-model="search"
           :disable="!!teacher"
-          color="primary"
           :placeholder="t('courses.table.courses.filters.search')"
           clearable
           clear-icon="sym_s_close"
           square
           dense
         />
-        <QToggle
-          v-model="weightedHours"
-          icon="sym_s_function"
-          color="primary"
-          dense
-        >
+        <QToggle v-model="weightedHours" icon="sym_s_function" dense>
           <QTooltip>
             {{ t("courses.table.courses.options.weightedHours") }}
           </QTooltip>
         </QToggle>
-        <QToggle
-          v-model="stickyHeader"
-          icon="sym_s_scrollable_header"
-          color="primary"
-          dense
-        >
+        <QToggle v-model="stickyHeader" icon="sym_s_scrollable_header" dense>
           <QTooltip>
             {{ t("courses.table.courses.options.stickyHeader") }}
           </QTooltip>
@@ -618,7 +607,6 @@ const downloadTeacherAssignments = async () => {
                   v-model="visibleColumns"
                   :val="col.name"
                   :label="col.label"
-                  color="primary"
                   dense
                 />
                 <QTooltip

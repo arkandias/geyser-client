@@ -18,17 +18,17 @@ const options = computed(() =>
     .sort((a, b) => b.value - a.value),
 );
 
-const selected = ref<number | null>(null);
+const selectedYear = ref<number | null>(null);
 watch(
   activeYear,
   (value) => {
-    selected.value = value;
+    selectedYear.value = value;
   },
   { immediate: true },
 );
 
 const update = async () => {
-  await selectYear(selected.value);
+  await selectYear(selectedYear.value);
 };
 </script>
 
@@ -43,9 +43,8 @@ const update = async () => {
       <QSeparator />
       <QItem class="q-pl-sm">
         <QOptionGroup
-          v-model="selected"
+          v-model="selectedYear"
           :options
-          color="primary"
           type="radio"
           @update:model-value="update"
         />

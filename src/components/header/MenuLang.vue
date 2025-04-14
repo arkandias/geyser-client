@@ -27,7 +27,6 @@ const localeOptions = AVAILABLE_LOCALES.map((l) => ({
         <QOptionGroup
           v-model="locale"
           :options="localeOptions"
-          color="primary"
           type="radio"
           @update:model-value="setLocale"
         />

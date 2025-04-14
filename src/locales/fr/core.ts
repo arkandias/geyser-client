@@ -85,7 +85,7 @@ export default {
   },
   priorityForm: {
     field: {
-      seniority: "Années",
+      seniority: "Ancienneté",
       isPriority: {
         null: "Neutre",
         true: "Positive",

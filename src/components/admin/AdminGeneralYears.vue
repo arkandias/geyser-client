@@ -22,7 +22,7 @@ const { years, currentYear } = useYearsStore();
 
 const selectedYear = ref<number | null>(null);
 const isFormOpen = ref(false);
-const formValue = ref<number | null>(null);
+const yearValue = ref<number | null>(null);
 
 graphql(`
   mutation SetCurrentYear($value: Int!) {
@@ -97,7 +97,7 @@ const setCurrentYearHandle = async (year: number): Promise<void> => {
 };
 
 const insertYearHandle = async () => {
-  if (formValue.value === null) {
+  if (yearValue.value === null) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.invalidForm"),
       caption: t("admin.general.years.error.emptyValue"),
@@ -106,7 +106,7 @@ const insertYearHandle = async () => {
   }
 
   const { data, error } = await insertYear.executeMutation({
-    value: formValue.value,
+    value: yearValue.value,
     visible: false,
   });
 
@@ -159,7 +159,7 @@ const updateYearValueHandle = async () => {
     return;
   }
 
-  if (formValue.value === null) {
+  if (yearValue.value === null) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.invalidForm"),
       caption: t("admin.general.years.error.emptyValue"),
@@ -167,7 +167,7 @@ const updateYearValueHandle = async () => {
     return;
   }
 
-  await updateYearHandle(selectedYear.value, { value: formValue.value });
+  await updateYearHandle(selectedYear.value, { value: yearValue.value });
 };
 
 const updateYearVisibilityHandle = async (value: number, visible: boolean) => {
@@ -265,13 +265,13 @@ const computePrioritiesHandle = async () => {
 
 const create = () => {
   selectedYear.value = null;
-  formValue.value = null;
+  yearValue.value = null;
   isFormOpen.value = true;
 };
 
 const edit = (year: number) => {
   selectedYear.value = year;
-  formValue.value = year;
+  yearValue.value = year;
   isFormOpen.value = true;
 };
 </script>
@@ -384,7 +384,7 @@ const edit = (year: number) => {
           @submit="selectedYear ? updateYearValueHandle() : insertYearHandle()"
         >
           <QInput
-            v-model.number="formValue"
+            v-model.number="yearValue"
             type="number"
             :label="t('admin.general.years.year')"
             square
@@ -403,7 +403,7 @@ const edit = (year: number) => {
               : t('admin.general.years.button.create')
           "
           color="primary"
-          :disable="formValue === null"
+          :disable="yearValue === null"
           flat
           square
         />
