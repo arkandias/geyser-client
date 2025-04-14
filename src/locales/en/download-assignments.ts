@@ -8,6 +8,7 @@ export default {
     teacher: "Teacher",
     email: "Email",
     error: {
+      requestFailed: "Request failed",
       downloadFailed: "Download failed",
       unknownError: "Unknown error",
     },

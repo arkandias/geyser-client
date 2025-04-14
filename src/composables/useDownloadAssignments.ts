@@ -1,4 +1,4 @@
-import { useQuery } from "@urql/vue";
+import { useClientHandle } from "@urql/vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
@@ -62,22 +62,31 @@ graphql(`
 `);
 
 export const useDownloadAssignments = () => {
+  const client = useClientHandle().client;
   const { t } = useCustomI18n();
   const { notify } = useNotify();
-  const getAssignments = useQuery({
-    query: GetAssignmentsDocument,
-    pause: true,
-  });
 
   const downloadAssignments = async (
     variables: GetAssignmentsQueryVariables,
     filename: string,
   ) => {
-    const assignments = await getAssignments
-      .executeQuery({ variables, cachePolicy: "network-only" })
-      .then((result) => result.data.value?.assignments ?? []);
+    const { data, error } = await client
+      .query(GetAssignmentsDocument, variables, {
+        requestPolicy: "network-only",
+      })
+      .toPromise();
 
-    const formattedAssignments = assignments.map((a) => ({
+    if (error || !data?.assignments) {
+      notify(NotifyType.ERROR, {
+        message: t("downloadAssignments.error.requestFailed"),
+        caption: error
+          ? error.message
+          : t("downloadAssignments.error.unknownError"),
+      });
+      return;
+    }
+
+    const formattedAssignments = data.assignments.map((a) => ({
       [t("downloadAssignments.program")]:
         `${a.course.program.degree.name} ${a.course.program.name}`,
       [t("downloadAssignments.track")]: a.course.track

@@ -8,6 +8,7 @@ export default {
     teacher: "Intervenant",
     email: "Email",
     error: {
+      requestFailed: "La requête a échoué",
       downloadFailed: "Le téléchargement a échoué",
       unknownError: "Erreur inconnue",
     },
