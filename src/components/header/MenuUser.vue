@@ -3,7 +3,7 @@ import { computed, ref, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useRefreshData } from "@/composables/useRefreshData.ts";
-import type { Role } from "@/config/types/roles.ts";
+import type { RoleTypeEnum } from "@/gql/graphql.ts";
 import { logout } from "@/services/keycloak.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
 
@@ -13,7 +13,7 @@ const { t } = useCustomI18n();
 const { displayname, roles, activeRole, setActiveRole } = useProfileStore();
 const { refreshData } = useRefreshData();
 
-const selectedRole = ref<Role | null>(null);
+const selectedRole = ref<RoleTypeEnum | null>(null);
 watch(
   activeRole,
   (value) => {
@@ -25,11 +25,11 @@ watch(
 const roleOptions = computed(() =>
   roles.value.map((role) => ({
     value: role,
-    label: t(`role.${role}`, 1),
+    label: t(`role.${role.toLowerCase()}`, 1),
   })),
 );
 
-const update = async (value: Role) => {
+const update = async (value: RoleTypeEnum) => {
   setActiveRole(value);
   await refreshData();
 };

@@ -1,7 +1,7 @@
 import { computed, reactive, readonly, ref, toRefs } from "vue";
 
 import { PHASES } from "@/config/types/phases.ts";
-import { ROLES, type Role } from "@/config/types/roles.ts";
+import { RoleTypeEnum } from "@/gql/graphql.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 
@@ -9,7 +9,7 @@ type Profile = {
   uid: string;
   displayname: string;
   active: boolean;
-  roles: Role[];
+  roles: RoleTypeEnum[];
   services: { id: number; year: number }[];
 };
 
@@ -17,13 +17,13 @@ const profile = reactive<Profile>({
   uid: "",
   displayname: "",
   active: false,
-  roles: [ROLES.TEACHER],
+  roles: [RoleTypeEnum.Teacher],
   services: [],
 });
-const activeRole = ref<Role>(ROLES.TEACHER);
+const activeRole = ref<RoleTypeEnum>(RoleTypeEnum.Teacher);
 const loaded = ref(false);
 
-const setActiveRole = (role: Role) => {
+const setActiveRole = (role: RoleTypeEnum) => {
   if (profile.roles.includes(role)) {
     activeRole.value = role;
   } else {
@@ -45,15 +45,17 @@ export const useProfileStore = () => {
   const setProfile = (newProfile: Profile) => {
     Object.assign(profile, newProfile);
 
-    if (profile.roles.includes(ROLES.ADMIN)) {
-      activeRole.value = ROLES.ADMIN;
+    profile.roles.push(RoleTypeEnum.Teacher);
+
+    if (profile.roles.includes(RoleTypeEnum.Admin)) {
+      activeRole.value = RoleTypeEnum.Admin;
     } else if (
-      profile.roles.includes(ROLES.COMMISSIONER) &&
+      profile.roles.includes(RoleTypeEnum.Commissioner) &&
       currentPhase.value === PHASES.ASSIGNMENTS
     ) {
-      activeRole.value = ROLES.COMMISSIONER;
+      activeRole.value = RoleTypeEnum.Commissioner;
     } else {
-      activeRole.value = ROLES.TEACHER;
+      activeRole.value = RoleTypeEnum.Teacher;
     }
 
     loaded.value = true;

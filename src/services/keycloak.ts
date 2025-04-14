@@ -10,8 +10,7 @@ import {
   hasuraAdminSecret,
   hasuraUserId,
 } from "@/config/env.ts";
-import { ROLES, type Role, isRole } from "@/config/types/roles.ts";
-import type { HasuraClaims } from "@/types/claims.ts";
+import type { HasuraClaims, HasuraRole } from "@/types/claims.ts";
 
 const keycloak = new Keycloak({
   url: authURL,
@@ -32,8 +31,8 @@ export const initKeycloak = async (): Promise<HasuraClaims | null> => {
     console.debug("Bypassing Keycloak authentication");
     return {
       userId: hasuraUserId,
-      defaultRole: ROLES.ADMIN,
-      allowedRoles: [ROLES.TEACHER, ROLES.COMMISSIONER, ROLES.ADMIN],
+      defaultRole: "admin",
+      allowedRoles: ["admin", "commissioner", "teacher"],
     };
   }
   try {
@@ -84,6 +83,9 @@ export const logout = async () => {
   }
 };
 
+const isHasuraRole = (role: string): role is HasuraRole =>
+  ["admin", "commissioner", "teacher"].includes(role);
+
 const validateClaims = (
   tokenParsed: Record<string, unknown>,
 ): HasuraClaims | null => {
@@ -93,15 +95,15 @@ const validateClaims = (
   }
   const claims = tokenParsed[HASURA_CLAIMS_NAMESPACE];
   const validRoles = claims["x-hasura-allowed-roles"].filter(
-    (role): role is Role => {
-      if (!isRole(role)) {
+    (role): role is HasuraRole => {
+      if (!isHasuraRole(role)) {
         console.error(`Invalid allowed role: ${role}`);
         return false;
       }
       return true;
     },
   );
-  if (!isRole(claims["x-hasura-default-role"])) {
+  if (!isHasuraRole(claims["x-hasura-default-role"])) {
     console.error(`Invalid default role: ${claims["x-hasura-default-role"]}`);
     return null;
   }

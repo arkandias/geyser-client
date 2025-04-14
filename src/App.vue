@@ -5,9 +5,12 @@ import { computed, watch } from "vue";
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { PHASES } from "@/config/types/phases.ts";
-import { ROLES, isRole } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
-import { GetAppDataDocument, GetUserProfileDocument } from "@/gql/graphql.ts";
+import {
+  GetAppDataDocument,
+  GetUserProfileDocument,
+  RoleTypeEnum,
+} from "@/gql/graphql.ts";
 import { setRoleHeader } from "@/services/urql.ts";
 import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
@@ -85,20 +88,9 @@ watch(
         uid: data.profile.uid,
         displayname: data.profile.displayname ?? "",
         active: data.profile.active,
-        roles: data.profile.roles
-          .map((role) => role.type)
-          .filter((role) => isRole(role))
-          .concat(ROLES.TEACHER),
+        roles: data.profile.roles.map((role) => role.type),
         services: data.profile.services,
       });
-
-      // Log invalid roles (if any)
-      const invalidRoles = data.profile.roles
-        .map((role) => role.type)
-        .filter((role) => !isRole(role));
-      if (invalidRoles.length) {
-        console.warn(`Invalid roles: ${invalidRoles.join(", ")}`);
-      }
     }
   },
   { immediate: true },
@@ -160,7 +152,7 @@ const accessDeniedMessage = computed(() => {
   }
   if (
     currentPhase.value === PHASES.SHUTDOWN &&
-    activeRole.value !== ROLES.ADMIN
+    activeRole.value !== RoleTypeEnum.Admin
   ) {
     return t("home.alert.shutdown");
   }

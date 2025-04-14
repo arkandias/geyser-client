@@ -1,7 +1,7 @@
-import type { Role } from "@/config/types/roles.ts";
+export type HasuraRole = "admin" | "commissioner" | "teacher";
 
 export type HasuraClaims = {
   userId: string;
-  defaultRole: Role;
-  allowedRoles: Role[];
+  defaultRole: HasuraRole;
+  allowedRoles: HasuraRole[];
 };

@@ -1,7 +1,7 @@
 import { computed, readonly } from "vue";
 
 import { PHASES } from "@/config/types/phases.ts";
-import { ROLES } from "@/config/types/roles.ts";
+import { RoleTypeEnum } from "@/gql/graphql.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
@@ -11,26 +11,28 @@ export const usePermissions = () => {
   const { currentPhase } = usePhaseStore();
   const { uid: myUid, activeRole, hasService } = useProfileStore();
 
-  const toAdmin = computed(() => activeRole.value === ROLES.ADMIN);
+  const toAdmin = computed(() => activeRole.value === RoleTypeEnum.Admin);
 
   const toSubmitRequestsForSelf = computed(
     () =>
-      activeRole.value === ROLES.ADMIN ||
-      (activeRole.value === ROLES.TEACHER &&
+      activeRole.value === RoleTypeEnum.Admin ||
+      (activeRole.value === RoleTypeEnum.Teacher &&
         currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value &&
         hasService.value),
   );
 
   const toSubmitRequestsForOthers = computed(
-    () => activeRole.value === ROLES.ADMIN,
+    () => activeRole.value === RoleTypeEnum.Admin,
   );
 
   const toSubmitRequests = computed(
     () => toSubmitRequestsForSelf.value || toSubmitRequestsForOthers.value,
   );
 
-  const toDeleteRequests = computed(() => activeRole.value === ROLES.ADMIN);
+  const toDeleteRequests = computed(
+    () => activeRole.value === RoleTypeEnum.Admin,
+  );
 
   const toViewAssignments = computed(
     () =>
@@ -41,31 +43,33 @@ export const usePermissions = () => {
 
   const toEditAssignments = computed(
     () =>
-      activeRole.value === ROLES.ADMIN ||
-      (activeRole.value === ROLES.COMMISSIONER &&
+      activeRole.value === RoleTypeEnum.Admin ||
+      (activeRole.value === RoleTypeEnum.Commissioner &&
         currentPhase.value === PHASES.ASSIGNMENTS &&
         isCurrentYearActive.value),
   );
 
-  const toEditPriorities = computed(() => activeRole.value === ROLES.ADMIN);
+  const toEditPriorities = computed(
+    () => activeRole.value === RoleTypeEnum.Admin,
+  );
 
   const toEditADescription = computed(
     () => (coordinators: string[]) =>
-      activeRole.value === ROLES.ADMIN ||
+      activeRole.value === RoleTypeEnum.Admin ||
       (isCurrentYearActive.value && coordinators.includes(myUid.value)),
   );
 
   const toViewAllServices = computed(
     () =>
-      activeRole.value === ROLES.ADMIN ||
-      (activeRole.value === ROLES.COMMISSIONER &&
+      activeRole.value === RoleTypeEnum.Admin ||
+      (activeRole.value === RoleTypeEnum.Commissioner &&
         currentPhase.value === PHASES.ASSIGNMENTS),
   );
 
   const toEditAService = computed(
     () => (uid: string) =>
-      activeRole.value === ROLES.ADMIN ||
-      (activeRole.value === ROLES.TEACHER &&
+      activeRole.value === RoleTypeEnum.Admin ||
+      (activeRole.value === RoleTypeEnum.Teacher &&
         currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value &&
         uid === myUid.value),
@@ -73,8 +77,8 @@ export const usePermissions = () => {
 
   const toEditAMessage = computed(
     () => (uid: string) =>
-      activeRole.value === ROLES.ADMIN ||
-      (activeRole.value === ROLES.TEACHER &&
+      activeRole.value === RoleTypeEnum.Admin ||
+      (activeRole.value === RoleTypeEnum.Teacher &&
         currentPhase.value === PHASES.REQUESTS &&
         isCurrentYearActive.value &&
         uid === myUid.value),

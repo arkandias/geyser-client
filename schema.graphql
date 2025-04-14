@@ -7083,7 +7083,7 @@ type Role {
   teacher: Teacher!
 
   """Type of privileged role"""
-  type: String!
+  type: RoleTypeEnum!
 
   """Teacher identifier with role access"""
   uid: String!
@@ -7176,7 +7176,7 @@ input RoleBoolExp {
   id: IntComparisonExp
   roleType: RoleTypeBoolExp
   teacher: TeacherBoolExp
-  type: StringComparisonExp
+  type: RoleTypeEnumComparisonExp
   uid: StringComparisonExp
   updatedAt: TimestamptzComparisonExp
 }
@@ -7209,7 +7209,7 @@ input RoleInsertInput {
   teacher: TeacherObjRelInsertInput
 
   """Type of privileged role"""
-  type: String
+  type: RoleTypeEnum
 
   """Teacher identifier with role access"""
   uid: String
@@ -7230,9 +7230,6 @@ type RoleMaxFields {
 
   """Unique role assignment identifier"""
   id: Int
-
-  """Type of privileged role"""
-  type: String
 
   """Teacher identifier with role access"""
   uid: String
@@ -7256,9 +7253,6 @@ input RoleMaxOrderBy {
   """Unique role assignment identifier"""
   id: OrderBy
 
-  """Type of privileged role"""
-  type: OrderBy
-
   """Teacher identifier with role access"""
   uid: OrderBy
 
@@ -7278,9 +7272,6 @@ type RoleMinFields {
 
   """Unique role assignment identifier"""
   id: Int
-
-  """Type of privileged role"""
-  type: String
 
   """Teacher identifier with role access"""
   uid: String
@@ -7303,9 +7294,6 @@ input RoleMinOrderBy {
 
   """Unique role assignment identifier"""
   id: OrderBy
-
-  """Type of privileged role"""
-  type: OrderBy
 
   """Teacher identifier with role access"""
   uid: OrderBy
@@ -7388,7 +7376,7 @@ input RoleSetInput {
   createdAt: timestamptz
 
   """Type of privileged role"""
-  type: String
+  type: RoleTypeEnum
 
   """Teacher identifier with role access"""
   uid: String
@@ -7464,7 +7452,7 @@ input RoleStreamCursorValueInput {
   id: Int
 
   """Type of privileged role"""
-  type: String
+  type: RoleTypeEnum
 
   """Teacher identifier with role access"""
   uid: String
@@ -7491,9 +7479,6 @@ input RoleSumOrderBy {
 
 """System roles for privileged access"""
 type RoleType {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz!
-
   """Description of the role privileges and responsibilities"""
   description: String
 
@@ -7533,11 +7518,6 @@ type RoleType {
     where: RoleBoolExp
   ): RoleAggregate!
 
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz!
-
   """Role identifier"""
   value: String!
 }
@@ -7566,11 +7546,9 @@ input RoleTypeBoolExp {
   _and: [RoleTypeBoolExp!]
   _not: RoleTypeBoolExp
   _or: [RoleTypeBoolExp!]
-  createdAt: TimestamptzComparisonExp
   description: StringComparisonExp
   roles: RoleBoolExp
   rolesAggregate: RoleAggregateBoolExp
-  updatedAt: TimestamptzComparisonExp
   value: StringComparisonExp
 }
 
@@ -7584,21 +7562,39 @@ enum RoleTypeConstraint {
   role_type_pkey
 }
 
+enum RoleTypeEnum {
+  """
+  Full system administration access with ability to manage users, roles, and system configuration
+  """
+  ADMIN
+
+  """
+  Member of the course assignment committee with extra abilities during the assignments phase
+  """
+  COMMISSIONER
+
+  """Base role with limited abilities"""
+  TEACHER
+}
+
+"""
+Boolean expression to compare columns of type "RoleTypeEnum". All fields are combined with logical 'AND'.
+"""
+input RoleTypeEnumComparisonExp {
+  _eq: RoleTypeEnum
+  _in: [RoleTypeEnum!]
+  _isNull: Boolean
+  _neq: RoleTypeEnum
+  _nin: [RoleTypeEnum!]
+}
+
 """
 input type for inserting data into table "role_type"
 """
 input RoleTypeInsertInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the role privileges and responsibilities"""
   description: String
   roles: RoleArrRelInsertInput
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Role identifier"""
   value: String
@@ -7606,16 +7602,8 @@ input RoleTypeInsertInput {
 
 """aggregate max on columns"""
 type RoleTypeMaxFields {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the role privileges and responsibilities"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Role identifier"""
   value: String
@@ -7623,16 +7611,8 @@ type RoleTypeMaxFields {
 
 """aggregate min on columns"""
 type RoleTypeMinFields {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the role privileges and responsibilities"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Role identifier"""
   value: String
@@ -7670,10 +7650,8 @@ input RoleTypeOnConflict {
 
 """Ordering options when selecting data from "role_type"."""
 input RoleTypeOrderBy {
-  createdAt: OrderBy
   description: OrderBy
   rolesAggregate: RoleAggregateOrderBy
-  updatedAt: OrderBy
   value: OrderBy
 }
 
@@ -7688,13 +7666,7 @@ select columns of table "role_type"
 """
 enum RoleTypeSelectColumn {
   """column name"""
-  createdAt
-
-  """column name"""
   description
-
-  """column name"""
-  updatedAt
 
   """column name"""
   value
@@ -7704,16 +7676,8 @@ enum RoleTypeSelectColumn {
 input type for updating data in table "role_type"
 """
 input RoleTypeSetInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the role privileges and responsibilities"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Role identifier"""
   value: String
@@ -7732,16 +7696,8 @@ input RoleTypeStreamCursorInput {
 
 """Initial value of the column from where the streaming should start"""
 input RoleTypeStreamCursorValueInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the role privileges and responsibilities"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Role identifier"""
   value: String
@@ -7752,13 +7708,7 @@ update columns of table "role_type"
 """
 enum RoleTypeUpdateColumn {
   """column name"""
-  createdAt
-
-  """column name"""
   description
-
-  """column name"""
-  updatedAt
 
   """column name"""
   value

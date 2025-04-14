@@ -8,13 +8,20 @@ import {
 } from "@urql/vue";
 
 import { graphqlURL } from "@/config/env.ts";
-import type { Role } from "@/config/types/roles.ts";
+import { RoleTypeEnum } from "@/gql/graphql.ts";
 import { getAuthHeader, refreshToken } from "@/services/keycloak.ts";
+import type { HasuraRole } from "@/types/claims.ts";
 
-const roleHeader: { "X-Hasura-Role"?: Role } = {};
+const roleHeader: { "X-Hasura-Role"?: HasuraRole } = {};
 
-export const setRoleHeader = (role: Role) => {
-  roleHeader["X-Hasura-Role"] = role;
+const roleToHeaderMap = {
+  [RoleTypeEnum.Admin]: "admin",
+  [RoleTypeEnum.Commissioner]: "commissioner",
+  [RoleTypeEnum.Teacher]: "teacher",
+} as const;
+
+export const setRoleHeader = (role: RoleTypeEnum) => {
+  roleHeader["X-Hasura-Role"] = roleToHeaderMap[role];
 };
 
 export const clientOptions: ClientOptions = {

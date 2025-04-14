@@ -5186,7 +5186,7 @@ export type Role = {
   /** An object relationship */
   teacher: Teacher;
   /** Type of privileged role */
-  type: Scalars['String']['output'];
+  type: RoleTypeEnum;
   /** Teacher identifier with role access */
   uid: Scalars['String']['output'];
   /** Timestamp when the record was last updated, automatically managed by trigger */
@@ -5272,7 +5272,7 @@ export type RoleBoolExp = {
   id?: InputMaybe<IntComparisonExp>;
   roleType?: InputMaybe<RoleTypeBoolExp>;
   teacher?: InputMaybe<TeacherBoolExp>;
-  type?: InputMaybe<StringComparisonExp>;
+  type?: InputMaybe<RoleTypeEnumComparisonExp>;
   uid?: InputMaybe<StringComparisonExp>;
   updatedAt?: InputMaybe<TimestamptzComparisonExp>;
 };
@@ -5294,7 +5294,7 @@ export type RoleInsertInput = {
   roleType?: InputMaybe<RoleTypeObjRelInsertInput>;
   teacher?: InputMaybe<TeacherObjRelInsertInput>;
   /** Type of privileged role */
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<RoleTypeEnum>;
   /** Teacher identifier with role access */
   uid?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
@@ -5310,8 +5310,6 @@ export type RoleMaxFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Unique role assignment identifier */
   id?: Maybe<Scalars['Int']['output']>;
-  /** Type of privileged role */
-  type?: Maybe<Scalars['String']['output']>;
   /** Teacher identifier with role access */
   uid?: Maybe<Scalars['String']['output']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
@@ -5326,8 +5324,6 @@ export type RoleMaxOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   /** Unique role assignment identifier */
   id?: InputMaybe<OrderBy>;
-  /** Type of privileged role */
-  type?: InputMaybe<OrderBy>;
   /** Teacher identifier with role access */
   uid?: InputMaybe<OrderBy>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
@@ -5343,8 +5339,6 @@ export type RoleMinFields = {
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Unique role assignment identifier */
   id?: Maybe<Scalars['Int']['output']>;
-  /** Type of privileged role */
-  type?: Maybe<Scalars['String']['output']>;
   /** Teacher identifier with role access */
   uid?: Maybe<Scalars['String']['output']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
@@ -5359,8 +5353,6 @@ export type RoleMinOrderBy = {
   createdAt?: InputMaybe<OrderBy>;
   /** Unique role assignment identifier */
   id?: InputMaybe<OrderBy>;
-  /** Type of privileged role */
-  type?: InputMaybe<OrderBy>;
   /** Teacher identifier with role access */
   uid?: InputMaybe<OrderBy>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
@@ -5424,7 +5416,7 @@ export type RoleSetInput = {
   /** Timestamp when the record was created */
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Type of privileged role */
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<RoleTypeEnum>;
   /** Teacher identifier with role access */
   uid?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
@@ -5487,7 +5479,7 @@ export type RoleStreamCursorValueInput = {
   /** Unique role assignment identifier */
   id?: InputMaybe<Scalars['Int']['input']>;
   /** Type of privileged role */
-  type?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<RoleTypeEnum>;
   /** Teacher identifier with role access */
   uid?: InputMaybe<Scalars['String']['input']>;
   /** Timestamp when the record was last updated, automatically managed by trigger */
@@ -5510,16 +5502,12 @@ export type RoleSumOrderBy = {
 /** System roles for privileged access */
 export type RoleType = {
   __typename?: 'RoleType';
-  /** Timestamp when the record was created */
-  createdAt: Scalars['timestamptz']['output'];
   /** Description of the role privileges and responsibilities */
   description?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   roles: Array<Role>;
   /** An aggregate relationship */
   rolesAggregate: RoleAggregate;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt: Scalars['timestamptz']['output'];
   /** Role identifier */
   value: Scalars['String']['output'];
 };
@@ -5571,11 +5559,9 @@ export type RoleTypeBoolExp = {
   _and?: InputMaybe<Array<RoleTypeBoolExp>>;
   _not?: InputMaybe<RoleTypeBoolExp>;
   _or?: InputMaybe<Array<RoleTypeBoolExp>>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
   roles?: InputMaybe<RoleBoolExp>;
   rolesAggregate?: InputMaybe<RoleAggregateBoolExp>;
-  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
   value?: InputMaybe<StringComparisonExp>;
 };
 
@@ -5585,15 +5571,29 @@ export enum RoleTypeConstraint {
   RoleTypePkey = 'role_type_pkey'
 }
 
+export enum RoleTypeEnum {
+  /** Full system administration access with ability to manage users, roles, and system configuration */
+  Admin = 'ADMIN',
+  /** Member of the course assignment committee with extra abilities during the assignments phase */
+  Commissioner = 'COMMISSIONER',
+  /** Base role with limited abilities */
+  Teacher = 'TEACHER'
+}
+
+/** Boolean expression to compare columns of type "RoleTypeEnum". All fields are combined with logical 'AND'. */
+export type RoleTypeEnumComparisonExp = {
+  _eq?: InputMaybe<RoleTypeEnum>;
+  _in?: InputMaybe<Array<RoleTypeEnum>>;
+  _isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<RoleTypeEnum>;
+  _nin?: InputMaybe<Array<RoleTypeEnum>>;
+};
+
 /** input type for inserting data into table "role_type" */
 export type RoleTypeInsertInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the role privileges and responsibilities */
   description?: InputMaybe<Scalars['String']['input']>;
   roles?: InputMaybe<RoleArrRelInsertInput>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Role identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5601,12 +5601,8 @@ export type RoleTypeInsertInput = {
 /** aggregate max on columns */
 export type RoleTypeMaxFields = {
   __typename?: 'RoleTypeMaxFields';
-  /** Timestamp when the record was created */
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Description of the role privileges and responsibilities */
   description?: Maybe<Scalars['String']['output']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Role identifier */
   value?: Maybe<Scalars['String']['output']>;
 };
@@ -5614,12 +5610,8 @@ export type RoleTypeMaxFields = {
 /** aggregate min on columns */
 export type RoleTypeMinFields = {
   __typename?: 'RoleTypeMinFields';
-  /** Timestamp when the record was created */
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Description of the role privileges and responsibilities */
   description?: Maybe<Scalars['String']['output']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Role identifier */
   value?: Maybe<Scalars['String']['output']>;
 };
@@ -5649,10 +5641,8 @@ export type RoleTypeOnConflict = {
 
 /** Ordering options when selecting data from "role_type". */
 export type RoleTypeOrderBy = {
-  createdAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   rolesAggregate?: InputMaybe<RoleAggregateOrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
   value?: InputMaybe<OrderBy>;
 };
 
@@ -5665,23 +5655,15 @@ export type RoleTypePkColumnsInput = {
 /** select columns of table "role_type" */
 export enum RoleTypeSelectColumn {
   /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
   Description = 'description',
-  /** column name */
-  UpdatedAt = 'updatedAt',
   /** column name */
   Value = 'value'
 }
 
 /** input type for updating data in table "role_type" */
 export type RoleTypeSetInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the role privileges and responsibilities */
   description?: InputMaybe<Scalars['String']['input']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Role identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5696,12 +5678,8 @@ export type RoleTypeStreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type RoleTypeStreamCursorValueInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the role privileges and responsibilities */
   description?: InputMaybe<Scalars['String']['input']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Role identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5709,11 +5687,7 @@ export type RoleTypeStreamCursorValueInput = {
 /** update columns of table "role_type" */
 export enum RoleTypeUpdateColumn {
   /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
   Description = 'description',
-  /** column name */
-  UpdatedAt = 'updatedAt',
   /** column name */
   Value = 'value'
 }
@@ -12525,7 +12499,7 @@ export type GetUserProfileQueryVariables = Exact<{
 }>;
 
 
-export type GetUserProfileQuery = { __typename?: 'query_root', profile?: { __typename?: 'Teacher', uid: string, displayname?: string | null, active: boolean, roles: Array<{ __typename?: 'Role', id: number, type: string }>, services: Array<{ __typename?: 'Service', id: number, year: number }> } | null };
+export type GetUserProfileQuery = { __typename?: 'query_root', profile?: { __typename?: 'Teacher', uid: string, displayname?: string | null, active: boolean, roles: Array<{ __typename?: 'Role', id: number, type: RoleTypeEnum }>, services: Array<{ __typename?: 'Service', id: number, year: number }> } | null };
 
 export type GetAppDataQueryVariables = Exact<{ [key: string]: never; }>;
 
