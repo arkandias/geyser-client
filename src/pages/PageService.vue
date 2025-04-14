@@ -53,7 +53,6 @@ const service = computed(() => data.value?.service ?? null);
         {{ t("service.noService") }}
       </QCardSection>
     </QCard>
-    <!--todo: test behavior on updates-->
     <QCard v-else-if="fetching" flat square>
       <QCardSection class="text-h4 q-pa-xl">
         {{ t("service.fetchingService") }}

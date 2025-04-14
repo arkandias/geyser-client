@@ -140,7 +140,6 @@ watch(service, resetBaseServiceForm, { immediate: true });
 const isModificationFormOpen = ref(false);
 const { data } = useQuery({
   query: GetModificationTypesDocument,
-  // todo: remove after urql fix
   variables: {},
   pause: () => !isModificationFormOpen.value,
   context: { additionalTypenames: ["All"] },

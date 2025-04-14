@@ -108,7 +108,6 @@ watch(activeRole, setRoleHeader, { immediate: true });
 // Fetch app data
 const getAppData = useQuery({
   query: GetAppDataDocument,
-  // todo: remove after urql fix
   variables: {},
   pause: () => !loaded.value || !active.value,
   context: { additionalTypenames: ["All"] },

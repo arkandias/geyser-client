@@ -80,10 +80,7 @@ const getCourseRows = useQuery({
   pause: () => activeYear.value === null,
   context: { additionalTypenames: ["All", "Request"] },
 });
-const fetchingCourseRows = computed(
-  // todo: test that paused query is not fetching (if activeYear is null)
-  () => getCourseRows.fetching.value,
-);
+const fetchingCourseRows = computed(() => getCourseRows.fetching.value);
 const courseRows = computed(() => getCourseRows.data.value?.courses ?? []);
 
 // Service rows
@@ -97,10 +94,7 @@ const getServiceRows = useQuery({
     additionalTypenames: ["All", "Request", "ServiceModification"],
   },
 });
-const fetchingServiceRows = computed(
-  // todo: test that paused query is not fetching (if activeYear is null)
-  () => getServiceRows.fetching.value,
-);
+const fetchingServiceRows = computed(() => getServiceRows.fetching.value);
 const serviceRows = computed(() => getServiceRows.data.value?.services ?? []);
 const vServiceRows = computed(() => getServiceRows.data.value?.vServices ?? []);
 
