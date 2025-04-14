@@ -68,6 +68,7 @@ const getUserProfile = useQuery({
   query: GetUserProfileDocument,
   variables: { uid: claims?.userId ?? "" },
   pause: !claims,
+  context: { additionalTypenames: ["All"] },
 });
 watch(
   [getUserProfile.data, getUserProfile.error],
