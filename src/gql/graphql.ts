@@ -633,7 +633,7 @@ export type Course = {
   priorities: Array<Priority>;
   /** An aggregate relationship */
   prioritiesAggregate: PriorityAggregate;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: Maybe<Scalars['Int']['output']>;
   /** An object relationship */
   program: Program;
@@ -802,7 +802,7 @@ export type CourseAvgFields = {
   hoursEffective?: Maybe<Scalars['Float']['output']>;
   /** Unique course identifier */
   id?: Maybe<Scalars['Float']['output']>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: Maybe<Scalars['Float']['output']>;
   /** Program offering this course */
   programId?: Maybe<Scalars['Float']['output']>;
@@ -836,7 +836,7 @@ export type CourseAvgOrderBy = {
   hoursEffective?: InputMaybe<OrderBy>;
   /** Unique course identifier */
   id?: InputMaybe<OrderBy>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<OrderBy>;
   /** Program offering this course */
   programId?: InputMaybe<OrderBy>;
@@ -914,7 +914,7 @@ export type CourseIncInput = {
   hours?: InputMaybe<Scalars['Float']['input']>;
   /** Modified teaching hours per group if different from standard */
   hoursAdjusted?: InputMaybe<Scalars['Float']['input']>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<Scalars['Int']['input']>;
   /** Program offering this course */
   programId?: InputMaybe<Scalars['Int']['input']>;
@@ -951,7 +951,7 @@ export type CourseInsertInput = {
   nameShort?: InputMaybe<Scalars['String']['input']>;
   nomImport?: InputMaybe<Scalars['String']['input']>;
   priorities?: InputMaybe<PriorityArrRelInsertInput>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<Scalars['Int']['input']>;
   program?: InputMaybe<ProgramObjRelInsertInput>;
   /** Program offering this course */
@@ -1006,7 +1006,7 @@ export type CourseMaxFields = {
   /** Abbreviated course name */
   nameShort?: Maybe<Scalars['String']['output']>;
   nomImport?: Maybe<Scalars['String']['output']>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: Maybe<Scalars['Int']['output']>;
   /** Program offering this course */
   programId?: Maybe<Scalars['Int']['output']>;
@@ -1055,7 +1055,7 @@ export type CourseMaxOrderBy = {
   /** Abbreviated course name */
   nameShort?: InputMaybe<OrderBy>;
   nomImport?: InputMaybe<OrderBy>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<OrderBy>;
   /** Program offering this course */
   programId?: InputMaybe<OrderBy>;
@@ -1103,7 +1103,7 @@ export type CourseMinFields = {
   /** Abbreviated course name */
   nameShort?: Maybe<Scalars['String']['output']>;
   nomImport?: Maybe<Scalars['String']['output']>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: Maybe<Scalars['Int']['output']>;
   /** Program offering this course */
   programId?: Maybe<Scalars['Int']['output']>;
@@ -1152,7 +1152,7 @@ export type CourseMinOrderBy = {
   /** Abbreviated course name */
   nameShort?: InputMaybe<OrderBy>;
   nomImport?: InputMaybe<OrderBy>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<OrderBy>;
   /** Program offering this course */
   programId?: InputMaybe<OrderBy>;
@@ -1318,7 +1318,7 @@ export type CourseSetInput = {
   /** Abbreviated course name */
   nameShort?: InputMaybe<Scalars['String']['input']>;
   nomImport?: InputMaybe<Scalars['String']['input']>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<Scalars['Int']['input']>;
   /** Program offering this course */
   programId?: InputMaybe<Scalars['Int']['input']>;
@@ -1355,7 +1355,7 @@ export type CourseStddevFields = {
   hoursEffective?: Maybe<Scalars['Float']['output']>;
   /** Unique course identifier */
   id?: Maybe<Scalars['Float']['output']>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: Maybe<Scalars['Float']['output']>;
   /** Program offering this course */
   programId?: Maybe<Scalars['Float']['output']>;
@@ -1389,7 +1389,7 @@ export type CourseStddevOrderBy = {
   hoursEffective?: InputMaybe<OrderBy>;
   /** Unique course identifier */
   id?: InputMaybe<OrderBy>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<OrderBy>;
   /** Program offering this course */
   programId?: InputMaybe<OrderBy>;
@@ -1422,7 +1422,7 @@ export type CourseStddevPopFields = {
   hoursEffective?: Maybe<Scalars['Float']['output']>;
   /** Unique course identifier */
   id?: Maybe<Scalars['Float']['output']>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: Maybe<Scalars['Float']['output']>;
   /** Program offering this course */
   programId?: Maybe<Scalars['Float']['output']>;
@@ -1456,7 +1456,7 @@ export type CourseStddevPopOrderBy = {
   hoursEffective?: InputMaybe<OrderBy>;
   /** Unique course identifier */
   id?: InputMaybe<OrderBy>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<OrderBy>;
   /** Program offering this course */
   programId?: InputMaybe<OrderBy>;
@@ -1489,7 +1489,7 @@ export type CourseStddevSampFields = {
   hoursEffective?: Maybe<Scalars['Float']['output']>;
   /** Unique course identifier */
   id?: Maybe<Scalars['Float']['output']>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: Maybe<Scalars['Float']['output']>;
   /** Program offering this course */
   programId?: Maybe<Scalars['Float']['output']>;
@@ -1523,7 +1523,7 @@ export type CourseStddevSampOrderBy = {
   hoursEffective?: InputMaybe<OrderBy>;
   /** Unique course identifier */
   id?: InputMaybe<OrderBy>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<OrderBy>;
   /** Program offering this course */
   programId?: InputMaybe<OrderBy>;
@@ -1576,7 +1576,7 @@ export type CourseStreamCursorValueInput = {
   /** Abbreviated course name */
   nameShort?: InputMaybe<Scalars['String']['input']>;
   nomImport?: InputMaybe<Scalars['String']['input']>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<Scalars['Int']['input']>;
   /** Program offering this course */
   programId?: InputMaybe<Scalars['Int']['input']>;
@@ -1613,7 +1613,7 @@ export type CourseSumFields = {
   hoursEffective?: Maybe<Scalars['Int']['output']>;
   /** Unique course identifier */
   id?: Maybe<Scalars['Int']['output']>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: Maybe<Scalars['Int']['output']>;
   /** Program offering this course */
   programId?: Maybe<Scalars['Int']['output']>;
@@ -1647,7 +1647,7 @@ export type CourseSumOrderBy = {
   hoursEffective?: InputMaybe<OrderBy>;
   /** Unique course identifier */
   id?: InputMaybe<OrderBy>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<OrderBy>;
   /** Program offering this course */
   programId?: InputMaybe<OrderBy>;
@@ -2069,7 +2069,7 @@ export type CourseVarPopFields = {
   hoursEffective?: Maybe<Scalars['Float']['output']>;
   /** Unique course identifier */
   id?: Maybe<Scalars['Float']['output']>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: Maybe<Scalars['Float']['output']>;
   /** Program offering this course */
   programId?: Maybe<Scalars['Float']['output']>;
@@ -2103,7 +2103,7 @@ export type CourseVarPopOrderBy = {
   hoursEffective?: InputMaybe<OrderBy>;
   /** Unique course identifier */
   id?: InputMaybe<OrderBy>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<OrderBy>;
   /** Program offering this course */
   programId?: InputMaybe<OrderBy>;
@@ -2136,7 +2136,7 @@ export type CourseVarSampFields = {
   hoursEffective?: Maybe<Scalars['Float']['output']>;
   /** Unique course identifier */
   id?: Maybe<Scalars['Float']['output']>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: Maybe<Scalars['Float']['output']>;
   /** Program offering this course */
   programId?: Maybe<Scalars['Float']['output']>;
@@ -2170,7 +2170,7 @@ export type CourseVarSampOrderBy = {
   hoursEffective?: InputMaybe<OrderBy>;
   /** Unique course identifier */
   id?: InputMaybe<OrderBy>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<OrderBy>;
   /** Program offering this course */
   programId?: InputMaybe<OrderBy>;
@@ -2203,7 +2203,7 @@ export type CourseVarianceFields = {
   hoursEffective?: Maybe<Scalars['Float']['output']>;
   /** Unique course identifier */
   id?: Maybe<Scalars['Float']['output']>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: Maybe<Scalars['Float']['output']>;
   /** Program offering this course */
   programId?: Maybe<Scalars['Float']['output']>;
@@ -2237,7 +2237,7 @@ export type CourseVarianceOrderBy = {
   hoursEffective?: InputMaybe<OrderBy>;
   /** Unique course identifier */
   id?: InputMaybe<OrderBy>;
-  /** Priority duration in years (3=default, 1=none, 0=permanent, NULL=disabled) */
+  /** Priority duration in years (1=none, 0=permanent, NULL=disabled) */
   priorityRule?: InputMaybe<OrderBy>;
   /** Program offering this course */
   programId?: InputMaybe<OrderBy>;
@@ -4861,12 +4861,16 @@ export type RequestSumOrderBy = {
 /** Types of teaching assignment requests in workflow */
 export type RequestType = {
   __typename?: 'RequestType';
+  /** Timestamp when the record was created */
+  createdAt: Scalars['timestamptz']['output'];
   /** Description of the request type and its purpose */
   description?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   requests: Array<Request>;
   /** An aggregate relationship */
   requestsAggregate: RequestAggregate;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt: Scalars['timestamptz']['output'];
   /** Request type identifier */
   value: Scalars['String']['output'];
 };
@@ -4918,9 +4922,11 @@ export type RequestTypeBoolExp = {
   _and?: InputMaybe<Array<RequestTypeBoolExp>>;
   _not?: InputMaybe<RequestTypeBoolExp>;
   _or?: InputMaybe<Array<RequestTypeBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
   requests?: InputMaybe<RequestBoolExp>;
   requestsAggregate?: InputMaybe<RequestAggregateBoolExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
   value?: InputMaybe<StringComparisonExp>;
 };
 
@@ -4932,9 +4938,13 @@ export enum RequestTypeConstraint {
 
 /** input type for inserting data into table "request_type" */
 export type RequestTypeInsertInput = {
+  /** Timestamp when the record was created */
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the request type and its purpose */
   description?: InputMaybe<Scalars['String']['input']>;
   requests?: InputMaybe<RequestArrRelInsertInput>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Request type identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4942,8 +4952,12 @@ export type RequestTypeInsertInput = {
 /** aggregate max on columns */
 export type RequestTypeMaxFields = {
   __typename?: 'RequestTypeMaxFields';
+  /** Timestamp when the record was created */
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Description of the request type and its purpose */
   description?: Maybe<Scalars['String']['output']>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Request type identifier */
   value?: Maybe<Scalars['String']['output']>;
 };
@@ -4951,8 +4965,12 @@ export type RequestTypeMaxFields = {
 /** aggregate min on columns */
 export type RequestTypeMinFields = {
   __typename?: 'RequestTypeMinFields';
+  /** Timestamp when the record was created */
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Description of the request type and its purpose */
   description?: Maybe<Scalars['String']['output']>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Request type identifier */
   value?: Maybe<Scalars['String']['output']>;
 };
@@ -4982,8 +5000,10 @@ export type RequestTypeOnConflict = {
 
 /** Ordering options when selecting data from "request_type". */
 export type RequestTypeOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   requestsAggregate?: InputMaybe<RequestAggregateOrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
   value?: InputMaybe<OrderBy>;
 };
 
@@ -4996,15 +5016,23 @@ export type RequestTypePkColumnsInput = {
 /** select columns of table "request_type" */
 export enum RequestTypeSelectColumn {
   /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
   Description = 'description',
+  /** column name */
+  UpdatedAt = 'updatedAt',
   /** column name */
   Value = 'value'
 }
 
 /** input type for updating data in table "request_type" */
 export type RequestTypeSetInput = {
+  /** Timestamp when the record was created */
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the request type and its purpose */
   description?: InputMaybe<Scalars['String']['input']>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Request type identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5019,8 +5047,12 @@ export type RequestTypeStreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type RequestTypeStreamCursorValueInput = {
+  /** Timestamp when the record was created */
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the request type and its purpose */
   description?: InputMaybe<Scalars['String']['input']>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Request type identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5028,7 +5060,11 @@ export type RequestTypeStreamCursorValueInput = {
 /** update columns of table "request_type" */
 export enum RequestTypeUpdateColumn {
   /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
   Description = 'description',
+  /** column name */
+  UpdatedAt = 'updatedAt',
   /** column name */
   Value = 'value'
 }
@@ -5498,12 +5534,16 @@ export type RoleSumOrderBy = {
 /** System roles for privileged access */
 export type RoleType = {
   __typename?: 'RoleType';
+  /** Timestamp when the record was created */
+  createdAt: Scalars['timestamptz']['output'];
   /** Description of the role privileges and responsibilities */
   description?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   roles: Array<Role>;
   /** An aggregate relationship */
   rolesAggregate: RoleAggregate;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt: Scalars['timestamptz']['output'];
   /** Role identifier */
   value: Scalars['String']['output'];
 };
@@ -5555,9 +5595,11 @@ export type RoleTypeBoolExp = {
   _and?: InputMaybe<Array<RoleTypeBoolExp>>;
   _not?: InputMaybe<RoleTypeBoolExp>;
   _or?: InputMaybe<Array<RoleTypeBoolExp>>;
+  createdAt?: InputMaybe<TimestamptzComparisonExp>;
   description?: InputMaybe<StringComparisonExp>;
   roles?: InputMaybe<RoleBoolExp>;
   rolesAggregate?: InputMaybe<RoleAggregateBoolExp>;
+  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
   value?: InputMaybe<StringComparisonExp>;
 };
 
@@ -5569,9 +5611,13 @@ export enum RoleTypeConstraint {
 
 /** input type for inserting data into table "role_type" */
 export type RoleTypeInsertInput = {
+  /** Timestamp when the record was created */
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the role privileges and responsibilities */
   description?: InputMaybe<Scalars['String']['input']>;
   roles?: InputMaybe<RoleArrRelInsertInput>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Role identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5579,8 +5625,12 @@ export type RoleTypeInsertInput = {
 /** aggregate max on columns */
 export type RoleTypeMaxFields = {
   __typename?: 'RoleTypeMaxFields';
+  /** Timestamp when the record was created */
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Description of the role privileges and responsibilities */
   description?: Maybe<Scalars['String']['output']>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Role identifier */
   value?: Maybe<Scalars['String']['output']>;
 };
@@ -5588,8 +5638,12 @@ export type RoleTypeMaxFields = {
 /** aggregate min on columns */
 export type RoleTypeMinFields = {
   __typename?: 'RoleTypeMinFields';
+  /** Timestamp when the record was created */
+  createdAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Description of the role privileges and responsibilities */
   description?: Maybe<Scalars['String']['output']>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
   /** Role identifier */
   value?: Maybe<Scalars['String']['output']>;
 };
@@ -5619,8 +5673,10 @@ export type RoleTypeOnConflict = {
 
 /** Ordering options when selecting data from "role_type". */
 export type RoleTypeOrderBy = {
+  createdAt?: InputMaybe<OrderBy>;
   description?: InputMaybe<OrderBy>;
   rolesAggregate?: InputMaybe<RoleAggregateOrderBy>;
+  updatedAt?: InputMaybe<OrderBy>;
   value?: InputMaybe<OrderBy>;
 };
 
@@ -5633,15 +5689,23 @@ export type RoleTypePkColumnsInput = {
 /** select columns of table "role_type" */
 export enum RoleTypeSelectColumn {
   /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
   Description = 'description',
+  /** column name */
+  UpdatedAt = 'updatedAt',
   /** column name */
   Value = 'value'
 }
 
 /** input type for updating data in table "role_type" */
 export type RoleTypeSetInput = {
+  /** Timestamp when the record was created */
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the role privileges and responsibilities */
   description?: InputMaybe<Scalars['String']['input']>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Role identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5656,8 +5720,12 @@ export type RoleTypeStreamCursorInput = {
 
 /** Initial value of the column from where the streaming should start */
 export type RoleTypeStreamCursorValueInput = {
+  /** Timestamp when the record was created */
+  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Description of the role privileges and responsibilities */
   description?: InputMaybe<Scalars['String']['input']>;
+  /** Timestamp when the record was last updated, automatically managed by trigger */
+  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
   /** Role identifier */
   value?: InputMaybe<Scalars['String']['input']>;
 };
@@ -5665,7 +5733,11 @@ export type RoleTypeStreamCursorValueInput = {
 /** update columns of table "role_type" */
 export enum RoleTypeUpdateColumn {
   /** column name */
+  CreatedAt = 'createdAt',
+  /** column name */
   Description = 'description',
+  /** column name */
+  UpdatedAt = 'updatedAt',
   /** column name */
   Value = 'value'
 }
@@ -8571,11 +8643,7 @@ export type UiTextUpdates = {
   where: UiTextBoolExp;
 };
 
-/**
- * @primary_key(id)
- * @foreign_key(year,public.year,id)
- * @foreign_key(uid,public.teacher,uid)
- */
+/** columns and relationships of "v_service" */
 export type VService = {
   __typename?: 'VService';
   id?: Maybe<Scalars['Int']['output']>;
@@ -8602,11 +8670,7 @@ export type VService = {
 };
 
 
-/**
- * @primary_key(id)
- * @foreign_key(year,public.year,id)
- * @foreign_key(uid,public.teacher,uid)
- */
+/** columns and relationships of "v_service" */
 export type VServiceModificationsArgs = {
   distinctOn?: InputMaybe<Array<ServiceModificationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8616,11 +8680,7 @@ export type VServiceModificationsArgs = {
 };
 
 
-/**
- * @primary_key(id)
- * @foreign_key(year,public.year,id)
- * @foreign_key(uid,public.teacher,uid)
- */
+/** columns and relationships of "v_service" */
 export type VServiceModificationsAggregateArgs = {
   distinctOn?: InputMaybe<Array<ServiceModificationSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8630,11 +8690,7 @@ export type VServiceModificationsAggregateArgs = {
 };
 
 
-/**
- * @primary_key(id)
- * @foreign_key(year,public.year,id)
- * @foreign_key(uid,public.teacher,uid)
- */
+/** columns and relationships of "v_service" */
 export type VServicePrioritiesArgs = {
   distinctOn?: InputMaybe<Array<PrioritySelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8644,11 +8700,7 @@ export type VServicePrioritiesArgs = {
 };
 
 
-/**
- * @primary_key(id)
- * @foreign_key(year,public.year,id)
- * @foreign_key(uid,public.teacher,uid)
- */
+/** columns and relationships of "v_service" */
 export type VServicePrioritiesAggregateArgs = {
   distinctOn?: InputMaybe<Array<PrioritySelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8658,11 +8710,7 @@ export type VServicePrioritiesAggregateArgs = {
 };
 
 
-/**
- * @primary_key(id)
- * @foreign_key(year,public.year,id)
- * @foreign_key(uid,public.teacher,uid)
- */
+/** columns and relationships of "v_service" */
 export type VServiceRequestsArgs = {
   distinctOn?: InputMaybe<Array<RequestSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -8672,11 +8720,7 @@ export type VServiceRequestsArgs = {
 };
 
 
-/**
- * @primary_key(id)
- * @foreign_key(year,public.year,id)
- * @foreign_key(uid,public.teacher,uid)
- */
+/** columns and relationships of "v_service" */
 export type VServiceRequestsAggregateArgs = {
   distinctOn?: InputMaybe<Array<RequestSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
