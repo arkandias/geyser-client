@@ -1081,11 +1081,6 @@ type Course {
   """Academic semester (1-6)"""
   semester: Int!
 
-  """
-  Calculates total effective teaching hours for a course by multiplying hours_effective by groups_effective
-  """
-  totalHoursEffective: Float
-
   """An object relationship"""
   track: Track
 
@@ -1206,11 +1201,6 @@ type CourseAvgFields {
   """Academic semester (1-6)"""
   semester: Float
 
-  """
-  Calculates total effective teaching hours for a course by multiplying hours_effective by groups_effective
-  """
-  totalHoursEffective: Float
-
   """Optional track specialization for this course"""
   trackId: Float
 
@@ -1301,7 +1291,6 @@ input CourseBoolExp {
   requests: RequestBoolExp
   requestsAggregate: RequestAggregateBoolExp
   semester: IntComparisonExp
-  totalHoursEffective: FloatComparisonExp
   track: TrackBoolExp
   trackId: IntComparisonExp
   type: CourseTypeBoolExp
@@ -1493,11 +1482,6 @@ type CourseMaxFields {
   """Academic semester (1-6)"""
   semester: Int
 
-  """
-  Calculates total effective teaching hours for a course by multiplying hours_effective by groups_effective
-  """
-  totalHoursEffective: Float
-
   """Optional track specialization for this course"""
   trackId: Int
 
@@ -1639,11 +1623,6 @@ type CourseMinFields {
 
   """Academic semester (1-6)"""
   semester: Int
-
-  """
-  Calculates total effective teaching hours for a course by multiplying hours_effective by groups_effective
-  """
-  totalHoursEffective: Float
 
   """Optional track specialization for this course"""
   trackId: Int
@@ -1787,7 +1766,6 @@ input CourseOrderBy {
   programId: OrderBy
   requestsAggregate: RequestAggregateOrderBy
   semester: OrderBy
-  totalHoursEffective: OrderBy
   track: TrackOrderBy
   trackId: OrderBy
   type: CourseTypeOrderBy
@@ -1990,11 +1968,6 @@ type CourseStddevFields {
   """Academic semester (1-6)"""
   semester: Float
 
-  """
-  Calculates total effective teaching hours for a course by multiplying hours_effective by groups_effective
-  """
-  totalHoursEffective: Float
-
   """Optional track specialization for this course"""
   trackId: Float
 
@@ -2087,11 +2060,6 @@ type CourseStddevPopFields {
   """Academic semester (1-6)"""
   semester: Float
 
-  """
-  Calculates total effective teaching hours for a course by multiplying hours_effective by groups_effective
-  """
-  totalHoursEffective: Float
-
   """Optional track specialization for this course"""
   trackId: Float
 
@@ -2183,11 +2151,6 @@ type CourseStddevSampFields {
 
   """Academic semester (1-6)"""
   semester: Float
-
-  """
-  Calculates total effective teaching hours for a course by multiplying hours_effective by groups_effective
-  """
-  totalHoursEffective: Float
 
   """Optional track specialization for this course"""
   trackId: Float
@@ -2364,11 +2327,6 @@ type CourseSumFields {
 
   """Academic semester (1-6)"""
   semester: Int
-
-  """
-  Calculates total effective teaching hours for a course by multiplying hours_effective by groups_effective
-  """
-  totalHoursEffective: Float
 
   """Optional track specialization for this course"""
   trackId: Int
@@ -2957,11 +2915,6 @@ type CourseVarPopFields {
   """Academic semester (1-6)"""
   semester: Float
 
-  """
-  Calculates total effective teaching hours for a course by multiplying hours_effective by groups_effective
-  """
-  totalHoursEffective: Float
-
   """Optional track specialization for this course"""
   trackId: Float
 
@@ -3054,11 +3007,6 @@ type CourseVarSampFields {
   """Academic semester (1-6)"""
   semester: Float
 
-  """
-  Calculates total effective teaching hours for a course by multiplying hours_effective by groups_effective
-  """
-  totalHoursEffective: Float
-
   """Optional track specialization for this course"""
   trackId: Float
 
@@ -3150,11 +3098,6 @@ type CourseVarianceFields {
 
   """Academic semester (1-6)"""
   semester: Float
-
-  """
-  Calculates total effective teaching hours for a course by multiplying hours_effective by groups_effective
-  """
-  totalHoursEffective: Float
 
   """Optional track specialization for this course"""
   trackId: Float

@@ -56,7 +56,6 @@ graphql(`
     }
     hoursPerGroup: hoursEffective
     numberOfGroups: groupsEffective
-    totalHours: totalHoursEffective
     requests {
       serviceId
       type
@@ -116,6 +115,7 @@ const courses = computed<CourseRow[]>(() =>
       CourseRowFragmentDoc,
       f,
     );
+    const totalHours = (hoursPerGroup ?? 0) * (numberOfGroups ?? 0);
     const { totalAssignment, totalPrimary, totalSecondary, totalPriority } =
       requests.reduce(
         (t, r) => ({
@@ -145,10 +145,10 @@ const courses = computed<CourseRow[]>(() =>
       groups: numberOfGroups ?? 0,
       requests,
       totalAssignment: totalAssignment * weight,
-      diffAssignment: ((rest.totalHours ?? 0) - totalAssignment) * weight,
+      diffAssignment: (totalHours - totalAssignment) * weight,
       totalPrimary: totalPrimary * weight,
-      diffPrimary: ((rest.totalHours ?? 0) - totalPrimary) * weight,
-      diffPrimaryPriority: ((rest.totalHours ?? 0) - totalPriority) * weight,
+      diffPrimary: (totalHours - totalPrimary) * weight,
+      diffPrimaryPriority: (totalHours - totalPriority) * weight,
       totalSecondary: totalSecondary * weight,
     };
   }),
