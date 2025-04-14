@@ -11,6 +11,7 @@ import {
   hasuraUserId,
 } from "@/config/env.ts";
 import { ROLES, type Role, isRole } from "@/config/types/roles.ts";
+import type { HasuraClaims } from "@/types/claims.ts";
 
 const keycloak = new Keycloak({
   url: authURL,
@@ -26,10 +27,14 @@ keycloak.onTokenExpired = () => {
   console.debug("Token expired");
 };
 
-const initKeycloak = async () => {
+export const initKeycloak = async (): Promise<HasuraClaims | null> => {
   if (bypassAuth) {
     console.debug("Bypassing Keycloak authentication");
-    return;
+    return {
+      userId: hasuraUserId,
+      defaultRole: ROLES.ADMIN,
+      allowedRoles: [ROLES.TEACHER, ROLES.COMMISSIONER, ROLES.ADMIN],
+    };
   }
   try {
     const authenticated = await keycloak.init({
@@ -37,40 +42,19 @@ const initKeycloak = async () => {
     });
     if (authenticated) {
       console.debug("Authenticated!");
-      return;
+      if (keycloak.tokenParsed === undefined) {
+        console.error("No parsed token");
+        return null;
+      }
+      return validateClaims(keycloak.tokenParsed);
     } else {
       console.error("Authentication failed");
-      return;
+      return null;
     }
   } catch (error) {
     console.error("Authentication error:", error);
-    return;
-  }
-};
-
-type HasuraClaims = {
-  userId: string;
-  defaultRole: Role;
-  allowedRoles: Role[];
-};
-
-export const getClaims = (): HasuraClaims | null => {
-  if (bypassAuth) {
-    return {
-      userId: hasuraUserId,
-      defaultRole: ROLES.ADMIN,
-      allowedRoles: [ROLES.TEACHER, ROLES.COMMISSIONER, ROLES.ADMIN],
-    };
-  }
-  if (keycloak.authenticated !== true) {
-    console.error("Not authenticated");
     return null;
   }
-  if (keycloak.tokenParsed === undefined) {
-    console.error("No parsed token");
-    return null;
-  }
-  return validateClaims(keycloak.tokenParsed);
 };
 
 export const refreshToken = async () => {
@@ -103,7 +87,7 @@ export const logout = async () => {
 const validateClaims = (
   tokenParsed: Record<string, unknown>,
 ): HasuraClaims | null => {
-  if (!isXHasuraClaims(HASURA_CLAIMS_NAMESPACE, tokenParsed)) {
+  if (!isRawHasuraClaims(HASURA_CLAIMS_NAMESPACE, tokenParsed)) {
     console.error("No valid X-Hasura claims in parsed token");
     return null;
   }
@@ -132,7 +116,7 @@ const validateClaims = (
   };
 };
 
-type XHasuraClaims<T extends string> = Record<
+type RawHasuraClaims<T extends string> = Record<
   T,
   {
     "x-hasura-user-id": string;
@@ -141,10 +125,10 @@ type XHasuraClaims<T extends string> = Record<
   }
 >;
 
-const isXHasuraClaims = <T extends string>(
+const isRawHasuraClaims = <T extends string>(
   namespace: T,
   claims: unknown,
-): claims is XHasuraClaims<T> => {
+): claims is RawHasuraClaims<T> => {
   if (!claims || typeof claims !== "object" || !(namespace in claims)) {
     return false;
   }
@@ -164,5 +148,3 @@ const isXHasuraClaims = <T extends string>(
     )
   );
 };
-
-await initKeycloak();

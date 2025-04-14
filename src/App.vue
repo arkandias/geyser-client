@@ -8,15 +8,17 @@ import { PHASES } from "@/config/types/phases.ts";
 import { ROLES, isRole } from "@/config/types/roles.ts";
 import { graphql } from "@/gql";
 import { GetAppDataDocument, GetUserProfileDocument } from "@/gql/graphql.ts";
-import { getClaims } from "@/services/keycloak.ts";
 import { setRoleHeader } from "@/services/urql.ts";
 import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
+import type { HasuraClaims } from "@/types/claims.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
 import PageHome from "@/pages/PageHome.vue";
+
+const { claims } = defineProps<{ claims: HasuraClaims | null }>();
 
 graphql(`
   query GetUserProfile($uid: String!) {
@@ -62,7 +64,6 @@ const { setYears } = useYearsStore();
 const { setCustomTexts } = useCustomTextsStore();
 
 // Fetch user profile
-const claims = getClaims();
 const getUserProfile = useQuery({
   query: GetUserProfileDocument,
   variables: { uid: claims?.userId ?? "" },

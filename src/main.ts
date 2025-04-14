@@ -3,6 +3,7 @@ import { createApp } from "vue";
 import { Quasar } from "quasar";
 import urql from "@urql/vue";
 
+import { initKeycloak } from "@/services/keycloak.ts";
 import { quasarOptions } from "@/services/quasar.ts";
 import { i18n } from "@/services/i18n.ts";
 import { router } from "@/services/router.ts";
@@ -19,7 +20,9 @@ if (import.meta.env.PROD) {
   };
 }
 
-createApp(App)
+const claims = await initKeycloak();
+
+createApp(App, { claims })
   .use(Quasar, quasarOptions)
   .use(i18n)
   .use(router)
