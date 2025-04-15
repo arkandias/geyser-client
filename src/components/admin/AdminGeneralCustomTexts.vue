@@ -4,7 +4,6 @@ import {
   type ComponentPublicInstance,
   type ShallowRef,
   computed,
-  ref,
   shallowRef,
 } from "vue";
 
@@ -26,17 +25,13 @@ import EditableText from "@/components/core/EditableText.vue";
 const { t } = useCustomI18n();
 const { getCustomText } = useCustomTextsStore();
 
-const customTextsEdit = ref(
-  Object.fromEntries(CUSTOM_TEXT_KEYS.map(([key]) => [key, false])) as Record<
-    CustomTextKey,
-    boolean
-  >,
-);
 const customTextOptions = computed(() =>
   CUSTOM_TEXT_KEYS.map((key) => ({
     key,
-    value: getCustomText(key),
+    value: getCustomText(key).value,
     label: t(`customText.${key}.label`),
+    default: t(`customText.${key}.default`),
+    edit: false,
   })),
 );
 
@@ -93,8 +88,8 @@ const setRef = (key: string, el: Element | ComponentPublicInstance | null) => {
   }
 };
 
-const callOnDelete = async (key: string) => {
-  if (isCustomTextKey(key)) {
+const callOnDelete = async (key: CustomTextKey, label: string) => {
+  if (confirm(t("admin.general.customTexts.confirm.delete", { label }))) {
     await editableTextRefs[key].value?.clear();
   }
 };
@@ -113,7 +108,7 @@ const callOnDelete = async (key: string) => {
         <QCardSection>
           <EditableText
             :ref="(el) => setRef(opt.key, el)"
-            v-model="customTextsEdit[opt.key]"
+            v-model="opt.edit"
             :text="opt.value"
             :set-text="(value) => updateCustomTextHandle(opt.key, value)"
             :default-text="t(`customText.${opt.key}.default`)"
@@ -127,17 +122,17 @@ const callOnDelete = async (key: string) => {
             no-caps
             outline
             dense
-            @click="customTextsEdit[opt.key] = true"
+            @click="opt.edit = true"
           />
           <QBtn
             :label="t('admin.general.customTexts.button.delete')"
             icon="sym_s_delete"
             color="primary"
-            :disable="!opt.value"
+            :disable="!opt"
             no-caps
             outline
             dense
-            @click="callOnDelete(opt.key)"
+            @click="callOnDelete(opt.key, opt.label)"
           />
         </QCardActions>
       </QCard>

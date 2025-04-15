@@ -2,10 +2,6 @@ import DOMPurify from "dompurify";
 import { computed, ref } from "vue";
 
 import {
-  type CustomComposerTranslation,
-  useCustomI18n,
-} from "@/composables/useCustomI18n.ts";
-import {
   CUSTOM_TEXT_KEYS,
   type CustomTextKey,
   isCustomTextKey,
@@ -28,22 +24,27 @@ const customTextsSanitized = computed(
     ) as Record<CustomTextKey, string>,
 );
 
-const getCustomText = (t: CustomComposerTranslation) => (key: CustomTextKey) =>
-  customTextsSanitized.value[key] || t(`customText.${key}.default`);
+const getCustomText = (key: CustomTextKey) =>
+  computed(() => customTextsSanitized.value[key]);
 
-const setCustomText = (key: string, value: string | null) => {
-  if (isCustomTextKey(key)) {
-    customTexts.value[key] = value;
-  } else {
-    console.error(`Invalid custom text key: ${key}`);
+const setCustomTexts = (
+  newCustomTexts: { key: string; value: string | null }[],
+) => {
+  CUSTOM_TEXT_KEYS.forEach((key) => {
+    customTexts.value[key] =
+      newCustomTexts.find((text) => text.key === key)?.value ?? null;
+  });
+
+  // Log invalid keys (if any)
+  const invalidKeys = newCustomTexts
+    .map(({ key }) => key)
+    .filter((key) => !isCustomTextKey(key));
+  if (invalidKeys.length) {
+    console.error(`Invalid custom text keys: ${invalidKeys.join(", ")}`);
   }
 };
 
-export const useCustomTextsStore = () => {
-  const { t } = useCustomI18n();
-
-  return {
-    getCustomText: getCustomText(t),
-    setCustomText,
-  };
-};
+export const useCustomTextsStore = () => ({
+  getCustomText,
+  setCustomTexts,
+});

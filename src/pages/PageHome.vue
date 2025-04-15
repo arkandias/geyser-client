@@ -1,20 +1,28 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 
 defineProps<{ alert?: string }>();
 
+const { t } = useCustomI18n();
 const { currentPhase } = usePhaseStore();
 const { getCustomText } = useCustomTextsStore();
 
-const title = computed(() => getCustomText("homeTitle"));
-const subtitle = computed(() =>
-  getCustomText(`homeSubtitle${currentPhase.value}`),
+const title = computed(
+  () => getCustomText("homeTitle").value || t("home.title"),
 );
-const message = computed(() =>
-  getCustomText(`homeMessage${currentPhase.value}`),
+const subtitle = computed(
+  () =>
+    getCustomText(`homeSubtitle${currentPhase.value}`).value ||
+    t(`home.subtitle.${currentPhase.value}`),
+);
+const message = computed(
+  () =>
+    getCustomText(`homeMessage${currentPhase.value}`).value ||
+    t(`home.message.${currentPhase.value}`),
 );
 </script>
 

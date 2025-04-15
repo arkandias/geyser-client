@@ -112,6 +112,9 @@ la supprimer.`,
           edit: "Éditer",
           delete: "Supprimer",
         },
+        confirm: {
+          delete: `Êtes-vous sûr de vouloir réinitialiser « {label} » à sa valeur par défaut ?`,
+        },
       },
     },
     teachers: {

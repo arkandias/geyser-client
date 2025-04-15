@@ -111,6 +111,9 @@ If courses or services are associated with this year, you will not be able to de
           edit: "Edit",
           delete: "Delete",
         },
+        confirm: {
+          delete: `Are you sure you want to reset "{label}" to its default value?`,
+        },
       },
     },
     teachers: {

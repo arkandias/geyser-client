@@ -30,8 +30,9 @@ const icons = {
 };
 
 const messages = computed(() => ({
-  contact: getCustomText("contact"),
-  legalNotice: getCustomText("legalNotice"),
+  contact: getCustomText("contact").value || t("header.info.contact.message"),
+  legalNotice:
+    getCustomText("legalNotice").value || t("header.info.legalNotice.message"),
   license: t("header.info.license.message"),
 }));
 </script>
