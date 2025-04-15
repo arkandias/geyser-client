@@ -384,7 +384,7 @@ const yearOptions = computed(() => years.value.map((y) => y.value));
 const typeOptions = computed(() =>
   Object.values(RequestTypeEnum).map((rt) => ({
     value: rt,
-    label: t(`requestType.${rt.toLowerCase()}`),
+    label: t(`requestType.${rt}`),
   })),
 );
 const uidOptions = computed(() =>
@@ -437,7 +437,7 @@ const selectedPrograms = ref<number[]>([]);
 const selectedYearsOptions = computed(() => years.value.map((y) => y.value));
 const selectedTypesOptions = Object.values(RequestTypeEnum).map((rt) => ({
   value: rt,
-  label: t(`requestType.${rt.toLowerCase()}`),
+  label: t(`requestType.${rt}`),
 }));
 const selectedUidsOptions = computed(() =>
   requests.value.map((r) => r.service.uid).filter(unique),

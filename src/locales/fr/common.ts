@@ -1,3 +1,5 @@
+import { RequestTypeEnum, RoleTypeEnum } from "@/gql/graphql.ts";
+
 export default {
   phase: {
     requests: "Vœux",
@@ -6,14 +8,14 @@ export default {
     shutdown: "Fermeture",
   },
   requestType: {
-    assignment: "Attribution | Attributions",
-    primary: "Principale | Principales",
-    secondary: "Secondaire | Secondaires",
+    [RequestTypeEnum.Assignment]: "Attribution | Attributions",
+    [RequestTypeEnum.Primary]: "Principale | Principales",
+    [RequestTypeEnum.Secondary]: "Secondaire | Secondaires",
   },
   role: {
-    admin: "Administrateur | Administrateurs",
-    commissioner: "Commissaire | Commissaires",
-    teacher: "Intervenant | Intervenants",
+    [RoleTypeEnum.Admin]: "Administrateur | Administrateurs",
+    [RoleTypeEnum.Commissioner]: "Commissaire | Commissaires",
+    [RoleTypeEnum.Teacher]: "Intervenant | Intervenants",
   },
   semester: "S{semester}",
   unit: {
