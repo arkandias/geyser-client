@@ -6,11 +6,11 @@ import { useDownloadAssignments } from "@/composables/useDownloadAssignments.ts"
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { useQueryParam } from "@/composables/useQueryParam.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
-import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type CourseRowFragment,
   CourseRowFragmentDoc,
+  RequestTypeEnum,
   TableCoursesVServiceFragmentDoc,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
@@ -121,15 +121,15 @@ const courses = computed<CourseRow[]>(() =>
         (t, r) => ({
           totalAssignment:
             t.totalAssignment +
-            (r.type === REQUEST_TYPES.ASSIGNMENT ? r.hours : 0),
+            (r.type === RequestTypeEnum.Assignment ? r.hours : 0),
           totalPrimary:
-            t.totalPrimary + (r.type === REQUEST_TYPES.PRIMARY ? r.hours : 0),
+            t.totalPrimary + (r.type === RequestTypeEnum.Primary ? r.hours : 0),
           totalSecondary:
             t.totalSecondary +
-            (r.type === REQUEST_TYPES.SECONDARY ? r.hours : 0),
+            (r.type === RequestTypeEnum.Secondary ? r.hours : 0),
           totalPriority:
             t.totalPriority +
-            (r.type === REQUEST_TYPES.PRIMARY && r.isPriority ? r.hours : 0),
+            (r.type === RequestTypeEnum.Primary && r.isPriority ? r.hours : 0),
         }),
         {
           totalAssignment: 0,
@@ -162,13 +162,13 @@ const teacherCourses = computed<CourseRow[]>(() =>
     return {
       ...row,
       totalAssignment:
-        teacherRequests.find((r) => r.type === REQUEST_TYPES.ASSIGNMENT)
+        teacherRequests.find((r) => r.type === RequestTypeEnum.Assignment)
           ?.hours ?? 0,
       totalPrimary:
-        teacherRequests.find((r) => r.type === REQUEST_TYPES.PRIMARY)?.hours ??
-        0,
+        teacherRequests.find((r) => r.type === RequestTypeEnum.Primary)
+          ?.hours ?? 0,
       totalSecondary:
-        teacherRequests.find((r) => r.type === REQUEST_TYPES.SECONDARY)
+        teacherRequests.find((r) => r.type === RequestTypeEnum.Secondary)
           ?.hours ?? 0,
       diffAssignment: null,
       diffPrimary: null,
@@ -416,7 +416,7 @@ const isAssigned = computed(
     row.requests.some(
       (r) =>
         r.serviceId === selectedService.value &&
-        r.type === REQUEST_TYPES.ASSIGNMENT,
+        r.type === RequestTypeEnum.Assignment,
     ),
 );
 const isVisible = (row: CourseRow) =>

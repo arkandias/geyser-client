@@ -6,13 +6,13 @@ import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
-import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   DeleteRequestCardDocument,
   GetAssignmentDocument,
   InsertAssignmentDocument,
   RequestCardDataFragmentDoc,
+  RequestTypeEnum,
   UpdateAssignmentDocument,
 } from "@/gql/graphql.ts";
 import { priorityColor } from "@/utils/colors.ts";
@@ -47,7 +47,7 @@ graphql(`
         _and: [
           { serviceId: { _eq: $serviceId } }
           { courseId: { _eq: $courseId } }
-          { type: { _eq: "assignment" } }
+          { type: { _eq: ASSIGNMENT } }
         ]
       }
       limit: 1 # unique
@@ -68,7 +68,7 @@ graphql(`
         year: $year
         serviceId: $serviceId
         courseId: $courseId
-        type: "assignment"
+        type: ASSIGNMENT
         hours: $hours
       }
     ) {
@@ -120,17 +120,17 @@ const groups = computed(() =>
 );
 
 const displayAssignButton = computed(
-  () => (requestType: string) =>
-    requestType !== REQUEST_TYPES.ASSIGNMENT && perm.toEditAssignments,
+  () => (requestType: RequestTypeEnum) =>
+    requestType !== RequestTypeEnum.Assignment && perm.toEditAssignments,
 );
 const displayDeleteButton = computed(
-  () => (requestType: string) =>
-    requestType === REQUEST_TYPES.ASSIGNMENT
+  () => (requestType: RequestTypeEnum) =>
+    requestType === RequestTypeEnum.Assignment
       ? perm.toEditAssignments
       : perm.toDeleteRequests,
 );
 const displayActions = computed(
-  () => (requestType: string) =>
+  () => (requestType: RequestTypeEnum) =>
     displayAssignButton.value(requestType) ||
     displayDeleteButton.value(requestType),
 );

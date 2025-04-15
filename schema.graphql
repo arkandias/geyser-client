@@ -5966,7 +5966,7 @@ type Request {
   serviceId: Int!
 
   """Type of request (primary choice, backup, or final assignment)"""
-  type: String!
+  type: RequestTypeEnum!
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -6099,7 +6099,7 @@ input RequestBoolExp {
   requestType: RequestTypeBoolExp
   service: ServiceBoolExp
   serviceId: IntComparisonExp
-  type: StringComparisonExp
+  type: RequestTypeEnumComparisonExp
   updatedAt: TimestamptzComparisonExp
   vService: VServiceBoolExp
   year: IntComparisonExp
@@ -6159,7 +6159,7 @@ input RequestInsertInput {
   serviceId: Int
 
   """Type of request (primary choice, backup, or final assignment)"""
-  type: String
+  type: RequestTypeEnum
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -6194,9 +6194,6 @@ type RequestMaxFields {
   """Associated teacher service record"""
   serviceId: Int
 
-  """Type of request (primary choice, backup, or final assignment)"""
-  type: String
-
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
@@ -6224,9 +6221,6 @@ input RequestMaxOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
-
-  """Type of request (primary choice, backup, or final assignment)"""
-  type: OrderBy
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -6259,9 +6253,6 @@ type RequestMinFields {
   """Associated teacher service record"""
   serviceId: Int
 
-  """Type of request (primary choice, backup, or final assignment)"""
-  type: String
-
   """
   Timestamp when the record was last updated, automatically managed by trigger
   """
@@ -6289,9 +6280,6 @@ input RequestMinOrderBy {
 
   """Associated teacher service record"""
   serviceId: OrderBy
-
-  """Type of request (primary choice, backup, or final assignment)"""
-  type: OrderBy
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -6393,7 +6381,7 @@ input RequestSetInput {
   serviceId: Int
 
   """Type of request (primary choice, backup, or final assignment)"""
-  type: String
+  type: RequestTypeEnum
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -6562,7 +6550,7 @@ input RequestStreamCursorValueInput {
   serviceId: Int
 
   """Type of request (primary choice, backup, or final assignment)"""
-  type: String
+  type: RequestTypeEnum
 
   """
   Timestamp when the record was last updated, automatically managed by trigger
@@ -6618,9 +6606,6 @@ input RequestSumOrderBy {
 
 """Types of teaching assignment requests in workflow"""
 type RequestType {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz!
-
   """Description of the request type and its purpose"""
   description: String
 
@@ -6660,11 +6645,6 @@ type RequestType {
     where: RequestBoolExp
   ): RequestAggregate!
 
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz!
-
   """Request type identifier"""
   value: String!
 }
@@ -6693,11 +6673,9 @@ input RequestTypeBoolExp {
   _and: [RequestTypeBoolExp!]
   _not: RequestTypeBoolExp
   _or: [RequestTypeBoolExp!]
-  createdAt: TimestamptzComparisonExp
   description: StringComparisonExp
   requests: RequestBoolExp
   requestsAggregate: RequestAggregateBoolExp
-  updatedAt: TimestamptzComparisonExp
   value: StringComparisonExp
 }
 
@@ -6711,21 +6689,37 @@ enum RequestTypeConstraint {
   request_type_pkey
 }
 
+enum RequestTypeEnum {
+  """
+  Final course assignment made by the committee during the assignments phase
+  """
+  ASSIGNMENT
+
+  """Teacher's preferred course choices submitted during the requests phase"""
+  PRIMARY
+
+  """Teacher's backup course choices submitted during the requests phase"""
+  SECONDARY
+}
+
+"""
+Boolean expression to compare columns of type "RequestTypeEnum". All fields are combined with logical 'AND'.
+"""
+input RequestTypeEnumComparisonExp {
+  _eq: RequestTypeEnum
+  _in: [RequestTypeEnum!]
+  _isNull: Boolean
+  _neq: RequestTypeEnum
+  _nin: [RequestTypeEnum!]
+}
+
 """
 input type for inserting data into table "request_type"
 """
 input RequestTypeInsertInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the request type and its purpose"""
   description: String
   requests: RequestArrRelInsertInput
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Request type identifier"""
   value: String
@@ -6733,16 +6727,8 @@ input RequestTypeInsertInput {
 
 """aggregate max on columns"""
 type RequestTypeMaxFields {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the request type and its purpose"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Request type identifier"""
   value: String
@@ -6750,16 +6736,8 @@ type RequestTypeMaxFields {
 
 """aggregate min on columns"""
 type RequestTypeMinFields {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the request type and its purpose"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Request type identifier"""
   value: String
@@ -6797,10 +6775,8 @@ input RequestTypeOnConflict {
 
 """Ordering options when selecting data from "request_type"."""
 input RequestTypeOrderBy {
-  createdAt: OrderBy
   description: OrderBy
   requestsAggregate: RequestAggregateOrderBy
-  updatedAt: OrderBy
   value: OrderBy
 }
 
@@ -6815,13 +6791,7 @@ select columns of table "request_type"
 """
 enum RequestTypeSelectColumn {
   """column name"""
-  createdAt
-
-  """column name"""
   description
-
-  """column name"""
-  updatedAt
 
   """column name"""
   value
@@ -6831,16 +6801,8 @@ enum RequestTypeSelectColumn {
 input type for updating data in table "request_type"
 """
 input RequestTypeSetInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the request type and its purpose"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Request type identifier"""
   value: String
@@ -6859,16 +6821,8 @@ input RequestTypeStreamCursorInput {
 
 """Initial value of the column from where the streaming should start"""
 input RequestTypeStreamCursorValueInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Description of the request type and its purpose"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Request type identifier"""
   value: String
@@ -6879,13 +6833,7 @@ update columns of table "request_type"
 """
 enum RequestTypeUpdateColumn {
   """column name"""
-  createdAt
-
-  """column name"""
   description
-
-  """column name"""
-  updatedAt
 
   """column name"""
   value

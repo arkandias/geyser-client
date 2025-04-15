@@ -3,9 +3,8 @@ import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
-import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
-import { CourseRequestsFragmentDoc } from "@/gql/graphql.ts";
+import { CourseRequestsFragmentDoc, RequestTypeEnum } from "@/gql/graphql.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import DetailsSubsection from "@/components/core/DetailsSubsection.vue";
@@ -37,8 +36,12 @@ const data = computed(() =>
 
 const requestsByType = computed(() =>
   (perm.toViewAssignments
-    ? [REQUEST_TYPES.ASSIGNMENT, REQUEST_TYPES.PRIMARY, REQUEST_TYPES.SECONDARY]
-    : [REQUEST_TYPES.PRIMARY, REQUEST_TYPES.SECONDARY]
+    ? [
+        RequestTypeEnum.Assignment,
+        RequestTypeEnum.Primary,
+        RequestTypeEnum.Secondary,
+      ]
+    : [RequestTypeEnum.Primary, RequestTypeEnum.Secondary]
   ).map((value) => ({
     value,
     label: t(`requestType.${value}`, 2),

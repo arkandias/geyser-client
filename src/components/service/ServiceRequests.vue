@@ -16,15 +16,15 @@ const { dataFragment } = defineProps<{
 
 graphql(`
   fragment TeacherServiceRequests on Service {
-    assignment: requests(where: { type: { _eq: "assignment" } }) {
+    assignment: requests(where: { type: { _eq: ASSIGNMENT } }) {
       id
       hoursWeighted
     }
-    primary: requests(where: { type: { _eq: "primary" } }) {
+    primary: requests(where: { type: { _eq: PRIMARY } }) {
       id
       hoursWeighted
     }
-    secondary: requests(where: { type: { _eq: "secondary" } }) {
+    secondary: requests(where: { type: { _eq: SECONDARY } }) {
       id
       hoursWeighted
     }

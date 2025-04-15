@@ -5,14 +5,11 @@ import { computed, ref, watch } from "vue";
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
-import {
-  REQUEST_TYPES,
-  type RequestType,
-} from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   DeleteRequestDocument,
   RequestFormDataFragmentDoc,
+  RequestTypeEnum,
   UpsertRequestDocument,
 } from "@/gql/graphql.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
@@ -34,7 +31,7 @@ graphql(`
     $year: Int!
     $serviceId: Int!
     $courseId: Int!
-    $requestType: String!
+    $requestType: RequestTypeEnum!
     $hours: Float!
   ) {
     request: insertRequestOne(
@@ -57,7 +54,7 @@ graphql(`
   mutation DeleteRequest(
     $serviceId: Int!
     $courseId: Int!
-    $requestType: String!
+    $requestType: RequestTypeEnum!
   ) {
     requests: deleteRequest(
       where: {
@@ -111,19 +108,19 @@ const groups = computed<number | null>({
   },
 });
 
-const requestType = ref<RequestType | null>(null);
+const requestType = ref<RequestTypeEnum | null>(null);
 const requestTypeInit = computed(() =>
   perm.toEditAssignments
-    ? REQUEST_TYPES.ASSIGNMENT
+    ? RequestTypeEnum.Assignment
     : perm.toSubmitRequests
-      ? REQUEST_TYPES.PRIMARY
+      ? RequestTypeEnum.Primary
       : null,
 );
 const requestTypeOptions = computed(() => [
   ...(perm.toEditAssignments
     ? [
         {
-          value: REQUEST_TYPES.ASSIGNMENT,
+          value: RequestTypeEnum.Assignment,
           label: t("requestForm.field.requestType.assignment"),
         },
       ]
@@ -131,11 +128,11 @@ const requestTypeOptions = computed(() => [
   ...(perm.toSubmitRequests
     ? [
         {
-          value: REQUEST_TYPES.PRIMARY,
+          value: RequestTypeEnum.Primary,
           label: t("requestForm.field.requestType.primary"),
         },
         {
-          value: REQUEST_TYPES.SECONDARY,
+          value: RequestTypeEnum.Secondary,
           label: t("requestForm.field.requestType.secondary"),
         },
       ]

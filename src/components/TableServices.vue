@@ -5,9 +5,9 @@ import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { useQueryParam } from "@/composables/useQueryParam.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
-import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
+  RequestTypeEnum,
   type ServiceRowFragment,
   ServiceRowFragmentDoc,
 } from "@/gql/graphql.ts";
@@ -67,13 +67,13 @@ const services = computed<ServiceRow[]>(() =>
       (t, r) => ({
         totalAssignment:
           t.totalAssignment +
-          (r.type === REQUEST_TYPES.ASSIGNMENT ? (r.hoursWeighted ?? 0) : 0),
+          (r.type === RequestTypeEnum.Assignment ? (r.hoursWeighted ?? 0) : 0),
         totalPrimary:
           t.totalAssignment +
-          (r.type === REQUEST_TYPES.PRIMARY ? (r.hoursWeighted ?? 0) : 0),
+          (r.type === RequestTypeEnum.Primary ? (r.hoursWeighted ?? 0) : 0),
         totalSecondary:
           t.totalAssignment +
-          (r.type === REQUEST_TYPES.SECONDARY ? (r.hoursWeighted ?? 0) : 0),
+          (r.type === RequestTypeEnum.Secondary ? (r.hoursWeighted ?? 0) : 0),
       }),
       {
         totalAssignment: 0,

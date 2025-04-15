@@ -50,7 +50,7 @@ graphql(`
     ) {
       year
       requests(
-        where: { type: { _eq: "assignment" } }
+        where: { type: { _eq: ASSIGNMENT } }
         orderBy: [{ service: { teacher: { displayname: ASC } } }]
       ) {
         id

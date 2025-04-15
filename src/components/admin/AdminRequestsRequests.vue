@@ -3,7 +3,6 @@ import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
-import { REQUEST_TYPES } from "@/config/types/request-types.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type AdminRequestFragment,
@@ -13,6 +12,7 @@ import {
   DeleteRequestsDocument,
   InsertRequestsDocument,
   RequestConstraint,
+  RequestTypeEnum,
   RequestUpdateColumn,
   UpdateRequestsDocument,
   UpsertRequestsDocument,
@@ -382,9 +382,9 @@ const selectedFields = ref<string[]>([]);
 
 const yearOptions = computed(() => years.value.map((y) => y.value));
 const typeOptions = computed(() =>
-  Object.values(REQUEST_TYPES).map((rt) => ({
+  Object.values(RequestTypeEnum).map((rt) => ({
     value: rt,
-    label: t(`requestType.${rt}`),
+    label: t(`requestType.${rt.toLowerCase()}`),
   })),
 );
 const uidOptions = computed(() =>
@@ -435,9 +435,9 @@ const selectedTypes = ref<string[]>([]);
 const selectedUids = ref<string[]>([]);
 const selectedPrograms = ref<number[]>([]);
 const selectedYearsOptions = computed(() => years.value.map((y) => y.value));
-const selectedTypesOptions = Object.values(REQUEST_TYPES).map((rt) => ({
+const selectedTypesOptions = Object.values(RequestTypeEnum).map((rt) => ({
   value: rt,
-  label: t(`requestType.${rt}`),
+  label: t(`requestType.${rt.toLowerCase()}`),
 }));
 const selectedUidsOptions = computed(() =>
   requests.value.map((r) => r.service.uid).filter(unique),
