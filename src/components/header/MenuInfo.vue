@@ -7,7 +7,7 @@ import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 import MenuBase from "@/components/header/MenuBase.vue";
 
 const { t } = useCustomI18n();
-const { customTexts } = useCustomTextsStore();
+const { getCustomText } = useCustomTextsStore();
 
 const sections = ["contact", "legalNotice", "license"] as const;
 
@@ -30,9 +30,8 @@ const icons = {
 };
 
 const messages = computed(() => ({
-  contact: customTexts.value.contact || t("header.info.contact.message"),
-  legalNotice:
-    customTexts.value.legalNotice || t("header.info.legalNotice.message"),
+  contact: getCustomText("contact"),
+  legalNotice: getCustomText("legalNotice"),
   license: t("header.info.license.message"),
 }));
 </script>

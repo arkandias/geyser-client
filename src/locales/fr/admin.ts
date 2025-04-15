@@ -112,24 +112,6 @@ la supprimer.`,
           edit: "Éditer",
           delete: "Supprimer",
         },
-        contact: "Contact",
-        legalNotice: "Mentions légales",
-        homeTitle: "Titre de la page d'accueil",
-        homeSubtitleRequests:
-          "Sous-titre de la page d'accueil en phase de vœux",
-        homeSubtitleAssignments:
-          "Sous-titre de la page d'accueil en phase de commission",
-        homeSubtitleResults:
-          "Sous-titre de la page d'accueil en phase de consultation",
-        homeSubtitleShutdown:
-          "Sous-titre de la page d'accueil en phase de fermeture",
-        homeMessageRequests: "Message de la page d'accueil en phase de vœux",
-        homeMessageAssignments:
-          "Message de la page d'accueil en phase de commission",
-        homeMessageResults:
-          "Message de la page d'accueil en phase de consultation",
-        homeMessageShutdown:
-          "Message de la page d'accueil en phase de fermeture",
       },
     },
     teachers: {

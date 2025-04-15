@@ -2,44 +2,48 @@ import DOMPurify from "dompurify";
 import { computed, ref } from "vue";
 
 import {
+  type CustomComposerTranslation,
+  useCustomI18n,
+} from "@/composables/useCustomI18n.ts";
+import {
   CUSTOM_TEXT_KEYS,
   type CustomTextKey,
   isCustomTextKey,
-} from "@/config/types/custom-text-keys.ts";
+} from "@/config/custom-text-keys.ts";
 
 const customTexts = ref(
-  CUSTOM_TEXT_KEYS.reduce(
-    (obj, key) => ({ ...obj, [key]: null }),
-    {} as Record<CustomTextKey, string | null>,
-  ),
+  Object.fromEntries(CUSTOM_TEXT_KEYS.map((key) => [key, null])) as Record<
+    CustomTextKey,
+    string | null
+  >,
 );
 
-const customTextsSanitized = computed(() =>
-  CUSTOM_TEXT_KEYS.reduce(
-    (obj, key) => ({
-      ...obj,
-      [key]: DOMPurify.sanitize(customTexts.value[key] ?? ""),
-    }),
-    {} as Record<CustomTextKey, string>,
-  ),
+const customTextsSanitized = computed(
+  () =>
+    Object.fromEntries(
+      CUSTOM_TEXT_KEYS.map((key) => [
+        key,
+        DOMPurify.sanitize(customTexts.value[key] ?? ""),
+      ]),
+    ) as Record<CustomTextKey, string>,
 );
 
-const setCustomTexts = (newCustomTexts: { key: string; value: string }[]) => {
-  CUSTOM_TEXT_KEYS.forEach((key) => {
-    customTexts.value[key] =
-      newCustomTexts.find((text) => text.key === key)?.value ?? null;
-  });
+const getCustomText = (t: CustomComposerTranslation) => (key: CustomTextKey) =>
+  customTextsSanitized.value[key] || t(`customText.${key}.default`);
 
-  // Log invalid keys (if any)
-  const invalidKeys = newCustomTexts
-    .map(({ key }) => key)
-    .filter((key) => !isCustomTextKey(key));
-  if (invalidKeys.length) {
-    console.error(`Invalid custom text keys: ${invalidKeys.join(", ")}`);
+const setCustomText = (key: string, value: string | null) => {
+  if (isCustomTextKey(key)) {
+    customTexts.value[key] = value;
+  } else {
+    console.error(`Invalid custom text key: ${key}`);
   }
 };
 
-export const useCustomTextsStore = () => ({
-  customTexts: customTextsSanitized,
-  setCustomTexts,
-});
+export const useCustomTextsStore = () => {
+  const { t } = useCustomI18n();
+
+  return {
+    getCustomText: getCustomText(t),
+    setCustomText,
+  };
+};

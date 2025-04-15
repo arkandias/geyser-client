@@ -64,7 +64,7 @@ const { notify } = useNotify();
 const { active, activeRole, loaded, setProfile } = useProfileStore();
 const { currentPhase, setCurrentPhase } = usePhaseStore();
 const { setYears } = useYearsStore();
-const { setCustomTexts } = useCustomTextsStore();
+const { setCustomText } = useCustomTextsStore();
 
 // Fetch user profile
 const getUserProfile = useQuery({
@@ -127,7 +127,9 @@ watch(
       );
     }
     if (data?.customTexts) {
-      setCustomTexts(data.customTexts);
+      data.customTexts.forEach((text) => {
+        setCustomText(text.key, text.value);
+      });
     }
   },
   { immediate: true },

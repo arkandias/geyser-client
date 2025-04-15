@@ -13,7 +13,7 @@ import {
   CUSTOM_TEXT_KEYS,
   type CustomTextKey,
   isCustomTextKey,
-} from "@/config/types/custom-text-keys.ts";
+} from "@/config/custom-text-keys.ts";
 import { graphql } from "@/gql";
 import {
   DeleteCustomTextDocument,
@@ -24,18 +24,19 @@ import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 import EditableText from "@/components/core/EditableText.vue";
 
 const { t } = useCustomI18n();
-const { customTexts } = useCustomTextsStore();
+const { getCustomText } = useCustomTextsStore();
 
 const customTextsEdit = ref(
-  Object.fromEntries(
-    Object.entries(customTexts.value).map(([key]) => [key, false]),
-  ),
+  Object.fromEntries(CUSTOM_TEXT_KEYS.map(([key]) => [key, false])) as Record<
+    CustomTextKey,
+    boolean
+  >,
 );
 const customTextOptions = computed(() =>
-  Object.entries(customTexts.value).map(([key, value]) => ({
+  CUSTOM_TEXT_KEYS.map((key) => ({
     key,
-    value,
-    label: t(`admin.general.customTexts.${key}`),
+    value: getCustomText(key),
+    label: t(`customText.${key}.label`),
   })),
 );
 
@@ -115,7 +116,7 @@ const callOnDelete = async (key: string) => {
             v-model="customTextsEdit[opt.key]"
             :text="opt.value"
             :set-text="(value) => updateCustomTextHandle(opt.key, value)"
-            :default-text="t(`customTextDefault.${opt.key}`)"
+            :default-text="t(`customText.${opt.key}.default`)"
           />
         </QCardSection>
         <QCardActions dense>

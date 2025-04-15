@@ -3,7 +3,7 @@ import app from "./app.ts";
 import common from "./common.ts";
 import core from "./core.ts";
 import courses from "./courses.ts";
-import customTextDefault from "./custom-text-default.ts";
+import customText from "./custom-text.ts";
 import downloadAssignments from "./download-assignments.ts";
 import header from "./header.ts";
 import home from "./home.ts";
@@ -15,7 +15,7 @@ export default {
   ...common,
   ...core,
   ...courses,
-  ...customTextDefault,
+  ...customText,
   ...downloadAssignments,
   ...header,
   ...home,
