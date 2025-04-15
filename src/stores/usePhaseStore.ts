@@ -1,6 +1,6 @@
 import { readonly, ref } from "vue";
 
-import { PHASES, type Phase, isPhase } from "@/config/types/phases.ts";
+import { PHASES, type Phase, isPhase } from "@/config/phases.ts";
 
 const currentPhase = ref<Phase>(PHASES.SHUTDOWN);
 

@@ -1,6 +1,6 @@
 import { computed, readonly } from "vue";
 
-import { PHASES } from "@/config/types/phases.ts";
+import { PHASES } from "@/config/phases.ts";
 import { RoleTypeEnum } from "@/gql/graphql.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";

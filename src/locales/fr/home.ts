@@ -1,4 +1,4 @@
-import { PHASES } from "@/config/types/phases.ts";
+import { PHASES } from "@/config/phases.ts";
 
 export default {
   home: {

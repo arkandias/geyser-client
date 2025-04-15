@@ -1,4 +1,5 @@
-import { PHASES } from "@/config/types/phases.ts";
+import { PHASES } from "@/config/phases.ts";
+import { capitalize } from "@/utils/misc.ts";
 
 export default {
   customText: {
@@ -6,35 +7,35 @@ export default {
       label: "Titre de la page d'accueil",
       default: "@:home.title",
     },
-    [`homeSubtitle${PHASES.REQUESTS}`]: {
+    [`homeSubtitle${capitalize(PHASES.REQUESTS)}`]: {
       label: "Sous-titre de la page d'accueil en phase de vœux",
       default: "@:home.subtitle.requests",
     },
-    [`homeSubtitle${PHASES.ASSIGNMENTS}`]: {
+    [`homeSubtitle${capitalize(PHASES.ASSIGNMENTS)}`]: {
       label: "Sous-titre de la page d'accueil en phase de commission",
       default: "@:home.subtitle.assignments",
     },
-    [`homeSubtitle${PHASES.RESULTS}`]: {
+    [`homeSubtitle${capitalize(PHASES.RESULTS)}`]: {
       label: "Sous-titre de la page d'accueil en phase de consultation",
       default: "@:home.subtitle.results",
     },
-    [`homeSubtitle${PHASES.SHUTDOWN}`]: {
+    [`homeSubtitle${capitalize(PHASES.SHUTDOWN)}`]: {
       label: "Sous-titre de la page d'accueil en phase de fermeture",
       default: "@:home.subtitle.shutdown",
     },
-    [`homeMessage${PHASES.REQUESTS}`]: {
+    [`homeMessage${capitalize(PHASES.REQUESTS)}`]: {
       label: "Message de la page d'accueil en phase de vœux",
       default: "@:home.message.requests",
     },
-    [`homeMessage${PHASES.ASSIGNMENTS}`]: {
+    [`homeMessage${capitalize(PHASES.ASSIGNMENTS)}`]: {
       label: "Message de la page d'accueil en phase de commission",
       default: "@:home.message.assignments",
     },
-    [`homeMessage${PHASES.RESULTS}`]: {
+    [`homeMessage${capitalize(PHASES.RESULTS)}`]: {
       label: "Message de la page d'accueil en phase de consultation",
       default: "@:home.message.results",
     },
-    [`homeMessage${PHASES.SHUTDOWN}`]: {
+    [`homeMessage${capitalize(PHASES.SHUTDOWN)}`]: {
       label: "Message de la page d'accueil en phase de fermeture",
       default: "@:home.message.shutdown",
     },
