@@ -78,7 +78,7 @@ const getCourseRows = useQuery({
   query: GetCourseRowsDocument,
   variables: () => ({ year: activeYear.value ?? -1 }),
   pause: () => activeYear.value === null,
-  context: { additionalTypenames: ["All", "Request"] },
+  context: { additionalTypenames: ["All", "Priority", "Request"] },
 });
 const fetchingCourseRows = computed(() => getCourseRows.fetching.value);
 const courseRows = computed(() => getCourseRows.data.value?.courses ?? []);
@@ -91,7 +91,13 @@ const getServiceRows = useQuery({
   }),
   pause: () => activeYear.value === null,
   context: {
-    additionalTypenames: ["All", "Request", "ServiceModification"],
+    additionalTypenames: [
+      "All",
+      "Priority",
+      "Request",
+      "Service",
+      "ServiceModification",
+    ],
   },
 });
 const fetchingServiceRows = computed(() => getServiceRows.fetching.value);
@@ -104,7 +110,15 @@ const getCourseDetails = useQuery({
   query: GetCourseDetailsDocument,
   variables: () => ({ courseId: selectedCourse.value ?? -1 }),
   pause: () => selectedCourse.value === null,
-  context: { additionalTypenames: ["All", "Priority", "Request"] },
+  context: {
+    additionalTypenames: [
+      "All",
+      "Coordination",
+      "Course",
+      "Priority",
+      "Request",
+    ],
+  },
 });
 const courseDetails = computed(() =>
   selectedCourse.value === null

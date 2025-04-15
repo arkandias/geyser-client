@@ -39,7 +39,14 @@ const { data, fetching } = useQuery({
   variables: () => ({ id: serviceId.value ?? -1 }),
   pause: () => serviceId.value === null,
   context: {
-    additionalTypenames: ["All", "Priority", "Request", "ServiceModification"],
+    additionalTypenames: [
+      "All",
+      "Coordination",
+      "Priority",
+      "Request",
+      "Service",
+      "ServiceModification",
+    ],
   },
 });
 

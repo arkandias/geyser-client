@@ -142,7 +142,7 @@ const { data } = useQuery({
   query: GetModificationTypesDocument,
   variables: {},
   pause: () => !isModificationFormOpen.value,
-  context: { additionalTypenames: ["All"] },
+  context: { additionalTypenames: ["All", "ServiceModificationType"] },
 });
 const modificationTypesOptions = computed(
   () => data.value?.modificationTypes ?? [],

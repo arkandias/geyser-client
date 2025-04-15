@@ -71,7 +71,7 @@ const getUserProfile = useQuery({
   query: GetUserProfileDocument,
   variables: { uid: claims?.userId ?? "" },
   pause: !claims,
-  context: { additionalTypenames: ["All"] },
+  context: { additionalTypenames: ["All", "Role", "Service"] },
 });
 watch(
   [getUserProfile.data, getUserProfile.error],
@@ -102,7 +102,7 @@ const getAppData = useQuery({
   query: GetAppDataDocument,
   variables: {},
   pause: () => !loaded.value || !active.value,
-  context: { additionalTypenames: ["All"] },
+  context: { additionalTypenames: ["All", "Phase", "Year", "UiText"] },
 });
 watch(
   [getAppData.data, getAppData.error],

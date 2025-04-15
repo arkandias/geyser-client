@@ -66,7 +66,9 @@ graphql(`
 const { data } = useQuery({
   query: GetAdminRequestsDocument,
   variables: {},
-  context: { additionalTypenames: ["All"] },
+  context: {
+    additionalTypenames: ["All", "Course", "Priority", "Request", "Service"],
+  },
 });
 const requests = computed(() => data.value?.requests ?? []);
 const priorities = computed(() => data.value?.priorities ?? []);
