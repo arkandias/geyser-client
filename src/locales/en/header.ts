@@ -3,7 +3,7 @@ export default {
     home: {
       label: "Home",
     },
-    teacher: {
+    service: {
       label: "My Information",
     },
     courses: {

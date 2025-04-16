@@ -6,14 +6,14 @@ import { useDarkMode } from "@/composables/useDarkMode.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { useRefreshData } from "@/composables/useRefreshData.ts";
 import { version } from "@/config/env.ts";
-import { buttonColor } from "@/utils/colors.ts";
 
 import MenuInfo from "@/components/header/MenuInfo.vue";
 import MenuLang from "@/components/header/MenuLang.vue";
 import MenuUser from "@/components/header/MenuUser.vue";
+import NavBtn from "@/components/header/NavBtn.vue";
 import ToolbarCourses from "@/components/header/ToolbarCourses.vue";
 
-defineProps<{ disable?: boolean }>();
+defineProps<{ disable: boolean }>();
 
 const { t } = useCustomI18n();
 const router = useRouter();
@@ -33,65 +33,42 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
         </QBadge>
       </QToolbarTitle>
       <QSpace />
-      <QBtn
+      <NavBtn
+        name="home"
         icon="sym_s_home"
-        :color="buttonColor(router.currentRoute.value.name === 'home')"
         :disable
-        flat
-        square
-        @click="router.push({ name: 'home' })"
-      >
-        <QTooltip>
-          {{ t("header.home.label") }}
-        </QTooltip>
-      </QBtn>
+        :tooltip="t('header.home.label')"
+      />
       <QSeparator vertical inset color="white" />
-      <QBtn
+      <NavBtn
+        name="service"
         icon="sym_s_id_card"
-        :color="buttonColor(router.currentRoute.value.name === 'service')"
         :disable
-        flat
-        square
-        @click="router.push({ name: 'service' })"
-      >
-        <QTooltip>
-          {{ t("header.teacher.label") }}
-        </QTooltip>
-      </QBtn>
+        :tooltip="t('header.service.label')"
+      />
       <QSeparator vertical inset color="white" />
-      <QBtn
+      <NavBtn
+        name="courses"
         icon="sym_s_menu_book"
-        :color="buttonColor(router.currentRoute.value.name === 'courses')"
         :disable
-        flat
-        square
-        @click="router.push({ name: 'courses' })"
-      >
-        <QTooltip>
-          {{ t("header.courses.label") }}
-        </QTooltip>
-      </QBtn>
+        :tooltip="t('header.courses.label')"
+      />
       <Transition>
         <div
           v-if="!disable && router.currentRoute.value.name === 'courses'"
-          id="transition-wrapper"
+          id="toolbar-wrapper"
         >
           <ToolbarCourses />
         </div>
       </Transition>
       <QSeparator vertical inset color="white" />
-      <QBtn
+      <NavBtn
         v-if="perm.toAdmin"
+        name="admin"
         icon="sym_s_settings"
-        :color="buttonColor(router.currentRoute.value.name === 'admin')"
-        flat
-        square
-        @click="router.push({ path: '/admin/general' })"
-      >
-        <QTooltip>
-          {{ t("header.admin.label") }}
-        </QTooltip>
-      </QBtn>
+        :disable
+        :tooltip="t('header.admin.label')"
+      />
       <QSeparator v-if="perm.toAdmin" vertical inset color="white" />
       <QBtn
         icon="sym_s_refresh"
@@ -130,12 +107,12 @@ const { isDarkModeActive, toggleDarkMode } = useDarkMode();
 .dev #header {
   background-color: $secondary;
 }
-#transition-wrapper {
+#toolbar-wrapper {
   display: flex;
   align-items: center;
   overflow: hidden;
 }
-#transition-wrapper * {
+#toolbar-wrapper * {
   white-space: nowrap;
 }
 .v-enter-active,
