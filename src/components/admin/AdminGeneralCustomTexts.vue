@@ -37,16 +37,16 @@ const customTextOptions = computed(() =>
 
 graphql(`
   mutation UpdateCustomText($key: String!, $value: String) {
-    customText: insertUiTextOne(
+    customText: insertAppSettingOne(
       object: { key: $key, value: $value }
-      onConflict: { constraint: ui_text_pkey, updateColumns: [value] }
+      onConflict: { constraint: app_setting_pkey, updateColumns: [value] }
     ) {
       key
     }
   }
 
   mutation DeleteCustomText($key: String!) {
-    customText: deleteUiTextByPk(key: $key) {
+    customText: deleteAppSettingByPk(key: $key) {
       key
     }
   }

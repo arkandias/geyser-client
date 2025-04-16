@@ -18,6 +18,153 @@ export type Scalars = {
   timestamptz: { input: any; output: any; }
 };
 
+/** Application settings (e.g., custom UI parameters) */
+export type AppSetting = {
+  __typename?: 'AppSetting';
+  /** Text identifier */
+  key: Scalars['String']['output'];
+  /** Text content */
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregated selection of "app_setting" */
+export type AppSettingAggregate = {
+  __typename?: 'AppSettingAggregate';
+  aggregate?: Maybe<AppSettingAggregateFields>;
+  nodes: Array<AppSetting>;
+};
+
+/** aggregate fields of "app_setting" */
+export type AppSettingAggregateFields = {
+  __typename?: 'AppSettingAggregateFields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<AppSettingMaxFields>;
+  min?: Maybe<AppSettingMinFields>;
+};
+
+
+/** aggregate fields of "app_setting" */
+export type AppSettingAggregateFieldsCountArgs = {
+  columns?: InputMaybe<Array<AppSettingSelectColumn>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "app_setting". All fields are combined with a logical 'AND'. */
+export type AppSettingBoolExp = {
+  _and?: InputMaybe<Array<AppSettingBoolExp>>;
+  _not?: InputMaybe<AppSettingBoolExp>;
+  _or?: InputMaybe<Array<AppSettingBoolExp>>;
+  key?: InputMaybe<StringComparisonExp>;
+  value?: InputMaybe<StringComparisonExp>;
+};
+
+/** unique or primary key constraints on table "app_setting" */
+export enum AppSettingConstraint {
+  /** unique or primary key constraint on columns "key" */
+  AppSettingPkey = 'app_setting_pkey'
+}
+
+/** input type for inserting data into table "app_setting" */
+export type AppSettingInsertInput = {
+  /** Text identifier */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Text content */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type AppSettingMaxFields = {
+  __typename?: 'AppSettingMaxFields';
+  /** Text identifier */
+  key?: Maybe<Scalars['String']['output']>;
+  /** Text content */
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type AppSettingMinFields = {
+  __typename?: 'AppSettingMinFields';
+  /** Text identifier */
+  key?: Maybe<Scalars['String']['output']>;
+  /** Text content */
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "app_setting" */
+export type AppSettingMutationResponse = {
+  __typename?: 'AppSettingMutationResponse';
+  /** number of rows affected by the mutation */
+  affectedRows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<AppSetting>;
+};
+
+/** on_conflict condition type for table "app_setting" */
+export type AppSettingOnConflict = {
+  constraint: AppSettingConstraint;
+  updateColumns?: Array<AppSettingUpdateColumn>;
+  where?: InputMaybe<AppSettingBoolExp>;
+};
+
+/** Ordering options when selecting data from "app_setting". */
+export type AppSettingOrderBy = {
+  key?: InputMaybe<OrderBy>;
+  value?: InputMaybe<OrderBy>;
+};
+
+/** primary key columns input for table: app_setting */
+export type AppSettingPkColumnsInput = {
+  /** Text identifier */
+  key: Scalars['String']['input'];
+};
+
+/** select columns of table "app_setting" */
+export enum AppSettingSelectColumn {
+  /** column name */
+  Key = 'key',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "app_setting" */
+export type AppSettingSetInput = {
+  /** Text identifier */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Text content */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "app_setting" */
+export type AppSettingStreamCursorInput = {
+  /** Stream column input with initial value */
+  initialValue: AppSettingStreamCursorValueInput;
+  /** cursor ordering */
+  ordering?: InputMaybe<CursorOrdering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type AppSettingStreamCursorValueInput = {
+  /** Text identifier */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Text content */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "app_setting" */
+export enum AppSettingUpdateColumn {
+  /** column name */
+  Key = 'key',
+  /** column name */
+  Value = 'value'
+}
+
+export type AppSettingUpdates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<AppSettingSetInput>;
+  /** filter the rows which have to be updated */
+  where: AppSettingBoolExp;
+};
+
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
 export type BooleanComparisonExp = {
   _eq?: InputMaybe<Scalars['Boolean']['input']>;
@@ -8384,189 +8531,6 @@ export type TrackVarianceOrderBy = {
   programId?: InputMaybe<OrderBy>;
 };
 
-/** Custom texts for the UI */
-export type UiText = {
-  __typename?: 'UiText';
-  /** Timestamp when the record was created */
-  createdAt: Scalars['timestamptz']['output'];
-  /** Text identifier */
-  key: Scalars['String']['output'];
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt: Scalars['timestamptz']['output'];
-  /** Text content */
-  value: Scalars['String']['output'];
-};
-
-/** aggregated selection of "ui_text" */
-export type UiTextAggregate = {
-  __typename?: 'UiTextAggregate';
-  aggregate?: Maybe<UiTextAggregateFields>;
-  nodes: Array<UiText>;
-};
-
-/** aggregate fields of "ui_text" */
-export type UiTextAggregateFields = {
-  __typename?: 'UiTextAggregateFields';
-  count: Scalars['Int']['output'];
-  max?: Maybe<UiTextMaxFields>;
-  min?: Maybe<UiTextMinFields>;
-};
-
-
-/** aggregate fields of "ui_text" */
-export type UiTextAggregateFieldsCountArgs = {
-  columns?: InputMaybe<Array<UiTextSelectColumn>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-/** Boolean expression to filter rows from the table "ui_text". All fields are combined with a logical 'AND'. */
-export type UiTextBoolExp = {
-  _and?: InputMaybe<Array<UiTextBoolExp>>;
-  _not?: InputMaybe<UiTextBoolExp>;
-  _or?: InputMaybe<Array<UiTextBoolExp>>;
-  createdAt?: InputMaybe<TimestamptzComparisonExp>;
-  key?: InputMaybe<StringComparisonExp>;
-  updatedAt?: InputMaybe<TimestamptzComparisonExp>;
-  value?: InputMaybe<StringComparisonExp>;
-};
-
-/** unique or primary key constraints on table "ui_text" */
-export enum UiTextConstraint {
-  /** unique or primary key constraint on columns "key" */
-  UiTextPkey = 'ui_text_pkey'
-}
-
-/** input type for inserting data into table "ui_text" */
-export type UiTextInsertInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Text identifier */
-  key?: InputMaybe<Scalars['String']['input']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Text content */
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** aggregate max on columns */
-export type UiTextMaxFields = {
-  __typename?: 'UiTextMaxFields';
-  /** Timestamp when the record was created */
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  /** Text identifier */
-  key?: Maybe<Scalars['String']['output']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
-  /** Text content */
-  value?: Maybe<Scalars['String']['output']>;
-};
-
-/** aggregate min on columns */
-export type UiTextMinFields = {
-  __typename?: 'UiTextMinFields';
-  /** Timestamp when the record was created */
-  createdAt?: Maybe<Scalars['timestamptz']['output']>;
-  /** Text identifier */
-  key?: Maybe<Scalars['String']['output']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: Maybe<Scalars['timestamptz']['output']>;
-  /** Text content */
-  value?: Maybe<Scalars['String']['output']>;
-};
-
-/** response of any mutation on the table "ui_text" */
-export type UiTextMutationResponse = {
-  __typename?: 'UiTextMutationResponse';
-  /** number of rows affected by the mutation */
-  affectedRows: Scalars['Int']['output'];
-  /** data from the rows affected by the mutation */
-  returning: Array<UiText>;
-};
-
-/** on_conflict condition type for table "ui_text" */
-export type UiTextOnConflict = {
-  constraint: UiTextConstraint;
-  updateColumns?: Array<UiTextUpdateColumn>;
-  where?: InputMaybe<UiTextBoolExp>;
-};
-
-/** Ordering options when selecting data from "ui_text". */
-export type UiTextOrderBy = {
-  createdAt?: InputMaybe<OrderBy>;
-  key?: InputMaybe<OrderBy>;
-  updatedAt?: InputMaybe<OrderBy>;
-  value?: InputMaybe<OrderBy>;
-};
-
-/** primary key columns input for table: ui_text */
-export type UiTextPkColumnsInput = {
-  /** Text identifier */
-  key: Scalars['String']['input'];
-};
-
-/** select columns of table "ui_text" */
-export enum UiTextSelectColumn {
-  /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
-  Key = 'key',
-  /** column name */
-  UpdatedAt = 'updatedAt',
-  /** column name */
-  Value = 'value'
-}
-
-/** input type for updating data in table "ui_text" */
-export type UiTextSetInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Text identifier */
-  key?: InputMaybe<Scalars['String']['input']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Text content */
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Streaming cursor of the table "ui_text" */
-export type UiTextStreamCursorInput = {
-  /** Stream column input with initial value */
-  initialValue: UiTextStreamCursorValueInput;
-  /** cursor ordering */
-  ordering?: InputMaybe<CursorOrdering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type UiTextStreamCursorValueInput = {
-  /** Timestamp when the record was created */
-  createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Text identifier */
-  key?: InputMaybe<Scalars['String']['input']>;
-  /** Timestamp when the record was last updated, automatically managed by trigger */
-  updatedAt?: InputMaybe<Scalars['timestamptz']['input']>;
-  /** Text content */
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** update columns of table "ui_text" */
-export enum UiTextUpdateColumn {
-  /** column name */
-  CreatedAt = 'createdAt',
-  /** column name */
-  Key = 'key',
-  /** column name */
-  UpdatedAt = 'updatedAt',
-  /** column name */
-  Value = 'value'
-}
-
-export type UiTextUpdates = {
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<UiTextSetInput>;
-  /** filter the rows which have to be updated */
-  where: UiTextBoolExp;
-};
-
 /** columns and relationships of "v_service" */
 export type VService = {
   __typename?: 'VService';
@@ -9658,6 +9622,10 @@ export type Mutation_Root = {
   createService: Array<Service>;
   /** execute VOLATILE function "create_year_services" which returns "service" */
   createYearServices: Array<Service>;
+  /** delete data from the table: "app_setting" */
+  deleteAppSetting?: Maybe<AppSettingMutationResponse>;
+  /** delete single row from the table: "app_setting" */
+  deleteAppSettingByPk?: Maybe<AppSetting>;
   /** delete data from the table: "coordination" */
   deleteCoordination?: Maybe<CoordinationMutationResponse>;
   /** delete single row from the table: "coordination" */
@@ -9726,10 +9694,6 @@ export type Mutation_Root = {
   deleteTrack?: Maybe<TrackMutationResponse>;
   /** delete single row from the table: "track" */
   deleteTrackByPk?: Maybe<Track>;
-  /** delete data from the table: "ui_text" */
-  deleteUiText?: Maybe<UiTextMutationResponse>;
-  /** delete single row from the table: "ui_text" */
-  deleteUiTextByPk?: Maybe<UiText>;
   /** delete data from the table: "v_service" */
   deleteVService?: Maybe<VServiceMutationResponse>;
   /** delete data from the table: "v_teacher" */
@@ -9738,6 +9702,10 @@ export type Mutation_Root = {
   deleteYear?: Maybe<YearMutationResponse>;
   /** delete single row from the table: "year" */
   deleteYearByPk?: Maybe<Year>;
+  /** insert data into the table: "app_setting" */
+  insertAppSetting?: Maybe<AppSettingMutationResponse>;
+  /** insert a single row into the table: "app_setting" */
+  insertAppSettingOne?: Maybe<AppSetting>;
   /** insert data into the table: "coordination" */
   insertCoordination?: Maybe<CoordinationMutationResponse>;
   /** insert a single row into the table: "coordination" */
@@ -9806,10 +9774,6 @@ export type Mutation_Root = {
   insertTrack?: Maybe<TrackMutationResponse>;
   /** insert a single row into the table: "track" */
   insertTrackOne?: Maybe<Track>;
-  /** insert data into the table: "ui_text" */
-  insertUiText?: Maybe<UiTextMutationResponse>;
-  /** insert a single row into the table: "ui_text" */
-  insertUiTextOne?: Maybe<UiText>;
   /** insert data into the table: "v_service" */
   insertVService?: Maybe<VServiceMutationResponse>;
   /** insert a single row into the table: "v_service" */
@@ -9822,6 +9786,12 @@ export type Mutation_Root = {
   insertYear?: Maybe<YearMutationResponse>;
   /** insert a single row into the table: "year" */
   insertYearOne?: Maybe<Year>;
+  /** update data of the table: "app_setting" */
+  updateAppSetting?: Maybe<AppSettingMutationResponse>;
+  /** update single row of the table: "app_setting" */
+  updateAppSettingByPk?: Maybe<AppSetting>;
+  /** update multiples rows of table: "app_setting" */
+  updateAppSettingMany?: Maybe<Array<Maybe<AppSettingMutationResponse>>>;
   /** update data of the table: "coordination" */
   updateCoordination?: Maybe<CoordinationMutationResponse>;
   /** update single row of the table: "coordination" */
@@ -9924,12 +9894,6 @@ export type Mutation_Root = {
   updateTrackByPk?: Maybe<Track>;
   /** update multiples rows of table: "track" */
   updateTrackMany?: Maybe<Array<Maybe<TrackMutationResponse>>>;
-  /** update data of the table: "ui_text" */
-  updateUiText?: Maybe<UiTextMutationResponse>;
-  /** update single row of the table: "ui_text" */
-  updateUiTextByPk?: Maybe<UiText>;
-  /** update multiples rows of table: "ui_text" */
-  updateUiTextMany?: Maybe<Array<Maybe<UiTextMutationResponse>>>;
   /** update data of the table: "v_service" */
   updateVService?: Maybe<VServiceMutationResponse>;
   /** update multiples rows of table: "v_service" */
@@ -9999,6 +9963,18 @@ export type Mutation_RootCreateYearServicesArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ServiceOrderBy>>;
   where?: InputMaybe<ServiceBoolExp>;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteAppSettingArgs = {
+  where: AppSettingBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDeleteAppSettingByPkArgs = {
+  key: Scalars['String']['input'];
 };
 
 
@@ -10207,18 +10183,6 @@ export type Mutation_RootDeleteTrackByPkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDeleteUiTextArgs = {
-  where: UiTextBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDeleteUiTextByPkArgs = {
-  key: Scalars['String']['input'];
-};
-
-
-/** mutation root */
 export type Mutation_RootDeleteVServiceArgs = {
   where: VServiceBoolExp;
 };
@@ -10239,6 +10203,20 @@ export type Mutation_RootDeleteYearArgs = {
 /** mutation root */
 export type Mutation_RootDeleteYearByPkArgs = {
   value: Scalars['Int']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertAppSettingArgs = {
+  objects: Array<AppSettingInsertInput>;
+  onConflict?: InputMaybe<AppSettingOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsertAppSettingOneArgs = {
+  object: AppSettingInsertInput;
+  onConflict?: InputMaybe<AppSettingOnConflict>;
 };
 
 
@@ -10481,20 +10459,6 @@ export type Mutation_RootInsertTrackOneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsertUiTextArgs = {
-  objects: Array<UiTextInsertInput>;
-  onConflict?: InputMaybe<UiTextOnConflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsertUiTextOneArgs = {
-  object: UiTextInsertInput;
-  onConflict?: InputMaybe<UiTextOnConflict>;
-};
-
-
-/** mutation root */
 export type Mutation_RootInsertVServiceArgs = {
   objects: Array<VServiceInsertInput>;
 };
@@ -10529,6 +10493,26 @@ export type Mutation_RootInsertYearArgs = {
 export type Mutation_RootInsertYearOneArgs = {
   object: YearInsertInput;
   onConflict?: InputMaybe<YearOnConflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateAppSettingArgs = {
+  _set?: InputMaybe<AppSettingSetInput>;
+  where: AppSettingBoolExp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateAppSettingByPkArgs = {
+  _set?: InputMaybe<AppSettingSetInput>;
+  pkColumns: AppSettingPkColumnsInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdateAppSettingManyArgs = {
+  updates: Array<AppSettingUpdates>;
 };
 
 
@@ -10895,26 +10879,6 @@ export type Mutation_RootUpdateTrackManyArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdateUiTextArgs = {
-  _set?: InputMaybe<UiTextSetInput>;
-  where: UiTextBoolExp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateUiTextByPkArgs = {
-  _set?: InputMaybe<UiTextSetInput>;
-  pkColumns: UiTextPkColumnsInput;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdateUiTextManyArgs = {
-  updates: Array<UiTextUpdates>;
-};
-
-
-/** mutation root */
 export type Mutation_RootUpdateVServiceArgs = {
   _inc?: InputMaybe<VServiceIncInput>;
   _set?: InputMaybe<VServiceSetInput>;
@@ -11006,6 +10970,12 @@ export type ProgramAggregateBoolExpCount = {
 
 export type Query_Root = {
   __typename?: 'query_root';
+  /** fetch data from the table: "app_setting" */
+  appSetting: Array<AppSetting>;
+  /** fetch aggregated fields from the table: "app_setting" */
+  appSettingAggregate: AppSettingAggregate;
+  /** fetch data from the table: "app_setting" using primary key columns */
+  appSettingByPk?: Maybe<AppSetting>;
   /** fetch data from the table: "coordination" */
   coordination: Array<Coordination>;
   /** fetch aggregated fields from the table: "coordination" */
@@ -11108,12 +11078,6 @@ export type Query_Root = {
   trackAggregate: TrackAggregate;
   /** fetch data from the table: "track" using primary key columns */
   trackByPk?: Maybe<Track>;
-  /** fetch data from the table: "ui_text" */
-  uiText: Array<UiText>;
-  /** fetch aggregated fields from the table: "ui_text" */
-  uiTextAggregate: UiTextAggregate;
-  /** fetch data from the table: "ui_text" using primary key columns */
-  uiTextByPk?: Maybe<UiText>;
   /** fetch data from the table: "v_service" */
   vService: Array<VService>;
   /** fetch aggregated fields from the table: "v_service" */
@@ -11128,6 +11092,29 @@ export type Query_Root = {
   yearAggregate: YearAggregate;
   /** fetch data from the table: "year" using primary key columns */
   yearByPk?: Maybe<Year>;
+};
+
+
+export type Query_RootAppSettingArgs = {
+  distinctOn?: InputMaybe<Array<AppSettingSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AppSettingOrderBy>>;
+  where?: InputMaybe<AppSettingBoolExp>;
+};
+
+
+export type Query_RootAppSettingAggregateArgs = {
+  distinctOn?: InputMaybe<Array<AppSettingSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AppSettingOrderBy>>;
+  where?: InputMaybe<AppSettingBoolExp>;
+};
+
+
+export type Query_RootAppSettingByPkArgs = {
+  key: Scalars['String']['input'];
 };
 
 
@@ -11522,29 +11509,6 @@ export type Query_RootTrackByPkArgs = {
 };
 
 
-export type Query_RootUiTextArgs = {
-  distinctOn?: InputMaybe<Array<UiTextSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<UiTextOrderBy>>;
-  where?: InputMaybe<UiTextBoolExp>;
-};
-
-
-export type Query_RootUiTextAggregateArgs = {
-  distinctOn?: InputMaybe<Array<UiTextSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<UiTextOrderBy>>;
-  where?: InputMaybe<UiTextBoolExp>;
-};
-
-
-export type Query_RootUiTextByPkArgs = {
-  key: Scalars['String']['input'];
-};
-
-
 export type Query_RootVServiceArgs = {
   distinctOn?: InputMaybe<Array<VServiceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -11633,6 +11597,14 @@ export type ServiceModificationAggregateBoolExpCount = {
 
 export type Subscription_Root = {
   __typename?: 'subscription_root';
+  /** fetch data from the table: "app_setting" */
+  appSetting: Array<AppSetting>;
+  /** fetch aggregated fields from the table: "app_setting" */
+  appSettingAggregate: AppSettingAggregate;
+  /** fetch data from the table: "app_setting" using primary key columns */
+  appSettingByPk?: Maybe<AppSetting>;
+  /** fetch data from the table in a streaming manner: "app_setting" */
+  appSettingStream: Array<AppSetting>;
   /** fetch data from the table: "coordination" */
   coordination: Array<Coordination>;
   /** fetch aggregated fields from the table: "coordination" */
@@ -11769,14 +11741,6 @@ export type Subscription_Root = {
   trackByPk?: Maybe<Track>;
   /** fetch data from the table in a streaming manner: "track" */
   trackStream: Array<Track>;
-  /** fetch data from the table: "ui_text" */
-  uiText: Array<UiText>;
-  /** fetch aggregated fields from the table: "ui_text" */
-  uiTextAggregate: UiTextAggregate;
-  /** fetch data from the table: "ui_text" using primary key columns */
-  uiTextByPk?: Maybe<UiText>;
-  /** fetch data from the table in a streaming manner: "ui_text" */
-  uiTextStream: Array<UiText>;
   /** fetch data from the table: "v_service" */
   vService: Array<VService>;
   /** fetch aggregated fields from the table: "v_service" */
@@ -11797,6 +11761,36 @@ export type Subscription_Root = {
   yearByPk?: Maybe<Year>;
   /** fetch data from the table in a streaming manner: "year" */
   yearStream: Array<Year>;
+};
+
+
+export type Subscription_RootAppSettingArgs = {
+  distinctOn?: InputMaybe<Array<AppSettingSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AppSettingOrderBy>>;
+  where?: InputMaybe<AppSettingBoolExp>;
+};
+
+
+export type Subscription_RootAppSettingAggregateArgs = {
+  distinctOn?: InputMaybe<Array<AppSettingSelectColumn>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AppSettingOrderBy>>;
+  where?: InputMaybe<AppSettingBoolExp>;
+};
+
+
+export type Subscription_RootAppSettingByPkArgs = {
+  key: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootAppSettingStreamArgs = {
+  batchSize: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<AppSettingStreamCursorInput>>;
+  where?: InputMaybe<AppSettingBoolExp>;
 };
 
 
@@ -12310,36 +12304,6 @@ export type Subscription_RootTrackStreamArgs = {
 };
 
 
-export type Subscription_RootUiTextArgs = {
-  distinctOn?: InputMaybe<Array<UiTextSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<UiTextOrderBy>>;
-  where?: InputMaybe<UiTextBoolExp>;
-};
-
-
-export type Subscription_RootUiTextAggregateArgs = {
-  distinctOn?: InputMaybe<Array<UiTextSelectColumn>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<UiTextOrderBy>>;
-  where?: InputMaybe<UiTextBoolExp>;
-};
-
-
-export type Subscription_RootUiTextByPkArgs = {
-  key: Scalars['String']['input'];
-};
-
-
-export type Subscription_RootUiTextStreamArgs = {
-  batchSize: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<UiTextStreamCursorInput>>;
-  where?: InputMaybe<UiTextBoolExp>;
-};
-
-
 export type Subscription_RootVServiceArgs = {
   distinctOn?: InputMaybe<Array<VServiceSelectColumn>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -12478,7 +12442,7 @@ export type GetUserProfileQuery = { __typename?: 'query_root', profile?: { __typ
 export type GetAppDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAppDataQuery = { __typename?: 'query_root', phases: Array<{ __typename?: 'Phase', value: string }>, years: Array<{ __typename?: 'Year', value: number, current: boolean, visible: boolean }>, customTexts: Array<{ __typename?: 'UiText', key: string, value: string }> };
+export type GetAppDataQuery = { __typename?: 'query_root', phases: Array<{ __typename?: 'Phase', value: string }>, years: Array<{ __typename?: 'Year', value: number, current: boolean, visible: boolean }>, customTexts: Array<{ __typename?: 'AppSetting', key: string, value?: string | null }> };
 
 export type CourseRowFragment = { __typename?: 'Course', id: number, visible: boolean, semester: number, name?: string | null, hoursPerGroup?: number | null, numberOfGroups?: number | null, program: { __typename?: 'Program', id: number, visible: boolean, name?: string | null, degree: { __typename?: 'Degree', visible: boolean, name?: string | null } }, track?: { __typename?: 'Track', visible: boolean, name?: string | null } | null, type: { __typename?: 'CourseType', label: string, coefficient: number }, requests: Array<{ __typename?: 'Request', serviceId: number, type: RequestTypeEnum, hours: number, isPriority?: boolean | null }> } & { ' $fragmentName'?: 'CourseRowFragment' };
 
@@ -12680,14 +12644,14 @@ export type UpdateCustomTextMutationVariables = Exact<{
 }>;
 
 
-export type UpdateCustomTextMutation = { __typename?: 'mutation_root', customText?: { __typename?: 'UiText', key: string } | null };
+export type UpdateCustomTextMutation = { __typename?: 'mutation_root', customText?: { __typename?: 'AppSetting', key: string } | null };
 
 export type DeleteCustomTextMutationVariables = Exact<{
   key: Scalars['String']['input'];
 }>;
 
 
-export type DeleteCustomTextMutation = { __typename?: 'mutation_root', customText?: { __typename?: 'UiText', key: string } | null };
+export type DeleteCustomTextMutation = { __typename?: 'mutation_root', customText?: { __typename?: 'AppSetting', key: string } | null };
 
 export type SetCurrentPhaseMutationVariables = Exact<{
   value: Scalars['String']['input'];
@@ -13332,7 +13296,7 @@ export const TeacherTitleFragmentDoc = {"kind":"Document","definitions":[{"kind"
 export const TeacherCoordinationsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TeacherCoordinations"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Teacher"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"coordinations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"programId"},"value":{"kind":"EnumValue","value":"ASC_NULLS_LAST"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"trackId"},"value":{"kind":"EnumValue","value":"ASC_NULLS_LAST"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"courseId"},"value":{"kind":"EnumValue","value":"ASC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"course"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"comment"}}]}}]}}]} as unknown as DocumentNode<TeacherCoordinationsFragment, unknown>;
 export const ServiceTeacherFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ServiceTeacher"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Teacher"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"TeacherTitle"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"TeacherCoordinations"}},{"kind":"Field","alias":{"kind":"Name","value":"coordinationIds"},"name":{"kind":"Name","value":"coordinations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TeacherTitle"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Teacher"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"displayname"}},{"kind":"Field","name":{"kind":"Name","value":"position"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"TeacherCoordinations"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Teacher"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"coordinations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"programId"},"value":{"kind":"EnumValue","value":"ASC_NULLS_LAST"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"trackId"},"value":{"kind":"EnumValue","value":"ASC_NULLS_LAST"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"courseId"},"value":{"kind":"EnumValue","value":"ASC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"course"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"name"},"name":{"kind":"Name","value":"nameDisplay"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"comment"}}]}}]}}]} as unknown as DocumentNode<ServiceTeacherFragment, unknown>;
 export const GetUserProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUserProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"uid"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"profile"},"name":{"kind":"Name","value":"teacherByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"uid"},"value":{"kind":"Variable","name":{"kind":"Name","value":"uid"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"uid"}},{"kind":"Field","name":{"kind":"Name","value":"displayname"}},{"kind":"Field","name":{"kind":"Name","value":"active"}},{"kind":"Field","name":{"kind":"Name","value":"roles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}},{"kind":"Field","name":{"kind":"Name","value":"services"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}}]}}]}}]}}]} as unknown as DocumentNode<GetUserProfileQuery, GetUserProfileQueryVariables>;
-export const GetAppDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAppData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"phases"},"name":{"kind":"Name","value":"phase"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"current"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"BooleanValue","value":true}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"years"},"name":{"kind":"Name","value":"year"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"EnumValue","value":"DESC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"current"}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"customTexts"},"name":{"kind":"Name","value":"uiText"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"key"},"value":{"kind":"EnumValue","value":"ASC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<GetAppDataQuery, GetAppDataQueryVariables>;
+export const GetAppDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAppData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"phases"},"name":{"kind":"Name","value":"phase"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"current"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"BooleanValue","value":true}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"years"},"name":{"kind":"Name","value":"year"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"EnumValue","value":"DESC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"current"}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"customTexts"},"name":{"kind":"Name","value":"appSetting"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"key"},"value":{"kind":"EnumValue","value":"ASC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<GetAppDataQuery, GetAppDataQueryVariables>;
 export const GetAdminCoursesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetAdminCourses"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"degrees"},"name":{"kind":"Name","value":"degree"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminDegree"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminProgramsDegree"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminTracksDegree"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminCoursesDegree"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"programs"},"name":{"kind":"Name","value":"program"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"degree"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminProgram"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"tracks"},"name":{"kind":"Name","value":"track"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"program"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"degree"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"program"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminTrack"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"courses"},"name":{"kind":"Name","value":"course"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"year"},"value":{"kind":"EnumValue","value":"DESC"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"program"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"degree"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"program"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"track"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"EnumValue","value":"ASC"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"semester"},"value":{"kind":"EnumValue","value":"ASC"}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"type"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"label"},"value":{"kind":"EnumValue","value":"ASC"}}]}}]}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminCourse"}}]}},{"kind":"Field","alias":{"kind":"Name","value":"types"},"name":{"kind":"Name","value":"courseType"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"label"},"value":{"kind":"EnumValue","value":"ASC"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminCourseType"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"AdminCoursesCourseType"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminDegree"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Degree"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameShort"}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminProgramsDegree"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Degree"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminTracksDegree"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Degree"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"programs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminCoursesDegree"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Degree"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"programs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"tracks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminProgram"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Program"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameDisplay"}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameShort"}},{"kind":"Field","name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminTrack"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Track"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameDisplay"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameShort"}},{"kind":"Field","name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminCourse"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Course"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"year"}},{"kind":"Field","name":{"kind":"Name","value":"program"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"degree"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameDisplay"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"track"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameDisplay"}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"nameShort"}},{"kind":"Field","name":{"kind":"Name","value":"nameDisplay"}},{"kind":"Field","name":{"kind":"Name","value":"semester"}},{"kind":"Field","name":{"kind":"Name","value":"type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}},{"kind":"Field","name":{"kind":"Name","value":"hours"}},{"kind":"Field","name":{"kind":"Name","value":"hoursAdjusted"}},{"kind":"Field","name":{"kind":"Name","value":"groups"}},{"kind":"Field","name":{"kind":"Name","value":"groupsAdjusted"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"priorityRule"}},{"kind":"Field","name":{"kind":"Name","value":"visible"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminCourseType"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CourseType"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"coefficient"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"AdminCoursesCourseType"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CourseType"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"label"}}]}}]} as unknown as DocumentNode<GetAdminCoursesQuery, GetAdminCoursesQueryVariables>;
 export const InsertCourseTypesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertCourseTypes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"objects"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CourseTypeInsertInput"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"insertData"},"name":{"kind":"Name","value":"insertCourseType"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"objects"},"value":{"kind":"Variable","name":{"kind":"Name","value":"objects"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<InsertCourseTypesMutation, InsertCourseTypesMutationVariables>;
 export const UpsertCourseTypesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertCourseTypes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"objects"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CourseTypeInsertInput"}}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"onConflict"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"CourseTypeOnConflict"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"upsertData"},"name":{"kind":"Name","value":"insertCourseType"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"objects"},"value":{"kind":"Variable","name":{"kind":"Name","value":"objects"}}},{"kind":"Argument","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"Variable","name":{"kind":"Name","value":"onConflict"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<UpsertCourseTypesMutation, UpsertCourseTypesMutationVariables>;
@@ -13354,8 +13318,8 @@ export const InsertTracksDocument = {"kind":"Document","definitions":[{"kind":"O
 export const UpsertTracksDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertTracks"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"objects"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TrackInsertInput"}}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"onConflict"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TrackOnConflict"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"upsertData"},"name":{"kind":"Name","value":"insertTrack"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"objects"},"value":{"kind":"Variable","name":{"kind":"Name","value":"objects"}}},{"kind":"Argument","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"Variable","name":{"kind":"Name","value":"onConflict"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<UpsertTracksMutation, UpsertTracksMutationVariables>;
 export const UpdateTracksDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateTracks"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ids"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"changes"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TrackSetInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"updateData"},"name":{"kind":"Name","value":"updateTrack"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_in"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ids"}}}]}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"changes"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<UpdateTracksMutation, UpdateTracksMutationVariables>;
 export const DeleteTracksDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteTracks"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"ids"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"deleteData"},"name":{"kind":"Name","value":"deleteTrack"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_in"},"value":{"kind":"Variable","name":{"kind":"Name","value":"ids"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<DeleteTracksMutation, DeleteTracksMutationVariables>;
-export const UpdateCustomTextDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateCustomText"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"key"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"value"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"customText"},"name":{"kind":"Name","value":"insertUiTextOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"key"},"value":{"kind":"Variable","name":{"kind":"Name","value":"key"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"ui_text_pkey"}},{"kind":"ObjectField","name":{"kind":"Name","value":"updateColumns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"value"}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}}]}}]}}]} as unknown as DocumentNode<UpdateCustomTextMutation, UpdateCustomTextMutationVariables>;
-export const DeleteCustomTextDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteCustomText"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"key"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"customText"},"name":{"kind":"Name","value":"deleteUiTextByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"key"},"value":{"kind":"Variable","name":{"kind":"Name","value":"key"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}}]}}]}}]} as unknown as DocumentNode<DeleteCustomTextMutation, DeleteCustomTextMutationVariables>;
+export const UpdateCustomTextDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateCustomText"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"key"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"value"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"customText"},"name":{"kind":"Name","value":"insertAppSettingOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"key"},"value":{"kind":"Variable","name":{"kind":"Name","value":"key"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"onConflict"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"constraint"},"value":{"kind":"EnumValue","value":"app_setting_pkey"}},{"kind":"ObjectField","name":{"kind":"Name","value":"updateColumns"},"value":{"kind":"ListValue","values":[{"kind":"EnumValue","value":"value"}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}}]}}]}}]} as unknown as DocumentNode<UpdateCustomTextMutation, UpdateCustomTextMutationVariables>;
+export const DeleteCustomTextDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteCustomText"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"key"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"customText"},"name":{"kind":"Name","value":"deleteAppSettingByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"key"},"value":{"kind":"Variable","name":{"kind":"Name","value":"key"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}}]}}]}}]} as unknown as DocumentNode<DeleteCustomTextMutation, DeleteCustomTextMutationVariables>;
 export const SetCurrentPhaseDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetCurrentPhase"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"value"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"phase"},"name":{"kind":"Name","value":"updatePhaseByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pkColumns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"current"},"value":{"kind":"BooleanValue","value":true}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<SetCurrentPhaseMutation, SetCurrentPhaseMutationVariables>;
 export const SetCurrentYearDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetCurrentYear"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"value"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"year"},"name":{"kind":"Name","value":"updateYearByPk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pkColumns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"current"},"value":{"kind":"BooleanValue","value":true}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<SetCurrentYearMutation, SetCurrentYearMutationVariables>;
 export const InsertYearDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"InsertYear"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"value"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"visible"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","alias":{"kind":"Name","value":"year"},"name":{"kind":"Name","value":"insertYearOne"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"value"},"value":{"kind":"Variable","name":{"kind":"Name","value":"value"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"visible"},"value":{"kind":"Variable","name":{"kind":"Name","value":"visible"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]} as unknown as DocumentNode<InsertYearMutation, InsertYearMutationVariables>;

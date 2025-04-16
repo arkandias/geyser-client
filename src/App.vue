@@ -51,7 +51,7 @@ graphql(`
       current
       visible
     }
-    customTexts: uiText(orderBy: [{ key: ASC }]) {
+    customTexts: appSetting(orderBy: [{ key: ASC }]) {
       key
       value
     }
@@ -101,7 +101,7 @@ const getAppData = useQuery({
   query: GetAppDataDocument,
   variables: {},
   pause: () => !loaded.value || !active.value,
-  context: { additionalTypenames: ["All", "Phase", "Year", "UiText"] },
+  context: { additionalTypenames: ["All", "AppSetting", "Phase", "Year"] },
 });
 watch(
   [getAppData.data, getAppData.error],
