@@ -1,3 +1,6 @@
+import { fileURLToPath } from "node:url";
+
+import { includeIgnoreFile } from "@eslint/compat";
 import eslint from "@eslint/js";
 import type { Linter } from "eslint";
 import eslintConfigPrettier from "eslint-config-prettier";
@@ -39,6 +42,7 @@ const tsrules: Linter.RulesRecord = {
 };
 
 export default tseslint.config(
+  includeIgnoreFile(fileURLToPath(new URL(".gitignore", import.meta.url))),
   {
     languageOptions: {
       ecmaVersion: "latest",

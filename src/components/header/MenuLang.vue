@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useLocale } from "@/composables/useLocale.ts";
-import { AVAILABLE_LOCALES, LOCALE_LABELS } from "@/config/types/locales.ts";
+import { AVAILABLE_LOCALES, LOCALE_LABELS } from "@/config/locales.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 

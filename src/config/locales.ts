@@ -11,6 +11,8 @@ export const isAvailableLocale = (
   );
 };
 
+export const DEFAULT_LOCALE: AvailableLocale = "fr-FR";
+
 export const LOCALE_LABELS: Record<AvailableLocale, string> = {
   "fr-FR": "Français",
   "en-US": "English",

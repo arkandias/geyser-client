@@ -25,7 +25,8 @@
     "validate": "pnpm run format:check && pnpm run typecheck && pnpm run lint && pnpm run test",
     "codegen:schema": "graphql-codegen --config codegen.schema.ts",
     "codegen:documents": "graphql-codegen --config codegen.documents.ts",
-    "codegen": "pnpm codegen:schema && pnpm codegen:documents"
+    "codegen": "pnpm codegen:schema && pnpm codegen:documents",
+    "i18n": "tsx --tsconfig tsconfig.node.json src/locales/validate-translations.ts"
   },
   "dependencies": {
     "@urql/vue": "^1.4.3",
@@ -39,6 +40,7 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@eslint/compat": "^1.2.8",
     "@eslint/js": "^9.24.0",
     "@graphql-codegen/cli": "^5.0.5",
     "@graphql-codegen/client-preset": "^4.8.0",
@@ -59,11 +61,12 @@
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-vue": "^10.0.0",
+    "glob": "^11.0.1",
     "globals": "^16.0.0",
     "happy-dom": "^17.4.4",
     "prettier": "^3.5.3",
     "sass-embedded": "^1.86.3",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1",
     "vite": "^6.2.6",

@@ -50,7 +50,7 @@ const selectedFields = defineModel<string[] | null>("selectedFields", {
 });
 const {
   name,
-  messagePrefix,
+  keyPrefix,
   idKey,
   rowDescriptor,
   columns,
@@ -68,7 +68,7 @@ const {
   extraCsvInstructions,
 } = defineProps<{
   name: string;
-  messagePrefix: string;
+  keyPrefix: string;
   idKey: IdKey;
   rowDescriptor: T;
   columns: Column<Row>[];
@@ -124,14 +124,14 @@ const isFormOpen = ref(false);
 const formTitle = computed(() => {
   switch (selectedRows.value.length) {
     case 0:
-      return t(messagePrefix + ".form.title.none");
+      return t(`${keyPrefix}.form.title.none`);
     case 1:
-      return t(messagePrefix + ".form.title.single", {
+      return t(`${keyPrefix}.form.title.single`, {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         label: formatRow(selectedRows.value[0]!),
       });
     default:
-      return t(messagePrefix + ".form.title.multiple", {
+      return t(`${keyPrefix}.form.title.multiple`, {
         count: selectedRows.value.length,
       });
   }
@@ -180,7 +180,7 @@ function validateForm(fields?: (keyof T)[]): ImportRow | Partial<ImportRow> {
     if (!fieldDescriptor.nullable && value == null) {
       throw new Error(
         t("admin.data.error.emptyField", {
-          field: t(messagePrefix + ".form.fields." + key),
+          field: t(`${keyPrefix}.form.fields.${key}`),
         }),
       );
     }
@@ -192,7 +192,7 @@ function validateForm(fields?: (keyof T)[]): ImportRow | Partial<ImportRow> {
     ) {
       throw new Error(
         t("admin.data.error.notANumber", {
-          field: t(messagePrefix + ".form.fields." + key),
+          field: t(`${keyPrefix}.form.fields.${key}`),
         }),
       );
     }
@@ -231,7 +231,7 @@ const insertDataHandle = async () => {
   } else {
     notify(NotifyType.SUCCESS, {
       message: t(
-        messagePrefix + ".data.success.insert",
+        `${keyPrefix}.data.success.insert`,
         data.insertData.returning.length,
       ),
     });
@@ -268,7 +268,7 @@ const updateDataHandle = async () => {
   } else {
     notify(NotifyType.SUCCESS, {
       message: t(
-        messagePrefix + ".data.success.update",
+        `${keyPrefix}.data.success.update`,
         data.updateData.returning.length,
       ),
     });
@@ -283,12 +283,12 @@ const deleteDataHandle = async () => {
     !selection.value ||
     !confirm(
       selectedRows.value.length === 1
-        ? t(messagePrefix + ".data.confirm.delete.single", {
+        ? t(`${keyPrefix}.data.confirm.delete.single`, {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             label: formatRow(selectedRows.value[0]!),
           })
         : t(
-            messagePrefix + ".data.confirm.delete.multiple",
+            `${keyPrefix}.data.confirm.delete.multiple`,
             selectedRows.value.length,
           ),
     )
@@ -307,7 +307,7 @@ const deleteDataHandle = async () => {
   } else {
     notify(NotifyType.SUCCESS, {
       message: t(
-        messagePrefix + ".data.success.delete",
+        `${keyPrefix}.data.success.delete`,
         data.deleteData.returning.length,
       ),
     });
@@ -429,15 +429,11 @@ const importRowsHandle = async () => {
       },
     });
     if (error || !data?.upsertData?.returning) {
-      throw new Error(
-        t("admin.data.error.insertError", {
-          reason: error?.message ?? t("admin.data.error.noReturnData"),
-        }),
-      );
+      throw new Error(error?.message ?? t("admin.data.error.noReturnData"));
     } else {
       notify(NotifyType.SUCCESS, {
         message: t(
-          messagePrefix + ".data.success.import",
+          `${keyPrefix}.data.success.import`,
           data.upsertData.returning.length,
         ),
       });
@@ -467,13 +463,13 @@ const exportDataHandle = () => {
     );
     notify(NotifyType.SUCCESS, {
       message: t(
-        messagePrefix + ".data.success.export",
+        `${keyPrefix}.data.success.export`,
         selectedRows.value.length || rows.length,
       ),
     });
   } catch (error) {
     notify(NotifyType.ERROR, {
-      message: t(messagePrefix + ".export.invalid.message"),
+      message: t("admin.data.error.exportFailed"),
       caption: errorMessage(error),
     });
   }

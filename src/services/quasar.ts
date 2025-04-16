@@ -8,7 +8,7 @@ import quasarIconSet from "quasar/icon-set/material-symbols-sharp";
 import quasarLangEn from "quasar/lang/en-US";
 import quasarLangFr from "quasar/lang/fr";
 
-import type { AvailableLocale } from "@/config/types/locales.ts";
+import type { AvailableLocale } from "@/config/locales.ts";
 
 export const quasarLanguages: Record<AvailableLocale, QuasarLanguage> = {
   "fr-FR": quasarLangFr,

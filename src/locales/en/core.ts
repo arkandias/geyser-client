@@ -35,12 +35,6 @@ export default {
     },
   },
   priorityChip: {
-    group: "group | groups",
-    hour: "hour | hours",
-    tooltip: {
-      assign: "Assign request",
-      remove: "Remove request",
-    },
     delete: {
       success: "Priority deleted",
       error: "Deletion failed",
@@ -63,11 +57,6 @@ export default {
         primary: "Primary",
         secondary: "Secondary",
       },
-    },
-    requestType: {
-      assignment: "Assignment",
-      primary: "Primary request",
-      secondary: "Secondary request",
     },
     invalid: {
       message: "Invalid form",

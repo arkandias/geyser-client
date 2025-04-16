@@ -25,30 +25,30 @@ export default {
             tooltip: "Message",
           },
           modifiedService: {
-            label: "S.",
+            label: "S. ({unit})",
             tooltip: "Service to complete (@:unit.weightedHours)",
           },
           totalAssignment: {
-            label: "A.",
+            label: "A. ({unit})",
             tooltip: "Number of hours assigned (@:unit.weightedHours)",
           },
           diffAssignment: {
-            label: "ΔA",
+            label: "ΔA ({unit})",
             tooltip:
               "Difference between service to complete and number of hours assigned (@:unit.weightedHours)",
           },
           totalPrimary: {
-            label: "R1",
+            label: "R1 ({unit})",
             tooltip:
               "Number of hours requested as primary requests (@:unit.weightedHours)",
           },
           diffPrimary: {
-            label: "ΔR1",
+            label: "ΔR1 ({unit})",
             tooltip:
               "Difference between service to complete and number of hours requested as primary requests (@:unit.weightedHours)",
           },
           totalSecondary: {
-            label: "R2",
+            label: "R2 ({unit})",
             tooltip:
               "Number of hours requested as secondary requests (@:unit.weightedHours)",
           },
@@ -88,7 +88,7 @@ export default {
             tooltip: "",
           },
           hours: {
-            label: "Hrs.",
+            label: "Hrs. ({unit})",
             tooltip: "Number of hours per group",
           },
           groups: {
@@ -96,29 +96,29 @@ export default {
             tooltip: "Number of groups",
           },
           totalAssignment: {
-            label: "A.",
+            label: "A. ({unit})",
             tooltip: "Number of hours assigned",
           },
           diffAssignment: {
-            label: "ΔA",
+            label: "ΔA ({unit})",
             tooltip: "Number of hours remaining to assign",
           },
           totalPrimary: {
-            label: "R1",
+            label: "R1 ({unit})",
             tooltip: "Number of hours requested as primary requests",
           },
           diffPrimary: {
-            label: "ΔR1",
+            label: "ΔR1 ({unit})",
             tooltip:
               "Difference between number of hours to assign and number of hours requested as primary requests",
           },
           diffPrimaryPriority: {
-            label: "ΔR1 Prio",
+            label: "ΔR1 Prio ({unit})",
             tooltip:
               "Difference between number of hours to assign and number of hours requested as priority primary requests",
           },
           totalSecondary: {
-            label: "R2",
+            label: "R2 ({unit})",
             tooltip: "Number of hours requested as secondary requests",
           },
         },

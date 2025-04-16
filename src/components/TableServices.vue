@@ -159,7 +159,9 @@ const columns = computed<Column<ServiceRow>[]>(() => [
   },
   {
     name: "modifiedService",
-    label: t("courses.table.services.columns.modifiedService.label"),
+    label: t("courses.table.services.columns.modifiedService.label", {
+      unit: t("unit.weightedHours"),
+    }),
     tooltip: t("courses.table.services.columns.modifiedService.tooltip"),
     field: "modifiedService",
     format: (val: number) => n(val, "decimalFixed"),
@@ -169,7 +171,9 @@ const columns = computed<Column<ServiceRow>[]>(() => [
   },
   {
     name: "totalAssignment",
-    label: t("courses.table.services.columns.totalAssignment.label"),
+    label: t("courses.table.services.columns.totalAssignment.label", {
+      unit: t("unit.weightedHours"),
+    }),
     tooltip: t("courses.table.services.columns.totalAssignment.tooltip"),
     field: "totalAssignment",
     format: (val: number) => n(val, "decimalFixed"),
@@ -179,7 +183,9 @@ const columns = computed<Column<ServiceRow>[]>(() => [
   },
   {
     name: "diffAssignment",
-    label: t("courses.table.services.columns.diffAssignment.label"),
+    label: t("courses.table.services.columns.diffAssignment.label", {
+      unit: t("unit.weightedHours"),
+    }),
     tooltip: t("courses.table.services.columns.diffAssignment.tooltip"),
     field: "diffAssignment",
     format: (val: number) => n(val, "decimalFixed"),
@@ -189,7 +195,9 @@ const columns = computed<Column<ServiceRow>[]>(() => [
   },
   {
     name: "totalPrimary",
-    label: t("courses.table.services.columns.totalPrimary.label"),
+    label: t("courses.table.services.columns.totalPrimary.label", {
+      unit: t("unit.weightedHours"),
+    }),
     tooltip: t("courses.table.services.columns.totalPrimary.tooltip"),
     field: "totalPrimary",
     format: (val: number) => n(val, "decimalFixed"),
@@ -199,7 +207,9 @@ const columns = computed<Column<ServiceRow>[]>(() => [
   },
   {
     name: "diffPrimary",
-    label: t("courses.table.services.columns.diffPrimary.label"),
+    label: t("courses.table.services.columns.diffPrimary.label", {
+      unit: t("unit.weightedHours"),
+    }),
     tooltip: t("courses.table.services.columns.diffPrimary.tooltip"),
     field: "diffPrimary",
     format: (val: number) => n(val, "decimalFixed"),
@@ -209,7 +219,9 @@ const columns = computed<Column<ServiceRow>[]>(() => [
   },
   {
     name: "totalSecondary",
-    label: t("courses.table.services.columns.totalSecondary.label"),
+    label: t("courses.table.services.columns.totalSecondary.label", {
+      unit: t("unit.weightedHours"),
+    }),
     tooltip: t("courses.table.services.columns.totalSecondary.tooltip"),
     field: "totalSecondary",
     format: (val: number) => n(val, "decimalFixed"),

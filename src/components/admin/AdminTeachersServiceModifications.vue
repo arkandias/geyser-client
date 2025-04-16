@@ -212,7 +212,7 @@ const columns = computed<Column<Row>[]>(() => [
   },
   {
     name: "hours",
-    label: t("admin.teachers.services.table.columns.hours"),
+    label: t("admin.teachers.serviceModifications.table.columns.hours"),
     field: "hours",
     format: (val: number | null) =>
       val === null ? null : n(val, "decimalFixed"),
@@ -319,7 +319,7 @@ const filterFn = computed(
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
     name="serviceModifications"
-    message-prefix="admin.teachers.serviceModifications"
+    key-prefix="admin.teachers.serviceModifications"
     :id-key
     :row-descriptor
     :columns

@@ -1,10 +1,7 @@
 import { useQuasar } from "quasar";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
-import {
-  type AvailableLocale,
-  isAvailableLocale,
-} from "@/config/types/locales.ts";
+import { type AvailableLocale, isAvailableLocale } from "@/config/locales.ts";
 import { quasarLanguages } from "@/services/quasar.ts";
 
 export const useLocale = () => {

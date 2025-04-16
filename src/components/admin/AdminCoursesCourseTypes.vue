@@ -167,7 +167,7 @@ const selectedFields = ref<string[]>([]);
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
     name="types"
-    message-prefix="admin.courses.types"
+    key-prefix="admin.courses.types"
     :id-key
     :row-descriptor
     :columns

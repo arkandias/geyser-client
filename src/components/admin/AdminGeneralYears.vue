@@ -203,7 +203,7 @@ const createServicesHandle = async () => {
 
   if (error || !data?.createYearServices) {
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.createServices"),
+      message: t("admin.general.years.error.createServices"),
       caption: error?.message ?? t("admin.data.error.noReturnData"),
     });
   } else {
@@ -227,7 +227,7 @@ const copyCoursesHandle = async () => {
 
   if (error || !data?.copyYearCourses) {
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.copyCourses"),
+      message: t("admin.general.years.error.copyCourses"),
       caption: error?.message ?? t("admin.data.error.noReturnData"),
     });
   } else {
@@ -251,7 +251,7 @@ const computePrioritiesHandle = async () => {
 
   if (error || !data?.computeYearPriorities) {
     notify(NotifyType.ERROR, {
-      message: t("admin.data.error.computePriorities"),
+      message: t("admin.general.years.error.computePriorities"),
       caption: error?.message ?? t("admin.data.error.noReturnData"),
     });
   } else {

@@ -40,19 +40,15 @@ const save = async () => {
     const { returnId, error } = await setText(editorText.value);
     if (!!returnId && !error) {
       notify(NotifyType.SUCCESS, {
-        message: t(
-          editorText.value
-            ? "editableText.save.success.updated"
-            : "editableText.save.success.deleted",
-        ),
+        message: editorText.value
+          ? t("editableText.save.success.updated")
+          : t("editableText.save.success.deleted"),
       });
     } else {
       notify(NotifyType.ERROR, {
-        message: t(
-          editorText.value
-            ? "editableText.save.error.update"
-            : "editableText.save.error.delete",
-        ),
+        message: editorText.value
+          ? t("editableText.save.error.update")
+          : t("editableText.save.error.delete"),
         caption: error?.message,
       });
     }

@@ -97,6 +97,9 @@ const title = computed(
 // Options
 const stickyHeader = ref(false);
 const weightedHours = ref(false);
+const unit = computed(() =>
+  weightedHours.value ? t("unit.weightedHours") : t("unit.hours"),
+);
 
 type CourseRow = Omit<CourseRowFragment, "hoursPerGroup" | "numberOfGroups"> & {
   hours: number;
@@ -252,7 +255,9 @@ const columns = computed<Column<CourseRow>[]>(() => [
   },
   {
     name: "hours",
-    label: t("courses.table.courses.columns.hours.label"),
+    label: t("courses.table.courses.columns.hours.label", {
+      unit: unit.value,
+    }),
     tooltip: t("courses.table.courses.columns.hours.tooltip"),
     align: "left",
     field: "hours",
@@ -274,7 +279,9 @@ const columns = computed<Column<CourseRow>[]>(() => [
   },
   {
     name: "totalAssignment",
-    label: t("courses.table.courses.columns.totalAssignment.label"),
+    label: t("courses.table.courses.columns.totalAssignment.label", {
+      unit: unit.value,
+    }),
     tooltip: t("courses.table.courses.columns.totalAssignment.tooltip"),
     field: "totalAssignment",
     format: (val: number) => n(val, "decimalFixed"),
@@ -284,7 +291,9 @@ const columns = computed<Column<CourseRow>[]>(() => [
   },
   {
     name: "diffAssignment",
-    label: t("courses.table.courses.columns.diffAssignment.label"),
+    label: t("courses.table.courses.columns.diffAssignment.label", {
+      unit: unit.value,
+    }),
     tooltip: t("courses.table.courses.columns.diffAssignment.tooltip"),
     field: "diffAssignment",
     format: (val: number | null) =>
@@ -295,7 +304,9 @@ const columns = computed<Column<CourseRow>[]>(() => [
   },
   {
     name: "totalPrimary",
-    label: t("courses.table.courses.columns.totalPrimary.label"),
+    label: t("courses.table.courses.columns.totalPrimary.label", {
+      unit: unit.value,
+    }),
     tooltip: t("courses.table.courses.columns.totalPrimary.tooltip"),
     field: "totalPrimary",
     format: (val: number) => n(val, "decimalFixed"),
@@ -305,7 +316,9 @@ const columns = computed<Column<CourseRow>[]>(() => [
   },
   {
     name: "diffPrimary",
-    label: t("courses.table.courses.columns.diffPrimary.label"),
+    label: t("courses.table.courses.columns.diffPrimary.label", {
+      unit: unit.value,
+    }),
     tooltip: t("courses.table.courses.columns.diffPrimary.tooltip"),
     field: "diffPrimary",
     format: (val: number | null) =>
@@ -316,7 +329,9 @@ const columns = computed<Column<CourseRow>[]>(() => [
   },
   {
     name: "diffPrimaryPriority",
-    label: t("courses.table.courses.columns.diffPrimaryPriority.label"),
+    label: t("courses.table.courses.columns.diffPrimaryPriority.label", {
+      unit: unit.value,
+    }),
     tooltip: t("courses.table.courses.columns.diffPrimaryPriority.tooltip"),
     field: "diffPrimaryPriority",
     format: (val: number | null) =>
@@ -327,7 +342,9 @@ const columns = computed<Column<CourseRow>[]>(() => [
   },
   {
     name: "totalSecondary",
-    label: t("courses.table.courses.columns.totalSecondary.label"),
+    label: t("courses.table.courses.columns.totalSecondary.label", {
+      unit: unit.value,
+    }),
     tooltip: t("courses.table.courses.columns.totalSecondary.tooltip"),
     field: "totalSecondary",
     format: (val: number) => n(val, "decimalFixed"),

@@ -356,10 +356,7 @@ function validateImportRow(
       importRow.courseType === undefined
     ) {
       throw new Error(
-        t(
-          "admin.requests.priorities.form.error.updateCourseMissingFields",
-          importRow,
-        ),
+        t("admin.requests.priorities.form.error.updateCourseMissingFields"),
       );
     }
 
@@ -482,7 +479,7 @@ const filterFn = computed(
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
     name="priorities"
-    message-prefix="admin.requests.priorities"
+    key-prefix="admin.requests.priorities"
     :id-key
     :row-descriptor
     :columns

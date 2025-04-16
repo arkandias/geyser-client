@@ -101,7 +101,7 @@ const submitForm = async (): Promise<void> => {
     });
   } else {
     notify(NotifyType.ERROR, {
-      message: t("priorityForm.error.updated"),
+      message: t("priorityForm.error"),
       caption: result.error?.message,
     });
   }

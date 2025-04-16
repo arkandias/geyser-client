@@ -586,7 +586,7 @@ const filterFn = computed(
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
     name="courses"
-    message-prefix="admin.courses.courses"
+    key-prefix="admin.courses.courses"
     :id-key
     :row-descriptor
     :columns

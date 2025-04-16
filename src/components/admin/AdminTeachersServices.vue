@@ -43,7 +43,8 @@ type T = typeof rowDescriptor;
 type FormValues = NullableParsedRow<T>;
 type ImportRow = ParsedRow<T>;
 type InsertInput = {
-  serviceId?: number | null;
+  year?: number | null;
+  uid?: string | null;
   hours?: number | null;
   message?: string | null;
 };
@@ -174,34 +175,17 @@ function validateImportRow(
 ): Partial<InsertInput> {
   const object: Partial<InsertInput> = {};
 
-  // serviceId
-  if (importRow.year !== undefined || importRow.uid !== undefined) {
-    if (importRow.uid === undefined) {
-      throw new Error(
-        t("admin.teachers.service.form.error.updateYearWithoutUid"),
-      );
-    }
-    if (importRow.year === undefined) {
-      throw new Error(
-        t("admin.teachers.service.form.error.updateUidWithoutYear"),
-      );
-    }
-    object.serviceId = services.value.find(
-      (s) => s.year === importRow.year && s.uid === importRow.uid,
-    )?.id;
-    if (object.serviceId === undefined) {
-      throw new Error(
-        t(
-          "admin.teachers.serviceModifications.form.error.serviceNotFound",
-          importRow,
-        ),
-      );
-    }
+  if (importRow.year !== undefined) {
+    object.year = importRow.year;
+  }
+
+  if (importRow.uid !== undefined) {
+    object.uid = importRow.uid;
   }
 
   if (importRow.hours !== undefined) {
     if (importRow.hours < 0) {
-      throw new Error(t("admin.teachers.positions.form.error.hoursNegative"));
+      throw new Error(t("admin.teachers.services.form.error.hoursNegative"));
     }
     object.hours = importRow.hours;
   }
@@ -236,7 +220,7 @@ const filterFn = computed(
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
     name="services"
-    message-prefix="admin.teachers.services"
+    key-prefix="admin.teachers.services"
     :id-key
     :row-descriptor
     :columns

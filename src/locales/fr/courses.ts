@@ -25,30 +25,30 @@ export default {
             tooltip: "Message",
           },
           modifiedService: {
-            label: "S.",
+            label: "S. ({unit})",
             tooltip: "Service à réaliser (@:unit.weightedHours)",
           },
           totalAssignment: {
-            label: "A.",
+            label: "A. ({unit})",
             tooltip: "Nombre d'heures attribuées (@:unit.weightedHours)",
           },
           diffAssignment: {
-            label: "ΔA",
+            label: "ΔA ({unit})",
             tooltip:
               "Différence entre le service à réaliser et le nombre d'heures attribuées (@:unit.weightedHours)",
           },
           totalPrimary: {
-            label: "V1",
+            label: "V1 ({unit})",
             tooltip:
               "Nombre d'heures demandées en vœux principaux (@:unit.weightedHours)",
           },
           diffPrimary: {
-            label: "ΔV1",
+            label: "ΔV1 ({unit})",
             tooltip:
               "Différence entre le service à réaliser et le nombre d'heures demandées en vœux principaux (@:unit.weightedHours)",
           },
           totalSecondary: {
-            label: "V2",
+            label: "V2 ({unit})",
             tooltip:
               "Nombre d'heures demandées en vœux secondaires (@:unit.weightedHours)",
           },
@@ -88,7 +88,7 @@ export default {
             tooltip: "",
           },
           hours: {
-            label: "H.",
+            label: "H. ({unit})",
             tooltip: "Nombre d'heures par groupe",
           },
           groups: {
@@ -96,29 +96,29 @@ export default {
             tooltip: "Nombre de groupes",
           },
           totalAssignment: {
-            label: "A.",
+            label: "A. ({unit})",
             tooltip: "Nombre d'heures attribuées",
           },
           diffAssignment: {
-            label: "ΔA",
+            label: "ΔA ({unit})",
             tooltip: "Nombre d'heures restantes à attribuer",
           },
           totalPrimary: {
-            label: "V1",
+            label: "V1 ({unit})",
             tooltip: "Nombre d'heures demandées en vœux principaux",
           },
           diffPrimary: {
-            label: "ΔV1",
+            label: "ΔV1 ({unit})",
             tooltip:
               "Différence entre le nombre d'heures à attribuer et le nombre d'heures demandées en vœux principaux",
           },
           diffPrimaryPriority: {
-            label: "ΔV1 Prio",
+            label: "ΔV1 Prio ({unit})",
             tooltip:
               "Différence entre le nombre d'heures à attribuer et le nombre d'heures demandées en vœux principaux prioritaires",
           },
           totalSecondary: {
-            label: "V2",
+            label: "V2 ({unit})",
             tooltip: "Nombre d'heures demandées en vœux secondaires",
           },
         },

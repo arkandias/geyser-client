@@ -5,7 +5,7 @@ import {
   useI18n,
 } from "vue-i18n";
 
-import type { AvailableLocale } from "@/config/types/locales.ts";
+import type { AvailableLocale } from "@/config/locales.ts";
 import type { CustomI18nOptions } from "@/services/i18n.ts";
 
 export type CustomComposerTranslation = ComposerTranslation<

@@ -18,9 +18,9 @@ const isDialogOpen = ref({
 });
 
 const labels = {
-  contact: t(`header.info.contact.label`),
-  legalNotice: t(`header.info.legalNotice.label`),
-  license: t(`header.info.license.label`),
+  contact: t("header.info.contact.label"),
+  legalNotice: t("header.info.legalNotice.label"),
+  license: t("header.info.license.label"),
 };
 
 const icons = {

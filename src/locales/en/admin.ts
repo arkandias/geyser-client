@@ -20,9 +20,6 @@ export default {
         deleteFailed: "Deletion failed",
         importFailed: "Import failed",
         exportFailed: "Export failed",
-        insertError: "Error while inserting data: {reason}",
-        updateError: "Error while updating data: {reason}",
-        deleteError: "Error while deleting data: {reason}",
         noReturnData: "No response",
         emptyFile: "Empty file",
         unreadableFile: "Unreadable file: {reason}",
@@ -91,7 +88,6 @@ If courses or services are associated with this year, you will not be able to de
           copyCourses: "Failed to copy courses",
           computePriorities: "Failed to compute priorities",
           emptyValue: "Enter a value for the year",
-          emptyVisibility: "Select the visibility of the year",
         },
         success: {
           setCurrent: "Current year updated",
@@ -198,7 +194,7 @@ If there are services, responsibilities, or roles for these teachers, you will n
             baseServiceHours: "Base service (@:unit.weightedHours)",
           },
           error: {
-            hoursNegative:
+            baseServiceHoursNegative:
               "Enter a positive or zero number of base service hours",
           },
         },
@@ -248,10 +244,6 @@ If these positions are assigned to teachers, you will not be able to delete them
             message: "Message",
           },
           error: {
-            updateYearWithoutUid:
-              "You cannot modify the year without selecting a teacher",
-            updateUidWithoutYear:
-              "You cannot modify the teacher without selecting a year",
             hoursNegative: "Enter a positive or zero number of hours",
           },
         },
@@ -350,7 +342,6 @@ If there are modifications, requests, or priorities for these services, you will
             label: "Label",
             description: "Description",
           },
-          error: {},
         },
         data: {
           success: {
@@ -398,7 +389,6 @@ If these types are assigned to modifications, you will not be able to delete the
             nameShort: "Short name",
             visible: "Visible",
           },
-          error: {},
         },
         data: {
           success: {
@@ -638,7 +628,6 @@ If there are requests, priorities, or coordinators for these courses, you will n
             coefficient: "Coefficient",
             description: "Description",
           },
-          error: {},
         },
         data: {
           success: {

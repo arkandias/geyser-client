@@ -35,12 +35,6 @@ export default {
     },
   },
   priorityChip: {
-    group: "groupe | groupes",
-    hour: "heure | heures",
-    tooltip: {
-      assign: "Attribuer la demande",
-      remove: "Supprimer la demande",
-    },
     delete: {
       success: "Priorité supprimée",
       error: "Échec de la suppression",
@@ -63,11 +57,6 @@ export default {
         primary: "Principale",
         secondary: "Secondaire",
       },
-    },
-    requestType: {
-      assignment: "Attribution",
-      primary: "Demande principale",
-      secondary: "Demande secondaire",
     },
     invalid: {
       message: "Formulaire non valide",

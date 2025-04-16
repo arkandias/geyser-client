@@ -280,7 +280,7 @@ const filterFn = computed(
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
     name="tracks"
-    message-prefix="admin.courses.tracks"
+    key-prefix="admin.courses.tracks"
     :id-key
     :row-descriptor
     :columns

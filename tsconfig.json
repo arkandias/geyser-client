@@ -1,19 +1,7 @@
 {
   "files": [],
   "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ],
-  // ts-node configuration
-  "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "bundler"
-  },
-  "ts-node": {
-    "esm": true
-  }
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

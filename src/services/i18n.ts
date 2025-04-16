@@ -1,7 +1,6 @@
 import { type I18nOptions, createI18n } from "vue-i18n";
 
-import { DEFAULT_LOCALE } from "@/config/constants.ts";
-import type { AvailableLocale } from "@/config/types/locales.ts";
+import { type AvailableLocale, DEFAULT_LOCALE } from "@/config/locales.ts";
 import enUS from "@/locales/en";
 import frFR from "@/locales/fr";
 

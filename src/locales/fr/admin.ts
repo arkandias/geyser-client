@@ -20,9 +20,6 @@ export default {
         deleteFailed: "Échec de la suppression",
         importFailed: "Échec de l'import",
         exportFailed: "Échec de l'export",
-        insertError: "Erreur durant l'insertion des données: {reason}",
-        updateError: "Erreur durant la mise à jour des données: {reason}",
-        deleteError: "Erreur durant la suppression des données: {reason}",
         noReturnData: "Pas de réponse",
         emptyFile: "Fichier vide",
         unreadableFile: "Fichier illisible: {reason}",
@@ -92,7 +89,6 @@ la supprimer.`,
           copyCourses: "Échec de la copie des enseignements",
           computePriorities: "Échec du calcul des priorités",
           emptyValue: "Entrez une valeur pour l'année",
-          emptyVisibility: "Sélectionnez la visibilité de l'année",
         },
         success: {
           setCurrent: "Année en cours mise à jour",
@@ -200,7 +196,7 @@ S'il existe des services, des responsabilités ou des rôles pour ces intervenan
             baseServiceHours: "Service de base (@:unit.weightedHours)",
           },
           error: {
-            hoursNegative:
+            baseServiceHoursNegative:
               "Entrez un nombre d'heures de service de base positif ou nul",
           },
         },
@@ -250,10 +246,6 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
             message: "Message",
           },
           error: {
-            updateYearWithoutUid:
-              "Vous ne pouvez pas modifier l'année sans sélectionner un intervenant",
-            updateUidWithoutYear:
-              "Vous ne pouvez pas modifier l'intervenant sans sélectionner une année",
             hoursNegative: "Entrez un nombre d'heures positif ou nul",
           },
         },
@@ -352,7 +344,6 @@ S'il existe des modifications, des demandes ou des priorités pour ces services,
             label: "Label",
             description: "Description",
           },
-          error: {},
         },
         data: {
           success: {
@@ -400,7 +391,6 @@ Si ces types sont attribués à des modifications, vous ne pourrez pas les suppr
             nameShort: "Nom court",
             visible: "Visible",
           },
-          error: {},
         },
         data: {
           success: {
@@ -647,7 +637,6 @@ S'il existe des demandes, des priorités ou des responsables pour ces enseigneme
             coefficient: "Coefficient",
             description: "Description",
           },
-          error: {},
         },
         data: {
           success: {

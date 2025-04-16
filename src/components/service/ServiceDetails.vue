@@ -165,7 +165,7 @@ const submitModificationForm = async (): Promise<void> => {
   if (modificationHours.value <= 0) {
     notify(NotifyType.ERROR, {
       message: t("service.details.modificationForm.invalid.message"),
-      caption: t("service.details.modificationForm.invalid.caption.type"),
+      caption: t("service.details.modificationForm.invalid.caption.hours"),
     });
     return;
   }

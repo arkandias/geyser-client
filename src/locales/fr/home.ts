@@ -28,7 +28,7 @@ export default {
         </p>`,
       [PHASES.ASSIGNMENTS]: `
         <p>
-          Les travaux de la commission sont en cours. Vous serez informé lorsqu'ils 
+          Les travaux de la commission sont en cours. Vous serez informé lorsqu'ils
           seront terminés pour consulter les attributions.
           En attendant, vous pouvez toujours consulter les demandes mais il n'est plus
           possible de les modifier.

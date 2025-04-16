@@ -111,6 +111,12 @@ pnpm run codegen:documents
 pnpm run codegen
 ```
 
+- Validate i18n translations by checking for missing and unused translation keys
+
+```shell
+pnpm run i18n
+```
+
 ## Environment variables
 
 Environment variables can be stored in either of the following .env files:
