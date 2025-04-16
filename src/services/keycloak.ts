@@ -10,7 +10,7 @@ import {
   hasuraAdminSecret,
   hasuraUserId,
 } from "@/config/env.ts";
-import type { HasuraClaims, HasuraRole } from "@/types/claims.ts";
+import { type HasuraRole, isHasuraRole } from "@/config/hasura-roles.ts";
 
 const keycloak = new Keycloak({
   url: authURL,
@@ -24,6 +24,12 @@ keycloak.onAuthLogout = () => {
 };
 keycloak.onTokenExpired = () => {
   console.debug("Token expired");
+};
+
+type HasuraClaims = {
+  userId: string;
+  defaultRole: HasuraRole;
+  allowedRoles: HasuraRole[];
 };
 
 export const initKeycloak = async (): Promise<HasuraClaims | null> => {
@@ -82,9 +88,6 @@ export const logout = async () => {
     await keycloak.logout();
   }
 };
-
-const isHasuraRole = (role: string): role is HasuraRole =>
-  ["admin", "commissioner", "teacher"].includes(role);
 
 const validateClaims = (
   tokenParsed: Record<string, unknown>,

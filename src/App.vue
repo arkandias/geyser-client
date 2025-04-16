@@ -16,12 +16,11 @@ import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
-import type { HasuraClaims } from "@/types/claims.ts";
 
 import TheHeader from "@/components/TheHeader.vue";
 import PageHome from "@/pages/PageHome.vue";
 
-const { claims } = defineProps<{ claims: HasuraClaims | null }>();
+const { uid } = defineProps<{ uid: string | null }>();
 
 graphql(`
   query GetUserProfile($uid: String!) {
@@ -69,8 +68,8 @@ const { setCustomTexts } = useCustomTextsStore();
 // Fetch user profile
 const getUserProfile = useQuery({
   query: GetUserProfileDocument,
-  variables: { uid: claims?.userId ?? "" },
-  pause: !claims,
+  variables: { uid: uid ?? "" },
+  pause: uid === null,
   context: { additionalTypenames: ["All", "Role", "Service"] },
 });
 watch(
@@ -135,7 +134,7 @@ watch(
 
 // Access check and information messages
 const accessDeniedMessage = computed(() => {
-  if (!claims) {
+  if (uid === null) {
     return t("home.alert.noAuth");
   }
   if (getUserProfile.fetching.value) {

@@ -22,7 +22,7 @@ if (import.meta.env.PROD) {
 
 const claims = await initKeycloak();
 
-createApp(App, { claims })
+createApp(App, { uid: claims?.userId ?? null })
   .use(Quasar, quasarOptions)
   .use(i18n)
   .use(router)
