@@ -4,6 +4,7 @@ import { computed } from "vue";
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
+import { capitalize } from "@/utils/misc.ts";
 
 defineProps<{ alert?: string }>();
 
@@ -16,12 +17,12 @@ const title = computed(
 );
 const subtitle = computed(
   () =>
-    getCustomText(`homeSubtitle${currentPhase.value}`).value ||
+    getCustomText(`homeSubtitle${capitalize(currentPhase.value)}`).value ||
     t(`home.subtitle.${currentPhase.value}`),
 );
 const message = computed(
   () =>
-    getCustomText(`homeMessage${currentPhase.value}`).value ||
+    getCustomText(`homeMessage${capitalize(currentPhase.value)}`).value ||
     t(`home.message.${currentPhase.value}`),
 );
 </script>
