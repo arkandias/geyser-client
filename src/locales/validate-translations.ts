@@ -1,8 +1,8 @@
 import * as fs from "fs/promises";
 import { glob } from "glob";
 
-import en from "./en/index.ts";
-import fr from "./fr/index.ts";
+import en from "./en";
+import fr from "./fr";
 import { CUSTOM_TEXT_KEYS } from "@/config/custom-text-keys.ts";
 import { PHASES } from "@/config/phases.ts";
 import { RequestTypeEnum, RoleTypeEnum } from "@/gql/graphql.ts";

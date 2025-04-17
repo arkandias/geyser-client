@@ -50,14 +50,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ["*.js"],
-    extends: [eslint.configs.recommended],
-    languageOptions: {
-      globals: globals.node,
-    },
-  },
-  {
-    files: ["*.ts"],
+    files: ["*.ts", "src/locales/validate-translations.ts"],
     extends: [
       eslint.configs.recommended,
       tseslint.configs.strictTypeChecked,
@@ -73,7 +66,7 @@ export default tseslint.config(
   },
   {
     files: ["src/**/*.ts", "src/**/*.vue"],
-    ignores: ["src/gql/"],
+    ignores: ["src/gql/", "src/locales/validate-translations.ts"],
     extends: [
       eslint.configs.recommended,
       tseslint.configs.strictTypeChecked,
