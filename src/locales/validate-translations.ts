@@ -117,8 +117,8 @@ const findKeysInFiles = async (): Promise<string[]> => {
 
   // Manually add template string keys
 
-  Object.values(RequestTypeEnum).forEach((rt) => {
-    standardKeys.add(`requestType.${rt}`);
+  Object.values(RequestTypeEnum).forEach((type) => {
+    standardKeys.add(`requestType.${type}`);
   });
   [...templateStringsKeys].forEach((key) => {
     if (/requestType\.\${[a-zA-Z.]*}/.test(key)) {
@@ -126,8 +126,8 @@ const findKeysInFiles = async (): Promise<string[]> => {
     }
   });
 
-  Object.values(RoleTypeEnum).forEach((role) => {
-    standardKeys.add(`role.${role}`);
+  Object.values(RoleTypeEnum).forEach((type) => {
+    standardKeys.add(`role.${type}`);
   });
   [...templateStringsKeys].forEach((key) => {
     if (/role\.\${[a-zA-Z.]*}/.test(key)) {

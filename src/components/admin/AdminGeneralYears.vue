@@ -15,6 +15,7 @@ import {
   UpdateYearDocument,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
+import { inputToNumber } from "@/utils/misc.ts";
 
 const { t } = useCustomI18n();
 const { notify } = useNotify();
@@ -384,11 +385,12 @@ const edit = (year: number) => {
           @submit="selectedYear ? updateYearValueHandle() : insertYearHandle()"
         >
           <QInput
-            v-model.number="yearValue"
+            :model-value="yearValue"
             type="number"
             :label="t('admin.general.years.year')"
             square
             dense
+            @update:model-value="(value) => (yearValue = inputToNumber(value))"
           />
         </QForm>
       </QCardSection>

@@ -8,17 +8,21 @@ import {
   type AdminDegreeFragment,
   AdminDegreeFragmentDoc,
   DegreeConstraint,
+  type DegreeInsertInput,
   DegreeUpdateColumn,
   DeleteDegreesDocument,
   InsertDegreesDocument,
   UpdateDegreesDocument,
   UpsertDegreesDocument,
 } from "@/gql/graphql.ts";
-import type { Column } from "@/types/column.ts";
-import type { NullableParsedRow, ParsedRow } from "@/types/data.ts";
-import { booleanOptions } from "@/utils/misc.ts";
+import type { ParsedRow, RowDescriptorExtra } from "@/types/data.ts";
+import { booleanOptions, nullObj } from "@/utils/misc.ts";
 
-import AdminData from "@/components/admin/AdminData.vue";
+import AdminData from "@/components/admin/core/AdminData.vue";
+
+type Row = AdminDegreeFragment;
+type FlatRow = ParsedRow<typeof rowDescriptor>;
+type InsertInput = DegreeInsertInput;
 
 const { degreeFragments } = defineProps<{
   degreeFragments: FragmentType<typeof AdminDegreeFragmentDoc>[];
@@ -26,22 +30,12 @@ const { degreeFragments } = defineProps<{
 
 const { t } = useCustomI18n();
 
-const idKey = "id";
+const idKey: keyof Row = "id";
 const rowDescriptor = {
   name: { type: "string" },
   nameShort: { type: "string", nullable: true },
   visible: { type: "boolean" },
-} as const;
-
-type Row = AdminDegreeFragment;
-type T = typeof rowDescriptor;
-type FormValues = NullableParsedRow<T>;
-type ImportRow = ParsedRow<T>;
-type InsertInput = {
-  name?: string | null;
-  nameShort?: string | null;
-  visible?: boolean | null;
-};
+} as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`
   fragment AdminDegree on Degree {
@@ -95,79 +89,41 @@ const upsertDegrees = useMutation(UpsertDegreesDocument);
 const updateDegrees = useMutation(UpdateDegreesDocument);
 const deleteDegrees = useMutation(DeleteDegreesDocument);
 
-const constraint = DegreeConstraint.DegreeNameKey;
-const updateColumns = [
+const importConstraint = DegreeConstraint.DegreeNameKey;
+const importUpdateColumns = [
   DegreeUpdateColumn.Name,
   DegreeUpdateColumn.NameShort,
   DegreeUpdateColumn.Visible,
 ];
 
-const columns = computed<Column<Row>[]>(() => [
-  {
-    name: "name",
-    label: t("admin.courses.degrees.table.columns.name"),
-    align: "left",
-    field: "name",
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "nameShort",
-    label: t("admin.courses.degrees.table.columns.nameShort"),
-    align: "left",
-    field: "nameShort",
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "visible",
-    label: t("admin.courses.degrees.table.columns.visible"),
-    align: "center",
-    field: "visible",
-    format: (val: boolean) => (val ? "✓" : "✗"),
-    sortable: true,
-    searchable: false,
-  },
-]);
-
 const formatRow = (row: Row) => row.name;
 
-const initForm = (rows: Row[]): FormValues => ({
-  name: rows[0]?.name ?? null,
-  nameShort: rows[0]?.nameShort ?? null,
-  visible: rows[0]?.visible ?? null,
-});
+const validateFlatRow = (flatRow: FlatRow): InsertInput => {
+  const object: InsertInput = {};
 
-function validateImportRow(importRow: ImportRow): InsertInput;
-function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-): Partial<InsertInput> {
-  const object: Partial<InsertInput> = {};
-
-  if (importRow.name !== undefined) {
-    object.name = importRow.name;
+  if (flatRow.name !== undefined) {
+    object.name = flatRow.name;
   }
 
-  if (importRow.nameShort !== undefined) {
-    object.nameShort = importRow.nameShort;
+  if (flatRow.nameShort !== undefined) {
+    object.nameShort = flatRow.nameShort;
   }
 
-  if (importRow.visible !== undefined) {
-    object.visible = importRow.visible;
+  if (flatRow.visible !== undefined) {
+    object.visible = flatRow.visible;
   }
 
   return object;
-}
+};
 
-const formValues = ref<FormValues>(initForm([]));
+const formValues = ref<FlatRow>(nullObj(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
 // Filters
 const selectedVisible = ref<boolean | null>(null);
 const filterFn = computed(
-  () => (r: Row) =>
-    selectedVisible.value === null || r.visible === selectedVisible.value,
+  () => (row: Row) =>
+    selectedVisible.value === null || row.visible === selectedVisible.value,
 );
 </script>
 
@@ -175,28 +131,26 @@ const filterFn = computed(
   <AdminData
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
+    section="courses"
     name="degrees"
-    key-prefix="admin.courses.degrees"
     :id-key
     :row-descriptor
-    :columns
     :rows="degrees"
     :filter-fn
     :format-row
-    :init-form
-    :validate-import-row
+    :validate-flat-row
     :insert-data="insertDegrees"
     :upsert-data="upsertDegrees"
     :update-data="updateDegrees"
     :delete-data="deleteDegrees"
-    :constraint
-    :update-columns
+    :import-constraint
+    :import-update-columns
   >
     <template #filters>
       <QSelect
         v-model="selectedVisible"
         :options="booleanOptions(t('yes'), t('no'))"
-        :label="t('admin.courses.programs.table.columns.visible')"
+        :label="t('admin.courses.programs.column.visible.label')"
         emit-value
         map-options
         clearable
@@ -210,7 +164,7 @@ const filterFn = computed(
     <template #form="{ multipleSelection }">
       <QInput
         v-model="formValues.name"
-        :label="t('admin.courses.degrees.form.fields.name')"
+        :label="t('admin.courses.degrees.column.name.label')"
         :disable="multipleSelection && !selectedFields.includes('name')"
         square
         dense
@@ -221,7 +175,7 @@ const filterFn = computed(
       </QInput>
       <QInput
         v-model="formValues.nameShort"
-        :label="t('admin.courses.degrees.form.fields.nameShort')"
+        :label="t('admin.courses.degrees.column.nameShort')"
         :disable="multipleSelection && !selectedFields.includes('nameShort')"
         square
         dense
@@ -238,7 +192,7 @@ const filterFn = computed(
         />
         <QToggle
           v-model="formValues.visible"
-          :label="t('admin.courses.degrees.form.fields.visible')"
+          :label="t('admin.courses.degrees.column.visible.label')"
           :disable="multipleSelection && !selectedFields.includes('visible')"
           left-label
         />

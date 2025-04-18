@@ -13,16 +13,20 @@ import {
   DeleteServiceModificationsDocument,
   InsertServiceModificationsDocument,
   ServiceModificationConstraint,
+  type ServiceModificationInsertInput,
   ServiceModificationUpdateColumn,
   UpdateServiceModificationsDocument,
   UpsertServiceModificationsDocument,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
-import type { Column } from "@/types/column.ts";
-import type { NullableParsedRow, ParsedRow } from "@/types/data.ts";
-import { inputToNumber } from "@/utils/misc.ts";
+import type { ParsedRow, RowDescriptorExtra } from "@/types/data.ts";
+import { inputToNumber, nullObj } from "@/utils/misc.ts";
 
-import AdminData from "@/components/admin/AdminData.vue";
+import AdminData from "@/components/admin/core/AdminData.vue";
+
+type Row = AdminServiceModificationFragment;
+type FlatRow = ParsedRow<typeof rowDescriptor>;
+type InsertInput = ServiceModificationInsertInput;
 
 const {
   serviceFragments,
@@ -44,26 +48,16 @@ const {
   >[];
 }>();
 
-const { t, n } = useCustomI18n();
+const { t } = useCustomI18n();
 const { years } = useYearsStore();
 
-const idKey = "id";
+const idKey: keyof Row = "id";
 const rowDescriptor = {
-  year: { type: "number" },
+  year: { type: "number", field: (row) => row.service.year },
   uid: { type: "string" },
-  type: { type: "string" },
-  hours: { type: "number" },
-} as const;
-
-type Row = AdminServiceModificationFragment;
-type T = typeof rowDescriptor;
-type FormValues = NullableParsedRow<T>;
-type ImportRow = ParsedRow<T>;
-type InsertInput = {
-  serviceId?: number | null;
-  typeId?: number | null;
-  hours?: number | null;
-};
+  type: { type: "string", field: (row) => row.type.label },
+  hours: { type: "number", numberFormat: "decimalFixed" },
+} as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`
   fragment AdminServiceModification on ServiceModification {
@@ -71,9 +65,6 @@ graphql(`
     service {
       year
       uid
-      teacher {
-        displayname
-      }
     }
     type {
       id
@@ -178,120 +169,79 @@ const deleteServiceModifications = useMutation(
   DeleteServiceModificationsDocument,
 );
 
-const constraint = ServiceModificationConstraint.ServiceModificationPkey;
-const updateColumns = [
+const importConstraint = ServiceModificationConstraint.ServiceModificationPkey;
+const importUpdateColumns = [
   ServiceModificationUpdateColumn.ServiceId,
   ServiceModificationUpdateColumn.TypeId,
   ServiceModificationUpdateColumn.Hours,
 ];
 
-const columns = computed<Column<Row>[]>(() => [
-  {
-    name: "year",
-    label: t("admin.teachers.serviceModifications.table.columns.year"),
-    align: "left",
-    field: (row) => row.service.year,
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "uid",
-    label: t("admin.teachers.serviceModifications.table.columns.uid"),
-    align: "left",
-    field: (row) => row.service.uid,
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "type",
-    label: t("admin.teachers.serviceModifications.table.columns.type"),
-    align: "left",
-    field: (row) => row.type.label,
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "hours",
-    label: t("admin.teachers.serviceModifications.table.columns.hours"),
-    field: "hours",
-    format: (val: number | null) =>
-      val === null ? null : n(val, "decimalFixed"),
-    sortable: true,
-    searchable: false,
-  },
-]);
-
 const formatRow = (row: Row): string =>
-  `${row.service.year} — ${row.service.teacher.displayname} — ${row.type.label}`;
+  `${row.service.year} — ${row.service.uid} — ${row.type.label}`;
 
-const initForm = (rows: Row[]): FormValues => ({
-  year: rows[0]?.service.year ?? null,
-  uid: rows[0]?.service.uid ?? null,
-  type: rows[0]?.type.label ?? null,
-  hours: rows[0]?.hours ?? null,
-});
-
-function validateImportRow(importRow: ImportRow): InsertInput;
-function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-): Partial<InsertInput> {
-  const object: Partial<InsertInput> = {};
+const validateFlatRow = (flatRow: FlatRow): InsertInput => {
+  const object: InsertInput = {};
 
   // serviceId
-  if (importRow.year !== undefined || importRow.uid !== undefined) {
-    if (importRow.uid === undefined) {
+  if (flatRow.year !== undefined || flatRow.uid !== undefined) {
+    if (flatRow.uid === undefined) {
       throw new Error(
         t(
-          "admin.teachers.serviceModifications.form.error.updateYearWithoutUid",
+          "admin.teachers.serviceModifications.form.error.updateYearWithoutTeacher",
         ),
       );
     }
-    if (importRow.year === undefined) {
+    if (flatRow.year === undefined) {
       throw new Error(
         t(
-          "admin.teachers.serviceModifications.form.error.updateUidWithoutYear",
+          "admin.teachers.serviceModifications.form.error.updateTeacherWithoutYear",
         ),
       );
     }
     object.serviceId = services.value.find(
-      (s) => s.year === importRow.year && s.uid === importRow.uid,
+      (s) => s.year === flatRow.year && s.uid === flatRow.uid,
     )?.id;
     if (object.serviceId === undefined) {
       throw new Error(
         t(
           "admin.teachers.serviceModifications.form.error.serviceNotFound",
-          importRow,
+          flatRow,
         ),
       );
     }
   }
 
   // typeId
-  if (importRow.type !== undefined) {
+  if (flatRow.type !== undefined) {
     object.typeId = serviceModificationTypes.value.find(
-      (smt) => smt.label === importRow.type,
+      (smt) => smt.label === flatRow.type,
     )?.id;
     if (object.typeId === undefined) {
       throw new Error(
         t(
           "admin.teachers.serviceModifications.form.error.typeNotFound",
-          importRow,
+          flatRow,
         ),
       );
     }
   }
 
-  if (importRow.hours !== undefined) {
-    object.hours = importRow.hours;
+  if (flatRow.hours !== undefined) {
+    if (flatRow.hours === null || flatRow.hours < 0) {
+      throw new Error(
+        t("admin.teachers.serviceModifications.form.error.hoursNegative"),
+      );
+    }
+    object.hours = flatRow.hours;
   }
 
   return object;
-}
+};
 
-const formValues = ref<FormValues>(initForm([]));
+const formValues = ref<FlatRow>(nullObj(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
+// Options
 const yearOptions = computed(() => years.value.map((y) => y.value));
 const teacherOptions = computed(() =>
   teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
@@ -305,12 +255,13 @@ const selectedYears = ref<number[]>([]);
 const selectedUids = ref<string[]>([]);
 const selectedTypes = ref<string[]>([]);
 const filterFn = computed(
-  () => (r: Row) =>
+  () => (row: Row) =>
     (!selectedYears.value.length ||
-      selectedYears.value.includes(r.service.year)) &&
+      selectedYears.value.includes(row.service.year)) &&
     (!selectedUids.value.length ||
-      selectedUids.value.includes(r.service.uid)) &&
-    (!selectedTypes.value.length || selectedTypes.value.includes(r.type.label)),
+      selectedUids.value.includes(row.service.uid)) &&
+    (!selectedTypes.value.length ||
+      selectedTypes.value.includes(row.type.label)),
 );
 </script>
 
@@ -318,28 +269,26 @@ const filterFn = computed(
   <AdminData
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
+    section="teachers"
     name="serviceModifications"
-    key-prefix="admin.teachers.serviceModifications"
     :id-key
     :row-descriptor
-    :columns
     :rows="serviceModifications"
     :filter-fn
     :format-row
-    :init-form
-    :validate-import-row
+    :validate-flat-row
     :insert-data="insertServiceModifications"
     :upsert-data="upsertServiceModifications"
     :update-data="updateServiceModifications"
     :delete-data="deleteServiceModifications"
-    :constraint
-    :update-columns
+    :import-constraint
+    :import-update-columns
   >
     <template #filters>
       <QSelect
         v-model="selectedYears"
         :options="yearOptions"
-        :label="t('admin.teachers.serviceModifications.table.columns.year')"
+        :label="t('admin.teachers.serviceModifications.column.year.label')"
         multiple
         use-chips
         square
@@ -350,7 +299,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedUids"
         :options="teacherOptions"
-        :label="t('admin.teachers.serviceModifications.table.columns.uid')"
+        :label="t('admin.teachers.serviceModifications.column.teacher.label')"
         emit-value
         map-options
         multiple
@@ -363,7 +312,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedTypes"
         :options="typeOptions"
-        :label="t('admin.teachers.serviceModifications.table.columns.type')"
+        :label="t('admin.teachers.serviceModifications.column.type.label')"
         multiple
         use-chips
         square
@@ -376,7 +325,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.year"
         :options="yearOptions"
-        :label="t('admin.teachers.serviceModifications.form.fields.year')"
+        :label="t('admin.teachers.serviceModifications.column.year.label')"
         :disable="multipleSelection && !selectedFields.includes('year')"
         square
         dense
@@ -389,7 +338,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.uid"
         :options="teacherOptions"
-        :label="t('admin.teachers.serviceModifications.form.fields.uid')"
+        :label="t('admin.teachers.serviceModifications.column.uid.label')"
         :disable="multipleSelection && !selectedFields.includes('uid')"
         emit-value
         map-options
@@ -404,7 +353,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.type"
         :options="typeOptions"
-        :label="t('admin.teachers.serviceModifications.form.fields.type')"
+        :label="t('admin.teachers.serviceModifications.column.type.label')"
         :disable="multipleSelection && !selectedFields.includes('type')"
         square
         dense
@@ -417,7 +366,7 @@ const filterFn = computed(
       <QInput
         :model-value="formValues.hours"
         type="number"
-        :label="t('admin.teachers.serviceModifications.form.fields.hours')"
+        :label="t('admin.teachers.serviceModifications.column.hours.label')"
         :disable="multipleSelection && !selectedFields.includes('hours')"
         square
         dense

@@ -11,7 +11,7 @@ import AdminCoursesCourses from "@/components/admin/AdminCoursesCourses.vue";
 import AdminCoursesDegrees from "@/components/admin/AdminCoursesDegrees.vue";
 import AdminCoursesPrograms from "@/components/admin/AdminCoursesPrograms.vue";
 import AdminCoursesTracks from "@/components/admin/AdminCoursesTracks.vue";
-import AdminSection from "@/components/admin/AdminSection.vue";
+import AdminSection from "@/components/admin/core/AdminSection.vue";
 
 const { t } = useCustomI18n();
 

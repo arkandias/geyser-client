@@ -293,9 +293,9 @@ If there are modifications, requests, or priorities for these services, you will
             hours: "Hours (@:unit.weightedHours)",
           },
           error: {
-            updateYearWithoutUid:
+            updateYearWithoutTeacher:
               "You cannot modify the year without selecting a teacher",
-            updateUidWithoutYear:
+            updateTeacherWithoutYear:
               "You cannot modify the teacher without selecting a year",
             serviceNotFound:
               "No service exists for teacher {uid} and year {year}",

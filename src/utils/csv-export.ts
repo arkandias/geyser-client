@@ -36,7 +36,7 @@ export const processSimpleObject = <T extends Scalar>(
   return flattenSimpleObject(obj, fields);
 };
 
-export const exportCSV = (
+const exportCSV = (
   objects: SimpleObject<Scalar>[],
   fields?: SimpleObject<string> | string[] | null,
 ) =>

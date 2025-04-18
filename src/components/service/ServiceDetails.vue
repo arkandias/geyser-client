@@ -14,6 +14,7 @@ import {
   TeacherServiceDetailsFragmentDoc,
   UpdateServiceDocument,
 } from "@/gql/graphql.ts";
+import { inputToNumber } from "@/utils/misc.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
 import ServiceTable from "@/components/service/ServiceTable.vue";
@@ -98,13 +99,13 @@ const totalService = computed(
 
 // Base service hours form
 const isBaseServiceFormOpen = ref(false);
-const baseServiceHours = ref(0);
+const baseServiceHours = ref<number | null>(null);
 const resetBaseServiceForm = (): void => {
   isBaseServiceFormOpen.value = false;
   baseServiceHours.value = service.value.hours;
 };
 const submitBaseServiceForm = async (): Promise<void> => {
-  if (baseServiceHours.value < 0) {
+  if (baseServiceHours.value === null || baseServiceHours.value < 0) {
     notify(NotifyType.ERROR, {
       message: t("service.details.baseServiceForm.invalid.message"),
       caption: t("service.details.baseServiceForm.invalid.caption.hours"),
@@ -148,7 +149,7 @@ const modificationTypesOptions = computed(
   () => data.value?.modificationTypes ?? [],
 );
 const modificationTypeId = ref<number | null>(null);
-const modificationHours = ref(0);
+const modificationHours = ref<number | null>(null);
 const resetModificationForm = (): void => {
   isModificationFormOpen.value = false;
   modificationTypeId.value = null;
@@ -162,7 +163,7 @@ const submitModificationForm = async (): Promise<void> => {
     });
     return;
   }
-  if (modificationHours.value <= 0) {
+  if (modificationHours.value === null || modificationHours.value <= 0) {
     notify(NotifyType.ERROR, {
       message: t("service.details.modificationForm.invalid.message"),
       caption: t("service.details.modificationForm.invalid.caption.hours"),
@@ -255,13 +256,16 @@ const formatWH = (hours: number) =>
           </td>
           <td v-if="isBaseServiceFormOpen">
             <QInput
-              v-model.number="baseServiceHours"
+              :model-value="baseServiceHours"
               type="number"
               :label="t('service.details.baseServiceForm.fields.hours')"
               square
               dense
               form="edit-base-service"
               class="inline-block"
+              @update:model-value="
+                (value) => (baseServiceHours = inputToNumber(value))
+              "
             />
           </td>
           <td v-else>
@@ -348,13 +352,16 @@ const formatWH = (hours: number) =>
           </td>
           <td>
             <QInput
-              v-model.number="modificationHours"
+              :model-value="modificationHours"
               type="number"
               :label="t('service.details.modificationForm.fields.hours')"
               square
               dense
               form="add-modification"
               class="inline-block"
+              @update:model-value="
+                (value) => (modificationHours = inputToNumber(value))
+              "
             />
           </td>
         </tr>

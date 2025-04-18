@@ -25,7 +25,7 @@ watch(
 const roleOptions = computed(() =>
   roles.value.map((role) => ({
     value: role,
-    label: t(`role.${role}`, 1),
+    label: t(`role.${role}`),
   })),
 );
 

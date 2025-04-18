@@ -47,3 +47,6 @@ export const booleanOptions = (trueLabel: string, falseLabel: string) => [
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getField = <R>(row: R, field: string | ((row: R) => any)): any =>
   typeof field === "function" ? field(row) : row[field as keyof R];
+
+export const nullObj = (obj: object) =>
+  Object.fromEntries(Object.keys(obj).map((key) => [key, null]));

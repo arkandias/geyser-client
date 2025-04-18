@@ -6,12 +6,12 @@ import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { graphql } from "@/gql";
 import { GetAdminTeachersDocument } from "@/gql/graphql.ts";
 
-import AdminSection from "@/components/admin/AdminSection.vue";
 import AdminTeachersPositions from "@/components/admin/AdminTeachersPositions.vue";
 import AdminTeachersServiceModificationTypes from "@/components/admin/AdminTeachersServiceModificationTypes.vue";
 import AdminTeachersServiceModifications from "@/components/admin/AdminTeachersServiceModifications.vue";
 import AdminTeachersServices from "@/components/admin/AdminTeachersServices.vue";
 import AdminTeachersTeachers from "@/components/admin/AdminTeachersTeachers.vue";
+import AdminSection from "@/components/admin/core/AdminSection.vue";
 
 const { t } = useCustomI18n();
 

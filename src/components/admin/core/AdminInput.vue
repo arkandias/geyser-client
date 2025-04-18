@@ -1,0 +1,50 @@
+<script setup lang="ts">
+import { computed } from "vue";
+
+import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { inputToNumber } from "@/utils/misc.ts";
+
+const modelValue = defineModel<string | number | null>();
+const selectedFields = defineModel<string[]>("selectedFields");
+
+const { name, numeric, multipleSelection } = defineProps<{
+  keyPrefix: string;
+  name: string;
+  numeric?: boolean;
+  multipleSelection?: boolean;
+}>();
+
+const { t } = useCustomI18n();
+
+const disable = computed(
+  () => multipleSelection && !(selectedFields.value?.includes(name) ?? true),
+);
+
+const onUpdate = (value: string | number | null) => {
+  modelValue.value = numeric
+    ? inputToNumber(value)
+    : value !== null
+      ? String(value)
+      : null;
+};
+</script>
+
+<template>
+  <QInput
+    :model-value="modelValue"
+    :type="numeric ? 'number' : 'text'"
+    :label="t(`${keyPrefix}.column.${name}.label`)"
+    :disable
+    clearable
+    clear-icon="sym_s_close"
+    square
+    dense
+    @update:model-value="onUpdate"
+  >
+    <template v-if="multipleSelection" #before>
+      <QCheckbox v-model="selectedFields" :val="name" />
+    </template>
+  </QInput>
+</template>
+
+<style scoped lang="scss"></style>

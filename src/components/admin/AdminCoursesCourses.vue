@@ -10,6 +10,7 @@ import {
   AdminCoursesCourseTypeFragmentDoc,
   AdminCoursesDegreeFragmentDoc,
   CourseConstraint,
+  type CourseInsertInput,
   CourseUpdateColumn,
   DeleteCoursesDocument,
   InsertCoursesDocument,
@@ -17,11 +18,14 @@ import {
   UpsertCoursesDocument,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
-import type { Column } from "@/types/column.ts";
-import type { NullableParsedRow, ParsedRow } from "@/types/data.ts";
-import { booleanOptions, inputToNumber } from "@/utils/misc.ts";
+import type { ParsedRow, RowDescriptorExtra } from "@/types/data.ts";
+import { booleanOptions, inputToNumber, nullObj } from "@/utils/misc.ts";
 
-import AdminData from "@/components/admin/AdminData.vue";
+import AdminData from "@/components/admin/core/AdminData.vue";
+
+type Row = AdminCourseFragment;
+type FlatRow = ParsedRow<typeof rowDescriptor>;
+type InsertInput = CourseInsertInput;
 
 const { degreeFragments, courseFragments, courseTypeFragments } = defineProps<{
   degreeFragments: FragmentType<typeof AdminCoursesDegreeFragmentDoc>[];
@@ -29,48 +33,34 @@ const { degreeFragments, courseFragments, courseTypeFragments } = defineProps<{
   courseTypeFragments: FragmentType<typeof AdminCoursesCourseTypeFragmentDoc>[];
 }>();
 
-const { t, n } = useCustomI18n();
+const { t } = useCustomI18n();
 const { years } = useYearsStore();
 
-const idKey = "id";
+const idKey: keyof Row = "id";
 const rowDescriptor = {
   year: { type: "number" },
-  degree: { type: "string" },
-  program: { type: "string" },
-  track: { type: "string", nullable: true },
+  degree: { type: "string", field: (row) => row.program.degree.name },
+  program: { type: "string", field: (row) => row.program.name },
+  track: { type: "string", nullable: true, field: (row) => row.track?.name },
   name: { type: "string" },
   nameShort: { type: "string", nullable: true },
-  semester: { type: "number" },
-  type: { type: "string" },
-  hours: { type: "number" },
-  hoursAdjusted: { type: "number", nullable: true },
-  groups: { type: "number" },
-  groupsAdjusted: { type: "number", nullable: true },
-  description: { type: "string", nullable: true },
+  semester: {
+    type: "number",
+    format: (val: number) => t("semester", { semester: val }),
+  },
+  type: { type: "string", field: (row) => row.type.label },
+  hours: { type: "number", numberFormat: "decimal" },
+  hoursAdjusted: { type: "number", nullable: true, numberFormat: "decimal" },
+  groups: { type: "number", numberFormat: "decimal" },
+  groupsAdjusted: { type: "number", nullable: true, numberFormat: "decimal" },
+  description: {
+    type: "string",
+    nullable: true,
+    format: (val: string) => (val ? "✓" : "✗"),
+  },
   priorityRule: { type: "number", nullable: true },
   visible: { type: "boolean" },
-} as const;
-
-type Row = AdminCourseFragment;
-type T = typeof rowDescriptor;
-type FormValues = NullableParsedRow<T>;
-type ImportRow = ParsedRow<T>;
-type InsertInput = {
-  year?: number | null;
-  programId?: number | null;
-  trackId?: number | null;
-  name?: string | null;
-  nameShort?: string | null;
-  semester?: number | null;
-  typeId?: number | null;
-  hours?: number | null;
-  hoursAdjusted?: number | null;
-  groups?: number | null;
-  groupsAdjusted?: number | null;
-  description?: string | null;
-  priorityRule?: number | null;
-  visible?: boolean | null;
-};
+} as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`
   fragment AdminCourse on Course {
@@ -177,9 +167,9 @@ const upsertCourses = useMutation(UpsertCoursesDocument);
 const updateCourses = useMutation(UpdateCoursesDocument);
 const deleteCourses = useMutation(DeleteCoursesDocument);
 
-const constraint =
+const importConstraint =
   CourseConstraint.CourseYearProgramIdTrackIdNameSemesterTypeIdKey;
-const updateColumns = [
+const importUpdateColumns = [
   CourseUpdateColumn.Year,
   CourseUpdateColumn.ProgramId,
   CourseUpdateColumn.TrackId,
@@ -196,214 +186,67 @@ const updateColumns = [
   CourseUpdateColumn.Visible,
 ];
 
-const columns = computed<Column<Row>[]>(() => [
-  {
-    name: "year",
-    label: t("admin.courses.courses.table.columns.year"),
-    align: "left",
-    field: "year",
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "degree",
-    label: t("admin.courses.courses.table.columns.degree"),
-    align: "left",
-    field: (row) => row.program.degree.name,
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "program",
-    label: t("admin.courses.courses.table.columns.program"),
-    align: "left",
-    field: (row) => row.program.name,
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "track",
-    label: t("admin.courses.courses.table.columns.track"),
-    align: "left",
-    field: (row) => row.track?.name,
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "name",
-    label: t("admin.courses.courses.table.columns.name"),
-    align: "left",
-    field: "name",
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "nameShort",
-    label: t("admin.courses.courses.table.columns.nameShort"),
-    align: "left",
-    field: "nameShort",
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "semester",
-    label: t("admin.courses.courses.table.columns.semester"),
-    align: "left",
-    field: "semester",
-    format: (val: number) => t("semester", { semester: val }),
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "type",
-    label: t("admin.courses.courses.table.columns.type"),
-    align: "left",
-    field: (row) => row.type.label,
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "hours",
-    label: t("admin.courses.courses.table.columns.hours"),
-    field: "hours",
-    format: (val: number | null) => (val === null ? null : n(val, "decimal")),
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "hoursAdjusted",
-    label: t("admin.courses.courses.table.columns.hoursAdjusted"),
-    field: "hoursAdjusted",
-    format: (val: number | null) => (val === null ? null : n(val, "decimal")),
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "groups",
-    label: t("admin.courses.courses.table.columns.groups"),
-    field: "groups",
-    format: (val: number | null) => (val === null ? null : n(val, "decimal")),
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "groupsAdjusted",
-    label: t("admin.courses.courses.table.columns.groupsAdjusted"),
-    field: "groupsAdjusted",
-    format: (val: number | null) => (val === null ? null : n(val, "decimal")),
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "description",
-    label: t("admin.courses.courses.table.columns.description"),
-    align: "center",
-    field: "description",
-    format: (val: string) => (val ? "✓" : "✗"),
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "priorityRule",
-    label: t("admin.courses.courses.table.columns.priorityRule"),
-    field: "priorityRule",
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "visible",
-    label: t("admin.courses.courses.table.columns.visible"),
-    align: "center",
-    field: "visible",
-    format: (val: boolean) => (val ? "✓" : "✗"),
-    sortable: true,
-    searchable: false,
-  },
-]);
-
 const formatRow = (row: Row) =>
   `${row.nameDisplay} (${row.program.degree.nameDisplay}` +
   ` — ${row.program.nameDisplay}` +
   (row.track ? ` — ${row.track.nameDisplay})` : `)`);
 
-const initForm = (rows: Row[]): FormValues => ({
-  year: rows[0]?.year ?? null,
-  degree: rows[0]?.program.degree.name ?? null,
-  program: rows[0]?.program.name ?? null,
-  track: rows[0]?.track?.name ?? null,
-  name: rows[0]?.name ?? null,
-  nameShort: rows[0]?.nameShort ?? null,
-  semester: rows[0]?.semester ?? null,
-  type: rows[0]?.type.label ?? null,
-  hours: rows[0]?.hours ?? null,
-  hoursAdjusted: rows[0]?.hoursAdjusted ?? null,
-  groups: rows[0]?.groups ?? null,
-  groupsAdjusted: rows[0]?.groupsAdjusted ?? null,
-  description: rows[0]?.description ?? null,
-  priorityRule: rows[0]?.priorityRule ?? null,
-  visible: rows[0]?.visible ?? null,
-});
+const validateFlatRow = (flatRow: FlatRow): InsertInput => {
+  const object: InsertInput = {};
 
-function validateImportRow(importRow: ImportRow): InsertInput;
-function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-): Partial<InsertInput> {
-  const object: Partial<InsertInput> = {};
-
-  if (importRow.year !== undefined) {
-    object.year = importRow.year;
+  if (flatRow.year !== undefined) {
+    object.year = flatRow.year;
   }
 
   // programId
   if (
-    importRow.degree !== undefined ||
-    importRow.program !== undefined ||
-    importRow.track !== undefined
+    flatRow.degree !== undefined ||
+    flatRow.program !== undefined ||
+    flatRow.track !== undefined
   ) {
-    if (importRow.degree !== undefined && importRow.program === undefined) {
+    if (flatRow.degree !== undefined && flatRow.program === undefined) {
       throw new Error(
         t("admin.courses.courses.form.error.updateDegreeWithoutProgram"),
       );
     }
-    if (importRow.program !== undefined && importRow.degree === undefined) {
+    if (flatRow.program !== undefined && flatRow.degree === undefined) {
       throw new Error(
         t("admin.courses.courses.form.error.updateProgramWithoutDegree"),
       );
     }
-    const degree = degrees.value.find((d) => d.name === importRow.degree);
+    const degree = degrees.value.find((d) => d.name === flatRow.degree);
     if (degree === undefined) {
       throw new Error(
-        t("admin.courses.courses.form.error.degreeNotFound", importRow),
+        t("admin.courses.courses.form.error.degreeNotFound", flatRow),
       );
     }
-    const program = degree.programs.find((p) => p.name === importRow.program);
+    const program = degree.programs.find((p) => p.name === flatRow.program);
     if (program === undefined) {
       throw new Error(
-        t("admin.courses.courses.form.error.programNotFound", importRow),
+        t("admin.courses.courses.form.error.programNotFound", flatRow),
       );
     }
     object.programId = program.id;
 
     // trackId
-    if (importRow.track !== undefined) {
-      if (importRow.degree === undefined) {
+    if (flatRow.track !== undefined) {
+      if (flatRow.degree === undefined) {
         throw new Error(
           t("admin.courses.courses.form.error.updateTrackWithoutDegree"),
         );
       }
-      if (importRow.program === undefined) {
+      if (flatRow.program === undefined) {
         throw new Error(
           t("admin.courses.courses.form.error.updateTrackWithoutProgram"),
         );
       }
-      if (importRow.track === null) {
+      if (flatRow.track === null) {
         object.trackId = null;
       } else {
-        const track = program.tracks.find((t) => t.name === importRow.track);
+        const track = program.tracks.find((t) => t.name === flatRow.track);
         if (track === undefined) {
           throw new Error(
-            t("admin.courses.courses.form.error.trackNotFound", importRow),
+            t("admin.courses.courses.form.error.trackNotFound", flatRow),
           );
         }
         object.trackId = track.id;
@@ -411,83 +254,83 @@ function validateImportRow(
     }
   }
 
-  if (importRow.nameShort !== undefined) {
-    object.nameShort = importRow.nameShort;
+  if (flatRow.nameShort !== undefined) {
+    object.nameShort = flatRow.nameShort;
   }
 
-  if (importRow.semester !== undefined) {
-    object.semester = importRow.semester;
+  if (flatRow.semester !== undefined) {
+    object.semester = flatRow.semester;
   }
 
   // typeId
-  if (importRow.type !== undefined) {
-    const type = courseTypes.value.find((ct) => ct.label === importRow.type);
+  if (flatRow.type !== undefined) {
+    const type = courseTypes.value.find((ct) => ct.label === flatRow.type);
     if (type === undefined) {
       throw new Error(
-        t("admin.courses.courses.form.error.courseTypeNotFound", importRow),
+        t("admin.courses.courses.form.error.courseTypeNotFound", flatRow),
       );
     }
     object.typeId = type.id;
   }
 
-  if (importRow.name !== undefined) {
-    object.name = importRow.name;
+  if (flatRow.name !== undefined) {
+    object.name = flatRow.name;
   }
 
-  if (importRow.hours !== undefined) {
-    if (importRow.hours < 0) {
+  if (flatRow.hours !== undefined) {
+    if (flatRow.hours === null || flatRow.hours < 0) {
       throw new Error(t("admin.courses.courses.form.error.hoursNegative"));
     }
-    object.hours = importRow.hours;
+    object.hours = flatRow.hours;
   }
 
-  if (importRow.hoursAdjusted !== undefined) {
-    if (importRow.hoursAdjusted !== null && importRow.hoursAdjusted < 0) {
+  if (flatRow.hoursAdjusted !== undefined) {
+    if (flatRow.hoursAdjusted !== null && flatRow.hoursAdjusted < 0) {
       throw new Error(
         t("admin.courses.courses.form.error.hoursAdjustedNegative"),
       );
     }
-    object.hoursAdjusted = importRow.hoursAdjusted;
+    object.hoursAdjusted = flatRow.hoursAdjusted;
   }
 
-  if (importRow.groups !== undefined) {
-    if (importRow.groups < 0) {
+  if (flatRow.groups !== undefined) {
+    if (flatRow.groups === null || flatRow.groups < 0) {
       throw new Error(t("admin.courses.courses.form.error.groupsNegative"));
     }
-    object.groups = importRow.groups;
+    object.groups = flatRow.groups;
   }
 
-  if (importRow.groupsAdjusted !== undefined) {
-    if (importRow.groupsAdjusted !== null && importRow.groupsAdjusted < 0) {
+  if (flatRow.groupsAdjusted !== undefined) {
+    if (flatRow.groupsAdjusted !== null && flatRow.groupsAdjusted < 0) {
       throw new Error(
         t("admin.courses.courses.form.error.groupsAdjustedNegative"),
       );
     }
-    object.groupsAdjusted = importRow.groupsAdjusted;
+    object.groupsAdjusted = flatRow.groupsAdjusted;
   }
 
-  if (importRow.description !== undefined) {
-    object.description = importRow.description;
+  if (flatRow.description !== undefined) {
+    object.description = flatRow.description;
   }
 
-  if (importRow.priorityRule !== undefined) {
+  if (flatRow.priorityRule !== undefined) {
     if (
-      importRow.priorityRule !== null &&
-      (importRow.priorityRule < 0 || !Number.isInteger(importRow.priorityRule))
+      flatRow.priorityRule !== null &&
+      (flatRow.priorityRule < 0 || !Number.isInteger(flatRow.priorityRule))
     ) {
       throw new Error(t("admin.courses.courses.form.error.priorityRule"));
     }
-    object.priorityRule = importRow.priorityRule;
+    object.priorityRule = flatRow.priorityRule;
   }
 
-  if (importRow.visible !== undefined) {
-    object.visible = importRow.visible;
+  if (flatRow.visible !== undefined) {
+    object.visible = flatRow.visible;
   }
 
   return object;
-}
+};
 
-const formValues = ref<FormValues>(initForm([]));
+const formValues = ref<FlatRow>(nullObj(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
 const yearOptions = computed(() => years.value.map((y) => y.value));
@@ -557,27 +400,28 @@ const selectedTrackOptions = computed(() =>
     ),
 );
 const filterFn = computed(
-  () => (r: Row) =>
-    (!selectedYears.value.length || selectedYears.value.includes(r.year)) &&
+  () => (row: Row) =>
+    (!selectedYears.value.length || selectedYears.value.includes(row.year)) &&
     (!selectedDegrees.value.length ||
-      selectedDegrees.value.includes(r.program.degree.name)) &&
+      selectedDegrees.value.includes(row.program.degree.name)) &&
     (!selectedPrograms.value.length ||
       selectedPrograms.value.some(
         (p) =>
-          p.degree === r.program.degree.name && p.program === r.program.name,
+          p.degree === row.program.degree.name &&
+          p.program === row.program.name,
       )) &&
     (!selectedTracks.value.length ||
       selectedTracks.value.some(
         (t) =>
-          t.degree === r.program.degree.name &&
-          t.program === r.program.name &&
-          t.track === r.track?.name,
+          t.degree === row.program.degree.name &&
+          t.program === row.program.name &&
+          t.track === row.track?.name,
       )) &&
     (!selectedSemesters.value.length ||
-      selectedSemesters.value.includes(r.semester)) &&
+      selectedSemesters.value.includes(row.semester)) &&
     (!selectedTypes.value.length ||
-      selectedTypes.value.includes(r.type.label)) &&
-    (selectedVisible.value === null || r.visible === selectedVisible.value),
+      selectedTypes.value.includes(row.type.label)) &&
+    (selectedVisible.value === null || row.visible === selectedVisible.value),
 );
 </script>
 
@@ -585,28 +429,26 @@ const filterFn = computed(
   <AdminData
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
+    section="courses"
     name="courses"
-    key-prefix="admin.courses.courses"
     :id-key
     :row-descriptor
-    :columns
     :rows="courses"
     :filter-fn
     :format-row
-    :init-form
-    :validate-import-row
+    :validate-flat-row
     :insert-data="insertCourses"
     :upsert-data="upsertCourses"
     :update-data="updateCourses"
     :delete-data="deleteCourses"
-    :constraint
-    :update-columns
+    :import-constraint
+    :import-update-columns
   >
     <template #filters>
       <QSelect
         v-model="selectedYears"
         :options="yearOptions"
-        :label="t('admin.courses.courses.table.columns.year')"
+        :label="t('admin.courses.courses.column.year.label')"
         multiple
         use-chips
         square
@@ -617,7 +459,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedDegrees"
         :options="degreeOptions"
-        :label="t('admin.courses.courses.table.columns.degree')"
+        :label="t('admin.courses.courses.column.degree.label')"
         multiple
         use-chips
         square
@@ -628,7 +470,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedPrograms"
         :options="selectedProgramOptions"
-        :label="t('admin.courses.courses.table.columns.program')"
+        :label="t('admin.courses.courses.column.program.label')"
         emit-value
         map-options
         multiple
@@ -641,7 +483,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedTracks"
         :options="selectedTrackOptions"
-        :label="t('admin.courses.courses.table.columns.track')"
+        :label="t('admin.courses.courses.column.track.label')"
         emit-value
         map-options
         multiple
@@ -654,7 +496,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedSemesters"
         :options="semesterOptions"
-        :label="t('admin.courses.courses.table.columns.semester')"
+        :label="t('admin.courses.courses.column.semester.label')"
         emit-value
         map-options
         multiple
@@ -667,7 +509,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedTypes"
         :options="typeOptions"
-        :label="t('admin.courses.courses.table.columns.type')"
+        :label="t('admin.courses.courses.column.type.label')"
         multiple
         use-chips
         square
@@ -678,7 +520,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedVisible"
         :options="booleanOptions(t('yes'), t('no'))"
-        :label="t('admin.courses.courses.table.columns.visible')"
+        :label="t('admin.courses.courses.column.visible.label')"
         emit-value
         map-options
         clearable
@@ -693,7 +535,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.year"
         :options="yearOptions"
-        :label="t('admin.courses.courses.form.fields.year')"
+        :label="t('admin.courses.courses.column.year.label')"
         :disable="multipleSelection && !selectedFields.includes('year')"
         square
         dense
@@ -706,7 +548,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.degree"
         :options="degreeOptions"
-        :label="t('admin.courses.courses.form.fields.degree')"
+        :label="t('admin.courses.courses.column.degree.label')"
         :disable="multipleSelection && !selectedFields.includes('degree')"
         square
         dense
@@ -719,7 +561,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.program"
         :options="programOptions"
-        :label="t('admin.courses.courses.form.fields.program')"
+        :label="t('admin.courses.courses.column.program.label')"
         :disable="
           !formValues.degree ||
           (multipleSelection && !selectedFields.includes('program'))
@@ -735,7 +577,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.track"
         :options="trackOptions"
-        :label="t('admin.courses.courses.form.fields.track')"
+        :label="t('admin.courses.courses.column.track.label')"
         :disable="
           !formValues.program ||
           (multipleSelection && !selectedFields.includes('track'))
@@ -752,7 +594,7 @@ const filterFn = computed(
       </QSelect>
       <QInput
         v-model="formValues.name"
-        :label="t('admin.courses.courses.form.fields.name')"
+        :label="t('admin.courses.courses.column.name.label')"
         :disable="multipleSelection && !selectedFields.includes('name')"
         square
         dense
@@ -763,7 +605,7 @@ const filterFn = computed(
       </QInput>
       <QInput
         v-model="formValues.nameShort"
-        :label="t('admin.courses.courses.form.fields.nameShort')"
+        :label="t('admin.courses.courses.column.nameShort')"
         :disable="multipleSelection && !selectedFields.includes('nameShort')"
         square
         dense
@@ -775,7 +617,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.semester"
         :options="semesterOptions"
-        :label="t('admin.courses.courses.form.fields.semester')"
+        :label="t('admin.courses.courses.column.semester.label')"
         :disable="multipleSelection && !selectedFields.includes('semester')"
         emit-value
         map-options
@@ -790,7 +632,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.type"
         :options="typeOptions"
-        :label="t('admin.courses.courses.form.fields.type')"
+        :label="t('admin.courses.courses.column.type.label')"
         :disable="multipleSelection && !selectedFields.includes('type')"
         square
         dense
@@ -803,7 +645,7 @@ const filterFn = computed(
       <QInput
         :model-value="formValues.hours"
         type="number"
-        :label="t('admin.courses.courses.form.fields.hours')"
+        :label="t('admin.courses.courses.column.hours.label')"
         :disable="multipleSelection && !selectedFields.includes('hours')"
         square
         dense
@@ -818,7 +660,7 @@ const filterFn = computed(
       <QInput
         :model-value="formValues.hoursAdjusted"
         type="number"
-        :label="t('admin.courses.courses.form.fields.hoursAdjusted')"
+        :label="t('admin.courses.courses.column.hoursAdjusted')"
         :disable="
           multipleSelection && !selectedFields.includes('hoursAdjusted')
         "
@@ -835,7 +677,7 @@ const filterFn = computed(
       <QInput
         :model-value="formValues.groups"
         type="number"
-        :label="t('admin.courses.courses.form.fields.groups')"
+        :label="t('admin.courses.courses.column.groups.label')"
         :disable="multipleSelection && !selectedFields.includes('groups')"
         square
         dense
@@ -850,7 +692,7 @@ const filterFn = computed(
       <QInput
         :model-value="formValues.groupsAdjusted"
         type="number"
-        :label="t('admin.courses.courses.form.fields.groupsAdjusted')"
+        :label="t('admin.courses.courses.column.groupsAdjusted')"
         :disable="
           multipleSelection && !selectedFields.includes('groupsAdjusted')
         "
@@ -866,7 +708,7 @@ const filterFn = computed(
       </QInput>
       <QInput
         v-model="formValues.description"
-        :label="t('admin.courses.courses.form.fields.description')"
+        :label="t('admin.courses.courses.column.description.label')"
         :disable="multipleSelection && !selectedFields.includes('description')"
         square
         dense
@@ -878,7 +720,7 @@ const filterFn = computed(
       <QInput
         :model-value="formValues.priorityRule"
         type="number"
-        :label="t('admin.courses.courses.form.fields.priorityRule')"
+        :label="t('admin.courses.courses.column.priorityRule')"
         :disable="multipleSelection && !selectedFields.includes('priorityRule')"
         clearable
         clear-icon="sym_s_close"
@@ -900,7 +742,7 @@ const filterFn = computed(
         />
         <QToggle
           v-model="formValues.visible"
-          :label="t('admin.courses.courses.form.fields.visible')"
+          :label="t('admin.courses.courses.column.visible.label')"
           :disable="multipleSelection && !selectedFields.includes('visible')"
           left-label
         />

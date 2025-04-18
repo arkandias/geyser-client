@@ -11,15 +11,19 @@ import {
   DeleteTracksDocument,
   InsertTracksDocument,
   TrackConstraint,
+  type TrackInsertInput,
   TrackUpdateColumn,
   UpdateTracksDocument,
   UpsertTracksDocument,
 } from "@/gql/graphql.ts";
-import type { Column } from "@/types/column.ts";
-import type { NullableParsedRow, ParsedRow } from "@/types/data.ts";
-import { booleanOptions } from "@/utils/misc.ts";
+import type { ParsedRow, RowDescriptorExtra } from "@/types/data.ts";
+import { booleanOptions, nullObj } from "@/utils/misc.ts";
 
-import AdminData from "@/components/admin/AdminData.vue";
+import AdminData from "@/components/admin/core/AdminData.vue";
+
+type Row = AdminTrackFragment;
+type FlatRow = ParsedRow<typeof rowDescriptor>;
+type InsertInput = TrackInsertInput;
 
 const { degreeFragments, trackFragments } = defineProps<{
   degreeFragments: FragmentType<typeof AdminTracksDegreeFragmentDoc>[];
@@ -28,25 +32,14 @@ const { degreeFragments, trackFragments } = defineProps<{
 
 const { t } = useCustomI18n();
 
-const idKey = "id";
+const idKey: keyof Row = "id";
 const rowDescriptor = {
-  degree: { type: "string" },
-  program: { type: "string" },
+  degree: { type: "string", field: (row) => row.program.degree.name },
+  program: { type: "string", field: (row) => row.program.name },
   name: { type: "string" },
   nameShort: { type: "string", nullable: true },
   visible: { type: "boolean" },
-} as const;
-
-type Row = AdminTrackFragment;
-type T = typeof rowDescriptor;
-type FormValues = NullableParsedRow<T>;
-type ImportRow = ParsedRow<T>;
-type InsertInput = {
-  programId?: number | null;
-  name?: string | null;
-  nameShort?: string | null;
-  visible?: boolean | null;
-};
+} as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`
   fragment AdminTrack on Track {
@@ -122,119 +115,63 @@ const upsertTracks = useMutation(UpsertTracksDocument);
 const updateTracks = useMutation(UpdateTracksDocument);
 const deleteTracks = useMutation(DeleteTracksDocument);
 
-const constraint = TrackConstraint.TrackProgramIdNameKey;
-const updateColumns = [
+const importConstraint = TrackConstraint.TrackProgramIdNameKey;
+const importUpdateColumns = [
   TrackUpdateColumn.ProgramId,
   TrackUpdateColumn.Name,
   TrackUpdateColumn.NameShort,
   TrackUpdateColumn.Visible,
 ];
 
-const columns = computed<Column<Row>[]>(() => [
-  {
-    name: "degree",
-    label: t("admin.courses.tracks.table.columns.degree"),
-    align: "left",
-    field: (row) => row.program.degree.name,
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "program",
-    label: t("admin.courses.tracks.table.columns.program"),
-    align: "left",
-    field: (row) => row.program.name,
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "name",
-    label: t("admin.courses.tracks.table.columns.name"),
-    align: "left",
-    field: "name",
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "nameShort",
-    label: t("admin.courses.tracks.table.columns.nameShort"),
-    align: "left",
-    field: "nameShort",
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "visible",
-    label: t("admin.courses.tracks.table.columns.visible"),
-    align: "center",
-    field: "visible",
-    format: (val: boolean) => (val ? "✓" : "✗"),
-    sortable: true,
-    searchable: false,
-  },
-]);
-
 const formatRow = (row: Row) =>
   `${row.nameDisplay} (${row.program.degree.nameDisplay} — ${row.program.nameDisplay})`;
 
-const initForm = (rows: Row[]): FormValues => ({
-  degree: rows[0]?.program.degree.name ?? null,
-  program: rows[0]?.program.name ?? null,
-  name: rows[0]?.name ?? null,
-  nameShort: rows[0]?.nameShort ?? null,
-  visible: rows[0]?.visible ?? null,
-});
-
-function validateImportRow(importRow: ImportRow): InsertInput;
-function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-): Partial<InsertInput> {
-  const object: Partial<InsertInput> = {};
+const validateFlatRow = (flatRow: FlatRow): InsertInput => {
+  const object: InsertInput = {};
 
   // programId
-  if (importRow.degree !== undefined || importRow.program !== undefined) {
-    if (importRow.program === undefined) {
+  if (flatRow.degree !== undefined || flatRow.program !== undefined) {
+    if (flatRow.program === undefined) {
       throw new Error(
         t("admin.courses.tracks.form.error.updateDegreeWithoutProgram"),
       );
     }
-    if (importRow.degree === undefined) {
+    if (flatRow.degree === undefined) {
       throw new Error(
         t("admin.courses.tracks.form.error.updateProgramWithoutDegree"),
       );
     }
-    const degree = degrees.value.find((d) => d.name === importRow.degree);
+    const degree = degrees.value.find((d) => d.name === flatRow.degree);
     if (degree === undefined) {
       throw new Error(
-        t("admin.courses.tracks.form.error.degreeNotFound", importRow),
+        t("admin.courses.tracks.form.error.degreeNotFound", flatRow),
       );
     }
-    const program = degree.programs.find((p) => p.name === importRow.program);
+    const program = degree.programs.find((p) => p.name === flatRow.program);
     if (program === undefined) {
       throw new Error(
-        t("admin.courses.tracks.form.error.programNotFound", importRow),
+        t("admin.courses.tracks.form.error.programNotFound", flatRow),
       );
     }
     object.programId = program.id;
   }
 
-  if (importRow.name !== undefined) {
-    object.name = importRow.name;
+  if (flatRow.name !== undefined) {
+    object.name = flatRow.name;
   }
 
-  if (importRow.nameShort !== undefined) {
-    object.nameShort = importRow.nameShort;
+  if (flatRow.nameShort !== undefined) {
+    object.nameShort = flatRow.nameShort;
   }
 
-  if (importRow.visible !== undefined) {
-    object.visible = importRow.visible;
+  if (flatRow.visible !== undefined) {
+    object.visible = flatRow.visible;
   }
 
   return object;
-}
+};
 
-const formValues = ref<FormValues>(initForm([]));
+const formValues = ref<FlatRow>(nullObj(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
 const degreeOptions = computed(() => degrees.value.map((d) => d.name));
@@ -263,15 +200,16 @@ const selectedProgramOptions = computed(() =>
     ),
 );
 const filterFn = computed(
-  () => (r: Row) =>
+  () => (row: Row) =>
     (!selectedDegrees.value.length ||
-      selectedDegrees.value.includes(r.program.degree.name)) &&
+      selectedDegrees.value.includes(row.program.degree.name)) &&
     (!selectedPrograms.value.length ||
       selectedPrograms.value.some(
         (p) =>
-          p.degree === r.program.degree.name && p.program === r.program.name,
+          p.degree === row.program.degree.name &&
+          p.program === row.program.name,
       )) &&
-    (selectedVisible.value === null || r.visible === selectedVisible.value),
+    (selectedVisible.value === null || row.visible === selectedVisible.value),
 );
 </script>
 
@@ -279,28 +217,26 @@ const filterFn = computed(
   <AdminData
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
+    section="courses"
     name="tracks"
-    key-prefix="admin.courses.tracks"
     :id-key
     :row-descriptor
-    :columns
     :rows="tracks"
     :filter-fn
     :format-row
-    :init-form
-    :validate-import-row
+    :validate-flat-row
     :insert-data="insertTracks"
     :upsert-data="upsertTracks"
     :update-data="updateTracks"
     :delete-data="deleteTracks"
-    :constraint
-    :update-columns
+    :import-constraint
+    :import-update-columns
   >
     <template #filters>
       <QSelect
         v-model="selectedDegrees"
         :options="degreeOptions"
-        :label="t('admin.courses.tracks.table.columns.degree')"
+        :label="t('admin.courses.tracks.column.degree.label')"
         multiple
         use-chips
         square
@@ -311,7 +247,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedPrograms"
         :options="selectedProgramOptions"
-        :label="t('admin.courses.tracks.table.columns.program')"
+        :label="t('admin.courses.tracks.column.program.label')"
         emit-value
         map-options
         multiple
@@ -324,7 +260,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedVisible"
         :options="booleanOptions(t('yes'), t('no'))"
-        :label="t('admin.courses.tracks.table.columns.visible')"
+        :label="t('admin.courses.tracks.column.visible.label')"
         emit-value
         map-options
         clearable
@@ -339,7 +275,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.degree"
         :options="degreeOptions"
-        :label="t('admin.courses.tracks.form.fields.degree')"
+        :label="t('admin.courses.tracks.column.degree.label')"
         :disable="multipleSelection && !selectedFields.includes('degree')"
         square
         dense
@@ -352,7 +288,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.program"
         :options="programOptions"
-        :label="t('admin.courses.tracks.form.fields.program')"
+        :label="t('admin.courses.tracks.column.program.label')"
         :disable="multipleSelection && !selectedFields.includes('program')"
         square
         dense
@@ -364,7 +300,7 @@ const filterFn = computed(
       </QSelect>
       <QInput
         v-model="formValues.name"
-        :label="t('admin.courses.tracks.form.fields.name')"
+        :label="t('admin.courses.tracks.column.name.label')"
         :disable="multipleSelection && !selectedFields.includes('name')"
         square
         dense
@@ -375,7 +311,7 @@ const filterFn = computed(
       </QInput>
       <QInput
         v-model="formValues.nameShort"
-        :label="t('admin.courses.tracks.form.fields.nameShort')"
+        :label="t('admin.courses.tracks.column.nameShort')"
         :disable="multipleSelection && !selectedFields.includes('nameShort')"
         square
         dense
@@ -388,7 +324,7 @@ const filterFn = computed(
         />
         <QToggle
           v-model="formValues.visible"
-          :label="t('admin.courses.tracks.form.fields.visible')"
+          :label="t('admin.courses.tracks.column.visible.label')"
           :disable="multipleSelection && !selectedFields.includes('visible')"
           left-label
         />

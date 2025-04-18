@@ -4,7 +4,7 @@
   generic="
     Row extends SimpleObject<Scalar>,
     IdKey extends string & keyof Row,
-    T extends RowDescriptor,
+    T extends RowDescriptorExtra<Row>,
     InsertInput extends object,
     Constraint extends string,
     UpdateColumn extends string
@@ -15,27 +15,22 @@ import { type Ref, computed, ref, toValue, useSlots, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
+import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import type { Column } from "@/types/column.ts";
 import type {
   FieldDescriptor,
-  NullableParsedRow,
   ParsedRow,
   PrimitiveTypeName,
-  RowDescriptor,
+  RowDescriptorExtra,
   Scalar,
   SimpleObject,
 } from "@/types/data.ts";
 import { downloadCSV } from "@/utils/csv-export.ts";
 import { importCSV } from "@/utils/csv-import.ts";
-import { getField, normalizeForSearch } from "@/utils/misc.ts";
+import { getField, normalizeForSearch, nullObj } from "@/utils/misc.ts";
 
 type Id = Row[IdKey];
-type FormValues = NullableParsedRow<T>;
-type ImportRow = ParsedRow<T>;
-type ValidateImportRow = {
-  (importRow: ImportRow): InsertInput;
-  (importRow: Partial<ImportRow>): Partial<InsertInput>;
-};
+type FlatRow = ParsedRow<T>;
 type CustomMutationResponse<
   Name extends string,
   V extends object,
@@ -43,40 +38,40 @@ type CustomMutationResponse<
   Partial<Record<Name, { returning: Record<IdKey, Id>[] } | null>>,
   V
 >;
+type FormData = {
+  [K in keyof T]: {
+    model: Scalar;
+    options?: (string | object)[];
+  };
+};
 
-const formValues = defineModel<FormValues>("formValues", { required: true });
-const selectedFields = defineModel<string[] | null>("selectedFields", {
-  default: null,
-});
+const formValues = defineModel<FlatRow>("formValues");
+const selectedFields = defineModel<string[]>("selectedFields");
 const {
+  section,
   name,
-  keyPrefix,
   idKey,
   rowDescriptor,
-  columns,
   rows,
   filterFn,
   formatRow,
-  initForm,
-  validateImportRow,
+  validateFlatRow,
   insertData,
   upsertData,
   updateData,
   deleteData,
-  constraint,
-  updateColumns,
-  extraCsvInstructions,
+  importConstraint,
+  importUpdateColumns,
+  formData,
 } = defineProps<{
+  section: string;
   name: string;
-  keyPrefix: string;
   idKey: IdKey;
   rowDescriptor: T;
-  columns: Column<Row>[];
   rows: Row[];
   filterFn?: (row: Row) => boolean;
   formatRow: (row: Row) => string;
-  initForm: (rows: Row[]) => FormValues;
-  validateImportRow: ValidateImportRow;
+  validateFlatRow: (flatRow: FlatRow) => InsertInput;
   insertData: CustomMutationResponse<
     "insertData",
     { objects: InsertInput | InsertInput[] }
@@ -95,13 +90,13 @@ const {
     "updateData",
     {
       ids: Id | Id[];
-      changes: Partial<InsertInput>;
+      changes: InsertInput;
     }
   >;
   deleteData: CustomMutationResponse<"deleteData", { ids: Id | Id[] }>;
-  constraint: Constraint;
-  updateColumns: UpdateColumn[];
-  extraCsvInstructions?: string;
+  importConstraint: Constraint;
+  importUpdateColumns: UpdateColumn[];
+  formData: FormData;
 }>();
 defineSlots<{
   form(slotProps: { multipleSelection: boolean }): unknown;
@@ -109,10 +104,37 @@ defineSlots<{
 }>();
 
 const slots = useSlots();
-const { t } = useCustomI18n();
+const { t, n } = useCustomI18n();
 const { notify } = useNotify();
 
+const keyPrefix = `admin.${section}.${name}`;
+
 // ===== Data Table =====
+const columns = computed<Column<Row>[]>(() =>
+  Object.entries(rowDescriptor).map(([key, descriptor]) => ({
+    name: key,
+    label: t(`${keyPrefix}.column.${key}.label`),
+    tooltip: t(`${keyPrefix}.column.${key}.tooltip`),
+    align:
+      descriptor.type === "string"
+        ? "left"
+        : descriptor.type === "number"
+          ? "right"
+          : "center",
+    field: descriptor.field ?? key,
+    format:
+      descriptor.type === "boolean"
+        ? (val: boolean | null) => (val ? "✓" : "✗")
+        : descriptor.numberFormat
+          ? (val: number | null) =>
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              val === null ? null : n(val, descriptor.numberFormat!)
+          : descriptor.format,
+    sortable: true,
+    searchable: descriptor.type === "string",
+  })),
+);
+
 const selectedRows: Ref<Row[]> = ref([]);
 const selection = computed(() => !!selectedRows.value.length);
 const multipleSelection = computed<boolean>(
@@ -137,6 +159,17 @@ const formTitle = computed(() => {
   }
 });
 
+const initForm = (rows: Row[]): FlatRow =>
+  (rows[0]
+    ? Object.fromEntries(
+        Object.entries(rowDescriptor).map(([key, descriptor]) => [
+          key,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          getField(rows[0]!, descriptor.field ?? key),
+        ]),
+      )
+    : nullObj(rowDescriptor)) as FlatRow;
+
 const openForm = (rows?: Row[]) => {
   if (rows) {
     selectedRows.value = rows;
@@ -152,21 +185,15 @@ const openForm = (rows?: Row[]) => {
 const errorMessage = (error: unknown) =>
   error instanceof Error ? error.message : t("admin.data.error.unknownError");
 
-function setImportRowValue<K extends keyof ImportRow>(
-  row: Partial<ImportRow>,
-  key: K,
-  value: ImportRow[K],
-) {
-  row[key] = value;
-}
-
-function validateForm(): ImportRow;
-function validateForm(fields: (keyof T)[]): Partial<ImportRow>;
-function validateForm(fields?: (keyof T)[]): ImportRow | Partial<ImportRow> {
-  const importRow: Partial<ImportRow> = {};
+const validateForm = (fields?: (keyof T)[]): FlatRow => {
+  const flatRow: FlatRow = {};
 
   Object.entries(rowDescriptor).forEach(([key, fieldDescriptor]) => {
     if (fields && !fields.includes(key)) {
+      return;
+    }
+
+    if (!formValues.value) {
       return;
     }
 
@@ -180,7 +207,7 @@ function validateForm(fields?: (keyof T)[]): ImportRow | Partial<ImportRow> {
     if (!fieldDescriptor.nullable && value == null) {
       throw new Error(
         t("admin.data.error.emptyField", {
-          field: t(`${keyPrefix}.form.fields.${key}`),
+          field: t(`${keyPrefix}.column.${key}.label`),
         }),
       );
     }
@@ -192,26 +219,22 @@ function validateForm(fields?: (keyof T)[]): ImportRow | Partial<ImportRow> {
     ) {
       throw new Error(
         t("admin.data.error.notANumber", {
-          field: t(`${keyPrefix}.form.fields.${key}`),
+          field: t(`${keyPrefix}.column.${key}.label`),
         }),
       );
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    setImportRowValue(importRow, key, value!);
+    // @ts-expect-error Vue: Type ParsedRow<T> is generic and can only be indexed for reading
+    flatRow[key] = value;
   });
 
-  if (!fields) {
-    return importRow as ImportRow;
-  }
-
-  return importRow;
-}
+  return flatRow;
+};
 
 const insertDataHandle = async () => {
   let object: InsertInput;
   try {
-    object = validateImportRow(validateForm());
+    object = validateFlatRow(validateForm());
   } catch (error) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.invalidForm"),
@@ -241,9 +264,9 @@ const insertDataHandle = async () => {
 };
 
 const updateDataHandle = async () => {
-  let changes: Partial<InsertInput>;
+  let changes: InsertInput;
   try {
-    changes = validateImportRow(
+    changes = validateFlatRow(
       multipleSelection.value && selectedFields.value
         ? validateForm(selectedFields.value)
         : validateForm(),
@@ -320,12 +343,14 @@ const deleteDataHandle = async () => {
 const hasFilters = computed(() => !!slots["filters"]);
 const showFilters = ref(false);
 const search = ref<string | null>(null);
-const searchableColumns = columns
-  .filter((col) => toValue(col.searchable))
-  .map((col) => col.name);
+const searchableColumns = computed(() =>
+  columns.value.filter((col) => toValue(col.searchable)).map((col) => col.name),
+);
 const filterObj = computed(() => ({
   search: normalizeForSearch(search.value ?? ""),
-  searchColumns: columns.filter((col) => searchableColumns.includes(col.name)),
+  searchColumns: columns.value.filter((col) =>
+    searchableColumns.value.includes(col.name),
+  ),
 }));
 const filterMethod = (
   rows: readonly Row[],
@@ -357,13 +382,13 @@ watch(isImportDialogOpen, (value) => {
 const importColumns: Column<[string, FieldDescriptor]>[] = [
   {
     name: "key",
-    label: t("admin.data.import.table.columns.key"),
+    label: t("admin.data.import.table.column.key"),
     align: "left",
     field: ([key]) => key,
   },
   {
     name: "type",
-    label: t("admin.data.import.table.columns.type"),
+    label: t("admin.data.import.table.column.type"),
     align: "left",
     field: ([_, fieldDescriptor]) => fieldDescriptor.type,
     format: (val: PrimitiveTypeName) =>
@@ -371,14 +396,20 @@ const importColumns: Column<[string, FieldDescriptor]>[] = [
   },
   {
     name: "nonNullable",
-    label: t("admin.data.import.table.columns.nonNullable"),
+    label: t("admin.data.import.table.column.nonNullable"),
     align: "center",
     field: ([_, fieldDescriptor]) => !fieldDescriptor.nullable,
     format: (val: boolean) => (val ? "✓" : "✗"),
   },
+  {
+    name: "info",
+    label: t("admin.data.import.table.column.info"),
+    align: "left",
+    field: ([_, fieldDescriptor]) => fieldDescriptor.info,
+  },
 ];
 
-const importRowsHandle = async () => {
+const flatRowsHandle = async () => {
   if (!selectedFile.value) {
     notify(NotifyType.ERROR, {
       message: t("admin.data.error.importFailed"),
@@ -399,18 +430,18 @@ const importRowsHandle = async () => {
       );
     }
 
-    let importRows: ImportRow[];
+    let flatRows: FlatRow[];
     try {
-      importRows = importCSV(text, rowDescriptor);
+      flatRows = importCSV(text, rowDescriptor);
     } catch (error) {
       throw new Error(
         t("admin.data.error.parsingError", { reason: errorMessage(error) }),
       );
     }
 
-    const objects = importRows.map((row, index) => {
+    const objects = flatRows.map((row, index) => {
       try {
-        return validateImportRow(row);
+        return validateFlatRow(row);
       } catch (error) {
         throw new Error(
           t("admin.data.error.invalidRow", {
@@ -424,8 +455,8 @@ const importRowsHandle = async () => {
     const { data, error } = await upsertData.executeMutation({
       objects,
       onConflict: {
-        constraint,
-        updateColumns: overwrite.value ? updateColumns : [],
+        constraint: importConstraint,
+        updateColumns: overwrite.value ? importUpdateColumns : [],
       },
     });
     if (error || !data?.upsertData?.returning) {
@@ -448,10 +479,6 @@ const importRowsHandle = async () => {
     importing.value = false;
   }
 };
-
-const csvInstructions = computed(
-  () => t("admin.data.import.csvInstructions") + (extraCsvInstructions ?? ""),
-);
 
 // ===== Data Export =====
 const exportDataHandle = () => {
@@ -548,7 +575,11 @@ const exportDataHandle = () => {
         clear-icon="sym_s_close"
         square
         dense
-        :style="hasFilters ? 'width: calc(100% - 50px)' : 'width: 100%'"
+        :class="
+          hasFilters
+            ? 'search-input-with-filters'
+            : 'search-input-without-filters'
+        "
       />
       <QSpace />
       <QBtn
@@ -561,6 +592,19 @@ const exportDataHandle = () => {
         @click="showFilters = !showFilters"
       />
       <slot v-if="showFilters" name="filters" />
+    </template>
+    <template #header-cell="scope">
+      <QTh :props="scope">
+        {{ scope.col.label }}
+        <QTooltip
+          v-if="scope.col.tooltip"
+          :delay="TOOLTIP_DELAY"
+          anchor="top middle"
+          self="center middle"
+        >
+          {{ scope.col.tooltip }}
+        </QTooltip>
+      </QTh>
     </template>
   </QTable>
 
@@ -575,7 +619,7 @@ const exportDataHandle = () => {
           class="q-gutter-md"
           @submit="selection ? updateDataHandle() : insertDataHandle()"
         >
-          <slot name="form" :multiple-selection />
+          <template v-for=""> </template>
         </QForm>
       </QCardSection>
       <QCardActions align="right">
@@ -602,7 +646,7 @@ const exportDataHandle = () => {
         {{ t("admin.data.import.title") }}
       </QCardSection>
       <!-- eslint-disable-next-line vue/no-v-html vue/no-v-text-v-html-on-component -->
-      <QCardSection v-html="csvInstructions" />
+      <QCardSection v-html="t('admin.data.import.csvInstructions')" />
       <QCardSection>
         <QTable
           :columns="importColumns"
@@ -643,7 +687,7 @@ const exportDataHandle = () => {
           color="primary"
           flat
           square
-          @click="importRowsHandle()"
+          @click="flatRowsHandle()"
         />
       </QCardActions>
     </QCard>
@@ -654,5 +698,11 @@ const exportDataHandle = () => {
 .q-dialog .q-card {
   max-width: unset;
   width: $dialog-admin-data-width;
+}
+.search-input-with-filters {
+  width: calc(100% - 50px);
+}
+.search-input-without-filters {
+  width: 100%;
 }
 </style>

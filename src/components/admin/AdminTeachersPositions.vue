@@ -10,38 +10,33 @@ import {
   DeletePositionsDocument,
   InsertPositionsDocument,
   PositionConstraint,
+  type PositionInsertInput,
   PositionUpdateColumn,
   UpdatePositionsDocument,
   UpsertPositionsDocument,
 } from "@/gql/graphql.ts";
-import type { Column } from "@/types/column.ts";
-import type { NullableParsedRow, ParsedRow } from "@/types/data.ts";
-import { inputToNumber } from "@/utils/misc.ts";
+import type { ParsedRow, RowDescriptorExtra } from "@/types/data.ts";
+import { inputToNumber, nullObj } from "@/utils/misc.ts";
 
-import AdminData from "@/components/admin/AdminData.vue";
+import AdminData from "@/components/admin/core/AdminData.vue";
+import AdminInput from "@/components/admin/core/AdminInput.vue";
+
+type Row = AdminPositionFragment;
+type FlatRow = ParsedRow<typeof rowDescriptor>;
+type InsertInput = PositionInsertInput;
 
 const { positionFragments } = defineProps<{
   positionFragments: FragmentType<typeof AdminPositionFragmentDoc>[];
 }>();
 
-const { t, n } = useCustomI18n();
+const { t } = useCustomI18n();
 
-const idKey = "id";
+const idKey: keyof Row = "id";
 const rowDescriptor = {
   label: { type: "string" },
   description: { type: "string", nullable: true },
   baseServiceHours: { type: "number", nullable: true },
-} as const;
-
-type Row = AdminPositionFragment;
-type T = typeof rowDescriptor;
-type FormValues = NullableParsedRow<T>;
-type ImportRow = ParsedRow<T>;
-type InsertInput = {
-  label?: string | null;
-  description?: string | null;
-  baseServiceHours?: number | null;
-};
+} as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`
   fragment AdminPosition on Position {
@@ -95,77 +90,39 @@ const upsertPositions = useMutation(UpsertPositionsDocument);
 const updatePositions = useMutation(UpdatePositionsDocument);
 const deletePositions = useMutation(DeletePositionsDocument);
 
-const constraint = PositionConstraint.PositionLabelKey;
-const updateColumns = [
+const importConstraint = PositionConstraint.PositionLabelKey;
+const importUpdateColumns = [
   PositionUpdateColumn.Label,
   PositionUpdateColumn.Description,
   PositionUpdateColumn.BaseServiceHours,
 ];
 
-const columns = computed<Column<Row>[]>(() => [
-  {
-    name: "label",
-    label: t("admin.teachers.positions.table.columns.label"),
-    align: "left",
-    field: "label",
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "description",
-    label: t("admin.teachers.positions.table.columns.description"),
-    align: "left",
-    field: "description",
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "baseServiceHours",
-    label: t("admin.teachers.positions.table.columns.baseServiceHours"),
-    field: "baseServiceHours",
-    format: (val: number | null) =>
-      val === null ? null : n(val, "decimalFixed"),
-    sortable: true,
-    searchable: false,
-  },
-]);
-
 const formatRow = (row: Row) => row.label;
 
-const initForm = (rows: Row[]): FormValues => ({
-  label: rows[0]?.label ?? null,
-  description: rows[0]?.description ?? null,
-  baseServiceHours: rows[0]?.baseServiceHours ?? null,
-});
+const validateFlatRow = (flatRow: FlatRow): InsertInput => {
+  const object: InsertInput = {};
 
-function validateImportRow(importRow: ImportRow): InsertInput;
-function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-): Partial<InsertInput> {
-  const object: Partial<InsertInput> = {};
-
-  if (importRow.label !== undefined) {
-    object.label = importRow.label;
+  if (flatRow.label !== undefined) {
+    object.label = flatRow.label;
   }
 
-  if (importRow.description !== undefined) {
-    object.description = importRow.description;
+  if (flatRow.description !== undefined) {
+    object.description = flatRow.description;
   }
 
-  if (importRow.baseServiceHours !== undefined) {
-    if (importRow.baseServiceHours !== null && importRow.baseServiceHours < 0) {
+  if (flatRow.baseServiceHours !== undefined) {
+    if (flatRow.baseServiceHours !== null && flatRow.baseServiceHours < 0) {
       throw new Error(
         t("admin.teachers.positions.form.error.baseServiceHoursNegative"),
       );
     }
-    object.baseServiceHours = importRow.baseServiceHours;
+    object.baseServiceHours = flatRow.baseServiceHours;
   }
 
   return object;
-}
+};
 
-const formValues = ref<FormValues>(initForm([]));
+const formValues = ref<FlatRow>(nullObj(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 </script>
 
@@ -173,26 +130,24 @@ const selectedFields = ref<string[]>([]);
   <AdminData
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
+    section="teachers"
     name="positions"
-    key-prefix="admin.teachers.positions"
     :id-key
     :row-descriptor
-    :columns
     :rows="positions"
     :format-row
-    :init-form
-    :validate-import-row
+    :validate-flat-row
     :insert-data="insertPositions"
     :upsert-data="upsertPositions"
     :update-data="updatePositions"
     :delete-data="deletePositions"
-    :constraint
-    :update-columns
+    :import-constraint
+    :import-update-columns
   >
     <template #form="{ multipleSelection }">
       <QInput
         v-model="formValues.label"
-        :label="t('admin.teachers.positions.form.fields.label')"
+        :label="t('admin.teachers.positions.column.label.label')"
         :disable="multipleSelection && !selectedFields.includes('label')"
         square
         dense
@@ -203,7 +158,7 @@ const selectedFields = ref<string[]>([]);
       </QInput>
       <QInput
         v-model="formValues.description"
-        :label="t('admin.teachers.positions.form.fields.description')"
+        :label="t('admin.teachers.positions.column.description.label')"
         :disable="multipleSelection && !selectedFields.includes('description')"
         square
         dense
@@ -215,7 +170,7 @@ const selectedFields = ref<string[]>([]);
       <QInput
         :model-value="formValues.baseServiceHours"
         type="number"
-        :label="t('admin.teachers.positions.form.fields.baseServiceHours')"
+        :label="t('admin.teachers.positions.column.baseServiceHours.label')"
         :disable="
           multipleSelection && !selectedFields.includes('baseServiceHours')
         "
