@@ -209,12 +209,6 @@ const validateFlatRow = (flatRow: FlatRow): InsertInput => {
 const formOptions = computed(() => ({
   position: positions.value.map((p) => p.label),
 }));
-
-const filterOptions = computed(() => ({
-  position: formOptions.value.position,
-  visible: booleanOptions(t("yes"), t("no")),
-  active: booleanOptions(t("yes"), t("no")),
-}));
 </script>
 
 <template>
@@ -227,7 +221,6 @@ const filterOptions = computed(() => ({
     :format-row
     :validate-flat-row
     :form-options
-    :filter-options
     :insert-data="insertTeachers"
     :upsert-data="upsertTeachers"
     :update-data="updateTeachers"

@@ -637,7 +637,7 @@ const exportDataHandle = () => {
           v-for="[key, filter] in Object.entries(filters)"
           :key
           v-model="filter.selected"
-          :options="filter.options.value"
+          :options="filter.options as unknown as any[]"
           :key-prefix
           :name="key"
           multiple
