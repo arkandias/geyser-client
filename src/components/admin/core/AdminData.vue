@@ -11,7 +11,7 @@
   "
 >
 import type { UseMutationResponse } from "@urql/vue";
-import { type ComputedRef, type Ref, computed, ref, toValue, watch } from "vue";
+import { type Ref, computed, ref, toValue, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
@@ -176,7 +176,7 @@ const errorMessage = (error: unknown) =>
   error instanceof Error ? error.message : t("admin.data.error.unknownError");
 
 const validateForm = (fields?: (keyof T)[]): FlatRow => {
-  const flatRow: FlatRow = {};
+  const flatRow: Record<string, Scalar> = {};
 
   Object.entries(rowDescriptor).forEach(([key, fieldDescriptor]) => {
     if (fields && !fields.includes(key)) {
@@ -210,11 +210,10 @@ const validateForm = (fields?: (keyof T)[]): FlatRow => {
       );
     }
 
-    // @ts-expect-error Vue: Type ParsedRow<T> is generic and can only be indexed for reading
     flatRow[key] = value;
   });
 
-  return flatRow;
+  return flatRow as FlatRow;
 };
 
 const insertDataHandle = async () => {
@@ -332,40 +331,35 @@ const searchableColumns = computed(() =>
 );
 
 type Filter = {
+  name: string;
   selected: Scalar[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options: ComputedRef<any[]>;
+  options: any[];
 };
 
-const booleanOptions = [
-  { value: "✓", label: t("yes") },
-  { value: "✗", label: t("no") },
-];
-
 const showFilters = ref(false);
-const filters = ref<Record<string, Filter>>(
-  Object.fromEntries(
-    Object.entries(rowDescriptor)
-      .filter(([_, descriptor]) => !descriptor.formType.startsWith("input"))
-      .map(([key, descriptor]) => [
-        key,
-        {
-          selected: [],
-          options: computed(
-            () =>
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-              descriptor.formType === "select"
-                ? (filterOptions[key] ?? formOptions[key] ?? [])
-                : booleanOptions, // formType === 'toggle'
-          ),
-        },
-      ]),
-  ),
+const filters: Ref<Filter[]> = ref(
+  Object.entries(rowDescriptor)
+    .filter(([_, descriptor]) => !descriptor.formType.startsWith("input"))
+    .map(([key, descriptor]) => ({
+      name: key,
+      selected: [],
+      options: computed(() =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        descriptor.formType === "select"
+          ? (filterOptions[key] ?? formOptions[key] ?? [])
+          : [
+              // formType === 'toggle'
+              { value: "✓", label: t("yes") },
+              { value: "✗", label: t("no") },
+            ],
+      ),
+    })),
 );
-const hasFilters = computed(() => !!Object.values(filters.value).length);
+const hasFilters = computed(() => !!filters.value.length);
 
 const resetFilters = () => {
-  Object.values(filters.value).forEach((filter) => {
+  filters.value.forEach((filter) => {
     filter.selected = [];
   });
 };
@@ -398,11 +392,11 @@ const filterMethod = (
         ),
       ) &&
       (!showFilters.value ||
-        Object.entries(terms.filters).every(([key, filter]) => {
+        terms.filters.every((filter) => {
           if (!filter.selected.length) {
             return true;
           }
-          const col = cols.find((col) => col.name === key);
+          const col = cols.find((col) => col.name === filter.name);
           return !col || filter.selected.includes(getCellValue(col, row));
         })),
   );
@@ -637,7 +631,7 @@ const exportDataHandle = () => {
           v-for="[key, filter] in Object.entries(filters)"
           :key
           v-model="filter.selected"
-          :options="filter.options as unknown as any[]"
+          :options="filter.options"
           :key-prefix
           :name="key"
           multiple

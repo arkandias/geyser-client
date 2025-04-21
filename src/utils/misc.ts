@@ -39,11 +39,6 @@ export const capitalize = <T extends string>(str: T): Capitalize<T> =>
 export const inputToNumber = (input: string | number | null) =>
   typeof input === "string" ? (input === "" ? null : Number(input)) : input;
 
-export const booleanOptions = (trueLabel: string, falseLabel: string) => [
-  { value: true, label: trueLabel },
-  { value: false, label: falseLabel },
-];
-
 export const getField = <R extends object>(
   row: R | undefined,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
