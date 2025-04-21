@@ -11,7 +11,7 @@
   "
 >
 import type { UseMutationResponse } from "@urql/vue";
-import { type Ref, computed, ref, toValue, watch } from "vue";
+import { type ComputedRef, type Ref, computed, ref, toValue, watch } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
@@ -331,15 +331,42 @@ const searchableColumns = computed(() =>
   columns.value.filter((col) => toValue(col.searchable)).map((col) => col.name),
 );
 
+type Filter = {
+  selected: Scalar[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  options: ComputedRef<any[]>;
+};
+
+const booleanOptions = [
+  { value: "✓", label: t("yes") },
+  { value: "✗", label: t("no") },
+];
+
 const showFilters = ref(false);
-const filters: Ref<Record<string, Scalar[]>> = ref(
-  Object.fromEntries(Object.keys(filterOptions).map((key) => [key, []])),
+const filters = ref<Record<string, Filter>>(
+  Object.fromEntries(
+    Object.entries(rowDescriptor)
+      .filter(([_, descriptor]) => !descriptor.formType.startsWith("input"))
+      .map(([key, descriptor]) => [
+        key,
+        {
+          selected: [],
+          options: computed(
+            () =>
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+              descriptor.formType === "select"
+                ? (filterOptions[key] ?? formOptions[key] ?? [])
+                : booleanOptions, // formType === 'toggle'
+          ),
+        },
+      ]),
+  ),
 );
 const hasFilters = computed(() => !!Object.values(filters.value).length);
 
 const resetFilters = () => {
-  Object.keys(filters.value).forEach((key) => {
-    filters.value[key] = [];
+  Object.values(filters.value).forEach((filter) => {
+    filter.selected = [];
   });
 };
 
@@ -371,13 +398,12 @@ const filterMethod = (
         ),
       ) &&
       (!showFilters.value ||
-        Object.entries(terms.filters).every(([key, fil]) => {
-          if (!fil.length) {
+        Object.entries(terms.filters).every(([key, filter]) => {
+          if (!filter.selected.length) {
             return true;
           }
-
           const col = cols.find((col) => col.name === key);
-          return !col || fil.includes(getCellValue(col, row));
+          return !col || filter.selected.includes(getCellValue(col, row));
         })),
   );
 
@@ -608,10 +634,10 @@ const exportDataHandle = () => {
       />
       <template v-if="showFilters">
         <AdminSelect
-          v-for="key in Object.keys(filters)"
+          v-for="[key, filter] in Object.entries(filters)"
           :key
-          v-model="filters[key]"
-          :options="filterOptions[key]"
+          v-model="filter.selected"
+          :options="filter.options.value"
           :key-prefix
           :name="key"
           multiple
