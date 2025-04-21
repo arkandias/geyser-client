@@ -6,12 +6,12 @@ import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { graphql } from "@/gql";
 import { GetAdminTeachersDocument } from "@/gql/graphql.ts";
 
-import AdminSection from "@/components/admin/AdminSection.vue";
 import AdminTeachersPositions from "@/components/admin/AdminTeachersPositions.vue";
 import AdminTeachersServiceModificationTypes from "@/components/admin/AdminTeachersServiceModificationTypes.vue";
 import AdminTeachersServiceModifications from "@/components/admin/AdminTeachersServiceModifications.vue";
 import AdminTeachersServices from "@/components/admin/AdminTeachersServices.vue";
 import AdminTeachersTeachers from "@/components/admin/AdminTeachersTeachers.vue";
+import AdminSection from "@/components/admin/core/AdminSection.vue";
 
 const { t } = useCustomI18n();
 
@@ -96,10 +96,10 @@ const serviceModificationTypes = computed(
       icon="sym_s_assignment_ind"
       :label="t('admin.teachers.services.label')"
     >
-      <AdminTeachersServices
-        :service-fragments="services"
-        :teacher-fragments="teachers"
-      />
+      <!--      <AdminTeachersServices-->
+      <!--        :service-fragments="services"-->
+      <!--        :teacher-fragments="teachers"-->
+      <!--      />-->
     </AdminSection>
 
     <QSeparator />
@@ -108,12 +108,12 @@ const serviceModificationTypes = computed(
       icon="sym_s_assignment_returned"
       :label="t('admin.teachers.serviceModifications.label')"
     >
-      <AdminTeachersServiceModifications
-        :service-fragments="services"
-        :service-modification-fragments="serviceModifications"
-        :service-modification-type-fragments="serviceModificationTypes"
-        :teacher-fragments="teachers"
-      />
+      <!--      <AdminTeachersServiceModifications-->
+      <!--        :service-fragments="services"-->
+      <!--        :service-modification-fragments="serviceModifications"-->
+      <!--        :service-modification-type-fragments="serviceModificationTypes"-->
+      <!--        :teacher-fragments="teachers"-->
+      <!--      />-->
     </AdminSection>
 
     <QSeparator />
@@ -122,9 +122,9 @@ const serviceModificationTypes = computed(
       icon="sym_s_format_list_bulleted"
       :label="t('admin.teachers.serviceModificationTypes.label')"
     >
-      <AdminTeachersServiceModificationTypes
-        :service-modification-type-fragments="serviceModificationTypes"
-      />
+      <!--      <AdminTeachersServiceModificationTypes-->
+      <!--        :service-modification-type-fragments="serviceModificationTypes"-->
+      <!--      />-->
     </AdminSection>
   </QList>
 </template>

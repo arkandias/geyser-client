@@ -15,13 +15,14 @@ export type PrimitiveTypeMap<T extends PrimitiveTypeName> = T extends "string"
 export type FieldDescriptor = {
   type: PrimitiveTypeName;
   nullable?: boolean;
+  info?: string;
 };
+
+export type RowDescriptor = Record<string, FieldDescriptor>;
 
 export type ParsedField<T extends FieldDescriptor> = T["nullable"] extends true
   ? PrimitiveTypeMap<T["type"]> | null
   : PrimitiveTypeMap<T["type"]>;
-
-export type RowDescriptor = Record<string, FieldDescriptor>;
 
 export type ParsedRow<T extends RowDescriptor> = {
   -readonly [K in keyof T]: ParsedField<T[K]>;
@@ -30,3 +31,18 @@ export type ParsedRow<T extends RowDescriptor> = {
 export type NullableParsedRow<T extends RowDescriptor> = {
   -readonly [K in keyof T]?: ParsedField<T[K]> | null;
 };
+
+export type FieldDescriptorExtra<R extends SimpleObject<Scalar>> =
+  FieldDescriptor & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    field?: string | ((row: R) => any);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    format?: (val: any, row: R) => any;
+    numberFormat?: "decimal" | "decimalFixed";
+    formType: "input" | "inputNum" | "select" | "toggle";
+  };
+
+export type RowDescriptorExtra<R extends SimpleObject<Scalar>> = Record<
+  string,
+  FieldDescriptorExtra<R>
+>;

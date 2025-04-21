@@ -8,40 +8,34 @@ import {
   type AdminCourseTypeFragment,
   AdminCourseTypeFragmentDoc,
   CourseTypeConstraint,
+  type CourseTypeInsertInput,
   CourseTypeUpdateColumn,
   DeleteCourseTypesDocument,
   InsertCourseTypesDocument,
   UpdateCourseTypesDocument,
   UpsertCourseTypesDocument,
 } from "@/gql/graphql.ts";
-import type { Column } from "@/types/column.ts";
-import type { NullableParsedRow, ParsedRow } from "@/types/data.ts";
-import { inputToNumber } from "@/utils/misc.ts";
+import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
+import { inputToNumber, nullObj } from "@/utils/misc.ts";
 
-import AdminData from "@/components/admin/AdminData.vue";
+import AdminData from "@/components/admin/core/AdminData.vue";
+
+type Row = AdminCourseTypeFragment;
+type FlatRow = NullableParsedRow<typeof rowDescriptor>;
+type InsertInput = CourseTypeInsertInput;
 
 const { courseTypeFragments } = defineProps<{
   courseTypeFragments: FragmentType<typeof AdminCourseTypeFragmentDoc>[];
 }>();
 
-const { t, n } = useCustomI18n();
+const { t } = useCustomI18n();
 
-const idKey = "id";
+const idKey: keyof Row = "id";
 const rowDescriptor = {
   label: { type: "string" },
-  coefficient: { type: "number" },
+  coefficient: { type: "number", numberFormat: "decimal" },
   description: { type: "string", nullable: true },
-} as const;
-
-type Row = AdminCourseTypeFragment;
-type T = typeof rowDescriptor;
-type FormValues = NullableParsedRow<T>;
-type ImportRow = ParsedRow<T>;
-type InsertInput = {
-  label?: string | null;
-  coefficient?: number | null;
-  description?: string | null;
-};
+} as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`
   fragment AdminCourseType on CourseType {
@@ -95,70 +89,34 @@ const upsertCourseTypes = useMutation(UpsertCourseTypesDocument);
 const updateCourseTypes = useMutation(UpdateCourseTypesDocument);
 const deleteCourseTypes = useMutation(DeleteCourseTypesDocument);
 
-const constraint = CourseTypeConstraint.CourseTypeLabelKey;
-const updateColumns = [
+const importConstraint = CourseTypeConstraint.CourseTypeLabelKey;
+const importUpdateColumns = [
   CourseTypeUpdateColumn.Label,
   CourseTypeUpdateColumn.Coefficient,
   CourseTypeUpdateColumn.Description,
 ];
 
-const columns = computed<Column<Row>[]>(() => [
-  {
-    name: "label",
-    label: t("admin.courses.types.table.columns.label"),
-    align: "left",
-    field: "label",
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "coefficient",
-    label: t("admin.courses.types.table.columns.coefficient"),
-    field: (row) => n(row.coefficient, "decimal"),
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "description",
-    label: t("admin.courses.types.table.columns.description"),
-    align: "left",
-    field: "description",
-    sortable: true,
-    searchable: true,
-  },
-]);
-
 const formatRow = (row: Row) => row.label;
 
-const initForm = (rows: Row[]): FormValues => ({
-  label: rows[0]?.label ?? null,
-  coefficient: rows[0]?.coefficient ?? null,
-  description: rows[0]?.description ?? null,
-});
+const validateFlatRow = (flatRow: FlatRow): InsertInput => {
+  const object: InsertInput = {};
 
-function validateImportRow(importRow: ImportRow): InsertInput;
-function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-): Partial<InsertInput> {
-  const object: Partial<InsertInput> = {};
-
-  if (importRow.label !== undefined) {
-    object.label = importRow.label;
+  if (flatRow.label !== undefined) {
+    object.label = flatRow.label;
   }
 
-  if (importRow.coefficient !== undefined) {
-    object.coefficient = importRow.coefficient;
+  if (flatRow.coefficient !== undefined) {
+    object.coefficient = flatRow.coefficient;
   }
 
-  if (importRow.description !== undefined) {
-    object.description = importRow.description;
+  if (flatRow.description !== undefined) {
+    object.description = flatRow.description;
   }
 
   return object;
-}
+};
 
-const formValues = ref<FormValues>(initForm([]));
+const formValues = ref<FlatRow>(nullObj(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 </script>
 
@@ -166,26 +124,24 @@ const selectedFields = ref<string[]>([]);
   <AdminData
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
+    section="courses"
     name="types"
-    key-prefix="admin.courses.types"
     :id-key
     :row-descriptor
-    :columns
     :rows="courseTypes"
     :format-row
-    :init-form
-    :validate-import-row
+    :validate-flat-row
     :insert-data="insertCourseTypes"
     :upsert-data="upsertCourseTypes"
     :update-data="updateCourseTypes"
     :delete-data="deleteCourseTypes"
-    :constraint
-    :update-columns
+    :import-constraint
+    :import-update-columns
   >
     <template #form="{ multipleSelection }">
       <QInput
         v-model="formValues.label"
-        :label="t('admin.courses.types.form.fields.label')"
+        :label="t('admin.courses.types.column.label.label')"
         :disable="multipleSelection && !selectedFields.includes('label')"
         square
         dense
@@ -197,7 +153,7 @@ const selectedFields = ref<string[]>([]);
       <QInput
         :model-value="formValues.coefficient"
         type="number"
-        :label="t('admin.courses.types.form.fields.coefficient')"
+        :label="t('admin.courses.types.column.coefficient.label')"
         :disable="multipleSelection && !selectedFields.includes('coefficient')"
         square
         dense
@@ -212,7 +168,7 @@ const selectedFields = ref<string[]>([]);
       <QInput
         v-if="!multipleSelection"
         v-model="formValues.description"
-        :label="t('admin.courses.types.form.fields.description')"
+        :label="t('admin.courses.types.column.description.label')"
         :disable="multipleSelection && !selectedFields.includes('description')"
         square
         dense

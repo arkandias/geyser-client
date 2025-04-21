@@ -4,7 +4,7 @@ import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import AdminGeneralCustomTexts from "@/components/admin/AdminGeneralCustomTexts.vue";
 import AdminGeneralPhase from "@/components/admin/AdminGeneralPhase.vue";
 import AdminGeneralYears from "@/components/admin/AdminGeneralYears.vue";
-import AdminSection from "@/components/admin/AdminSection.vue";
+import AdminSection from "@/components/admin/core/AdminSection.vue";
 
 const { t } = useCustomI18n();
 </script>

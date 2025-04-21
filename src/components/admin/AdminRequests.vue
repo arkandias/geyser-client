@@ -8,7 +8,7 @@ import { GetAdminRequestsDocument } from "@/gql/graphql.ts";
 
 import AdminRequestsPriorities from "@/components/admin/AdminRequestsPriorities.vue";
 import AdminRequestsRequests from "@/components/admin/AdminRequestsRequests.vue";
-import AdminSection from "@/components/admin/AdminSection.vue";
+import AdminSection from "@/components/admin/core/AdminSection.vue";
 
 const { t } = useCustomI18n();
 

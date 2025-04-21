@@ -11,52 +11,46 @@ import {
   DeleteServicesDocument,
   InsertServicesDocument,
   ServiceConstraint,
+  type ServiceInsertInput,
   ServiceUpdateColumn,
   UpdateServicesDocument,
   UpsertServicesDocument,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
-import type { Column } from "@/types/column.ts";
-import type { NullableParsedRow, ParsedRow } from "@/types/data.ts";
-import { inputToNumber } from "@/utils/misc.ts";
+import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
+import { inputToNumber, nullObj } from "@/utils/misc.ts";
 
-import AdminData from "@/components/admin/AdminData.vue";
+import AdminData from "@/components/admin/core/AdminData.vue";
 
-const { teacherFragments, serviceFragments } = defineProps<{
+type Row = AdminServiceFragment;
+type FlatRow = NullableParsedRow<typeof rowDescriptor>;
+type InsertInput = ServiceInsertInput;
+
+const { serviceFragments, teacherFragments } = defineProps<{
   serviceFragments: FragmentType<typeof AdminServiceFragmentDoc>[];
   teacherFragments: FragmentType<typeof AdminServicesTeacherFragmentDoc>[];
 }>();
 
-const { t, n } = useCustomI18n();
+const { t } = useCustomI18n();
 const { years } = useYearsStore();
 
-const idKey = "id";
+const idKey: keyof Row = "id";
 const rowDescriptor = {
   year: { type: "number" },
   uid: { type: "string" },
-  hours: { type: "number" },
-  message: { type: "string", nullable: true },
-} as const;
-
-type Row = AdminServiceFragment;
-type T = typeof rowDescriptor;
-type FormValues = NullableParsedRow<T>;
-type ImportRow = ParsedRow<T>;
-type InsertInput = {
-  year?: number | null;
-  uid?: string | null;
-  hours?: number | null;
-  message?: string | null;
-};
+  hours: { type: "number", numberFormat: "decimalFixed" },
+  message: {
+    type: "string",
+    nullable: true,
+    format: (val: string) => (val ? "✓" : "✗"),
+  },
+} as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`
   fragment AdminService on Service {
     id
     year
     uid
-    teacher {
-      displayname
-    }
     hours
     message
   }
@@ -113,105 +107,57 @@ const upsertServices = useMutation(UpsertServicesDocument);
 const updateServices = useMutation(UpdateServicesDocument);
 const deleteServices = useMutation(DeleteServicesDocument);
 
-const constraint = ServiceConstraint.ServiceYearUidKey;
-const updateColumns = [
+const importConstraint = ServiceConstraint.ServiceYearUidKey;
+const importUpdateColumns = [
   ServiceUpdateColumn.Year,
   ServiceUpdateColumn.Uid,
   ServiceUpdateColumn.Hours,
   ServiceUpdateColumn.Message,
 ];
 
-const columns = computed<Column<Row>[]>(() => [
-  {
-    name: "year",
-    label: t("admin.teachers.services.table.columns.year"),
-    align: "left",
-    field: "year",
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "uid",
-    label: t("admin.teachers.services.table.columns.uid"),
-    align: "left",
-    field: "uid",
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "hours",
-    label: t("admin.teachers.services.table.columns.hours"),
-    field: "hours",
-    format: (val: number | null) =>
-      val === null ? null : n(val, "decimalFixed"),
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "message",
-    label: t("admin.teachers.services.table.columns.message"),
-    align: "center",
-    field: "message",
-    format: (val: string) => (val ? "✓" : "✗"),
-    sortable: true,
-    searchable: false,
-  },
-]);
+const formatRow = (row: Row): string => `${row.year} — ${row.uid}`;
 
-const formatRow = (row: Row): string =>
-  `${row.year} — ${row.teacher.displayname}`;
+const validateFlatRow = (flatRow: FlatRow): InsertInput => {
+  const object: InsertInput = {};
 
-const initForm = (rows: Row[]): FormValues => ({
-  year: rows[0]?.year ?? null,
-  uid: rows[0]?.uid ?? null,
-  hours: rows[0]?.hours ?? null,
-  message: rows[0]?.message ?? null,
-});
-
-function validateImportRow(importRow: ImportRow): InsertInput;
-function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-): Partial<InsertInput> {
-  const object: Partial<InsertInput> = {};
-
-  if (importRow.year !== undefined) {
-    object.year = importRow.year;
+  if (flatRow.year !== undefined) {
+    object.year = flatRow.year;
   }
 
-  if (importRow.uid !== undefined) {
-    object.uid = importRow.uid;
+  if (flatRow.uid !== undefined) {
+    object.uid = flatRow.uid;
   }
 
-  if (importRow.hours !== undefined) {
-    if (importRow.hours < 0) {
+  if (flatRow.hours !== undefined) {
+    if (flatRow.hours === null || flatRow.hours < 0) {
       throw new Error(t("admin.teachers.services.form.error.hoursNegative"));
     }
-    object.hours = importRow.hours;
+    object.hours = flatRow.hours;
   }
 
-  if (importRow.message !== undefined) {
-    object.message = importRow.message;
+  if (flatRow.message !== undefined) {
+    object.message = flatRow.message;
   }
 
   return object;
-}
+};
 
-const formValues = ref<FormValues>(initForm([]));
+const formValues = ref<FlatRow>(nullObj(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
+// Options
 const yearOptions = computed(() => years.value.map((y) => y.value));
-const teacherOptions = computed(() =>
+const uidOptions = computed(() =>
   teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
 );
 
 // Filters
-const selectedYears = ref<number[]>([]);
-const selectedUids = ref<string[]>([]);
+const yearFilter = ref<number[]>([]);
+const uidFilter = ref<string[]>([]);
 const filterFn = computed(
-  () => (r: Row) =>
-    (!selectedYears.value.length || selectedYears.value.includes(r.year)) &&
-    (!selectedUids.value.length || selectedUids.value.includes(r.uid)),
+  () => (row: Row) =>
+    (!yearFilter.value.length || yearFilter.value.includes(row.year)) &&
+    (!uidFilter.value.length || uidFilter.value.includes(row.uid)),
 );
 </script>
 
@@ -219,28 +165,26 @@ const filterFn = computed(
   <AdminData
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
+    section="teachers"
     name="services"
-    key-prefix="admin.teachers.services"
     :id-key
     :row-descriptor
-    :columns
     :rows="services"
     :filter-fn
     :format-row
-    :init-form
-    :validate-import-row
+    :validate-flat-row
     :insert-data="insertServices"
     :upsert-data="upsertServices"
     :update-data="updateServices"
     :delete-data="deleteServices"
-    :constraint
-    :update-columns
+    :import-constraint
+    :import-update-columns
   >
     <template #filters>
       <QSelect
-        v-model="selectedYears"
+        v-model="yearFilter"
         :options="yearOptions"
-        :label="t('admin.teachers.services.table.columns.year')"
+        :label="t('admin.teachers.services.column.year.label')"
         multiple
         use-chips
         square
@@ -249,11 +193,9 @@ const filterFn = computed(
         style="width: 100%"
       />
       <QSelect
-        v-model="selectedUids"
-        :options="teacherOptions"
-        :label="t('admin.teachers.services.table.columns.uid')"
-        emit-value
-        map-options
+        v-model="uidFilter"
+        :options="uidOptions"
+        :label="t('admin.teachers.services.column.uid.label')"
         multiple
         use-chips
         square
@@ -266,7 +208,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.year"
         :options="yearOptions"
-        :label="t('admin.teachers.services.form.fields.year')"
+        :label="t('admin.teachers.services.column.year.label')"
         :disable="multipleSelection && !selectedFields.includes('year')"
         square
         dense
@@ -278,11 +220,9 @@ const filterFn = computed(
       </QSelect>
       <QSelect
         v-model="formValues.uid"
-        :options="teacherOptions"
-        :label="t('admin.teachers.services.form.fields.uid')"
+        :options="uidOptions"
+        :label="t('admin.teachers.services.column.uid.label')"
         :disable="multipleSelection && !selectedFields.includes('uid')"
-        emit-value
-        map-options
         square
         dense
         options-dense
@@ -294,7 +234,7 @@ const filterFn = computed(
       <QInput
         :model-value="formValues.hours"
         type="number"
-        :label="t('admin.teachers.services.form.fields.hours')"
+        :label="t('admin.teachers.services.column.hours.label')"
         :disable="multipleSelection && !selectedFields.includes('hours')"
         square
         dense
@@ -308,7 +248,7 @@ const filterFn = computed(
       </QInput>
       <QInput
         v-model="formValues.message"
-        :label="t('admin.teachers.services.form.fields.message')"
+        :label="t('admin.teachers.services.column.message.label')"
         :disable="multipleSelection && !selectedFields.includes('message')"
         autogrow
         square

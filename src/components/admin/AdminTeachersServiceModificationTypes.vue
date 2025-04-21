@@ -10,14 +10,19 @@ import {
   DeleteServiceModificationTypesDocument,
   InsertServiceModificationTypesDocument,
   ServiceModificationTypeConstraint,
+  type ServiceModificationTypeInsertInput,
   ServiceModificationTypeUpdateColumn,
   UpdateServiceModificationTypesDocument,
   UpsertServiceModificationTypesDocument,
 } from "@/gql/graphql.ts";
-import type { Column } from "@/types/column.ts";
-import type { NullableParsedRow, ParsedRow } from "@/types/data.ts";
+import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
+import { nullObj } from "@/utils/misc.ts";
 
-import AdminData from "@/components/admin/AdminData.vue";
+import AdminData from "@/components/admin/core/AdminData.vue";
+
+type Row = AdminServiceModificationTypeFragment;
+type FlatRow = NullableParsedRow<typeof rowDescriptor>;
+type InsertInput = ServiceModificationTypeInsertInput;
 
 const { serviceModificationTypeFragments } = defineProps<{
   serviceModificationTypeFragments: FragmentType<
@@ -27,20 +32,11 @@ const { serviceModificationTypeFragments } = defineProps<{
 
 const { t } = useCustomI18n();
 
-const idKey = "id";
+const idKey: keyof Row = "id";
 const rowDescriptor = {
   label: { type: "string" },
   description: { type: "string", nullable: true },
-} as const;
-
-type Row = AdminServiceModificationTypeFragment;
-type T = typeof rowDescriptor;
-type FormValues = NullableParsedRow<T>;
-type ImportRow = ParsedRow<T>;
-type InsertInput = {
-  label?: string | null;
-  description?: string | null;
-};
+} as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`
   fragment AdminServiceModificationType on ServiceModificationType {
@@ -114,60 +110,30 @@ const deleteServiceModificationTypes = useMutation(
   DeleteServiceModificationTypesDocument,
 );
 
-const constraint =
+const importConstraint =
   ServiceModificationTypeConstraint.ServiceModificationTypeLabelKey;
-const updateColumns = [
+const importUpdateColumns = [
   ServiceModificationTypeUpdateColumn.Label,
   ServiceModificationTypeUpdateColumn.Description,
 ];
 
-const columns = computed<Column<Row>[]>(() => [
-  {
-    name: "label",
-    label: t("admin.teachers.serviceModificationTypes.table.columns.label"),
-    align: "left",
-    field: "label",
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "description",
-    label: t(
-      "admin.teachers.serviceModificationTypes.table.columns.description",
-    ),
-    align: "left",
-    field: "description",
-    sortable: true,
-    searchable: true,
-  },
-]);
-
 const formatRow = (row: Row) => row.label;
 
-const initForm = (rows: Row[]): FormValues => ({
-  label: rows[0]?.label ?? null,
-  description: rows[0]?.description ?? null,
-});
+const validateFlatRow = (flatRow: FlatRow): InsertInput => {
+  const object: InsertInput = {};
 
-function validateImportRow(importRow: ImportRow): InsertInput;
-function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-): Partial<InsertInput> {
-  const object: Partial<InsertInput> = {};
-
-  if (importRow.label !== undefined) {
-    object.label = importRow.label;
+  if (flatRow.label !== undefined) {
+    object.label = flatRow.label;
   }
 
-  if (importRow.description !== undefined) {
-    object.description = importRow.description;
+  if (flatRow.description !== undefined) {
+    object.description = flatRow.description;
   }
 
   return object;
-}
+};
 
-const formValues = ref<FormValues>(initForm([]));
+const formValues = ref<FlatRow>(nullObj(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 </script>
 
@@ -175,26 +141,24 @@ const selectedFields = ref<string[]>([]);
   <AdminData
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
+    section="teachers"
     name="serviceModificationTypes"
-    key-prefix="admin.teachers.serviceModificationTypes"
     :id-key
     :row-descriptor
-    :columns
     :rows="serviceModificationTypes"
     :format-row
-    :init-form
-    :validate-import-row
+    :validate-flat-row
     :insert-data="insertServiceModificationTypes"
     :upsert-data="upsertServiceModificationTypes"
     :update-data="updateServiceModificationTypes"
     :delete-data="deleteServiceModificationTypes"
-    :constraint
-    :update-columns
+    :import-constraint
+    :import-update-columns
   >
     <template #form="{ multipleSelection }">
       <QInput
         v-model="formValues.label"
-        :label="t('admin.teachers.serviceModificationTypes.form.fields.label')"
+        :label="t('admin.teachers.serviceModificationTypes.column.label.label')"
         :disable="multipleSelection && !selectedFields.includes('label')"
         square
         dense
@@ -206,7 +170,7 @@ const selectedFields = ref<string[]>([]);
       <QInput
         v-model="formValues.description"
         :label="
-          t('admin.teachers.serviceModificationTypes.form.fields.description')
+          t('admin.teachers.serviceModificationTypes.column.description.label')
         "
         :disable="multipleSelection && !selectedFields.includes('description')"
         square

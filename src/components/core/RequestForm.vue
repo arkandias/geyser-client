@@ -13,6 +13,7 @@ import {
   UpsertRequestDocument,
 } from "@/gql/graphql.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
+import { inputToNumber } from "@/utils/misc.ts";
 
 import SelectService from "@/components/core/SelectService.vue";
 
@@ -244,18 +245,20 @@ const resetForm = (): void => {
       options-dense
     />
     <QInput
-      v-model.number="groups"
+      :model-value="groups"
       type="number"
       :label="t('requestForm.field.groups')"
       square
       dense
+      @update:model-value="(value) => (groups = inputToNumber(value))"
     />
     <QInput
-      v-model.number="hours"
+      :model-value="hours"
       type="number"
       :label="t('requestForm.field.hours')"
       square
       dense
+      @update:model-value="(value) => (hours = inputToNumber(value))"
     />
     <QOptionGroup
       v-model="requestType"

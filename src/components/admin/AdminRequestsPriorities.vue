@@ -12,22 +12,27 @@ import {
   DeletePrioritiesDocument,
   InsertPrioritiesDocument,
   PriorityConstraint,
+  type PriorityInsertInput,
   PriorityUpdateColumn,
   UpdatePrioritiesDocument,
   UpsertPrioritiesDocument,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
-import type { Column } from "@/types/column.ts";
-import type { NullableParsedRow, ParsedRow } from "@/types/data.ts";
+import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
 import {
   booleanOptions,
   compare,
   inputToNumber,
+  nullObj,
   unique,
   uniqueValue,
 } from "@/utils/misc.ts";
 
-import AdminData from "@/components/admin/AdminData.vue";
+import AdminData from "@/components/admin/core/AdminData.vue";
+
+type Row = AdminPriorityFragment;
+type FlatRow = NullableParsedRow<typeof rowDescriptor>;
+type InsertInput = PriorityInsertInput;
 
 const { priorityFragments, serviceFragments, courseFragments } = defineProps<{
   priorityFragments: FragmentType<typeof AdminPriorityFragmentDoc>[];
@@ -35,36 +40,31 @@ const { priorityFragments, serviceFragments, courseFragments } = defineProps<{
   courseFragments: FragmentType<typeof AdminPrioritiesCourseFragmentDoc>[];
 }>();
 
-const { t, n } = useCustomI18n();
+const { t } = useCustomI18n();
 const { years } = useYearsStore();
 
-const idKey = "id";
+const idKey: keyof Row = "id";
 const rowDescriptor = {
   year: { type: "number" },
-  seniority: { type: "number" },
+  seniority: { type: "number", numberFormat: "decimal" },
   isPriority: { type: "boolean", nullable: true },
   computed: { type: "boolean" },
   uid: { type: "string" },
-  degree: { type: "string" },
-  program: { type: "string" },
-  track: { type: "string", nullable: true },
-  course: { type: "string" },
-  semester: { type: "number" },
-  courseType: { type: "string" },
-} as const;
-
-type Row = AdminPriorityFragment;
-type T = typeof rowDescriptor;
-type FormValues = NullableParsedRow<T>;
-type ImportRow = ParsedRow<T>;
-type InsertInput = {
-  year?: number | null;
-  serviceId?: number | null;
-  courseId?: number | null;
-  seniority?: number | null;
-  isPriority?: boolean | null;
-  computed?: boolean | null;
-};
+  degree: { type: "string", field: (row) => row.course.program.degree.name },
+  program: { type: "string", field: (row) => row.course.program.name },
+  track: {
+    type: "string",
+    nullable: true,
+    field: (row) => row.course.track?.name,
+  },
+  course: { type: "string", field: (row) => row.course.name },
+  semester: {
+    type: "number",
+    field: (row) => row.course.semester,
+    format: (val: number) => t("semester", { semester: val }),
+  },
+  courseType: { type: "string", field: (row) => row.course.type.label },
+} as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`
   fragment AdminPriority on Priority {
@@ -105,7 +105,10 @@ graphql(`
   fragment AdminPrioritiesService on Service {
     id
     year
-    uid
+    teacher {
+      uid
+      displayname
+    }
   }
 
   fragment AdminPrioritiesCourse on Course {
@@ -185,8 +188,8 @@ const upsertPriorities = useMutation(UpsertPrioritiesDocument);
 const updatePriorities = useMutation(UpdatePrioritiesDocument);
 const deletePriorities = useMutation(DeletePrioritiesDocument);
 
-const constraint = PriorityConstraint.PriorityServiceIdCourseIdKey;
-const updateColumns = [
+const importConstraint = PriorityConstraint.PriorityServiceIdCourseIdKey;
+const importUpdateColumns = [
   PriorityUpdateColumn.ServiceId,
   PriorityUpdateColumn.CourseId,
   PriorityUpdateColumn.Seniority,
@@ -194,143 +197,31 @@ const updateColumns = [
   PriorityUpdateColumn.Computed,
 ];
 
-const columns = computed<Column<Row>[]>(() => [
-  {
-    name: "year",
-    label: t("admin.requests.priorities.table.columns.year"),
-    align: "left",
-    field: "year",
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "seniority",
-    label: t("admin.requests.priorities.table.columns.seniority"),
-    field: "seniority",
-    format: (val: number) => n(val, "decimal"),
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "isPriority",
-    label: t("admin.requests.priorities.table.columns.isPriority"),
-    align: "center",
-    field: "isPriority",
-    format: (val: boolean) => (val ? "✓" : "✗"),
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "computed",
-    label: t("admin.requests.priorities.table.columns.computed"),
-    align: "center",
-    field: "computed",
-    format: (val: boolean) => (val ? "✓" : "✗"),
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "uid",
-    label: t("admin.requests.priorities.table.columns.uid"),
-    align: "left",
-    field: (row) => row.service.uid,
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "degree",
-    label: t("admin.requests.priorities.table.columns.degree"),
-    align: "left",
-    field: (row) => row.course.program.degree.name,
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "program",
-    label: t("admin.requests.priorities.table.columns.program"),
-    align: "left",
-    field: (row) => row.course.program.name,
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "track",
-    label: t("admin.requests.priorities.table.columns.track"),
-    align: "left",
-    field: (row) => row.course.track?.name,
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "course",
-    label: t("admin.requests.priorities.table.columns.course"),
-    align: "left",
-    field: (row) => row.course.name,
-    sortable: true,
-    searchable: true,
-  },
-  {
-    name: "semester",
-    label: t("admin.requests.priorities.table.columns.semester"),
-    align: "left",
-    field: (row) => row.course.semester,
-    format: (val: number) => t("semester", { semester: val }),
-    sortable: true,
-    searchable: false,
-  },
-  {
-    name: "courseType",
-    label: t("admin.requests.priorities.table.columns.courseType"),
-    align: "left",
-    field: (row) => row.course.type.label,
-    sortable: true,
-    searchable: false,
-  },
-]);
-
 const formatRow = (row: Row) =>
   `${row.year} — ${row.service.uid} — ${row.course.name}`;
 
-const initForm = (rows: Row[]): FormValues => ({
-  year: rows[0]?.year ?? null,
-  seniority: rows[0]?.seniority ?? null,
-  isPriority: rows[0]?.isPriority ?? null,
-  computed: rows[0]?.computed ?? null,
-  uid: rows[0]?.service.uid ?? null,
-  degree: rows[0]?.course.program.degree.name ?? null,
-  program: rows[0]?.course.program.name ?? null,
-  track: rows[0]?.course.track?.name ?? null,
-  course: rows[0]?.course.name ?? null,
-  semester: rows[0]?.course.semester ?? null,
-  courseType: rows[0]?.course.type.label ?? null,
-});
+const validateFlatRow = (flatRow: FlatRow): InsertInput => {
+  const object: InsertInput = {};
 
-function validateImportRow(importRow: ImportRow): InsertInput;
-function validateImportRow(importRow: Partial<ImportRow>): Partial<InsertInput>;
-function validateImportRow(
-  importRow: Partial<ImportRow>,
-): Partial<InsertInput> {
-  const object: Partial<InsertInput> = {};
-
-  if (importRow.year !== undefined) {
-    object.year = importRow.year;
+  if (flatRow.year !== undefined) {
+    object.year = flatRow.year;
   }
 
   // serviceId
-  if (importRow.uid !== undefined) {
-    if (importRow.year === undefined) {
+  if (flatRow.uid !== undefined) {
+    if (flatRow.year === undefined) {
       throw new Error(
         t("admin.requests.priorities.form.error.updateUidWithoutYear"),
       );
     }
 
     const service = services.value.find(
-      (s) => s.year === importRow.year && s.uid === importRow.uid,
+      (s) => s.year === flatRow.year && s.teacher.uid === flatRow.uid,
     );
 
     if (service === undefined) {
       throw new Error(
-        t("admin.requests.priorities.form.error.serviceNotFound", importRow),
+        t("admin.requests.priorities.form.error.serviceNotFound", flatRow),
       );
     }
 
@@ -339,21 +230,21 @@ function validateImportRow(
 
   // courseId
   if (
-    importRow.degree !== undefined ||
-    importRow.program !== undefined ||
-    importRow.track !== undefined ||
-    importRow.course !== undefined ||
-    importRow.semester !== undefined ||
-    importRow.courseType !== undefined
+    flatRow.degree !== undefined ||
+    flatRow.program !== undefined ||
+    flatRow.track !== undefined ||
+    flatRow.course !== undefined ||
+    flatRow.semester !== undefined ||
+    flatRow.courseType !== undefined
   ) {
     if (
-      importRow.year === undefined ||
-      importRow.degree === undefined ||
-      importRow.program === undefined ||
-      importRow.track === undefined ||
-      importRow.course === undefined ||
-      importRow.semester === undefined ||
-      importRow.courseType === undefined
+      flatRow.year === undefined ||
+      flatRow.degree === undefined ||
+      flatRow.program === undefined ||
+      flatRow.track === undefined ||
+      flatRow.course === undefined ||
+      flatRow.semester === undefined ||
+      flatRow.courseType === undefined
     ) {
       throw new Error(
         t("admin.requests.priorities.form.error.updateCourseMissingFields"),
@@ -362,47 +253,47 @@ function validateImportRow(
 
     const course = courses.value.find(
       (c) =>
-        c.year === importRow.year &&
-        c.program.degree.name === importRow.degree &&
-        c.program.name === importRow.program &&
-        (c.track?.name ?? null) === importRow.track &&
-        c.name === importRow.course &&
-        c.semester === importRow.semester &&
-        c.type.label === importRow.courseType,
+        c.year === flatRow.year &&
+        c.program.degree.name === flatRow.degree &&
+        c.program.name === flatRow.program &&
+        (c.track?.name ?? null) === flatRow.track &&
+        c.name === flatRow.course &&
+        c.semester === flatRow.semester &&
+        c.type.label === flatRow.courseType,
     );
 
     if (course === undefined) {
       throw new Error(
-        t("admin.requests.priorities.form.error.courseNotFound", importRow),
+        t("admin.requests.priorities.form.error.courseNotFound", flatRow),
       );
     }
 
     object.courseId = course.id;
   }
 
-  if (importRow.seniority !== undefined) {
-    object.seniority = importRow.seniority;
+  if (flatRow.seniority !== undefined) {
+    object.seniority = flatRow.seniority;
   }
 
-  if (importRow.isPriority !== undefined) {
-    object.isPriority = importRow.isPriority;
+  if (flatRow.isPriority !== undefined) {
+    object.isPriority = flatRow.isPriority;
   }
 
-  if (importRow.computed !== undefined) {
-    object.computed = importRow.computed;
+  if (flatRow.computed !== undefined) {
+    object.computed = flatRow.computed;
   }
 
   return object;
-}
+};
 
-const formValues = ref<FormValues>(initForm([]));
+const formValues = ref<FlatRow>(nullObj(rowDescriptor));
 const selectedFields = ref<string[]>([]);
 
 const yearOptions = computed(() => years.value.map((y) => y.value));
-const uidOptions = computed(() =>
+const teacherOptions = computed(() =>
   services.value
     .filter((s) => s.year === formValues.value.year)
-    .map((s) => s.uid),
+    .map((s) => ({ value: s.teacher.uid, label: s.teacher.displayname })),
 );
 const coursesFiltered = computed(() =>
   courses.value.filter(
@@ -445,7 +336,7 @@ const courseTypeOptions = computed(() =>
 const selectedYears = ref<number[]>([]);
 const selectedIsPriority = ref<boolean | null>(null);
 const selectedComputed = ref<boolean | null>(null);
-const selectedUids = ref<string[]>([]);
+const selectedTeachers = ref<string[]>([]);
 const selectedPrograms = ref<number[]>([]);
 const selectedYearsOptions = computed(() => years.value.map((y) => y.value));
 const selectedUidsOptions = computed(() =>
@@ -461,16 +352,16 @@ const selectedProgramsOptions = computed(() =>
     .sort(compare("label")),
 );
 const filterFn = computed(
-  () => (r: Row) =>
-    (!selectedYears.value.length || selectedYears.value.includes(r.year)) &&
+  () => (row: Row) =>
+    (!selectedYears.value.length || selectedYears.value.includes(row.year)) &&
     (selectedIsPriority.value === null ||
-      r.isPriority === selectedIsPriority.value) &&
+      row.isPriority === selectedIsPriority.value) &&
     (selectedComputed.value === null ||
-      r.computed === selectedComputed.value) &&
-    (!selectedUids.value.length ||
-      selectedUids.value.includes(r.service.uid)) &&
+      row.computed === selectedComputed.value) &&
+    (!selectedTeachers.value.length ||
+      selectedTeachers.value.includes(row.service.uid)) &&
     (!selectedPrograms.value.length ||
-      selectedPrograms.value.includes(r.course.program.id)),
+      selectedPrograms.value.includes(row.course.program.id)),
 );
 </script>
 
@@ -478,28 +369,26 @@ const filterFn = computed(
   <AdminData
     v-model:form-values="formValues"
     v-model:selected-fields="selectedFields"
+    section="requests"
     name="priorities"
-    key-prefix="admin.requests.priorities"
     :id-key
     :row-descriptor
-    :columns
     :rows="priorities"
     :filter-fn
     :format-row
-    :init-form
-    :validate-import-row
+    :validate-flat-row
     :insert-data="insertPriorities"
     :upsert-data="upsertPriorities"
     :update-data="updatePriorities"
     :delete-data="deletePriorities"
-    :constraint
-    :update-columns
+    :import-constraint
+    :import-update-columns
   >
     <template #filters>
       <QSelect
         v-model="selectedYears"
         :options="selectedYearsOptions"
-        :label="t('admin.requests.priorities.table.columns.year')"
+        :label="t('admin.requests.priorities.column.year.label')"
         multiple
         use-chips
         square
@@ -510,7 +399,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedIsPriority"
         :options="booleanOptions(t('yes'), t('no'))"
-        :label="t('admin.requests.priorities.table.columns.isPriority')"
+        :label="t('admin.requests.priorities.column.isPriority')"
         emit-value
         map-options
         multiple
@@ -523,7 +412,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedComputed"
         :options="booleanOptions(t('yes'), t('no'))"
-        :label="t('admin.requests.priorities.table.columns.computed')"
+        :label="t('admin.requests.priorities.column.computed.label')"
         emit-value
         map-options
         multiple
@@ -534,9 +423,11 @@ const filterFn = computed(
         style="width: 100%"
       />
       <QSelect
-        v-model="selectedUids"
+        v-model="selectedTeachers"
         :options="selectedUidsOptions"
-        :label="t('admin.requests.priorities.table.columns.uid')"
+        :label="t('admin.requests.priorities.column.teacher.label')"
+        emit-value
+        map-options
         multiple
         use-chips
         square
@@ -547,7 +438,7 @@ const filterFn = computed(
       <QSelect
         v-model="selectedPrograms"
         :options="selectedProgramsOptions"
-        :label="t('admin.requests.priorities.table.columns.program')"
+        :label="t('admin.requests.priorities.column.program.label')"
         multiple
         use-chips
         square
@@ -560,7 +451,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.year"
         :options="yearOptions"
-        :label="t('admin.requests.priorities.form.fields.year')"
+        :label="t('admin.requests.priorities.column.year.label')"
         :disable="multipleSelection && !selectedFields.includes('year')"
         clearable
         clear-icon="sym_s_close"
@@ -575,7 +466,7 @@ const filterFn = computed(
       <QInput
         :model-value="formValues.seniority"
         type="number"
-        :label="t('admin.requests.priorities.form.fields.seniority')"
+        :label="t('admin.requests.priorities.column.seniority.label')"
         :disable="multipleSelection && !selectedFields.includes('seniority')"
         clearable
         clear-icon="sym_s_close"
@@ -592,7 +483,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.isPriority"
         :options="booleanOptions(t('yes'), t('no'))"
-        :label="t('admin.requests.priorities.form.fields.isPriority')"
+        :label="t('admin.requests.priorities.column.isPriority')"
         :disable="multipleSelection && !selectedFields.includes('isPriority')"
         emit-value
         map-options
@@ -609,7 +500,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.computed"
         :options="booleanOptions(t('yes'), t('no'))"
-        :label="t('admin.requests.priorities.form.fields.computed')"
+        :label="t('admin.requests.priorities.column.computed.label')"
         :disable="multipleSelection && !selectedFields.includes('computed')"
         emit-value
         map-options
@@ -625,14 +516,16 @@ const filterFn = computed(
       </QSelect>
       <QSelect
         v-model="formValues.uid"
-        :options="uidOptions"
-        :label="t('admin.requests.priorities.form.fields.uid')"
+        :options="teacherOptions"
+        :label="t('admin.requests.priorities.column.uid.label')"
         :disable="
           formValues.year === null ||
           (multipleSelection && !selectedFields.includes('uid'))
         "
         clearable
         clear-icon="sym_s_close"
+        emit-value
+        map-options
         square
         dense
         options-dense
@@ -644,7 +537,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.degree"
         :options="degreeOptions"
-        :label="t('admin.requests.priorities.form.fields.degree')"
+        :label="t('admin.requests.priorities.column.degree.label')"
         :disable="
           !formValues.year ||
           (multipleSelection && !selectedFields.includes('degree'))
@@ -662,7 +555,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.program"
         :options="programOptions"
-        :label="t('admin.requests.priorities.form.fields.program')"
+        :label="t('admin.requests.priorities.column.program.label')"
         :disable="
           !formValues.degree ||
           (multipleSelection && !selectedFields.includes('program'))
@@ -680,7 +573,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.track"
         :options="trackOptions"
-        :label="t('admin.requests.priorities.form.fields.track')"
+        :label="t('admin.requests.priorities.column.track.label')"
         :disable="
           !formValues.program ||
           (multipleSelection && !selectedFields.includes('track'))
@@ -698,7 +591,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.course"
         :options="courseOptions"
-        :label="t('admin.requests.priorities.form.fields.course')"
+        :label="t('admin.requests.priorities.column.course.label')"
         :disable="
           formValues.year === null ||
           !formValues.program ||
@@ -717,7 +610,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.semester"
         :options="semesterOptions"
-        :label="t('admin.requests.priorities.form.fields.semester')"
+        :label="t('admin.requests.priorities.column.semester.label')"
         :disable="
           !formValues.course ||
           (multipleSelection && !selectedFields.includes('semester'))
@@ -735,7 +628,7 @@ const filterFn = computed(
       <QSelect
         v-model="formValues.courseType"
         :options="courseTypeOptions"
-        :label="t('admin.requests.priorities.form.fields.courseType')"
+        :label="t('admin.requests.priorities.column.courseType')"
         :disable="
           !formValues.course ||
           (multipleSelection && !selectedFields.includes('courseType'))
