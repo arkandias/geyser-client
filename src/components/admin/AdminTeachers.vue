@@ -96,10 +96,10 @@ const serviceModificationTypes = computed(
       icon="sym_s_assignment_ind"
       :label="t('admin.teachers.services.label')"
     >
-      <!--      <AdminTeachersServices-->
-      <!--        :service-fragments="services"-->
-      <!--        :teacher-fragments="teachers"-->
-      <!--      />-->
+      <AdminTeachersServices
+        :service-fragments="services"
+        :teacher-fragments="teachers"
+      />
     </AdminSection>
 
     <QSeparator />
@@ -108,12 +108,12 @@ const serviceModificationTypes = computed(
       icon="sym_s_assignment_returned"
       :label="t('admin.teachers.serviceModifications.label')"
     >
-      <!--      <AdminTeachersServiceModifications-->
-      <!--        :service-fragments="services"-->
-      <!--        :service-modification-fragments="serviceModifications"-->
-      <!--        :service-modification-type-fragments="serviceModificationTypes"-->
-      <!--        :teacher-fragments="teachers"-->
-      <!--      />-->
+      <AdminTeachersServiceModifications
+        :service-fragments="services"
+        :service-modification-fragments="serviceModifications"
+        :service-modification-type-fragments="serviceModificationTypes"
+        :teacher-fragments="teachers"
+      />
     </AdminSection>
 
     <QSeparator />
@@ -122,9 +122,9 @@ const serviceModificationTypes = computed(
       icon="sym_s_format_list_bulleted"
       :label="t('admin.teachers.serviceModificationTypes.label')"
     >
-      <!--      <AdminTeachersServiceModificationTypes-->
-      <!--        :service-modification-type-fragments="serviceModificationTypes"-->
-      <!--      />-->
+      <AdminTeachersServiceModificationTypes
+        :service-modification-type-fragments="serviceModificationTypes"
+      />
     </AdminSection>
   </QList>
 </template>

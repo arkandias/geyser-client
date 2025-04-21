@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -20,7 +20,6 @@ import {
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
-import { inputToNumber, nullObj } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/core/AdminData.vue";
 
@@ -53,10 +52,28 @@ const { years } = useYearsStore();
 
 const idKey: keyof Row = "id";
 const rowDescriptor = {
-  year: { type: "number", field: (row) => row.service.year },
-  uid: { type: "string" },
-  type: { type: "string", field: (row) => row.type.label },
-  hours: { type: "number", numberFormat: "decimalFixed" },
+  year: {
+    type: "number",
+    field: (row) => row.service.year,
+    formType: "select",
+  },
+  uid: {
+    type: "string",
+    field: (row) => row.service.uid,
+    format: (val: string) =>
+      teachers.value.find((t) => t.uid === val)?.displayname,
+    formType: "select",
+  },
+  type: {
+    type: "string",
+    field: (row) => row.type.label,
+    formType: "select",
+  },
+  hours: {
+    type: "number",
+    numberFormat: "decimalFixed",
+    formType: "inputNum",
+  },
 } as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`
@@ -238,148 +255,30 @@ const validateFlatRow = (flatRow: FlatRow): InsertInput => {
   return object;
 };
 
-const formValues = ref<FlatRow>(nullObj(rowDescriptor));
-const selectedFields = ref<string[]>([]);
-
-// Options
-const yearOptions = computed(() => years.value.map((y) => y.value));
-const teacherOptions = computed(() =>
-  teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
-);
-const typeOptions = computed(() =>
-  serviceModificationTypes.value.map((smt) => smt.label),
-);
-
-// Filters
-const selectedYears = ref<number[]>([]);
-const selectedUids = ref<string[]>([]);
-const selectedTypes = ref<string[]>([]);
-const filterFn = computed(
-  () => (row: Row) =>
-    (!selectedYears.value.length ||
-      selectedYears.value.includes(row.service.year)) &&
-    (!selectedUids.value.length ||
-      selectedUids.value.includes(row.service.uid)) &&
-    (!selectedTypes.value.length ||
-      selectedTypes.value.includes(row.type.label)),
-);
+const formOptions = computed(() => ({
+  year: years.value.map((y) => y.value),
+  uid: teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
+  type: serviceModificationTypes.value.map((smt) => smt.label),
+}));
 </script>
 
 <template>
   <AdminData
-    v-model:form-values="formValues"
-    v-model:selected-fields="selectedFields"
     section="teachers"
     name="serviceModifications"
     :id-key
     :row-descriptor
     :rows="serviceModifications"
-    :filter-fn
     :format-row
     :validate-flat-row
+    :form-options
     :insert-data="insertServiceModifications"
     :upsert-data="upsertServiceModifications"
     :update-data="updateServiceModifications"
     :delete-data="deleteServiceModifications"
     :import-constraint
     :import-update-columns
-  >
-    <template #filters>
-      <QSelect
-        v-model="selectedYears"
-        :options="yearOptions"
-        :label="t('admin.teachers.serviceModifications.column.year.label')"
-        multiple
-        use-chips
-        square
-        dense
-        options-dense
-        style="width: 100%"
-      />
-      <QSelect
-        v-model="selectedUids"
-        :options="teacherOptions"
-        :label="t('admin.teachers.serviceModifications.column.teacher.label')"
-        emit-value
-        map-options
-        multiple
-        use-chips
-        square
-        dense
-        options-dense
-        style="width: 100%"
-      />
-      <QSelect
-        v-model="selectedTypes"
-        :options="typeOptions"
-        :label="t('admin.teachers.serviceModifications.column.type.label')"
-        multiple
-        use-chips
-        square
-        dense
-        options-dense
-        style="width: 100%"
-      />
-    </template>
-    <template #form="{ multipleSelection }">
-      <QSelect
-        v-model="formValues.year"
-        :options="yearOptions"
-        :label="t('admin.teachers.serviceModifications.column.year.label')"
-        :disable="multipleSelection && !selectedFields.includes('year')"
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="year" />
-        </template>
-      </QSelect>
-      <QSelect
-        v-model="formValues.uid"
-        :options="teacherOptions"
-        :label="t('admin.teachers.serviceModifications.column.uid.label')"
-        :disable="multipleSelection && !selectedFields.includes('uid')"
-        emit-value
-        map-options
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="uid" />
-        </template>
-      </QSelect>
-      <QSelect
-        v-model="formValues.type"
-        :options="typeOptions"
-        :label="t('admin.teachers.serviceModifications.column.type.label')"
-        :disable="multipleSelection && !selectedFields.includes('type')"
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="type" />
-        </template>
-      </QSelect>
-      <QInput
-        :model-value="formValues.hours"
-        type="number"
-        :label="t('admin.teachers.serviceModifications.column.hours.label')"
-        :disable="multipleSelection && !selectedFields.includes('hours')"
-        square
-        dense
-        @update:model-value="
-          (value) => (formValues.hours = inputToNumber(value))
-        "
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="hours" />
-        </template>
-      </QInput>
-    </template>
-  </AdminData>
+  />
 </template>
 
 <style scoped lang="scss"></style>

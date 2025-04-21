@@ -17,7 +17,6 @@ import {
   UpsertTeachersDocument,
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
-import { booleanOptions } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/core/AdminData.vue";
 

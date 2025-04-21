@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -18,7 +18,6 @@ import {
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
-import { inputToNumber, nullObj } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/core/AdminData.vue";
 
@@ -36,13 +35,26 @@ const { years } = useYearsStore();
 
 const idKey: keyof Row = "id";
 const rowDescriptor = {
-  year: { type: "number" },
-  uid: { type: "string" },
-  hours: { type: "number", numberFormat: "decimalFixed" },
+  year: {
+    type: "number",
+    formType: "select",
+  },
+  uid: {
+    type: "string",
+    format: (val: string) =>
+      teachers.value.find((t) => t.uid === val)?.displayname,
+    formType: "input",
+  },
+  hours: {
+    type: "number",
+    numberFormat: "decimalFixed",
+    formType: "inputNum",
+  },
   message: {
     type: "string",
     nullable: true,
     format: (val: string) => (val ? "✓" : "✗"),
+    formType: "input",
   },
 } as const satisfies RowDescriptorExtra<Row>;
 
@@ -142,124 +154,29 @@ const validateFlatRow = (flatRow: FlatRow): InsertInput => {
   return object;
 };
 
-const formValues = ref<FlatRow>(nullObj(rowDescriptor));
-const selectedFields = ref<string[]>([]);
-
-// Options
-const yearOptions = computed(() => years.value.map((y) => y.value));
-const uidOptions = computed(() =>
-  teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
-);
-
-// Filters
-const yearFilter = ref<number[]>([]);
-const uidFilter = ref<string[]>([]);
-const filterFn = computed(
-  () => (row: Row) =>
-    (!yearFilter.value.length || yearFilter.value.includes(row.year)) &&
-    (!uidFilter.value.length || uidFilter.value.includes(row.uid)),
-);
+const formOptions = computed(() => ({
+  year: years.value.map((y) => y.value),
+  uid: teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
+}));
 </script>
 
 <template>
   <AdminData
-    v-model:form-values="formValues"
-    v-model:selected-fields="selectedFields"
     section="teachers"
     name="services"
     :id-key
     :row-descriptor
     :rows="services"
-    :filter-fn
     :format-row
     :validate-flat-row
+    :form-options
     :insert-data="insertServices"
     :upsert-data="upsertServices"
     :update-data="updateServices"
     :delete-data="deleteServices"
     :import-constraint
     :import-update-columns
-  >
-    <template #filters>
-      <QSelect
-        v-model="yearFilter"
-        :options="yearOptions"
-        :label="t('admin.teachers.services.column.year.label')"
-        multiple
-        use-chips
-        square
-        dense
-        options-dense
-        style="width: 100%"
-      />
-      <QSelect
-        v-model="uidFilter"
-        :options="uidOptions"
-        :label="t('admin.teachers.services.column.uid.label')"
-        multiple
-        use-chips
-        square
-        dense
-        options-dense
-        style="width: 100%"
-      />
-    </template>
-    <template #form="{ multipleSelection }">
-      <QSelect
-        v-model="formValues.year"
-        :options="yearOptions"
-        :label="t('admin.teachers.services.column.year.label')"
-        :disable="multipleSelection && !selectedFields.includes('year')"
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="year" />
-        </template>
-      </QSelect>
-      <QSelect
-        v-model="formValues.uid"
-        :options="uidOptions"
-        :label="t('admin.teachers.services.column.uid.label')"
-        :disable="multipleSelection && !selectedFields.includes('uid')"
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="uid" />
-        </template>
-      </QSelect>
-      <QInput
-        :model-value="formValues.hours"
-        type="number"
-        :label="t('admin.teachers.services.column.hours.label')"
-        :disable="multipleSelection && !selectedFields.includes('hours')"
-        square
-        dense
-        @update:model-value="
-          (value) => (formValues.hours = inputToNumber(value))
-        "
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="hours" />
-        </template>
-      </QInput>
-      <QInput
-        v-model="formValues.message"
-        :label="t('admin.teachers.services.column.message.label')"
-        :disable="multipleSelection && !selectedFields.includes('message')"
-        autogrow
-        square
-        dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="message" />
-        </template>
-      </QInput>
-    </template>
-  </AdminData>
+  />
 </template>
 
 <style scoped lang="scss"></style>

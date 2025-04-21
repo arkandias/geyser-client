@@ -34,8 +34,15 @@ const { t } = useCustomI18n();
 
 const idKey: keyof Row = "id";
 const rowDescriptor = {
-  label: { type: "string" },
-  description: { type: "string", nullable: true },
+  label: {
+    type: "string",
+    formType: "input",
+  },
+  description: {
+    type: "string",
+    nullable: true,
+    formType: "input",
+  },
 } as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`
@@ -132,15 +139,10 @@ const validateFlatRow = (flatRow: FlatRow): InsertInput => {
 
   return object;
 };
-
-const formValues = ref<FlatRow>(nullObj(rowDescriptor));
-const selectedFields = ref<string[]>([]);
 </script>
 
 <template>
   <AdminData
-    v-model:form-values="formValues"
-    v-model:selected-fields="selectedFields"
     section="teachers"
     name="serviceModificationTypes"
     :id-key
@@ -154,34 +156,7 @@ const selectedFields = ref<string[]>([]);
     :delete-data="deleteServiceModificationTypes"
     :import-constraint
     :import-update-columns
-  >
-    <template #form="{ multipleSelection }">
-      <QInput
-        v-model="formValues.label"
-        :label="t('admin.teachers.serviceModificationTypes.column.label.label')"
-        :disable="multipleSelection && !selectedFields.includes('label')"
-        square
-        dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="label" />
-        </template>
-      </QInput>
-      <QInput
-        v-model="formValues.description"
-        :label="
-          t('admin.teachers.serviceModificationTypes.column.description.label')
-        "
-        :disable="multipleSelection && !selectedFields.includes('description')"
-        square
-        dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="description" />
-        </template>
-      </QInput>
-    </template>
-  </AdminData>
+  />
 </template>
 
 <style scoped lang="scss"></style>

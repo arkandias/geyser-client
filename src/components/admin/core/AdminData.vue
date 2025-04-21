@@ -628,12 +628,12 @@ const exportDataHandle = () => {
       />
       <template v-if="showFilters">
         <AdminSelect
-          v-for="[key, filter] in Object.entries(filters)"
-          :key
+          v-for="filter in filters"
+          :key="filter.name"
           v-model="filter.selected"
           :options="filter.options"
           :key-prefix
-          :name="key"
+          :name="filter.name"
           multiple
           style="width: 100%"
         />
