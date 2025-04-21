@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type AdminCourseTypeFragment,
@@ -16,7 +15,6 @@ import {
   UpsertCourseTypesDocument,
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
-import { inputToNumber, nullObj } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/core/AdminData.vue";
 
@@ -28,13 +26,22 @@ const { courseTypeFragments } = defineProps<{
   courseTypeFragments: FragmentType<typeof AdminCourseTypeFragmentDoc>[];
 }>();
 
-const { t } = useCustomI18n();
-
 const idKey: keyof Row = "id";
 const rowDescriptor = {
-  label: { type: "string" },
-  coefficient: { type: "number", numberFormat: "decimal" },
-  description: { type: "string", nullable: true },
+  label: {
+    type: "string",
+    formType: "input",
+  },
+  coefficient: {
+    type: "number",
+    numberFormat: "decimal",
+    formType: "inputNum",
+  },
+  description: {
+    type: "string",
+    nullable: true,
+    formType: "input",
+  },
 } as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`
@@ -115,17 +122,12 @@ const validateFlatRow = (flatRow: FlatRow): InsertInput => {
 
   return object;
 };
-
-const formValues = ref<FlatRow>(nullObj(rowDescriptor));
-const selectedFields = ref<string[]>([]);
 </script>
 
 <template>
   <AdminData
-    v-model:form-values="formValues"
-    v-model:selected-fields="selectedFields"
     section="courses"
-    name="types"
+    name="courseTypes"
     :id-key
     :row-descriptor
     :rows="courseTypes"
@@ -137,48 +139,7 @@ const selectedFields = ref<string[]>([]);
     :delete-data="deleteCourseTypes"
     :import-constraint
     :import-update-columns
-  >
-    <template #form="{ multipleSelection }">
-      <QInput
-        v-model="formValues.label"
-        :label="t('admin.courses.types.column.label.label')"
-        :disable="multipleSelection && !selectedFields.includes('label')"
-        square
-        dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="label" />
-        </template>
-      </QInput>
-      <QInput
-        :model-value="formValues.coefficient"
-        type="number"
-        :label="t('admin.courses.types.column.coefficient.label')"
-        :disable="multipleSelection && !selectedFields.includes('coefficient')"
-        square
-        dense
-        @update:model-value="
-          (value) => (formValues.coefficient = inputToNumber(value))
-        "
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="coefficient" />
-        </template>
-      </QInput>
-      <QInput
-        v-if="!multipleSelection"
-        v-model="formValues.description"
-        :label="t('admin.courses.types.column.description.label')"
-        :disable="multipleSelection && !selectedFields.includes('description')"
-        square
-        dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="description" />
-        </template>
-      </QInput>
-    </template>
-  </AdminData>
+  />
 </template>
 
 <style scoped lang="scss"></style>

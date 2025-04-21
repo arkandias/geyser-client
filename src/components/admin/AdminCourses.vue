@@ -25,6 +25,8 @@ graphql(`
     }
     programs: program(orderBy: [{ degree: { name: ASC } }, { name: ASC }]) {
       ...AdminProgram
+      ...AdminTracksProgram
+      ...AdminCoursesProgram
     }
     tracks: track(
       orderBy: [
@@ -34,6 +36,7 @@ graphql(`
       ]
     ) {
       ...AdminTrack
+      ...AdminCoursesTrack
     }
     courses: course(
       orderBy: [
@@ -102,6 +105,7 @@ const types = computed(() => data.value?.types ?? []);
     >
       <AdminCoursesTracks
         :degree-fragments="degrees"
+        :program-fragments="programs"
         :track-fragments="tracks"
       />
     </AdminSection>
@@ -114,6 +118,8 @@ const types = computed(() => data.value?.types ?? []);
     >
       <AdminCoursesCourses
         :degree-fragments="degrees"
+        :program-fragments="programs"
+        :track-fragments="tracks"
         :course-fragments="courses"
         :course-type-fragments="types"
       />
@@ -123,7 +129,7 @@ const types = computed(() => data.value?.types ?? []);
 
     <AdminSection
       icon="sym_s_format_list_bulleted"
-      :label="t('admin.courses.types.label')"
+      :label="t('admin.courses.courseTypes.label')"
     >
       <AdminCoursesCourseTypes :course-type-fragments="types" />
     </AdminSection>

@@ -281,7 +281,7 @@ S'il existe des demandes, des priorités ou des responsables pour ces enseigneme
         },
       },
     },
-    types: {
+    courseTypes: {
       label: "Types d'enseignement",
       column: {
         label: {
@@ -289,8 +289,8 @@ S'il existe des demandes, des priorités ou des responsables pour ces enseigneme
           tooltip: "",
         },
         coefficient: {
-          label: "Coeff.",
-          tooltip: "Coefficient",
+          label: "Coefficient",
+          tooltip: "",
         },
         description: {
           label: "Description",

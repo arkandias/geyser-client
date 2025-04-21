@@ -8,7 +8,7 @@ import { inputToNumber } from "@/utils/misc.ts";
 const modelValue = defineModel<any>();
 const selectedFields = defineModel<string[]>("selectedFields");
 
-const { name, numeric, multipleSelection } = defineProps<{
+const { keyPrefix, name, numeric, multipleSelection } = defineProps<{
   keyPrefix: string;
   name: string;
   numeric?: boolean;
@@ -16,6 +16,12 @@ const { name, numeric, multipleSelection } = defineProps<{
 }>();
 
 const { t } = useCustomI18n();
+
+const label = computed(
+  () =>
+    t(`${keyPrefix}.column.${name}.tooltip`) ||
+    t(`${keyPrefix}.column.${name}.label`),
+);
 
 const disable = computed(
   () => multipleSelection && !(selectedFields.value?.includes(name) ?? true),
@@ -34,7 +40,7 @@ const onUpdate = (value: string | number | null) => {
   <QInput
     :model-value="modelValue"
     :type="numeric ? 'number' : 'text'"
-    :label="t(`${keyPrefix}.column.${name}.label`)"
+    :label
     :disable
     clearable
     clear-icon="sym_s_close"
