@@ -356,12 +356,12 @@ const filterObj = computed(() => ({
   ),
   filters: filters.value,
 }));
+
 const filterMethod = (
   rows: readonly Row[],
   terms: typeof filterObj.value,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   cols: readonly Column<Row>[],
-  getCellValue: (col: string, row: Row) => Scalar,
+  getCellValue: (col: Column<Row>, row: Row) => Scalar,
 ): readonly Row[] =>
   rows.filter(
     (row) =>
@@ -371,10 +371,14 @@ const filterMethod = (
         ),
       ) &&
       (!showFilters.value ||
-        Object.entries(terms.filters).every(
-          ([key, selected]) =>
-            !selected.length || selected.includes(getCellValue(key, row)),
-        )),
+        Object.entries(terms.filters).every(([key, fil]) => {
+          if (!fil.length) {
+            return true;
+          }
+
+          const col = cols.find((col) => col.name === key);
+          return !col || fil.includes(getCellValue(col, row));
+        })),
   );
 
 // ===== Data Import =====
