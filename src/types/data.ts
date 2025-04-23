@@ -2,6 +2,10 @@ export type Scalar = string | number | boolean | null | undefined;
 export type SimpleObject<T extends Scalar> = {
   [key: string]: T | SimpleObject<T>;
 };
+export type Option = {
+  value: Scalar;
+  label: string;
+};
 
 export type PrimitiveTypeName = "string" | "number" | "boolean";
 export type PrimitiveTypeMap<T extends PrimitiveTypeName> = T extends "string"

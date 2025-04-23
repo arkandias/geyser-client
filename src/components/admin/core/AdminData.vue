@@ -20,6 +20,7 @@ import type { Column } from "@/types/column.ts";
 import type {
   FieldDescriptor,
   NullableParsedRow,
+  Option,
   PrimitiveTypeName,
   RowDescriptorExtra,
   Scalar,
@@ -43,6 +44,8 @@ type CustomMutationResponse<
   V
 >;
 
+const formValues = defineModel<Record<string, Scalar>>({ default: {} });
+const filterValues = defineModel<Record<string, Scalar[]>>({ default: {} });
 const {
   section,
   name,
@@ -67,10 +70,8 @@ const {
   rows: Row[];
   formatRow: (row: Row) => string;
   validateFlatRow: (flatRow: FlatRow) => InsertInput;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  formOptions?: Record<string, any[]>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  filterOptions?: Record<string, any[]>;
+  formOptions?: Record<string, Scalar[]>;
+  filterOptions?: Record<string, Scalar[] | Option[]>;
   insertData: CustomMutationResponse<
     "insertData",
     { objects: InsertInput | InsertInput[] }
@@ -160,8 +161,6 @@ const initForm = (rows: Row[]) =>
       getField(rows[0], descriptor.field ?? key),
     ]),
   ) as Record<string, Scalar>;
-
-const formValues = ref(initForm([]));
 
 const openForm = (rows?: Row[]) => {
   if (rows) {
@@ -332,9 +331,7 @@ const searchableColumns = computed(() =>
 
 type Filter = {
   name: string;
-  selected: Scalar[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options: any[];
+  options: Scalar[] | Option[];
 };
 
 const showFilters = ref(false);
@@ -343,9 +340,7 @@ const filters: Ref<Filter[]> = ref(
     .filter(([_, descriptor]) => !descriptor.formType.startsWith("input"))
     .map(([key, descriptor]) => ({
       name: key,
-      selected: [],
       options: computed(() =>
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         descriptor.formType === "select"
           ? (filterOptions[key] ?? formOptions[key] ?? [])
           : [
@@ -360,7 +355,7 @@ const hasFilters = computed(() => !!filters.value.length);
 
 const resetFilters = () => {
   filters.value.forEach((filter) => {
-    filter.selected = [];
+    filterValues.value[filter.name] = [];
   });
 };
 
@@ -393,11 +388,14 @@ const filterMethod = (
       ) &&
       (!showFilters.value ||
         terms.filters.every((filter) => {
-          if (!filter.selected.length) {
+          if (!filterValues.value[filter.name]?.length) {
             return true;
           }
           const col = cols.find((col) => col.name === filter.name);
-          return !col || filter.selected.includes(getCellValue(col, row));
+          return (
+            !col ||
+            filterValues.value[filter.name]?.includes(getCellValue(col, row))
+          );
         })),
   );
 
@@ -630,7 +628,7 @@ const exportDataHandle = () => {
         <AdminSelect
           v-for="filter in filters"
           :key="filter.name"
-          v-model="filter.selected"
+          v-model="filterValues[filter.name]"
           :options="filter.options"
           :key-prefix
           :name="filter.name"

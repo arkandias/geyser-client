@@ -45,25 +45,60 @@ const { years } = useYearsStore();
 
 const idKey: keyof Row = "id";
 const rowDescriptor = {
-  year: { type: "number" },
-  seniority: { type: "number", numberFormat: "decimal" },
-  isPriority: { type: "boolean", nullable: true },
-  computed: { type: "boolean" },
-  uid: { type: "string" },
-  degree: { type: "string", field: (row) => row.course.program.degree.name },
-  program: { type: "string", field: (row) => row.course.program.name },
+  year: {
+    type: "number",
+    formType: "select",
+  },
+  seniority: {
+    type: "number",
+    numberFormat: "decimal",
+    formType: "inputNum",
+  },
+  isPriority: {
+    type: "boolean",
+    nullable: true,
+    formType: "toggle",
+  },
+  computed: {
+    type: "boolean",
+    formType: "toggle",
+  },
+  uid: {
+    type: "string",
+    formType: "select",
+  },
+  degree: {
+    type: "string",
+    field: (row) => row.course.program.degree.name,
+    formType: "select",
+  },
+  program: {
+    type: "string",
+    field: (row) => row.course.program.name,
+    formType: "select",
+  },
   track: {
     type: "string",
     nullable: true,
     field: (row) => row.course.track?.name,
+    formType: "select",
   },
-  course: { type: "string", field: (row) => row.course.name },
+  course: {
+    type: "string",
+    field: (row) => row.course.name,
+    formType: "select",
+  },
   semester: {
     type: "number",
     field: (row) => row.course.semester,
     format: (val: number) => t("semester", { semester: val }),
+    formType: "select",
   },
-  courseType: { type: "string", field: (row) => row.course.type.label },
+  courseType: {
+    type: "string",
+    field: (row) => row.course.type.label,
+    formType: "select",
+  },
 } as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`

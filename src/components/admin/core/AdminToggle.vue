@@ -2,9 +2,9 @@
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import type { Scalar } from "@/types/data.ts";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const modelValue = defineModel<any>();
+const modelValue = defineModel<Scalar>();
 const selectedFields = defineModel<string[]>("selectedFields");
 
 const { name, multipleSelection } = defineProps<{
