@@ -186,31 +186,37 @@ const validateForm = (fields?: (keyof T)[]): FlatRow => {
       return;
     }
 
-    let value = formValues.value[key];
+    let value = formValues.value[key] ?? null;
 
-    if (fieldDescriptor.type === "string") {
-      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      value = value || null;
-    }
-
-    if (!fieldDescriptor.nullable && value == null) {
-      throw new Error(
-        t("admin.data.error.emptyField", {
-          field: t(`${keyPrefix}.column.${key}.label`),
-        }),
-      );
-    }
-
-    if (
-      fieldDescriptor.type === "number" &&
-      value != null &&
-      !Number.isFinite(value)
-    ) {
-      throw new Error(
-        t("admin.data.error.notANumber", {
-          field: t(`${keyPrefix}.column.${key}.label`),
-        }),
-      );
+    if (value === null) {
+      if (!fieldDescriptor.nullable) {
+        throw new Error(
+          t("admin.data.error.emptyField", {
+            field: t(`${keyPrefix}.column.${key}.label`),
+          }),
+        );
+      }
+    } else {
+      switch (fieldDescriptor.type) {
+        case "string":
+          value = String(value).trim() || null;
+          break;
+        case "number":
+          value = Number(value);
+          if (!Number.isFinite(value)) {
+            throw new Error(
+              t("admin.data.error.notANumber", {
+                field: t(`${keyPrefix}.column.${key}.label`),
+              }),
+            );
+          }
+          break;
+        case "boolean":
+          value = Boolean(value);
+          break;
+        default:
+          throw new Error(`Invalid type: ${fieldDescriptor.type as string}`);
+      }
     }
 
     flatRow[key] = value;

@@ -13,10 +13,16 @@ const { t } = useCustomI18n();
 
 graphql(`
   query GetAdminRoles {
-    roles: role(orderBy: [{ uid: ASC }, { type: ASC }]) {
+    roles: role(
+      orderBy: [
+        { type: ASC }
+        { teacher: { lastname: ASC } }
+        { teacher: { firstname: ASC } }
+      ]
+    ) {
       ...AdminRole
     }
-    teachers: teacher(orderBy: [{ uid: ASC }]) {
+    teachers: teacher(orderBy: [{ lastname: ASC }, { firstname: ASC }]) {
       ...AdminRolesTeacher
     }
   }

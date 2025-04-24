@@ -83,7 +83,7 @@ const coordinations = computed(() =>
     TeacherCoordinationsFragmentDoc,
     dataFragment,
   ).coordinations.filter(
-    (c) => c.course == null || c.course.year === activeYear.value,
+    (c) => !c.course || c.course.year === activeYear.value,
   ),
 );
 

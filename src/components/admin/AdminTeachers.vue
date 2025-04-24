@@ -17,7 +17,7 @@ const { t } = useCustomI18n();
 
 graphql(`
   query GetAdminTeachers {
-    teachers: teacher(orderBy: [{ uid: ASC }]) {
+    teachers: teacher(orderBy: [{ lastname: ASC }, { firstname: ASC }]) {
       ...AdminTeacher
       ...AdminServicesTeacher
       ...AdminServiceModificationsTeacher
@@ -26,12 +26,23 @@ graphql(`
       ...AdminPosition
       ...AdminTeachersPosition
     }
-    services: service(orderBy: [{ year: DESC }, { uid: ASC }]) {
+    services: service(
+      orderBy: [
+        { year: DESC }
+        { teacher: { lastname: ASC } }
+        { teacher: { firstname: ASC } }
+      ]
+    ) {
       ...AdminService
       ...AdminServiceModificationsService
     }
     serviceModifications: serviceModification(
-      orderBy: [{ service: { year: DESC } }, { service: { uid: ASC } }]
+      orderBy: [
+        { service: { year: DESC } }
+        { service: { teacher: { lastname: ASC } } }
+        { service: { teacher: { firstname: ASC } } }
+        { type: { label: ASC } }
+      ]
     ) {
       ...AdminServiceModification
     }

@@ -17,7 +17,9 @@ graphql(`
     requests: request(
       orderBy: [
         { year: DESC }
-        { service: { uid: ASC } }
+        { type: ASC }
+        { service: { teacher: { lastname: ASC } } }
+        { service: { teacher: { firstname: ASC } } }
         { course: { program: { degree: { name: ASC } } } }
         { course: { program: { name: ASC } } }
         { course: { track: { name: ASC } } }
@@ -31,7 +33,8 @@ graphql(`
     priorities: priority(
       orderBy: [
         { year: DESC }
-        { service: { uid: ASC } }
+        { service: { teacher: { lastname: ASC } } }
+        { service: { teacher: { firstname: ASC } } }
         { course: { program: { degree: { name: ASC } } } }
         { course: { program: { name: ASC } } }
         { course: { track: { name: ASC } } }
@@ -42,9 +45,19 @@ graphql(`
     ) {
       ...AdminPriority
     }
-    services: service(orderBy: [{ year: DESC }, { uid: ASC }]) {
+    services: service(
+      orderBy: [
+        { year: DESC }
+        { teacher: { lastname: ASC } }
+        { teacher: { firstname: ASC } }
+      ]
+    ) {
       ...AdminRequestsService
       ...AdminPrioritiesService
+    }
+    teachers: teacher(orderBy: [{ lastname: ASC }, { firstname: ASC }]) {
+      ...AdminRequestsTeacher
+      ...AdminPrioritiesTeacher
     }
     courses: course(
       orderBy: [
@@ -60,6 +73,28 @@ graphql(`
       ...AdminRequestsCourse
       ...AdminPrioritiesCourse
     }
+    degrees: degree(orderBy: [{ name: ASC }]) {
+      ...AdminRequestsDegree
+      ...AdminPrioritiesDegree
+    }
+    programs: program(orderBy: [{ degree: { name: ASC } }, { name: ASC }]) {
+      ...AdminRequestsProgram
+      ...AdminPrioritiesProgram
+    }
+    tracks: track(
+      orderBy: [
+        { program: { degree: { name: ASC } } }
+        { program: { name: ASC } }
+        { name: ASC }
+      ]
+    ) {
+      ...AdminRequestsTrack
+      ...AdminPrioritiesTrack
+    }
+    courseTypes: courseType(orderBy: { label: ASC }) {
+      ...AdminRequestsCourseType
+      ...AdminPrioritiesCourseType
+    }
   }
 `);
 
@@ -73,7 +108,12 @@ const { data } = useQuery({
 const requests = computed(() => data.value?.requests ?? []);
 const priorities = computed(() => data.value?.priorities ?? []);
 const services = computed(() => data.value?.services ?? []);
+const teachers = computed(() => data.value?.teachers ?? []);
 const courses = computed(() => data.value?.courses ?? []);
+const degrees = computed(() => data.value?.degrees ?? []);
+const programs = computed(() => data.value?.programs ?? []);
+const tracks = computed(() => data.value?.tracks ?? []);
+const courseTypes = computed(() => data.value?.courseTypes ?? []);
 </script>
 
 <template>
@@ -85,7 +125,12 @@ const courses = computed(() => data.value?.courses ?? []);
       <AdminRequestsRequests
         :request-fragments="requests"
         :service-fragments="services"
+        :teacher-fragments="teachers"
         :course-fragments="courses"
+        :degree-fragments="degrees"
+        :program-fragments="programs"
+        :track-fragments="tracks"
+        :course-type-fragments="courseTypes"
       />
     </AdminSection>
 
@@ -98,7 +143,12 @@ const courses = computed(() => data.value?.courses ?? []);
       <AdminRequestsPriorities
         :priority-fragments="priorities"
         :service-fragments="services"
+        :teacher-fragments="teachers"
         :course-fragments="courses"
+        :degree-fragments="degrees"
+        :program-fragments="programs"
+        :track-fragments="tracks"
+        :course-type-fragments="courseTypes"
       />
     </AdminSection>
   </QList>

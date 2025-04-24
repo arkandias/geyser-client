@@ -26,7 +26,8 @@ graphql(`
         { course: { semester: ASC } }
         { course: { name: ASC } }
         { course: { type: { label: ASC } } }
-        { service: { teacher: { displayname: ASC } } }
+        { service: { teacher: { lastname: ASC } } }
+        { service: { teacher: { firstname: ASC } } }
       ]
     ) {
       course {

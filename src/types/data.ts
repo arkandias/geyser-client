@@ -4,7 +4,7 @@ export type SimpleObject<T extends Scalar> = {
 };
 export type Option = {
   value: Scalar;
-  label: string;
+  label: Scalar;
 };
 
 export type PrimitiveTypeName = "string" | "number" | "boolean";

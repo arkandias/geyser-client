@@ -6,7 +6,12 @@ import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   AdminPrioritiesCourseFragmentDoc,
+  AdminPrioritiesCourseTypeFragmentDoc,
+  AdminPrioritiesDegreeFragmentDoc,
+  AdminPrioritiesProgramFragmentDoc,
   AdminPrioritiesServiceFragmentDoc,
+  AdminPrioritiesTeacherFragmentDoc,
+  AdminPrioritiesTrackFragmentDoc,
   type AdminPriorityFragment,
   AdminPriorityFragmentDoc,
   DeletePrioritiesDocument,
@@ -18,15 +23,12 @@ import {
   UpsertPrioritiesDocument,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
-import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
-import {
-  booleanOptions,
-  compare,
-  inputToNumber,
-  nullObj,
-  unique,
-  uniqueValue,
-} from "@/utils/misc.ts";
+import type {
+  NullableParsedRow,
+  RowDescriptorExtra,
+  Scalar,
+} from "@/types/data.ts";
+import { unique } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/core/AdminData.vue";
 
@@ -34,10 +36,26 @@ type Row = AdminPriorityFragment;
 type FlatRow = NullableParsedRow<typeof rowDescriptor>;
 type InsertInput = PriorityInsertInput;
 
-const { priorityFragments, serviceFragments, courseFragments } = defineProps<{
+const {
+  priorityFragments,
+  serviceFragments,
+  teacherFragments,
+  courseFragments,
+  degreeFragments,
+  programFragments,
+  trackFragments,
+  courseTypeFragments,
+} = defineProps<{
   priorityFragments: FragmentType<typeof AdminPriorityFragmentDoc>[];
   serviceFragments: FragmentType<typeof AdminPrioritiesServiceFragmentDoc>[];
+  teacherFragments: FragmentType<typeof AdminPrioritiesTeacherFragmentDoc>[];
   courseFragments: FragmentType<typeof AdminPrioritiesCourseFragmentDoc>[];
+  degreeFragments: FragmentType<typeof AdminPrioritiesDegreeFragmentDoc>[];
+  programFragments: FragmentType<typeof AdminPrioritiesProgramFragmentDoc>[];
+  trackFragments: FragmentType<typeof AdminPrioritiesTrackFragmentDoc>[];
+  courseTypeFragments: FragmentType<
+    typeof AdminPrioritiesCourseTypeFragmentDoc
+  >[];
 }>();
 
 const { t } = useCustomI18n();
@@ -47,6 +65,53 @@ const idKey: keyof Row = "id";
 const rowDescriptor = {
   year: {
     type: "number",
+    formType: "select",
+  },
+  uid: {
+    type: "string",
+    field: (row) => row.service.uid,
+    format: (val: string) =>
+      teachers.value.find((t) => t.uid === val)?.displayname,
+    formType: "select",
+  },
+  degree: {
+    type: "string",
+    field: (row) => row.course.program.degree.name,
+    format: (val: string) =>
+      degrees.value.find((d) => d.name === val)?.nameDisplay,
+    formType: "select",
+  },
+  program: {
+    type: "string",
+    field: (row) => row.course.program.name,
+    format: (val: string) =>
+      programs.value.find((p) => p.name === val)?.nameDisplay,
+    formType: "select",
+  },
+  track: {
+    type: "string",
+    nullable: true,
+    field: (row) => row.course.track?.name,
+    format: (val: string) =>
+      tracks.value.find((t) => t.name === val)?.nameDisplay,
+    formType: "select",
+  },
+  course: {
+    type: "string",
+    field: (row) => row.course.name,
+    format: (val: string) =>
+      courses.value.find((c) => c.name === val)?.nameDisplay,
+    formType: "select",
+  },
+  semester: {
+    type: "number",
+    field: (row) => row.course.semester,
+    format: (val: number) => t("semester", { semester: val }),
+    formType: "select",
+  },
+  courseType: {
+    type: "string",
+    field: (row) => row.course.type.label,
     formType: "select",
   },
   seniority: {
@@ -62,42 +127,6 @@ const rowDescriptor = {
   computed: {
     type: "boolean",
     formType: "toggle",
-  },
-  uid: {
-    type: "string",
-    formType: "select",
-  },
-  degree: {
-    type: "string",
-    field: (row) => row.course.program.degree.name,
-    formType: "select",
-  },
-  program: {
-    type: "string",
-    field: (row) => row.course.program.name,
-    formType: "select",
-  },
-  track: {
-    type: "string",
-    nullable: true,
-    field: (row) => row.course.track?.name,
-    formType: "select",
-  },
-  course: {
-    type: "string",
-    field: (row) => row.course.name,
-    formType: "select",
-  },
-  semester: {
-    type: "number",
-    field: (row) => row.course.semester,
-    format: (val: number) => t("semester", { semester: val }),
-    formType: "select",
-  },
-  courseType: {
-    type: "string",
-    field: (row) => row.course.type.label,
-    formType: "select",
   },
 } as const satisfies RowDescriptorExtra<Row>;
 
@@ -126,6 +155,7 @@ graphql(`
         name
       }
       name
+      nameDisplay
       semester
       type {
         id
@@ -144,6 +174,11 @@ graphql(`
       uid
       displayname
     }
+  }
+
+  fragment AdminPrioritiesTeacher on Teacher {
+    uid
+    displayname
   }
 
   fragment AdminPrioritiesCourse on Course {
@@ -165,10 +200,34 @@ graphql(`
       }
     }
     name
+    nameDisplay
     semester
     type {
       label
     }
+  }
+
+  fragment AdminPrioritiesDegree on Degree {
+    id
+    name
+    nameDisplay
+  }
+
+  fragment AdminPrioritiesProgram on Program {
+    id
+    name
+    nameDisplay
+  }
+
+  fragment AdminPrioritiesTrack on Track {
+    id
+    name
+    nameDisplay
+  }
+
+  fragment AdminPrioritiesCourseType on CourseType {
+    id
+    label
   }
 
   mutation InsertPriorities($objects: [PriorityInsertInput!]!) {
@@ -215,8 +274,29 @@ const services = computed(() =>
     useFragment(AdminPrioritiesServiceFragmentDoc, f),
   ),
 );
+const teachers = computed(() =>
+  teacherFragments.map((f) =>
+    useFragment(AdminPrioritiesTeacherFragmentDoc, f),
+  ),
+);
 const courses = computed(() =>
   courseFragments.map((f) => useFragment(AdminPrioritiesCourseFragmentDoc, f)),
+);
+const degrees = computed(() =>
+  degreeFragments.map((f) => useFragment(AdminPrioritiesDegreeFragmentDoc, f)),
+);
+const programs = computed(() =>
+  programFragments.map((f) =>
+    useFragment(AdminPrioritiesProgramFragmentDoc, f),
+  ),
+);
+const tracks = computed(() =>
+  trackFragments.map((f) => useFragment(AdminPrioritiesTrackFragmentDoc, f)),
+);
+const courseTypes = computed(() =>
+  courseTypeFragments.map((f) =>
+    useFragment(AdminPrioritiesCourseTypeFragmentDoc, f),
+  ),
 );
 const insertPriorities = useMutation(InsertPrioritiesDocument);
 const upsertPriorities = useMutation(UpsertPrioritiesDocument);
@@ -321,365 +401,88 @@ const validateFlatRow = (flatRow: FlatRow): InsertInput => {
   return object;
 };
 
-const formValues = ref<FlatRow>(nullObj(rowDescriptor));
-const selectedFields = ref<string[]>([]);
-
-const yearOptions = computed(() => years.value.map((y) => y.value));
-const teacherOptions = computed(() =>
-  services.value
-    .filter((s) => s.year === formValues.value.year)
+const formValues = ref<Record<string, Scalar>>({});
+const formOptions = computed(() => ({
+  year: years.value.map((y) => y.value),
+  uid: services.value
+    .filter((s) => s.year === formValues.value["year"])
     .map((s) => ({ value: s.teacher.uid, label: s.teacher.displayname })),
-);
-const coursesFiltered = computed(() =>
-  courses.value.filter(
-    (c) =>
-      (formValues.value.year === null || c.year === formValues.value.year) &&
-      (formValues.value.degree === null ||
-        c.program.degree.name === formValues.value.degree) &&
-      (formValues.value.program === null ||
-        c.program.name === formValues.value.program) &&
-      (formValues.value.track === null ||
-        c.track?.name === formValues.value.track) &&
-      (formValues.value.course === null ||
-        c.name === formValues.value.course) &&
-      (formValues.value.semester === null ||
-        c.semester === formValues.value.semester) &&
-      (formValues.value.courseType === null ||
-        c.type.label === formValues.value.courseType),
-  ),
-);
-const degreeOptions = computed(() =>
-  coursesFiltered.value.map((c) => c.program.degree.name).filter(unique),
-);
-const programOptions = computed(() =>
-  coursesFiltered.value.map((c) => c.program.name).filter(unique),
-);
-const trackOptions = computed(() =>
-  coursesFiltered.value.map((c) => c.track?.name ?? null).filter(unique),
-);
-const courseOptions = computed(() =>
-  coursesFiltered.value.map((c) => c.name).filter(unique),
-);
-const semesterOptions = computed(() =>
-  coursesFiltered.value.map((c) => c.semester).filter(unique),
-);
-const courseTypeOptions = computed(() =>
-  coursesFiltered.value.map((c) => c.type.label).filter(unique),
-);
-
-// Filters
-const selectedYears = ref<number[]>([]);
-const selectedIsPriority = ref<boolean | null>(null);
-const selectedComputed = ref<boolean | null>(null);
-const selectedTeachers = ref<string[]>([]);
-const selectedPrograms = ref<number[]>([]);
-const selectedYearsOptions = computed(() => years.value.map((y) => y.value));
-const selectedUidsOptions = computed(() =>
-  priorities.value.map((p) => p.service.uid).filter(unique),
-);
-const selectedProgramsOptions = computed(() =>
-  priorities.value
-    .map((p) => ({
-      value: p.course.program.id,
-      label: `${p.course.program.degree.nameDisplay} ${p.course.program.nameDisplay}`,
-    }))
-    .filter(uniqueValue("value"))
-    .sort(compare("label")),
-);
-const filterFn = computed(
-  () => (row: Row) =>
-    (!selectedYears.value.length || selectedYears.value.includes(row.year)) &&
-    (selectedIsPriority.value === null ||
-      row.isPriority === selectedIsPriority.value) &&
-    (selectedComputed.value === null ||
-      row.computed === selectedComputed.value) &&
-    (!selectedTeachers.value.length ||
-      selectedTeachers.value.includes(row.service.uid)) &&
-    (!selectedPrograms.value.length ||
-      selectedPrograms.value.includes(row.course.program.id)),
-);
+  degree: courses.value.map((c) => c.program.degree.name).filter(unique),
+  program: courses.value
+    .filter((c) => c.program.degree.name === formValues.value["degree"])
+    .map((c) => c.program.name)
+    .filter(unique),
+  track: courses.value
+    .filter(
+      (c) =>
+        c.program.degree.name === formValues.value["degree"] &&
+        c.program.name === formValues.value["program"] &&
+        c.track?.name,
+    )
+    .map((c) => c.track?.name)
+    .filter(unique),
+  course: courses.value
+    .filter(
+      (c) =>
+        c.program.degree.name === formValues.value["degree"] &&
+        c.program.name === formValues.value["program"] &&
+        (c.track?.name ?? null) === (formValues.value["track"] ?? null),
+    )
+    .map((c) => c.name)
+    .filter(unique),
+  semester: courses.value
+    .filter(
+      (c) =>
+        c.program.degree.name === formValues.value["degree"] &&
+        c.program.name === formValues.value["program"] &&
+        (c.track?.name ?? null) === (formValues.value["track"] ?? null) &&
+        c.name === formValues.value["course"],
+    )
+    .map((c) => ({
+      value: c.semester,
+      label: t("semester", { semester: c.semester }),
+    })),
+  courseType: courses.value
+    .filter(
+      (c) =>
+        c.program.degree.name === formValues.value["degree"] &&
+        c.program.name === formValues.value["program"] &&
+        (c.track?.name ?? null) === (formValues.value["track"] ?? null) &&
+        c.name === formValues.value["course"] &&
+        c.semester === formValues.value["semester"],
+    )
+    .map((c) => c.type.label),
+}));
+const filterOptions = computed(() => ({
+  uid: teachers.value.map((t) => t.uid),
+  degree: degrees.value.map((d) => d.name),
+  program: programs.value.map((p) => p.name),
+  track: tracks.value.map((t) => t.name),
+  course: courses.value.map((c) => c.name),
+  semester: [1, 2, 3, 4, 5, 6],
+  courseType: courseTypes.value.map((ct) => ct.label),
+}));
 </script>
 
 <template>
   <AdminData
     v-model:form-values="formValues"
-    v-model:selected-fields="selectedFields"
     section="requests"
     name="priorities"
     :id-key
     :row-descriptor
     :rows="priorities"
-    :filter-fn
     :format-row
     :validate-flat-row
+    :form-options
+    :filter-options
     :insert-data="insertPriorities"
     :upsert-data="upsertPriorities"
     :update-data="updatePriorities"
     :delete-data="deletePriorities"
     :import-constraint
     :import-update-columns
-  >
-    <template #filters>
-      <QSelect
-        v-model="selectedYears"
-        :options="selectedYearsOptions"
-        :label="t('admin.requests.priorities.column.year.label')"
-        multiple
-        use-chips
-        square
-        dense
-        options-dense
-        style="width: 100%"
-      />
-      <QSelect
-        v-model="selectedIsPriority"
-        :options="booleanOptions(t('yes'), t('no'))"
-        :label="t('admin.requests.priorities.column.isPriority')"
-        emit-value
-        map-options
-        multiple
-        use-chips
-        square
-        dense
-        options-dense
-        style="width: 100%"
-      />
-      <QSelect
-        v-model="selectedComputed"
-        :options="booleanOptions(t('yes'), t('no'))"
-        :label="t('admin.requests.priorities.column.computed.label')"
-        emit-value
-        map-options
-        multiple
-        use-chips
-        square
-        dense
-        options-dense
-        style="width: 100%"
-      />
-      <QSelect
-        v-model="selectedTeachers"
-        :options="selectedUidsOptions"
-        :label="t('admin.requests.priorities.column.teacher.label')"
-        emit-value
-        map-options
-        multiple
-        use-chips
-        square
-        dense
-        options-dense
-        style="width: 100%"
-      />
-      <QSelect
-        v-model="selectedPrograms"
-        :options="selectedProgramsOptions"
-        :label="t('admin.requests.priorities.column.program.label')"
-        multiple
-        use-chips
-        square
-        dense
-        options-dense
-        style="width: 100%"
-      />
-    </template>
-    <template #form="{ multipleSelection }">
-      <QSelect
-        v-model="formValues.year"
-        :options="yearOptions"
-        :label="t('admin.requests.priorities.column.year.label')"
-        :disable="multipleSelection && !selectedFields.includes('year')"
-        clearable
-        clear-icon="sym_s_close"
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="year" />
-        </template>
-      </QSelect>
-      <QInput
-        :model-value="formValues.seniority"
-        type="number"
-        :label="t('admin.requests.priorities.column.seniority.label')"
-        :disable="multipleSelection && !selectedFields.includes('seniority')"
-        clearable
-        clear-icon="sym_s_close"
-        square
-        dense
-        @update:model-value="
-          (value) => (formValues.seniority = inputToNumber(value))
-        "
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="seniority" />
-        </template>
-      </QInput>
-      <QSelect
-        v-model="formValues.isPriority"
-        :options="booleanOptions(t('yes'), t('no'))"
-        :label="t('admin.requests.priorities.column.isPriority')"
-        :disable="multipleSelection && !selectedFields.includes('isPriority')"
-        emit-value
-        map-options
-        clearable
-        clear-icon="sym_s_close"
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="isPriority" />
-        </template>
-      </QSelect>
-      <QSelect
-        v-model="formValues.computed"
-        :options="booleanOptions(t('yes'), t('no'))"
-        :label="t('admin.requests.priorities.column.computed.label')"
-        :disable="multipleSelection && !selectedFields.includes('computed')"
-        emit-value
-        map-options
-        clearable
-        clear-icon="sym_s_close"
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="computed" />
-        </template>
-      </QSelect>
-      <QSelect
-        v-model="formValues.uid"
-        :options="teacherOptions"
-        :label="t('admin.requests.priorities.column.uid.label')"
-        :disable="
-          formValues.year === null ||
-          (multipleSelection && !selectedFields.includes('uid'))
-        "
-        clearable
-        clear-icon="sym_s_close"
-        emit-value
-        map-options
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="uid" />
-        </template>
-      </QSelect>
-      <QSelect
-        v-model="formValues.degree"
-        :options="degreeOptions"
-        :label="t('admin.requests.priorities.column.degree.label')"
-        :disable="
-          !formValues.year ||
-          (multipleSelection && !selectedFields.includes('degree'))
-        "
-        clearable
-        clear-icon="sym_s_close"
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="degree" />
-        </template>
-      </QSelect>
-      <QSelect
-        v-model="formValues.program"
-        :options="programOptions"
-        :label="t('admin.requests.priorities.column.program.label')"
-        :disable="
-          !formValues.degree ||
-          (multipleSelection && !selectedFields.includes('program'))
-        "
-        clearable
-        clear-icon="sym_s_close"
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="program" />
-        </template>
-      </QSelect>
-      <QSelect
-        v-model="formValues.track"
-        :options="trackOptions"
-        :label="t('admin.requests.priorities.column.track.label')"
-        :disable="
-          !formValues.program ||
-          (multipleSelection && !selectedFields.includes('track'))
-        "
-        clearable
-        clear-icon="sym_s_close"
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="track" />
-        </template>
-      </QSelect>
-      <QSelect
-        v-model="formValues.course"
-        :options="courseOptions"
-        :label="t('admin.requests.priorities.column.course.label')"
-        :disable="
-          formValues.year === null ||
-          !formValues.program ||
-          (multipleSelection && !selectedFields.includes('course'))
-        "
-        clearable
-        clear-icon="sym_s_close"
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="course" />
-        </template>
-      </QSelect>
-      <QSelect
-        v-model="formValues.semester"
-        :options="semesterOptions"
-        :label="t('admin.requests.priorities.column.semester.label')"
-        :disable="
-          !formValues.course ||
-          (multipleSelection && !selectedFields.includes('semester'))
-        "
-        clearable
-        clear-icon="sym_s_close"
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="semester" />
-        </template>
-      </QSelect>
-      <QSelect
-        v-model="formValues.courseType"
-        :options="courseTypeOptions"
-        :label="t('admin.requests.priorities.column.courseType')"
-        :disable="
-          !formValues.course ||
-          (multipleSelection && !selectedFields.includes('courseType'))
-        "
-        clearable
-        clear-icon="sym_s_close"
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="courseType" />
-        </template>
-      </QSelect>
-    </template>
-  </AdminData>
+  />
 </template>
 
 <style scoped lang="scss"></style>
