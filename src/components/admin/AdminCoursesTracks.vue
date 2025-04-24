@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -17,7 +17,11 @@ import {
   UpdateTracksDocument,
   UpsertTracksDocument,
 } from "@/gql/graphql.ts";
-import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
+import type {
+  NullableParsedRow,
+  RowDescriptorExtra,
+  Scalar,
+} from "@/types/data.ts";
 
 import AdminData from "@/components/admin/core/AdminData.vue";
 
@@ -204,14 +208,22 @@ const validateFlatRow = (flatRow: FlatRow): InsertInput => {
   return object;
 };
 
+const formValues = ref<Record<string, Scalar>>({});
 const formOptions = computed(() => ({
   degree: degrees.value.map((d) => d.name),
+  program:
+    degrees.value
+      .find((d) => d.name === formValues.value["degree"])
+      ?.programs.map((p) => p.name) ?? [],
+}));
+const filterOptions = computed(() => ({
   program: programs.value.map((p) => p.name),
 }));
 </script>
 
 <template>
   <AdminData
+    v-model:form-values="formValues"
     section="courses"
     name="tracks"
     :id-key
@@ -220,6 +232,7 @@ const formOptions = computed(() => ({
     :format-row
     :validate-flat-row
     :form-options
+    :filter-options
     :insert-data="insertTracks"
     :upsert-data="upsertTracks"
     :update-data="updateTracks"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -20,7 +20,11 @@ import {
   UpsertCoursesDocument,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
-import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
+import type {
+  NullableParsedRow,
+  RowDescriptorExtra,
+  Scalar,
+} from "@/types/data.ts";
 
 import AdminData from "@/components/admin/core/AdminData.vue";
 
@@ -418,21 +422,34 @@ const validateFlatRow = (flatRow: FlatRow): InsertInput => {
   return object;
 };
 
+const formValues = ref<Record<string, Scalar>>({});
 const formOptions = computed(() => ({
   year: years.value.map((y) => y.value),
   degree: degrees.value.map((d) => d.name),
-  program: programs.value.map((p) => p.name),
-  track: tracks.value.map((t) => t.name),
+  program:
+    degrees.value
+      .find((d) => d.name === formValues.value["degree"])
+      ?.programs.map((p) => p.name) ?? [],
+  track:
+    degrees.value
+      .find((d) => d.name === formValues.value["degree"])
+      ?.programs.find((p) => p.name === formValues.value["program"])
+      ?.tracks.map((t) => t.name) ?? [],
   semester: [1, 2, 3, 4, 5, 6].map((s) => ({
     value: s,
     label: t("semester", { semester: s }),
   })),
   type: courseTypes.value.map((ct) => ct.label),
 }));
+const filterOptions = computed(() => ({
+  program: programs.value.map((p) => p.name),
+  track: tracks.value.map((t) => t.name),
+}));
 </script>
 
 <template>
   <AdminData
+    v-model:form-values="formValues"
     section="courses"
     name="courses"
     :id-key
@@ -441,6 +458,7 @@ const formOptions = computed(() => ({
     :format-row
     :validate-flat-row
     :form-options
+    :filter-options
     :insert-data="insertCourses"
     :upsert-data="upsertCourses"
     :update-data="updateCourses"

@@ -44,8 +44,12 @@ type CustomMutationResponse<
   V
 >;
 
-const formValues = defineModel<Record<string, Scalar>>({ default: {} });
-const filterValues = defineModel<Record<string, Scalar[]>>({ default: {} });
+const formValues = defineModel<Record<string, Scalar>>("formValues", {
+  default: {},
+});
+const filterValues = defineModel<Record<string, Scalar[]>>("filterValues", {
+  default: {},
+});
 const {
   section,
   name,
@@ -70,7 +74,7 @@ const {
   rows: Row[];
   formatRow: (row: Row) => string;
   validateFlatRow: (flatRow: FlatRow) => InsertInput;
-  formOptions?: Record<string, Scalar[]>;
+  formOptions?: Record<string, Scalar[] | Option[]>;
   filterOptions?: Record<string, Scalar[] | Option[]>;
   insertData: CustomMutationResponse<
     "insertData",
