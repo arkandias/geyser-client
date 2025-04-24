@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
@@ -18,7 +18,6 @@ import {
   UpsertRolesDocument,
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
-import { nullObj } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/core/AdminData.vue";
 
@@ -36,8 +35,17 @@ const { t } = useCustomI18n();
 
 const idKey: keyof Row = "id";
 const rowDescriptor = {
-  uid: { type: "string" },
-  comment: { type: "string", nullable: true },
+  uid: {
+    type: "string",
+    format: (val: string) =>
+      teachers.value.find((t) => t.uid === val)?.displayname,
+    formType: "select",
+  },
+  comment: {
+    type: "string",
+    nullable: true,
+    formType: "input",
+  },
 } as const satisfies RowDescriptorExtra<Row>;
 
 graphql(`
@@ -125,18 +133,13 @@ const validateFlatRow = (flatRow: FlatRow): InsertInput => {
   return object;
 };
 
-const formValues = ref<FlatRow>(nullObj(rowDescriptor));
-const selectedFields = ref<string[]>([]);
-
-const teacherOptions = computed(() =>
-  teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
-);
+const formOptions = computed(() => ({
+  uid: teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
+}));
 </script>
 
 <template>
   <AdminData
-    v-model:form-values="formValues"
-    v-model:selected-fields="selectedFields"
     section="roles"
     :name="roleType.toLowerCase()"
     :id-key
@@ -144,44 +147,14 @@ const teacherOptions = computed(() =>
     :rows="roles"
     :format-row
     :validate-flat-row
+    :form-options
     :insert-data="insertServices"
     :upsert-data="upsertServices"
     :update-data="updateServices"
     :delete-data="deleteServices"
     :import-constraint
     :import-update-columns
-  >
-    <template #form="{ multipleSelection }">
-      <QSelect
-        v-model="formValues.uid"
-        :options="teacherOptions"
-        :label="t(`admin.roles.${roleType.toLowerCase()}.column.uid`)"
-        :disable="multipleSelection && !selectedFields.includes('uid')"
-        clearable
-        clear-icon="sym_s_close"
-        emit-value
-        map-options
-        square
-        dense
-        options-dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="uid" />
-        </template>
-      </QSelect>
-      <QInput
-        :model-value="formValues.comment"
-        :label="t(`admin.roles.${roleType.toLowerCase()}.column.comment`)"
-        :disable="multipleSelection && !selectedFields.includes('comment')"
-        square
-        dense
-      >
-        <template v-if="multipleSelection" #before>
-          <QCheckbox v-model="selectedFields" val="comment" />
-        </template>
-      </QInput>
-    </template>
-  </AdminData>
+  />
 </template>
 
 <style scoped lang="scss"></style>
