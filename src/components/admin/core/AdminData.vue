@@ -676,7 +676,7 @@ const exportDataHandle = () => {
           <div v-for="key in Object.keys(rowDescriptor)" :key>
             <AdminInput
               v-if="rowDescriptor[key]?.formType.startsWith('input')"
-              v-model="formValues[key]"
+              v-model="formValues[key] as string | number | null | undefined"
               v-model:selected-fields="selectedFields"
               :key-prefix
               :name="key"

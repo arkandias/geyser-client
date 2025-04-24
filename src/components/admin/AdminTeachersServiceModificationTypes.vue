@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type AdminServiceModificationTypeFragment,
@@ -16,7 +15,6 @@ import {
   UpsertServiceModificationTypesDocument,
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
-import { nullObj } from "@/utils/misc.ts";
 
 import AdminData from "@/components/admin/core/AdminData.vue";
 
@@ -29,8 +27,6 @@ const { serviceModificationTypeFragments } = defineProps<{
     typeof AdminServiceModificationTypeFragmentDoc
   >[];
 }>();
-
-const { t } = useCustomI18n();
 
 const idKey: keyof Row = "id";
 const rowDescriptor = {

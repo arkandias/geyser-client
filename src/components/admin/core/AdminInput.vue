@@ -2,10 +2,9 @@
 import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
-import type { Scalar } from "@/types/data.ts";
 import { inputToNumber } from "@/utils/misc.ts";
 
-const modelValue = defineModel<Scalar>();
+const modelValue = defineModel<string | number | null>();
 const selectedFields = defineModel<string[]>("selectedFields");
 
 const { keyPrefix, name, numeric, multipleSelection } = defineProps<{
