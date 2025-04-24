@@ -1,3 +1,15 @@
+<script lang="ts">
+export type ColName =
+  | "uid"
+  | "firstname"
+  | "lastname"
+  | "alias"
+  | "position"
+  | "baseServiceHours"
+  | "visible"
+  | "active";
+</script>
+
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
 import { computed } from "vue";
@@ -70,7 +82,7 @@ const rowDescriptor = {
     type: "boolean",
     formType: "toggle",
   },
-} as const satisfies RowDescriptorExtra<Row>;
+} as const satisfies RowDescriptorExtra<ColName, Row>;
 
 graphql(`
   fragment AdminTeacher on Teacher {

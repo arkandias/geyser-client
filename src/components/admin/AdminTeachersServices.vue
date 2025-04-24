@@ -1,3 +1,7 @@
+<script lang="ts">
+export type ColName = "year" | "uid" | "hours" | "message";
+</script>
+
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
 import { computed } from "vue";
@@ -56,7 +60,7 @@ const rowDescriptor = {
     format: (val: string) => (val ? "✓" : "✗"),
     formType: "input",
   },
-} as const satisfies RowDescriptorExtra<Row>;
+} as const satisfies RowDescriptorExtra<ColName, Row>;
 
 graphql(`
   fragment AdminService on Service {

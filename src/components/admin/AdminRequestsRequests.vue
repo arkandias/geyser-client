@@ -1,3 +1,17 @@
+<script lang="ts">
+export type ColName =
+  | "year"
+  | "uid"
+  | "degree"
+  | "program"
+  | "track"
+  | "course"
+  | "semester"
+  | "courseType"
+  | "type"
+  | "hours";
+</script>
+
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
@@ -127,7 +141,7 @@ const rowDescriptor = {
     numberFormat: "decimal",
     formType: "inputNum",
   },
-} as const satisfies RowDescriptorExtra<Row>;
+} as const satisfies RowDescriptorExtra<ColName, Row>;
 
 graphql(`
   fragment AdminRequest on Request {

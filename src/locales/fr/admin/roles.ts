@@ -1,20 +1,19 @@
 import { RoleTypeEnum } from "@/gql/graphql.ts";
+import type { AdminColNameOptions } from "@/types/i18n.ts";
+
+import type { ColName as AdminRolesRolesColName } from "@/components/admin/AdminRolesRoles.vue";
 
 const roles = {
   column: {
-    teacher: {
+    uid: {
       label: "Intervenant",
-      tooltip: "",
-    },
-    type: {
-      label: "Type",
       tooltip: "",
     },
     comment: {
       label: "Commentaire",
       tooltip: "",
     },
-  },
+  } satisfies Record<AdminRolesRolesColName, AdminColNameOptions>,
   form: {
     title: {
       none: "Nouveau rôle",
@@ -43,21 +42,14 @@ const roles = {
 
 export default {
   roles: {
-    title: "Rôles et responsabilités",
-    roles: {
-      [RoleTypeEnum.Admin.toLowerCase()]: {
-        label: "Administrateurs",
-        ...roles,
-      },
-      [RoleTypeEnum.Commissioner.toLowerCase()]: {
-        label: "Commissaires",
-        ...roles,
-      },
+    title: "Rôles",
+    [RoleTypeEnum.Admin]: {
+      label: "Administrateurs",
+      ...roles,
     },
-    coordinations: {
-      programs: "Responsables de mention",
-      tracks: "Responsables de parcours",
-      courses: "Responsables d'enseignement",
+    [RoleTypeEnum.Commissioner]: {
+      label: "Commissaires",
+      ...roles,
     },
   },
 } as const;

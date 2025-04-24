@@ -1,3 +1,11 @@
+import type { AdminColNameOptions } from "@/types/i18n.ts";
+
+import type { ColName as AdminTeachersPositionsColName } from "@/components/admin/AdminTeachersPositions.vue";
+import type { ColName as AdminTeachersServiceModificationTypesColName } from "@/components/admin/AdminTeachersServiceModificationTypes.vue";
+import type { ColName as AdminTeachersServiceModificationsColName } from "@/components/admin/AdminTeachersServiceModifications.vue";
+import type { ColName as AdminTeachersServicesColName } from "@/components/admin/AdminTeachersServices.vue";
+import type { ColName as AdminTeachersTeachersColName } from "@/components/admin/AdminTeachersTeachers.vue";
+
 export default {
   teachers: {
     title: "Intervenants",
@@ -36,22 +44,12 @@ export default {
           label: "Actif",
           tooltip: "",
         },
-      },
+      } satisfies Record<AdminTeachersTeachersColName, AdminColNameOptions>,
       form: {
         title: {
           none: "Nouvel intervenant",
           single: "{label}",
           multiple: "{count} intervenants sélectionnés",
-        },
-        fields: {
-          uid: "Email",
-          firstname: "Prénom",
-          lastname: "Nom",
-          alias: "Alias",
-          position: "Fonction",
-          baseServiceHours: "Service de base (@:unit.weightedHours)",
-          visible: "Visible",
-          active: "Actif",
         },
         error: {
           positionNotFound:
@@ -98,7 +96,7 @@ S'il existe des services, des responsabilités ou des rôles pour ces intervenan
           label: "S. base (@:unit.weightedHours)",
           tooltip: "Service de base (@:unit.weightedHours)",
         },
-      },
+      } satisfies Record<AdminTeachersPositionsColName, AdminColNameOptions>,
       form: {
         title: {
           none: "Nouvelle fonction",
@@ -152,18 +150,12 @@ Si ces fonctions sont attribuées à des intervenants, vous ne pourrez pas les s
           label: "Message",
           tooltip: "",
         },
-      },
+      } satisfies Record<AdminTeachersServicesColName, AdminColNameOptions>,
       form: {
         title: {
           none: "Nouveau service",
           single: "{label}",
           multiple: "{count} services sélectionnés",
-        },
-        fields: {
-          year: "Année",
-          teacher: "Intervenant",
-          hours: "Heures (@:unit.weightedHours)",
-          message: "Message",
         },
         error: {
           hoursNegative: "Entrez un nombre d'heures positif ou nul",
@@ -210,18 +202,15 @@ S'il existe des modifications, des demandes ou des priorités pour ces services,
           label: "Heures (@:unit.weightedHours)",
           tooltip: "",
         },
-      },
+      } satisfies Record<
+        AdminTeachersServiceModificationsColName,
+        AdminColNameOptions
+      >,
       form: {
         title: {
           none: "Nouvelle modification de service",
           single: "{label}",
           multiple: "{count} modifications de service sélectionnées",
-        },
-        fields: {
-          year: "Année",
-          teacher: "Intervenant",
-          type: "Type",
-          hours: "Heures (@:unit.weightedHours)",
         },
         error: {
           updateYearWithoutTeacher:
@@ -267,16 +256,15 @@ S'il existe des modifications, des demandes ou des priorités pour ces services,
           label: "Description",
           tooltip: "",
         },
-      },
+      } satisfies Record<
+        AdminTeachersServiceModificationTypesColName,
+        AdminColNameOptions
+      >,
       form: {
         title: {
           none: "Nouveau type de modification",
           single: "{label}",
           multiple: "{count} types de modification sélectionnés",
-        },
-        fields: {
-          label: "Label",
-          description: "Description",
         },
       },
       data: {

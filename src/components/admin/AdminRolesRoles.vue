@@ -1,3 +1,7 @@
+<script lang="ts">
+export type ColName = "uid" | "comment";
+</script>
+
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
 import { computed } from "vue";
@@ -46,7 +50,7 @@ const rowDescriptor = {
     nullable: true,
     formType: "input",
   },
-} as const satisfies RowDescriptorExtra<Row>;
+} as const satisfies RowDescriptorExtra<ColName, Row>;
 
 graphql(`
   fragment AdminRole on Role {
@@ -141,7 +145,7 @@ const formOptions = computed(() => ({
 <template>
   <AdminData
     section="roles"
-    :name="roleType.toLowerCase()"
+    :name="roleType"
     :id-key
     :row-descriptor
     :rows="roles"

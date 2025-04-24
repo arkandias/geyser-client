@@ -1,4 +1,8 @@
 import { RequestTypeEnum } from "@/gql/graphql.ts";
+import type { AdminColNameOptions } from "@/types/i18n.ts";
+
+import type { ColName as AdminRequestsPrioritiesColNames } from "@/components/admin/AdminRequestsPriorities.vue";
+import type { ColName as AdminRequestsRequestsColNames } from "@/components/admin/AdminRequestsRequests.vue";
 
 export default {
   requests: {
@@ -46,7 +50,7 @@ export default {
           label: "Type ens.",
           tooltip: "Type d'enseignement",
         },
-      },
+      } satisfies Record<AdminRequestsRequestsColNames, AdminColNameOptions>,
       form: {
         title: {
           none: "Nouvelle demande",
@@ -88,8 +92,6 @@ export default {
           },
         },
       },
-      extraCSVInstructions: `
-          N.B. Le champ « type » doit avoir l'une des valeurs suivantes&nbsp;: <i>assignment</i> (attribution), <i>primary</i> (principale), <i>secondary</i> (secondaire)`,
     },
     priorities: {
       label: "Priorités",
@@ -138,7 +140,7 @@ export default {
           label: "Type ens.",
           tooltip: "Type d'enseignement",
         },
-      },
+      } satisfies Record<AdminRequestsPrioritiesColNames, AdminColNameOptions>,
       form: {
         title: {
           none: "Nouvelle priorité",

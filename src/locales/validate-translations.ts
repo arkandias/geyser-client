@@ -7,6 +7,20 @@ import { CUSTOM_TEXT_KEYS } from "@/config/custom-text-keys.ts";
 import { PHASES } from "@/config/phases.ts";
 import { RequestTypeEnum, RoleTypeEnum } from "@/gql/graphql.ts";
 
+import type { ColName as AdminCoursesCourseTypesColName } from "@/components/admin/AdminCoursesCourseTypes.vue";
+import type { ColName as AdminCoursesCoursesColName } from "@/components/admin/AdminCoursesCourses.vue";
+import type { ColName as AdminCoursesDegreesColName } from "@/components/admin/AdminCoursesDegrees.vue";
+import type { ColName as AdminCoursesProgramsColName } from "@/components/admin/AdminCoursesPrograms.vue";
+import type { ColName as AdminCoursesTracksColName } from "@/components/admin/AdminCoursesTracks.vue";
+import type { ColName as AdminRequestsPrioritiesColNames } from "@/components/admin/AdminRequestsPriorities.vue";
+import type { ColName as AdminRequestsRequestsColNames } from "@/components/admin/AdminRequestsRequests.vue";
+import type { ColName as AdminRolesRolesColName } from "@/components/admin/AdminRolesRoles.vue";
+import type { ColName as AdminTeachersPositionsColNames } from "@/components/admin/AdminTeachersPositions.vue";
+import type { ColName as AdminTeachersServiceModificationTypesColNames } from "@/components/admin/AdminTeachersServiceModificationTypes.vue";
+import type { ColName as AdminTeachersServiceModificationsColNames } from "@/components/admin/AdminTeachersServiceModifications.vue";
+import type { ColName as AdminTeachersServicesColNames } from "@/components/admin/AdminTeachersServices.vue";
+import type { ColName as AdminTeachersTeachersColNames } from "@/components/admin/AdminTeachersTeachers.vue";
+
 const locales = [
   { label: "fr-FR", messages: fr },
   { label: "en-US", messages: en },
@@ -16,7 +30,7 @@ async function main() {
   const keysInFiles = await findKeysInFiles();
 
   locales.forEach((locale) => {
-    console.log(`Validation translations for locale ${locale.label}...`);
+    console.log(`Validating translations for locale ${locale.label}...`);
     validateTranslations(locale.messages, keysInFiles);
   });
 }
@@ -160,41 +174,167 @@ const findKeysInFiles = async (): Promise<string[]> => {
     templateStringsKeys.delete("admin.data.import.table.type.${val}");
   });
 
-  [
-    "admin.courses.degrees",
-    "admin.teachers.positions",
-    "admin.requests.priorities",
-    "admin.teachers.serviceModifications",
-    "admin.teachers.services",
-    "admin.teachers.teachers",
-    "admin.requests.requests",
-    "admin.courses.courses",
-    "admin.courses.programs",
-    "admin.teachers.serviceModificationTypes",
-    "admin.courses.tracks",
-    "admin.courses.types",
-  ].forEach((keyPrefix) => {
-    standardKeys.add(`${keyPrefix}.form.title.none`);
-    standardKeys.add(`${keyPrefix}.form.title.single`);
-    standardKeys.add(`${keyPrefix}.form.title.multiple`);
-    standardKeys.add(`${keyPrefix}.data.success.insert`);
-    standardKeys.add(`${keyPrefix}.data.success.update`);
-    standardKeys.add(`${keyPrefix}.data.success.delete`);
-    standardKeys.add(`${keyPrefix}.data.success.import`);
-    standardKeys.add(`${keyPrefix}.data.success.export`);
-    standardKeys.add(`${keyPrefix}.data.confirm.delete.single`);
-    standardKeys.add(`${keyPrefix}.data.confirm.delete.multiple`);
-    templateStringsKeys.delete("${keyPrefix}.form.title.none");
-    templateStringsKeys.delete("${keyPrefix}.form.title.single");
-    templateStringsKeys.delete("${keyPrefix}.form.title.multiple");
-    templateStringsKeys.delete("${keyPrefix}.data.success.insert");
-    templateStringsKeys.delete("${keyPrefix}.data.success.update");
-    templateStringsKeys.delete("${keyPrefix}.data.success.delete");
-    templateStringsKeys.delete("${keyPrefix}.data.success.import");
-    templateStringsKeys.delete("${keyPrefix}.data.success.export");
-    templateStringsKeys.delete("${keyPrefix}.export.invalid.message");
-    templateStringsKeys.delete("${keyPrefix}.data.confirm.delete.single");
-    templateStringsKeys.delete("${keyPrefix}.data.confirm.delete.multiple");
+  const adminColNames: Record<string, Record<string, string[]>> = {
+    teachers: {
+      teachers: [
+        "uid",
+        "firstname",
+        "lastname",
+        "alias",
+        "position",
+        "baseServiceHours",
+        "visible",
+        "active",
+      ] satisfies AdminTeachersTeachersColNames[],
+      positions: [
+        "label",
+        "description",
+        "baseServiceHours",
+      ] satisfies AdminTeachersPositionsColNames[],
+      services: [
+        "year",
+        "uid",
+        "hours",
+        "message",
+      ] satisfies AdminTeachersServicesColNames[],
+      serviceModifications: [
+        "year",
+        "uid",
+        "type",
+        "hours",
+      ] satisfies AdminTeachersServiceModificationsColNames[],
+      serviceModificationTypes: [
+        "label",
+        "description",
+      ] satisfies AdminTeachersServiceModificationTypesColNames[],
+    },
+    courses: {
+      degrees: [
+        "name",
+        "nameShort",
+        "visible",
+      ] satisfies AdminCoursesDegreesColName[],
+      programs: [
+        "degree",
+        "name",
+        "nameShort",
+        "visible",
+      ] satisfies AdminCoursesProgramsColName[],
+      tracks: [
+        "degree",
+        "program",
+        "name",
+        "nameShort",
+        "visible",
+      ] satisfies AdminCoursesTracksColName[],
+      courses: [
+        "year",
+        "degree",
+        "program",
+        "track",
+        "name",
+        "nameShort",
+        "semester",
+        "type",
+        "hours",
+        "hoursAdjusted",
+        "groups",
+        "groupsAdjusted",
+        "description",
+        "priorityRule",
+        "visible",
+      ] satisfies AdminCoursesCoursesColName[],
+      courseTypes: [
+        "label",
+        "coefficient",
+        "description",
+      ] satisfies AdminCoursesCourseTypesColName[],
+    },
+    requests: {
+      requests: [
+        "year",
+        "uid",
+        "degree",
+        "program",
+        "track",
+        "course",
+        "semester",
+        "courseType",
+        "type",
+        "hours",
+      ] satisfies AdminRequestsRequestsColNames[],
+      priorities: [
+        "year",
+        "uid",
+        "degree",
+        "program",
+        "track",
+        "course",
+        "semester",
+        "courseType",
+        "seniority",
+        "isPriority",
+        "computed",
+      ] satisfies AdminRequestsPrioritiesColNames[],
+    },
+    roles: {
+      [RoleTypeEnum.Admin]: [
+        "uid",
+        "comment",
+      ] satisfies AdminRolesRolesColName[],
+      [RoleTypeEnum.Commissioner]: [
+        "uid",
+        "comment",
+      ] satisfies AdminRolesRolesColName[],
+    },
+  };
+
+  Object.entries(adminColNames).forEach(([section, names]) => {
+    Object.entries(names).forEach(([name, colNames]) => {
+      const keyPrefix = `admin.${section}.${name}`;
+      colNames.forEach((colName) => {
+        standardKeys.add(`${keyPrefix}.column.${colName}.label`);
+        standardKeys.add(`${keyPrefix}.column.${colName}.tooltip`);
+      });
+      standardKeys.add(`${keyPrefix}.form.title.none`);
+      standardKeys.add(`${keyPrefix}.form.title.single`);
+      standardKeys.add(`${keyPrefix}.form.title.multiple`);
+      standardKeys.add(`${keyPrefix}.data.success.insert`);
+      standardKeys.add(`${keyPrefix}.data.success.update`);
+      standardKeys.add(`${keyPrefix}.data.success.delete`);
+      standardKeys.add(`${keyPrefix}.data.success.import`);
+      standardKeys.add(`${keyPrefix}.data.success.export`);
+      standardKeys.add(`${keyPrefix}.data.confirm.delete.single`);
+      standardKeys.add(`${keyPrefix}.data.confirm.delete.multiple`);
+      templateStringsKeys.delete("${keyPrefix}.column.${key}.label");
+      templateStringsKeys.delete("${keyPrefix}.column.${key}.tooltip");
+      templateStringsKeys.delete("${keyPrefix}.column.${name}.label");
+      templateStringsKeys.delete("${keyPrefix}.column.${name}.tooltip");
+      templateStringsKeys.delete("${keyPrefix}.form.title.none");
+      templateStringsKeys.delete("${keyPrefix}.form.title.single");
+      templateStringsKeys.delete("${keyPrefix}.form.title.multiple");
+      templateStringsKeys.delete("${keyPrefix}.data.success.insert");
+      templateStringsKeys.delete("${keyPrefix}.data.success.update");
+      templateStringsKeys.delete("${keyPrefix}.data.success.delete");
+      templateStringsKeys.delete("${keyPrefix}.data.success.import");
+      templateStringsKeys.delete("${keyPrefix}.data.success.export");
+      templateStringsKeys.delete("${keyPrefix}.export.invalid.message");
+      templateStringsKeys.delete("${keyPrefix}.data.confirm.delete.single");
+      templateStringsKeys.delete("${keyPrefix}.data.confirm.delete.multiple");
+    });
+  });
+
+  [RoleTypeEnum.Admin, RoleTypeEnum.Commissioner].forEach((type) => {
+    standardKeys.add(`role.${type}`);
+    standardKeys.add(`admin.roles.${type}.label`);
+  });
+  [...templateStringsKeys].forEach((key) => {
+    if (/role\.\${[a-zA-Z.]*}/.test(key)) {
+      templateStringsKeys.delete(key);
+    }
+    if (/admin\.roles\.\${[a-zA-Z.]*}\.label/.test(key)) {
+      templateStringsKeys.delete(key);
+    }
   });
 
   if (templateStringsKeys.size > 0) {

@@ -1,5 +1,5 @@
 export type Scalar = string | number | boolean | null | undefined;
-export type SimpleObject<T extends Scalar> = {
+export type SimpleObject<T extends Scalar = Scalar> = {
   [key: string]: T | SimpleObject<T>;
 };
 export type Option = {
@@ -22,7 +22,10 @@ export type FieldDescriptor = {
   info?: string;
 };
 
-export type RowDescriptor = Record<string, FieldDescriptor>;
+export type RowDescriptor<K extends string = string> = Record<
+  K,
+  FieldDescriptor
+>;
 
 export type ParsedField<T extends FieldDescriptor> = T["nullable"] extends true
   ? PrimitiveTypeMap<T["type"]> | null
@@ -36,17 +39,16 @@ export type NullableParsedRow<T extends RowDescriptor> = {
   -readonly [K in keyof T]?: ParsedField<T[K]> | null;
 };
 
-export type FieldDescriptorExtra<R extends SimpleObject<Scalar>> =
-  FieldDescriptor & {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    field?: string | ((row: R) => any);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    format?: (val: any, row: R) => any;
-    numberFormat?: "decimal" | "decimalFixed";
-    formType: "input" | "inputNum" | "select" | "toggle";
-  };
+export type FieldDescriptorExtra<R extends SimpleObject> = FieldDescriptor & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  field?: string | ((row: R) => any);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  format?: (val: any, row: R) => any;
+  numberFormat?: "decimal" | "decimalFixed";
+  formType: "input" | "inputNum" | "select" | "toggle";
+};
 
-export type RowDescriptorExtra<R extends SimpleObject<Scalar>> = Record<
-  string,
-  FieldDescriptorExtra<R>
->;
+export type RowDescriptorExtra<
+  K extends string = string,
+  R extends SimpleObject = SimpleObject,
+> = Record<K, FieldDescriptorExtra<R>>;

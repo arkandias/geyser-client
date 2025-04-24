@@ -2,9 +2,9 @@
   setup
   lang="ts"
   generic="
-    Row extends SimpleObject<Scalar>,
+    Row extends SimpleObject,
     IdKey extends string & keyof Row,
-    T extends RowDescriptorExtra<Row>,
+    T extends RowDescriptorExtra<string, Row>,
     InsertInput extends object,
     Constraint extends string,
     UpdateColumn extends string

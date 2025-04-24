@@ -1,3 +1,4 @@
+import coordinations from "./coordinations.ts";
 import courses from "./courses.ts";
 import data from "./data.ts";
 import general from "./general.ts";
@@ -12,6 +13,7 @@ export default {
     ...teachers,
     ...courses,
     ...requests,
+    ...coordinations,
     ...roles,
   },
 } as const;

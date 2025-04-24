@@ -43,7 +43,7 @@ const teachers = computed(() => data.value?.teachers ?? []);
   <QList bordered>
     <AdminSection
       icon="sym_s_shield_person"
-      :label="t(`admin.roles.roles.label.${RoleTypeEnum.Admin}`)"
+      :label="t(`admin.roles.${RoleTypeEnum.Admin}.label`)"
     >
       <AdminRolesRoles
         :role-type="RoleTypeEnum.Admin"
@@ -56,35 +56,13 @@ const teachers = computed(() => data.value?.teachers ?? []);
 
     <AdminSection
       icon="sym_s_local_police"
-      :label="t(`admin.roles.roles.label.${RoleTypeEnum.Commissioner}`)"
+      :label="t(`admin.roles.${RoleTypeEnum.Commissioner}.label`)"
     >
       <AdminRolesRoles
         :role-type="RoleTypeEnum.Commissioner"
         :role-fragments="roles"
         :teacher-fragments="teachers"
       />
-    </AdminSection>
-
-    <QSeparator />
-
-    <AdminSection
-      icon="sym_s_account_tree"
-      :label="t('admin.roles.coordinations.programs')"
-    >
-    </AdminSection>
-
-    <QSeparator />
-    <AdminSection
-      icon="sym_s_alt_route"
-      :label="t('admin.roles.coordinations.tracks')"
-    >
-    </AdminSection>
-
-    <QSeparator />
-    <AdminSection
-      icon="sym_s_menu_book"
-      :label="t('admin.roles.coordinations.courses')"
-    >
     </AdminSection>
   </QList>
 </template>

@@ -37,7 +37,7 @@ export const processSimpleObject = <T extends Scalar>(
 };
 
 const exportCSV = (
-  objects: SimpleObject<Scalar>[],
+  objects: SimpleObject[],
   fields?: SimpleObject<string> | string[] | null,
 ) =>
   unparse(
@@ -47,7 +47,7 @@ const exportCSV = (
 
 export const downloadCSV = (
   filename: string,
-  objects: SimpleObject<Scalar>[],
+  objects: SimpleObject[],
   fields?: SimpleObject<string> | string[] | null,
 ): void => {
   const csv = exportCSV(objects, fields);

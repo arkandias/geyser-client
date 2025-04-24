@@ -3,6 +3,7 @@ import { computed } from "vue";
 
 import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 
+import AdminCoordinations from "@/components/admin/AdminCoordinations.vue";
 import AdminCourses from "@/components/admin/AdminCourses.vue";
 import AdminGeneral from "@/components/admin/AdminGeneral.vue";
 import AdminRequests from "@/components/admin/AdminRequests.vue";
@@ -35,6 +36,11 @@ const routeTabs = computed(() => [
     name: "requests",
     label: t("admin.requests.title"),
     to: "/admin/requests",
+  },
+  {
+    name: "coordinations",
+    label: t("admin.coordinations.title"),
+    to: "/admin/coordinations",
   },
   {
     name: "roles",
@@ -72,6 +78,10 @@ const routeTabs = computed(() => [
 
       <QTabPanel name="requests">
         <AdminRequests />
+      </QTabPanel>
+
+      <QTabPanel name="coordinations">
+        <AdminCoordinations />
       </QTabPanel>
 
       <QTabPanel name="roles">

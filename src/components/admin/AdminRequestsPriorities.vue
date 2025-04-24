@@ -1,3 +1,18 @@
+<script lang="ts">
+export type ColName =
+  | "year"
+  | "uid"
+  | "degree"
+  | "program"
+  | "track"
+  | "course"
+  | "semester"
+  | "courseType"
+  | "seniority"
+  | "isPriority"
+  | "computed";
+</script>
+
 <script setup lang="ts">
 import { useMutation } from "@urql/vue";
 import { computed, ref } from "vue";
@@ -128,7 +143,7 @@ const rowDescriptor = {
     type: "boolean",
     formType: "toggle",
   },
-} as const satisfies RowDescriptorExtra<Row>;
+} as const satisfies RowDescriptorExtra<ColName, Row>;
 
 graphql(`
   fragment AdminPriority on Priority {

@@ -1,3 +1,11 @@
+import type { AdminColNameOptions } from "@/types/i18n.ts";
+
+import type { ColName as AdminCoursesCourseTypesColName } from "@/components/admin/AdminCoursesCourseTypes.vue";
+import type { ColName as AdminCoursesCoursesColName } from "@/components/admin/AdminCoursesCourses.vue";
+import type { ColName as AdminCoursesDegreesColName } from "@/components/admin/AdminCoursesDegrees.vue";
+import type { ColName as AdminCoursesProgramsColName } from "@/components/admin/AdminCoursesPrograms.vue";
+import type { ColName as AdminCoursesTracksColName } from "@/components/admin/AdminCoursesTracks.vue";
+
 export default {
   courses: {
     title: "Enseignements",
@@ -16,7 +24,7 @@ export default {
           label: "Visible",
           tooltip: "",
         },
-      },
+      } satisfies Record<AdminCoursesDegreesColName, AdminColNameOptions>,
       form: {
         title: {
           none: "Nouveau diplôme",
@@ -65,7 +73,7 @@ Si ces diplômes contiennent des mentions, vous ne pourrez pas les supprimer.`,
           label: "Visible",
           tooltip: "",
         },
-      },
+      } satisfies Record<AdminCoursesProgramsColName, AdminColNameOptions>,
       form: {
         title: {
           none: "Nouvelle mention",
@@ -122,7 +130,7 @@ S'il existe des parcours, des cours ou des responsables pour ces mentions, vous 
           label: "Visible",
           tooltip: "",
         },
-      },
+      } satisfies Record<AdminCoursesTracksColName, AdminColNameOptions>,
       form: {
         title: {
           none: "Nouveau parcours",
@@ -225,7 +233,7 @@ S'il existe des cours ou des responsables pour ces parcours, vous ne pourrez pas
           label: "Visible",
           tooltip: "",
         },
-      },
+      } satisfies Record<AdminCoursesCoursesColName, AdminColNameOptions>,
       form: {
         title: {
           none: "Nouvel enseignement",
@@ -296,7 +304,7 @@ S'il existe des demandes, des priorités ou des responsables pour ces enseigneme
           label: "Description",
           tooltip: "",
         },
-      },
+      } satisfies Record<AdminCoursesCourseTypesColName, AdminColNameOptions>,
       form: {
         title: {
           none: "Nouveau type d'enseignement",
