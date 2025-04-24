@@ -20,11 +20,11 @@ export default {
     group: "groupe | groupes",
     hour: "heure | heures",
     tooltip: {
-      assign: "Attribuer la demande",
-      remove: "Supprimer la demande",
+      validate: "Valider la demande",
+      delete: "Supprimer la demande",
     },
-    assign: {
-      identical: "Demande déjà attribuée",
+    validate: {
+      identical: "Demande déjà validée",
       created: "Attribution créée",
       updated: "Attribution mise à jour",
       error: "Échec de l'attribution",

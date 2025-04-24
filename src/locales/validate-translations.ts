@@ -12,9 +12,9 @@ import type { ColName as AdminCoursesCoursesColName } from "@/components/admin/A
 import type { ColName as AdminCoursesDegreesColName } from "@/components/admin/AdminCoursesDegrees.vue";
 import type { ColName as AdminCoursesProgramsColName } from "@/components/admin/AdminCoursesPrograms.vue";
 import type { ColName as AdminCoursesTracksColName } from "@/components/admin/AdminCoursesTracks.vue";
+import type { ColName as AdminRolesRolesColName } from "@/components/admin/AdminGeneralRoles.vue";
 import type { ColName as AdminRequestsPrioritiesColNames } from "@/components/admin/AdminRequestsPriorities.vue";
 import type { ColName as AdminRequestsRequestsColNames } from "@/components/admin/AdminRequestsRequests.vue";
-import type { ColName as AdminRolesRolesColName } from "@/components/admin/AdminRolesRoles.vue";
 import type { ColName as AdminTeachersPositionsColNames } from "@/components/admin/AdminTeachersPositions.vue";
 import type { ColName as AdminTeachersServiceModificationTypesColNames } from "@/components/admin/AdminTeachersServiceModificationTypes.vue";
 import type { ColName as AdminTeachersServiceModificationsColNames } from "@/components/admin/AdminTeachersServiceModifications.vue";
@@ -175,6 +175,9 @@ const findKeysInFiles = async (): Promise<string[]> => {
   });
 
   const adminColNames: Record<string, Record<string, string[]>> = {
+    general: {
+      roles: ["uid", "type", "comment"] satisfies AdminRolesRolesColName[],
+    },
     teachers: {
       teachers: [
         "uid",
@@ -277,16 +280,6 @@ const findKeysInFiles = async (): Promise<string[]> => {
         "computed",
       ] satisfies AdminRequestsPrioritiesColNames[],
     },
-    roles: {
-      [RoleTypeEnum.Admin]: [
-        "uid",
-        "comment",
-      ] satisfies AdminRolesRolesColName[],
-      [RoleTypeEnum.Commissioner]: [
-        "uid",
-        "comment",
-      ] satisfies AdminRolesRolesColName[],
-    },
   };
 
   Object.entries(adminColNames).forEach(([section, names]) => {
@@ -322,19 +315,6 @@ const findKeysInFiles = async (): Promise<string[]> => {
       templateStringsKeys.delete("${keyPrefix}.data.confirm.delete.single");
       templateStringsKeys.delete("${keyPrefix}.data.confirm.delete.multiple");
     });
-  });
-
-  [RoleTypeEnum.Admin, RoleTypeEnum.Commissioner].forEach((type) => {
-    standardKeys.add(`role.${type}`);
-    standardKeys.add(`admin.roles.${type}.label`);
-  });
-  [...templateStringsKeys].forEach((key) => {
-    if (/role\.\${[a-zA-Z.]*}/.test(key)) {
-      templateStringsKeys.delete(key);
-    }
-    if (/admin\.roles\.\${[a-zA-Z.]*}\.label/.test(key)) {
-      templateStringsKeys.delete(key);
-    }
   });
 
   if (templateStringsKeys.size > 0) {

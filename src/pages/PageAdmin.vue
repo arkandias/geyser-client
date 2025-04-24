@@ -7,7 +7,6 @@ import AdminCoordinations from "@/components/admin/AdminCoordinations.vue";
 import AdminCourses from "@/components/admin/AdminCourses.vue";
 import AdminGeneral from "@/components/admin/AdminGeneral.vue";
 import AdminRequests from "@/components/admin/AdminRequests.vue";
-import AdminRoles from "@/components/admin/AdminRoles.vue";
 import AdminTeachers from "@/components/admin/AdminTeachers.vue";
 
 const { section = "general" } = defineProps<{
@@ -41,11 +40,6 @@ const routeTabs = computed(() => [
     name: "coordinations",
     label: t("admin.coordinations.title"),
     to: "/admin/coordinations",
-  },
-  {
-    name: "roles",
-    label: t("admin.roles.title"),
-    to: "/admin/roles",
   },
 ]);
 </script>
@@ -82,10 +76,6 @@ const routeTabs = computed(() => [
 
       <QTabPanel name="coordinations">
         <AdminCoordinations />
-      </QTabPanel>
-
-      <QTabPanel name="roles">
-        <AdminRoles />
       </QTabPanel>
     </QTabPanels>
   </QPage>

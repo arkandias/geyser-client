@@ -135,12 +135,12 @@ const displayActions = computed(
     displayDeleteButton.value(requestType),
 );
 
-const assign = async (): Promise<void> => {
+const validateRequest = async (): Promise<void> => {
   const result = await getAssignment.executeQuery();
 
   if (!result.data.value?.requests || result.error.value) {
     notify(NotifyType.ERROR, {
-      message: t("requestCard.assign.error"),
+      message: t("requestCard.validate.error"),
       caption: result.error.value?.message,
     });
     return;
@@ -151,7 +151,7 @@ const assign = async (): Promise<void> => {
   if (assignment) {
     if (assignment.hours === request.value.hours) {
       notify(NotifyType.DEFAULT, {
-        message: t("requestCard.assign.identical"),
+        message: t("requestCard.validate.identical"),
       });
       return;
     }
@@ -163,11 +163,11 @@ const assign = async (): Promise<void> => {
 
     if (data?.assignment && !error) {
       notify(NotifyType.SUCCESS, {
-        message: t("requestCard.assign.updated"),
+        message: t("requestCard.validate.updated"),
       });
     } else {
       notify(NotifyType.ERROR, {
-        message: t("requestCard.assign.error"),
+        message: t("requestCard.validate.error"),
         caption: error?.message,
       });
     }
@@ -181,18 +181,18 @@ const assign = async (): Promise<void> => {
 
     if (data?.assignment && !error) {
       notify(NotifyType.SUCCESS, {
-        message: t("requestCard.assign.created"),
+        message: t("requestCard.validate.created"),
       });
     } else {
       notify(NotifyType.ERROR, {
-        message: t("requestCard.assign.error"),
+        message: t("requestCard.validate.error"),
         caption: error?.message,
       });
     }
   }
 };
 
-const remove = async (): Promise<void> => {
+const deleteRequest = async (): Promise<void> => {
   const { data, error } = await deleteRequestCard.executeMutation({
     id: request.value.id,
   });
@@ -244,14 +244,14 @@ const remove = async (): Promise<void> => {
         flat
         square
         dense
-        @click="assign()"
+        @click="validateRequest()"
       >
         <QTooltip
           :delay="TOOLTIP_DELAY"
           anchor="bottom middle"
           self="top middle"
         >
-          {{ t("requestCard.tooltip.assign") }}
+          {{ t("requestCard.tooltip.validate") }}
         </QTooltip>
       </QBtn>
       <QBtn
@@ -262,14 +262,14 @@ const remove = async (): Promise<void> => {
         flat
         square
         dense
-        @click="remove()"
+        @click="deleteRequest()"
       >
         <QTooltip
           :delay="TOOLTIP_DELAY"
           anchor="bottom middle"
           self="top middle"
         >
-          {{ t("requestCard.tooltip.remove") }}
+          {{ t("requestCard.tooltip.delete") }}
         </QTooltip>
       </QBtn>
     </QCardActions>

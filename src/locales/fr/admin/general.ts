@@ -1,3 +1,8 @@
+import { RoleTypeEnum } from "@/gql/graphql.ts";
+import type { AdminColNameOptions } from "@/types/i18n.ts";
+
+import type { ColName as AdminRolesRolesColName } from "@/components/admin/AdminGeneralRoles.vue";
+
 export default {
   general: {
     title: "Paramètres généraux",
@@ -44,6 +49,51 @@ la supprimer.`,
         copyCourses: "0 cours copié | 1 cours copié | {count} cours copié",
         computePriorities:
           "0 priorité calculée | 1 priorité calculée | {count} priorités calculées",
+      },
+    },
+    roles: {
+      label: "Rôles",
+      column: {
+        uid: {
+          label: "Intervenant",
+          tooltip: "",
+        },
+        type: {
+          label: "Type",
+          tooltip: "",
+        },
+        comment: {
+          label: "Commentaire",
+          tooltip: "",
+        },
+      } satisfies Record<AdminRolesRolesColName, AdminColNameOptions>,
+      form: {
+        title: {
+          none: "Nouveau rôle",
+          single: "{label}",
+          multiple: "{count} rôles sélectionnés",
+        },
+        error: {
+          invalidRole: `Le type de rôle doit être ${RoleTypeEnum.Admin} ou ${RoleTypeEnum.Commissioner}`,
+        },
+      },
+      data: {
+        success: {
+          insert: "Aucun rôle créé | Rôle créé | {count} rôles créés",
+          update:
+            "Aucun rôle mis à jour | Rôle mis à jour | {count} rôles mis à jour",
+          delete:
+            "Aucun rôle supprimé | Rôle supprimé | {count} rôles supprimés",
+          import: "0 rôle importé | 1 rôle importé | {count} rôles importés",
+          export: "0 rôle exporté | 1 rôle exporté | {count} rôles exportés",
+        },
+        confirm: {
+          delete: {
+            single: "Êtes-vous sûr de vouloir supprimer le rôle « {label} » ?",
+            multiple:
+              "Êtes-vous sûr de vouloir supprimer les {count} rôles sélectionnés ?",
+          },
+        },
       },
     },
     customTexts: {

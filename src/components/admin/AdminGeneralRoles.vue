@@ -1,5 +1,5 @@
 <script lang="ts">
-export type ColName = "uid" | "comment";
+export type ColName = "uid" | "type" | "comment";
 </script>
 
 <script setup lang="ts">
@@ -16,12 +16,13 @@ import {
   InsertRolesDocument,
   RoleConstraint,
   type RoleInsertInput,
-  type RoleTypeEnum,
+  RoleTypeEnum,
   RoleUpdateColumn,
   UpdateRolesDocument,
   UpsertRolesDocument,
 } from "@/gql/graphql.ts";
 import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
+import { isRole } from "@/utils/enum-guards.ts";
 
 import AdminData from "@/components/admin/core/AdminData.vue";
 
@@ -29,8 +30,7 @@ type Row = AdminRoleFragment;
 type FlatRow = NullableParsedRow<typeof rowDescriptor>;
 type InsertInput = RoleInsertInput;
 
-const { roleType, roleFragments, teacherFragments } = defineProps<{
-  roleType: RoleTypeEnum;
+const { roleFragments, teacherFragments } = defineProps<{
   roleFragments: FragmentType<typeof AdminRoleFragmentDoc>[];
   teacherFragments: FragmentType<typeof AdminRolesTeacherFragmentDoc>[];
 }>();
@@ -43,6 +43,11 @@ const rowDescriptor = {
     type: "string",
     format: (val: string) =>
       teachers.value.find((t) => t.uid === val)?.displayname,
+    formType: "select",
+  },
+  type: {
+    type: "string",
+    format: (val: string) => t(`role.${val}`),
     formType: "select",
   },
   comment: {
@@ -102,9 +107,7 @@ graphql(`
 `);
 
 const roles = computed(() =>
-  roleFragments
-    .map((f) => useFragment(AdminRoleFragmentDoc, f))
-    .filter((role) => role.type === roleType),
+  roleFragments.map((f) => useFragment(AdminRoleFragmentDoc, f)),
 );
 const teachers = computed(() =>
   teacherFragments.map((f) => useFragment(AdminRolesTeacherFragmentDoc, f)),
@@ -121,13 +124,20 @@ const importUpdateColumns = [
   RoleUpdateColumn.Comment,
 ];
 
-const formatRow = (row: Row) => `${t(`role.${roleType}`)} — ${row.uid}`;
+const formatRow = (row: Row) => `${t(`role.${row.type}`)} — ${row.uid}`;
 
 const validateFlatRow = (flatRow: FlatRow): InsertInput => {
-  const object: InsertInput = { type: roleType };
+  const object: InsertInput = {};
 
   if (flatRow.uid !== undefined) {
     object.uid = flatRow.uid;
+  }
+
+  if (flatRow.type !== undefined) {
+    if (!isRole(flatRow.type)) {
+      throw new Error(t("admin.general.roles.form.error.invalidRole"));
+    }
+    object.type = flatRow.type;
   }
 
   if (flatRow.comment !== undefined) {
@@ -139,13 +149,14 @@ const validateFlatRow = (flatRow: FlatRow): InsertInput => {
 
 const formOptions = computed(() => ({
   uid: teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
+  type: Object.values(RoleTypeEnum).map((type) => t(`role.${type}`)),
 }));
 </script>
 
 <template>
   <AdminData
-    section="roles"
-    :name="roleType"
+    section="general"
+    name="roles"
     :id-key
     :row-descriptor
     :rows="roles"

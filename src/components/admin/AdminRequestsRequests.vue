@@ -459,6 +459,7 @@ const formOptions = computed(() => ({
         c.semester === formValues.value["semester"],
     )
     .map((c) => c.type.label),
+  type: Object.values(RequestTypeEnum).map((type) => t(`requestType.${type}`)),
 }));
 const filterOptions = computed(() => ({
   uid: teachers.value.map((t) => t.uid),

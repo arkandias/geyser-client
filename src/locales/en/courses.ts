@@ -184,20 +184,20 @@ export default {
       },
       defaultText: `
         <p>
-          Click on a course row to display detailed information here. If both a course 
-          and a teacher are selected at the same time, the course information will be displayed. 
+          Click on a course row to display detailed information here. If both a course
+          and a teacher are selected at the same time, the course information will be displayed.
           You can deselect a course or a teacher by clicking again on the corresponding row.
         </p>
         <p>Buttons in the header (accessible only from this page):</p>
         <ul>
           <li>
             <i class="q-icon text-primary material-symbols-sharp">history</i>
-            Year: allows you to choose the year to view (by default the current year 
+            Year: allows you to choose the year to view (by default the current year
             is displayed, but it is possible to view requests and assignments from previous years).
           </li>
           <li>
             <i class="q-icon text-primary material-symbols-sharp">vertical_split</i>
-            Services table: allows you to show/hide the list of services for the current 
+            Services table: allows you to show/hide the list of services for the current
             year (feature reserved for commission members and administrators).
           </li>
           <li>
@@ -207,9 +207,9 @@ export default {
           </li>
         </ul>
         <p>
-          When a teacher is selected in the services table, the courses that appear in the table 
-          above are only those that have been requested by the teacher or assigned to the teacher, 
-          and the search filters are disabled. The teacher's name then appears at the top of the table 
+          When a teacher is selected in the services table, the courses that appear in the table
+          above are only those that have been requested by the teacher or assigned to the teacher,
+          and the search filters are disabled. The teacher's name then appears at the top of the table
           (instead of "Courses"). Two shortcuts are present to the right of the teacher's name:
         </p>
         <ul>

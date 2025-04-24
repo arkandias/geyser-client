@@ -20,11 +20,11 @@ export default {
     group: "group | groups",
     hour: "hour | hours",
     tooltip: {
-      assign: "Assign request",
-      remove: "Remove request",
+      validate: "Validate request",
+      delete: "Delete request",
     },
-    assign: {
-      identical: "Request already assigned",
+    validate: {
+      identical: "Request already validated",
       created: "Assignment created",
       updated: "Assignment updated",
       error: "Assignment failed",

@@ -197,7 +197,7 @@ export default {
         <ul>
           <li>
             <i class="q-icon text-primary material-symbols-sharp">history</i>
-            Année : permet de choisir l'année à consulter (par défaut l'année en cours 
+            Année : permet de choisir l'année à consulter (par défaut l'année en cours
             est affichée, mais il est possible de consulter les demandes et les
             attributions des années antérieures).
           </li>

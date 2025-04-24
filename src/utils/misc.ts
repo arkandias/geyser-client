@@ -39,12 +39,6 @@ export const capitalize = <T extends string>(str: T): Capitalize<T> =>
 export const inputToNumber = (input: string | number | null) =>
   typeof input === "string" ? (input === "" ? null : Number(input)) : input;
 
-// todo: remove
-export const booleanOptions = (trueLabel: string, falseLabel: string) => [
-  { value: true, label: trueLabel },
-  { value: false, label: falseLabel },
-];
-
 export const getField = <R extends object>(
   row: R | undefined,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,7 +50,3 @@ export const getField = <R extends object>(
     : typeof field === "function"
       ? field(row)
       : row[field as keyof R];
-
-// todo: remove
-export const nullObj = (obj: object) =>
-  Object.fromEntries(Object.keys(obj).map((key) => [key, null]));
