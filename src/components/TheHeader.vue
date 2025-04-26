@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useDarkMode } from "@/composables/useDarkMode.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { useRefreshData } from "@/composables/useRefreshData.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { version } from "@/config/env.ts";
 
 import MenuInfo from "@/components/header/MenuInfo.vue";
@@ -15,7 +15,7 @@ import ToolbarCourses from "@/components/header/ToolbarCourses.vue";
 
 defineProps<{ disable: boolean }>();
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const router = useRouter();
 const perm = usePermissions();
 const { isRefreshing, refreshData } = useRefreshData();

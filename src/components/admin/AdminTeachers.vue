@@ -2,7 +2,7 @@
 import { useQuery } from "@urql/vue";
 import { computed } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { graphql } from "@/gql";
 import { GetAdminTeachersDocument } from "@/gql/graphql.ts";
 
@@ -13,7 +13,7 @@ import AdminTeachersServices from "@/components/admin/AdminTeachersServices.vue"
 import AdminTeachersTeachers from "@/components/admin/AdminTeachersTeachers.vue";
 import AdminSection from "@/components/admin/core/AdminSection.vue";
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 
 graphql(`
   query GetAdminTeachers {

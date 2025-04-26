@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 import { capitalize } from "@/utils/misc.ts";
 
 defineProps<{ alert?: string }>();
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const { currentPhase } = usePhaseStore();
 const { getCustomText } = useCustomTextsStore();
 

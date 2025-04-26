@@ -2,9 +2,9 @@
 import { useMutation } from "@urql/vue";
 import { computed, ref, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   DeleteRequestDocument,
@@ -73,7 +73,7 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const { notify } = useNotify();
 const { serviceId: myServiceId } = useProfileStore();
 const perm = usePermissions();

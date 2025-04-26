@@ -1,11 +1,11 @@
 import { useQuasar } from "quasar";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { type AvailableLocale, isAvailableLocale } from "@/config/locales.ts";
 import { quasarLanguages } from "@/services/quasar.ts";
 
 export const useLocale = () => {
-  const { locale } = useCustomI18n();
+  const { locale } = useTypedI18n();
   const $q = useQuasar();
 
   const storedLocale = $q.localStorage.getItem("lang");

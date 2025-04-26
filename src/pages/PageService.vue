@@ -2,8 +2,8 @@
 import { useQuery } from "@urql/vue";
 import { computed } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useQueryParam } from "@/composables/useQueryParam.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { graphql } from "@/gql";
 import { GetServiceDetailsDocument } from "@/gql/graphql.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
@@ -28,7 +28,7 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const { serviceId: myServiceId } = useProfileStore();
 const { getValue: selectedService } = useQueryParam("serviceId", true);
 

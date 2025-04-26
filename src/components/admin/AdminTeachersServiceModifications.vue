@@ -6,7 +6,7 @@ export type ColName = "year" | "uid" | "type" | "hours";
 import { useMutation } from "@urql/vue";
 import { computed } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   type AdminServiceModificationFragment,
@@ -51,7 +51,7 @@ const {
   >[];
 }>();
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const { years } = useYearsStore();
 
 const idKey: keyof Row = "id";

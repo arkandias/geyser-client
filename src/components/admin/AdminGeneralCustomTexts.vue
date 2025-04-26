@@ -7,7 +7,7 @@ import {
   shallowRef,
 } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import {
   CUSTOM_TEXT_KEYS,
   type CustomTextKey,
@@ -22,7 +22,7 @@ import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 
 import EditableText from "@/components/core/EditableText.vue";
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const { getCustomText } = useCustomTextsStore();
 
 const customTextOptions = computed(() =>

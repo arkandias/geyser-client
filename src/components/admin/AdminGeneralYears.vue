@@ -2,8 +2,8 @@
 import { useMutation } from "@urql/vue";
 import { ref } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { graphql } from "@/gql";
 import {
   ComputePrioritiesDocument,
@@ -17,7 +17,7 @@ import {
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import { inputToNumber } from "@/utils/misc.ts";
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const { notify } = useNotify();
 const { years, currentYear } = useYearsStore();
 

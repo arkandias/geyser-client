@@ -2,7 +2,7 @@
 import { useQuery } from "@urql/vue";
 import { computed, ref, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { graphql } from "@/gql";
 import { GetServicesDocument } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
@@ -24,7 +24,7 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const { activeYear } = useYearsStore();
 
 const { data } = useQuery({

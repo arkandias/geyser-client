@@ -1,7 +1,7 @@
 import { useClientHandle } from "@urql/vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { graphql } from "@/gql";
 import {
   GetAssignmentsDocument,
@@ -64,7 +64,7 @@ graphql(`
 
 export const useDownloadAssignments = () => {
   const client = useClientHandle().client;
-  const { t } = useCustomI18n();
+  const { t } = useTypedI18n();
   const { notify } = useNotify();
 
   const downloadAssignments = async (

@@ -2,8 +2,8 @@
 import { useQuery } from "@urql/vue";
 import { computed, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { PHASES } from "@/config/phases.ts";
 import { graphql } from "@/gql";
 import {
@@ -58,7 +58,7 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const { notify } = useNotify();
 const { active, activeRole, loaded, setProfile } = useProfileStore();
 const { currentPhase, setCurrentPhase } = usePhaseStore();

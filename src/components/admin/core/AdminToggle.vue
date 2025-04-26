@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import type { Scalar } from "@/types/data.ts";
 
 const modelValue = defineModel<Scalar>();
@@ -13,7 +13,7 @@ const { name, multipleSelection } = defineProps<{
   multipleSelection?: boolean;
 }>();
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 
 const disable = computed(
   () => multipleSelection && !(selectedFields.value?.includes(name) ?? true),

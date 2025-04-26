@@ -13,8 +13,8 @@
 import type { UseMutationResponse } from "@urql/vue";
 import { type Ref, computed, ref, toValue, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
 import type { Column } from "@/types/column.ts";
 import type {
@@ -102,7 +102,7 @@ const {
   importUpdateColumns: UpdateColumn[];
 }>();
 
-const { t, n } = useCustomI18n();
+const { t, n } = useTypedI18n();
 const { notify } = useNotify();
 
 const keyPrefix = `admin.${section}.${name}`;

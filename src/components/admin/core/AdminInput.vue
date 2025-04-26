@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { inputToNumber } from "@/utils/misc.ts";
 
 const modelValue = defineModel<string | number | null>();
@@ -14,7 +14,7 @@ const { keyPrefix, name, numeric, multipleSelection } = defineProps<{
   multipleSelection?: boolean;
 }>();
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 
 const label = computed(
   () =>

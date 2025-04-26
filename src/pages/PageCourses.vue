@@ -2,9 +2,9 @@
 import { useQuery } from "@urql/vue";
 import { computed, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { usePermissions } from "@/composables/usePermissions.ts";
 import { useQueryParam } from "@/composables/useQueryParam.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { graphql } from "@/gql";
 import {
   GetCourseDetailsDocument,
@@ -68,7 +68,7 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const { activeYear, isCurrentYearActive } = useYearsStore();
 const { closeLeftPanel, isLeftPanelOpen, openLeftPanel } = useLeftPanelStore();
 const perm = usePermissions();

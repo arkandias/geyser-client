@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const { years, activeYear, selectYear } = useYearsStore();
 
 const options = computed(() =>

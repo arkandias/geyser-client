@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 
 import AdminCoordinations from "@/components/admin/AdminCoordinations.vue";
 import AdminCourses from "@/components/admin/AdminCourses.vue";
@@ -13,7 +13,7 @@ const { section = "general" } = defineProps<{
   section?: string;
 }>();
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 
 const routeTabs = computed(() => [
   {

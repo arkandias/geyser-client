@@ -2,8 +2,8 @@
 import type { CombinedError } from "@urql/vue";
 import { ref, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 
 type SetTextReturn = {
   returnId?: string | number | null;
@@ -25,7 +25,7 @@ const {
   textStyle?: string;
 }>();
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const { notify } = useNotify();
 
 const editorText = ref("");

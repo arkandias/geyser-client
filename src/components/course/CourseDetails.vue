@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import { CourseDetailsFragmentDoc } from "@/gql/graphql.ts";
 
@@ -28,7 +28,7 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 
 const details = computed(() =>
   useFragment(CourseDetailsFragmentDoc, dataFragment),

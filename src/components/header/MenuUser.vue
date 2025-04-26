@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useRefreshData } from "@/composables/useRefreshData.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import type { RoleTypeEnum } from "@/gql/graphql.ts";
 import { logout } from "@/services/keycloak.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const { displayname, roles, activeRole, setActiveRole } = useProfileStore();
 const { refreshData } = useRefreshData();
 

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { useLocale } from "@/composables/useLocale.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { AVAILABLE_LOCALES, LOCALE_LABELS } from "@/config/locales.ts";
 
 import MenuBase from "@/components/header/MenuBase.vue";
 
-const { t, locale } = useCustomI18n();
+const { t, locale } = useTypedI18n();
 const { setLocale } = useLocale();
 
 const localeOptions = AVAILABLE_LOCALES.map((l) => ({

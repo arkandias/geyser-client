@@ -2,8 +2,8 @@
 import { useMutation } from "@urql/vue";
 import { computed, ref, watch } from "vue";
 
-import { useCustomI18n } from "@/composables/useCustomI18n.ts";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
+import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { type FragmentType, graphql, useFragment } from "@/gql";
 import {
   PriorityFormDataFragmentDoc,
@@ -49,7 +49,7 @@ graphql(`
   }
 `);
 
-const { t } = useCustomI18n();
+const { t } = useTypedI18n();
 const { notify } = useNotify();
 
 const upsertPriority = useMutation(UpsertPriorityDocument);
