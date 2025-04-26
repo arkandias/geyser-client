@@ -1,14 +1,13 @@
 import { computed, readonly } from "vue";
 
-import { PHASES } from "@/config/phases.ts";
-import { RoleTypeEnum } from "@/gql/graphql.ts";
-import { usePhaseStore } from "@/stores/usePhaseStore.ts";
+import { PhaseEnum, RoleTypeEnum } from "@/gql/graphql.ts";
+import { useCurrentPhaseStore } from "@/stores/useCurrentPhaseStore.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 
 export const usePermissions = () => {
   const { isCurrentYearActive } = useYearsStore();
-  const { currentPhase } = usePhaseStore();
+  const { currentPhase } = useCurrentPhaseStore();
   const { uid: myUid, activeRole, hasService } = useProfileStore();
 
   const toAdmin = computed(() => activeRole.value === RoleTypeEnum.Admin);
@@ -17,7 +16,7 @@ export const usePermissions = () => {
     () =>
       activeRole.value === RoleTypeEnum.Admin ||
       (activeRole.value === RoleTypeEnum.Teacher &&
-        currentPhase.value === PHASES.REQUESTS &&
+        currentPhase.value === PhaseEnum.Requests &&
         isCurrentYearActive.value &&
         hasService.value),
   );
@@ -37,7 +36,7 @@ export const usePermissions = () => {
   const toViewAssignments = computed(
     () =>
       toEditAssignments.value ||
-      currentPhase.value === PHASES.RESULTS ||
+      currentPhase.value === PhaseEnum.Results ||
       !isCurrentYearActive.value,
   );
 
@@ -45,7 +44,7 @@ export const usePermissions = () => {
     () =>
       activeRole.value === RoleTypeEnum.Admin ||
       (activeRole.value === RoleTypeEnum.Commissioner &&
-        currentPhase.value === PHASES.ASSIGNMENTS &&
+        currentPhase.value === PhaseEnum.Assignments &&
         isCurrentYearActive.value),
   );
 
@@ -63,14 +62,14 @@ export const usePermissions = () => {
     () =>
       activeRole.value === RoleTypeEnum.Admin ||
       (activeRole.value === RoleTypeEnum.Commissioner &&
-        currentPhase.value === PHASES.ASSIGNMENTS),
+        currentPhase.value === PhaseEnum.Assignments),
   );
 
   const toEditAService = computed(
     () => (uid: string) =>
       activeRole.value === RoleTypeEnum.Admin ||
       (activeRole.value === RoleTypeEnum.Teacher &&
-        currentPhase.value === PHASES.REQUESTS &&
+        currentPhase.value === PhaseEnum.Requests &&
         isCurrentYearActive.value &&
         uid === myUid.value),
   );
@@ -79,7 +78,7 @@ export const usePermissions = () => {
     () => (uid: string) =>
       activeRole.value === RoleTypeEnum.Admin ||
       (activeRole.value === RoleTypeEnum.Teacher &&
-        currentPhase.value === PHASES.REQUESTS &&
+        currentPhase.value === PhaseEnum.Requests &&
         isCurrentYearActive.value &&
         uid === myUid.value),
   );

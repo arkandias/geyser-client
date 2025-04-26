@@ -4,16 +4,16 @@ import { computed, watch } from "vue";
 
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { useTypedI18n } from "@/composables/useTypedI18n.ts";
-import { PHASES } from "@/config/phases.ts";
 import { graphql } from "@/gql";
 import {
   GetAppDataDocument,
   GetUserProfileDocument,
+  PhaseEnum,
   RoleTypeEnum,
 } from "@/gql/graphql.ts";
 import { setRoleHeader } from "@/services/urql.ts";
+import { useCurrentPhaseStore } from "@/stores/useCurrentPhaseStore.ts";
 import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
-import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 
@@ -40,8 +40,7 @@ graphql(`
   }
 
   query GetAppData {
-    phases: phase(
-      where: { current: { _eq: true } }
+    phase: currentPhase(
       limit: 1 # unique
     ) {
       value
@@ -61,7 +60,7 @@ graphql(`
 const { t } = useTypedI18n();
 const { notify } = useNotify();
 const { active, activeRole, loaded, setProfile } = useProfileStore();
-const { currentPhase, setCurrentPhase } = usePhaseStore();
+const { currentPhase, setCurrentPhase } = useCurrentPhaseStore();
 const { setYears } = useYearsStore();
 const { setCustomTexts } = useCustomTextsStore();
 
@@ -113,8 +112,8 @@ watch(
       });
       return;
     }
-    if (data?.phases[0]) {
-      setCurrentPhase(data.phases[0].value);
+    if (data?.phase[0]?.value) {
+      setCurrentPhase(data.phase[0].value);
     }
     if (data?.years) {
       setYears(
@@ -150,7 +149,7 @@ const accessDeniedMessage = computed(() => {
     return t("home.alert.loadingAppData");
   }
   if (
-    currentPhase.value === PHASES.SHUTDOWN &&
+    currentPhase.value === PhaseEnum.Shutdown &&
     activeRole.value !== RoleTypeEnum.Admin
   ) {
     return t("home.alert.shutdown");

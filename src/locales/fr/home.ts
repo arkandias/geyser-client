@@ -1,16 +1,14 @@
-import { PHASES } from "@/config/phases.ts";
-
 export default {
   home: {
     title: "Bienvenue",
     subtitle: {
-      [PHASES.REQUESTS]: "Geyser est en phase de vœux",
-      [PHASES.ASSIGNMENTS]: "Geyser est en phase de commission",
-      [PHASES.RESULTS]: "Geyser est en phase de consultation",
-      [PHASES.SHUTDOWN]: "Geyser est fermé",
+      requests: "Geyser est en phase de vœux",
+      assignments: "Geyser est en phase de commission",
+      results: "Geyser est en phase de consultation",
+      shutdown: "Geyser est fermé",
     },
     message: {
-      [PHASES.REQUESTS]: `
+      requests: `
         <p>
           Sur la page <i class="q-icon text-primary material-symbols-sharp">badge</i>
           Mes informations, entrez votre service de base (en heures EQTD), puis ajoutez
@@ -26,20 +24,20 @@ export default {
           Enseignements. Merci de demander l’équivalent de votre service total en
           demandes principales et en demandes secondaires.
         </p>`,
-      [PHASES.ASSIGNMENTS]: `
+      assignments: `
         <p>
           Les travaux de la commission sont en cours. Vous serez informé lorsqu'ils
           seront terminés pour consulter les attributions.
           En attendant, vous pouvez toujours consulter les demandes mais il n'est plus
           possible de les modifier.
         </p>`,
-      [PHASES.RESULTS]: `
+      results: `
         <p>
           Vous pouvez à présent consulter les attributions des enseignements de cette
           année. Vous avez également toujours accès aux demandes et aux attributions des
           années précédentes.
         </p>`,
-      [PHASES.SHUTDOWN]: "",
+      shutdown: "",
     },
     alert: {
       noAuth: "Vous n'êtes pas authentifié",

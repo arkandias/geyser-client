@@ -1,34 +1,46 @@
 import type { ComposerTranslation } from "vue-i18n";
 
 import type { CustomTextKey } from "@/config/custom-text-keys.ts";
-import { PHASES, type Phase } from "@/config/phases.ts";
 import type { PrimitiveType } from "@/config/primitive-types.ts";
-import { RequestTypeEnum, RoleTypeEnum } from "@/gql/graphql.ts";
+import { PhaseEnum, RequestTypeEnum, RoleTypeEnum } from "@/gql/graphql.ts";
 import { capitalize } from "@/utils/misc.ts";
 
-export const phaseSubtitle = (t: ComposerTranslation, phase: Phase) => {
+export const phaseSubtitle = (t: ComposerTranslation, phase: PhaseEnum) => {
   switch (phase) {
-    case PHASES.REQUESTS:
+    case PhaseEnum.Requests:
       return t("home.subtitle.requests");
-    case PHASES.ASSIGNMENTS:
+    case PhaseEnum.Assignments:
       return t("home.subtitle.assignments");
-    case PHASES.RESULTS:
+    case PhaseEnum.Results:
       return t("home.subtitle.results");
-    case PHASES.SHUTDOWN:
+    case PhaseEnum.Shutdown:
       return t("home.subtitle.shutdown");
   }
 };
 
-export const phaseMessage = (t: ComposerTranslation, phase: Phase) => {
+export const phaseMessage = (t: ComposerTranslation, phase: PhaseEnum) => {
   switch (phase) {
-    case PHASES.REQUESTS:
+    case PhaseEnum.Requests:
       return t("home.message.requests");
-    case PHASES.ASSIGNMENTS:
+    case PhaseEnum.Assignments:
       return t("home.message.assignments");
-    case PHASES.RESULTS:
+    case PhaseEnum.Results:
       return t("home.message.results");
-    case PHASES.SHUTDOWN:
+    case PhaseEnum.Shutdown:
       return t("home.message.shutdown");
+  }
+};
+
+export const phaseLabel = (t: ComposerTranslation, phase: PhaseEnum) => {
+  switch (phase) {
+    case PhaseEnum.Requests:
+      return t("phase.requests");
+    case PhaseEnum.Assignments:
+      return t("phase.assignments");
+    case PhaseEnum.Results:
+      return t("phase.results");
+    case PhaseEnum.Shutdown:
+      return t("phase.shutdown");
   }
 };
 
@@ -72,21 +84,21 @@ export const customTextDefault = (
   switch (key) {
     case "homeTitle":
       return t("home.title");
-    case `homeSubtitle${capitalize(PHASES.REQUESTS)}`:
+    case `homeSubtitle${capitalize(PhaseEnum.Requests)}`:
       return t("home.subtitle.requests");
-    case `homeSubtitle${capitalize(PHASES.ASSIGNMENTS)}`:
+    case `homeSubtitle${capitalize(PhaseEnum.Assignments)}`:
       return t("home.subtitle.assignments");
-    case `homeSubtitle${capitalize(PHASES.RESULTS)}`:
+    case `homeSubtitle${capitalize(PhaseEnum.Results)}`:
       return t("home.subtitle.results");
-    case `homeSubtitle${capitalize(PHASES.SHUTDOWN)}`:
+    case `homeSubtitle${capitalize(PhaseEnum.Shutdown)}`:
       return t("home.subtitle.shutdown");
-    case `homeMessage${capitalize(PHASES.REQUESTS)}`:
+    case `homeMessage${capitalize(PhaseEnum.Requests)}`:
       return t("home.message.requests");
-    case `homeMessage${capitalize(PHASES.ASSIGNMENTS)}`:
+    case `homeMessage${capitalize(PhaseEnum.Assignments)}`:
       return t("home.message.assignments");
-    case `homeMessage${capitalize(PHASES.RESULTS)}`:
+    case `homeMessage${capitalize(PhaseEnum.Results)}`:
       return t("home.message.results");
-    case `homeMessage${capitalize(PHASES.SHUTDOWN)}`:
+    case `homeMessage${capitalize(PhaseEnum.Shutdown)}`:
       return t("home.message.shutdown");
     case "contact":
       return t("header.info.contact.message");

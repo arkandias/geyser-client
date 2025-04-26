@@ -3325,6 +3325,321 @@ input CourseVarianceOrderBy {
   year: OrderBy
 }
 
+"""
+columns and relationships of "current_phase"
+"""
+type CurrentPhase {
+  id: Int!
+
+  """An object relationship"""
+  phase: Phase
+  value: PhaseEnum
+}
+
+"""
+aggregated selection of "current_phase"
+"""
+type CurrentPhaseAggregate {
+  aggregate: CurrentPhaseAggregateFields
+  nodes: [CurrentPhase!]!
+}
+
+input CurrentPhaseAggregateBoolExp {
+  count: currentPhaseAggregateBoolExpCount
+}
+
+"""
+aggregate fields of "current_phase"
+"""
+type CurrentPhaseAggregateFields {
+  avg: CurrentPhaseAvgFields
+  count(columns: [CurrentPhaseSelectColumn!], distinct: Boolean): Int!
+  max: CurrentPhaseMaxFields
+  min: CurrentPhaseMinFields
+  stddev: CurrentPhaseStddevFields
+  stddevPop: CurrentPhaseStddevPopFields
+  stddevSamp: CurrentPhaseStddevSampFields
+  sum: CurrentPhaseSumFields
+  varPop: CurrentPhaseVarPopFields
+  varSamp: CurrentPhaseVarSampFields
+  variance: CurrentPhaseVarianceFields
+}
+
+"""
+order by aggregate values of table "current_phase"
+"""
+input CurrentPhaseAggregateOrderBy {
+  avg: CurrentPhaseAvgOrderBy
+  count: OrderBy
+  max: CurrentPhaseMaxOrderBy
+  min: CurrentPhaseMinOrderBy
+  stddev: CurrentPhaseStddevOrderBy
+  stddevPop: CurrentPhaseStddevPopOrderBy
+  stddevSamp: CurrentPhaseStddevSampOrderBy
+  sum: CurrentPhaseSumOrderBy
+  varPop: CurrentPhaseVarPopOrderBy
+  varSamp: CurrentPhaseVarSampOrderBy
+  variance: CurrentPhaseVarianceOrderBy
+}
+
+"""
+input type for inserting array relation for remote table "current_phase"
+"""
+input CurrentPhaseArrRelInsertInput {
+  data: [CurrentPhaseInsertInput!]!
+
+  """upsert condition"""
+  onConflict: CurrentPhaseOnConflict
+}
+
+"""aggregate avg on columns"""
+type CurrentPhaseAvgFields {
+  id: Float
+}
+
+"""
+order by avg() on columns of table "current_phase"
+"""
+input CurrentPhaseAvgOrderBy {
+  id: OrderBy
+}
+
+"""
+Boolean expression to filter rows from the table "current_phase". All fields are combined with a logical 'AND'.
+"""
+input CurrentPhaseBoolExp {
+  _and: [CurrentPhaseBoolExp!]
+  _not: CurrentPhaseBoolExp
+  _or: [CurrentPhaseBoolExp!]
+  id: IntComparisonExp
+  phase: PhaseBoolExp
+  value: PhaseEnumComparisonExp
+}
+
+"""
+unique or primary key constraints on table "current_phase"
+"""
+enum CurrentPhaseConstraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  current_phase_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "current_phase"
+"""
+input CurrentPhaseIncInput {
+  id: Int
+}
+
+"""
+input type for inserting data into table "current_phase"
+"""
+input CurrentPhaseInsertInput {
+  id: Int
+  phase: PhaseObjRelInsertInput
+  value: PhaseEnum
+}
+
+"""aggregate max on columns"""
+type CurrentPhaseMaxFields {
+  id: Int
+}
+
+"""
+order by max() on columns of table "current_phase"
+"""
+input CurrentPhaseMaxOrderBy {
+  id: OrderBy
+}
+
+"""aggregate min on columns"""
+type CurrentPhaseMinFields {
+  id: Int
+}
+
+"""
+order by min() on columns of table "current_phase"
+"""
+input CurrentPhaseMinOrderBy {
+  id: OrderBy
+}
+
+"""
+response of any mutation on the table "current_phase"
+"""
+type CurrentPhaseMutationResponse {
+  """number of rows affected by the mutation"""
+  affectedRows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [CurrentPhase!]!
+}
+
+"""
+on_conflict condition type for table "current_phase"
+"""
+input CurrentPhaseOnConflict {
+  constraint: CurrentPhaseConstraint!
+  updateColumns: [CurrentPhaseUpdateColumn!]! = []
+  where: CurrentPhaseBoolExp
+}
+
+"""Ordering options when selecting data from "current_phase"."""
+input CurrentPhaseOrderBy {
+  id: OrderBy
+  phase: PhaseOrderBy
+  value: OrderBy
+}
+
+"""primary key columns input for table: current_phase"""
+input CurrentPhasePkColumnsInput {
+  id: Int!
+}
+
+"""
+select columns of table "current_phase"
+"""
+enum CurrentPhaseSelectColumn {
+  """column name"""
+  id
+
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "current_phase"
+"""
+input CurrentPhaseSetInput {
+  id: Int
+  value: PhaseEnum
+}
+
+"""aggregate stddev on columns"""
+type CurrentPhaseStddevFields {
+  id: Float
+}
+
+"""
+order by stddev() on columns of table "current_phase"
+"""
+input CurrentPhaseStddevOrderBy {
+  id: OrderBy
+}
+
+"""aggregate stddevPop on columns"""
+type CurrentPhaseStddevPopFields {
+  id: Float
+}
+
+"""
+order by stddevPop() on columns of table "current_phase"
+"""
+input CurrentPhaseStddevPopOrderBy {
+  id: OrderBy
+}
+
+"""aggregate stddevSamp on columns"""
+type CurrentPhaseStddevSampFields {
+  id: Float
+}
+
+"""
+order by stddevSamp() on columns of table "current_phase"
+"""
+input CurrentPhaseStddevSampOrderBy {
+  id: OrderBy
+}
+
+"""
+Streaming cursor of the table "current_phase"
+"""
+input CurrentPhaseStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: CurrentPhaseStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input CurrentPhaseStreamCursorValueInput {
+  id: Int
+  value: PhaseEnum
+}
+
+"""aggregate sum on columns"""
+type CurrentPhaseSumFields {
+  id: Int
+}
+
+"""
+order by sum() on columns of table "current_phase"
+"""
+input CurrentPhaseSumOrderBy {
+  id: OrderBy
+}
+
+"""
+update columns of table "current_phase"
+"""
+enum CurrentPhaseUpdateColumn {
+  """column name"""
+  id
+
+  """column name"""
+  value
+}
+
+input CurrentPhaseUpdates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: CurrentPhaseIncInput
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: CurrentPhaseSetInput
+
+  """filter the rows which have to be updated"""
+  where: CurrentPhaseBoolExp!
+}
+
+"""aggregate varPop on columns"""
+type CurrentPhaseVarPopFields {
+  id: Float
+}
+
+"""
+order by varPop() on columns of table "current_phase"
+"""
+input CurrentPhaseVarPopOrderBy {
+  id: OrderBy
+}
+
+"""aggregate varSamp on columns"""
+type CurrentPhaseVarSampFields {
+  id: Float
+}
+
+"""
+order by varSamp() on columns of table "current_phase"
+"""
+input CurrentPhaseVarSampOrderBy {
+  id: OrderBy
+}
+
+"""aggregate variance on columns"""
+type CurrentPhaseVarianceFields {
+  id: Float
+}
+
+"""
+order by variance() on columns of table "current_phase"
+"""
+input CurrentPhaseVarianceOrderBy {
+  id: OrderBy
+}
+
 """ordering argument of a cursor"""
 enum CursorOrdering {
   """ascending ordering of the cursor"""
@@ -3793,21 +4108,44 @@ enum OrderBy {
 
 """System phases controlling the course assignment workflow"""
 type Phase {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz!
+  """An array relationship"""
+  currentPhases(
+    """distinct select on columns"""
+    distinctOn: [CurrentPhaseSelectColumn!]
 
-  """
-  Current phase flag (TRUE or NULL). Constrained to have at most one current phase
-  """
-  current: Boolean!
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [CurrentPhaseOrderBy!]
+
+    """filter the rows returned"""
+    where: CurrentPhaseBoolExp
+  ): [CurrentPhase!]!
+
+  """An aggregate relationship"""
+  currentPhasesAggregate(
+    """distinct select on columns"""
+    distinctOn: [CurrentPhaseSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [CurrentPhaseOrderBy!]
+
+    """filter the rows returned"""
+    where: CurrentPhaseBoolExp
+  ): CurrentPhaseAggregate!
 
   """Summary of activities and permissions during this phase"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz!
 
   """Phase identifier"""
   value: String!
@@ -3837,10 +4175,9 @@ input PhaseBoolExp {
   _and: [PhaseBoolExp!]
   _not: PhaseBoolExp
   _or: [PhaseBoolExp!]
-  createdAt: TimestamptzComparisonExp
-  current: BooleanComparisonExp
+  currentPhases: CurrentPhaseBoolExp
+  currentPhasesAggregate: CurrentPhaseAggregateBoolExp
   description: StringComparisonExp
-  updatedAt: TimestamptzComparisonExp
   value: StringComparisonExp
 }
 
@@ -3852,32 +4189,49 @@ enum PhaseConstraint {
   unique or primary key constraint on columns "value"
   """
   phase_pkey
+}
+
+enum PhaseEnum {
+  """
+  The course assignment committee reviews requests and makes final teaching assignments, during which teachers can view but not modify their requests.
+  """
+  ASSIGNMENTS
 
   """
-  unique or primary key constraint on columns "current"
+  Teachers submit their teaching preferences by making primary and secondary course requests, while also confirming their required teaching hours and any service modifications.
   """
-  unique_current_phase
+  REQUESTS
+
+  """
+  Teachers can view their final course assignments for the upcoming year, along with historical assignments from previous years.
+  """
+  RESULTS
+
+  """
+  System is temporarily closed, typically between academic years or during maintenance periods.
+  """
+  SHUTDOWN
+}
+
+"""
+Boolean expression to compare columns of type "PhaseEnum". All fields are combined with logical 'AND'.
+"""
+input PhaseEnumComparisonExp {
+  _eq: PhaseEnum
+  _in: [PhaseEnum!]
+  _isNull: Boolean
+  _neq: PhaseEnum
+  _nin: [PhaseEnum!]
 }
 
 """
 input type for inserting data into table "phase"
 """
 input PhaseInsertInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
-  """
-  Current phase flag (TRUE or NULL). Constrained to have at most one current phase
-  """
-  current: Boolean
+  currentPhases: CurrentPhaseArrRelInsertInput
 
   """Summary of activities and permissions during this phase"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Phase identifier"""
   value: String
@@ -3885,16 +4239,8 @@ input PhaseInsertInput {
 
 """aggregate max on columns"""
 type PhaseMaxFields {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Summary of activities and permissions during this phase"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Phase identifier"""
   value: String
@@ -3902,16 +4248,8 @@ type PhaseMaxFields {
 
 """aggregate min on columns"""
 type PhaseMinFields {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
   """Summary of activities and permissions during this phase"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Phase identifier"""
   value: String
@@ -3929,6 +4267,16 @@ type PhaseMutationResponse {
 }
 
 """
+input type for inserting object relation for remote table "phase"
+"""
+input PhaseObjRelInsertInput {
+  data: PhaseInsertInput!
+
+  """upsert condition"""
+  onConflict: PhaseOnConflict
+}
+
+"""
 on_conflict condition type for table "phase"
 """
 input PhaseOnConflict {
@@ -3939,10 +4287,8 @@ input PhaseOnConflict {
 
 """Ordering options when selecting data from "phase"."""
 input PhaseOrderBy {
-  createdAt: OrderBy
-  current: OrderBy
+  currentPhasesAggregate: CurrentPhaseAggregateOrderBy
   description: OrderBy
-  updatedAt: OrderBy
   value: OrderBy
 }
 
@@ -3957,16 +4303,7 @@ select columns of table "phase"
 """
 enum PhaseSelectColumn {
   """column name"""
-  createdAt
-
-  """column name"""
-  current
-
-  """column name"""
   description
-
-  """column name"""
-  updatedAt
 
   """column name"""
   value
@@ -3976,21 +4313,8 @@ enum PhaseSelectColumn {
 input type for updating data in table "phase"
 """
 input PhaseSetInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
-  """
-  Current phase flag (TRUE or NULL). Constrained to have at most one current phase
-  """
-  current: Boolean
-
   """Summary of activities and permissions during this phase"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Phase identifier"""
   value: String
@@ -4009,21 +4333,8 @@ input PhaseStreamCursorInput {
 
 """Initial value of the column from where the streaming should start"""
 input PhaseStreamCursorValueInput {
-  """Timestamp when the record was created"""
-  createdAt: timestamptz
-
-  """
-  Current phase flag (TRUE or NULL). Constrained to have at most one current phase
-  """
-  current: Boolean
-
   """Summary of activities and permissions during this phase"""
   description: String
-
-  """
-  Timestamp when the record was last updated, automatically managed by trigger
-  """
-  updatedAt: timestamptz
 
   """Phase identifier"""
   value: String
@@ -4034,16 +4345,7 @@ update columns of table "phase"
 """
 enum PhaseUpdateColumn {
   """column name"""
-  createdAt
-
-  """column name"""
-  current
-
-  """column name"""
   description
-
-  """column name"""
-  updatedAt
 
   """column name"""
   value
@@ -12791,6 +13093,13 @@ input createYearServicesArgs {
   p_year: Int
 }
 
+input currentPhaseAggregateBoolExpCount {
+  arguments: [CurrentPhaseSelectColumn!]
+  distinct: Boolean
+  filter: CurrentPhaseBoolExp
+  predicate: IntComparisonExp!
+}
+
 """mutation root"""
 type mutation_root {
   """
@@ -12981,6 +13290,19 @@ type mutation_root {
     """Unique course type identifier"""
     id: Int!
   ): CourseType
+
+  """
+  delete data from the table: "current_phase"
+  """
+  deleteCurrentPhase(
+    """filter the rows which have to be deleted"""
+    where: CurrentPhaseBoolExp!
+  ): CurrentPhaseMutationResponse
+
+  """
+  delete single row from the table: "current_phase"
+  """
+  deleteCurrentPhaseByPk(id: Int!): CurrentPhase
 
   """
   delete data from the table: "degree"
@@ -13325,6 +13647,28 @@ type mutation_root {
     """upsert condition"""
     onConflict: CourseTypeOnConflict
   ): CourseType
+
+  """
+  insert data into the table: "current_phase"
+  """
+  insertCurrentPhase(
+    """the rows to be inserted"""
+    objects: [CurrentPhaseInsertInput!]!
+
+    """upsert condition"""
+    onConflict: CurrentPhaseOnConflict
+  ): CurrentPhaseMutationResponse
+
+  """
+  insert a single row into the table: "current_phase"
+  """
+  insertCurrentPhaseOne(
+    """the row to be inserted"""
+    object: CurrentPhaseInsertInput!
+
+    """upsert condition"""
+    onConflict: CurrentPhaseOnConflict
+  ): CurrentPhase
 
   """
   insert data into the table: "degree"
@@ -13817,6 +14161,40 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [CourseTypeUpdates!]!
   ): [CourseTypeMutationResponse]
+
+  """
+  update data of the table: "current_phase"
+  """
+  updateCurrentPhase(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: CurrentPhaseIncInput
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: CurrentPhaseSetInput
+
+    """filter the rows which have to be updated"""
+    where: CurrentPhaseBoolExp!
+  ): CurrentPhaseMutationResponse
+
+  """
+  update single row of the table: "current_phase"
+  """
+  updateCurrentPhaseByPk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: CurrentPhaseIncInput
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: CurrentPhaseSetInput
+    pkColumns: CurrentPhasePkColumnsInput!
+  ): CurrentPhase
+
+  """
+  update multiples rows of table: "current_phase"
+  """
+  updateCurrentPhaseMany(
+    """updates to execute, in order"""
+    updates: [CurrentPhaseUpdates!]!
+  ): [CurrentPhaseMutationResponse]
 
   """
   update data of the table: "degree"
@@ -14560,6 +14938,49 @@ type query_root {
     """Unique course type identifier"""
     id: Int!
   ): CourseType
+
+  """
+  fetch data from the table: "current_phase"
+  """
+  currentPhase(
+    """distinct select on columns"""
+    distinctOn: [CurrentPhaseSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [CurrentPhaseOrderBy!]
+
+    """filter the rows returned"""
+    where: CurrentPhaseBoolExp
+  ): [CurrentPhase!]!
+
+  """
+  fetch aggregated fields from the table: "current_phase"
+  """
+  currentPhaseAggregate(
+    """distinct select on columns"""
+    distinctOn: [CurrentPhaseSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [CurrentPhaseOrderBy!]
+
+    """filter the rows returned"""
+    where: CurrentPhaseBoolExp
+  ): CurrentPhaseAggregate!
+
+  """fetch data from the table: "current_phase" using primary key columns"""
+  currentPhaseByPk(id: Int!): CurrentPhase
 
   """
   fetch data from the table: "degree"
@@ -15606,6 +16027,63 @@ type subscription_root {
     """filter the rows returned"""
     where: CourseTypeBoolExp
   ): [CourseType!]!
+
+  """
+  fetch data from the table: "current_phase"
+  """
+  currentPhase(
+    """distinct select on columns"""
+    distinctOn: [CurrentPhaseSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [CurrentPhaseOrderBy!]
+
+    """filter the rows returned"""
+    where: CurrentPhaseBoolExp
+  ): [CurrentPhase!]!
+
+  """
+  fetch aggregated fields from the table: "current_phase"
+  """
+  currentPhaseAggregate(
+    """distinct select on columns"""
+    distinctOn: [CurrentPhaseSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [CurrentPhaseOrderBy!]
+
+    """filter the rows returned"""
+    where: CurrentPhaseBoolExp
+  ): CurrentPhaseAggregate!
+
+  """fetch data from the table: "current_phase" using primary key columns"""
+  currentPhaseByPk(id: Int!): CurrentPhase
+
+  """
+  fetch data from the table in a streaming manner: "current_phase"
+  """
+  currentPhaseStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [CurrentPhaseStreamCursorInput]!
+
+    """filter the rows returned"""
+    where: CurrentPhaseBoolExp
+  ): [CurrentPhase!]!
 
   """
   fetch data from the table: "degree"

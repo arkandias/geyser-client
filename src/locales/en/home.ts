@@ -1,16 +1,14 @@
-import { PHASES } from "@/config/phases.ts";
-
 export default {
   home: {
     title: "Welcome",
     subtitle: {
-      [PHASES.REQUESTS]: "Geyser is in request phase",
-      [PHASES.ASSIGNMENTS]: "Geyser is in assignment phase",
-      [PHASES.RESULTS]: "Geyser is in results phase",
-      [PHASES.SHUTDOWN]: "Geyser is closed",
+      requests: "Geyser is in request phase",
+      assignments: "Geyser is in assignment phase",
+      results: "Geyser is in results phase",
+      shutdown: "Geyser is closed",
     },
     message: {
-      [PHASES.REQUESTS]: `
+      requests: `
         <p>
           On the <i class="q-icon text-primary material-symbols-sharp">badge</i>
           My Information page, enter your base service (in teaching equivalent hours), then add
@@ -26,20 +24,20 @@ export default {
           Courses page. Please request the equivalent of your total service in
           both primary and secondary requests.
         </p>`,
-      [PHASES.ASSIGNMENTS]: `
+      assignments: `
         <p>
           The commission's work is in progress. You will be informed when it
           is complete so you can view the assignments.
           In the meantime, you can still view requests but it is no longer
           possible to modify them.
         </p>`,
-      [PHASES.RESULTS]: `
+      results: `
         <p>
           You can now view the course assignments for this
           year. You also still have access to requests and assignments from
           previous years.
         </p>`,
-      [PHASES.SHUTDOWN]: "",
+      shutdown: "",
     },
     alert: {
       noAuth: "You are not authenticated",

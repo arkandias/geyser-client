@@ -3,14 +3,14 @@ import { computed } from "vue";
 
 import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { phaseMessage, phaseSubtitle } from "@/locales/helpers.ts";
+import { useCurrentPhaseStore } from "@/stores/useCurrentPhaseStore.ts";
 import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
-import { usePhaseStore } from "@/stores/usePhaseStore.ts";
 import { capitalize } from "@/utils/misc.ts";
 
 defineProps<{ alert?: string }>();
 
 const { t } = useTypedI18n();
-const { currentPhase } = usePhaseStore();
+const { currentPhase } = useCurrentPhaseStore();
 const { getCustomText } = useCustomTextsStore();
 
 const title = computed(

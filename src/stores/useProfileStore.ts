@@ -1,8 +1,7 @@
 import { computed, reactive, readonly, ref, toRefs } from "vue";
 
-import { PHASES } from "@/config/phases.ts";
-import { RoleTypeEnum } from "@/gql/graphql.ts";
-import { usePhaseStore } from "@/stores/usePhaseStore.ts";
+import { PhaseEnum, RoleTypeEnum } from "@/gql/graphql.ts";
+import { useCurrentPhaseStore } from "@/stores/useCurrentPhaseStore.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 
 type Profile = {
@@ -32,7 +31,7 @@ const setActiveRole = (role: RoleTypeEnum) => {
 };
 
 export const useProfileStore = () => {
-  const { currentPhase } = usePhaseStore();
+  const { currentPhase } = useCurrentPhaseStore();
   const { activeYear } = useYearsStore();
 
   const serviceId = computed(
@@ -51,7 +50,7 @@ export const useProfileStore = () => {
       activeRole.value = RoleTypeEnum.Admin;
     } else if (
       profile.roles.includes(RoleTypeEnum.Commissioner) &&
-      currentPhase.value === PHASES.ASSIGNMENTS
+      currentPhase.value === PhaseEnum.Assignments
     ) {
       activeRole.value = RoleTypeEnum.Commissioner;
     } else {
