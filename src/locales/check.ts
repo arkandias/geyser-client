@@ -4,8 +4,7 @@ import { glob } from "glob";
 import en from "./en";
 import fr from "./fr";
 import { CUSTOM_TEXT_KEYS } from "@/config/custom-text-keys.ts";
-import { PHASES } from "@/config/phases.ts";
-import { RequestTypeEnum, RoleTypeEnum } from "@/gql/graphql.ts";
+import { PRIMITIVE_TYPES } from "@/config/primitive-types.ts";
 import type { SimpleObject } from "@/types/data.ts";
 
 import type { ColName as AdminCoursesCourseTypesColName } from "@/components/admin/AdminCoursesCourseTypes.vue";
@@ -128,48 +127,15 @@ const findKeysInFiles = async (): Promise<string[]> => {
 
   // Manually add template string keys
 
-  Object.values(RequestTypeEnum).forEach((type) => {
-    standardKeys.add(`requestType.${type}`);
-  });
-  [...templateStringsKeys].forEach((key) => {
-    if (/requestType\.\${[a-zA-Z.]*}/.test(key)) {
-      templateStringsKeys.delete(key);
-    }
-  });
-
-  Object.values(RoleTypeEnum).forEach((type) => {
-    standardKeys.add(`role.${type}`);
-  });
-  [...templateStringsKeys].forEach((key) => {
-    if (/role\.\${[a-zA-Z.]*}/.test(key)) {
-      templateStringsKeys.delete(key);
-    }
-  });
-
   CUSTOM_TEXT_KEYS.forEach((key) => {
-    standardKeys.add(`customText.${key}.label`);
-    standardKeys.add(`customText.${key}.default`);
+    standardKeys.add(`customTextLabel.${key}`);
   });
-  [...templateStringsKeys].forEach((key) => {
-    if (/customText\.\${[a-zA-Z.]*}\.(label|default)/.test(key)) {
-      templateStringsKeys.delete(key);
-    }
-  });
+  templateStringsKeys.delete("customTextLabel.${key}");
 
-  Object.values(PHASES).forEach((phase) => {
-    standardKeys.add(`home.subtitle.${phase}`);
-    standardKeys.add(`home.message.${phase}`);
+  PRIMITIVE_TYPES.forEach((type) => {
+    standardKeys.add(`primitiveTypeName.${type}`);
   });
-  [...templateStringsKeys].forEach((key) => {
-    if (/home\.(subtitle|message)\.\${[a-zA-Z.]*}/.test(key)) {
-      templateStringsKeys.delete(key);
-    }
-  });
-
-  ["string", "number", "boolean"].forEach((type) => {
-    standardKeys.add(`admin.data.import.table.type.${type}`);
-    templateStringsKeys.delete("admin.data.import.table.type.${val}");
-  });
+  templateStringsKeys.delete("primitiveTypeName.${type}");
 
   const adminColNames: Record<string, Record<string, string[]>> = {
     general: {

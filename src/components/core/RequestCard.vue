@@ -139,7 +139,7 @@ const validateRequest = async (): Promise<void> => {
   const result = await getAssignment.executeQuery();
 
   if (!result.data.value?.requests || result.error.value) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("requestCard.validate.error"),
       caption: result.error.value?.message,
     });
@@ -150,7 +150,7 @@ const validateRequest = async (): Promise<void> => {
 
   if (assignment) {
     if (assignment.hours === request.value.hours) {
-      notify(NotifyType.DEFAULT, {
+      notify(NotifyType.Default, {
         message: t("requestCard.validate.identical"),
       });
       return;
@@ -162,11 +162,11 @@ const validateRequest = async (): Promise<void> => {
     });
 
     if (data?.assignment && !error) {
-      notify(NotifyType.SUCCESS, {
+      notify(NotifyType.Success, {
         message: t("requestCard.validate.updated"),
       });
     } else {
-      notify(NotifyType.ERROR, {
+      notify(NotifyType.Error, {
         message: t("requestCard.validate.error"),
         caption: error?.message,
       });
@@ -180,11 +180,11 @@ const validateRequest = async (): Promise<void> => {
     });
 
     if (data?.assignment && !error) {
-      notify(NotifyType.SUCCESS, {
+      notify(NotifyType.Success, {
         message: t("requestCard.validate.created"),
       });
     } else {
-      notify(NotifyType.ERROR, {
+      notify(NotifyType.Error, {
         message: t("requestCard.validate.error"),
         caption: error?.message,
       });
@@ -198,11 +198,11 @@ const deleteRequest = async (): Promise<void> => {
   });
 
   if (data?.request && !error) {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t("requestCard.delete.success"),
     });
   } else {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("requestCard.delete.error"),
       caption: error?.message,
     });

@@ -70,7 +70,7 @@ const priorityOptions = [
 
 const submitForm = async (): Promise<void> => {
   if (serviceId.value === null) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("priorityForm.invalid.message"),
       caption: t("priorityForm.invalid.caption.service"),
     });
@@ -80,7 +80,7 @@ const submitForm = async (): Promise<void> => {
     seniority.value !== null &&
     (!Number.isInteger(seniority.value) || seniority.value < 0)
   ) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("priorityForm.invalid.message"),
       caption: t("priorityForm.invalid.caption.seniority"),
     });
@@ -96,11 +96,11 @@ const submitForm = async (): Promise<void> => {
   });
 
   if (result.data?.priority && !result.error) {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t("priorityForm.success"),
     });
   } else {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("priorityForm.error"),
       caption: result.error?.message,
     });

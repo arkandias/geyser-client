@@ -1,9 +1,9 @@
 import { type QNotifyCreateOptions, useQuasar } from "quasar";
 
 export enum NotifyType {
-  DEFAULT = "DEFAULT",
-  ERROR = "ERROR",
-  SUCCESS = "SUCCESS",
+  Default,
+  Error,
+  Success,
 }
 
 const commonProps: QNotifyCreateOptions = {
@@ -13,17 +13,17 @@ const commonProps: QNotifyCreateOptions = {
 
 const defaultOptions = (type: NotifyType): QNotifyCreateOptions => {
   switch (type) {
-    case NotifyType.DEFAULT:
+    case NotifyType.Default:
       return {
         ...commonProps,
         color: "info",
       };
-    case NotifyType.ERROR:
+    case NotifyType.Error:
       return {
         ...commonProps,
         color: "negative",
       };
-    case NotifyType.SUCCESS:
+    case NotifyType.Success:
       return {
         ...commonProps,
         color: "positive",

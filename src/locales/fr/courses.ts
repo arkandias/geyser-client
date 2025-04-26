@@ -160,20 +160,20 @@ export default {
         defaultText: "Pas de description (contactez un responsable)",
       },
       defaultText: `
-<p>
-  Lorsqu'un course est sélectionné, les informations suivantes sont affichées
-  ici :
-</p>
-<ul>
-  <li>les responsables de la mention, du parcours et de l'enseignement ;</li>
-  <li>une description de l'enseignement.</li>
-</ul>
-<p>
-  La description peut être éditée par les responsables sus-mentionnés en
-  cliquant sur le bouton
-  <i class="q-icon text-primary material-symbols-sharp">edit</i>
-  (visible par eux seuls) qui apparaît à côté de «&nbsp;Description&nbsp;».
-</p>`,
+        <p>
+          Lorsqu'un course est sélectionné, les informations suivantes sont affichées
+          ici :
+        </p>
+        <ul>
+          <li>les responsables de la mention, du parcours et de l'enseignement ;</li>
+          <li>une description de l'enseignement.</li>
+        </ul>
+        <p>
+          La description peut être éditée par les responsables sus-mentionnés en
+          cliquant sur le bouton
+          <i class="q-icon text-primary material-symbols-sharp">edit</i>
+          (visible par eux seuls) qui apparaît à côté de «&nbsp;Description&nbsp;».
+        </p>`,
     },
     details: {
       requests: {

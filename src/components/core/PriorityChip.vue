@@ -65,7 +65,7 @@ const remove = async () => {
 
   if (data?.priority && !error) {
     notify(
-      NotifyType.SUCCESS,
+      NotifyType.Success,
       priority.value.computed
         ? {
             message: t("priorityChip.deleteComputed.success.message"),
@@ -74,7 +74,7 @@ const remove = async () => {
         : { message: t("priorityChip.delete.success") },
     );
   } else {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: priority.value.computed
         ? t("priorityChip.deleteComputed.error")
         : t("priorityChip.delete.error"),

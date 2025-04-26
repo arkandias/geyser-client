@@ -86,12 +86,12 @@ const setCurrentYearHandle = async (year: number): Promise<void> => {
   });
 
   if (error) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.general.years.error.setCurrent"),
       caption: error.message,
     });
   } else {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t("admin.general.years.success.setCurrent"),
     });
   }
@@ -99,7 +99,7 @@ const setCurrentYearHandle = async (year: number): Promise<void> => {
 
 const insertYearHandle = async () => {
   if (yearValue.value === null) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.data.error.invalidForm"),
       caption: t("admin.general.years.error.emptyValue"),
     });
@@ -114,12 +114,12 @@ const insertYearHandle = async () => {
   isFormOpen.value = false;
 
   if (error || data?.year?.value === undefined) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.data.error.insertFailed"),
       caption: error?.message ?? t("admin.data.error.noReturnData"),
     });
   } else {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t("admin.general.years.success.insert", {
         value: data.year.value,
       }),
@@ -142,12 +142,12 @@ const updateYearHandle = async (
   isFormOpen.value = false;
 
   if (error || data?.year?.value === undefined) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.data.error.updateFailed"),
       caption: error?.message ?? t("admin.data.error.noReturnData"),
     });
   } else {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t("admin.general.years.success.update", {
         value: data.year.value,
       }),
@@ -161,7 +161,7 @@ const updateYearValueHandle = async () => {
   }
 
   if (yearValue.value === null) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.data.error.invalidForm"),
       caption: t("admin.general.years.error.emptyValue"),
     });
@@ -182,12 +182,12 @@ const deleteYearHandle = async (value: number) => {
 
   const { data, error } = await deleteYear.executeMutation({ value });
   if (error || data?.year?.value === undefined) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.data.error.deleteFailed"),
       caption: error?.message ?? t("admin.data.error.noReturnData"),
     });
   } else {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t("admin.general.years.success.delete"),
     });
   }
@@ -203,12 +203,12 @@ const createServicesHandle = async () => {
   });
 
   if (error || !data?.createYearServices) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.general.years.error.createServices"),
       caption: error?.message ?? t("admin.data.error.noReturnData"),
     });
   } else {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t(
         "admin.general.years.success.createServices",
         data.createYearServices.length,
@@ -227,12 +227,12 @@ const copyCoursesHandle = async () => {
   });
 
   if (error || !data?.copyYearCourses) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.general.years.error.copyCourses"),
       caption: error?.message ?? t("admin.data.error.noReturnData"),
     });
   } else {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t(
         "admin.general.years.success.copyCourses",
         data.copyYearCourses.length,
@@ -251,12 +251,12 @@ const computePrioritiesHandle = async () => {
   });
 
   if (error || !data?.computeYearPriorities) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.general.years.error.computePriorities"),
       caption: error?.message ?? t("admin.data.error.noReturnData"),
     });
   } else {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t("admin.general.years.success.computePriorities", {
         count: data.computeYearPriorities.length,
       }),

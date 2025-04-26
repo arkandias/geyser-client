@@ -21,6 +21,7 @@ import {
   UpdateRolesDocument,
   UpsertRolesDocument,
 } from "@/gql/graphql.ts";
+import { roleTypeLabel } from "@/locales/helpers.ts";
 import type { NullableParsedRow, RowDescriptorExtra } from "@/types/data.ts";
 import { isRole } from "@/utils/enum-guards.ts";
 
@@ -47,7 +48,7 @@ const rowDescriptor = {
   },
   type: {
     type: "string",
-    format: (val: string) => t(`role.${val}`),
+    format: (val: RoleTypeEnum) => roleTypeLabel(t, val),
     formType: "select",
   },
   comment: {
@@ -124,7 +125,7 @@ const importUpdateColumns = [
   RoleUpdateColumn.Comment,
 ];
 
-const formatRow = (row: Row) => `${t(`role.${row.type}`)} — ${row.uid}`;
+const formatRow = (row: Row) => `${roleTypeLabel(t, row.type)} — ${row.uid}`;
 
 const validateFlatRow = (flatRow: FlatRow): InsertInput => {
   const object: InsertInput = {};
@@ -149,7 +150,7 @@ const validateFlatRow = (flatRow: FlatRow): InsertInput => {
 
 const formOptions = computed(() => ({
   uid: teachers.value.map((t) => ({ value: t.uid, label: t.displayname })),
-  type: Object.values(RoleTypeEnum).map((type) => t(`role.${type}`)),
+  type: Object.values(RoleTypeEnum).map((type) => roleTypeLabel(t, type)),
 }));
 </script>
 

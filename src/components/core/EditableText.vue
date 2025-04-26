@@ -35,17 +35,17 @@ const save = async () => {
     editorText.value = "";
   }
   if (editorText.value === text) {
-    notify(NotifyType.DEFAULT, { message: t("editableText.save.noChanges") });
+    notify(NotifyType.Default, { message: t("editableText.save.noChanges") });
   } else {
     const { returnId, error } = await setText(editorText.value);
     if (!!returnId && !error) {
-      notify(NotifyType.SUCCESS, {
+      notify(NotifyType.Success, {
         message: editorText.value
           ? t("editableText.save.success.updated")
           : t("editableText.save.success.deleted"),
       });
     } else {
-      notify(NotifyType.ERROR, {
+      notify(NotifyType.Error, {
         message: editorText.value
           ? t("editableText.save.error.update")
           : t("editableText.save.error.delete"),

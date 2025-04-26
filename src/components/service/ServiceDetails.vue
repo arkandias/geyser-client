@@ -106,14 +106,14 @@ const resetBaseServiceForm = (): void => {
 };
 const submitBaseServiceForm = async (): Promise<void> => {
   if (baseServiceHours.value === null || baseServiceHours.value < 0) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("service.details.baseServiceForm.invalid.message"),
       caption: t("service.details.baseServiceForm.invalid.caption.hours"),
     });
     return;
   }
   if (baseServiceHours.value === service.value.hours) {
-    notify(NotifyType.DEFAULT, {
+    notify(NotifyType.Default, {
       message: t("service.details.baseServiceForm.noChanges"),
     });
   } else {
@@ -123,11 +123,11 @@ const submitBaseServiceForm = async (): Promise<void> => {
       hours: baseServiceHours.value,
     });
     if (data?.services?.returning[0] && !error) {
-      notify(NotifyType.SUCCESS, {
+      notify(NotifyType.Success, {
         message: t("service.details.baseServiceForm.success"),
       });
     } else {
-      notify(NotifyType.ERROR, {
+      notify(NotifyType.Error, {
         message: t("service.details.baseServiceForm.error"),
         caption: error?.message,
       });
@@ -157,14 +157,14 @@ const resetModificationForm = (): void => {
 };
 const submitModificationForm = async (): Promise<void> => {
   if (!modificationTypeId.value) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("service.details.modificationForm.invalid.message"),
       caption: t("service.details.modificationForm.invalid.caption.type"),
     });
     return;
   }
   if (modificationHours.value === null || modificationHours.value <= 0) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("service.details.modificationForm.invalid.message"),
       caption: t("service.details.modificationForm.invalid.caption.hours"),
     });
@@ -176,11 +176,11 @@ const submitModificationForm = async (): Promise<void> => {
     hours: modificationHours.value,
   });
   if (data?.serviceModification && !error) {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t("service.details.modificationForm.success.create"),
     });
   } else {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("service.details.modificationForm.error.create"),
       caption: error?.message,
     });
@@ -191,11 +191,11 @@ const submitModificationForm = async (): Promise<void> => {
 const handleModificationDeletion = async (id: number): Promise<void> => {
   const { data, error } = await deleteModification.executeMutation({ id });
   if (data?.serviceModification && !error) {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t("service.details.modificationForm.success.delete"),
     });
   } else {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("service.details.modificationForm.error.delete"),
       caption: error?.message,
     });

@@ -78,7 +78,7 @@ export const useDownloadAssignments = () => {
       .toPromise();
 
     if (error || !data?.assignments) {
-      notify(NotifyType.ERROR, {
+      notify(NotifyType.Error, {
         message: t("downloadAssignments.error.requestFailed"),
         caption: error
           ? error.message
@@ -103,7 +103,7 @@ export const useDownloadAssignments = () => {
     try {
       downloadCSV(filename, formattedAssignments);
     } catch (error) {
-      notify(NotifyType.ERROR, {
+      notify(NotifyType.Error, {
         message: t("downloadAssignments.error.downloadFailed"),
         caption:
           error instanceof Error

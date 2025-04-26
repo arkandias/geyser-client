@@ -18,6 +18,7 @@ import {
   DeleteCustomTextDocument,
   UpdateCustomTextDocument,
 } from "@/gql/graphql.ts";
+import { customTextDefault, customTextLabel } from "@/locales/helpers.ts";
 import { useCustomTextsStore } from "@/stores/useCustomTextsStore.ts";
 
 import EditableText from "@/components/core/EditableText.vue";
@@ -29,8 +30,8 @@ const customTextOptions = computed(() =>
   CUSTOM_TEXT_KEYS.map((key) => ({
     key,
     value: getCustomText(key).value,
-    label: t(`customText.${key}.label`),
-    default: t(`customText.${key}.default`),
+    label: customTextLabel(t, key),
+    default: customTextDefault(t, key),
     edit: false,
   })),
 );
@@ -111,7 +112,7 @@ const callOnDelete = async (key: CustomTextKey, label: string) => {
             v-model="opt.edit"
             :text="opt.value"
             :set-text="(value) => updateCustomTextHandle(opt.key, value)"
-            :default-text="t(`customText.${opt.key}.default`)"
+            :default-text="opt.default"
           />
         </QCardSection>
         <QCardActions dense>

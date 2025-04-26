@@ -37,12 +37,12 @@ const setCurrentPhaseHandle = async (phase: string): Promise<void> => {
     value: phase,
   });
   if (error) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.general.phase.error.setCurrent"),
       caption: error.message,
     });
   } else {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t("admin.general.phase.success.setCurrent"),
     });
   }

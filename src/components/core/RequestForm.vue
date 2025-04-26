@@ -165,21 +165,21 @@ watch(
 
 const submitForm = async (): Promise<void> => {
   if (serviceId.value === null) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("requestForm.invalid.message"),
       caption: t("requestForm.invalid.caption.service"),
     });
     return;
   }
   if (hours.value === null || hours.value < 0) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("requestForm.invalid.message"),
       caption: t("requestForm.invalid.caption.hours"),
     });
     return;
   }
   if (requestType.value === null) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("requestForm.invalid.message"),
       caption: t("requestForm.invalid.caption.type"),
     });
@@ -194,11 +194,11 @@ const submitForm = async (): Promise<void> => {
     });
 
     if (result.data?.requests?.returning && !result.error) {
-      notify(NotifyType.SUCCESS, {
+      notify(NotifyType.Success, {
         message: t("requestForm.success"),
       });
     } else {
-      notify(NotifyType.ERROR, {
+      notify(NotifyType.Error, {
         message: t("requestForm.error"),
         caption: result.error?.message,
       });
@@ -213,11 +213,11 @@ const submitForm = async (): Promise<void> => {
     });
 
     if (result.data?.request && !result.error) {
-      notify(NotifyType.SUCCESS, {
+      notify(NotifyType.Success, {
         message: t("requestForm.success"),
       });
     } else {
-      notify(NotifyType.ERROR, {
+      notify(NotifyType.Error, {
         message: t("requestForm.error"),
         caption: result.error?.message,
       });

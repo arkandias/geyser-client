@@ -76,7 +76,7 @@ watch(
   [getUserProfile.data, getUserProfile.error],
   ([data, error]) => {
     if (error) {
-      notify(NotifyType.ERROR, {
+      notify(NotifyType.Error, {
         message: t("app.userProfile.error"),
         caption: error.message,
       });
@@ -107,7 +107,7 @@ watch(
   [getAppData.data, getAppData.error],
   ([data, error]) => {
     if (error) {
-      notify(NotifyType.ERROR, {
+      notify(NotifyType.Error, {
         message: t("app.data.error"),
         caption: error.message,
       });

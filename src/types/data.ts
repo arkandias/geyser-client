@@ -1,23 +1,20 @@
+import type {
+  PrimitiveType,
+  PrimitiveTypeMap,
+} from "@/config/primitive-types.ts";
+
 export type Scalar = string | number | boolean | null | undefined;
 export type SimpleObject<T extends Scalar = Scalar> = {
   [key: string]: T | SimpleObject<T>;
 };
+
 export type Option = {
   value: Scalar;
   label: Scalar;
 };
 
-export type PrimitiveTypeName = "string" | "number" | "boolean";
-export type PrimitiveTypeMap<T extends PrimitiveTypeName> = T extends "string"
-  ? string
-  : T extends "number"
-    ? number
-    : T extends "boolean"
-      ? boolean
-      : never;
-
 export type FieldDescriptor = {
-  type: PrimitiveTypeName;
+  type: PrimitiveType;
   nullable?: boolean;
   info?: string;
 };

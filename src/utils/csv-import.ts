@@ -43,8 +43,6 @@ export const parseField = <T extends FieldDescriptor>(
           throw new Error("Boolean fields must be 'true' or 'false'");
       }
     }
-    default:
-      throw new Error(`Invalid type: ${fieldDescriptor.type as string}`);
   }
 };
 

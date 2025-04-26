@@ -157,20 +157,20 @@ export default {
         defaultText: "No description (contact a coordinator)",
       },
       defaultText: `
-<p>
-  When a course is selected, the following information is displayed
-  here:
-</p>
-<ul>
-  <li>the program, track, and course coordinators;</li>
-  <li>a description of the course.</li>
-</ul>
-<p>
-  The description can be edited by the above-mentioned coordinators by
-  clicking on the
-  <i class="q-icon text-primary material-symbols-sharp">edit</i>
-  button (visible only to them) that appears next to "Description".
-</p>`,
+        <p>
+          When a course is selected, the following information is displayed
+          here:
+        </p>
+        <ul>
+          <li>the program, track, and course coordinators;</li>
+          <li>a description of the course.</li>
+        </ul>
+        <p>
+          The description can be edited by the above-mentioned coordinators by
+          clicking on the
+          <i class="q-icon text-primary material-symbols-sharp">edit</i>
+          button (visible only to them) that appears next to "Description".
+        </p>`,
     },
     details: {
       requests: {

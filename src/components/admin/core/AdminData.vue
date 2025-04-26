@@ -16,12 +16,13 @@ import { type Ref, computed, ref, toValue, watch } from "vue";
 import { NotifyType, useNotify } from "@/composables/useNotify.ts";
 import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import { TOOLTIP_DELAY } from "@/config/constants.ts";
+import type { PrimitiveType } from "@/config/primitive-types.ts";
+import { primitiveTypeName } from "@/locales/helpers.ts";
 import type { Column } from "@/types/column.ts";
 import type {
   FieldDescriptor,
   NullableParsedRow,
   Option,
-  PrimitiveTypeName,
   RowDescriptorExtra,
   Scalar,
   SimpleObject,
@@ -214,8 +215,6 @@ const validateForm = (fields?: (keyof T)[]): FlatRow => {
         case "boolean":
           value = Boolean(value);
           break;
-        default:
-          throw new Error(`Invalid type: ${fieldDescriptor.type as string}`);
       }
     }
 
@@ -230,7 +229,7 @@ const insertDataHandle = async () => {
   try {
     object = validateFlatRow(validateForm());
   } catch (error) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.data.error.invalidForm"),
       caption: errorMessage(error),
     });
@@ -241,12 +240,12 @@ const insertDataHandle = async () => {
     objects: [object],
   });
   if (error || !data?.insertData?.returning) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.data.error.insertFailed"),
       caption: error ? errorMessage(error) : t("admin.data.error.noReturnData"),
     });
   } else {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t(
         `${keyPrefix}.data.success.insert`,
         data.insertData.returning.length,
@@ -266,7 +265,7 @@ const updateDataHandle = async () => {
         : validateForm(),
     );
   } catch (error) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.data.error.invalidForm"),
       caption: errorMessage(error),
     });
@@ -278,12 +277,12 @@ const updateDataHandle = async () => {
     changes,
   });
   if (error || !data?.updateData?.returning) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.data.error.updateFailed"),
       caption: error ? errorMessage(error) : t("admin.data.error.noReturnData"),
     });
   } else {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t(
         `${keyPrefix}.data.success.update`,
         data.updateData.returning.length,
@@ -317,12 +316,12 @@ const deleteDataHandle = async () => {
     ids: selectedRows.value.map((row) => row[idKey]),
   });
   if (error || !data?.deleteData?.returning) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.data.error.deleteFailed"),
       caption: error ? errorMessage(error) : t("admin.data.error.noReturnData"),
     });
   } else {
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t(
         `${keyPrefix}.data.success.delete`,
         data.deleteData.returning.length,
@@ -434,8 +433,7 @@ const importColumns: Column<[string, FieldDescriptor]>[] = [
     label: t("admin.data.import.table.column.type"),
     align: "left",
     field: ([_, fieldDescriptor]) => fieldDescriptor.type,
-    format: (val: PrimitiveTypeName) =>
-      t(`admin.data.import.table.type.${val}`),
+    format: (val: PrimitiveType) => primitiveTypeName(t, val),
   },
   {
     name: "nonNullable",
@@ -454,7 +452,7 @@ const importColumns: Column<[string, FieldDescriptor]>[] = [
 
 const importRowsHandle = async () => {
   if (!selectedFile.value) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.data.error.importFailed"),
       caption: t("admin.data.error.emptyFile"),
     });
@@ -505,7 +503,7 @@ const importRowsHandle = async () => {
     if (error || !data?.upsertData?.returning) {
       throw new Error(error?.message ?? t("admin.data.error.noReturnData"));
     } else {
-      notify(NotifyType.SUCCESS, {
+      notify(NotifyType.Success, {
         message: t(
           `${keyPrefix}.data.success.import`,
           data.upsertData.returning.length,
@@ -514,7 +512,7 @@ const importRowsHandle = async () => {
     }
     isImportDialogOpen.value = false;
   } catch (error) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.data.error.importFailed"),
       caption: errorMessage(error),
     });
@@ -531,14 +529,14 @@ const exportDataHandle = () => {
       selectedRows.value.length ? selectedRows.value : rows,
       Object.keys(rowDescriptor),
     );
-    notify(NotifyType.SUCCESS, {
+    notify(NotifyType.Success, {
       message: t(
         `${keyPrefix}.data.success.export`,
         selectedRows.value.length || rows.length,
       ),
     });
   } catch (error) {
-    notify(NotifyType.ERROR, {
+    notify(NotifyType.Error, {
       message: t("admin.data.error.exportFailed"),
       caption: errorMessage(error),
     });

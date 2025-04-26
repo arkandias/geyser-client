@@ -4,6 +4,7 @@ import { computed, ref, watch } from "vue";
 import { useRefreshData } from "@/composables/useRefreshData.ts";
 import { useTypedI18n } from "@/composables/useTypedI18n.ts";
 import type { RoleTypeEnum } from "@/gql/graphql.ts";
+import { roleTypeLabel } from "@/locales/helpers.ts";
 import { logout } from "@/services/keycloak.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
 
@@ -25,7 +26,7 @@ watch(
 const roleOptions = computed(() =>
   roles.value.map((role) => ({
     value: role,
-    label: t(`role.${role}`),
+    label: roleTypeLabel(t, role),
   })),
 );
 

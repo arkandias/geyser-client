@@ -37,6 +37,7 @@ import {
   UpdateRequestsDocument,
   UpsertRequestsDocument,
 } from "@/gql/graphql.ts";
+import { requestTypeLabel } from "@/locales/helpers.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
 import type {
   NullableParsedRow,
@@ -133,7 +134,7 @@ const rowDescriptor = {
   type: {
     type: "string",
     info: `${RequestTypeEnum.Assignment} | ${RequestTypeEnum.Primary} | ${RequestTypeEnum.Secondary}`,
-    format: (val: string) => t(`requestType.${val}`),
+    format: (val: RequestTypeEnum) => requestTypeLabel(t, val),
     formType: "select",
   },
   hours: {
@@ -318,7 +319,7 @@ const importUpdateColumns = [
 ];
 
 const formatRow = (row: Row) =>
-  `${t(`requestType.${row.type}`)} — ${row.year} — ${row.service.uid} — ${row.course.name}`;
+  `${requestTypeLabel(t, row.type)} — ${row.year} — ${row.service.uid} — ${row.course.name}`;
 
 const validateFlatRow = (flatRow: FlatRow): InsertInput => {
   const object: InsertInput = {};
@@ -459,7 +460,7 @@ const formOptions = computed(() => ({
         c.semester === formValues.value["semester"],
     )
     .map((c) => c.type.label),
-  type: Object.values(RequestTypeEnum).map((type) => t(`requestType.${type}`)),
+  type: Object.values(RequestTypeEnum).map((type) => requestTypeLabel(t, type)),
 }));
 const filterOptions = computed(() => ({
   uid: teachers.value.map((t) => t.uid),
