@@ -15,7 +15,8 @@ import {
   UpdateYearDocument,
 } from "@/gql/graphql.ts";
 import { useYearsStore } from "@/stores/useYearsStore.ts";
-import { inputToNumber } from "@/utils/misc.ts";
+
+import NumInput from "@/components/core/NumInput.vue";
 
 const { t } = useTypedI18n();
 const { notify } = useNotify();
@@ -384,13 +385,9 @@ const edit = (year: number) => {
           class="q-gutter-md"
           @submit="selectedYear ? updateYearValueHandle() : insertYearHandle()"
         >
-          <QInput
-            :model-value="yearValue"
-            type="number"
+          <NumInput
+            v-model="yearValue"
             :label="t('admin.general.years.year')"
-            square
-            dense
-            @update:model-value="(value) => (yearValue = inputToNumber(value))"
           />
         </QForm>
       </QCardSection>

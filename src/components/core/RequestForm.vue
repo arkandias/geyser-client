@@ -13,8 +13,8 @@ import {
   UpsertRequestDocument,
 } from "@/gql/graphql.ts";
 import { useProfileStore } from "@/stores/useProfileStore.ts";
-import { inputToNumber } from "@/utils/misc.ts";
 
+import NumInput from "@/components/core/NumInput.vue";
 import SelectService from "@/components/core/SelectService.vue";
 
 const { dataFragment } = defineProps<{
@@ -244,22 +244,8 @@ const resetForm = (): void => {
       dense
       options-dense
     />
-    <QInput
-      :model-value="groups"
-      type="number"
-      :label="t('requestForm.field.groups')"
-      square
-      dense
-      @update:model-value="(value) => (groups = inputToNumber(value))"
-    />
-    <QInput
-      :model-value="hours"
-      type="number"
-      :label="t('requestForm.field.hours')"
-      square
-      dense
-      @update:model-value="(value) => (hours = inputToNumber(value))"
-    />
+    <NumInput v-model="groups" :label="t('requestForm.field.groups')" />
+    <NumInput v-model="hours" :label="t('requestForm.field.hours')" />
     <QOptionGroup
       v-model="requestType"
       :options="requestTypeOptions"

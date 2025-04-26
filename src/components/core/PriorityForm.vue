@@ -9,8 +9,8 @@ import {
   PriorityFormDataFragmentDoc,
   UpsertPriorityDocument,
 } from "@/gql/graphql.ts";
-import { inputToNumber } from "@/utils/misc.ts";
 
+import NumInput from "@/components/core/NumInput.vue";
 import SelectService from "@/components/core/SelectService.vue";
 
 const { dataFragment } = defineProps<{
@@ -123,14 +123,7 @@ watch(() => data.value.courseId, resetForm);
     @reset="resetForm"
   >
     <SelectService v-model="serviceId" dense options-dense />
-    <QInput
-      :model-value="seniority"
-      type="number"
-      :label="t('priorityForm.field.seniority')"
-      square
-      dense
-      @update:model-value="(value) => (seniority = inputToNumber(value))"
-    />
+    <NumInput v-model="seniority" :label="t('priorityForm.field.seniority')" />
     <QOptionGroup
       v-model="isPriority"
       :options="priorityOptions"

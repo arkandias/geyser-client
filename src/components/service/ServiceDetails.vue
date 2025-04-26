@@ -14,9 +14,9 @@ import {
   TeacherServiceDetailsFragmentDoc,
   UpdateServiceDocument,
 } from "@/gql/graphql.ts";
-import { inputToNumber } from "@/utils/misc.ts";
 
 import DetailsSection from "@/components/core/DetailsSection.vue";
+import NumInput from "@/components/core/NumInput.vue";
 import ServiceTable from "@/components/service/ServiceTable.vue";
 
 const { dataFragment } = defineProps<{
@@ -255,17 +255,11 @@ const formatWH = (hours: number) =>
             </QBtn>
           </td>
           <td v-if="isBaseServiceFormOpen">
-            <QInput
-              :model-value="baseServiceHours"
-              type="number"
+            <NumInput
+              v-model="baseServiceHours"
               :label="t('service.details.baseServiceForm.fields.hours')"
-              square
-              dense
               form="edit-base-service"
               class="inline-block"
-              @update:model-value="
-                (value) => (baseServiceHours = inputToNumber(value))
-              "
             />
           </td>
           <td v-else>
@@ -351,17 +345,11 @@ const formatWH = (hours: number) =>
             </QSelect>
           </td>
           <td>
-            <QInput
-              :model-value="modificationHours"
-              type="number"
+            <NumInput
+              v-model="modificationHours"
               :label="t('service.details.modificationForm.fields.hours')"
-              square
-              dense
               form="add-modification"
               class="inline-block"
-              @update:model-value="
-                (value) => (modificationHours = inputToNumber(value))
-              "
             />
           </td>
         </tr>
