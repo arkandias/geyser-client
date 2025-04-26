@@ -1,5 +1,5 @@
 import { RequestTypeEnum } from "@/gql/graphql.ts";
-import type { AdminColNameOptions } from "@/types/i18n.ts";
+import type { AdminColNameOptions } from "@/locales/types.ts";
 
 import type { ColName as AdminRequestsPrioritiesColNames } from "@/components/admin/AdminRequestsPriorities.vue";
 import type { ColName as AdminRequestsRequestsColNames } from "@/components/admin/AdminRequestsRequests.vue";

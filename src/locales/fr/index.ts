@@ -1,4 +1,4 @@
-import admin from "./admin/";
+import admin from "./admin";
 import app from "./app.ts";
 import common from "./common.ts";
 import core from "./core.ts";

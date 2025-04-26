@@ -6,6 +6,7 @@ import fr from "./fr";
 import { CUSTOM_TEXT_KEYS } from "@/config/custom-text-keys.ts";
 import { PHASES } from "@/config/phases.ts";
 import { RequestTypeEnum, RoleTypeEnum } from "@/gql/graphql.ts";
+import type { SimpleObject } from "@/types/data.ts";
 
 import type { ColName as AdminCoursesCourseTypesColName } from "@/components/admin/AdminCoursesCourseTypes.vue";
 import type { ColName as AdminCoursesCoursesColName } from "@/components/admin/AdminCoursesCourses.vue";
@@ -35,18 +36,14 @@ async function main() {
   });
 }
 
-type MessagesObj = {
-  [key: string]: string | MessagesObj;
-};
-
-const flattenObject = (obj: MessagesObj, prefix = ""): string[] =>
+const flattenObject = (obj: SimpleObject<string>, prefix = ""): string[] =>
   Object.keys(obj).flatMap((key) =>
     typeof obj[key] === "object"
       ? flattenObject(obj[key], prefix + key + ".")
       : [prefix + key],
   );
 
-const validateTranslations = (obj: MessagesObj, keys: string[]) => {
+const validateTranslations = (obj: SimpleObject<string>, keys: string[]) => {
   const definedKeys = flattenObject(obj);
 
   const missingKeys = keys.filter((key) => !definedKeys.includes(key));

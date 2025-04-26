@@ -26,7 +26,7 @@
     "codegen:schema": "graphql-codegen --config codegen.schema.ts",
     "codegen:documents": "graphql-codegen --config codegen.documents.ts",
     "codegen": "pnpm codegen:schema && pnpm codegen:documents",
-    "i18n": "tsx --tsconfig tsconfig.node.json src/locales/validate-translations.ts"
+    "locales:check": "tsx --tsconfig tsconfig.node.json src/locales/check.ts"
   },
   "dependencies": {
     "@urql/vue": "^1.4.3",

@@ -13,4 +13,4 @@ export default {
       unknownError: "Unknown error",
     },
   },
-};
+} as const;

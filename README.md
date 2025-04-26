@@ -111,10 +111,10 @@ pnpm run codegen:documents
 pnpm run codegen
 ```
 
-- Validate i18n translations by checking for missing and unused translation keys
+- Check locales translations by looking for missing and unused translation keys
 
 ```shell
-pnpm run i18n
+pnpm run locales:check
 ```
 
 ## Environment variables

@@ -1,16 +1,21 @@
-import { type I18nOptions, createI18n } from "vue-i18n";
+import { type UseI18nOptions, createI18n, useI18n } from "vue-i18n";
 
 import { type AvailableLocale, DEFAULT_LOCALE } from "@/config/locales.ts";
 import enUS from "@/locales/en";
 import frFR from "@/locales/fr";
 
-type LocaleStructure<T> = {
-  [K in keyof T]: T[K] extends string
-    ? string
-    : T[K] extends object
-      ? LocaleStructure<T[K]>
-      : never;
+type MessageSchema = (typeof messages)[typeof DEFAULT_LOCALE];
+type NumberSchema = typeof numberFormat;
+
+export type TypedI18nSchema = {
+  message: MessageSchema;
+  number: NumberSchema;
 };
+
+const messages = {
+  "fr-FR": frFR,
+  "en-US": enUS,
+} satisfies Record<AvailableLocale, unknown>;
 
 const numberFormat = {
   decimal: {
@@ -24,22 +29,24 @@ const numberFormat = {
   },
 } as const;
 
-export type CustomI18nOptions = I18nOptions & {
-  message: LocaleStructure<typeof frFR>;
-  number: typeof numberFormat;
-};
+const numberFormats = {
+  "fr-FR": numberFormat,
+  "en-US": numberFormat,
+} satisfies Record<AvailableLocale, typeof numberFormat>;
 
-export const i18n = createI18n<CustomI18nOptions, AvailableLocale>({
+export const i18n = createI18n<[MessageSchema], AvailableLocale>({
   legacy: false,
   locale: DEFAULT_LOCALE,
   fallbackLocale: DEFAULT_LOCALE,
-  messages: {
-    "fr-FR": frFR,
-    "en-US": enUS,
-  },
-  numberFormats: {
-    "fr-FR": numberFormat,
-    "en-US": numberFormat,
-  },
+  messages,
+  numberFormats,
   warnHtmlMessage: false,
 });
+
+export const useCustomI18n = (
+  options?: UseI18nOptions<TypedI18nSchema, AvailableLocale>,
+) =>
+  useI18n<TypedI18nSchema, AvailableLocale>({
+    useScope: "global",
+    ...options,
+  });

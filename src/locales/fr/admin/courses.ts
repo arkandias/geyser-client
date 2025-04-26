@@ -1,4 +1,4 @@
-import type { AdminColNameOptions } from "@/types/i18n.ts";
+import type { AdminColNameOptions } from "@/locales/types.ts";
 
 import type { ColName as AdminCoursesCourseTypesColName } from "@/components/admin/AdminCoursesCourseTypes.vue";
 import type { ColName as AdminCoursesCoursesColName } from "@/components/admin/AdminCoursesCourses.vue";
